@@ -15,8 +15,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      /// these are the routes of my app so that I can navigate through them
+      /// easily using the pushNamed method
+      /// and '/' indicates the home page of the app
+      routes: {'/': (context) => const MainPage()},
       debugShowCheckedModeBanner: false,
-      home: const MainPage(),
       theme: ThemeData(
           textTheme: const TextTheme(
               bodyLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
