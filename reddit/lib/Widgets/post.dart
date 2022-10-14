@@ -70,7 +70,7 @@ class Post extends StatelessWidget {
                         onPressed: () {},
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: const [Icon(Icons.thumb_up), Text("Like")],
+                          children: const [Icon(Icons.thumb_up), Text('Like')],
                         )),
                   ),
                   Flexible(
@@ -80,7 +80,7 @@ class Post extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: const [
                             Icon(Icons.comment),
-                            Text("Comment"),
+                            Text('Comment'),
                           ],
                         )),
                   ),
@@ -91,7 +91,7 @@ class Post extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: const [
                             Icon(Icons.ios_share),
-                            Text("Share"),
+                            Text('Share'),
                           ],
                         )),
                   )

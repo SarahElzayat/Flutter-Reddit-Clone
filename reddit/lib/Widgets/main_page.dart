@@ -15,7 +15,7 @@ class MainPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Reddit Posts Simulator",
+          'Reddit Posts Simulator',
           style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
@@ -24,9 +24,9 @@ class MainPage extends StatelessWidget {
         itemCount: postsExamples.length,
         itemBuilder: (ctx, index) {
           return Post(
-              imgPath: postsExamples[index]["ImagePath"],
-              userName: postsExamples[index]["UserName"],
-              thePostContent: postsExamples[index]["Content"]);
+              imgPath: postsExamples[index]['ImagePath'],
+              userName: postsExamples[index]['UserName'],
+              thePostContent: postsExamples[index]['Content']);
         },
       ),
     );
