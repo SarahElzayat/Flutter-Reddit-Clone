@@ -1,5 +1,14 @@
+// fen el comments wl @author wl date ya hanem ?
+
 import 'package:flutter/material.dart';
-import 'package:first_task/posts.dart';
+
+/// always make the path relative not the absolute path
+
+/// don't
+// import 'package:first_task/posts.dart';
+
+/// do
+import './posts.dart';
 
 void main() {
   runApp(const MyApp());

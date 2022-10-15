@@ -1,3 +1,5 @@
+// fen el comments wl @author wl date ya hanem ?
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -39,7 +41,16 @@ class _PostsState extends State<Posts> {
   }
 }
 
-// ignore: non_constant_identifier_names
+/// don't use this ignore tags matensobesh :D, eb2y 7ely el warning nfso
+// ignore: non_constant_identifier_names => de laa sheleha
+
+/// el moshkela hena enna katba esm el Widget UpperCamelCase
+/// wehna metf2en fl styling en ehna nemshy camelCase bs
+/// fa el 7l enk tkhleha badal CardInstance => cardInstance
+/// (khaly 7rf el C small msh capital)
+///
+/// note kaman dayman law 3auza te3mly widget gdeda 7oteha fe file lw7dha
+/// msh f nfs el file bta3 widget tanya da el good practice.
 Widget CardInstance(menuButton, context, heartPressed) => Card(
       child: Column(children: [
         Row(children: [
