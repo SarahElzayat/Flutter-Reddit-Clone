@@ -1,3 +1,5 @@
+/// where are the author and date and description comments ya hanem ??
+
 import 'package:flutter/material.dart';
 import 'package:reddit/posts_screen.dart';
 
@@ -12,19 +14,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      // title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
 
-      theme: ThemeData(
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(
-            fontSize: 18 
-          )
+        /// remove these comments if you are not gonna use it again
+        // title: 'Flutter Demo',
+
+        theme: ThemeData(
+          textTheme: const TextTheme(bodyLarge: TextStyle(fontSize: 18)),
+          primarySwatch: Colors.deepPurple,
         ),
-        primarySwatch: Colors.deepPurple,
-      ),
-      home:  PostsScreen()
-    );
+
+        /// use routes instead of home b3d keda ahsan
+        home: PostsScreen());
   }
 }
-

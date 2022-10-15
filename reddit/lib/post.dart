@@ -1,10 +1,15 @@
+/// where are the author and date and description comments ya hanem ??
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class PostBuilder extends StatefulWidget {
-  PostBuilder(
+  /// you should make the constructor const to make the class immutable
+  /** const */ PostBuilder(
       {super.key, required this.post, required this.name, required this.title});
-  String post, name, title;
+
+  /// it is better to make these vars final
+  /** final */ String post, name, title;
 
   @override
   State<PostBuilder> createState() => _PostBuilderState();
@@ -71,14 +76,16 @@ class _PostBuilderState extends State<PostBuilder> {
                 },
                 icon: const Icon(Icons.thumb_up),
                 color: _isPressed ? Colors.red : Colors.grey,
-              ),IconButton(
+              ),
+              IconButton(
                 onPressed: () => showToast('You\'ll comment here'),
                 icon: const Icon(Icons.comment),
-                color:Colors.grey,
-              ),IconButton(
+                color: Colors.grey,
+              ),
+              IconButton(
                 onPressed: () => showToast('You shall share it from here'),
                 icon: const Icon(Icons.share),
-                color:  Colors.grey,
+                color: Colors.grey,
               ),
             ],
           )
