@@ -2,8 +2,12 @@
 /// @author Haitham Mohamed
 /// @date 14/10/2022
 
-import 'package:assignment/data/constantData/posts.dart';
-import 'package:assignment/view/widgets/post_widget.dart';
+/// same issue here always use the relative paths
+// import 'package:assignment/data/constantData/posts.dart';
+// import 'package:assignment/view/widgets/post_widget.dart';
+
+import '../../data/constantData/posts.dart';
+import '../../view/widgets/post_widget.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatelessWidget {

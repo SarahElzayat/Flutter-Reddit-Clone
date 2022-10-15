@@ -2,7 +2,13 @@
 /// @author Haitham Mohamed
 /// @date 14/10/2022
 
-import 'package:assignment/data/model/post.dart';
+// always make the path relative not as on your device to work on other devices.
+
+//don't use this. :D
+// import 'package:assignment/data/model/post.dart';
+
+// instead use this. :D
+import '../model/post.dart';
 
 List<Post> constPosts = [
   Post(

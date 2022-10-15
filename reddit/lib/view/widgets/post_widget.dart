@@ -2,11 +2,21 @@
 /// it use PostActionButtons and PostDescription widget
 /// @author Haitham Mohamed
 /// @date 14/10/2022
-import 'package:assignment/view/widgets/post_action_buttons.dart';
+
+/// use the relative paths.
+
+/// don't
+// import 'package:assignment/view/widgets/post_action_buttons.dart';
+// import 'package:assignment/data/model/post.dart';
+// import 'package:assignment/view/screens/subreddit.dart';
+// import 'package:assignment/view/widgets/post_description.dart';
+
+/// do
+import '../../view/widgets/post_action_buttons.dart';
+import '../../view/screens/subreddit.dart';
+import '../../view/widgets/post_description.dart';
+import '../../data/model/post.dart';
 import 'package:flutter/material.dart';
-import 'package:assignment/data/model/post.dart';
-import 'package:assignment/view/screens/subreddit.dart';
-import 'package:assignment/view/widgets/post_description.dart';
 
 class PostWidget extends StatelessWidget {
   final List<Post> posts;

@@ -21,6 +21,8 @@ class PostDescription extends StatefulWidget {
 }
 
 class _PostDescriptionState extends State<PostDescription> {
+  /// if you are not gonna use them outside the
+  /// class then make them private better
   String lessText = '';
   String moreText = '';
 

@@ -1,7 +1,11 @@
 /// this is the Main Screen for the application
 /// @author Haitham Mohamed
 /// @date 14/10/2022
-import 'package:assignment/view/screens/home.dart';
+
+/// don't
+// import 'package:assignment/view/screens/home.dart';
+
+import './view/screens/home.dart';
 import 'package:flutter/material.dart';
 
 void main() {
