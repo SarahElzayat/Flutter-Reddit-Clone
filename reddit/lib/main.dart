@@ -1,13 +1,9 @@
-/// this is the Main Screen for the application
-/// @author Haitham Mohamed
+
+/// this is a scrollable screen contains some posts
+/// @author Abdelaziz Salah
 /// @date 14/10/2022
-
-/// don't
-// import 'package:assignment/view/screens/home.dart';
-
-import './view/screens/home.dart';
-
 import 'package:flutter/material.dart';
+import 'Widgets/main_page.dart';
 
 import 'package:reddit/posts_screen.dart';
 void main() {
@@ -17,34 +13,31 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const PostList(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-      theme: ThemeData(primaryColor: Colors.white),
+      /// these are the routes of my app so that I can navigate through them
+      /// easily using the pushNamed method
+      /// and '/' indicates the home page of the app
+      routes: {'/': (context) => const MainPage()},
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      home: const MyHomePage(),
+      theme: ThemeData(
+          textTheme: const TextTheme(
+              bodyLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              bodyMedium: TextStyle(
+                fontSize: 18,
+              ),
+              titleLarge: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                  color: Colors.white,
+                  shadows: [
+                    Shadow(
+                        blurRadius: 100,
+                        color: Colors.black,
+                        offset: Offset(10, 10))
+                  ]))),
+
     );
   }
 }
