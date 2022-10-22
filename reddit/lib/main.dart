@@ -6,7 +6,9 @@
 // import 'package:assignment/view/screens/home.dart';
 
 import './view/screens/home.dart';
+
 import 'package:flutter/material.dart';
+import 'package:reddit/posts_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,6 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
       theme: ThemeData(primaryColor: Colors.white),
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
