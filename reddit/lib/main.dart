@@ -1,16 +1,17 @@
+
 /// this is a scrollable screen contains some posts
 /// @author Abdelaziz Salah
 /// @date 14/10/2022
-
 import 'package:flutter/material.dart';
 import 'Widgets/main_page.dart';
 
+import 'package:reddit/posts_screen.dart';
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
                         color: Colors.black,
                         offset: Offset(10, 10))
                   ]))),
+
     );
   }
 }
