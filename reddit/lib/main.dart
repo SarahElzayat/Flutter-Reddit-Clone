@@ -1,4 +1,11 @@
-/// where are the author and date and description comments ya hanem ??
+/// this is the Main Screen for the application
+/// @author Haitham Mohamed
+/// @date 14/10/2022
+
+/// don't
+// import 'package:assignment/view/screens/home.dart';
+
+import './view/screens/home.dart';
 
 import 'package:flutter/material.dart';
 import 'package:reddit/posts_screen.dart';
@@ -8,23 +15,17 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
 
-        /// remove these comments if you are not gonna use it again
-        // title: 'Flutter Demo',
-
-        theme: ThemeData(
-          textTheme: const TextTheme(bodyLarge: TextStyle(fontSize: 18)),
-          primarySwatch: Colors.deepPurple,
-        ),
-
-        /// use routes instead of home b3d keda ahsan
-        home: PostsScreen());
+      theme: ThemeData(primaryColor: Colors.white),
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      home: const MyHomePage(),
+    );
   }
 }
