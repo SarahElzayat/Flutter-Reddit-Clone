@@ -20,13 +20,8 @@ class Main extends StatelessWidget {
         inputDecorationTheme: const InputDecorationTheme(
           floatingLabelStyle: TextStyle(color: darkBlueColor),
           labelStyle: TextStyle(color: greyColor),
+          hintStyle: TextStyle(color: greyColor),
           suffixIconColor: greyColor,
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: darkBlueColor),
-          ),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: greyColor),
-          ),
           alignLabelWithHint: true,
         ),
       ),
@@ -55,6 +50,8 @@ class Main extends StatelessWidget {
                     color: darkBlueColor,
                   ),
                 ),
+                const SizedBox(height: 30),
+                squareTextField('r/Comunity_name'),
               ],
             ),
           ),
