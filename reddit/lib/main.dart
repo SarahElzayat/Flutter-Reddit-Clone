@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/components/text_fields.dart';
 
+import 'components/my_text_field.dart';
+import 'components/square_text_field.dart';
+import 'components/text_fields.dart';
 import 'consts/colors.dart';
 
 void main() {
@@ -14,14 +16,9 @@ class Main extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primaryColor: Colors.red,
-        primarySwatch: Colors.blue,
         scaffoldBackgroundColor: backgroundColor,
         inputDecorationTheme: const InputDecorationTheme(
-          floatingLabelStyle: TextStyle(color: darkBlueColor),
-          labelStyle: TextStyle(color: greyColor),
           hintStyle: TextStyle(color: greyColor),
-          suffixIconColor: greyColor,
           alignLabelWithHint: true,
         ),
       ),
@@ -32,17 +29,20 @@ class Main extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                defaultTextField('Normal'),
-                defaultTextField('description', maxLength: 5),
-                defaultTextField(
-                  'Password',
+                const DefaultTextField(labelText: 'Normal'),
+                const DefaultTextField(labelText: 'description', maxLength: 5),
+                DefaultTextField(
+                  labelText: 'Password',
                   icon: IconButton(
                     onPressed: () {},
-                    icon: const Icon(Icons.remove_red_eye),
+                    icon: const Icon(
+                      Icons.remove_red_eye,
+                      color: greyColor,
+                    ),
                   ),
                 ),
-                defaultTextField(
-                  'New Password',
+                DefaultTextField(
+                  labelText: 'New Password',
                   obscureText: true,
                   icon: IconButton(
                     onPressed: () {},
@@ -51,7 +51,8 @@ class Main extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 30),
-                squareTextField('r/Comunity_name'),
+                const SquareTextField(
+                    labelText: 'r/Comunity_name', maxLength: 21),
               ],
             ),
           ),

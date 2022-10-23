@@ -1,34 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/consts/colors.dart';
 
-class DefaultTextField extends StatefulWidget {
+class SquareTextField extends StatefulWidget {
   final String labelText;
-  final IconButton? icon;
-  final bool obscureText;
   final void Function(String)? onChanged;
   final void Function(String)? onSubmitted;
   final TextInputType keyboardType;
   final TextEditingController? formController;
-  final int? maxLength;
+  final int maxLength;
 
-  const DefaultTextField({
+  const SquareTextField({
     Key? key,
     required this.labelText,
-    this.icon,
-    this.obscureText = false,
+    required this.maxLength,
     this.onChanged,
     this.onSubmitted,
     this.keyboardType = TextInputType.text,
     this.formController,
-    this.maxLength,
   }) : super(key: key);
 
   @override
-  DefaultTextFieldState createState() => DefaultTextFieldState();
+  SquareTextFieldState createState() => SquareTextFieldState();
 }
 
-class DefaultTextFieldState extends State<DefaultTextField> {
+class SquareTextFieldState extends State<SquareTextField> {
   late FocusNode _focusNode;
+  var textLength = 0;
 
   @override
   void initState() {
@@ -50,24 +47,27 @@ class DefaultTextFieldState extends State<DefaultTextField> {
     return TextFormField(
       focusNode: _focusNode,
       controller: widget.formController,
-      obscureText: widget.obscureText,
-      onChanged: widget.onChanged,
+      onChanged: (value) {
+        setState(() {
+          textLength = value.length;
+        });
+      },
       keyboardType: widget.keyboardType,
       onFieldSubmitted: widget.onSubmitted,
       style: const TextStyle(color: lightGreyColor),
       decoration: InputDecoration(
-        enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: greyColor, width: 2.0),
+        hintText: widget.labelText,
+        filled: true,
+        fillColor: darkGreyColor,
+        suffixIconConstraints: const BoxConstraints(),
+        suffixIcon: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Text('${widget.maxLength - textLength}',
+              style: const TextStyle(color: greyColor)),
         ),
         focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: darkBlueColor, width: 2.0),
+          borderSide: BorderSide(color: Colors.transparent, width: 0),
         ),
-        labelText: widget.labelText,
-        labelStyle:
-            TextStyle(color: _focusNode.hasFocus ? darkBlueColor : greyColor),
-        suffixIcon: widget.icon,
-        suffixIconColor: greyColor,
-        counterStyle: const TextStyle(color: greyColor),
       ),
       maxLength: widget.maxLength,
     );

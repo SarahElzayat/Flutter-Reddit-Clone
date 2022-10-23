@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/consts/colors.dart';
 
-Widget defaultTextField(
+Widget defaultTextField2(
   String labelText, {
   IconButton? icon,
   bool obscureText = false,
