@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reddit/components/text_fields.dart';
 
 void main() {
   runApp(const Main());
@@ -9,6 +10,12 @@ class Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: defaultTextField(),
+        ),
+      ),
+    );
   }
 }
