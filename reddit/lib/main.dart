@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'components/my_text_field.dart';
 import 'components/square_text_field.dart';
-import 'components/text_fields.dart';
 import 'consts/colors.dart';
 
 void main() {
@@ -30,14 +29,17 @@ class Main extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const DefaultTextField(labelText: 'Normal'),
-                const DefaultTextField(labelText: 'description', maxLength: 5),
+                const SizedBox(height: 30),
+                const DefaultTextField(
+                    labelText: 'Description', maxLength: 500, multiLine: true),
+                const SizedBox(height: 30),
                 DefaultTextField(
                   labelText: 'Password',
                   icon: IconButton(
                     onPressed: () {},
                     icon: const Icon(
-                      Icons.remove_red_eye,
-                      color: greyColor,
+                      Icons.remove_red_eye_outlined,
+                      color: darkBlueColor,
                     ),
                   ),
                 ),
@@ -46,13 +48,17 @@ class Main extends StatelessWidget {
                   obscureText: true,
                   icon: IconButton(
                     onPressed: () {},
-                    icon: const Icon(Icons.remove_red_eye),
-                    color: darkBlueColor,
+                    icon: const Icon(Icons.remove_red_eye_outlined),
+                    color: greyColor,
                   ),
                 ),
                 const SizedBox(height: 30),
                 const SquareTextField(
                     labelText: 'r/Comunity_name', maxLength: 21),
+                const SquareTextField(
+                  labelText: 'Add Comment',
+                  showSuffix: false,
+                ),
               ],
             ),
           ),

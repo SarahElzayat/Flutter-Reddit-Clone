@@ -7,15 +7,17 @@ class SquareTextField extends StatefulWidget {
   final void Function(String)? onSubmitted;
   final TextInputType keyboardType;
   final TextEditingController? formController;
-  final int maxLength;
+  final int? maxLength;
+  final bool showSuffix;
 
   const SquareTextField({
     Key? key,
+    this.showSuffix = true,
+    this.keyboardType = TextInputType.text,
     required this.labelText,
-    required this.maxLength,
+    this.maxLength,
     this.onChanged,
     this.onSubmitted,
-    this.keyboardType = TextInputType.text,
     this.formController,
   }) : super(key: key);
 
@@ -56,17 +58,22 @@ class SquareTextFieldState extends State<SquareTextField> {
       onFieldSubmitted: widget.onSubmitted,
       style: const TextStyle(color: lightGreyColor),
       decoration: InputDecoration(
+        // border: OutlineInputBorder(
+        //   borderRadius: BorderRadius.circular(10),
+        // ),
         hintText: widget.labelText,
         filled: true,
         fillColor: darkGreyColor,
         suffixIconConstraints: const BoxConstraints(),
-        suffixIcon: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: Text('${widget.maxLength - textLength}',
-              style: const TextStyle(color: greyColor)),
-        ),
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.transparent, width: 0),
+        suffixIcon: widget.showSuffix
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Text('${widget.maxLength ?? 0 - textLength}',
+                    style: const TextStyle(color: greyColor)),
+              )
+            : null,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
         ),
       ),
       maxLength: widget.maxLength,

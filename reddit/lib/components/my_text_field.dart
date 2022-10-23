@@ -10,12 +10,13 @@ class DefaultTextField extends StatefulWidget {
   final TextInputType keyboardType;
   final TextEditingController? formController;
   final int? maxLength;
-
+  final bool multiLine;
   const DefaultTextField({
     Key? key,
     required this.labelText,
-    this.icon,
     this.obscureText = false,
+    this.multiLine = false,
+    this.icon,
     this.onChanged,
     this.onSubmitted,
     this.keyboardType = TextInputType.text,
@@ -52,7 +53,8 @@ class DefaultTextFieldState extends State<DefaultTextField> {
       controller: widget.formController,
       obscureText: widget.obscureText,
       onChanged: widget.onChanged,
-      keyboardType: widget.keyboardType,
+      keyboardType:
+          widget.multiLine ? TextInputType.multiline : widget.keyboardType,
       onFieldSubmitted: widget.onSubmitted,
       style: const TextStyle(color: lightGreyColor),
       decoration: InputDecoration(
@@ -70,6 +72,7 @@ class DefaultTextFieldState extends State<DefaultTextField> {
         counterStyle: const TextStyle(color: greyColor),
       ),
       maxLength: widget.maxLength,
+      maxLines: widget.multiLine ? null : 1,
     );
   }
 }
