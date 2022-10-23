@@ -1,22 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:reddit/consts/colors.dart';
 
 Widget defaultTextField(
   String labelText, {
-  Icon? icon,
+  IconButton? icon,
   bool obscureText = false,
-  onChanged,
-  onSubmitted,
+  void Function(String)? onChanged,
+  void Function(String)? onSubmitted,
   keyboardType = TextInputType.text,
+  TextEditingController? formController,
+  int? maxLength,
 }) {
-  return TextField(
+  return TextFormField(
+    controller: formController,
     obscureText: obscureText,
     onChanged: onChanged,
     keyboardType: keyboardType,
-    onSubmitted: onSubmitted,
+    onFieldSubmitted: onSubmitted,
+    style: const TextStyle(color: lightGreyColor),
     decoration: InputDecoration(
-      // border: OutlineInputBorder(),
       labelText: labelText,
       suffixIcon: icon,
+      suffixIconColor: greyColor,
+      counterStyle: const TextStyle(color: greyColor),
     ),
+    maxLength: maxLength,
   );
 }
