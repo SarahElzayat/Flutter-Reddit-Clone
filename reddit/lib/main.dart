@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'components/my_text_field.dart';
+import 'components/default_text_field.dart';
 import 'components/square_text_field.dart';
 import 'consts/colors.dart';
 
