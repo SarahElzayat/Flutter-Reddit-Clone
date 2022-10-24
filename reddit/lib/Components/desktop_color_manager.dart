@@ -12,7 +12,8 @@ const darkGrey = Color(0xff181a1b); //posts background, colorless buttons
 
 const lightGrey = Color(0xff8d857b); //text in appbar, small headlines and icons
 
-const blueGrey = Color(0xff191f25); //body background, text form fields when hovered
+const blueGrey =
+    Color(0xff191f25); //body background, text form fields when hovered
 
 const hoverGrey = Color(0xff171d21); //colorless buttons when hovered
 
@@ -25,7 +26,8 @@ const deepDarkGrey = Color(0xff1d1f20); //text form field when not focused
 
 const eggshellWhite = Color(0xffd6d3cd); //general text
 
-const blue = Color(0xff47aef8); //blue buttons, some borders, selected filter(hot, trending...)
+const blue = Color(
+    0xff47aef8); //blue buttons, some borders, selected filter(hot, trending...)
 
 const downvoteBlue = Color(0xff69adff); //arrow color when downvote is pressed
 const upvoteRed = Color(0xffff581a); //arrow color when upvote is pressed

@@ -1,26 +1,47 @@
+/// A widget that displays a square text field with a label.
+/// date: 23/10/2022
+/// @Auther: Ahmed Atta
+
 import 'package:flutter/material.dart';
-import 'package:reddit/consts/colors.dart';
+import '../consts/colors.dart';
 
 class SquareTextField extends StatefulWidget {
-  final String labelText;
-  final void Function(String)? onChanged;
-  final void Function(String)? onSubmitted;
-  final TextInputType keyboardType;
-  final TextEditingController? formController;
-  final int? maxLength;
-  final bool showSuffix;
-
+  /// Creates an [SquareTextField].
+  /// it's used in many places in the app like in Add Comment and Add Community screens
+  /// the [labelText] is required.
   const SquareTextField({
     Key? key,
-    this.showSuffix = true,
-    this.keyboardType = TextInputType.text,
     required this.labelText,
+    this.keyboardType = TextInputType.text,
     this.maxLength,
+    this.formController,
     this.onChanged,
     this.onSubmitted,
-    this.formController,
+    this.showSuffix = true,
   }) : super(key: key);
 
+  /// The text to display in the label.
+  final String labelText;
+
+  /// The type of keyboard to use for editing the text.
+  /// Defaults to [TextInputType.text].
+  final TextInputType keyboardType;
+
+  /// The maximum number of characters to allow in the text field.
+  final int? maxLength;
+
+  /// The controller for the text field.
+  final TextEditingController? formController;
+
+  /// its used to show or hide the suffix whitch contains the number of line left.
+  /// Default to [true].
+  final bool showSuffix;
+
+  /// Called when the text being edited changes.
+  final void Function(String)? onChanged;
+
+  /// Called when the text is submitted.
+  final void Function(String)? onSubmitted;
   @override
   SquareTextFieldState createState() => SquareTextFieldState();
 }
@@ -58,9 +79,6 @@ class SquareTextFieldState extends State<SquareTextField> {
       onFieldSubmitted: widget.onSubmitted,
       style: const TextStyle(color: lightGreyColor),
       decoration: InputDecoration(
-        // border: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(10),
-        // ),
         hintText: widget.labelText,
         filled: true,
         fillColor: darkGreyColor,

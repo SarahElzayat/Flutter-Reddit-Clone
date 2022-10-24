@@ -1,16 +1,14 @@
+/// A widget that displays a text field with a label.
+/// date: 23/10/2022
+/// @Auther: Ahmed Atta
+
 import 'package:flutter/material.dart';
-import 'package:reddit/consts/colors.dart';
+import '../consts/colors.dart';
 
 class DefaultTextField extends StatefulWidget {
-  final String labelText;
-  final IconButton? icon;
-  final bool obscureText;
-  final void Function(String)? onChanged;
-  final void Function(String)? onSubmitted;
-  final TextInputType keyboardType;
-  final TextEditingController? formController;
-  final int? maxLength;
-  final bool multiLine;
+  /// Creates an [DefaultTextField].
+  /// it's used in many places in the app like in the change password screen
+  /// the [labelText] is required.
   const DefaultTextField({
     Key? key,
     required this.labelText,
@@ -23,6 +21,37 @@ class DefaultTextField extends StatefulWidget {
     this.formController,
     this.maxLength,
   }) : super(key: key);
+
+  /// The text to display in the label.
+  /// it's required.
+  final String labelText;
+
+  /// the icon to display in the text field.
+  final IconButton? icon;
+
+  /// indicates Whether the text being edited is obscured.
+  /// Defaults to [false].
+  final bool obscureText;
+
+  /// Called when the text being edited changes.
+  final void Function(String)? onChanged;
+
+  /// Called when the text is submitted.
+  final void Function(String)? onSubmitted;
+
+  /// The type of keyboard to use for editing the text.
+  /// Defaults to [TextInputType.text].
+  final TextInputType keyboardType;
+
+  /// The controller for the text field.
+  final TextEditingController? formController;
+
+  /// The maximum number of characters to allow in the text field.
+  final int? maxLength;
+
+  /// indicates Whether the text field should be multiline.
+  /// Defaults to [false].
+  final bool multiLine;
 
   @override
   DefaultTextFieldState createState() => DefaultTextFieldState();
