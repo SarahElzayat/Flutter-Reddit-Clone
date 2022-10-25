@@ -3,7 +3,8 @@
 /// @Auther: Ahmed Atta
 
 import 'package:flutter/material.dart';
-import 'package:reddit/Components/color_manager.dart';
+
+import './color_manager.dart';
 
 class DefaultTextField extends StatefulWidget {
   /// Creates an [DefaultTextField].
