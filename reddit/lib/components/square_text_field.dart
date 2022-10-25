@@ -3,7 +3,7 @@
 /// @Auther: Ahmed Atta
 
 import 'package:flutter/material.dart';
-import '../consts/colors.dart';
+import 'package:reddit/Components/color_manager.dart';
 
 class SquareTextField extends StatefulWidget {
   /// Creates an [SquareTextField].
@@ -82,17 +82,17 @@ class SquareTextFieldState extends State<SquareTextField> {
       },
       keyboardType: widget.keyboardType,
       onFieldSubmitted: widget.onSubmitted,
-      style: const TextStyle(color: lightGreyColor),
+      style: const TextStyle(color: ColorManager.lightGrey),
       decoration: InputDecoration(
         hintText: widget.labelText,
         filled: true,
-        fillColor: darkGreyColor,
+        fillColor: ColorManager.darkGrey,
         suffixIconConstraints: const BoxConstraints(),
         suffixIcon: widget.showSuffix
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Text('${widget.maxLength ?? 0 - textLength}',
-                    style: const TextStyle(color: greyColor)),
+                    style: const TextStyle(color: ColorManager.greyColor)),
               )
             : null,
         border: OutlineInputBorder(

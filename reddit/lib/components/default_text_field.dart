@@ -3,7 +3,7 @@
 /// @Auther: Ahmed Atta
 
 import 'package:flutter/material.dart';
-import '../consts/colors.dart';
+import 'package:reddit/Components/color_manager.dart';
 
 class DefaultTextField extends StatefulWidget {
   /// Creates an [DefaultTextField].
@@ -89,25 +89,26 @@ class DefaultTextFieldState extends State<DefaultTextField> {
       keyboardType:
           widget.multiLine ? TextInputType.multiline : widget.keyboardType,
       onFieldSubmitted: widget.onSubmitted,
-      style: const TextStyle(color: lightGreyColor),
+      style: const TextStyle(color: ColorManager.lightGrey),
       decoration: InputDecoration(
         enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: greyColor, width: 2.0),
+          borderSide: BorderSide(color: ColorManager.greyColor, width: 2.0),
         ),
         focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: darkBlueColor, width: 2.0),
+          borderSide: BorderSide(color: ColorManager.darkBlueColor, width: 2.0),
         ),
         labelText: widget.labelText,
-        labelStyle:
-            TextStyle(color: _focusNode.hasFocus ? darkBlueColor : greyColor),
+        labelStyle: TextStyle(
+            color: _focusNode.hasFocus
+                ? ColorManager.darkBlueColor
+                : ColorManager.greyColor),
         suffixIcon: widget.icon,
-        suffixIconColor: greyColor,
-        counterStyle: const TextStyle(color: greyColor),
+        suffixIconColor: ColorManager.greyColor,
+        counterStyle: const TextStyle(color: ColorManager.greyColor),
       ),
       maxLength: widget.maxLength,
       maxLines: widget.multiLine ? null : 1,
       validator: widget.validator,
-      
     );
   }
 }

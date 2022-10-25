@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:reddit/Components/color_manager.dart';
 import 'package:reddit/components/default_text_field.dart';
 import 'package:reddit/components/square_text_field.dart';
-import 'package:reddit/consts/colors.dart';
 
 void main() {
   runApp(Main());
@@ -15,9 +15,9 @@ class Main extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        scaffoldBackgroundColor: backgroundColor,
+        scaffoldBackgroundColor: ColorManager.darkGrey,
         inputDecorationTheme: const InputDecorationTheme(
-          hintStyle: TextStyle(color: greyColor),
+          hintStyle: TextStyle(color: ColorManager.greyColor),
           alignLabelWithHint: true,
         ),
       ),
@@ -45,7 +45,7 @@ class Main extends StatelessWidget {
                         onPressed: () {},
                         icon: const Icon(
                           Icons.remove_red_eye_outlined,
-                          color: darkBlueColor,
+                          color: ColorManager.darkBlueColor,
                         ),
                       ),
                     ),
@@ -55,7 +55,7 @@ class Main extends StatelessWidget {
                       icon: IconButton(
                         onPressed: () {},
                         icon: const Icon(Icons.remove_red_eye_outlined),
-                        color: greyColor,
+                        color: ColorManager.greyColor,
                       ),
                     ),
                     const SizedBox(height: 30),
@@ -71,7 +71,8 @@ class Main extends StatelessWidget {
                     //Elevated Button to validate the form
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        side: const BorderSide(color: darkBlueColor, width: 2),
+                        side: const BorderSide(
+                            color: ColorManager.darkBlueColor, width: 2),
                       ),
                       onPressed: () {
                         _formKey.currentState!.validate();
