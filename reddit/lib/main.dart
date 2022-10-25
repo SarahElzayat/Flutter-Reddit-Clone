@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/Components/color_manager.dart';
-import 'package:reddit/Screens/test_screen.dart';
+import './Components/color_manager.dart';
+import './Screens/test_screen.dart';
 
 void main() {
   runApp(const Main());
