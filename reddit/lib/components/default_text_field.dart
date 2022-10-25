@@ -20,6 +20,7 @@ class DefaultTextField extends StatefulWidget {
     this.keyboardType = TextInputType.text,
     this.formController,
     this.maxLength,
+    this.validator,
   }) : super(key: key);
 
   /// The text to display in the label.
@@ -38,6 +39,9 @@ class DefaultTextField extends StatefulWidget {
 
   /// Called when the text is submitted.
   final void Function(String)? onSubmitted;
+
+  /// Called when [validate] is called.
+  final String? Function(String?)? validator;
 
   /// The type of keyboard to use for editing the text.
   /// Defaults to [TextInputType.text].
@@ -102,6 +106,8 @@ class DefaultTextFieldState extends State<DefaultTextField> {
       ),
       maxLength: widget.maxLength,
       maxLines: widget.multiLine ? null : 1,
+      validator: widget.validator,
+      
     );
   }
 }
