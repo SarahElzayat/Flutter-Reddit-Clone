@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/Components/color_manager.dart';
-import 'package:reddit/Components/square_text_field.dart';
-import 'package:reddit/components/default_text_field.dart';
+import '../Components/default_text_field.dart';
+import '../Components/square_text_field.dart';
 
 class TestScreen extends StatelessWidget {
   TestScreen({super.key});
