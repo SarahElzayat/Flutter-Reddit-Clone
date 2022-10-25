@@ -13,6 +13,7 @@ class ColorManager {
 
   static const Color greyColor = Color(0XFF7a7a7a);
 
+  static const Color black = Color(0xff0a0a0a); //background color of the app
   static const Color darkGrey =
       Color(0xff181a1b); //posts background, colorless buttons
 
