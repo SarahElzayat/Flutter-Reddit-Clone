@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class Button extends StatelessWidget {
   final String text; //text written in button
   final Color textColor; //color of button text
