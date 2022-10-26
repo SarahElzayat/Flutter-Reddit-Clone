@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+
+import 'Screens/testing_screen.dart';
+
 import 'package:reddit/components/search_field.dart';
 
 import 'consts/colors.dart';
+
 
 void main() {
   runApp(Main());
