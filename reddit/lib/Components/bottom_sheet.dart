@@ -2,7 +2,7 @@
 /// @author Haitham Mohamed
 /// @date 26/10/2022
 
-import 'package:bottomsheet/color.dart';
+import '../Components/color_manager.dart';
 import 'package:flutter/material.dart';
 
 /// This function Shows the proper bottom sheet depends on the inputs
