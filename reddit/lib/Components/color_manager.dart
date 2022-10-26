@@ -12,7 +12,7 @@ class ColorManager {
       const Color(0xffbe3502); //orange buttons when hovered
 
   static Color darkGrey =
-      const Color(0xff181a1b); //posts background, colorless buttons
+      const Color(0xff1e1e1e); //posts background, colorless buttons
 
   static Color lightGrey =
       const Color(0xff8d857b); //text in appbar, small headlines and icons
