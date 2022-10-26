@@ -2,11 +2,7 @@
 /// Date: 25/10/2022
 /// Reuasable custom button component
 
-import 'dart:ui';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class Button extends StatelessWidget {
   final String text; //text written in button
@@ -14,10 +10,10 @@ class Button extends StatelessWidget {
   final Color backgroundColor; //color of the button
   final double buttonWidth; //for size of button
   final double buttonHeight; //for size of button
-  FontWeight? textFontWeight; //font size of text
-  double? textFontSize; //weight of font (normal/bold/...)
-  Color? borderColor; //border color if it exists
-  VoidCallback onPressed; //actual function of button when pressed
+  final FontWeight? textFontWeight; //font size of text
+  final double textFontSize; //weight of font (normal/bold/...)
+  final Color? borderColor; //border color if it exists
+  final VoidCallback onPressed; //actual function of button when pressed
   double _borderWidth = 1.0;
 
   Button(
@@ -27,14 +23,15 @@ class Button extends StatelessWidget {
       required this.backgroundColor,
       required this.buttonWidth,
       required this.buttonHeight,
-      this.textFontSize,
+      required this.textFontSize,
       this.textFontWeight,
       this.borderColor,
       required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final double fontScale = MediaQuery.of(context).textScaleFactor;
+    return SizedBox(
       width: buttonWidth,
       height: buttonHeight,
       child: Material(
@@ -48,7 +45,7 @@ class Button extends StatelessWidget {
               width: _borderWidth = borderColor == null ? 0 : _borderWidth,
             )),
         child: InkWell(
-          onTap: onPressed, //passed function of button when pressed
+          onTap: onPressed,
           splashColor: Colors.transparent,
           highlightColor:
               Colors.black.withOpacity(0.1), //color when the button is pressed
@@ -59,7 +56,7 @@ class Button extends StatelessWidget {
               text,
               style: TextStyle(
                 color: textColor,
-                fontSize: textFontSize ?? 12,
+                fontSize: (textFontSize * fontScale),
                 fontWeight: textFontWeight ?? FontWeight.normal,
               ),
             ),
