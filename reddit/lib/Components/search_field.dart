@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:reddit/Components/color_manager.dart';
+/// @author SarahElzayat
+/// @date 25/10/2022
+/// general search field to be included in home, subreddits, profiles... etc
 
-/// Author @SarahElzayat
-/// Date 25/10/2022
-/// Description: general search field to be included in home, subreddits, profiles... etc
+import 'package:flutter/material.dart';
+import '../Components/color_manager.dart';
 
 class SearchFiled extends StatefulWidget {
   final String? labelText;
@@ -15,7 +15,7 @@ class SearchFiled extends StatefulWidget {
 
   const SearchFiled(
       {super.key,
-      this.labelText ,//= 'Search Reddit',
+      this.labelText, //= 'Search Reddit',
       this.isSubreddit = false,
       this.isProfile = false,
       this.onChanged,
@@ -35,23 +35,24 @@ class _SearchFiledState extends State<SearchFiled> {
       decoration: ShapeDecoration(
         // borderRadius: BorderRadius.circular(5),
         shape: const StadiumBorder(),
-        
+
         color: ColorManager.darkGrey,
       ),
       child: TextField(
         onChanged: (value) => setState(() {
           (widget.textEditingController.text);
         }),
-        
+
         controller: widget.textEditingController,
         style: TextStyle(
           color: ColorManager.lightGrey,
         ),
         // textAlignVertical: TextAlignVertical.,
         decoration: InputDecoration(
-          
           hintText: 'Search Reddit',
-          hintStyle: TextStyle(color: ColorManager.lightGrey,textBaseline: TextBaseline.alphabetic),
+          hintStyle: TextStyle(
+              color: ColorManager.lightGrey,
+              textBaseline: TextBaseline.alphabetic),
 
           alignLabelWithHint: true,
           floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -68,7 +69,7 @@ class _SearchFiledState extends State<SearchFiled> {
                 if (widget.isSubreddit || widget.isProfile && isPrefix)
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
-                    decoration:  ShapeDecoration(
+                    decoration: ShapeDecoration(
                       shape: const StadiumBorder(),
                       color: ColorManager.grey,
                     ),
@@ -114,18 +115,12 @@ class _SearchFiledState extends State<SearchFiled> {
                 )
               : null,
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(50),
-          borderSide: BorderSide(
-            color: ColorManager.blue
-          )  
-          ),
-          
+              borderRadius: BorderRadius.circular(50),
+              borderSide: BorderSide(color: ColorManager.blue)),
+
           disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(50),
-          borderSide: BorderSide(
-            color: ColorManager.darkGrey
-          )  
-          ),
+              borderRadius: BorderRadius.circular(50),
+              borderSide: BorderSide(color: ColorManager.darkGrey)),
           // border: InputBorder.none,
         ),
       ),
