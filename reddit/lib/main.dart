@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'Screens/testing_screen.dart';
 
 void main() {
   runApp(const Main());
@@ -9,6 +10,6 @@ class Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return const TestingScreen();
   }
 }
