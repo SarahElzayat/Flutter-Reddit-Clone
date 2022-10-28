@@ -45,4 +45,4 @@ app.*.map.json
 
 
 # Addeed
-pubspec.lock
+*.lock
