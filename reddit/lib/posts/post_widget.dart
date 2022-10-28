@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/Components/color_manager.dart';
-import 'package:reddit/posts/image_viewer.dart';
+import 'package:reddit/posts/inline_image_viewer.dart';
 
 import 'post_data.dart';
 
@@ -28,7 +28,7 @@ class PostWidget extends StatelessWidget {
                     children: [
                       const CircleAvatar(
                         radius: 20,
-                        backgroundColor: ColorManager.greyColor,
+                        child: Icon(Icons.category_sharp),
                       ),
                       const SizedBox(
                         width: 10,
@@ -102,9 +102,9 @@ class PostWidget extends StatelessWidget {
                   ),
                   // The body of the post
                   if (post.images != null && post.images!.isNotEmpty)
-                    SizedBox(
-                      width: boxConstraints.maxWidth,
-                      height: boxConstraints.maxWidth,
+                    Container(
+                      height: boxConstraints.maxWidth * 0.9,
+                      alignment: Alignment.center,
                       child: InlineImageViewer(
                         imagesUrls: post.images!,
                       ),

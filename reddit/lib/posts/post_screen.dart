@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/posts/tmp_data.dart';
 import '../posts/post_widget.dart';
-import 'image_viewer.dart';
+import 'inline_image_viewer.dart';
 
 class PostScreen extends StatelessWidget {
   const PostScreen({super.key});
@@ -15,7 +15,8 @@ class PostScreen extends StatelessWidget {
             child: Column(
               children: [
                 PostWidget(post: textPost),
-                PostWidget(post: imagePost),
+                PostWidget(post: oneImagePost),
+                PostWidget(post: manyImagePost),
               ],
             ),
           ),
