@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/Components/color_manager.dart';
-import 'package:reddit/Screens/test_screen.dart';
 import 'package:reddit/posts/post_screen.dart';
 
 void main() {
@@ -13,6 +12,7 @@ class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: ColorManager.black,
         inputDecorationTheme: const InputDecorationTheme(
