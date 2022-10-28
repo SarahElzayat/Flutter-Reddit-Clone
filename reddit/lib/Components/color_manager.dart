@@ -37,6 +37,7 @@ class ColorManager {
       Color(0xff1d1f20); //text form field when not focused
 
   static const Color eggshellWhite = Color(0xffd6d3cd); //general text
+  static const Color white = Color(0xffffffff); //general text
 
   static const Color blue = Color(
       0xff47aef8); //blue buttons, some borders, selected filter(hot, trending...)

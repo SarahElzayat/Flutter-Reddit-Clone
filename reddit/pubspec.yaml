@@ -31,6 +31,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   cupertino_icons: ^1.0.2
+  dots_indicator: ^2.1.0
   flutter:
     sdk: flutter
   flutter_lorem: ^2.0.0
