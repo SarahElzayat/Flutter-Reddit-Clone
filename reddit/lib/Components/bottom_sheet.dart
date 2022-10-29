@@ -46,13 +46,22 @@ Future<dynamic> modalBottomSheet(
                 child: Text(
                   title,
                   style: const TextStyle(
+
+                      /// TODO:
+                      /// I think these colors should be selected from the color_manager, they are colorManager.lightGrey
                       color: Color.fromRGBO(129, 131, 132, 1),
+
+                      /// search for this color in color manager, and always try to pick colors from there.
+                      // static Color lightGrey =
+                      //       const Color(0xff8d857b); //text in appbar, small headlines and icons
+                      /// same for all colors
                       fontWeight: FontWeight.w900),
                 ),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 child: Divider(
+                  /// TODO: here you must multiply this by  MediaQuery.of(context).size.height, even if it was very small
                   height: 20,
                   color: Color.fromRGBO(129, 131, 132, 1),
                 ),
@@ -109,6 +118,8 @@ Future<dynamic> modalBottomSheet(
                                             23,
                                         color: ColorManager.blue,
                                       )
+
+                                    /// why are you using empty sized box ?
                                     : const SizedBox()
                               ]),
                             ),
@@ -123,12 +134,19 @@ Future<dynamic> modalBottomSheet(
 }
 
 /// This function check if all lists have same length or not
+/// TODO: here you must explain each parameter and what is its function
+/// ie:
+/// @param text it is the text sent to the smth and we use it as smth
+/// @param items they are the ... which are used in ... and so on.
+/// you should do this for all the functions .
 bool validations({
   required List<String> text,
   required List<dynamic> items,
   required List<IconData>? unselectedIcons,
   required List<IconData>? selectedIcons,
 }) {
+  /// try to explain the logic because I don't understand it, so
+  /// what is the relation betwee the items size and the text length?
   if (items.length != text.length) {
     return false;
   }
@@ -146,6 +164,8 @@ bool validations({
 /// if [selectedItem] or [unselectedIcons] not exist it shows the check circle icon instead
 Widget iconOrCheckCircle({
   required BuildContext context,
+
+  /// TODO: don't use i, if it is used as index, write idx or index, always make a meaningful namesS
   required int i,
   required String text,
   required List<dynamic> items,
