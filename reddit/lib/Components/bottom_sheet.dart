@@ -46,13 +46,22 @@ Future<dynamic> modalBottomSheet(
                 child: Text(
                   title,
                   style: const TextStyle(
+
+                      /// TODO:
+                      /// I think these colors should be selected from the color_manager, they are colorManager.lightGrey
                       color: Color.fromRGBO(129, 131, 132, 1),
+
+                      /// search for this color in color manager, and always try to pick colors from there.
+                      // static Color lightGrey =
+                      //       const Color(0xff8d857b); //text in appbar, small headlines and icons
+                      /// same for all colors
                       fontWeight: FontWeight.w900),
                 ),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 child: Divider(
+                  /// TODO: here you must multiply this by  MediaQuery.of(context).size.height, even if it was very small
                   height: 20,
                   color: Color.fromRGBO(129, 131, 132, 1),
                 ),
@@ -109,6 +118,8 @@ Future<dynamic> modalBottomSheet(
                                             23,
                                         color: ColorManager.blue,
                                       )
+
+                                    /// why are you using empty sized box ?
                                     : const SizedBox()
                               ]),
                             ),
@@ -134,6 +145,8 @@ bool validations({
   required List<IconData>? unselectedIcons,
   required List<IconData>? selectedIcons,
 }) {
+  /// try to explain the logic because I don't understand it, so
+  /// what is the relation betwee the items size and the text length?
   if (items.length != text.length) {
     return false;
   }
