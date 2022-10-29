@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 import '../Components/bottom_sheet.dart';
@@ -12,21 +11,15 @@ enum SortType {
 class TestScreen extends StatelessWidget {
   const TestScreen({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Flutter Demo',
-        // theme: ThemeData(
-        //   primarySwatch: Colors.blue,
-        // ),
         theme: ThemeData(
           primarySwatch: Colors.grey,
           primaryColor: Colors.black,
           brightness: Brightness.dark,
           backgroundColor: const Color(0xFF212121),
-          // accentColor: const Color(0xff8d857b),
-          // accentIconTheme: IconThemeData(color: Colors.black),
           dividerColor: Colors.black12,
         ),
         home: BottomSheetWidget());
