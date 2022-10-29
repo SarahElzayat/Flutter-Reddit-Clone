@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'Screens/testing_screen.dart';
-
+import 'Components/color_manager.dart';
 import 'package:reddit/components/search_field.dart';
-
-import 'consts/colors.dart';
-
 
 void main() {
   runApp(Main());
@@ -19,13 +14,13 @@ class Main extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          scaffoldBackgroundColor: backgroundColor,
-          // inputDecorationTheme: const InputDecorationTheme(
-          //   hintStyle: TextStyle(color: greyColor),
-          //   alignLabelWithHint: true,
-          // ),
+        scaffoldBackgroundColor: ColorManager.darkGrey,
+        // inputDecorationTheme: const InputDecorationTheme(
+        //   hintStyle: TextStyle(color: greyColor),
+        //   alignLabelWithHint: true,
+        // ),
       ),
-          // iconTheme: IconThemeData(color: ColorManager.lightGrey, size: 20)),
+      // iconTheme: IconThemeData(color: ColorManager.lightGrey, size: 20)),
       home: Scaffold(
         body: SafeArea(
           child: Center(
@@ -37,12 +32,13 @@ class Main extends StatelessWidget {
                   SearchFiled(
                     textEditingController: TextEditingController(),
                   ),
-                  const SizedBox(height: 20,),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   SearchFiled(
                     textEditingController: _controller,
                     isProfile: true,
                     labelText: 'u/sarsora',
-
                   ),
                 ],
               ),
