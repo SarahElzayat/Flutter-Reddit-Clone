@@ -123,6 +123,11 @@ Future<dynamic> modalBottomSheet(
 }
 
 /// This function check if all lists have same length or not
+/// TODO: here you must explain each parameter and what is its function
+/// ie:
+/// @param text it is the text sent to the smth and we use it as smth
+/// @param items they are the ... which are used in ... and so on.
+/// you should do this for all the functions .
 bool validations({
   required List<String> text,
   required List<dynamic> items,
