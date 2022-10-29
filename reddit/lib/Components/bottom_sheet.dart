@@ -151,6 +151,8 @@ bool validations({
 /// if [selectedItem] or [unselectedIcons] not exist it shows the check circle icon instead
 Widget iconOrCheckCircle({
   required BuildContext context,
+
+  /// TODO: don't use i, if it is used as index, write idx or index, always make a meaningful namesS
   required int i,
   required String text,
   required List<dynamic> items,
