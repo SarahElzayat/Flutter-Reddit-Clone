@@ -7,19 +7,35 @@ import 'package:flutter/material.dart';
 
 /// This function Shows the proper bottom sheet depends on the inputs
 ///
-/// [items]  should the same type of selectedItem
+/// [title] Title of the Bottom Sheet
+///
+/// [text] The text of each item the will appear
+///
+/// [items] should the same type of selectedItem
 /// this parameter used if you don't want to use text and want to use other type in backend like enum
+///
+/// [selectedItem] The item that is selected before
+///
+/// [selectedIcons] and [unselectedIcons] icons that want to show beside text if you want
 
 Future<dynamic> modalBottomSheet(
     {required BuildContext context,
     required String title,
     required List<String> text,
     required dynamic selectedItem,
+    Color? backgroundColor,
+    Color? titleColor,
+    Color? selectedColor,
+    Color? unselectedColor,
     List<dynamic>? items,
     List<IconData>? unselectedIcons,
     List<IconData>? selectedIcons}) async {
   /// if items equal null it will be used text instead
   items ??= text;
+  backgroundColor ??= ColorManager.bottomSheetBackgound;
+  titleColor ??= ColorManager.bottomSheetTitle;
+  selectedColor ??= ColorManager.eggshellWhite;
+  unselectedColor ??= ColorManager.unselectedItem;
   if (!validations(
       text: text,
       items: items,
@@ -33,7 +49,7 @@ Future<dynamic> modalBottomSheet(
         return Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: const Color(0xFF212121),
+            color: backgroundColor,
           ),
           margin: const EdgeInsets.all(8),
           padding: const EdgeInsets.symmetric(vertical: 15),
@@ -45,25 +61,15 @@ Future<dynamic> modalBottomSheet(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Text(
                   title,
-                  style: const TextStyle(
-
-                      /// TODO:
-                      /// I think these colors should be selected from the color_manager, they are colorManager.lightGrey
-                      color: Color.fromRGBO(129, 131, 132, 1),
-
-                      /// search for this color in color manager, and always try to pick colors from there.
-                      // static Color lightGrey =
-                      //       const Color(0xff8d857b); //text in appbar, small headlines and icons
-                      /// same for all colors
-                      fontWeight: FontWeight.w900),
+                  style:
+                      TextStyle(color: titleColor, fontWeight: FontWeight.w900),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Divider(
-                  /// TODO: here you must multiply this by  MediaQuery.of(context).size.height, even if it was very small
                   height: 20,
-                  color: Color.fromRGBO(129, 131, 132, 1),
+                  color: titleColor,
                 ),
               ),
               ConstrainedBox(
@@ -74,13 +80,13 @@ Future<dynamic> modalBottomSheet(
                 child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: text.length,
-                    itemBuilder: ((context, i) => Material(
-                          color: const Color(0xFF212121),
+                    itemBuilder: ((context, index) => Material(
+                          color: backgroundColor,
                           child: InkWell(
-                            splashColor: const Color(0xFF212121),
+                            splashColor: backgroundColor,
                             hoverColor: ColorManager.hoverGrey,
                             onTap: (() {
-                              selectedItem = items![i];
+                              selectedItem = items![index];
                               Navigator.of(context).pop();
                             }),
                             child: Padding(
@@ -91,36 +97,34 @@ Future<dynamic> modalBottomSheet(
                                     padding: const EdgeInsets.only(right: 10),
                                     child: iconOrCheckCircle(
                                         context: context,
-                                        i: i,
+                                        index: index,
                                         items: items!,
                                         selectedItem: selectedItem,
-                                        text: text[i],
+                                        text: text[index],
                                         unselectedIcons: unselectedIcons,
-                                        selectedIcons: selectedIcons)),
+                                        selectedIcons: selectedIcons,
+                                        selectedColor: selectedColor!,
+                                        unselectedColor: unselectedColor!)),
                                 Text(
-                                  text[i],
+                                  text[index],
                                   style: TextStyle(
                                       fontSize: MediaQuery.of(context)
                                               .textScaleFactor *
                                           17,
-                                      color: (items[i] == selectedItem)
-                                          ? ColorManager.eggshellWhite
-                                          : const Color.fromRGBO(
-                                              86, 87, 88, 1)),
+                                      color: (items[index] == selectedItem)
+                                          ? selectedColor
+                                          : unselectedColor),
                                 ),
                                 const Spacer(),
-                                (unselectedIcons != null &&
-                                        items[i] == selectedItem)
-                                    ? Icon(
-                                        Icons.done,
-                                        size: MediaQuery.of(context)
-                                                .textScaleFactor *
+                                if (unselectedIcons != null &&
+                                    items[index] == selectedItem)
+                                  Icon(
+                                    Icons.done,
+                                    size:
+                                        MediaQuery.of(context).textScaleFactor *
                                             23,
-                                        color: ColorManager.blue,
-                                      )
-
-                                    /// why are you using empty sized box ?
-                                    : const SizedBox()
+                                    color: ColorManager.blue,
+                                  ),
                               ]),
                             ),
                           ),
@@ -134,11 +138,13 @@ Future<dynamic> modalBottomSheet(
 }
 
 /// This function check if all lists have same length or not
-/// TODO: here you must explain each parameter and what is its function
-/// ie:
-/// @param text it is the text sent to the smth and we use it as smth
-/// @param items they are the ... which are used in ... and so on.
-/// you should do this for all the functions .
+///
+/// [text] The text of each item the will appear
+///
+/// [items] this parameter used in backend instead of text
+///
+/// [selectedIcons] and [unselectedIcons] icons that want to show beside text if you want
+
 bool validations({
   required List<String> text,
   required List<dynamic> items,
@@ -161,37 +167,45 @@ bool validations({
 
 /// This function show the proper icon depend on its state (selected or not)
 ///
+/// [text] The text of the item (one item not list)
+///
+/// [index] The index of the certain item in the list
+///
+/// [items] this parameter used in backend instead of text
+///
+/// [selectedItem] The item that is selected before
+///
 /// if [selectedItem] or [unselectedIcons] not exist it shows the check circle icon instead
+
 Widget iconOrCheckCircle({
   required BuildContext context,
-
-  /// TODO: don't use i, if it is used as index, write idx or index, always make a meaningful namesS
-  required int i,
+  required int index,
   required String text,
   required List<dynamic> items,
   required dynamic selectedItem,
+  required Color selectedColor,
+  required Color unselectedColor,
   List<IconData>? unselectedIcons,
   List<IconData>? selectedIcons,
 }) {
   double size = MediaQuery.of(context).textScaleFactor * 24;
-  Color color = (items[i] == selectedItem)
-      ? ColorManager.eggshellWhite
-      : const Color.fromRGBO(86, 87, 88, 1);
+  Color color =
+      (items[index] == selectedItem) ? selectedColor : unselectedColor;
   if (unselectedIcons != null && selectedIcons != null) {
-    if (items[i] == selectedItem) {
+    if (items[index] == selectedItem) {
       return Icon(
-        selectedIcons[i],
+        selectedIcons[index],
         size: size,
         color: color,
       );
     } else {
       return Icon(
-        unselectedIcons[i],
+        unselectedIcons[index],
         size: size,
         color: color,
       );
     }
-  } else if (items[i] == selectedItem) {
+  } else if (items[index] == selectedItem) {
     return Icon(
       Icons.check_circle,
       size: size,

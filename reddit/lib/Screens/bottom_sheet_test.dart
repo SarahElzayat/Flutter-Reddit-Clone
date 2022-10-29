@@ -63,18 +63,21 @@ class BottomSheetWidget extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              /// Two buttons with different color
               MaterialButton(
                   // key: const ValueKey('button1'),
                   onPressed: () async {
                     selectedItem = await modalBottomSheet(
-                      context: context,
-                      title: 'AUTOPLAY',
-                      text: _text,
-                      items: _items,
-                      selectedIcons: _selectedIcons,
-                      unselectedIcons: _unselectedIcons,
-                      selectedItem: selectedItem,
-                    );
+                        context: context,
+                        title: 'AUTOPLAY',
+                        text: _text,
+                        items: _items,
+                        selectedIcons: _selectedIcons,
+                        unselectedIcons: _unselectedIcons,
+                        selectedItem: selectedItem,
+                        backgroundColor: Colors.white,
+                        selectedColor: Colors.black,
+                        titleColor: Colors.black);
                   },
                   child: const Text('Bottom Sheet With Icons')),
               MaterialButton(
@@ -86,6 +89,7 @@ class BottomSheetWidget extends StatelessWidget {
                       text: _text,
                       items: _items,
                       selectedItem: selectedItem,
+                      // backgroundColor: Colors.white,
                     );
                   },
                   child: const Text('Bottom Sheet Without Icons')),
