@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../Components/color_manager.dart';
+import '../Components/Helpers/color_manager.dart';
 import '../Components/default_text_field.dart';
 import '../Components/square_text_field.dart';
 

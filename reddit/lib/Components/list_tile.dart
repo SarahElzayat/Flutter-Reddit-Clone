@@ -4,8 +4,8 @@
 /// built to be a reuseable widget for further uses
 
 import 'package:flutter/material.dart';
-import '../Components/color_manager.dart';
-import 'enums.dart';
+import '../Components/Helpers/color_manager.dart';
+import 'Helpers/enums.dart';
 
 /// this class requires three main parameters
 /// 1- [leadingIcon] which is the icon shown in the beginning of the row
@@ -21,14 +21,14 @@ class ListTileWidget extends StatefulWidget {
   final TrailingObjects tailingObj;
   List<String>? items;
 
-  /// function which should be executed whenever something is changed
-  final func;
+  /// function handler which should be executed whenever something is changed
+  final handler;
 
   ListTileWidget(
       {super.key,
       required this.leadingIcon,
       required this.title,
-      required this.func,
+      required this.handler,
       required this.tailingObj,
       this.items});
 
@@ -41,7 +41,7 @@ class _ListTileWidgetState extends State<ListTileWidget> {
   String? dropDownValue = 'Empty';
   bool setBool = false;
 
-  /// utility function to build if the tailing object was switch
+  /// utility handlertion to build if the tailing object was switch
   Widget buildSwitch(ctx) {
     final mediaQuery = MediaQuery.of(ctx);
     return Container(
@@ -66,7 +66,7 @@ class _ListTileWidgetState extends State<ListTileWidget> {
     );
   }
 
-  /// utility function to build if the tailing object was IconButton
+  /// utility handlertion to build if the tailing object was IconButton
   Widget buildIconButton(ctx) {
     final mediaQuery = MediaQuery.of(ctx);
     return SizedBox(
@@ -78,13 +78,13 @@ class _ListTileWidgetState extends State<ListTileWidget> {
             Icons.arrow_forward,
             color: Colors.grey,
           ),
-          onPressed: widget.func,
+          onPressed: widget.handler,
         ),
       ),
     );
   }
 
-  /// utility function to build if the tailing object was dropDown
+  /// utility handlertion to build if the tailing object was dropDown
   Widget buildDropDown(ctx) {
     final mediaQuery = MediaQuery.of(ctx);
     dropDownValue =
@@ -130,7 +130,7 @@ class _ListTileWidgetState extends State<ListTileWidget> {
     );
   }
 
-  /// the build main function
+  /// the build main handlertion
   @override
   Widget build(BuildContext context) {
     return SizedBox(

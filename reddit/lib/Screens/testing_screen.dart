@@ -3,9 +3,9 @@
 /// testing screen to test that the ListTile is working correctly
 
 import 'package:flutter/material.dart';
-import '../Components/color_manager.dart';
+import '../Components/Helpers/color_manager.dart';
 import '../Components/list_tile.dart';
-import '../Components/enums.dart';
+import '../Components/Helpers/enums.dart';
 
 class TestingScreen extends StatelessWidget {
   const TestingScreen({super.key});
@@ -37,41 +37,41 @@ class TestingScreen extends StatelessWidget {
             children: [
               ListTileWidget(
                   items: myData,
-                  func: () {},
+                  handler: () {},
                   leadingIcon: const Icon(Icons.settings, color: Colors.white),
                   title: 'Language (Beta)',
                   tailingObj: TrailingObjects.dropBox),
               ListTileWidget(
                   items: myData,
-                  func: () {},
+                  handler: () {},
                   leadingIcon:
                       const Icon(Icons.square_outlined, color: Colors.white),
                   title: 'Default View',
                   tailingObj: TrailingObjects.dropBox),
               ListTileWidget(
                   items: myData,
-                  func: () {},
+                  handler: () {},
                   leadingIcon:
                       const Icon(Icons.house_outlined, color: Colors.white),
                   title: 'Sort Home posts by',
                   tailingObj: TrailingObjects.dropBox),
               ListTileWidget(
                   items: myData,
-                  func: () {},
+                  handler: () {},
                   leadingIcon: const Icon(Icons.watch_later_outlined,
                       color: Colors.white),
                   title: 'Create Avatar',
                   tailingObj: TrailingObjects.dropBox),
               ListTileWidget(
                   items: myData,
-                  func: () {},
+                  handler: () {},
                   leadingIcon: const Icon(Icons.remove_red_eye_outlined,
                       color: Colors.white),
                   title: 'Reduce animations',
                   tailingObj: TrailingObjects.switchButton),
               ListTileWidget(
                   items: myData,
-                  func: () {},
+                  handler: () {},
                   leadingIcon: const Icon(Icons.remove_red_eye_outlined,
                       color: Colors.white),
                   title: 'Reduce animations',

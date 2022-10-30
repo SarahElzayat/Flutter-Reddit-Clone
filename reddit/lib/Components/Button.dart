@@ -17,6 +17,16 @@ class Button extends StatelessWidget {
   final VoidCallback onPressed; //actual function of button when pressed
   double _borderWidth = 1.0;
 
+  /// it requires
+  /// @param [text] which is the text to be displayed on the button
+  /// @param [textColor] which is the color of the text
+  /// @param [backgroundColor] which is the color of the background
+  /// @param [buttonWidth] which is the width of each button
+  /// @param [buttonHeight] which is the height of each button
+  /// @param [textFontSize] which is the fontsize used for this button
+  /// @param [textFontweight] which is the weight used for this button ie: bold
+  /// @param [boarderWeight] which is the color of the boarders
+  /// @param [onPressed] which is handler for each button
   Button(
       {super.key,
       required this.text,
