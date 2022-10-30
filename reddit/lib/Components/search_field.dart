@@ -32,9 +32,9 @@ class _SearchFiledState extends State<SearchFiled> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: ShapeDecoration(
+      decoration: const ShapeDecoration(
         // borderRadius: BorderRadius.circular(5),
-        shape: const StadiumBorder(),
+        shape: StadiumBorder(),
 
         color: ColorManager.darkGrey,
       ),
@@ -44,13 +44,13 @@ class _SearchFiledState extends State<SearchFiled> {
         }),
 
         controller: widget.textEditingController,
-        style: TextStyle(
+        style: const TextStyle(
           color: ColorManager.lightGrey,
         ),
         // textAlignVertical: TextAlignVertical.,
         decoration: InputDecoration(
           hintText: 'Search Reddit',
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
               color: ColorManager.lightGrey,
               textBaseline: TextBaseline.alphabetic),
 
@@ -62,7 +62,7 @@ class _SearchFiledState extends State<SearchFiled> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
+                const Icon(
                   Icons.search,
                   color: ColorManager.lightGrey,
                 ),
@@ -80,7 +80,8 @@ class _SearchFiledState extends State<SearchFiled> {
                       children: [
                         Text(
                           '${widget.labelText!} ',
-                          style: TextStyle(color: ColorManager.eggshellWhite),
+                          style: const TextStyle(
+                              color: ColorManager.eggshellWhite),
                         ),
                         InkWell(
                             onTap: () {
@@ -88,7 +89,7 @@ class _SearchFiledState extends State<SearchFiled> {
                                 isPrefix = false;
                               });
                             },
-                            child: Icon(
+                            child: const Icon(
                               Icons.cancel_outlined,
                               color: ColorManager.lightGrey,
                               // size: MediaQuery.,
@@ -108,7 +109,7 @@ class _SearchFiledState extends State<SearchFiled> {
                       widget.textEditingController.clear();
                     });
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.cancel_sharp,
                     color: ColorManager.lightGrey,
                   ),
@@ -116,11 +117,11 @@ class _SearchFiledState extends State<SearchFiled> {
               : null,
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(50),
-              borderSide: BorderSide(color: ColorManager.blue)),
+              borderSide: const BorderSide(color: ColorManager.blue)),
 
           disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(50),
-              borderSide: BorderSide(color: ColorManager.darkGrey)),
+              borderSide: const BorderSide(color: ColorManager.darkGrey)),
           // border: InputBorder.none,
         ),
       ),

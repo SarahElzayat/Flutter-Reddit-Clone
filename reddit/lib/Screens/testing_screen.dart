@@ -32,7 +32,7 @@ class TestingScreen extends StatelessWidget {
         appBar: AppBar(),
         drawer: const Drawer(),
         body: Container(
-          decoration: BoxDecoration(color: ColorManager.blueGrey),
+          decoration: const BoxDecoration(color: ColorManager.blueGrey),
           child: Column(
             children: [
               ListTileWidget(
