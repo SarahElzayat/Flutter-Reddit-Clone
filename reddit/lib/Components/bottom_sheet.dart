@@ -46,6 +46,7 @@ Future<dynamic> modalBottomSheet(
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: ((context) {
+        final mediaQuery = MediaQuery.of(context);
         return Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
@@ -68,14 +69,14 @@ Future<dynamic> modalBottomSheet(
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Divider(
-                  height: 20,
+                  height: 0.03 * mediaQuery.size.height,
                   color: titleColor,
                 ),
               ),
               ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: 0,
-                  maxHeight: MediaQuery.of(context).size.height * 0.8,
+                  maxHeight: mediaQuery.size.height * 0.8,
                 ),
                 child: ListView.builder(
                     shrinkWrap: true,
@@ -108,9 +109,7 @@ Future<dynamic> modalBottomSheet(
                                 Text(
                                   text[index],
                                   style: TextStyle(
-                                      fontSize: MediaQuery.of(context)
-                                              .textScaleFactor *
-                                          17,
+                                      fontSize: mediaQuery.textScaleFactor * 17,
                                       color: (items[index] == selectedItem)
                                           ? selectedColor
                                           : unselectedColor),
@@ -120,9 +119,7 @@ Future<dynamic> modalBottomSheet(
                                     items[index] == selectedItem)
                                   Icon(
                                     Icons.done,
-                                    size:
-                                        MediaQuery.of(context).textScaleFactor *
-                                            23,
+                                    size: mediaQuery.textScaleFactor * 23,
                                     color: ColorManager.blue,
                                   ),
                               ]),
@@ -139,11 +136,11 @@ Future<dynamic> modalBottomSheet(
 
 /// This function check if all lists have same length or not
 ///
-/// [text] The text of each item the will appear
+/// @param [text] List of texts, which are text of each item that will appear
 ///
-/// [items] this parameter used in backend instead of text
+/// @param [items] this parameter used in backend instead of text
 ///
-/// [selectedIcons] and [unselectedIcons] icons that want to show beside text if you want
+/// @param [selectedIcons] and [unselectedIcons] List of icons that want to show beside text if you want
 
 bool validations({
   required List<String> text,
@@ -151,8 +148,6 @@ bool validations({
   required List<IconData>? unselectedIcons,
   required List<IconData>? selectedIcons,
 }) {
-  /// try to explain the logic because I don't understand it, so
-  /// what is the relation betwee the items size and the text length?
   if (items.length != text.length) {
     return false;
   }
