@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:reddit/Components/color_manager.dart';
-import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
+// import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
 import 'package:reddit/posts/image_page_view.dart';
 
 class InlineImageViewer extends StatefulWidget {
@@ -54,11 +54,11 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
       onTap: () {
         openImage(context, currentIndex);
       },
-      child: Stack(
-        children: <Widget>[
-          Container(
-            height: height,
-            child: PhotoViewGallery.builder(
+      child: SizedBox(
+        height: height,
+        child: Stack(
+          children: <Widget>[
+            PhotoViewGallery.builder(
               scrollPhysics: const BouncingScrollPhysics(),
               builder: _buildItem,
               itemCount: widget.imagesUrls.length,
@@ -70,87 +70,88 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
               // allowImplicitScrolling: true,
               scrollDirection: Axis.horizontal,
             ),
-          ),
-          if (widget.imagesUrls.length > 1)
-            Align(
-              alignment: Alignment.topRight,
-              child: Container(
-                margin: const EdgeInsets.all(10),
-                child: Opacity(
-                  opacity: 0.7,
-                  child: Chip(
-                    label: Text(
-                      '${currentIndex + 1}/${widget.imagesUrls.length}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 17.0,
+            if (widget.imagesUrls.length > 1)
+              Align(
+                alignment: Alignment.topRight,
+                child: Container(
+                  margin: const EdgeInsets.all(10),
+                  child: Opacity(
+                    opacity: 0.7,
+                    child: Chip(
+                      label: Text(
+                        '${currentIndex + 1}/${widget.imagesUrls.length}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 17.0,
+                        ),
                       ),
+                      backgroundColor: ColorManager.darkGrey,
                     ),
+                  ),
+                ),
+              ),
+            if (defaultTargetPlatform == TargetPlatform.android &&
+                widget.imagesUrls.length > 1)
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: DotsIndicator(
+                    dotsCount: widget.imagesUrls.length,
+                    position: currentIndex.toDouble(),
+                    decorator: const DotsDecorator(
+                      color: Colors.transparent,
+                      activeColor: ColorManager.white,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          side: BorderSide(
+                              width: 1.1, color: ColorManager.white)),
+                    )),
+              ),
+            if (kIsWeb && currentIndex != widget.imagesUrls.length - 1)
+              Align(
+                alignment: Alignment.centerRight,
+                child: Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  child: CircleAvatar(
                     backgroundColor: ColorManager.darkGrey,
+                    radius: 20,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_forward_ios_outlined),
+                      color: Colors.white,
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        widget.pageController.nextPage(
+                          duration: const Duration(milliseconds: 400),
+                          curve: Curves.easeInOut,
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
-            ),
-          if (Platform.isAndroid && widget.imagesUrls.length > 1)
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: DotsIndicator(
-                  dotsCount: widget.imagesUrls.length,
-                  position: currentIndex.toDouble(),
-                  decorator: const DotsDecorator(
-                    color: Colors.transparent,
-                    activeColor: ColorManager.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        side:
-                            BorderSide(width: 1.1, color: ColorManager.white)),
-                  )),
-            ),
-          if (kIsWeb && currentIndex != widget.imagesUrls.length - 1)
-            Align(
-              alignment: Alignment.centerRight,
-              child: Container(
-                margin: const EdgeInsets.only(right: 10),
-                child: CircleAvatar(
-                  backgroundColor: ColorManager.darkGrey,
-                  radius: 20,
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_forward_ios_outlined),
-                    color: Colors.white,
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      widget.pageController.nextPage(
-                        duration: const Duration(milliseconds: 400),
-                        curve: Curves.easeInOut,
-                      );
-                    },
+            if (kIsWeb && currentIndex != 0)
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  margin: const EdgeInsets.only(left: 10),
+                  child: CircleAvatar(
+                    backgroundColor: ColorManager.darkGrey,
+                    radius: 20,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back_ios_new),
+                      color: Colors.white,
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        widget.pageController.previousPage(
+                          duration: const Duration(milliseconds: 400),
+                          curve: Curves.easeInOut,
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
-            ),
-          if (kIsWeb && currentIndex != 0)
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                margin: const EdgeInsets.only(left: 10),
-                child: CircleAvatar(
-                  backgroundColor: ColorManager.darkGrey,
-                  radius: 20,
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_back_ios_new),
-                    color: Colors.white,
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      widget.pageController.previousPage(
-                        duration: const Duration(milliseconds: 400),
-                        curve: Curves.easeInOut,
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }
