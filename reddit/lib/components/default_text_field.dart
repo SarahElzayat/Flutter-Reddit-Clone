@@ -1,10 +1,9 @@
 /// A widget that displays a text field with a label.
 /// date: 23/10/2022
-/// @Auther: Ahmed Atta
+/// @Author: Ahmed Atta
 
 import 'package:flutter/material.dart';
-
-import './color_manager.dart';
+import '../Components/Helpers/color_manager.dart';
 
 class DefaultTextField extends StatefulWidget {
   /// Creates an [DefaultTextField].

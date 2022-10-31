@@ -3,12 +3,12 @@ import 'package:reddit/Components/color_manager.dart';
 import 'package:reddit/posts/post_screen.dart';
 
 void main() {
-  runApp(const Main());
+  runApp(Main());
 }
 
 class Main extends StatelessWidget {
-  const Main({super.key});
-
+  Main({super.key});
+  final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

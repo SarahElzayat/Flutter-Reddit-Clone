@@ -1,9 +1,9 @@
 /// A widget that displays a square text field with a label.
 /// date: 23/10/2022
-/// @Auther: Ahmed Atta
+/// @author: Ahmed Atta
 
 import 'package:flutter/material.dart';
-import '../Components/color_manager.dart';
+import '../Components/Helpers/color_manager.dart';
 
 class SquareTextField extends StatefulWidget {
   /// Creates an [SquareTextField].
