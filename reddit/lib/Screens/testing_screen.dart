@@ -3,9 +3,9 @@
 /// testing screen to test that the ListTile is working correctly
 
 import 'package:flutter/material.dart';
-import '../Components/Helpers/color_manager.dart';
-import '../Components/list_tile.dart';
-import '../Components/Helpers/enums.dart';
+import '../components/Helpers/color_manager.dart';
+import '../components/list_tile.dart';
+import '../components/Helpers/enums.dart';
 
 class TestingScreen extends StatelessWidget {
   const TestingScreen({super.key});

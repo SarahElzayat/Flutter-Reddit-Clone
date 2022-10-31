@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../Components/bottom_sheet.dart';
+import '../components/bottom_sheet.dart';
 
 enum SortType {
   best,
