@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/Components/color_manager.dart';
-import 'package:reddit/posts/post_screen.dart';
+import 'package:reddit/posts/post_test_screen.dart';
 
 void main() {
-  runApp(Main());
+  runApp(const Main());
 }
 
 class Main extends StatelessWidget {
-  Main({super.key});
-  final TextEditingController _controller = TextEditingController();
+  const Main({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,11 +15,11 @@ class Main extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: ColorManager.black,
         inputDecorationTheme: const InputDecorationTheme(
-          hintStyle: TextStyle(color: ColorManager.greyColor),
+          hintStyle: TextStyle(color: ColorManager.grey),
           alignLabelWithHint: true,
         ),
       ),
-      home: PostScreen(),
+      home: const PostTestScreen(),
     );
   }
 }

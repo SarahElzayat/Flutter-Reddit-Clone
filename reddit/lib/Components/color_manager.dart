@@ -24,10 +24,13 @@ class ColorManager {
   static Color hoverGrey =
       const Color(0xff171d21); //colorless buttons when hovered
 
-  static Color grey = const Color(0xff2f3435); //buttons when hovered
-
+  static const Color grey = Color(0xff2f3435); //buttons when hovered
+  static const Color greyColor = Color(0XFF7a7a7a);
+  static const Color blue = Color(
+      0xff47aef8); //blue buttons, some borders, selected filter(hot, trending...)
   static Color disabledButtonGrey =
       const Color(0xff5f5f5f); //buttons when hovered
+
   static Color disabledHoverButtonGrey =
       const Color(0xff5a5a5a); //buttons when hovered
 
@@ -36,9 +39,6 @@ class ColorManager {
 
   static const Color eggshellWhite = Color(0xffd6d3cd); //general text
   static const Color white = Color(0xffffffff); //general text
-
-  static Color blue = const Color(
-      0xff47aef8); //blue buttons, some borders, selected filter(hot, trending...)
 
   static Color downvoteBlue =
       const Color(0xff69adff); //arrow color when downvote is pressed
