@@ -35,6 +35,8 @@ class Button extends StatelessWidget {
   ///actual function of button when pressed
   double _borderWidth = 1.0;
 
+  ///boarder radius of the button
+  double? boarderRadius = 50;
   Button(
       {super.key,
       required this.text,
@@ -45,6 +47,7 @@ class Button extends StatelessWidget {
       required this.textFontSize,
       this.textFontWeight,
       this.borderColor,
+      this.boarderRadius,
       required this.onPressed});
 
   @override
@@ -59,7 +62,7 @@ class Button extends StatelessWidget {
             color: backgroundColor,
 
             ///button background color
-            borderRadius: BorderRadius.circular(50),
+            borderRadius: BorderRadius.circular(boarderRadius!),
 
             ///for circular buttons
             border: Border.all(
@@ -74,8 +77,8 @@ class Button extends StatelessWidget {
           highlightColor: Colors.black.withOpacity(0.1),
 
           ///color when the button is pressed
-          customBorder:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          customBorder: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(boarderRadius!)),
           child: Center(
             child: Text(
               text,

@@ -3,6 +3,7 @@
 /// testing screen to test that the ListTile is working correctly
 
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/sign_up_screen.dart';
 
 class TestingScreen extends StatelessWidget {
   const TestingScreen({super.key});
@@ -10,7 +11,9 @@ class TestingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: Center(),
+      home: Scaffold(
+        body: SignUpScreen(),
+      ),
     );
   }
 }
