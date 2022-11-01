@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../Components/bottom_sheet.dart';
+import '../components/bottom_sheet.dart';
 
 enum SortType {
   best,
@@ -26,6 +26,7 @@ class TestScreen extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class BottomSheetWidget extends StatelessWidget {
   final List<SortType> _items = [
     SortType.best,
