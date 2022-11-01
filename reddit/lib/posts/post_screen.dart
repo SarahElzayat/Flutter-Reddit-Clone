@@ -21,7 +21,7 @@ class _PostScreenState extends State<PostScreen> {
         children: [
           PostWidget(
             post: widget.post,
-            gowable: false,
+            outsideScreen: false,
           ),
         ],
       ),

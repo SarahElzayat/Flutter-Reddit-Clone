@@ -9,9 +9,9 @@ class PostWidget extends StatelessWidget {
   const PostWidget({
     super.key,
     required this.post,
-    this.gowable = true,
+    this.outsideScreen = true,
   });
-  final bool gowable;
+  final bool outsideScreen;
   final Post post;
   @override
   Widget build(BuildContext context) {
@@ -119,8 +119,8 @@ class PostWidget extends StatelessWidget {
                           color: ColorManager.greyColor,
                           fontSize: 15,
                         ),
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
+                        maxLines: outsideScreen ? 3 : null,
+                        overflow: outsideScreen ? TextOverflow.ellipsis : null,
                       ),
                     const SizedBox(
                       height: 10,
@@ -215,7 +215,7 @@ class PostWidget extends StatelessWidget {
 
   void _goToPost(BuildContext context) {
     // Navigator.of(context).pushNamed(Postscreen.routeName, arguments: post);
-    if (gowable) {
+    if (outsideScreen)
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => PostScreen(
@@ -223,6 +223,5 @@ class PostWidget extends StatelessWidget {
           ),
         ),
       );
-    }
   }
 }
