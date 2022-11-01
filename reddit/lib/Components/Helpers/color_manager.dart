@@ -58,4 +58,8 @@ class ColorManager {
 
   static const Color notificationRed =
       Color(0xffcc3700); //news growing down arrow
+
+  static const Color bottomSheetBackgound = Color(0xFF212121);
+  static const Color bottomSheetTitle = Color.fromRGBO(129, 131, 132, 1);
+  static const Color unselectedItem = Color.fromRGBO(86, 87, 88, 1);
 }

@@ -3,7 +3,7 @@
 /// general search field to be included in home, subreddits, profiles... etc
 
 import 'package:flutter/material.dart';
-import '../Components/Helpers/color_manager.dart';
+import '../components/helpers/color_manager.dart';
 
 class SearchFiled extends StatefulWidget {
   final String? labelText;
