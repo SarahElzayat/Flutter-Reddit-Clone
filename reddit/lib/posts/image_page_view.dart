@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:reddit/posts/post_data.dart';
 
 class WholeScreenImageViewer extends StatefulWidget {
   WholeScreenImageViewer({
     super.key,
-    required this.imagesUrls,
+    required this.post,
     this.initialIndex = 0,
     this.backgroundDecoration = const BoxDecoration(
       color: Colors.black,
     ),
   }) : pageController =
             PageController(initialPage: initialIndex, keepPage: true);
-  final List<String> imagesUrls;
   final int initialIndex;
   final PageController pageController;
   final BoxDecoration? backgroundDecoration;
+  final Post post;
 
   @override
   State<WholeScreenImageViewer> createState() => _WholeScreenImageViewerState();
@@ -23,7 +24,7 @@ class WholeScreenImageViewer extends StatefulWidget {
 
 class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
   late int currentIndex = widget.initialIndex;
-
+  double initialInDragging = 0.0;
   void onPageChanged(int index) {
     setState(() {
       currentIndex = index;
@@ -36,7 +37,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(
-          '${currentIndex + 1}/${widget.imagesUrls.length}',
+          '${currentIndex + 1}/${widget.post.images!.length}',
           style: const TextStyle(
             color: Colors.white,
           ),
@@ -48,31 +49,43 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
           },
         ),
       ),
-      body: Container(
-        decoration: widget.backgroundDecoration,
-        constraints: BoxConstraints.expand(
-          height: MediaQuery.of(context).size.height,
-        ),
-        child: Stack(
-          children: <Widget>[
-            PhotoViewGallery.builder(
-              scrollPhysics: const BouncingScrollPhysics(),
-              builder: _buildItem,
-              itemCount: widget.imagesUrls.length,
-              // loadingBuilder: widget.loadingBuilder,
-              backgroundDecoration: widget.backgroundDecoration,
-              pageController: widget.pageController,
-              onPageChanged: onPageChanged,
-              scrollDirection: Axis.horizontal,
-            ),
-          ],
+      body: GestureDetector(
+        onVerticalDragStart: (details) {
+          initialInDragging = details.globalPosition.dy;
+        },
+        onVerticalDragUpdate: (details) {
+          // double diff = details.globalPosition.dy - diffInDragging;
+          // debugPrint('diff:' + diff.toString());
+        },
+        onVerticalDragEnd: (details) {
+          // debugPrint('speed: ' + details.primaryVelocity.toString());
+        },
+        child: Container(
+          decoration: widget.backgroundDecoration,
+          constraints: BoxConstraints.expand(
+            height: MediaQuery.of(context).size.height,
+          ),
+          child: Stack(
+            children: [
+              PhotoViewGallery.builder(
+                scrollPhysics: const BouncingScrollPhysics(),
+                builder: _buildItem,
+                itemCount: widget.post.images!.length,
+                // loadingBuilder: widget.loadingBuilder,
+                backgroundDecoration: widget.backgroundDecoration,
+                pageController: widget.pageController,
+                onPageChanged: onPageChanged,
+                scrollDirection: Axis.horizontal,
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
-    final String item = widget.imagesUrls[index];
+    final String item = widget.post.images![index];
     return PhotoViewGalleryPageOptions(
       imageProvider: NetworkImage(item),
       initialScale: PhotoViewComputedScale.contained,

@@ -3,24 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:reddit/Components/color_manager.dart';
-// import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
 import 'package:reddit/posts/image_page_view.dart';
+import 'package:reddit/posts/post_data.dart';
 
 class InlineImageViewer extends StatefulWidget {
   InlineImageViewer({
+    required this.post,
     super.key,
-    required this.imagesUrls,
     this.initialIndex = 0,
     this.backgroundDecoration = const BoxDecoration(
       color: Colors.black,
     ),
   }) : pageController =
             PageController(initialPage: initialIndex, keepPage: true);
-  final List<String> imagesUrls;
   final int initialIndex;
   final PageController pageController;
   final BoxDecoration? backgroundDecoration;
+  final Post post;
 
   @override
   State<InlineImageViewer> createState() => _InlineImageViewerState();
@@ -28,7 +28,7 @@ class InlineImageViewer extends StatefulWidget {
 
 class _InlineImageViewerState extends State<InlineImageViewer> {
   late int currentIndex = widget.initialIndex;
-  double height = 500;
+  double aspectRatio = 1;
   void onPageChanged(int index) {
     setState(() {
       currentIndex = index;
@@ -38,14 +38,15 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
   @override
   void initState() {
     // TODO: implement initState
-    Image(image: NetworkImage(widget.imagesUrls[0]))
+    Image(image: NetworkImage(widget.post.images![0]))
         .image
         .resolve(const ImageConfiguration())
         .addListener(ImageStreamListener((info, call) {
       setState(() {
-        height = info.image.height as double;
+        aspectRatio = info.image.height / info.image.width;
       });
     }));
+    super.initState();
   }
 
   @override
@@ -55,22 +56,24 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
         openImage(context, currentIndex);
       },
       child: SizedBox(
-        height: height,
+        height: aspectRatio * MediaQuery.of(context).size.width,
         child: Stack(
           children: <Widget>[
-            PhotoViewGallery.builder(
-              scrollPhysics: const BouncingScrollPhysics(),
-              builder: _buildItem,
-              itemCount: widget.imagesUrls.length,
-              // loadingBuilder: widget.loadingBuilder,
-              backgroundDecoration: widget.backgroundDecoration,
-              pageController: widget.pageController,
-              onPageChanged: onPageChanged,
+            SizedBox(
+              child: PhotoViewGallery.builder(
+                scrollPhysics: const BouncingScrollPhysics(),
+                builder: _buildItem,
+                itemCount: widget.post.images!.length,
+                // loadingBuilder: widget.loadingBuilder,
+                backgroundDecoration: widget.backgroundDecoration,
+                pageController: widget.pageController,
+                onPageChanged: onPageChanged,
 
-              // allowImplicitScrolling: true,
-              scrollDirection: Axis.horizontal,
+                // allowImplicitScrolling: true,
+                scrollDirection: Axis.horizontal,
+              ),
             ),
-            if (widget.imagesUrls.length > 1)
+            if (widget.post.images!.length > 1)
               Align(
                 alignment: Alignment.topRight,
                 child: Container(
@@ -79,7 +82,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                     opacity: 0.7,
                     child: Chip(
                       label: Text(
-                        '${currentIndex + 1}/${widget.imagesUrls.length}',
+                        '${currentIndex + 1}/${widget.post.images!.length}',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 17.0,
@@ -91,11 +94,11 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                 ),
               ),
             if (defaultTargetPlatform == TargetPlatform.android &&
-                widget.imagesUrls.length > 1)
+                widget.post.images!.length > 1)
               Align(
                 alignment: Alignment.bottomCenter,
                 child: DotsIndicator(
-                    dotsCount: widget.imagesUrls.length,
+                    dotsCount: widget.post.images!.length,
                     position: currentIndex.toDouble(),
                     decorator: const DotsDecorator(
                       color: Colors.transparent,
@@ -106,7 +109,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                               width: 1.1, color: ColorManager.white)),
                     )),
               ),
-            if (kIsWeb && currentIndex != widget.imagesUrls.length - 1)
+            if (kIsWeb && currentIndex != widget.post.images!.length - 1)
               Align(
                 alignment: Alignment.centerRight,
                 child: Container(
@@ -157,9 +160,10 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
   }
 
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
-    final String item = widget.imagesUrls[index];
+    final String item = widget.post.images![index];
     return PhotoViewGalleryPageOptions(
       imageProvider: NetworkImage(item),
+      tightMode: true,
       initialScale: PhotoViewComputedScale.contained,
       minScale: PhotoViewComputedScale.contained * (0.5 + index / 10),
       maxScale: PhotoViewComputedScale.covered * 4.1,
@@ -173,7 +177,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
       context,
       MaterialPageRoute(
         builder: (context) => WholeScreenImageViewer(
-          imagesUrls: widget.imagesUrls,
+          post: widget.post,
           backgroundDecoration: const BoxDecoration(
             color: Colors.black,
           ),
