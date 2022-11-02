@@ -7,7 +7,9 @@ class LogInAppBar extends StatelessWidget implements PreferredSizeWidget {
       required this.sideBarButtonText,
       required this.sideBarButtonAction});
 
+  // ignore: prefer_typing_uninitialized_variables
   final sideBarButtonText;
+  // ignore: prefer_typing_uninitialized_variables
   final sideBarButtonAction;
   @override
   Widget build(BuildContext context) {

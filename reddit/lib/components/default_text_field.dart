@@ -89,7 +89,7 @@ class DefaultTextFieldState extends State<DefaultTextField> {
       keyboardType:
           widget.multiLine ? TextInputType.multiline : widget.keyboardType,
       onFieldSubmitted: widget.onSubmitted,
-      style: const TextStyle(color: ColorManager.lightGrey),
+      style: Theme.of(context).textTheme.bodyMedium,
       decoration: InputDecoration(
         enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: ColorManager.greyColor, width: 2.0),

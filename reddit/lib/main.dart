@@ -16,12 +16,12 @@ class Main extends StatelessWidget {
       theme: ThemeData(
           textTheme: const TextTheme(
               titleMedium: TextStyle(
-                fontSize: 24,
+                fontSize: 28,
                 fontWeight: FontWeight.bold,
-                color: ColorManager.white,
+                color: ColorManager.eggshellWhite,
               ),
               bodyMedium:
-                  TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
+                  TextStyle(fontSize: 16, color: ColorManager.eggshellWhite))),
       home: const TestingScreen(),
     );
   }
