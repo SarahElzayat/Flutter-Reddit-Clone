@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/screens/bottom_sheet_test.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
+import '/screens/testing_screen.dart';
 
 void main() {
   runApp(const Main());
@@ -10,6 +11,17 @@ class Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const TestScreen();
+    return MaterialApp(
+      theme: ThemeData(
+          textTheme: const TextTheme(
+              titleMedium: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: ColorManager.white,
+              ),
+              bodyMedium:
+                  TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
+      home: const TestingScreen(),
+    );
   }
 }

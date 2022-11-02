@@ -8,6 +8,8 @@ class ColorManager {
   static const Color primaryColor =
       Color(0xffcc3700); //primary color of the application
 
+  static const Color white = Colors.white; //white color
+
   static const Color hoverOrange =
       Color(0xffbe3502); //orange buttons when hovered
 
