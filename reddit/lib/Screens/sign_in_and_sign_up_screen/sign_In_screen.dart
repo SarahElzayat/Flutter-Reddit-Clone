@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/forget_user_name_and_password/forget_password_screen.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/sign_up_screen.dart';
 import '../../components/default_text_field.dart';
 import '../../components/button.dart';
 import '../../components/helpers/color_manager.dart';
@@ -6,12 +8,16 @@ import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
-
+  static const routeName = '/sign_in_route';
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    final customAppBar =
-        LogInAppBar(sideBarButtonText: 'Sign Up', sideBarButtonAction: () {});
+    final navigator = Navigator.of(context);
+    final customAppBar = LogInAppBar(
+        sideBarButtonText: 'Sign Up',
+        sideBarButtonAction: () {
+          navigator.pushReplacementNamed(SignUpScreen.routeName);
+        });
     final theme = Theme.of(context);
     return Scaffold(
       appBar: customAppBar,
@@ -94,7 +100,10 @@ class SignInScreen extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       margin: const EdgeInsets.symmetric(vertical: 4),
                       child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            navigator.pushReplacementNamed(
+                                ForgetPasswordScreen.routeName);
+                          },
                           child: const Text(
                             'Forgot password',
                             style: TextStyle(

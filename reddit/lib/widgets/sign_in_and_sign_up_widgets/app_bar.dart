@@ -15,6 +15,7 @@ class LogInAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     return AppBar(
+        iconTheme: const IconThemeData(color: ColorManager.greyColor),
         foregroundColor: ColorManager.darkGrey,
         backgroundColor: ColorManager.darkGrey,
         centerTitle: true,

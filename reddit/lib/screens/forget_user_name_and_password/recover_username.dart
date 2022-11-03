@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/sign_In_screen.dart';
 import '../../components/default_text_field.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
@@ -6,13 +7,16 @@ import '../../components/button.dart';
 
 class RecoverUserName extends StatelessWidget {
   const RecoverUserName({super.key});
-
+  static const routeName = '/recover_user_name_route';
   @override
   Widget build(BuildContext context) {
+    final navigator = Navigator.of(context);
     final customAppBar = LogInAppBar(
         sideBarButtonText: 'Log In',
         sideBarButtonAction: () {
-          print('Log in');
+          navigator.pushNamed(
+            SignInScreen.routeName,
+          );
         });
 
     final mediaQuery = MediaQuery.of(context);
@@ -72,7 +76,7 @@ class RecoverUserName extends StatelessWidget {
                 ),
               ),
               Container(
-                height: mediaQuery.size.height * 0.3 -
+                height: mediaQuery.size.height * 0.21 -
                     mediaQuery.padding.top -
                     customAppBar.preferredSize.height,
                 width: mediaQuery.size.width,
@@ -80,27 +84,14 @@ class RecoverUserName extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextButton(
-                        onPressed: () {
-                          print('forget userName');
-                        },
-                        child: SizedBox(
-                          width: mediaQuery.size.width,
-                          child: Text(
-                            'Forget username?',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: ColorManager.eggshellWhite,
-                                fontSize: 16.5 * textScaleFactor),
-                          ),
-                        )),
                     FittedBox(
                       child: Button(
                           text: 'Email me',
                           boarderRadius: 50,
                           textColor: ColorManager.greyColor,
-                          backgroundColor: ColorManager.blue,
+
+                          /// lets see how to fix that color later
+                          backgroundColor: ColorManager.darkBlue,
                           buttonWidth: mediaQuery.size.width,
                           buttonHeight: mediaQuery.size.height * 0.08,
                           textFontSize: 18,

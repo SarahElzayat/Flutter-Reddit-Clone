@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/sign_In_screen.dart';
 import '../../components/default_text_field.dart';
 import '../../components/button.dart';
 import '../../components/helpers/color_manager.dart';
@@ -7,11 +8,16 @@ import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
 
+  static const routeName = '/sign_up_route';
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    final customAppBar =
-        LogInAppBar(sideBarButtonText: 'Sign Up', sideBarButtonAction: () {});
+    final navigator = Navigator.of(context);
+    final customAppBar = LogInAppBar(
+        sideBarButtonText: 'Log in',
+        sideBarButtonAction: () {
+          navigator.pushReplacementNamed(SignInScreen.routeName);
+        });
     final theme = Theme.of(context);
     final textScaleFactor = mediaQuery.textScaleFactor;
     return Scaffold(
