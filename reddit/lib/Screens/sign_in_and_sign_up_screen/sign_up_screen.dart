@@ -3,9 +3,9 @@
 /// this is the screen of creating new account for the users.
 
 import 'package:flutter/material.dart';
-import 'package:reddit/data/sign_in_And_sign_up_models/sign_up_model.dart';
-import 'package:reddit/networks/constant_end_points.dart';
-import 'package:reddit/networks/dio_helper.dart';
+import '../../data/sign_in_And_sign_up_models/sign_up_model.dart';
+import '../../networks/constant_end_points.dart';
+import '../../networks/dio_helper.dart';
 import '../../screens/sign_in_and_sign_up_screen/sign_In_screen.dart';
 import '../../components/default_text_field.dart';
 import '../../components/button.dart';
