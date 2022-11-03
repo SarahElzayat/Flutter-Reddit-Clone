@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/posts/post_screen.dart';
-import '../Components/color_manager.dart';
 import 'package:reddit/posts/inline_image_viewer.dart';
 
+import '../components/helpers/color_manager.dart';
 import 'post_data.dart';
 
 class PostWidget extends StatelessWidget {
@@ -215,7 +215,7 @@ class PostWidget extends StatelessWidget {
 
   void _goToPost(BuildContext context) {
     // Navigator.of(context).pushNamed(Postscreen.routeName, arguments: post);
-    if (outsideScreen)
+    if (outsideScreen) {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => PostScreen(
@@ -223,5 +223,6 @@ class PostWidget extends StatelessWidget {
           ),
         ),
       );
+    }
   }
 }

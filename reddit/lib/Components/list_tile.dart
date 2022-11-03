@@ -4,21 +4,24 @@
 /// built to be a reuseable widget for further uses
 
 import 'package:flutter/material.dart';
-import '../Components/Helpers/color_manager.dart';
-import 'Helpers/enums.dart';
+import '../components/helpers/color_manager.dart';
+import 'helpers/enums.dart';
 
-/// this class requires three main parameters
-/// 1- [leadingIcon] which is the icon shown in the beginning of the row
-/// 2- [title] which is the text shown next to the icon
-/// 3- [tailingObj] which may take one of three values
-///   3.1- Switch
-///   3.2- DropBox
-///   3.3- IconButton
 // ignore: must_be_immutable
 class ListTileWidget extends StatefulWidget {
+  /// which is the icon shown in the beginning of the row
   final Icon leadingIcon;
+
+  /// which is the text shown next to the icon
   final String title;
+
+  /// which may take one of three values
+  ///   3.1- Switch
+  ///   3.2- DropBox
+  ///   3.3- IconButton
   final TrailingObjects tailingObj;
+
+  /// The items that we are gonna show.
   List<String>? items;
 
   /// function handler which should be executed whenever something is changed

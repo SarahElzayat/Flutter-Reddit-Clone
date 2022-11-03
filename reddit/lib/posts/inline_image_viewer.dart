@@ -2,10 +2,12 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-import 'package:reddit/Components/color_manager.dart';
+// import 'package:reddit/Components/color_manager.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
 import 'package:reddit/posts/image_page_view.dart';
 import 'package:reddit/posts/post_data.dart';
+
+import '../components/helpers/color_manager.dart';
 
 class InlineImageViewer extends StatefulWidget {
   InlineImageViewer({

@@ -2,21 +2,21 @@
 /// @author Haitham Mohamed
 /// @date 26/10/2022
 
-import '../Components/color_manager.dart';
+import '../components/helpers/color_manager.dart';
 import 'package:flutter/material.dart';
 
 /// This function Shows the proper bottom sheet depends on the inputs
 ///
-/// [title] Title of the Bottom Sheet
+/// @param [title] Title of the Bottom Sheet
 ///
-/// [text] The text of each item the will appear
+/// @parma [text] The text of each item the will appear
 ///
-/// [items] should the same type of selectedItem
+/// @param [items] should the same type of selectedItem
 /// this parameter used if you don't want to use text and want to use other type in backend like enum
 ///
-/// [selectedItem] The item that is selected before
+/// @param [selectedItem] The item that is selected before
 ///
-/// [selectedIcons] and [unselectedIcons] icons that want to show beside text if you want
+/// @params [selectedIcons] and [unselectedIcons] icons that want to show beside text if you want
 
 Future<dynamic> modalBottomSheet(
     {required BuildContext context,
@@ -162,15 +162,15 @@ bool validations({
 
 /// This function show the proper icon depend on its state (selected or not)
 ///
-/// [text] The text of the item (one item not list)
+/// @param [text] The text of the item (one item not list)
 ///
-/// [index] The index of the certain item in the list
+/// @param [index] The index of the certain item in the list
 ///
-/// [items] this parameter used in backend instead of text
+/// @param [items] this parameter used in backend instead of text
 ///
-/// [selectedItem] The item that is selected before
+/// @param [selectedItem] The item that is selected before
 ///
-/// if [selectedItem] or [unselectedIcons] not exist it shows the check circle icon instead
+/// @param [selectedItem] or [unselectedIcons] not exist it shows the check circle icon instead
 
 Widget iconOrCheckCircle({
   required BuildContext context,

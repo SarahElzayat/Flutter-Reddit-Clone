@@ -26,6 +26,7 @@ class TestScreen extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class BottomSheetWidget extends StatelessWidget {
   final List<SortType> _items = [
     SortType.best,
