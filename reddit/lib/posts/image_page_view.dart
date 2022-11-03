@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -24,11 +26,29 @@ class WholeScreenImageViewer extends StatefulWidget {
 
 class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
   late int currentIndex = widget.initialIndex;
+  double aspectRatio = 1.0;
   double initialInDragging = 0.0;
   void onPageChanged(int index) {
     setState(() {
       currentIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    for (var i = 0; i < widget.post.images!.length; i++) {
+      Image(image: NetworkImage(widget.post.images![i]))
+          .image
+          .resolve(const ImageConfiguration())
+          .addListener(ImageStreamListener((info, call) {
+        setState(() {
+          aspectRatio = max(aspectRatio, info.image.height / info.image.width);
+          print(aspectRatio);
+        });
+      }));
+    }
+
+    super.initState();
   }
 
   @override
@@ -43,7 +63,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
           ),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -62,20 +82,25 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
         },
         child: Container(
           decoration: widget.backgroundDecoration,
+          alignment: Alignment.center,
           constraints: BoxConstraints.expand(
             height: MediaQuery.of(context).size.height,
           ),
           child: Stack(
             children: [
-              PhotoViewGallery.builder(
-                scrollPhysics: const BouncingScrollPhysics(),
-                builder: _buildItem,
-                itemCount: widget.post.images!.length,
-                // loadingBuilder: widget.loadingBuilder,
-                backgroundDecoration: widget.backgroundDecoration,
-                pageController: widget.pageController,
-                onPageChanged: onPageChanged,
-                scrollDirection: Axis.horizontal,
+              SizedBox(
+                height: min(MediaQuery.of(context).size.width * aspectRatio,
+                    MediaQuery.of(context).size.height * .8),
+                child: PhotoViewGallery.builder(
+                  scrollPhysics: const BouncingScrollPhysics(),
+                  builder: _buildItem,
+                  itemCount: widget.post.images!.length,
+                  // loadingBuilder: widget.loadingBuilder,
+                  backgroundDecoration: widget.backgroundDecoration,
+                  pageController: widget.pageController,
+                  onPageChanged: onPageChanged,
+                  scrollDirection: Axis.horizontal,
+                ),
               ),
             ],
           ),
@@ -88,7 +113,8 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
     final String item = widget.post.images![index];
     return PhotoViewGalleryPageOptions(
       imageProvider: NetworkImage(item),
-      initialScale: PhotoViewComputedScale.contained,
+      tightMode: true,
+      initialScale: PhotoViewComputedScale.covered,
       minScale: PhotoViewComputedScale.contained * (0.5 + index / 10),
       maxScale: PhotoViewComputedScale.covered * 4.1,
       heroAttributes: PhotoViewHeroAttributes(tag: item),

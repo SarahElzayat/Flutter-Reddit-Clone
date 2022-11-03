@@ -1,9 +1,11 @@
 import 'package:reddit/posts/post_data.dart';
 import 'package:flutter_lorem/flutter_lorem.dart';
 
-var textPost = Post(
+var textPost = const Post(
   title: 'That\'s a Plain Text Post',
-  body: lorem(paragraphs: 1, words: 50),
+  body:
+      '''This is a paragraph *THIS IS Italic* \n **THIS IS BOLD** \n ***THIS IS BOLD AND ITALIC*** \n
+   ''',
   id: '123456789',
   userId: '557545467',
   subredditId: 'r/Flutter',

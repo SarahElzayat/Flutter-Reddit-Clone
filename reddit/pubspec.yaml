@@ -35,6 +35,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_lorem: ^2.0.0
+  flutter_markdown: ^0.6.12
   flutter_svg: ^1.1.6
   lint: ^1.10.0
   photo_view: ^0.14.0
@@ -54,7 +55,6 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
-
   assets:
     - assets/images/Logo.png
   #   - images/a_dot_ham.jpeg
