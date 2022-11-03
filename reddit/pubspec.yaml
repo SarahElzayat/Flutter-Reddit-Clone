@@ -43,6 +43,7 @@ dependencies:
   # cupertino_icons: ^1.0.2
 
   lint: ^1.10.0
+  flutter_facebook_auth: ^5.0.1
 dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
