@@ -14,9 +14,13 @@ import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
 import 'package:dio/dio.dart';
 
 class SignUpScreen extends StatelessWidget {
-  const SignUpScreen({super.key});
+  SignUpScreen({super.key});
 
   static const routeName = '/sign_up_route';
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -106,18 +110,21 @@ class SignUpScreen extends StatelessWidget {
                 ),
               ),
               Expanded(
-                flex: 2,
+                flex: 3,
                 child: Column(
-                  children: const [
+                  children: [
                     DefaultTextField(
+                      formController: emailController,
                       labelText: 'Email',
                     ),
                     DefaultTextField(
+                      formController: usernameController,
                       labelText: 'Username',
                     ),
                     DefaultTextField(
+                      formController: passwordController,
                       labelText: 'Password',
-                      keyboardType: TextInputType.visiblePassword,
+                      isPassword: true,
                     ),
                   ],
                 ),

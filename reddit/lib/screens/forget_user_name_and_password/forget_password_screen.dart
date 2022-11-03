@@ -12,8 +12,12 @@ import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
 import '../../components/button.dart';
 
 class ForgetPasswordScreen extends StatelessWidget {
-  const ForgetPasswordScreen({super.key});
+  ForgetPasswordScreen({super.key});
   static const routeName = '/forget_password_screen_route';
+
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -49,8 +53,14 @@ class ForgetPasswordScreen extends StatelessWidget {
                       'Forgot your password?',
                       style: theme.textTheme.titleMedium,
                     ),
-                    const DefaultTextField(labelText: 'Username'),
-                    const DefaultTextField(labelText: 'Email'),
+                    DefaultTextField(
+                      labelText: 'Username',
+                      formController: usernameController,
+                    ),
+                    DefaultTextField(
+                      labelText: 'Email',
+                      formController: emailController,
+                    ),
                     Text(
                       'Unfortunately, if you have never given us your email,'
                       'we will not be able to reset your password.',

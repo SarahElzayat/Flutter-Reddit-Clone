@@ -3,6 +3,8 @@
 /// this is the screen of recovering the username
 ///  if the user forgot his own username
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import '../../screens/sign_in_and_sign_up_screen/sign_In_screen.dart';
 import '../../components/default_text_field.dart';
@@ -11,7 +13,10 @@ import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
 import '../../components/button.dart';
 
 class RecoverUserName extends StatelessWidget {
-  const RecoverUserName({super.key});
+  RecoverUserName({super.key});
+
+  TextEditingController emailController = TextEditingController();
+
   static const routeName = '/recover_user_name_route';
   @override
   Widget build(BuildContext context) {
@@ -52,7 +57,8 @@ class RecoverUserName extends StatelessWidget {
                       'Recover username',
                       style: theme.textTheme.titleMedium,
                     ),
-                    const DefaultTextField(labelText: 'Email'),
+                    DefaultTextField(
+                        formController: emailController, labelText: 'Email'),
                     Text(
                       'Unfortunately, if you have never given us your email,'
                       'we will not be able to reset your password.',
@@ -93,15 +99,15 @@ class RecoverUserName extends StatelessWidget {
                       child: Button(
                           text: 'Email me',
                           boarderRadius: 50,
-                          textColor: ColorManager.greyColor,
+                          textColor: ColorManager.white,
 
                           /// lets see how to fix that color later
-                          backgroundColor: ColorManager.darkBlue,
+                          backgroundColor: ColorManager.blue,
                           buttonWidth: mediaQuery.size.width,
                           buttonHeight: mediaQuery.size.height * 0.08,
                           textFontSize: 18 * textScaleFactor,
                           onPressed: () {
-                            print('Email Me');
+                            print(emailController.text);
                           }),
                     ),
                   ],

@@ -24,10 +24,10 @@ class Main extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/',
       routes: {
-        RecoverUserName.routeName: (ctx) => const RecoverUserName(),
-        SignUpScreen.routeName: (ctx) => const SignUpScreen(),
-        SignInScreen.routeName: (ctx) => const SignInScreen(),
-        ForgetPasswordScreen.routeName: (ctx) => const ForgetPasswordScreen(),
+        RecoverUserName.routeName: (ctx) => RecoverUserName(),
+        SignUpScreen.routeName: (ctx) => SignUpScreen(),
+        SignInScreen.routeName: (ctx) => SignInScreen(),
+        ForgetPasswordScreen.routeName: (ctx) => ForgetPasswordScreen(),
       },
       onUnknownRoute: (settings) {
         return MaterialPageRoute(builder: (ctx) => const TestingScreen());
