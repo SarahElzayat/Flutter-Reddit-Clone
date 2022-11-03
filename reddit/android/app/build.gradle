@@ -8,7 +8,7 @@ if (localPropertiesFile.exists()) {
 
 def flutterRoot = localProperties.getProperty('flutter.sdk')
 if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+    // throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
@@ -34,6 +34,8 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -53,6 +55,18 @@ android {
         versionName flutterVersionName
     }
 
+
+    /// @author Abdelaziz Salah
+    /// @date 3/11/2022
+    /// Adding the key for logging in using google
+    signingConfigs{
+        debug{
+            keyAlias 'androiddebugkey'
+            keyPassword 'readit'
+            storeFile file('myKey.jks')
+            storePassword 'readit'
+        }
+    }
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

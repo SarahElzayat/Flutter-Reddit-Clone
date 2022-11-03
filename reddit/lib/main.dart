@@ -5,8 +5,14 @@ import 'package:reddit/screens/forget_user_name_and_password/recover_username.da
 import 'package:reddit/screens/sign_in_and_sign_up_screen/sign_In_screen.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/sign_up_screen.dart';
 import '/screens/testing_screen.dart';
+import 'networks/dio_helper.dart';
 
 void main() {
+  /// this is used to insure that every thing has been initialized well
+  WidgetsFlutterBinding.ensureInitialized();
+
+  /// and this is used to initialized Dio
+  DioHelper.init();
   runApp(const Main());
 }
 

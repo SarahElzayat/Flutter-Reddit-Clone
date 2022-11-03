@@ -3,18 +3,27 @@
 /// this is the screen of signing into the own account
 
 import 'package:flutter/material.dart';
+import 'package:reddit/data/sign_in_And_sign_up_models/sign_in_model.dart';
+import 'package:reddit/networks/constant_end_points.dart';
+import '../../networks/dio_helper.dart';
 import '../../screens/forget_user_name_and_password/forget_password_screen.dart';
 import '../../screens/sign_in_and_sign_up_screen/sign_up_screen.dart';
 import '../../components/default_text_field.dart';
 import '../../components/button.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
+import '../../data/google_api/google_sign_in_api.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
   static const routeName = '/sign_in_route';
+
   @override
   Widget build(BuildContext context) {
+    Future signInWithGoogle() async {
+      await GoogleSignInApi.login();
+    }
+
     final mediaQuery = MediaQuery.of(context);
     final navigator = Navigator.of(context);
     final customAppBar = LogInAppBar(
@@ -23,6 +32,7 @@ class SignInScreen extends StatelessWidget {
           navigator.pushReplacementNamed(SignUpScreen.routeName);
         });
     final theme = Theme.of(context);
+    final user = LogInModel(username: 'Abdelaziz', password: '132001');
     return Scaffold(
       appBar: customAppBar,
       backgroundColor: ColorManager.darkGrey,
@@ -63,6 +73,7 @@ class SignInScreen extends StatelessWidget {
                           buttonHeight: mediaQuery.size.height * 0.05,
                           textFontSize: 18,
                           onPressed: () {
+                            signInWithGoogle();
                             print('Continue with google');
                           },
                           boarderRadius: 20,
@@ -145,7 +156,16 @@ class SignInScreen extends StatelessWidget {
                           buttonWidth: mediaQuery.size.width,
                           buttonHeight: mediaQuery.size.height * 0.05,
                           textFontSize: 14,
-                          onPressed: () {}),
+                          onPressed: () {
+                            DioHelper.postData(path: login, data: user.toJson())
+                                .then((value) {
+                              print((value));
+
+                              /// here we want to make sure that we got the correct response
+                            });
+
+                            print(user.toJson());
+                          }),
                     )
                   ],
                 ),

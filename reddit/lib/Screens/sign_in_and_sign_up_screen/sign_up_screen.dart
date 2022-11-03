@@ -3,11 +3,15 @@
 /// this is the screen of creating new account for the users.
 
 import 'package:flutter/material.dart';
+import 'package:reddit/data/sign_in_And_sign_up_models/sign_up_model.dart';
+import 'package:reddit/networks/constant_end_points.dart';
+import 'package:reddit/networks/dio_helper.dart';
 import '../../screens/sign_in_and_sign_up_screen/sign_In_screen.dart';
 import '../../components/default_text_field.dart';
 import '../../components/button.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
+import 'package:dio/dio.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -24,6 +28,10 @@ class SignUpScreen extends StatelessWidget {
         });
     final theme = Theme.of(context);
     final textScaleFactor = mediaQuery.textScaleFactor;
+    final user = signUpModel(
+        email: 'Abdelaziz132001@gmail.com',
+        password: '1023',
+        username: 'Abdelaziz');
     return Scaffold(
       appBar: customAppBar,
       backgroundColor: ColorManager.darkGrey,
@@ -138,7 +146,12 @@ class SignUpScreen extends StatelessWidget {
                           buttonWidth: mediaQuery.size.width,
                           buttonHeight: mediaQuery.size.height * 0.05,
                           textFontSize: textScaleFactor * 14,
-                          onPressed: () {}),
+                          onPressed: () {
+                            DioHelper.postData(
+                                path: signUp, data: user.toJson());
+
+                            print(user.toJson());
+                          }),
                     )
                   ],
                 ),
