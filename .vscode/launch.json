@@ -5,7 +5,11 @@
             "type": "dart",
             "request": "launch",
             "cwd": "reddit",
-            "program": "lib\\main.dart"
+            "program": "lib\\main.dart",
+            "args": [
+                "--web-port",
+                "5000"
+            ]
         }
     ]
 }

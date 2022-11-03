@@ -3,6 +3,7 @@
 /// this is the screen of creating new account for the users.
 
 import 'package:flutter/material.dart';
+import '../../data/google_api/google_sign_in_api.dart';
 import '../../data/sign_in_And_sign_up_models/sign_up_model.dart';
 import '../../networks/constant_end_points.dart';
 import '../../networks/dio_helper.dart';
@@ -23,6 +24,12 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future signInWithGoogle() async {
+      final user = await GoogleSignInApi.login();
+
+      print(user);
+    }
+
     final mediaQuery = MediaQuery.of(context);
     final navigator = Navigator.of(context);
     final customAppBar = LogInAppBar(
@@ -79,7 +86,7 @@ class SignUpScreen extends StatelessWidget {
                           buttonHeight: mediaQuery.size.height * 0.05,
                           textFontSize: textScaleFactor * 18,
                           onPressed: () {
-                            print('Continue with google');
+                            signInWithGoogle();
                           },
                           boarderRadius: 20,
                           borderColor: ColorManager.white,

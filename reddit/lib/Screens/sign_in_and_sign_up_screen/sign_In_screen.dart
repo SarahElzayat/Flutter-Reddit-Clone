@@ -25,7 +25,9 @@ class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future signInWithGoogle() async {
-      await GoogleSignInApi.login();
+      final user = await GoogleSignInApi.login();
+
+      print(user);
     }
 
     final mediaQuery = MediaQuery.of(context);
@@ -78,7 +80,6 @@ class SignInScreen extends StatelessWidget {
                           textFontSize: 18,
                           onPressed: () {
                             signInWithGoogle();
-                            print('Continue with google');
                           },
                           boarderRadius: 20,
                           borderColor: ColorManager.white,
@@ -164,7 +165,9 @@ class SignInScreen extends StatelessWidget {
                           buttonWidth: mediaQuery.size.width,
                           buttonHeight: mediaQuery.size.height * 0.05,
                           textFontSize: 14 * mediaQuery.textScaleFactor,
-                          onPressed: () {
+                          onPressed: () async {
+                            /// TODO: remove this log out from here it is not its place
+                            await GoogleSignInApi.logOut();
                             print(
                                 'the userControllerContent : ${usernameController.text}\nthe passwordControllerContent: ${passwordController.text}');
                             DioHelper.postData(path: login, data: user.toJson())
