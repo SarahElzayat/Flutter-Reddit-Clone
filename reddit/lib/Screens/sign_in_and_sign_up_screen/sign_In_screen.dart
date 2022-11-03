@@ -62,7 +62,9 @@ class SignInScreen extends StatelessWidget {
                           buttonWidth: mediaQuery.size.width * 0.9,
                           buttonHeight: mediaQuery.size.height * 0.05,
                           textFontSize: 18,
-                          onPressed: () {},
+                          onPressed: () {
+                            print('Continue with google');
+                          },
                           boarderRadius: 20,
                           borderColor: ColorManager.white,
                           textFontWeight: FontWeight.bold),
@@ -73,7 +75,9 @@ class SignInScreen extends StatelessWidget {
                           buttonWidth: mediaQuery.size.width * 0.9,
                           buttonHeight: mediaQuery.size.height * 0.05,
                           textFontSize: 18,
-                          onPressed: () {},
+                          onPressed: () {
+                            print('Continue with facebook');
+                          },
                           boarderRadius: 20,
                           borderColor: ColorManager.white,
                           textFontWeight: FontWeight.bold),
