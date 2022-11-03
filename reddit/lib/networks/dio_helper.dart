@@ -1,10 +1,17 @@
+/// @author Abdelaziz Salah
+/// @date 3/11/2022
+/// this is a DioHelper which is a class used to connect us to the backend
+/// and deal with the server
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'constant_end_points.dart';
 
 class DioHelper {
   static late Dio dio;
 
+  /// this is the initializer function used to set the base options such as
+  /// the base url value
+  /// and the limits for the timeouts
+  /// and the headers
   static init() {
     dio = Dio(
       BaseOptions(
@@ -32,7 +39,7 @@ class DioHelper {
 
   /// now we need to define the web Services
 
-  /// this is for the post request
+  /// this is a function used to send post request with certain body.
   static Future<Response> postData({
     required String path, // the added path to the baseURL
     required Map<String, dynamic> data,
@@ -45,11 +52,12 @@ class DioHelper {
     return await dio.post(path, data: data, queryParameters: query);
   }
 
-  /// for the get request
+  /// this is a function used to send get request
+  /// @param [query] which is the query we are asking for <optional>
+  /// @param [path] string defining the end point
   static Future<Response> getData({
     Map<String, dynamic>? query,
     required String path,
-    String? token,
   }) async {
     return await dio.get(path, queryParameters: query);
   }

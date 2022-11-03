@@ -1,3 +1,8 @@
+/// @author Abdelaziz Salah
+/// @date 3/11/2022
+/// this is a model for the logIn attributes which are sent to the backend
+/// instead of each time creating the strings and we may forget something
+
 class LogInModel {
   String? username;
   String? password;

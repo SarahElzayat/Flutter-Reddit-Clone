@@ -1,3 +1,9 @@
+/// @author Abdelaziz Salah
+/// @date 3/11/2022
+/// this is the appBar model for the Login
+///and sign up and forget user name and also and we may use it later
+///instead of creating it every single time.
+
 import 'package:flutter/material.dart';
 import '../../components/helpers/color_manager.dart';
 
@@ -7,10 +13,14 @@ class LogInAppBar extends StatelessWidget implements PreferredSizeWidget {
       required this.sideBarButtonText,
       required this.sideBarButtonAction});
 
+  /// this is the text in the app bar which may be sign in or sign out ... etc
   // ignore: prefer_typing_uninitialized_variables
   final sideBarButtonText;
+
+  /// this is the function that should be excuted when pressing on the button
   // ignore: prefer_typing_uninitialized_variables
   final sideBarButtonAction;
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -36,6 +46,7 @@ class LogInAppBar extends StatelessWidget implements PreferredSizeWidget {
         ));
   }
 
+  /// defining how much height do we want to take for the app bar
   @override
   Size get preferredSize => const Size.fromHeight(60);
 }
