@@ -1,5 +1,9 @@
+/// @author Abdelaziz Salah
+/// @date 3/11/2022
+/// this is the screen of creating new account for the users.
+
 import 'package:flutter/material.dart';
-import 'package:reddit/screens/sign_in_and_sign_up_screen/sign_In_screen.dart';
+import '../../screens/sign_in_and_sign_up_screen/sign_In_screen.dart';
 import '../../components/default_text_field.dart';
 import '../../components/button.dart';
 import '../../components/helpers/color_manager.dart';

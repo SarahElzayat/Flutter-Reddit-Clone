@@ -1,6 +1,10 @@
+/// @author Abdelaziz Salah
+/// @date 3/11/2022
+/// this is the screen of signing into the own account
+
 import 'package:flutter/material.dart';
-import 'package:reddit/screens/forget_user_name_and_password/forget_password_screen.dart';
-import 'package:reddit/screens/sign_in_and_sign_up_screen/sign_up_screen.dart';
+import '../../screens/forget_user_name_and_password/forget_password_screen.dart';
+import '../../screens/sign_in_and_sign_up_screen/sign_up_screen.dart';
 import '../../components/default_text_field.dart';
 import '../../components/button.dart';
 import '../../components/helpers/color_manager.dart';
