@@ -113,8 +113,8 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
     final String item = widget.post.images![index];
     return PhotoViewGalleryPageOptions(
       imageProvider: NetworkImage(item),
-      tightMode: true,
-      initialScale: PhotoViewComputedScale.covered,
+
+      initialScale: PhotoViewComputedScale.contained,
       minScale: PhotoViewComputedScale.contained * (0.5 + index / 10),
       maxScale: PhotoViewComputedScale.covered * 4.1,
       heroAttributes: PhotoViewHeroAttributes(tag: item),

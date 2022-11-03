@@ -169,7 +169,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
     final String item = widget.post.images![index];
     return PhotoViewGalleryPageOptions(
       imageProvider: NetworkImage(item),
-      initialScale: PhotoViewComputedScale.contained,
+      initialScale: PhotoViewComputedScale.contained / aspectRatio,
       minScale: PhotoViewComputedScale.contained * (0.5 + index / 10),
       maxScale: PhotoViewComputedScale.covered * 4.1,
       // TODO: Add hero tag to the image
