@@ -3,8 +3,6 @@
 /// this is the screen of recovering the username
 ///  if the user forgot his own username
 
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import '../../screens/sign_in_and_sign_up_screen/sign_In_screen.dart';
 import '../../components/default_text_field.dart';
@@ -12,6 +10,7 @@ import '../../components/helpers/color_manager.dart';
 import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
 import '../../components/button.dart';
 
+// ignore: must_be_immutable
 class RecoverUserName extends StatelessWidget {
   RecoverUserName({super.key});
 
@@ -21,6 +20,9 @@ class RecoverUserName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final navigator = Navigator.of(context);
+    final mediaQuery = MediaQuery.of(context);
+    final theme = Theme.of(context);
+    final textScaleFactor = mediaQuery.textScaleFactor;
     final customAppBar = LogInAppBar(
         sideBarButtonText: 'Log In',
         sideBarButtonAction: () {
@@ -28,10 +30,6 @@ class RecoverUserName extends StatelessWidget {
             SignInScreen.routeName,
           );
         });
-
-    final mediaQuery = MediaQuery.of(context);
-    final theme = Theme.of(context);
-    final textScaleFactor = mediaQuery.textScaleFactor;
     return Scaffold(
       appBar: customAppBar,
       body: SingleChildScrollView(

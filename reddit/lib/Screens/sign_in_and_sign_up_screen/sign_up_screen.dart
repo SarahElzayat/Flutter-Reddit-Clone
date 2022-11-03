@@ -32,7 +32,7 @@ class SignUpScreen extends StatelessWidget {
         });
     final theme = Theme.of(context);
     final textScaleFactor = mediaQuery.textScaleFactor;
-    final user = signUpModel(
+    final user = SignUpModel(
         email: 'Abdelaziz132001@gmail.com',
         password: '1023',
         username: 'Abdelaziz');
