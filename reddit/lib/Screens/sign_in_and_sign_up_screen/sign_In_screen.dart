@@ -3,6 +3,7 @@
 /// this is the screen of signing into the own account
 
 import 'package:flutter/material.dart';
+import 'package:reddit/data/facebook_api/facebook_api.dart';
 import '../../data/sign_in_And_sign_up_models/sign_in_model.dart';
 import '../../networks/constant_end_points.dart';
 import '../../networks/dio_helper.dart';
@@ -27,6 +28,11 @@ class SignInScreen extends StatelessWidget {
     Future signInWithGoogle() async {
       final user = await GoogleSignInApi.login();
 
+      print(user);
+    }
+
+    Future signInWithFacebook() async {
+      final user = await FacebookLoginAPI.login();
       print(user);
     }
 
@@ -92,7 +98,19 @@ class SignInScreen extends StatelessWidget {
                           buttonHeight: mediaQuery.size.height * 0.05,
                           textFontSize: 18 * mediaQuery.textScaleFactor,
                           onPressed: () {
-                            print('Continue with facebook');
+                            Future<Map<String, dynamic>?> accessToken =
+                                FacebookLoginAPI.checkIfIsLogged();
+
+                            accessToken.then((value) {
+                              if (value == null) {
+                                signInWithFacebook();
+                              } else {
+                                /// now I have the access token which
+                                /// I should send it to the API
+                                print(value['token']);
+                              }
+                              print('Continue with facebook');
+                            });
                           },
                           boarderRadius: 20,
                           borderColor: ColorManager.white,
@@ -167,7 +185,7 @@ class SignInScreen extends StatelessWidget {
                           textFontSize: 14 * mediaQuery.textScaleFactor,
                           onPressed: () async {
                             /// TODO: remove this log out from here it is not its place
-                            await GoogleSignInApi.logOut();
+                            await FacebookLoginAPI.logOut();
                             print(
                                 'the userControllerContent : ${usernameController.text}\nthe passwordControllerContent: ${passwordController.text}');
                             DioHelper.postData(path: login, data: user.toJson())

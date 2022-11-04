@@ -3,6 +3,7 @@
 /// this is the screen of creating new account for the users.
 
 import 'package:flutter/material.dart';
+import '../../data/facebook_api/facebook_api.dart';
 import '../../data/google_api/google_sign_in_api.dart';
 import '../../data/sign_in_And_sign_up_models/sign_up_model.dart';
 import '../../networks/constant_end_points.dart';
@@ -26,6 +27,12 @@ class SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Future signInWithGoogle() async {
       final user = await GoogleSignInApi.login();
+
+      print(user);
+    }
+
+    Future signInWithFacebook() async {
+      final user = await FacebookLoginAPI.login();
 
       print(user);
     }
@@ -99,7 +106,7 @@ class SignUpScreen extends StatelessWidget {
                           buttonHeight: mediaQuery.size.height * 0.05,
                           textFontSize: textScaleFactor * 18,
                           onPressed: () {
-                            print('Continue with facebook');
+                            signInWithFacebook();
                           },
                           boarderRadius: 20,
                           borderColor: ColorManager.white,
