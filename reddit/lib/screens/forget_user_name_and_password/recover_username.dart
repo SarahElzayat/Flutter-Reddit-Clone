@@ -4,6 +4,8 @@
 ///  if the user forgot his own username
 
 import 'package:flutter/material.dart';
+import 'package:reddit/networks/constant_end_points.dart';
+import 'package:reddit/networks/dio_helper.dart';
 import '../../data/sign_in_And_sign_up_models/login_forget_model.dart';
 import '../../screens/sign_in_and_sign_up_screen/sign_In_screen.dart';
 import '../../components/default_text_field.dart';
@@ -110,6 +112,9 @@ class RecoverUserName extends StatelessWidget {
                               email: emailController.text,
                               type: 'username',
                             );
+
+                            DioHelper.postData(
+                                path: loginForget, data: user.toJson());
                           }),
                     ),
                   ],
