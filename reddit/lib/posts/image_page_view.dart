@@ -3,7 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:reddit/components/Helpers/color_manager.dart';
 import 'package:reddit/posts/post_data.dart';
+
+import 'post_bar.dart';
 
 class WholeScreenImageViewer extends StatefulWidget {
   WholeScreenImageViewer({
@@ -43,7 +46,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
           .addListener(ImageStreamListener((info, call) {
         setState(() {
           aspectRatio = max(aspectRatio, info.image.height / info.image.width);
-          print(aspectRatio);
+          // print(aspectRatio);
         });
       }));
     }
@@ -56,11 +59,59 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text(
-          '${currentIndex + 1}/${widget.post.images!.length}',
-          style: const TextStyle(
-            color: Colors.white,
-          ),
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  '${widget.post.subredditId} •',
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Colors.white,
+                      ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                InkWell(
+                  onTap: () {
+                    debugPrint('joined');
+                  },
+                  child: Text(
+                    'Join',
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Colors.blue,
+                        ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  ' •  u/${widget.post.userId}  •',
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Colors.white,
+                      ),
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  '8h',
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Colors.white,
+                      ),
+                ),
+              ],
+            ),
+            Text(
+              widget.post.title,
+              style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                    color: Colors.white,
+                  ),
+            ),
+          ],
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -82,26 +133,27 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
         },
         child: Container(
           decoration: widget.backgroundDecoration,
-          alignment: Alignment.center,
+          // alignment: Alignment.center,
           constraints: BoxConstraints.expand(
             height: MediaQuery.of(context).size.height,
           ),
           child: Stack(
             children: [
-              SizedBox(
-                height: min(MediaQuery.of(context).size.width * aspectRatio,
-                    MediaQuery.of(context).size.height * .8),
-                child: PhotoViewGallery.builder(
-                  scrollPhysics: const BouncingScrollPhysics(),
-                  builder: _buildItem,
-                  itemCount: widget.post.images!.length,
-                  // loadingBuilder: widget.loadingBuilder,
-                  backgroundDecoration: widget.backgroundDecoration,
-                  pageController: widget.pageController,
-                  onPageChanged: onPageChanged,
-                  scrollDirection: Axis.horizontal,
-                ),
+              PhotoViewGallery.builder(
+                scrollPhysics: const BouncingScrollPhysics(),
+                builder: _buildItem,
+                itemCount: widget.post.images!.length,
+                // loadingBuilder: widget.loadingBuilder,
+                backgroundDecoration: widget.backgroundDecoration,
+                pageController: widget.pageController,
+                onPageChanged: onPageChanged,
+                scrollDirection: Axis.horizontal,
               ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: postBar(context, widget.post,
+                    backgroundColor: ColorManager.darkGrey),
+              )
             ],
           ),
         ),
@@ -113,9 +165,8 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
     final String item = widget.post.images![index];
     return PhotoViewGalleryPageOptions(
       imageProvider: NetworkImage(item),
-
       initialScale: PhotoViewComputedScale.contained,
-      minScale: PhotoViewComputedScale.contained * (0.5 + index / 10),
+      minScale: PhotoViewComputedScale.contained * 0.5,
       maxScale: PhotoViewComputedScale.covered * 4.1,
       heroAttributes: PhotoViewHeroAttributes(tag: item),
     );

@@ -17,13 +17,15 @@ class _PostScreenState extends State<PostScreen> {
       appBar: AppBar(
         title: Text(widget.post.title),
       ),
-      body: Column(
-        children: [
-          PostWidget(
-            post: widget.post,
-            outsideScreen: false,
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            PostWidget(
+              post: widget.post,
+              outsideScreen: false,
+            ),
+          ],
+        ),
       ),
     );
   }

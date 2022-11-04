@@ -30,7 +30,7 @@ class InlineImageViewer extends StatefulWidget {
 
 class _InlineImageViewerState extends State<InlineImageViewer> {
   late int currentIndex = widget.initialIndex;
-  double aspectRatio = 1.0;
+  double aspectRatio = 0;
   void onPageChanged(int index) {
     setState(() {
       currentIndex = index;
@@ -60,7 +60,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
             openImage(context, currentIndex);
           },
           child: SizedBox(
-            height: min(MediaQuery.of(context).size.height * .4,
+            height: min(MediaQuery.of(context).size.height * .6,
                 aspectRatio * constraints.maxWidth),
             child: Stack(
               children: [
@@ -169,7 +169,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
     final String item = widget.post.images![index];
     return PhotoViewGalleryPageOptions(
       imageProvider: NetworkImage(item),
-      initialScale: PhotoViewComputedScale.contained / aspectRatio,
+      initialScale: PhotoViewComputedScale.contained,
       minScale: PhotoViewComputedScale.contained * (0.5 + index / 10),
       maxScale: PhotoViewComputedScale.covered * 4.1,
       // TODO: Add hero tag to the image

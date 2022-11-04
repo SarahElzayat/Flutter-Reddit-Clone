@@ -5,6 +5,8 @@ import 'package:reddit/posts/post_screen.dart';
 import 'package:reddit/posts/inline_image_viewer.dart';
 
 import '../components/helpers/color_manager.dart';
+import 'helper_funcs.dart';
+import 'post_bar.dart';
 import 'post_data.dart';
 
 class PostWidget extends StatelessWidget {
@@ -25,7 +27,7 @@ class PostWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: InkWell(
             onTap: () {
-              _goToPost(context);
+              goToPost(context, post);
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,20 +112,18 @@ class PostWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                // const SizedBox(
+                //   height: 10,
+                // ),
                 // The body of the post
                 if (post.images != null && post.images!.isNotEmpty)
                   InlineImageViewer(
                     post: post,
                   ),
-                const SizedBox(
-                  height: 10,
-                ),
+
                 if (post.images == null || !outsideScreen)
                   Padding(
-                      padding: const EdgeInsets.all(5.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
                       // child: Text(
                       //   post.body ?? '',
                       //   style: TextStyle(
@@ -146,110 +146,15 @@ class PostWidget extends StatelessWidget {
                           ),
                         ),
                       )),
-                const SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: const [
-                          Icon(
-                            Icons.arrow_upward,
-                            color: ColorManager.greyColor,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            '1.2k',
-                            style: TextStyle(
-                              color: ColorManager.greyColor,
-                              fontSize: 15,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Icon(
-                            Icons.arrow_downward,
-                            color: ColorManager.greyColor,
-                          ),
-                        ],
-                      ),
-                      InkWell(
-                        onTap: () {
-                          _goToPost(context);
-                        },
-                        child: Row(
-                          children: const [
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Icon(
-                              Icons.comment,
-                              color: ColorManager.greyColor,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              '1.2k',
-                              style: TextStyle(
-                                color: ColorManager.greyColor,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: Row(
-                          children: const [
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Icon(
-                              Icons.share,
-                              color: ColorManager.greyColor,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              'Share',
-                              style: TextStyle(
-                                color: ColorManager.greyColor,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                )
+
+                postBar(context, post,
+                    pad: const EdgeInsets.symmetric(
+                        horizontal: 5.0, vertical: 10))
               ],
             ),
           ),
         );
       },
     );
-  }
-
-  void _goToPost(BuildContext context) {
-    // Navigator.of(context).pushNamed(Postscreen.routeName, arguments: post);
-    if (outsideScreen) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => PostScreen(
-            post: post,
-          ),
-        ),
-      );
-    }
   }
 }
