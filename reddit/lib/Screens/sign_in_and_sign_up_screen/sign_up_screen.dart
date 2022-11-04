@@ -26,15 +26,11 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future signInWithGoogle() async {
-      final user = await GoogleSignInApi.login();
-
-      print(user);
+      await GoogleSignInApi.login();
     }
 
     Future signInWithFacebook() async {
-      final user = await FacebookLoginAPI.login();
-
-      print(user);
+      await FacebookLoginAPI.login();
     }
 
     final mediaQuery = MediaQuery.of(context);
@@ -46,10 +42,7 @@ class SignUpScreen extends StatelessWidget {
         });
     final theme = Theme.of(context);
     final textScaleFactor = mediaQuery.textScaleFactor;
-    final user = SignUpModel(
-        email: 'Abdelaziz132001@gmail.com',
-        password: '1023',
-        username: 'Abdelaziz');
+
     return Scaffold(
       appBar: customAppBar,
       backgroundColor: ColorManager.darkGrey,
@@ -168,10 +161,17 @@ class SignUpScreen extends StatelessWidget {
                           buttonHeight: mediaQuery.size.height * 0.05,
                           textFontSize: textScaleFactor * 14,
                           onPressed: () {
+                            ///creating an object of the signup model to be used
+                            ///to create the post request depending
+                            ///on the user input
+                            final user = SignUpModel(
+                                email: emailController.text,
+                                password: passwordController.text,
+                                username: usernameController.text);
+
+                            /// sending the data using a post request
                             DioHelper.postData(
                                 path: signUp, data: user.toJson());
-
-                            print(user.toJson());
                           }),
                     )
                   ],

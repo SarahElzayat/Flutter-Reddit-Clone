@@ -4,6 +4,9 @@
 ///  if the user forgot his own username
 
 import 'package:flutter/material.dart';
+import '../../data/sign_in_And_sign_up_models/login_forget_model.dart';
+import '../../networks/constant_end_points.dart';
+import '../../networks/dio_helper.dart';
 import '../../screens/forget_user_name_and_password/recover_username.dart';
 import '../../screens/sign_in_and_sign_up_screen/sign_In_screen.dart';
 import '../../components/default_text_field.dart';
@@ -11,6 +14,7 @@ import '../../components/helpers/color_manager.dart';
 import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
 import '../../components/button.dart';
 
+// ignore: must_be_immutable
 class ForgetPasswordScreen extends StatelessWidget {
   ForgetPasswordScreen({super.key});
   static const routeName = '/forget_password_screen_route';
@@ -91,10 +95,10 @@ class ForgetPasswordScreen extends StatelessWidget {
                               },
                               child: SizedBox(
                                 width: mediaQuery.size.width,
-                                child: const Text(
+                                child: Text(
                                   'Having trouble?',
                                   style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 16 * mediaQuery.textScaleFactor,
                                       color: ColorManager.primaryColor),
                                 ),
                               )),
@@ -114,9 +118,14 @@ class ForgetPasswordScreen extends StatelessWidget {
                       backgroundColor: ColorManager.blue,
                       buttonWidth: mediaQuery.size.width,
                       buttonHeight: mediaQuery.size.height * 0.08,
-                      textFontSize: 18,
+                      textFontSize: 18 * mediaQuery.textScaleFactor,
                       onPressed: () {
-                        print('Email Me');
+                        final user = LogInForgetModel(
+                            type: 'password',
+                            username: usernameController.text,
+                            email: emailController.text);
+                        DioHelper.postData(
+                            path: loginForget, data: user.toJson());
                       }),
                 ),
               )

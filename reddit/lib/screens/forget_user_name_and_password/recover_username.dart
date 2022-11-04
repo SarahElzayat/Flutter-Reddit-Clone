@@ -4,6 +4,7 @@
 ///  if the user forgot his own username
 
 import 'package:flutter/material.dart';
+import '../../data/sign_in_And_sign_up_models/login_forget_model.dart';
 import '../../screens/sign_in_and_sign_up_screen/sign_In_screen.dart';
 import '../../components/default_text_field.dart';
 import '../../components/helpers/color_manager.dart';
@@ -105,7 +106,10 @@ class RecoverUserName extends StatelessWidget {
                           buttonHeight: mediaQuery.size.height * 0.08,
                           textFontSize: 18 * textScaleFactor,
                           onPressed: () {
-                            print(emailController.text);
+                            final user = LogInForgetModel(
+                              email: emailController.text,
+                              type: 'username',
+                            );
                           }),
                     ),
                   ],

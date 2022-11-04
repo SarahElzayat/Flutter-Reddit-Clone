@@ -44,7 +44,6 @@ class SignInScreen extends StatelessWidget {
           navigator.pushReplacementNamed(SignUpScreen.routeName);
         });
     final theme = Theme.of(context);
-    final user = LogInModel(username: 'Abdelaziz', password: '132001');
     return Scaffold(
       appBar: customAppBar,
       backgroundColor: ColorManager.darkGrey,
@@ -58,16 +57,16 @@ class SignInScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const Expanded(
+              Expanded(
                 child: Text(
                   textAlign: TextAlign.center,
                   'Log in to Reddit',
-                  // style: theme.textTheme.titleMedium,
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: ColorManager.white,
-                  ),
+                  style: theme.textTheme.titleMedium,
+                  // style: TextStyle(
+                  //   fontSize: 24,
+                  //   fontWeight: FontWeight.bold,
+                  //   color: ColorManager.white,
+                  // ),
                 ),
               ),
               Expanded(
@@ -185,13 +184,14 @@ class SignInScreen extends StatelessWidget {
                           textFontSize: 14 * mediaQuery.textScaleFactor,
                           onPressed: () async {
                             /// TODO: remove this log out from here it is not its place
-                            await FacebookLoginAPI.logOut();
-                            print(
-                                'the userControllerContent : ${usernameController.text}\nthe passwordControllerContent: ${passwordController.text}');
+                            // await FacebookLoginAPI.logOut();
+
+                            LogInModel user = LogInModel(
+                                username: usernameController.text,
+                                password: passwordController.text);
+
                             DioHelper.postData(path: login, data: user.toJson())
                                 .then((value) {
-                              print((value));
-
                               /// here we want to make sure that we got the correct response
                             });
 
