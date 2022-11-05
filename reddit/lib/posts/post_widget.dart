@@ -6,8 +6,9 @@ import 'package:reddit/posts/inline_image_viewer.dart';
 
 import '../components/helpers/color_manager.dart';
 import 'helper_funcs.dart';
-import 'post_bar.dart';
+import 'post_lower_bar.dart';
 import 'post_data.dart';
+import 'post_upper_bar.dart';
 
 class PostWidget extends StatelessWidget {
   const PostWidget({
@@ -33,88 +34,7 @@ class PostWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // A row with the Avatar, title and the subreddit
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          const CircleAvatar(
-                            radius: 20,
-                            child: Icon(Icons.category_sharp),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                post.subredditId,
-                                style: const TextStyle(
-                                  color: ColorManager.eggshellWhite,
-                                  fontSize: 15,
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    'u/${post.userId}',
-                                    style: const TextStyle(
-                                      color: ColorManager.greyColor,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  const Text(
-                                    '•',
-                                    style: TextStyle(
-                                      color: ColorManager.greyColor,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  const Text(
-                                    '14h',
-                                    style: TextStyle(
-                                      color: ColorManager.greyColor,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          const Spacer(),
-                          const Chip(
-                            label: Text('Join'),
-                            backgroundColor: ColorManager.blue,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      // The title of the post
-                      Text(
-                        post.title,
-                        style: const TextStyle(
-                          color: ColorManager.eggshellWhite,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                // const SizedBox(
-                //   height: 10,
-                // ),
+                PostUpperBar(post: post),
                 // The body of the post
                 if (post.images != null && post.images!.isNotEmpty)
                   InlineImageViewer(
@@ -123,7 +43,12 @@ class PostWidget extends StatelessWidget {
 
                 if (post.images == null || !outsideScreen)
                   Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                      padding: const EdgeInsets.only(
+                        left: 10,
+                        right: 10,
+                        top: 10,
+                      ),
+
                       // child: Text(
                       //   post.body ?? '',
                       //   style: TextStyle(
@@ -147,7 +72,7 @@ class PostWidget extends StatelessWidget {
                         ),
                       )),
 
-                postBar(context, post,
+                postLowerBar(context, post,
                     pad: const EdgeInsets.symmetric(
                         horizontal: 5.0, vertical: 10))
               ],

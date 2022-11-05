@@ -6,7 +6,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:reddit/components/Helpers/color_manager.dart';
 import 'package:reddit/posts/post_data.dart';
 
-import 'post_bar.dart';
+import 'post_lower_bar.dart';
 
 class WholeScreenImageViewer extends StatefulWidget {
   WholeScreenImageViewer({
@@ -58,7 +58,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.black.withOpacity(0.5),
         title: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,8 +151,12 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: postBar(context, widget.post,
-                    backgroundColor: ColorManager.darkGrey),
+                child: postLowerBar(
+                  context,
+                  widget.post,
+                  backgroundColor: Colors.black.withOpacity(0.5),
+                  iconColor: ColorManager.eggshellWhite,
+                ),
               )
             ],
           ),

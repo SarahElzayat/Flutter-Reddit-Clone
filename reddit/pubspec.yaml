@@ -30,6 +30,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  conditional_builder_null_safety: ^0.0.6
   cupertino_icons: ^1.0.2
   dots_indicator: ^2.1.0
   flutter:
