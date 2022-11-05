@@ -42,7 +42,7 @@ class CustomLineMarkdownBody extends MarkdownWidget {
   @override
   Widget build(BuildContext context, List<Widget>? children) {
     print(children!);
-    final RichText? richText = _findWidgetOfType<RichText>(children!.first);
+    final RichText? richText = _findWidgetOfType<RichText>(children.first);
     if (richText != null) {
       return RichText(
         text: richText.text,
