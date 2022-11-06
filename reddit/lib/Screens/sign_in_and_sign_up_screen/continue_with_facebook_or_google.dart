@@ -59,7 +59,7 @@ class ContinueWithGoOrFB extends StatelessWidget {
                     side: BorderSide(width: 2, color: ColorManager.white))),
                 backgroundColor:
                     MaterialStatePropertyAll(ColorManager.darkGrey)),
-            onPressed: signInWithGoogle,
+            onPressed: signInWithFacebook,
             child: Row(
               children: [
                 SizedBox(
