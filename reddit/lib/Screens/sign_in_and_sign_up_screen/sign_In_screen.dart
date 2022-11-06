@@ -3,17 +3,15 @@
 /// this is the screen of signing into the own account
 
 import 'package:flutter/material.dart';
-import 'package:reddit/data/facebook_api/facebook_api.dart';
 import '../../data/sign_in_And_sign_up_models/sign_in_model.dart';
 import '../../networks/constant_end_points.dart';
 import '../../networks/dio_helper.dart';
 import '../../screens/forget_user_name_and_password/forget_password_screen.dart';
 import '../../screens/sign_in_and_sign_up_screen/sign_up_screen.dart';
 import '../../components/default_text_field.dart';
-import '../../components/button.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
-import '../../data/google_api/google_sign_in_api.dart';
+import 'continue_with_facebook_or_google.dart';
 
 // ignore: must_be_immutable
 class SignInScreen extends StatelessWidget {
@@ -25,17 +23,6 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future signInWithGoogle() async {
-      final user = await GoogleSignInApi.login();
-
-      print(user);
-    }
-
-    Future signInWithFacebook() async {
-      final user = await FacebookLoginAPI.login();
-      print(user);
-    }
-
     final mediaQuery = MediaQuery.of(context);
     final navigator = Navigator.of(context);
     final customAppBar = LogInAppBar(
@@ -62,76 +49,13 @@ class SignInScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                   'Log in to Reddit',
                   style: theme.textTheme.titleMedium,
-                  // style: TextStyle(
-                  //   fontSize: 24,
-                  //   fontWeight: FontWeight.bold,
-                  //   color: ColorManager.white,
-                  // ),
                 ),
               ),
               Expanded(
                 flex: 2,
                 child: SizedBox(
-                  height: mediaQuery.size.height * 0.18,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      ElevatedButton.icon(
-                          onPressed: signInWithGoogle,
-                          icon: Image.asset(
-                            '/assets/images/Logo.png',
-                            fit: BoxFit.contain,
-                          ),
-                          label: const Text('sign in with google')),
-                      // Button(
-                      //     text: 'Continue with Google',
-                      //     textColor: ColorManager.white,
-                      //     backgroundColor: ColorManager.darkGrey,
-                      //     buttonWidth: mediaQuery.size.width * 0.9,
-                      //     buttonHeight: mediaQuery.size.height * 0.05,
-                      //     textFontSize: 18,
-                      //     onPressed: () {
-                      //       signInWithGoogle();
-                      //     },
-                      //     boarderRadius: 20,
-                      //     borderColor: ColorManager.white,
-                      //     textFontWeight: FontWeight.bold),
-                      Button(
-                          text: 'Continue with Facebook',
-                          textColor: ColorManager.white,
-                          backgroundColor: ColorManager.darkGrey,
-                          buttonWidth: mediaQuery.size.width * 0.9,
-                          buttonHeight: mediaQuery.size.height * 0.05,
-                          textFontSize: 18 * mediaQuery.textScaleFactor,
-                          onPressed: () {
-                            Future<Map<String, dynamic>?> accessToken =
-                                FacebookLoginAPI.checkIfIsLogged();
-
-                            accessToken.then((value) {
-                              if (value == null) {
-                                signInWithFacebook();
-                              } else {
-                                /// now I have the access token which
-                                /// I should send it to the API
-                                print(value['token']);
-                              }
-                              print('Continue with facebook');
-                            });
-                          },
-                          boarderRadius: 20,
-                          borderColor: ColorManager.white,
-                          textFontWeight: FontWeight.bold),
-                      Text(
-                        'OR',
-                        style: TextStyle(
-                          color: ColorManager.greyColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14 * mediaQuery.textScaleFactor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                    height: mediaQuery.size.height * 0.18,
+                    child: const ContinueWithGoOrFB()),
               ),
               Expanded(
                 flex: 3,
@@ -179,16 +103,17 @@ class SignInScreen extends StatelessWidget {
                     Container(
                       margin: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 1),
-                      child: Button(
-                          text: 'Continue',
-                          boarderRadius: 20,
-                          borderColor: ColorManager.white,
-                          textFontWeight: FontWeight.bold,
-                          textColor: ColorManager.white,
-                          backgroundColor: ColorManager.blue,
-                          buttonWidth: mediaQuery.size.width,
-                          buttonHeight: mediaQuery.size.height * 0.05,
-                          textFontSize: 14 * mediaQuery.textScaleFactor,
+                      child: ElevatedButton(
+                          style: const ButtonStyle(
+                              shape: MaterialStatePropertyAll(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
+                                      side: BorderSide(
+                                          width: 2,
+                                          color: ColorManager.white))),
+                              backgroundColor:
+                                  MaterialStatePropertyAll(ColorManager.blue)),
                           onPressed: () async {
                             /// TODO: remove this log out from here it is not its place
                             // await FacebookLoginAPI.logOut();
@@ -203,7 +128,19 @@ class SignInScreen extends StatelessWidget {
                             });
 
                             print(user.toJson());
-                          }),
+                          },
+                          child: SizedBox(
+                            width: mediaQuery.size.width,
+                            child: Text(
+                              'Continue',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: ColorManager.white,
+                                fontSize: (18 * mediaQuery.textScaleFactor),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )),
                     )
                   ],
                 ),

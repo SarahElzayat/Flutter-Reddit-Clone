@@ -3,18 +3,16 @@
 /// this is the screen of creating new account for the users.
 
 import 'package:flutter/material.dart';
-import '../../data/facebook_api/facebook_api.dart';
-import '../../data/google_api/google_sign_in_api.dart';
+import 'continue_with_facebook_or_google.dart';
+import 'sign_in_screen.dart';
 import '../../data/sign_in_And_sign_up_models/sign_up_model.dart';
 import '../../networks/constant_end_points.dart';
 import '../../networks/dio_helper.dart';
-import 'sign_in_screen.dart';
 import '../../components/default_text_field.dart';
-import '../../components/button.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
-import 'package:dio/dio.dart';
 
+// ignore: must_be_immutable
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
 
@@ -25,14 +23,6 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future signInWithGoogle() async {
-      await GoogleSignInApi.login();
-    }
-
-    Future signInWithFacebook() async {
-      await FacebookLoginAPI.login();
-    }
-
     final mediaQuery = MediaQuery.of(context);
     final navigator = Navigator.of(context);
     final customAppBar = LogInAppBar(
@@ -40,7 +30,6 @@ class SignUpScreen extends StatelessWidget {
         sideBarButtonAction: () {
           navigator.pushReplacementNamed(SignInScreen.routeName);
         });
-    final theme = Theme.of(context);
     final textScaleFactor = mediaQuery.textScaleFactor;
 
     return Scaffold(
@@ -74,47 +63,8 @@ class SignUpScreen extends StatelessWidget {
               Expanded(
                 flex: 2,
                 child: SizedBox(
-                  height: mediaQuery.size.height * 0.18,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Button(
-                          text: 'Continue with Google',
-                          textColor: ColorManager.white,
-                          backgroundColor: ColorManager.darkGrey,
-                          buttonWidth: mediaQuery.size.width * 0.9,
-                          buttonHeight: mediaQuery.size.height * 0.05,
-                          textFontSize: textScaleFactor * 18,
-                          onPressed: () {
-                            signInWithGoogle();
-                          },
-                          boarderRadius: 20,
-                          borderColor: ColorManager.white,
-                          textFontWeight: FontWeight.bold),
-                      Button(
-                          text: 'Continue with Facebook',
-                          textColor: ColorManager.white,
-                          backgroundColor: ColorManager.darkGrey,
-                          buttonWidth: mediaQuery.size.width * 0.9,
-                          buttonHeight: mediaQuery.size.height * 0.05,
-                          textFontSize: textScaleFactor * 18,
-                          onPressed: () {
-                            signInWithFacebook();
-                          },
-                          boarderRadius: 20,
-                          borderColor: ColorManager.white,
-                          textFontWeight: FontWeight.bold),
-                      Text(
-                        'OR',
-                        style: TextStyle(
-                          color: ColorManager.greyColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: textScaleFactor * 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                    height: mediaQuery.size.height * 0.18,
+                    child: const ContinueWithGoOrFB()),
               ),
               Expanded(
                 flex: 3,
@@ -150,29 +100,42 @@ class SignUpScreen extends StatelessWidget {
                     Container(
                       margin: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 1),
-                      child: Button(
-                          text: 'Continue',
-                          boarderRadius: 20,
-                          borderColor: ColorManager.white,
-                          textFontWeight: FontWeight.bold,
-                          textColor: ColorManager.white,
-                          backgroundColor: ColorManager.blue,
-                          buttonWidth: mediaQuery.size.width,
-                          buttonHeight: mediaQuery.size.height * 0.05,
-                          textFontSize: textScaleFactor * 14,
-                          onPressed: () {
-                            ///creating an object of the signup model to be used
-                            ///to create the post request depending
-                            ///on the user input
+                      child: ElevatedButton(
+                          style: const ButtonStyle(
+                              shape: MaterialStatePropertyAll(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
+                                      side: BorderSide(
+                                          width: 2,
+                                          color: ColorManager.white))),
+                              backgroundColor:
+                                  MaterialStatePropertyAll(ColorManager.blue)),
+                          onPressed: () async {
+                            /// TODO: remove this log out from here it is not its place
+                            // await FacebookLoginAPI.logOut();
                             final user = SignUpModel(
                                 email: emailController.text,
                                 password: passwordController.text,
                                 username: usernameController.text);
 
-                            /// sending the data using a post request
-                            DioHelper.postData(
-                                path: signUp, data: user.toJson());
-                          }),
+                            DioHelper.postData(path: login, data: user.toJson())
+                                .then((value) {
+                              /// here we want to make sure that we got the correct response
+                            });
+                          },
+                          child: SizedBox(
+                            width: mediaQuery.size.width,
+                            child: Text(
+                              'Continue',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: ColorManager.white,
+                                fontSize: (18 * mediaQuery.textScaleFactor),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )),
                     )
                   ],
                 ),
