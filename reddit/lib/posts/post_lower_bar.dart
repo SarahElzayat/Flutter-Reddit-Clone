@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/posts/post_data.dart';
+import 'package:reddit/posts/post_model/post_model.dart';
 import '../Components/helpers/color_manager.dart';
 import 'helper_funcs.dart';
 
 Widget postLowerBar(
   BuildContext context,
-  Post post, {
+  PostModel post, {
   Color backgroundColor = Colors.transparent,
   Color iconColor = ColorManager.greyColor,
   EdgeInsets pad = const EdgeInsets.symmetric(horizontal: 5.0, vertical: 6),
@@ -28,7 +28,7 @@ Widget postLowerBar(
                   color: iconColor,
                 ),
                 Text(
-                  '1.2k',
+                  '${post.data!.votes ?? 0}',
                   style: TextStyle(
                     color: iconColor,
                     fontSize: 15,
@@ -58,7 +58,7 @@ Widget postLowerBar(
                     color: iconColor,
                   ),
                   Text(
-                    '1.2k',
+                    '${post.data!.numberOfComments ?? 0}',
                     style: TextStyle(
                       color: iconColor,
                       fontSize: 15,

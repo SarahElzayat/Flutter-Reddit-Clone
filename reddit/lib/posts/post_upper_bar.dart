@@ -2,7 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 
 import '../Components/helpers/color_manager.dart';
-import 'post_data.dart';
+import 'post_model/post_model.dart';
 
 class PostUpperBar extends StatelessWidget {
   const PostUpperBar({
@@ -11,7 +11,7 @@ class PostUpperBar extends StatelessWidget {
     this.showSubReddit = true,
   }) : super(key: key);
 
-  final Post post;
+  final PostModel post;
   final bool showSubReddit;
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class PostUpperBar extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            post.subredditId,
+                            post.data!.subreddit ?? '',
                             style: const TextStyle(
                               color: ColorManager.eggshellWhite,
                               fontSize: 15,
@@ -57,7 +57,7 @@ class PostUpperBar extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
-              post.title,
+              post.data!.title ?? '',
               style: const TextStyle(
                 color: ColorManager.eggshellWhite,
                 fontSize: 20,
@@ -74,7 +74,7 @@ class PostUpperBar extends StatelessWidget {
     return Row(
       children: [
         Text(
-          'u/${post.userId}',
+          'u/${post.data!.postedBy}',
           style: const TextStyle(
             color: ColorManager.greyColor,
             fontSize: 15,

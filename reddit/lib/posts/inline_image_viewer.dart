@@ -6,7 +6,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 // import 'package:reddit/Components/color_manager.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
 import 'package:reddit/posts/image_page_view.dart';
-import 'package:reddit/posts/post_data.dart';
+import 'package:reddit/posts/post_model/post_model.dart';
 import '../components/helpers/color_manager.dart';
 
 class InlineImageViewer extends StatefulWidget {
@@ -22,7 +22,7 @@ class InlineImageViewer extends StatefulWidget {
   final int initialIndex;
   final PageController pageController;
   final BoxDecoration? backgroundDecoration;
-  final Post post;
+  final PostModel post;
 
   @override
   State<InlineImageViewer> createState() => _InlineImageViewerState();
@@ -39,7 +39,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
 
   @override
   void initState() {
-    Image(image: NetworkImage(widget.post.images![0]))
+    Image(image: NetworkImage(widget.post.data!.images![0]))
         .image
         .resolve(const ImageConfiguration())
         .addListener(ImageStreamListener((info, call) {
@@ -67,7 +67,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                 PhotoViewGallery.builder(
                   scrollPhysics: const BouncingScrollPhysics(),
                   builder: _buildItem,
-                  itemCount: widget.post.images!.length,
+                  itemCount: widget.post.data!.images!.length,
                   // loadingBuilder: widget.loadingBuilder,
                   backgroundDecoration: widget.backgroundDecoration,
                   pageController: widget.pageController,
@@ -76,7 +76,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                   // allowImplicitScrolling: true,
                   scrollDirection: Axis.horizontal,
                 ),
-                if (widget.post.images!.length > 1)
+                if (widget.post.data!.images!.length > 1)
                   Align(
                     alignment: Alignment.topRight,
                     child: Container(
@@ -85,7 +85,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                         opacity: 0.7,
                         child: Chip(
                           label: Text(
-                            '${currentIndex + 1}/${widget.post.images!.length}',
+                            '${currentIndex + 1}/${widget.post.data!.images!.length}',
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 17.0,
@@ -97,11 +97,11 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                     ),
                   ),
                 if (defaultTargetPlatform == TargetPlatform.android &&
-                    widget.post.images!.length > 1)
+                    widget.post.data!.images!.length > 1)
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: DotsIndicator(
-                        dotsCount: widget.post.images!.length,
+                        dotsCount: widget.post.data!.images!.length,
                         position: currentIndex.toDouble(),
                         decorator: const DotsDecorator(
                           color: Colors.transparent,
@@ -113,7 +113,8 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                                   width: 1.1, color: ColorManager.white)),
                         )),
                   ),
-                if (kIsWeb && currentIndex != widget.post.images!.length - 1)
+                if (kIsWeb &&
+                    currentIndex != widget.post.data!.images!.length - 1)
                   Align(
                     alignment: Alignment.centerRight,
                     child: Container(
@@ -166,7 +167,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
   }
 
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
-    final String item = widget.post.images![index];
+    final String item = widget.post.data!.images![index];
     return PhotoViewGalleryPageOptions(
       imageProvider: NetworkImage(item),
       initialScale: PhotoViewComputedScale.contained,

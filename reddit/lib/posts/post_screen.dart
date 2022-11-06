@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/posts/post_data.dart';
 import 'package:reddit/posts/post_widget.dart';
+
+import 'post_model/post_model.dart';
 
 class PostScreen extends StatefulWidget {
   static const String routeName = 'post_screen';
   const PostScreen({super.key, required this.post});
-  final Post post;
+  final PostModel post;
   @override
   State<PostScreen> createState() => _PostScreenState();
 }
@@ -15,7 +16,7 @@ class _PostScreenState extends State<PostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.post.title),
+        title: Text(widget.post.data!.title!),
       ),
       body: SingleChildScrollView(
         child: Column(

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:reddit/posts/custom_markdown.dart';
-import 'package:reddit/posts/post_screen.dart';
 import 'package:reddit/posts/inline_image_viewer.dart';
 
 import '../components/helpers/color_manager.dart';
 import 'helper_funcs.dart';
 import 'post_lower_bar.dart';
-import 'post_data.dart';
+import 'post_model/post_model.dart';
 import 'post_upper_bar.dart';
 
 class PostWidget extends StatelessWidget {
@@ -17,7 +15,7 @@ class PostWidget extends StatelessWidget {
     this.outsideScreen = true,
   });
   final bool outsideScreen;
-  final Post post;
+  final PostModel post;
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -36,12 +34,12 @@ class PostWidget extends StatelessWidget {
                 // A row with the Avatar, title and the subreddit
                 PostUpperBar(post: post),
                 // The body of the post
-                if (post.images != null && post.images!.isNotEmpty)
+                if (post.data!.images != null && post.data!.images!.isNotEmpty)
                   InlineImageViewer(
                     post: post,
                   ),
 
-                if (post.images == null || !outsideScreen)
+                if (post.data!.images == null || !outsideScreen)
                   Padding(
                       padding: const EdgeInsets.only(
                         left: 10,
@@ -49,7 +47,7 @@ class PostWidget extends StatelessWidget {
                         top: 10,
                       ),
                       // child: Text(
-                      //   post.body ?? '',
+                      //   post.data!.body ?? '',
                       //   style: TextStyle(
                       //     color: outsideScreen
                       //         ? ColorManager.greyColor
@@ -60,7 +58,7 @@ class PostWidget extends StatelessWidget {
                       //   overflow: outsideScreen ? TextOverflow.ellipsis : null,
                       // ),
                       child: MarkdownBody(
-                        data: post.body ?? '',
+                        data: post.data!.content ?? '',
                         styleSheet: MarkdownStyleSheet(
                           p: TextStyle(
                             color: outsideScreen

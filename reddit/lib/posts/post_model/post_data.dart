@@ -1,7 +1,7 @@
 import 'flair.dart';
 import 'moderation/moderation.dart';
 
-class Data {
+class PostData {
   String? subreddit;
   String? postedBy;
   String? title;
@@ -18,8 +18,9 @@ class Data {
   bool? spoiler;
   bool? saved;
   int? vote;
+  final List<String>? images;
 
-  Data({
+  PostData({
     this.subreddit,
     this.postedBy,
     this.title,
@@ -36,6 +37,7 @@ class Data {
     this.spoiler,
     this.saved,
     this.vote,
+    this.images,
   });
 
   @override
@@ -43,7 +45,7 @@ class Data {
     return 'Data(subreddit: $subreddit, postedBy: $postedBy, title: $title, type: $type, content: $content, votes: $votes, numberOfComments: $numberOfComments, flair: $flair, editTime: $editTime, publishTime: $publishTime, inYourSubreddit: $inYourSubreddit, moderation: $moderation, nsfw: $nsfw, spoiler: $spoiler, saved: $saved, vote: $vote)';
   }
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory PostData.fromJson(Map<String, dynamic> json) => PostData(
         subreddit: json['subreddit'] as String?,
         postedBy: json['postedBy'] as String?,
         title: json['title'] as String?,
@@ -64,6 +66,7 @@ class Data {
         spoiler: json['spoiler'] as bool?,
         saved: json['saved'] as bool?,
         vote: json['vote'] as int?,
+        images: json['images'].cast<String>(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -83,5 +86,6 @@ class Data {
         'spoiler': spoiler,
         'saved': saved,
         'vote': vote,
+        'images': images,
       };
 }

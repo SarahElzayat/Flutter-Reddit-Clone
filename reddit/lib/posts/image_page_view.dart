@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:reddit/components/Helpers/color_manager.dart';
-import 'package:reddit/posts/post_data.dart';
 
 import 'post_lower_bar.dart';
+import 'post_model/post_model.dart';
 
 class WholeScreenImageViewer extends StatefulWidget {
   WholeScreenImageViewer({
@@ -21,7 +21,7 @@ class WholeScreenImageViewer extends StatefulWidget {
   final int initialIndex;
   final PageController pageController;
   final BoxDecoration? backgroundDecoration;
-  final Post post;
+  final PostModel post;
 
   @override
   State<WholeScreenImageViewer> createState() => _WholeScreenImageViewerState();
@@ -39,8 +39,8 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
 
   @override
   void initState() {
-    for (var i = 0; i < widget.post.images!.length; i++) {
-      Image(image: NetworkImage(widget.post.images![i]))
+    for (var i = 0; i < widget.post.data!.images!.length; i++) {
+      Image(image: NetworkImage(widget.post.data!.images![i]))
           .image
           .resolve(const ImageConfiguration())
           .addListener(ImageStreamListener((info, call) {
@@ -66,7 +66,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
             Row(
               children: [
                 Text(
-                  '${widget.post.subredditId} •',
+                  '${widget.post.data!.subreddit ?? '-'} •',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         color: Colors.white,
                       ),
@@ -89,7 +89,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
                   width: 10,
                 ),
                 Text(
-                  ' •  u/${widget.post.userId}  •',
+                  ' •  u/${widget.post.data!.postedBy ?? '-'}  •',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         color: Colors.white,
                       ),
@@ -106,7 +106,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
               ],
             ),
             Text(
-              widget.post.title,
+              widget.post.data!.title ?? '',
               style: Theme.of(context).textTheme.labelLarge!.copyWith(
                     color: Colors.white,
                   ),
@@ -142,7 +142,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
               PhotoViewGallery.builder(
                 scrollPhysics: const BouncingScrollPhysics(),
                 builder: _buildItem,
-                itemCount: widget.post.images!.length,
+                itemCount: widget.post.data!.images!.length,
                 // loadingBuilder: widget.loadingBuilder,
                 backgroundDecoration: widget.backgroundDecoration,
                 pageController: widget.pageController,
@@ -166,7 +166,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
   }
 
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
-    final String item = widget.post.images![index];
+    final String item = widget.post.data!.images![index];
     return PhotoViewGalleryPageOptions(
       imageProvider: NetworkImage(item),
       initialScale: PhotoViewComputedScale.contained,

@@ -2,7 +2,7 @@ import 'post_data.dart';
 
 class PostModel {
   String? id;
-  Data? data;
+  PostData? data;
 
   PostModel({this.id, this.data});
 
@@ -13,7 +13,7 @@ class PostModel {
         id: json['id'] as String?,
         data: json['data'] == null
             ? null
-            : Data.fromJson(json['data'] as Map<String, dynamic>),
+            : PostData.fromJson(json['data'] as Map<String, dynamic>),
       );
 
   Map<String, dynamic> toJson() => {
