@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import '../../data/sign_in_And_sign_up_models/login_forget_model.dart';
-import '../../screens/sign_in_and_sign_up_screen/sign_In_screen.dart';
+import '../sign_in_and_sign_up_screen/sign_in_screen.dart';
 import '../../components/default_text_field.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';

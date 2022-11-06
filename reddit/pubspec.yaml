@@ -4,7 +4,6 @@ description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
 # followed by an optional build number separated by a +.
@@ -45,10 +44,16 @@ dependencies:
   lint: ^1.10.0
   flutter_facebook_auth: ^5.0.1
 dev_dependencies:
+  flutter_launcher_icons: ^0.10.0
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/appIcon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter packages.
@@ -62,6 +67,8 @@ flutter:
 
   assets:
     - assets/images/Logo.png
+    - assets/icons/googleIcon.png
+    - assets/icons/appIcon.png
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

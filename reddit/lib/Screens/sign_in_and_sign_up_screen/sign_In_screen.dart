@@ -76,19 +76,26 @@ class SignInScreen extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Button(
-                          text: 'Continue with Google',
-                          textColor: ColorManager.white,
-                          backgroundColor: ColorManager.darkGrey,
-                          buttonWidth: mediaQuery.size.width * 0.9,
-                          buttonHeight: mediaQuery.size.height * 0.05,
-                          textFontSize: 18,
-                          onPressed: () {
-                            signInWithGoogle();
-                          },
-                          boarderRadius: 20,
-                          borderColor: ColorManager.white,
-                          textFontWeight: FontWeight.bold),
+                      ElevatedButton.icon(
+                          onPressed: signInWithGoogle,
+                          icon: Image.asset(
+                            '/assets/images/Logo.png',
+                            fit: BoxFit.contain,
+                          ),
+                          label: const Text('sign in with google')),
+                      // Button(
+                      //     text: 'Continue with Google',
+                      //     textColor: ColorManager.white,
+                      //     backgroundColor: ColorManager.darkGrey,
+                      //     buttonWidth: mediaQuery.size.width * 0.9,
+                      //     buttonHeight: mediaQuery.size.height * 0.05,
+                      //     textFontSize: 18,
+                      //     onPressed: () {
+                      //       signInWithGoogle();
+                      //     },
+                      //     boarderRadius: 20,
+                      //     borderColor: ColorManager.white,
+                      //     textFontWeight: FontWeight.bold),
                       Button(
                           text: 'Continue with Facebook',
                           textColor: ColorManager.white,
