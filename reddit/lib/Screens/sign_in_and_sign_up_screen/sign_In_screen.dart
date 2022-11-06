@@ -3,6 +3,7 @@
 /// this is the screen of signing into the own account
 
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/continue_button.dart';
 import '../../data/sign_in_And_sign_up_models/sign_in_model.dart';
 import '../../networks/constant_end_points.dart';
 import '../../networks/dio_helper.dart';
@@ -100,47 +101,22 @@ class SignInScreen extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(color: ColorManager.white),
                     ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 1),
-                      child: ElevatedButton(
-                          style: const ButtonStyle(
-                              shape: MaterialStatePropertyAll(
-                                  RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(15)),
-                                      side: BorderSide(
-                                          width: 2,
-                                          color: ColorManager.white))),
-                              backgroundColor:
-                                  MaterialStatePropertyAll(ColorManager.blue)),
-                          onPressed: () async {
-                            /// TODO: remove this log out from here it is not its place
-                            // await FacebookLoginAPI.logOut();
+                    ContinueButton(
+                      appliedFunction: () async {
+                        /// TODO: remove this log out from here it is not its place
+                        // await FacebookLoginAPI.logOut();
 
-                            LogInModel user = LogInModel(
-                                username: usernameController.text,
-                                password: passwordController.text);
+                        LogInModel user = LogInModel(
+                            username: usernameController.text,
+                            password: passwordController.text);
 
-                            DioHelper.postData(path: login, data: user.toJson())
-                                .then((value) {
-                              /// here we want to make sure that we got the correct response
-                            });
+                        DioHelper.postData(path: login, data: user.toJson())
+                            .then((value) {
+                          /// here we want to make sure that we got the correct response
+                        });
 
-                            print(user.toJson());
-                          },
-                          child: SizedBox(
-                            width: mediaQuery.size.width,
-                            child: Text(
-                              'Continue',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: ColorManager.white,
-                                fontSize: (18 * mediaQuery.textScaleFactor),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          )),
+                        print(user.toJson());
+                      },
                     )
                   ],
                 ),

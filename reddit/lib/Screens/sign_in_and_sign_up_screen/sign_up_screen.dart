@@ -3,6 +3,7 @@
 /// this is the screen of creating new account for the users.
 
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/continue_button.dart';
 import 'continue_with_facebook_or_google.dart';
 import 'sign_in_screen.dart';
 import '../../data/sign_in_And_sign_up_models/sign_up_model.dart';
@@ -97,45 +98,20 @@ class SignUpScreen extends StatelessWidget {
                       'User Agreement and Privace Policy',
                       style: TextStyle(color: ColorManager.white),
                     ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 1),
-                      child: ElevatedButton(
-                          style: const ButtonStyle(
-                              shape: MaterialStatePropertyAll(
-                                  RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(15)),
-                                      side: BorderSide(
-                                          width: 2,
-                                          color: ColorManager.white))),
-                              backgroundColor:
-                                  MaterialStatePropertyAll(ColorManager.blue)),
-                          onPressed: () async {
-                            /// TODO: remove this log out from here it is not its place
-                            // await FacebookLoginAPI.logOut();
-                            final user = SignUpModel(
-                                email: emailController.text,
-                                password: passwordController.text,
-                                username: usernameController.text);
+                    ContinueButton(
+                      appliedFunction: () async {
+                        /// TODO: remove this log out from here it is not its place
+                        // await FacebookLoginAPI.logOut();
+                        final user = SignUpModel(
+                            email: emailController.text,
+                            password: passwordController.text,
+                            username: usernameController.text);
 
-                            DioHelper.postData(path: login, data: user.toJson())
-                                .then((value) {
-                              /// here we want to make sure that we got the correct response
-                            });
-                          },
-                          child: SizedBox(
-                            width: mediaQuery.size.width,
-                            child: Text(
-                              'Continue',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: ColorManager.white,
-                                fontSize: (18 * mediaQuery.textScaleFactor),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          )),
+                        DioHelper.postData(path: login, data: user.toJson())
+                            .then((value) {
+                          /// here we want to make sure that we got the correct response
+                        });
+                      },
                     )
                   ],
                 ),

@@ -4,6 +4,8 @@
 ///  if the user forgot his own username
 
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/continue_button.dart';
+import 'package:reddit/screens/to_go_screens/having_trouble_screen.dart';
 import '../../data/sign_in_And_sign_up_models/login_forget_model.dart';
 import '../../networks/constant_end_points.dart';
 import '../../networks/dio_helper.dart';
@@ -12,7 +14,6 @@ import '../sign_in_and_sign_up_screen/sign_in_screen.dart';
 import '../../components/default_text_field.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
-import '../../components/button.dart';
 
 // ignore: must_be_immutable
 class ForgetPasswordScreen extends StatelessWidget {
@@ -91,7 +92,8 @@ class ForgetPasswordScreen extends StatelessWidget {
                               )),
                           TextButton(
                               onPressed: () {
-                                print('Having trouble');
+                                Navigator.of(context)
+                                    .pushNamed(TroubleScreen.routeName);
                               },
                               child: SizedBox(
                                 width: mediaQuery.size.width,
@@ -108,26 +110,14 @@ class ForgetPasswordScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(6.0),
-                child: FittedBox(
-                  child: Button(
-                      text: 'Email me',
-                      boarderRadius: 50,
-                      textColor: ColorManager.greyColor,
-                      backgroundColor: ColorManager.blue,
-                      buttonWidth: mediaQuery.size.width,
-                      buttonHeight: mediaQuery.size.height * 0.08,
-                      textFontSize: 18 * mediaQuery.textScaleFactor,
-                      onPressed: () {
-                        final user = LogInForgetModel(
-                            type: 'password',
-                            username: usernameController.text,
-                            email: emailController.text);
-                        DioHelper.postData(
-                            path: loginForget, data: user.toJson());
-                      }),
-                ),
+              ContinueButton(
+                appliedFunction: () {
+                  final user = LogInForgetModel(
+                      type: 'password',
+                      username: usernameController.text,
+                      email: emailController.text);
+                  DioHelper.postData(path: loginForget, data: user.toJson());
+                },
               )
             ],
           ),

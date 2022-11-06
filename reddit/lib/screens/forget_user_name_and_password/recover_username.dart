@@ -4,8 +4,10 @@
 ///  if the user forgot his own username
 
 import 'package:flutter/material.dart';
-import 'package:reddit/networks/constant_end_points.dart';
-import 'package:reddit/networks/dio_helper.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/continue_button.dart';
+import 'package:reddit/screens/to_go_screens/having_trouble_screen.dart';
+import '../../networks/constant_end_points.dart';
+import '../../networks/dio_helper.dart';
 import '../../data/sign_in_And_sign_up_models/login_forget_model.dart';
 import '../sign_in_and_sign_up_screen/sign_in_screen.dart';
 import '../../components/default_text_field.dart';
@@ -70,7 +72,7 @@ class RecoverUserName extends StatelessWidget {
                         children: [
                           TextButton(
                               onPressed: () {
-                                print('Having trouble');
+                                navigator.pushNamed(TroubleScreen.routeName);
                               },
                               child: SizedBox(
                                 width: mediaQuery.size.width,
@@ -88,38 +90,19 @@ class RecoverUserName extends StatelessWidget {
                 ),
               ),
               Container(
-                height: mediaQuery.size.height * 0.21 -
-                    mediaQuery.padding.top -
-                    customAppBar.preferredSize.height,
-                width: mediaQuery.size.width,
-                padding: const EdgeInsets.all(6),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    FittedBox(
-                      child: Button(
-                          text: 'Email me',
-                          boarderRadius: 50,
-                          textColor: ColorManager.white,
+                  height: mediaQuery.size.height * 0.21 -
+                      mediaQuery.padding.top -
+                      customAppBar.preferredSize.height,
+                  width: mediaQuery.size.width,
+                  padding: const EdgeInsets.all(6),
+                  child: ContinueButton(appliedFunction: () {
+                    final user = LogInForgetModel(
+                      email: emailController.text,
+                      type: 'username',
+                    );
 
-                          /// lets see how to fix that color later
-                          backgroundColor: ColorManager.blue,
-                          buttonWidth: mediaQuery.size.width,
-                          buttonHeight: mediaQuery.size.height * 0.08,
-                          textFontSize: 18 * textScaleFactor,
-                          onPressed: () {
-                            final user = LogInForgetModel(
-                              email: emailController.text,
-                              type: 'username',
-                            );
-
-                            DioHelper.postData(
-                                path: loginForget, data: user.toJson());
-                          }),
-                    ),
-                  ],
-                ),
-              )
+                    DioHelper.postData(path: loginForget, data: user.toJson());
+                  }))
             ],
           ),
         ),
