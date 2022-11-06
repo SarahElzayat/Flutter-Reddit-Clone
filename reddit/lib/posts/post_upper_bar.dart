@@ -1,5 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 import '../Components/helpers/color_manager.dart';
 import 'post_model/post_model.dart';
@@ -53,9 +54,27 @@ class PostUpperBar extends StatelessWidget {
                   ),
               fallback: (context) => userRow()),
 
+          if (post.data!.nsfw ?? false)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                children: const [
+                  Icon(Icons.eighteen_up_rating, color: ColorManager.red),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text('NSFW',
+                      style: TextStyle(
+                        color: ColorManager.red,
+                        fontSize: 15,
+                      )),
+                ],
+              ),
+            ),
+
           // The title of the post
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Text(
               post.data!.title ?? '',
               style: const TextStyle(
@@ -65,6 +84,16 @@ class PostUpperBar extends StatelessWidget {
               ),
             ),
           ),
+          if (post.data!.flair != null)
+            Chip(
+                label: Text(
+                  post.data!.flair!.flairText ?? '',
+                  style: TextStyle(
+                      color:
+                          HexColor(post.data!.flair!.textColor ?? '#FFFFFF')),
+                ),
+                backgroundColor:
+                    HexColor(post.data!.flair!.backgroundColor ?? '#FF00000')),
         ],
       ),
     );
@@ -74,22 +103,15 @@ class PostUpperBar extends StatelessWidget {
     return Row(
       children: [
         Text(
-          'u/${post.data!.postedBy}',
+          'u/${post.data!.postedBy} • ',
           style: const TextStyle(
             color: ColorManager.greyColor,
             fontSize: 15,
           ),
         ),
-        const Text(
-          ' • ',
-          style: TextStyle(
-            color: ColorManager.greyColor,
-            fontSize: 15,
-          ),
-        ),
-        const Text(
-          '14h',
-          style: TextStyle(
+        Text(
+          '${post.data!.publishTime}',
+          style: const TextStyle(
             color: ColorManager.greyColor,
             fontSize: 15,
           ),
