@@ -48,7 +48,6 @@ class PostWidget extends StatelessWidget {
                         right: 10,
                         top: 10,
                       ),
-
                       // child: Text(
                       //   post.body ?? '',
                       //   style: TextStyle(
