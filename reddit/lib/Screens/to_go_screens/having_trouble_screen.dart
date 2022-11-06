@@ -1,3 +1,6 @@
+/// @author Abdelaziz Salah
+/// @date 6/11/2022
+/// this is a screen contianing having trouble notes
 import 'package:flutter/material.dart';
 
 /// to be implemented

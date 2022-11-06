@@ -1,3 +1,6 @@
+/// @author Abdelaziz Salah
+/// @date 6/11/2022
+/// utility button to press continue and apply certain function
 import 'package:flutter/material.dart';
 
 import '../../components/Helpers/color_manager.dart';
