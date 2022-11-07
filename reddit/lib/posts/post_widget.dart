@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown/markdown.dart';
 import 'package:reddit/posts/inline_image_viewer.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -37,12 +36,12 @@ class PostWidget extends StatelessWidget {
                 // A row with the Avatar, title and the subreddit
                 PostUpperBar(post: post),
                 // The body of the post
-                if (post.data!.images != null && post.data!.images!.isNotEmpty)
+                if (post.images != null && post.images!.isNotEmpty)
                   InlineImageViewer(
                     post: post,
                   ),
 
-                if (post.data!.images == null || !outsideScreen)
+                if (post.images == null || !outsideScreen)
                   Padding(
                     padding: const EdgeInsets.only(
                       left: 5,
@@ -50,7 +49,7 @@ class PostWidget extends StatelessWidget {
                       // top: 10,
                     ),
                     child: Html(
-                      data: markdownToHtml(post.data!.content ?? ''),
+                      data: markdownToHtml(post.content ?? ''),
                       shrinkWrap: true,
                       style: {
                         '#': Style(

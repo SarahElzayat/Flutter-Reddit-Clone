@@ -16,7 +16,7 @@ class _PostScreenState extends State<PostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.post.data!.title!),
+        title: Text(widget.post.title!),
       ),
       body: SingleChildScrollView(
         child: Column(

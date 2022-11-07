@@ -38,7 +38,7 @@ class _PostLowerBarState extends State<PostLowerBar> {
   int votes = 0;
   @override
   void initState() {
-    votes = widget.post.data!.votes!;
+    votes = widget.post.votes!;
     super.initState();
   }
 
@@ -146,7 +146,7 @@ class _PostLowerBarState extends State<PostLowerBar> {
                       color: widget.iconColor,
                     ),
                     Text(
-                      '${widget.post.data!.numberOfComments ?? 0}',
+                      '${widget.post.numberOfComments ?? 0}',
                       style: TextStyle(
                         color: widget.iconColor,
                         fontSize: 15,

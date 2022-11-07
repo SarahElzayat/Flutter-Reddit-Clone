@@ -39,7 +39,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
 
   @override
   void initState() {
-    Image(image: NetworkImage(widget.post.data!.images![0]))
+    Image(image: NetworkImage(widget.post.images![0]))
         .image
         .resolve(const ImageConfiguration())
         .addListener(ImageStreamListener((info, call) {
@@ -67,7 +67,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                 PhotoViewGallery.builder(
                   scrollPhysics: const BouncingScrollPhysics(),
                   builder: _buildItem,
-                  itemCount: widget.post.data!.images!.length,
+                  itemCount: widget.post.images!.length,
                   // loadingBuilder: widget.loadingBuilder,
                   backgroundDecoration: widget.backgroundDecoration,
                   pageController: widget.pageController,
@@ -76,7 +76,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                   // allowImplicitScrolling: true,
                   scrollDirection: Axis.horizontal,
                 ),
-                if (widget.post.data!.images!.length > 1)
+                if (widget.post.images!.length > 1)
                   Align(
                     alignment: Alignment.topRight,
                     child: Container(
@@ -85,7 +85,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                         opacity: 0.7,
                         child: Chip(
                           label: Text(
-                            '${currentIndex + 1}/${widget.post.data!.images!.length}',
+                            '${currentIndex + 1}/${widget.post.images!.length}',
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 17.0,
@@ -97,11 +97,11 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                     ),
                   ),
                 if (defaultTargetPlatform == TargetPlatform.android &&
-                    widget.post.data!.images!.length > 1)
+                    widget.post.images!.length > 1)
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: DotsIndicator(
-                        dotsCount: widget.post.data!.images!.length,
+                        dotsCount: widget.post.images!.length,
                         position: currentIndex.toDouble(),
                         decorator: const DotsDecorator(
                           color: Colors.transparent,
@@ -113,8 +113,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                                   width: 1.1, color: ColorManager.white)),
                         )),
                   ),
-                if (kIsWeb &&
-                    currentIndex != widget.post.data!.images!.length - 1)
+                if (kIsWeb && currentIndex != widget.post.images!.length - 1)
                   Align(
                     alignment: Alignment.centerRight,
                     child: Container(
@@ -167,11 +166,11 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
   }
 
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
-    final String item = widget.post.data!.images![index];
+    final String item = widget.post.images![index];
     return PhotoViewGalleryPageOptions(
       imageProvider: NetworkImage(item),
       initialScale: PhotoViewComputedScale.contained,
-      minScale: PhotoViewComputedScale.contained * (0.5 + index / 10),
+      minScale: PhotoViewComputedScale.contained * (0.5),
       maxScale: PhotoViewComputedScale.covered * 4.1,
       // TODO: Add hero tag to the image
       heroAttributes: PhotoViewHeroAttributes(tag: item),

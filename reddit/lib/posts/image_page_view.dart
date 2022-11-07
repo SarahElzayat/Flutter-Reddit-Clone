@@ -39,8 +39,8 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
 
   @override
   void initState() {
-    for (var i = 0; i < widget.post.data!.images!.length; i++) {
-      Image(image: NetworkImage(widget.post.data!.images![i]))
+    for (var i = 0; i < widget.post.images!.length; i++) {
+      Image(image: NetworkImage(widget.post.images![i]))
           .image
           .resolve(const ImageConfiguration())
           .addListener(ImageStreamListener((info, call) {
@@ -66,7 +66,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
             Row(
               children: [
                 Text(
-                  'r/${widget.post.data!.subreddit ?? '-'} •',
+                  'r/${widget.post.subreddit ?? '-'} •',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         color: Colors.white,
                       ),
@@ -89,7 +89,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
                   width: 10,
                 ),
                 Text(
-                  ' •  u/${widget.post.data!.postedBy ?? '-'}  •',
+                  ' •  u/${widget.post.postedBy ?? '-'}  •',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         color: Colors.white,
                       ),
@@ -98,7 +98,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
                   width: 5,
                 ),
                 Text(
-                  timeago.format(DateTime.parse(widget.post.data!.publishTime!),
+                  timeago.format(DateTime.parse(widget.post.publishTime!),
                       locale: 'en_short'),
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         color: Colors.white,
@@ -107,7 +107,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
               ],
             ),
             Text(
-              widget.post.data!.title ?? '',
+              widget.post.title ?? '',
               style: Theme.of(context).textTheme.labelLarge!.copyWith(
                     color: Colors.white,
                   ),
@@ -143,7 +143,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
               PhotoViewGallery.builder(
                 scrollPhysics: const BouncingScrollPhysics(),
                 builder: _buildItem,
-                itemCount: widget.post.data!.images!.length,
+                itemCount: widget.post.images!.length,
                 // loadingBuilder: widget.loadingBuilder,
                 backgroundDecoration: widget.backgroundDecoration,
                 pageController: widget.pageController,
@@ -166,7 +166,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
   }
 
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
-    final String item = widget.post.data!.images![index];
+    final String item = widget.post.images![index];
     return PhotoViewGalleryPageOptions(
       imageProvider: NetworkImage(item),
       initialScale: PhotoViewComputedScale.contained,

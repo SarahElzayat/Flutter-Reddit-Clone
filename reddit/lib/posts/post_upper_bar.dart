@@ -36,7 +36,7 @@ class PostUpperBar extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'r/${post.data!.subreddit ?? ''}',
+                            'r/${post.subreddit ?? ''}',
                             style: const TextStyle(
                               color: ColorManager.eggshellWhite,
                               fontSize: 15,
@@ -54,7 +54,7 @@ class PostUpperBar extends StatelessWidget {
                   ),
               fallback: (context) => userRow()),
 
-          if (post.data!.nsfw ?? false)
+          if (post.nsfw ?? false)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4),
               child: Row(
@@ -76,7 +76,7 @@ class PostUpperBar extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Text(
-              post.data!.title ?? '',
+              post.title ?? '',
               style: const TextStyle(
                 color: ColorManager.eggshellWhite,
                 fontSize: 20,
@@ -84,18 +84,17 @@ class PostUpperBar extends StatelessWidget {
               ),
             ),
           ),
-          if (post.data!.flair != null)
+          if (post.flair != null)
             SizedBox(
               height: 40,
               child: Chip(
                 label: Text(
-                  post.data!.flair!.flairText ?? '',
+                  post.flair!.flairText ?? '',
                   style: TextStyle(
-                      color:
-                          HexColor(post.data!.flair!.textColor ?? '#FFFFFF')),
+                      color: HexColor(post.flair!.textColor ?? '#FFFFFF')),
                 ),
                 backgroundColor:
-                    HexColor(post.data!.flair!.backgroundColor ?? '#FF00000'),
+                    HexColor(post.flair!.backgroundColor ?? '#FF00000'),
               ),
             ),
         ],
@@ -107,15 +106,14 @@ class PostUpperBar extends StatelessWidget {
     return Row(
       children: [
         Text(
-          'u/${post.data!.postedBy} • ',
+          'u/${post.postedBy} • ',
           style: const TextStyle(
             color: ColorManager.greyColor,
             fontSize: 15,
           ),
         ),
         Text(
-          timeago.format(DateTime.parse(post.data!.publishTime!),
-              locale: 'en_short'),
+          timeago.format(DateTime.parse(post.publishTime!), locale: 'en_short'),
           style: const TextStyle(
             color: ColorManager.greyColor,
             fontSize: 15,
