@@ -5,17 +5,39 @@
 import 'package:flutter/material.dart';
 import '../Components/color_manager.dart';
 
+/// ignore: must_be_immutable
 class Button extends StatelessWidget {
-  final String text; //text written in button
-  final Color textColor; //color of button text
-  final Color backgroundColor; //color of the button
-  final double buttonWidth; //for size of button
-  final double buttonHeight; //for size of button
-  final FontWeight? textFontWeight; //font size of text
-  final double textFontSize; //weight of font (normal/bold/...)
-  final Color? borderColor; //border color if it exists
-  final VoidCallback onPressed; //actual function of button when pressed
-  final double _borderWidth = 1.0;
+
+  ///text written in button
+  final String text;
+
+  /// color of the text
+  final Color textColor;
+
+  /// the background color of the button
+  final Color backgroundColor;
+  
+  /// the width of the button
+  final double buttonWidth;
+  
+  /// the height of the button 
+  final double buttonHeight;
+
+  /// the fontWeight of the text as the weight. 
+  final FontWeight? textFontWeight;
+
+  /// the font size 
+  final double textFontSize;
+  
+  /// the color of the border.
+  final Color? borderColor;
+
+  /// the function that should be executed when the button is pressed. 
+  final VoidCallback onPressed;
+  
+  /// the width of the boarded 
+  double _borderWidth = 1.0;
+
 
   Button(
       {super.key,
@@ -38,19 +60,24 @@ class Button extends StatelessWidget {
       child: Material(
           color: Colors.transparent,
           child: Ink(
+
             decoration: BoxDecoration(
-                color: backgroundColor, //button background color
-                borderRadius: BorderRadius.circular(50), //for circular buttons
+                color: backgroundColor,
+
+                /// button background color
+                borderRadius: BorderRadius.circular(50),
+
+                /// for circular buttons
                 border: Border.all(
-                  color: borderColor ??
-                      backgroundColor, //if border color is not passed set it to background color
+                  /// if border color is not passed set it to background color
+                  color: borderColor == null ? backgroundColor : borderColor!,
                   width: borderColor == null ? 0 : _borderWidth,
                 )),
             child: InkWell(
               onTap: onPressed,
-              splashColor: Colors.transparent,
-              highlightColor: ColorManager
-                  .disabledButtonGrey, //color when the button is pressed
+
+              /// color when the button is pressed
+              highlightColor: Colors.black.withOpacity(0.1),
               customBorder: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50)),
               child: Center(
@@ -59,9 +86,15 @@ class Button extends StatelessWidget {
                   style: TextStyle(
                     color: textColor,
                     fontSize: (textFontSize * fontScale),
-                    fontWeight: textFontWeight ?? FontWeight.normal,
+
+                    ///  ignore: prefer_if_null_operators
+                    fontWeight: textFontWeight == null
+                        ? FontWeight.normal
+                        : textFontWeight,
                   ),
                 ),
+              ),
+            ),
               ),
             ),
           )),
