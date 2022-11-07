@@ -151,9 +151,8 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: postLowerBar(
-                  context,
-                  widget.post,
+                child: PostLowerBar(
+                  post: widget.post,
                   backgroundColor: Colors.black.withOpacity(0.5),
                   iconColor: ColorManager.eggshellWhite,
                 ),

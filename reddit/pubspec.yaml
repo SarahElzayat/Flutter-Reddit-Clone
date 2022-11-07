@@ -35,11 +35,13 @@ dependencies:
   dots_indicator: ^2.1.0
   flutter:
     sdk: flutter
+  flutter_html: ^2.2.1
   flutter_lorem: ^2.0.0
   flutter_markdown: ^0.6.12
-  flutter_svg: ^1.1.6
+  flutter_svg: null
   hexcolor: ^3.0.1
   lint: ^1.10.0
+  markdown: ^6.0.1
   photo_view: ^0.14.0
   share: ^2.0.4
 dev_dependencies:

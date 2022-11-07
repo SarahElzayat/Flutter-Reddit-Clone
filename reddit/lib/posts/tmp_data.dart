@@ -7,7 +7,11 @@ var textPost = PostModel(
     id: '12',
     data: PostData(
       title: 'This is a title',
-      content: lorem(paragraphs: 1, words: 50),
+      content: ''' This is a content <br />
+      **This IS BOLD** <br />
+      *this is italic* <br />
+      ***THIS IS BOLD AND ITALIC***
+      ''',
       subreddit: 'Flutter',
       postedBy: 'username',
       publishTime: '2019-08-24T14:15:22Z',
@@ -31,7 +35,7 @@ var oneImagePost = PostModel(
       title: 'That\'s a Post with only image inside it',
       content: lorem(paragraphs: 1, words: 50),
       subreddit: 'Flutter',
-      postedBy: 'u/username',
+      postedBy: 'username',
       publishTime: '2019-08-24T14:15:22Z',
       editTime: '2019-08-24T14:15:22Z',
       nsfw: true,
@@ -50,7 +54,7 @@ var manyImagePost = PostModel(
       title: 'That\'s a Post with Many image inside it',
       content: lorem(paragraphs: 1, words: 50),
       subreddit: 'Flutter',
-      postedBy: 'u/username',
+      postedBy: 'username',
       publishTime: '2019-08-24T14:15:22Z',
       editTime: '2019-08-24T14:15:22Z',
       flair: Flair(

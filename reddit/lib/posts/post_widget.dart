@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:markdown/markdown.dart';
 import 'package:reddit/posts/inline_image_viewer.dart';
-
+import 'package:flutter_html/flutter_html.dart';
 import '../components/helpers/color_manager.dart';
 import 'helper_funcs.dart';
 import 'post_lower_bar.dart';
@@ -25,9 +26,11 @@ class PostWidget extends StatelessWidget {
           margin: const EdgeInsets.symmetric(vertical: 5),
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: InkWell(
-            onTap: () {
-              goToPost(context, post);
-            },
+            onTap: outsideScreen
+                ? () {
+                    goToPost(context, post);
+                  }
+                : null,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -41,35 +44,32 @@ class PostWidget extends StatelessWidget {
 
                 if (post.data!.images == null || !outsideScreen)
                   Padding(
-                      padding: const EdgeInsets.only(
-                        left: 10,
-                        right: 10,
-                        top: 10,
-                      ),
-                      // child: Text(
-                      //   post.data!.body ?? '',
-                      //   style: TextStyle(
-                      //     color: outsideScreen
-                      //         ? ColorManager.greyColor
-                      //         : ColorManager.white,
-                      //     fontSize: 15,
-                      //   ),
-                      //   maxLines: outsideScreen ? 3 : null,
-                      //   overflow: outsideScreen ? TextOverflow.ellipsis : null,
-                      // ),
-                      child: MarkdownBody(
-                        data: post.data!.content ?? '',
-                        styleSheet: MarkdownStyleSheet(
-                          p: TextStyle(
-                            color: outsideScreen
-                                ? ColorManager.greyColor
-                                : ColorManager.white,
-                            fontSize: 15,
-                          ),
+                    padding: const EdgeInsets.only(
+                      left: 5,
+                      right: 5,
+                      // top: 10,
+                    ),
+                    child: Html(
+                      data: markdownToHtml(post.data!.content ?? ''),
+                      shrinkWrap: true,
+                      style: {
+                        '#': Style(
+                          color: outsideScreen
+                              ? ColorManager.greyColor
+                              : ColorManager.white,
+                          fontSize: const FontSize(15),
+                          maxLines: outsideScreen ? 3 : null,
+                          textOverflow:
+                              outsideScreen ? TextOverflow.ellipsis : null,
+                          margin: EdgeInsets.zero,
+                          padding: EdgeInsets.zero,
                         ),
-                      )),
+                      },
+                    ),
+                  ),
 
-                postLowerBar(context, post,
+                PostLowerBar(
+                    post: post,
                     pad: const EdgeInsets.symmetric(
                         horizontal: 5.0, vertical: 10))
               ],

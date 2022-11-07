@@ -36,7 +36,7 @@ class PostUpperBar extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            post.data!.subreddit ?? '',
+                            'r/${post.data!.subreddit ?? ''}',
                             style: const TextStyle(
                               color: ColorManager.eggshellWhite,
                               fontSize: 15,
