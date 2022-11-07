@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reddit/components/Button.dart';
 
 void main() {
   runApp(const Main());
@@ -9,6 +10,22 @@ class Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(),
+        body: Center(
+          child: SizedBox(
+            child: Button(
+                text: 'text',
+                textColor: Colors.white,
+                backgroundColor: Colors.green,
+                buttonWidth: 400,
+                buttonHeight: 200,
+                textFontSize: 20,
+                onPressed: () {}),
+          ),
+        ),
+      ),
+    );
   }
 }
