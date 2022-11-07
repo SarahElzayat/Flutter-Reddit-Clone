@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:reddit/components/Helpers/color_manager.dart';
-
+import 'package:timeago/timeago.dart' as timeago;
 import 'post_lower_bar.dart';
 import 'post_model/post_model.dart';
 
@@ -66,7 +66,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
             Row(
               children: [
                 Text(
-                  '${widget.post.data!.subreddit ?? '-'} •',
+                  'r/${widget.post.data!.subreddit ?? '-'} •',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         color: Colors.white,
                       ),
@@ -98,7 +98,8 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
                   width: 5,
                 ),
                 Text(
-                  '8h',
+                  timeago.format(DateTime.parse(widget.post.data!.publishTime!),
+                      locale: 'en_short'),
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         color: Colors.white,
                       ),

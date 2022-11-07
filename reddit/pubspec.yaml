@@ -40,10 +40,12 @@ dependencies:
   flutter_markdown: ^0.6.12
   flutter_svg: null
   hexcolor: ^3.0.1
+  intl: ^0.17.0
   lint: ^1.10.0
   markdown: ^6.0.1
   photo_view: ^0.14.0
   share: ^2.0.4
+  timeago: ^3.3.0
 dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:

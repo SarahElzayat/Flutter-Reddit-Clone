@@ -1,7 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-
+import 'package:timeago/timeago.dart' as timeago;
 import '../Components/helpers/color_manager.dart';
 import 'post_model/post_model.dart';
 
@@ -17,7 +17,7 @@ class PostUpperBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -85,7 +85,9 @@ class PostUpperBar extends StatelessWidget {
             ),
           ),
           if (post.data!.flair != null)
-            Chip(
+            SizedBox(
+              height: 40,
+              child: Chip(
                 label: Text(
                   post.data!.flair!.flairText ?? '',
                   style: TextStyle(
@@ -93,7 +95,9 @@ class PostUpperBar extends StatelessWidget {
                           HexColor(post.data!.flair!.textColor ?? '#FFFFFF')),
                 ),
                 backgroundColor:
-                    HexColor(post.data!.flair!.backgroundColor ?? '#FF00000')),
+                    HexColor(post.data!.flair!.backgroundColor ?? '#FF00000'),
+              ),
+            ),
         ],
       ),
     );
@@ -110,7 +114,8 @@ class PostUpperBar extends StatelessWidget {
           ),
         ),
         Text(
-          '${post.data!.publishTime}',
+          timeago.format(DateTime.parse(post.data!.publishTime!),
+              locale: 'en_short'),
           style: const TextStyle(
             color: ColorManager.greyColor,
             fontSize: 15,
