@@ -5,9 +5,9 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 // import 'package:reddit/Components/color_manager.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
-import 'package:reddit/posts/image_page_view.dart';
-import 'package:reddit/posts/post_model/post_model.dart';
-import '../components/helpers/color_manager.dart';
+import 'package:reddit/widgets/posts/image_page_view.dart';
+import 'package:reddit/Data/post_model/post_model.dart';
+import '../../components/helpers/color_manager.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class InlineImageViewer extends StatefulWidget {

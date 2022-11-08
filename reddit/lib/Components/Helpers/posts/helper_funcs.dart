@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'post_model/post_model.dart';
-import 'post_screen.dart';
+import '../../../Data/post_model/post_model.dart';
+import '../../../screens/posts/post_screen.dart';
 
 /// Goes to the post screen
 void goToPost(BuildContext context, PostModel post) {

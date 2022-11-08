@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/posts/post_widget.dart';
-import 'post_model/post_model.dart';
+import 'package:reddit/widgets/posts/post_widget.dart';
+import '../../Data/post_model/post_model.dart';
 
 /// The Screen that displays the indvidual Posts
 ///

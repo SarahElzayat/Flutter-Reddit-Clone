@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:markdown/markdown.dart';
-import 'package:reddit/posts/inline_image_viewer.dart';
+import 'package:reddit/widgets/posts/inline_image_viewer.dart';
 import 'package:flutter_html/flutter_html.dart';
-import '../components/helpers/color_manager.dart';
-import 'helper_funcs.dart';
+import '../../components/helpers/color_manager.dart';
+import '../../components/helpers/posts/helper_funcs.dart';
 import 'post_lower_bar.dart';
-import 'post_model/post_model.dart';
+import '../../Data/post_model/post_model.dart';
 import 'post_upper_bar.dart';
 
 /// The widget that displays the post

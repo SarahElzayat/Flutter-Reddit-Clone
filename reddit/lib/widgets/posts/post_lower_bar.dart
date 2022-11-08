@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/posts/post_model/post_model.dart';
-import '../Components/helpers/color_manager.dart';
-import 'helper_funcs.dart';
+import 'package:reddit/Data/post_model/post_model.dart';
+import '../../Components/helpers/color_manager.dart';
+import '../../components/helpers/posts/helper_funcs.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 enum LowerPostBarState { upvoted, downvoted, none }

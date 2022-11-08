@@ -3,10 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-import 'package:reddit/components/Helpers/color_manager.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'post_lower_bar.dart';
-import 'post_model/post_model.dart';
+import '../../Data/post_model/post_model.dart';
 
 /// A widget that displays the images in all the Screen
 /// it shows images with the help of [PageView]

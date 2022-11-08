@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/Components/helpers/color_manager.dart';
-import 'package:reddit/posts/post_test_screen.dart';
+import 'package:reddit/screens/test_screens/post_test_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:reddit/screens/testing_screen.dart';
-
 import 'components/helpers/color_manager.dart';
 
 void main() {
@@ -25,21 +22,20 @@ class Main extends StatelessWidget {
               bodyMedium:
                   TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
       home: ResponsiveSizer(
-      builder: (context, orientation, screenType) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            scaffoldBackgroundColor: ColorManager.black,
-            inputDecorationTheme: const InputDecorationTheme(
-              hintingStyle: TextStyle(color: ColorManager.grey),
-              alignLabelWithHint: true,
+        builder: (context, orientation, screenType) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              scaffoldBackgroundColor: ColorManager.black,
+              inputDecorationTheme: const InputDecorationTheme(
+                hintStyle: TextStyle(color: ColorManager.grey),
+                alignLabelWithHint: true,
+              ),
             ),
-          ),
-          home: const PostTestScreen(),
-        );
-      },
-    ),
+            home: const PostTestScreen(),
+          );
+        },
+      ),
     );
-    ;
   }
 }

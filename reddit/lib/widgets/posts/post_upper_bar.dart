@@ -2,9 +2,9 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import '../Components/helpers/color_manager.dart';
-import '../components/Button.dart';
-import 'post_model/post_model.dart';
+import '../../Components/helpers/color_manager.dart';
+import '../../components/Button.dart';
+import '../../Data/post_model/post_model.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 bool isjoined = false;

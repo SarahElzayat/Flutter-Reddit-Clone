@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/posts/tmp_data.dart';
-import '../posts/post_widget.dart';
+import 'package:reddit/Data/temp_data/tmp_data.dart';
+import '../../widgets/posts/post_widget.dart';
 
 class PostTestScreen extends StatelessWidget {
   const PostTestScreen({super.key});

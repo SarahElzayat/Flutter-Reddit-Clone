@@ -1,6 +1,6 @@
 import 'package:flutter_lorem/flutter_lorem.dart';
-import 'package:reddit/posts/post_model/flair.dart';
-import 'package:reddit/posts/post_model/post_model.dart';
+import 'package:reddit/Data/post_model/flair.dart';
+import 'package:reddit/Data/post_model/post_model.dart';
 
 var textPost = PostModel(
   id: '12',

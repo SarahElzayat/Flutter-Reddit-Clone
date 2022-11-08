@@ -38,7 +38,6 @@ class ColorManager {
       Color(0xff1d1f20); //text form field when not focused
 
   static const Color eggshellWhite = Color(0xffd6d3cd); //general text
-  static const Color white = Color.fromARGB(255, 208, 208, 208); //general text
   static const Color black = Color(0xff0a0a0a); //background color of the app
 
   static const Color blue = Color(
