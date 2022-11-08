@@ -79,45 +79,49 @@ class _AddPostState extends State<AddPost> {
                 ))
           ],
         ),
-        body: Column(mainAxisSize: MainAxisSize.min, children: [
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: AddPostTextField(
-                  isTitle: true,
-                  controller: titleController,
-                  mltiline: false,
-                  isBold: true,
-                  fontSize: (23 * mediaQuery.textScaleFactor).toInt(),
-                  hintText: 'An intereting title')),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: ValueListenableBuilder(
-                valueListenable: GlobalVarible.postType,
-                builder: (BuildContext context2, dynamic value, Widget? child) {
-                  return PostTypeWidget(
-                    pollTextController: pollTextController,
-                    pollController: pollController,
-                    textController: textController,
-                    urlController: urlController,
-                    keyboardIsOpened: (mediaQuery.viewInsets.bottom > 0),
-                    picker: picker,
-                    imageKey: imageKey,
-                  );
-                },
-              )),
-          const Spacer(),
-          ValueListenableBuilder(
-            valueListenable: GlobalVarible.postType,
-            builder:
-                (BuildContext contextBuilder, dynamic value, Widget? child) {
-              return PostTypeButtons(
-                keyboardIsOpened: (mediaQuery.viewInsets.bottom > 0),
-                imageKey: imageKey,
-                picker: picker,
-              );
-            },
-          ),
-        ]));
+        body: SizedBox(
+          height: mediaQuery.size.height,
+          child: ListView(children: [
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: AddPostTextField(
+                    isTitle: true,
+                    controller: titleController,
+                    mltiline: false,
+                    isBold: true,
+                    fontSize: (23 * mediaQuery.textScaleFactor).toInt(),
+                    hintText: 'An intereting title')),
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: ValueListenableBuilder(
+                  valueListenable: GlobalVarible.postType,
+                  builder:
+                      (BuildContext context2, dynamic value, Widget? child) {
+                    return PostTypeWidget(
+                      pollTextController: pollTextController,
+                      pollController: pollController,
+                      textController: textController,
+                      urlController: urlController,
+                      keyboardIsOpened: (mediaQuery.viewInsets.bottom > 0),
+                      picker: picker,
+                      imageKey: imageKey,
+                    );
+                  },
+                )),
+            const Spacer(),
+            ValueListenableBuilder(
+              valueListenable: GlobalVarible.postType,
+              builder:
+                  (BuildContext contextBuilder, dynamic value, Widget? child) {
+                return PostTypeButtons(
+                  keyboardIsOpened: (mediaQuery.viewInsets.bottom > 0),
+                  imageKey: imageKey,
+                  picker: picker,
+                );
+              },
+            ),
+          ]),
+        ));
   }
 }
 
