@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:reddit/Screens/create_community_test_screen.dart';
 import '../Components/Helpers/constants.dart';
 import 'dart:io' show Platform;
+import 'package:reddit/screens/bottom_sheet_test.dart';
+import 'package:reddit/components/button.dart';
 
 void main() {
   try {

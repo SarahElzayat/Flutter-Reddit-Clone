@@ -1,5 +1,5 @@
-/// Author @yasmineghanem
-/// Date: 25/10/2022
+/// @author yasmineghanem
+/// @date: 25/10/2022
 /// Reuasable custom button component
 
 import 'package:flutter/material.dart';
@@ -8,34 +8,34 @@ import 'package:flutter/material.dart';
 class Button extends StatelessWidget {
   final String text;
 
-  ///text written in button
+  /// text written in button
   final Color textColor;
 
-  ///color of button text
+  /// color of button text
   final Color backgroundColor;
 
-  ///color of the button
+  /// color of the button
   final double buttonWidth;
 
-  ///for size of button
+  /// for size of button
   final double buttonHeight;
 
-  ///for size of button
+  /// for size of button
   final FontWeight? textFontWeight;
 
-  ///font size of text
+  /// font size of text
   final double textFontSize;
 
-  ///weight of font (normal/bold/...)
+  /// weight of font (normal/bold/...)
   final Color? borderColor;
 
-  ///border color if it exists
+  /// border color if it exists
   final VoidCallback onPressed;
 
-  ///actual function of button when pressed
-  double _borderWidth = 1.0;
+  /// actual function of button when pressed
+  final double _borderWidth = 1.0;
 
-  Button(
+  const Button(
       {super.key,
       required this.text,
       required this.textColor,
@@ -54,40 +54,44 @@ class Button extends StatelessWidget {
       width: buttonWidth,
       height: buttonHeight,
       child: Material(
-          child: Ink(
-        decoration: BoxDecoration(
-            color: backgroundColor,
+        color: Colors.transparent,
+        child: Ink(
+          decoration: BoxDecoration(
+              color: backgroundColor,
 
-            ///button background color
-            borderRadius: BorderRadius.circular(50),
+              /// button background color
+              borderRadius: BorderRadius.circular(50),
 
-            ///for circular buttons
-            border: Border.all(
-              color: borderColor ?? backgroundColor,
+              /// for circular buttons
+              border: Border.all(
+                /// if border color is not passed set it to background color
+                color: borderColor == null ? backgroundColor : borderColor!,
+                width: borderColor == null ? 0 : _borderWidth,
+              )),
+          child: InkWell(
+            onTap: onPressed,
 
-              ///if border color is not passed set it to background color
-              width: _borderWidth = borderColor == null ? 0 : _borderWidth,
-            )),
-        child: InkWell(
-          onTap: onPressed,
-          splashColor: Colors.transparent,
-          highlightColor: Colors.black.withOpacity(0.1),
+            /// color when the button is pressed
+            highlightColor: Colors.black.withOpacity(0.1),
+            customBorder:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+            child: Center(
+              child: Text(
+                text,
+                style: TextStyle(
+                  color: textColor,
+                  fontSize: (textFontSize * fontScale),
 
-          ///color when the button is pressed
-          customBorder:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-          child: Center(
-            child: Text(
-              text,
-              style: TextStyle(
-                color: textColor,
-                fontSize: (textFontSize * fontScale),
-                fontWeight: textFontWeight ?? FontWeight.normal,
+                  ///  ignore: prefer_if_null_operators
+                  fontWeight: textFontWeight == null
+                      ? FontWeight.normal
+                      : textFontWeight,
+                ),
               ),
             ),
           ),
         ),
-      )),
+      ),
     );
   }
 }
