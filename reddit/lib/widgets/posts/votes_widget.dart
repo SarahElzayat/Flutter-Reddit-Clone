@@ -22,6 +22,7 @@ class VotesPart extends StatefulWidget {
   /// The default color of the icons
   final Color iconColor;
 
+  /// if the app is running on web
   final bool isWeb;
 
   @override
