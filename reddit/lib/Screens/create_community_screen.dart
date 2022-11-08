@@ -54,7 +54,7 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
         child: Container(
           padding: EdgeInsets.zero,
           height: 55.h,
-          width: MediaQuery.of(context).size.width,
+          width: 100.w,
           child: Card(
             color: ColorManager.darkGrey,
             child: Padding(
