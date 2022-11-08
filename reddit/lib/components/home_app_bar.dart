@@ -22,7 +22,9 @@ AppBar homeAppBar(context, index) {
                   : null,
       actions: [
         cubit.screensNames[index] == 'Home'
-            ? IconButton(onPressed: () {}, icon: const Icon(Icons.search))
+            ? IconButton(
+                onPressed: () => navigateToSearch(context),
+                icon: const Icon(Icons.search))
             : cubit.screensNames[index] == 'Inbox'
                 ? IconButton(
                     onPressed: () {}, icon: const Icon(Icons.more_vert))

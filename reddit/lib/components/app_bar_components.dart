@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../Screens/search/search_screen.dart';
+
 Widget avatar({image}) {
   return Padding(
     padding: const EdgeInsets.only(right: 8.0),
@@ -10,4 +12,9 @@ Widget avatar({image}) {
       ),
     ),
   );
+}
+
+Future<Object?> navigateToSearch(context) {
+  return Navigator.push(
+      context, MaterialPageRoute(builder: (context) => const SearchScreen()));
 }
