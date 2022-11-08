@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:markdown/markdown.dart';
 import 'package:reddit/widgets/posts/inline_image_viewer.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:reddit/widgets/posts/votes_widget.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../components/helpers/posts/helper_funcs.dart';
 import 'post_lower_bar.dart';
 import '../../Data/post_model/post_model.dart';
 import 'post_upper_bar.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 /// The widget that displays the post
 ///
@@ -26,61 +28,88 @@ class PostWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (buildContext, boxConstraints) {
+    return ResponsiveBuilder(
+      builder: (buildContext, sizingInformation) {
+        bool isWeb =
+            sizingInformation.deviceScreenType == DeviceScreenType.tablet;
         return Container(
           color: ColorManager.darkGrey,
           margin: const EdgeInsets.symmetric(vertical: 5),
           padding: const EdgeInsets.symmetric(vertical: 5),
-          child: InkWell(
-            onTap: outsideScreen
-                ? () {
-                    goToPost(context, post);
-                  }
-                : null,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // A row with the Avatar, title and the subreddit
-                PostUpperBar(post: post),
-                // The body of the post
-                if (post.images != null && post.images!.isNotEmpty)
-                  InlineImageViewer(
-                    post: post,
-                  ),
-
-                if (post.images == null || !outsideScreen)
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 5,
-                      right: 5,
-                      top: 5,
-                    ),
-                    child: Html(
-                      data: markdownToHtml(post.content ?? ''),
-                      shrinkWrap: true,
-                      style: {
-                        '#': Style(
-                          color: outsideScreen
-                              ? ColorManager.greyColor
-                              : ColorManager.white,
-                          fontSize: const FontSize(15),
-                          maxLines: outsideScreen ? 3 : null,
-                          textOverflow:
-                              outsideScreen ? TextOverflow.ellipsis : null,
-                          margin: EdgeInsets.zero,
-                          padding: EdgeInsets.zero,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (isWeb)
+                VotesPart(
+                  post: post,
+                  isWeb: isWeb,
+                ),
+              Expanded(
+                child: InkWell(
+                  onTap: outsideScreen
+                      ? () {
+                          goToPost(context, post);
+                        }
+                      : null,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // A row with the Avatar, title and the subreddit
+                      PostUpperBar(post: post),
+                      // The body of the post
+                      if (post.images != null && post.images!.isNotEmpty)
+                        InlineImageViewer(
+                          post: post,
                         ),
-                      },
-                    ),
-                  ),
 
-                PostLowerBar(
-                    post: post,
-                    pad: const EdgeInsets.symmetric(
-                        horizontal: 5.0, vertical: 10))
-              ],
-            ),
+                      if (post.images == null || !outsideScreen)
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 5,
+                            right: 5,
+                            top: 5,
+                          ),
+                          child: Html(
+                            data: markdownToHtml(post.content ?? ''),
+                            shrinkWrap: true,
+                            style: {
+                              '#': Style(
+                                color: outsideScreen
+                                    ? ColorManager.greyColor
+                                    : ColorManager.white,
+                                fontSize: const FontSize(15),
+                                maxLines: outsideScreen ? 3 : null,
+                                textOverflow: outsideScreen
+                                    ? TextOverflow.ellipsis
+                                    : null,
+                                margin: EdgeInsets.zero,
+                                padding: EdgeInsets.zero,
+                              ),
+                            },
+                          ),
+                        ),
+
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (!isWeb)
+                            Expanded(flex: 1, child: VotesPart(post: post)),
+                          Expanded(
+                            flex: 2,
+                            child: PostLowerBarWithoutVotes(
+                                post: post,
+                                isWeb: isWeb,
+                                pad: const EdgeInsets.symmetric(
+                                    horizontal: 5.0, vertical: 10)),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       },

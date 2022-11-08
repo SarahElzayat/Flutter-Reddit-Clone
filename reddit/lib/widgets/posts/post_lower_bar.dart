@@ -4,18 +4,14 @@ import '../../Components/helpers/color_manager.dart';
 import '../../components/helpers/posts/helper_funcs.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-enum LowerPostBarState { upvoted, downvoted, none }
-
-bool isUpvoted = false;
-bool isDownvoted = false;
-
-class PostLowerBar extends StatefulWidget {
-  const PostLowerBar(
+class PostLowerBarWithoutVotes extends StatefulWidget {
+  const PostLowerBarWithoutVotes(
       {Key? key,
       required this.post,
       this.backgroundColor = Colors.transparent,
       this.iconColor = ColorManager.greyColor,
       this.pad = const EdgeInsets.symmetric(horizontal: 5.0, vertical: 6),
+      this.isWeb = false,
       this.isMod = false})
       : super(key: key);
 
@@ -35,17 +31,16 @@ class PostLowerBar extends StatefulWidget {
   ///
   /// defaults to false
   final bool isMod;
+
+  /// if the app is running on web
+  final bool isWeb;
+
   @override
-  State<PostLowerBar> createState() => _PostLowerBarState();
+  State<PostLowerBarWithoutVotes> createState() =>
+      _PostLowerBarWithoutVotesState();
 }
 
-class _PostLowerBarState extends State<PostLowerBar> {
-  LowerPostBarState state = isUpvoted
-      ? LowerPostBarState.upvoted
-      : isDownvoted
-          ? LowerPostBarState.downvoted
-          : LowerPostBarState.none;
-  @override
+class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -53,150 +48,68 @@ class _PostLowerBarState extends State<PostLowerBar> {
       child: Padding(
         padding: widget.pad,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: widget.isWeb
+              ? MainAxisAlignment.start
+              : MainAxisAlignment.spaceEvenly,
           children: [
-            Expanded(
-              flex: 4,
+            InkWell(
+              onTap: () {
+                goToPost(context, widget.post);
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Material(
-                    color: Colors.transparent,
-                    clipBehavior: Clip.antiAlias,
-                    shape: const CircleBorder(),
-                    child: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          if (state == LowerPostBarState.upvoted) {
-                            state = LowerPostBarState.none;
-                            widget.post.setVote(widget.post.votes! - 1);
-                          } else if (state == LowerPostBarState.downvoted) {
-                            state = LowerPostBarState.upvoted;
-                            widget.post.setVote(widget.post.votes! + 2);
-                          } else {
-                            state = LowerPostBarState.upvoted;
-                            widget.post.setVote(widget.post.votes! + 1);
-                          }
-                        });
-                      },
-                      constraints: const BoxConstraints(),
-                      padding: const EdgeInsets.all(0),
-                      splashColor: ColorManager.hoverOrange,
-                      color: ColorManager.hoverOrange,
-                      icon: Icon(
-                        Icons.arrow_upward,
-                        color: state == LowerPostBarState.upvoted
-                            ? ColorManager.hoverOrange
-                            : widget.iconColor,
-                      ),
-                      iconSize: 7.w,
-                    ),
+                  Icon(
+                    Icons.comment_outlined,
+                    color: widget.iconColor,
+                    size: 7.w,
                   ),
                   Text(
-                    widget.post.votes!.toString(),
+                    ' ${widget.post.numberOfComments ?? 0}'
+                    '${widget.isWeb ? ' Comments' : ''}',
                     style: TextStyle(
                       color: widget.iconColor,
-                      fontSize: 15,
-                    ),
-                  ),
-                  Material(
-                    color: Colors.transparent,
-                    clipBehavior: Clip.antiAlias,
-                    shape: const CircleBorder(),
-                    child: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          if (state == LowerPostBarState.downvoted) {
-                            state = LowerPostBarState.none;
-                            widget.post.setVote(widget.post.votes! + 1);
-                          } else if (state == LowerPostBarState.upvoted) {
-                            state = LowerPostBarState.downvoted;
-                            widget.post.setVote(widget.post.votes! - 2);
-                          } else {
-                            state = LowerPostBarState.downvoted;
-                            widget.post.setVote(widget.post.votes! - 1);
-                          }
-                        });
-                      },
-                      constraints: const BoxConstraints(),
-                      padding: const EdgeInsets.all(0),
-                      splashColor: ColorManager.downvoteBlue,
-                      icon: Icon(
-                        Icons.arrow_downward,
-                        color: state == LowerPostBarState.downvoted
-                            ? ColorManager.downvoteBlue
-                            : widget.iconColor,
-                      ),
-                      iconSize: 7.w,
+                      fontSize: 15.sp,
                     ),
                   ),
                 ],
               ),
             ),
-            const Spacer(
-              flex: 3,
+            SizedBox(
+              width: 5.w,
             ),
-            Expanded(
-              flex: 3,
-              child: InkWell(
-                onTap: () {
-                  goToPost(context, widget.post);
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Icon(
-                      Icons.comment_outlined,
-                      color: widget.iconColor,
-                    ),
-                    Text(
-                      '${widget.post.numberOfComments ?? 0}',
-                      style: TextStyle(
-                        color: widget.iconColor,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const Spacer(
-              flex: 3,
-            ),
-            Expanded(
-              flex: 4,
-              child: InkWell(
-                onTap: () {},
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: !widget.isMod
-                      ? [
-                          Icon(
-                            Icons.share,
+            InkWell(
+              onTap: () {},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: !widget.isMod
+                    ? [
+                        Icon(
+                          Icons.share,
+                          color: widget.iconColor,
+                          size: 7.w,
+                        ),
+                        Text(
+                          'Share',
+                          style: TextStyle(
                             color: widget.iconColor,
+                            fontSize: 15,
                           ),
-                          Text(
-                            'Share',
-                            style: TextStyle(
-                              color: widget.iconColor,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ]
-                      : [
-                          Icon(
-                            Icons.shield_outlined,
+                        ),
+                      ]
+                    : [
+                        Icon(
+                          Icons.shield_outlined,
+                          color: widget.iconColor,
+                        ),
+                        Text(
+                          'Mod',
+                          style: TextStyle(
                             color: widget.iconColor,
+                            fontSize: 15,
                           ),
-                          Text(
-                            'Mod',
-                            style: TextStyle(
-                              color: widget.iconColor,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ],
-                ),
+                        ),
+                      ],
               ),
             )
           ],

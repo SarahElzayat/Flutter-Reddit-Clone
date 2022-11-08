@@ -107,7 +107,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: PostLowerBar(
+                child: PostLowerBarWithoutVotes(
                   post: widget.post,
                   backgroundColor: Colors.black.withOpacity(0.5),
                   iconColor: ColorManager.eggshellWhite,

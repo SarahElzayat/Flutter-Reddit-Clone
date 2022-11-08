@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../Components/helpers/color_manager.dart';
-import '../../components/Button.dart';
 import '../../Data/post_model/post_model.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -40,7 +39,7 @@ class _PostUpperBarState extends State<PostUpperBar> {
           ConditionalBuilder(
               condition: widget.showSubReddit,
               builder: (context) => SizedBox(
-                    height: 5.h,
+                    height: 15.w,
                     child: Row(
                       children: [
                         CircleAvatar(
@@ -51,6 +50,7 @@ class _PostUpperBarState extends State<PostUpperBar> {
                           width: 3.w,
                         ),
                         Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
