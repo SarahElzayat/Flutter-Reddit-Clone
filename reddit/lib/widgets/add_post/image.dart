@@ -3,8 +3,8 @@
 /// @date 7/11/2022
 import 'dart:io';
 
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:image_painter/image_painter.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -13,6 +13,7 @@ import '../../functions/add_post.dart';
 import '../../variable/global_varible.dart';
 
 /// This Widget Shows the images after selected shows them in row (in main add post Screen)
+// ignore: must_be_immutable
 class ImageWidget extends StatelessWidget {
   /// [picker] Image Picker use to get image from gallery or Camera
   ImagePicker picker;
@@ -28,8 +29,9 @@ class ImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double hight = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    final mediaQuery = MediaQuery.of(context);
+    double hight = mediaQuery.size.height;
+    double width = mediaQuery.size.width;
 
     return Align(
       alignment: Alignment.topLeft,
@@ -65,7 +67,6 @@ class ImageWidget extends StatelessWidget {
                       child: Container(
                         margin: const EdgeInsets.all(7),
                         decoration: const BoxDecoration(
-                            // border:RoundedRectangleBorder(borderRadius: )
                             color: Color.fromARGB(130, 0, 0, 0),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(50))),
