@@ -7,3 +7,9 @@ enum TrailingObjects {
   dropBox,
   tailingIcon,
 }
+
+enum SortType {
+  best,
+  newPost,
+  top,
+}
