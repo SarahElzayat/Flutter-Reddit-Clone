@@ -1,14 +1,17 @@
+///@author Ahmed Atta
+///@date 9/11/2022
+///
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter/material.dart';
 import 'package:markdown/markdown.dart';
-import 'package:reddit/widgets/posts/inline_image_viewer.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:reddit/widgets/posts/votes_widget.dart';
+import 'package:responsive_builder/responsive_builder.dart';
+import 'post_lower_bar.dart';
+import 'post_upper_bar.dart';
+import '../../widgets/posts/inline_image_viewer.dart';
+import '../../widgets/posts/votes_widget.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../components/helpers/posts/helper_funcs.dart';
-import 'post_lower_bar.dart';
 import '../../Data/post_model/post_model.dart';
-import 'post_upper_bar.dart';
-import 'package:responsive_builder/responsive_builder.dart';
 
 /// The widget that displays the post
 ///

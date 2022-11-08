@@ -1,9 +1,11 @@
+///@author Ahmed Atta
+///@date 9/11/2022
+///
 import 'dart:math';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-// import 'package:reddit/Components/color_manager.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
 import 'package:reddit/widgets/posts/image_page_view.dart';
 import 'package:reddit/Data/post_model/post_model.dart';
@@ -16,7 +18,7 @@ class InlineImageViewer extends StatefulWidget {
     super.key,
     this.initialIndex = 0,
     this.backgroundDecoration = const BoxDecoration(
-      color: Colors.black,
+      color: ColorManager.black,
     ),
   }) : pageController =
             PageController(initialPage: initialIndex, keepPage: true);

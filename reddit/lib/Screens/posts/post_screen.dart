@@ -1,3 +1,6 @@
+///@author Ahmed Atta
+///@date 9/11/2022
+///
 import 'package:flutter/material.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
 import '../../Data/post_model/post_model.dart';

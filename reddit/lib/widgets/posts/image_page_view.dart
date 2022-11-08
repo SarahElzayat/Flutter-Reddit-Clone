@@ -1,3 +1,7 @@
+///@author Ahmed Atta
+///@date 9/11/2022
+///this is the page view for the images
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';

@@ -1,3 +1,6 @@
+///@author Ahmed Atta
+///@date 9/11/2022
+///
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
