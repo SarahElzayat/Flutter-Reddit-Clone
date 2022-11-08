@@ -8,14 +8,22 @@ import 'post_lower_bar.dart';
 import 'post_model/post_model.dart';
 import 'post_upper_bar.dart';
 
+/// The widget that displays the post
+///
+/// it's inteded to be used in the HOME PAGE
 class PostWidget extends StatelessWidget {
   const PostWidget({
     super.key,
     required this.post,
     this.outsideScreen = true,
   });
+
+  /// determines if the post is in the home page or in the post screen
   final bool outsideScreen;
+
+  /// the post to show
   final PostModel post;
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -46,7 +54,7 @@ class PostWidget extends StatelessWidget {
                     padding: const EdgeInsets.only(
                       left: 5,
                       right: 5,
-                      // top: 10,
+                      top: 5,
                     ),
                     child: Html(
                       data: markdownToHtml(post.content ?? ''),

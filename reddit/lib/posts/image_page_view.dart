@@ -8,7 +8,13 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'post_lower_bar.dart';
 import 'post_model/post_model.dart';
 
+/// A widget that displays the images in all the Screen
+/// it shows images with the help of [PageView]
+/// and [PhotoViewGallery]
 class WholeScreenImageViewer extends StatefulWidget {
+  /// Creates a widget that displays the images in all the Screen
+  ///
+  /// [post] and [initialIndex] cann't be null
   WholeScreenImageViewer({
     super.key,
     required this.post,
@@ -16,11 +22,21 @@ class WholeScreenImageViewer extends StatefulWidget {
     this.backgroundDecoration = const BoxDecoration(
       color: Colors.black,
     ),
-  }) : pageController =
-            PageController(initialPage: initialIndex, keepPage: true);
+  })  : pageController =
+            PageController(initialPage: initialIndex, keepPage: true),
+        assert(post.images != null),
+        assert(initialIndex >= 0);
+
+  /// The initial page to show when first creating the [PhotoViewGallery].
   final int initialIndex;
+
+  /// The controller for the page view.
   final PageController pageController;
+
+  /// The decoration to paint behind the child.
   final BoxDecoration? backgroundDecoration;
+
+  /// The post to show
   final PostModel post;
 
   @override
@@ -31,6 +47,8 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
   late int currentIndex = widget.initialIndex;
   double aspectRatio = 1.0;
   double initialInDragging = 0.0;
+
+  /// called when the page is changed
   void onPageChanged(int index) {
     setState(() {
       currentIndex = index;
@@ -57,70 +75,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black.withOpacity(0.5),
-        title: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(
-                  'r/${widget.post.subreddit ?? '-'} •',
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: Colors.white,
-                      ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                InkWell(
-                  onTap: () {
-                    debugPrint('joined');
-                  },
-                  child: Text(
-                    'Join',
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: Colors.blue,
-                        ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  ' •  u/${widget.post.postedBy ?? '-'}  •',
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: Colors.white,
-                      ),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  timeago.format(DateTime.parse(widget.post.publishTime!),
-                      locale: 'en_short'),
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: Colors.white,
-                      ),
-                ),
-              ],
-            ),
-            Text(
-              widget.post.title ?? '',
-              style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                    color: Colors.white,
-                  ),
-            ),
-          ],
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ),
+      appBar: appBar(context),
       body: GestureDetector(
         onVerticalDragStart: (details) {
           initialInDragging = details.globalPosition.dy;
@@ -165,6 +120,67 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
     );
   }
 
+  AppBar appBar(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.black.withOpacity(0.5),
+      title: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                'r/${widget.post.subreddit ?? '-'} • ',
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      color: Colors.white,
+                    ),
+              ),
+              InkWell(
+                onTap: () {
+                  debugPrint('joined');
+                },
+                child: Text(
+                  'Join',
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Colors.blue,
+                      ),
+                ),
+              ),
+              Text(
+                '  •   u/${widget.post.postedBy ?? '-'}  • ',
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      color: Colors.white,
+                    ),
+              ),
+              Text(
+                timeago.format(DateTime.parse(widget.post.publishTime!),
+                    locale: 'en_short'),
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      color: Colors.white,
+                    ),
+              ),
+            ],
+          ),
+          Text(
+            widget.post.title ?? '',
+            style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                  color: Colors.white,
+                ),
+          ),
+        ],
+      ),
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
+    );
+  }
+
+  /// Builds a single item for the gallery
+  ///
+  /// [index] is the index of the item
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
     final String item = widget.post.images![index];
     return PhotoViewGalleryPageOptions(

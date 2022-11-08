@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/posts/post_widget.dart';
-
 import 'post_model/post_model.dart';
 
+/// The Screen that displays the indvidual Posts
+///
+/// it will contain the [PostWidget] and the [Comments]
 class PostScreen extends StatefulWidget {
   static const String routeName = 'post_screen';
   const PostScreen({super.key, required this.post});
+
+  /// The post to be displayed
   final PostModel post;
+
   @override
   State<PostScreen> createState() => _PostScreenState();
 }

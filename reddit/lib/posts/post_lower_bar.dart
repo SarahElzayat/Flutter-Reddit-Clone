@@ -10,13 +10,6 @@ bool isUpvoted = false;
 bool isDownvoted = false;
 
 class PostLowerBar extends StatefulWidget {
-  final PostModel post;
-
-  final Color backgroundColor;
-  final Color iconColor;
-  final EdgeInsets pad;
-  final bool isMod;
-
   const PostLowerBar(
       {Key? key,
       required this.post,
@@ -26,6 +19,22 @@ class PostLowerBar extends StatefulWidget {
       this.isMod = false})
       : super(key: key);
 
+  /// The post to be displayed
+  final PostModel post;
+
+  /// The background color of the bar
+  final Color backgroundColor;
+
+  /// The default color of the icons
+  final Color iconColor;
+
+  /// the padding of the bar
+  final EdgeInsets pad;
+
+  /// if the user is a mod of the subreddit
+  ///
+  /// defaults to false
+  final bool isMod;
   @override
   State<PostLowerBar> createState() => _PostLowerBarState();
 }
@@ -36,13 +45,7 @@ class _PostLowerBarState extends State<PostLowerBar> {
       : isDownvoted
           ? LowerPostBarState.downvoted
           : LowerPostBarState.none;
-  int votes = 0;
   @override
-  void initState() {
-    votes = widget.post.votes!;
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -66,13 +69,13 @@ class _PostLowerBarState extends State<PostLowerBar> {
                         setState(() {
                           if (state == LowerPostBarState.upvoted) {
                             state = LowerPostBarState.none;
-                            votes--;
+                            widget.post.setVote(widget.post.votes! - 1);
                           } else if (state == LowerPostBarState.downvoted) {
                             state = LowerPostBarState.upvoted;
-                            votes += 2;
+                            widget.post.setVote(widget.post.votes! + 2);
                           } else {
                             state = LowerPostBarState.upvoted;
-                            votes++;
+                            widget.post.setVote(widget.post.votes! + 1);
                           }
                         });
                       },
@@ -90,7 +93,7 @@ class _PostLowerBarState extends State<PostLowerBar> {
                     ),
                   ),
                   Text(
-                    votes.toString(),
+                    widget.post.votes!.toString(),
                     style: TextStyle(
                       color: widget.iconColor,
                       fontSize: 15,
@@ -105,13 +108,13 @@ class _PostLowerBarState extends State<PostLowerBar> {
                         setState(() {
                           if (state == LowerPostBarState.downvoted) {
                             state = LowerPostBarState.none;
-                            votes++;
+                            widget.post.setVote(widget.post.votes! + 1);
                           } else if (state == LowerPostBarState.upvoted) {
                             state = LowerPostBarState.downvoted;
-                            votes -= 2;
+                            widget.post.setVote(widget.post.votes! - 2);
                           } else {
                             state = LowerPostBarState.downvoted;
-                            votes--;
+                            widget.post.setVote(widget.post.votes! - 1);
                           }
                         });
                       },

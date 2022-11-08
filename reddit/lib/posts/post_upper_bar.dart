@@ -3,18 +3,33 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../Components/helpers/color_manager.dart';
+import '../components/Button.dart';
 import 'post_model/post_model.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class PostUpperBar extends StatelessWidget {
+bool isjoined = false;
+
+class PostUpperBar extends StatefulWidget {
   const PostUpperBar({
     Key? key,
     required this.post,
     this.showSubReddit = true,
   }) : super(key: key);
 
+  /// The post to be displayed
   final PostModel post;
+
+  /// if the subreddit should be shown
+  ///
+  /// it's passed because the post don't require the subreddit to be shown in
+  /// the sunreddit screen
   final bool showSubReddit;
+
+  @override
+  State<PostUpperBar> createState() => _PostUpperBarState();
+}
+
+class _PostUpperBarState extends State<PostUpperBar> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -23,39 +38,55 @@ class PostUpperBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ConditionalBuilder(
-              condition: showSubReddit,
-              builder: (context) => Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 5.w,
-                        child: const Icon(Icons.category_sharp),
-                      ),
-                      SizedBox(
-                        width: 3.w,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'r/${post.subreddit ?? ''}',
-                            style: const TextStyle(
-                              color: ColorManager.eggshellWhite,
-                              fontSize: 15,
+              condition: widget.showSubReddit,
+              builder: (context) => SizedBox(
+                    height: 5.h,
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 5.5.w,
+                          child: const Icon(Icons.category_sharp),
+                        ),
+                        SizedBox(
+                          width: 3.w,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'r/${widget.post.subreddit ?? ''}',
+                              style: const TextStyle(
+                                color: ColorManager.eggshellWhite,
+                                fontSize: 15,
+                              ),
                             ),
-                          ),
-                          userRow(),
-                        ],
-                      ),
-                      const Spacer(),
-                      const Chip(
-                        label: Text('Join'),
-                        backgroundColor: ColorManager.blue,
-                      ),
-                    ],
+                            userRow(),
+                          ],
+                        ),
+                        const Spacer(),
+                        if (!isjoined)
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                isjoined = true;
+                              });
+                            },
+                            child: const Chip(
+                              label: Text(
+                                'Join',
+                                style: TextStyle(
+                                  color: ColorManager.eggshellWhite,
+                                ),
+                              ),
+                              backgroundColor: ColorManager.blue,
+                            ),
+                          )
+                      ],
+                    ),
                   ),
               fallback: (context) => userRow()),
 
-          if (post.nsfw ?? false)
+          if (widget.post.nsfw ?? false)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4),
               child: Row(
@@ -74,7 +105,7 @@ class PostUpperBar extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Text(
-              post.title ?? '',
+              widget.post.title ?? '',
               style: const TextStyle(
                 color: ColorManager.eggshellWhite,
                 fontSize: 20,
@@ -82,17 +113,23 @@ class PostUpperBar extends StatelessWidget {
               ),
             ),
           ),
-          if (post.flair != null)
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              decoration: BoxDecoration(
-                color: HexColor(post.flair!.backgroundColor ?? '#FF00000'),
-                borderRadius: BorderRadius.circular(40),
-              ),
-              child: Text(
-                post.flair!.flairText ?? '',
-                style: TextStyle(
-                    color: HexColor(post.flair!.textColor ?? '#FFFFFF')),
+          if (widget.post.flair != null)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: HexColor(
+                      widget.post.flair!.backgroundColor ?? '#FF00000'),
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                child: Text(
+                  widget.post.flair!.flairText ?? '',
+                  style: TextStyle(
+                      color:
+                          HexColor(widget.post.flair!.textColor ?? '#FFFFFF')),
+                ),
               ),
             )
         ],
@@ -104,14 +141,15 @@ class PostUpperBar extends StatelessWidget {
     return Row(
       children: [
         Text(
-          'u/${post.postedBy} • ',
+          'u/${widget.post.postedBy} • ',
           style: const TextStyle(
             color: ColorManager.greyColor,
             fontSize: 15,
           ),
         ),
         Text(
-          timeago.format(DateTime.parse(post.publishTime!), locale: 'en_short'),
+          timeago.format(DateTime.parse(widget.post.publishTime!),
+              locale: 'en_short'),
           style: const TextStyle(
             color: ColorManager.greyColor,
             fontSize: 15,

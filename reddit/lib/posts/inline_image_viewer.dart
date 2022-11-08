@@ -20,9 +20,19 @@ class InlineImageViewer extends StatefulWidget {
     ),
   }) : pageController =
             PageController(initialPage: initialIndex, keepPage: true);
+
+  /// The initial page to show when first creating the [InlineImageViewer].
   final int initialIndex;
+
+  /// The controller for the page view.
   final PageController pageController;
+
+  /// The decoration to paint behind the child if the is a gap.
+  ///
+  /// defaults to [BoxDecoration] with [Colors.black]
   final BoxDecoration? backgroundDecoration;
+
+  /// The post to show
   final PostModel post;
 
   @override
@@ -60,6 +70,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
             openImage(context, currentIndex);
           },
           child: SizedBox(
+            /// expand the image to the width of the screen with max height of 60% of the screen
             height: min(60.h, aspectRatio * constraints.maxWidth),
             child: Stack(
               children: [
@@ -176,7 +187,10 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
     );
   }
 
-  void openImage(BuildContext context, final int index) {
+  /// Opens the image in a new screen
+  ///
+  /// [index] is the index of the image to be opened
+  void openImage(BuildContext context, int index) {
     Navigator.push(
       context,
       MaterialPageRoute(

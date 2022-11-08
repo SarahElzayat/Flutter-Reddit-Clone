@@ -16,9 +16,9 @@ var textPost = PostModel(
   editTime: '2019-08-24T14:15:22Z',
   flair: Flair(
     flairId: '123',
-    flairText: 'text',
-    backgroundColor: '#FF0000',
-    textColor: '#FFFaFa',
+    flairText: 'flair',
+    backgroundColor: '#FFAA00',
+    textColor: '#0E0EEE',
   ),
   saved: false,
   inYourSubreddit: false,

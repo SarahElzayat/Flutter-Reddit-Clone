@@ -1,6 +1,8 @@
 import 'flair.dart';
 import 'moderation/moderation.dart';
 
+enum LowerPostBarState { upvoted, downvoted, none }
+
 class PostModel {
   String? id;
   String? subreddit;
@@ -87,4 +89,8 @@ class PostModel {
         'vote': vote,
         'images': images,
       };
+
+  void setVote(int vote) {
+    votes = vote;
+  }
 }
