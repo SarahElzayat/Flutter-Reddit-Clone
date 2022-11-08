@@ -4,6 +4,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../Components/helpers/color_manager.dart';
 import 'post_model/post_model.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class PostUpperBar extends StatelessWidget {
   const PostUpperBar({
@@ -25,12 +26,12 @@ class PostUpperBar extends StatelessWidget {
               condition: showSubReddit,
               builder: (context) => Row(
                     children: [
-                      const CircleAvatar(
-                        radius: 20,
-                        child: Icon(Icons.category_sharp),
+                      CircleAvatar(
+                        radius: 5.w,
+                        child: const Icon(Icons.category_sharp),
                       ),
-                      const SizedBox(
-                        width: 10,
+                      SizedBox(
+                        width: 3.w,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,9 +61,6 @@ class PostUpperBar extends StatelessWidget {
               child: Row(
                 children: const [
                   Icon(Icons.eighteen_up_rating, color: ColorManager.red),
-                  SizedBox(
-                    width: 5,
-                  ),
                   Text('NSFW',
                       style: TextStyle(
                         color: ColorManager.red,
@@ -85,18 +83,18 @@ class PostUpperBar extends StatelessWidget {
             ),
           ),
           if (post.flair != null)
-            SizedBox(
-              height: 40,
-              child: Chip(
-                label: Text(
-                  post.flair!.flairText ?? '',
-                  style: TextStyle(
-                      color: HexColor(post.flair!.textColor ?? '#FFFFFF')),
-                ),
-                backgroundColor:
-                    HexColor(post.flair!.backgroundColor ?? '#FF00000'),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              decoration: BoxDecoration(
+                color: HexColor(post.flair!.backgroundColor ?? '#FF00000'),
+                borderRadius: BorderRadius.circular(40),
               ),
-            ),
+              child: Text(
+                post.flair!.flairText ?? '',
+                style: TextStyle(
+                    color: HexColor(post.flair!.textColor ?? '#FFFFFF')),
+              ),
+            )
         ],
       ),
     );

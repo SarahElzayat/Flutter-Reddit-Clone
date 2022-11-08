@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:reddit/posts/post_model/post_model.dart';
 import '../Components/helpers/color_manager.dart';
 import 'helper_funcs.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 enum LowerPostBarState { upvoted, downvoted, none }
 
@@ -16,7 +17,7 @@ class PostLowerBar extends StatefulWidget {
   final EdgeInsets pad;
   final bool isMod;
 
-  PostLowerBar(
+  const PostLowerBar(
       {Key? key,
       required this.post,
       this.backgroundColor = Colors.transparent,
@@ -85,7 +86,7 @@ class _PostLowerBarState extends State<PostLowerBar> {
                             ? ColorManager.hoverOrange
                             : widget.iconColor,
                       ),
-                      iconSize: 30,
+                      iconSize: 7.w,
                     ),
                   ),
                   Text(
@@ -123,7 +124,7 @@ class _PostLowerBarState extends State<PostLowerBar> {
                             ? ColorManager.downvoteBlue
                             : widget.iconColor,
                       ),
-                      iconSize: 30,
+                      iconSize: 7.w,
                     ),
                   ),
                 ],

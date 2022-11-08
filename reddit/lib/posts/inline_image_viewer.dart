@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
 import 'package:reddit/posts/image_page_view.dart';
 import 'package:reddit/posts/post_model/post_model.dart';
 import '../components/helpers/color_manager.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class InlineImageViewer extends StatefulWidget {
   InlineImageViewer({
@@ -45,7 +46,6 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
         .addListener(ImageStreamListener((info, call) {
       setState(() {
         aspectRatio = info.image.height / info.image.width;
-        print(aspectRatio);
       });
     }));
     super.initState();
@@ -60,8 +60,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
             openImage(context, currentIndex);
           },
           child: SizedBox(
-            height: min(MediaQuery.of(context).size.height * .6,
-                aspectRatio * constraints.maxWidth),
+            height: min(60.h, aspectRatio * constraints.maxWidth),
             child: Stack(
               children: [
                 PhotoViewGallery.builder(

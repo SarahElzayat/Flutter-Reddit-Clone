@@ -22,7 +22,7 @@ var textPost = PostModel(
   ),
   saved: false,
   inYourSubreddit: false,
-  nsfw: true,
+  nsfw: false,
   votes: 100,
   numberOfComments: 10,
 );
