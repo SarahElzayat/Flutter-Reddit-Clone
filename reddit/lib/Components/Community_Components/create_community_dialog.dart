@@ -16,6 +16,7 @@ class CreateCommunityWeb extends StatefulWidget {
   State<CreateCommunityWeb> createState() => _CreateCommunityWindow();
 }
 
+/// this widget creates a window to create a community in the web.
 class _CreateCommunityWindow extends State<CreateCommunityWeb> {
   CommunityTypes? _chosenCommunityType = CommunityTypes.public;
   bool? isAdultContent = false;
@@ -23,6 +24,7 @@ class _CreateCommunityWindow extends State<CreateCommunityWeb> {
 
   ///variables for handling the text field (still working on it)
   ///maximum number of letters a community name can have
+  // ignore: prefer_final_fields
   int _charachtersRemaining = 21;
 
   ///to control the text field
@@ -45,6 +47,7 @@ class _CreateCommunityWindow extends State<CreateCommunityWeb> {
 
   ///This is the actual function that build the dialog(popup window) called in the build function
   Future<void> _dialogBuilder(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     return showDialog(
         context: context,
         builder: (BuildContext context) => StatefulBuilder(
@@ -267,7 +270,9 @@ class _CreateCommunityWindow extends State<CreateCommunityWeb> {
                       )),
                   actions: <Widget>[
                     Container(
+                      /// here you should mediaquery siize
                       height: 60,
+
                       width: double.infinity,
                       decoration: const BoxDecoration(
                           color: ColorManager.bottomWindowGrey,
