@@ -1,4 +1,4 @@
-/// A widget that displays a text field with a label.
+/// The votes widget that is used in the post widget and have different sizes and shapes
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
 

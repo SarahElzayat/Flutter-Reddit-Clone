@@ -1,4 +1,4 @@
-/// A widget that displays a text field with a label.
+/// The Image PageView that opens when clicking images
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
 
