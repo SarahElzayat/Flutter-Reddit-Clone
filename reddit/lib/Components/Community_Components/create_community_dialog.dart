@@ -9,28 +9,6 @@ import 'package:reddit/Components/square_text_field.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../Button.dart';
 
-///To test create community for web call [TestApp] in main
-class TestApp extends StatelessWidget {
-  const TestApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ResponsiveSizer(builder: (context, orientation, screenType) {
-      return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            primarySwatch: Colors.grey,
-            primaryColor: Colors.black,
-            brightness: Brightness.dark,
-            backgroundColor: const Color(0xFF212121),
-            dividerColor: Colors.black12,
-            splashColor: Colors.transparent),
-        home: const CreateCommunityWeb(),
-      );
-    });
-  }
-}
-
 class CreateCommunityWeb extends StatefulWidget {
   const CreateCommunityWeb({super.key});
 
