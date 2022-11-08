@@ -63,8 +63,9 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
 
   @override
   void initState() {
-    // i used this to get the aspect ratio of the images to show them in the right size
-    // i get the max aspect ratio of the images and use it so Constraint their box
+    // i used this to get the aspect ratio of the images
+    // to show them in the right size
+    // i get the max aspect ratio of the images and use it so constraint their box
     for (var i = 0; i < widget.post.images!.length; i++) {
       Image(image: NetworkImage(widget.post.images![i]))
           .image
@@ -88,15 +89,16 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
           initialInDragging = details.globalPosition.dy;
         },
         onVerticalDragUpdate: (details) {
+          /// TODO: to be implemented
           // double diff = details.globalPosition.dy - diffInDragging;
           // debugPrint('diff:' + diff.toString());
         },
         onVerticalDragEnd: (details) {
+          /// TODO: to be implemented
           // debugPrint('speed: ' + details.primaryVelocity.toString());
         },
         child: Container(
           decoration: widget.backgroundDecoration,
-          // alignment: Alignment.center,
           constraints: BoxConstraints.expand(
             height: MediaQuery.of(context).size.height,
           ),
