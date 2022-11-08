@@ -81,6 +81,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  kumi_popup_window:
+    dependency: "direct main"
+    description:
+      name: kumi_popup_window
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
   lint:
     dependency: "direct main"
     description:

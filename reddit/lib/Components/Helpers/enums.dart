@@ -7,3 +7,9 @@ enum TrailingObjects {
   dropBox,
   tailingIcon,
 }
+
+enum CommunityTypes {
+  public,
+  restricted,
+  private,
+}

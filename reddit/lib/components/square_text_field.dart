@@ -79,6 +79,10 @@ class SquareTextFieldState extends State<SquareTextField> {
         setState(() {
           textLength = value.length;
         });
+
+        if (widget.onChanged != null) {
+          widget.onChanged!(value);
+        }
       },
       keyboardType: widget.keyboardType,
       onFieldSubmitted: widget.onSubmitted,

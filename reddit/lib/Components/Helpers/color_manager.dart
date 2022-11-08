@@ -62,4 +62,10 @@ class ColorManager {
   static const Color bottomSheetBackgound = Color(0xFF212121);
   static const Color bottomSheetTitle = Color.fromRGBO(129, 131, 132, 1);
   static const Color unselectedItem = Color.fromRGBO(86, 87, 88, 1);
+
+  //Create community window colors
+  static const Color greyBlack = Color.fromRGBO(26, 27, 26, 1);
+  static const Color bottomWindowGrey = Color.fromRGBO(53, 52, 54, 1);
+  static const Color textGrey = Color.fromRGBO(112, 114, 115, 1);
+  //rgba(112,114,115,255)
 }
