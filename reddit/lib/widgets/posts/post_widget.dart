@@ -1,3 +1,7 @@
+/// A widget that displays a text field with a label.
+/// date: 8/11/2022
+/// @Author: Ahmed Atta
+
 import 'package:flutter/material.dart';
 import 'package:markdown/markdown.dart';
 import 'package:reddit/widgets/posts/inline_image_viewer.dart';

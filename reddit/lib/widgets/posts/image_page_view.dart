@@ -1,5 +1,8 @@
-import 'dart:math';
+/// A widget that displays a text field with a label.
+/// date: 8/11/2022
+/// @Author: Ahmed Atta
 
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
