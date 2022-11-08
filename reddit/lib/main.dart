@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/Screens/create_community_test_screen.dart';
-import '../Components/Community_Components/create_community_dialog.dart';
 import '../Components/Helpers/constants.dart';
 import 'dart:io' show Platform;
 

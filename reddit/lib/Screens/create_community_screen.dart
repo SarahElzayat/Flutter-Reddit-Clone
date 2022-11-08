@@ -40,6 +40,8 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        elevation: 3.sp,
+        shadowColor: Colors.white,
         backgroundColor: ColorManager.darkGrey,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -55,7 +57,7 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
           padding: EdgeInsets.zero,
           height: 55.h,
           width: 100.w,
-          child: Card(
+          child: Container(
             color: ColorManager.darkGrey,
             child: Padding(
               padding: EdgeInsets.fromLTRB(15.sp, 20.sp, 15.sp, 20.sp),
