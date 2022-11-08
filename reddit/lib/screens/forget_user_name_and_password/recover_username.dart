@@ -13,7 +13,6 @@ import '../sign_in_and_sign_up_screen/sign_in_screen.dart';
 import '../../components/default_text_field.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
-import '../../components/button.dart';
 
 // ignore: must_be_immutable
 class RecoverUserName extends StatelessWidget {
@@ -101,7 +100,8 @@ class RecoverUserName extends StatelessWidget {
                       type: 'username',
                     );
 
-                    DioHelper.postData(path: loginForget, data: user.toJson());
+                    DioHelper.postData(
+                        path: loginForgetUserName, data: user.toJson());
                   }))
             ],
           ),

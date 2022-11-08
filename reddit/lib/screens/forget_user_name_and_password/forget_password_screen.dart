@@ -116,7 +116,11 @@ class ForgetPasswordScreen extends StatelessWidget {
                       type: 'password',
                       username: usernameController.text,
                       email: emailController.text);
-                  DioHelper.postData(path: loginForget, data: user.toJson());
+                  DioHelper.postData(
+                          path: loginForgetPassword, data: user.toJson())
+                      .then((returnVal) {
+                    print(returnVal.toString());
+                  });
                 },
               )
             ],
