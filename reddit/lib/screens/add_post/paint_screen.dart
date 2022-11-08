@@ -1,4 +1,4 @@
-/// Modle Paint Screen
+/// Model Paint Screen
 /// @author Haitham Mohamed
 /// @date 12/11/2022
 import 'dart:io';
@@ -14,6 +14,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../variable/global_varible.dart';
 
+// ignore: must_be_immutable
 class PaintScreen extends StatefulWidget {
   /// [image] images that you are selecting <List>
   List<XFile> image;

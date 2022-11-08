@@ -14,6 +14,8 @@ import '../../variable/global_varible.dart';
 /// I use this now for simplify the code that i want to check that
 /// all packages are work will and can get the output from them or not
 /// And It will be change and use Bloc instead
+// ignore: must_be_immutable.
+
 class Button extends StatefulWidget {
   /// [textController] Optional Text controller
   TextEditingController textController;

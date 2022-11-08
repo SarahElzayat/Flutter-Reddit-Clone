@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 
 /// Special Text Field that used in Add Post Screen
 class AddPostTextField extends StatefulWidget {
-  /// Boolen to check if it is title or not because if it's we will check is it empty or not
+  /// Boolen to check if it is title or not because if
+  /// it's we will check is it empty or not
   /// Because it never allow To create post without title
   /// There are other validation that not implemented yet
   final bool isTitle;

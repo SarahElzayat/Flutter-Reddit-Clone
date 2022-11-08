@@ -15,6 +15,7 @@ import 'video.dart';
 /// according to its type
 /// Is just Inteface (No Implementation here)
 
+// ignore: must_be_immutable
 class PostTypeWidget extends StatelessWidget {
   /// [textController] Optional Text controller
   TextEditingController textController;
@@ -78,7 +79,6 @@ class PostTypeWidget extends StatelessWidget {
       case 4:
         return Poll(
             isOpen: keyboardIsOpened,
-            // numOptions: 2,
             pollController: pollController,
             textController: pollTextController);
       default:

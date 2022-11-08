@@ -12,7 +12,8 @@ import '../../Components/Helpers/color_manager.dart';
 import '../../functions/add_post.dart';
 import '../../variable/global_varible.dart';
 
-/// This Widget Shows the images after selected shows them in row (in main add post Screen)
+/// This Widget Shows the images after selected
+///  shows them in row (in main add post Screen)
 // ignore: must_be_immutable
 class ImageWidget extends StatelessWidget {
   /// [picker] Image Picker use to get image from gallery or Camera

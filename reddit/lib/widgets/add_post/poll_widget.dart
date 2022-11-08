@@ -9,11 +9,13 @@ import 'package:flutter/material.dart';
 
 import 'add_post_textfield.dart';
 
-/// Poll widget that show the options and can add or delet
+/// Poll widget that show the options and can add or delete
 /// Note Minimum number of Options is 2
 
+// ignore: must_be_immutable
 class Poll extends StatefulWidget {
-  /// [pollController] Controller for each option in poll <List> (min 2 options)
+  /// [pollController] Controller for each option
+  /// in poll <List> (min 2 options)
   List<TextEditingController> pollController;
 
   /// [textController] Options poll Text controller
@@ -33,11 +35,12 @@ class Poll extends StatefulWidget {
 class _PollState extends State<Poll> {
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     return ConstrainedBox(
       constraints: BoxConstraints(
           maxHeight: (widget.isOpen)
-              ? MediaQuery.of(context).size.height * 0.44
-              : MediaQuery.of(context).size.height * 0.55),
+              ? mediaQuery.size.height * 0.44
+              : mediaQuery.size.height * 0.55),
       child: Column(
         children: [
           Expanded(
@@ -47,8 +50,7 @@ class _PollState extends State<Poll> {
                     isTitle: false,
                     mltiline: true,
                     isBold: false,
-                    fontSize:
-                        (18 * MediaQuery.of(context).textScaleFactor).toInt(),
+                    fontSize: (18 * mediaQuery.textScaleFactor).toInt(),
                     hintText: 'Add optional body text',
                     controller: widget.textController),
                 for (int index = 0;
@@ -59,8 +61,7 @@ class _PollState extends State<Poll> {
                     children: [
                       ConstrainedBox(
                         constraints: BoxConstraints(
-                            maxWidth:
-                                MediaQuery.of(context).size.width * 0.945),
+                            maxWidth: mediaQuery.size.width * 0.945),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           child: Row(
@@ -74,10 +75,9 @@ class _PollState extends State<Poll> {
                                       isTitle: false,
                                       mltiline: false,
                                       isBold: false,
-                                      fontSize: (18 *
-                                              MediaQuery.of(context)
-                                                  .textScaleFactor)
-                                          .toInt(),
+                                      fontSize:
+                                          (18 * mediaQuery.textScaleFactor)
+                                              .toInt(),
                                       hintText: 'Opition ${index + 1}',
                                       controller: widget.pollController[index]),
                                 ),
@@ -108,18 +108,18 @@ class _PollState extends State<Poll> {
                         : () {
                             setState(() {
                               if (widget.pollController.length < 6) {
-                                // widget.numOptions += 1;
                                 widget.pollController
                                     .add(TextEditingController());
                               }
                             });
                           },
                     child: Row(
-                      children: const [
-                        Icon(Icons.add),
+                      children: [
+                        const Icon(Icons.add),
                         Text(
                           'Add option',
-                          style: TextStyle(fontSize: 17),
+                          style: TextStyle(
+                              fontSize: 17 * mediaQuery.textScaleFactor),
                         )
                       ],
                     ),

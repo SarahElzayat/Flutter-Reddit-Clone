@@ -7,7 +7,6 @@ import '../../variable/constants.dart';
 import '../../variable/global_varible.dart';
 
 /// Simple Post Screen That Show only Details of the post
-
 class PostSimpleScreen extends StatelessWidget {
   /// Post Title
   final String title;

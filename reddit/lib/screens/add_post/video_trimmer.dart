@@ -82,8 +82,6 @@ class _TrimmerViewState extends State<TrimmerView> {
         endValue: _endValue,
         onSave: ((outputPath) {
           _progressVisibility = false;
-          // _value = value;
-
           _value = outputPath;
           if (_value != null) {
             GlobalVarible.video.value = XFile(_value!);

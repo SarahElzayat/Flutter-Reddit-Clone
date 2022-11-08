@@ -16,7 +16,7 @@ import 'package:path/path.dart' as p;
 import 'add_post.dart';
 
 /// Image Screen that Perview the Image After Select it
-
+// ignore: must_be_immutable
 class ImageScreen extends StatefulWidget {
   /// [image] images that you are selecting <List>
   List<XFile> image;
@@ -36,6 +36,8 @@ class ImageScreen extends StatefulWidget {
 class _ImageScreenState extends State<ImageScreen> {
   @override
   Widget build(BuildContext context) {
+    final navigator = Navigator.of(context);
+    final mediaQuery = MediaQuery.of(context);
     return Scaffold(
       body: SafeArea(
         child: Column(children: [
@@ -46,17 +48,17 @@ class _ImageScreenState extends State<ImageScreen> {
               IconButton(
                   onPressed: () {
                     widget.image.removeAt(0);
-                    Navigator.of(context).pop();
+                    navigator.pop();
                   },
                   icon: const Icon(Icons.arrow_back)),
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.25,
+                width: mediaQuery.size.width * 0.25,
               ),
 
               /// The button that navigate to Paint Screen
               IconButton(
                   onPressed: () async {
-                    Navigator.of(context).push(MaterialPageRoute(
+                    navigator.push(MaterialPageRoute(
                         builder: ((context) => PaintScreen(
                               context: context,
                               image: widget.image,
@@ -122,7 +124,7 @@ class _ImageScreenState extends State<ImageScreen> {
                     }
 
                     GlobalVarible.images.notifyListeners();
-                    Navigator.of(context).pop();
+                    navigator.pop();
                   },
                   child: const Text('Add')),
             ],

@@ -13,6 +13,7 @@ import '../../variable/global_varible.dart';
 
 /// Post Type Buttons is the Widget that can select the post type
 /// That on the Bottom of the add post Screeen
+// ignore: must_be_immutable
 class PostTypeButtons extends StatefulWidget {
   /// [keyboardIsOpened]Boolen to Know if the keyboard is opened or not
   /// because if it is opened the Buttons will change to be smaller
@@ -38,6 +39,7 @@ class PostTypeButtons extends StatefulWidget {
 class _PostTypeButtonsState extends State<PostTypeButtons> {
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     return Container(
       color: ColorManager.textFieldBackground,
       child: widget.keyboardIsOpened
@@ -66,7 +68,7 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Icon(
                           icons[index],
-                          size: 32 * MediaQuery.of(context).textScaleFactor,
+                          size: 32 * mediaQuery.textScaleFactor,
                           color: (index == GlobalVarible.postType.value)
                               ? Colors.blue
                               : Colors.white,
@@ -102,14 +104,13 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Icon(
                               icons[index],
-                              size: 25 * MediaQuery.of(context).textScaleFactor,
+                              size: 25 * mediaQuery.textScaleFactor,
                             ),
                           ),
                           Text(
                             labels[index],
                             style: TextStyle(
-                                fontSize: 20 *
-                                    MediaQuery.of(context).textScaleFactor),
+                                fontSize: 20 * mediaQuery.textScaleFactor),
                           ),
                           const Spacer(),
                           if (GlobalVarible.postType.value == index)

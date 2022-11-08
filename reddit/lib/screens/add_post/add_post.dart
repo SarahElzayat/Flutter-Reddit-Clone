@@ -3,15 +3,16 @@
 /// @date 4/11/2022
 
 import 'dart:io';
+import 'package:flutter/services.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_painter/image_painter.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
 import '../../Components/Helpers/color_manager.dart';
 import '../../../variable/global_varible.dart';
 import '../../../widgets/add_post/add_post_textfield.dart';
 import '../../../widgets/add_post/post_type_widget.dart';
-import 'package:flutter/services.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_painter/image_painter.dart';
-import 'package:image_picker/image_picker.dart';
 import '../../widgets/add_post/button.dart';
 import '../../widgets/add_post/post_type_buttons.dart';
 
@@ -51,6 +52,8 @@ class _AddPostState extends State<AddPost> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -84,8 +87,7 @@ class _AddPostState extends State<AddPost> {
                   controller: titleController,
                   mltiline: false,
                   isBold: true,
-                  fontSize:
-                      (23 * MediaQuery.of(context).textScaleFactor).toInt(),
+                  fontSize: (23 * mediaQuery.textScaleFactor).toInt(),
                   hintText: 'An intereting title')),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -97,8 +99,7 @@ class _AddPostState extends State<AddPost> {
                     pollController: pollController,
                     textController: textController,
                     urlController: urlController,
-                    keyboardIsOpened:
-                        (MediaQuery.of(context).viewInsets.bottom > 0),
+                    keyboardIsOpened: (mediaQuery.viewInsets.bottom > 0),
                     picker: picker,
                     imageKey: imageKey,
                   );
@@ -110,8 +111,7 @@ class _AddPostState extends State<AddPost> {
             builder:
                 (BuildContext contextBuilder, dynamic value, Widget? child) {
               return PostTypeButtons(
-                keyboardIsOpened:
-                    (MediaQuery.of(context).viewInsets.bottom > 0),
+                keyboardIsOpened: (mediaQuery.viewInsets.bottom > 0),
                 imageKey: imageKey,
                 picker: picker,
               );
@@ -123,7 +123,7 @@ class _AddPostState extends State<AddPost> {
 
 /// This function takes the Image and Navigate to the crop Screen
 /// It returns the image even if you do not make any change
-///
+
 /// [image] The Image That you want to make edit on it
 
 Future<XFile> cropFunc(XFile image, BuildContext context) async {
