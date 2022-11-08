@@ -25,10 +25,13 @@ class WholeScreenImageViewer extends StatefulWidget {
     this.backgroundDecoration = const BoxDecoration(
       color: Colors.black,
     ),
-  })  : pageController =
-            PageController(initialPage: initialIndex, keepPage: true),
-        assert(post.images != null),
-        assert(initialIndex >= 0);
+  })  : pageController = PageController(
+            initialPage: initialIndex,
+            keepPage:
+                true), // that initial A Page Controller with the passed index
+        assert(post.images !=
+            null), // it asserts the passed Values and images can't be null
+        assert(initialIndex >= 0); // the initial index can't be less than 0
 
   /// The initial page to show when first creating the [PhotoViewGallery].
   final int initialIndex;
@@ -60,6 +63,8 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
 
   @override
   void initState() {
+    // i used this to get the aspect ratio of the images to show them in the right size
+    // i get the max aspect ratio of the images and use it so Constraint their box
     for (var i = 0; i < widget.post.images!.length; i++) {
       Image(image: NetworkImage(widget.post.images![i]))
           .image
@@ -67,7 +72,6 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
           .addListener(ImageStreamListener((info, call) {
         setState(() {
           aspectRatio = max(aspectRatio, info.image.height / info.image.width);
-          // print(aspectRatio);
         });
       }));
     }

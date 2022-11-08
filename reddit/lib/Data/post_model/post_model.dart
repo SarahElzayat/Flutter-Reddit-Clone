@@ -1,4 +1,4 @@
-/// A widget that displays a text field with a label.
+/// The Post model
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
 

@@ -3,6 +3,7 @@
 /// @Author: Ahmed Atta
 
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:markdown/markdown.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'post_lower_bar.dart';
