@@ -25,7 +25,8 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
   /// default is false
   bool isSwitched = false;
 
-  /// selected item from bottom sheet which indicate whether community is public, private, or restricted
+  /// selected item from bottom sheet which indicate whether community
+  /// is public, private, or restricted
   /// default is public
   late dynamic _communityType = 'Public';
   final List<String> _communityTypes = ['Public', 'Restricted', 'Private'];
