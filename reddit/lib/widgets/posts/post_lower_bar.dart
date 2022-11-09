@@ -58,7 +58,8 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
           children: [
             InkWell(
               onTap: () {
-                goToPost(context, widget.post);
+                //
+                // goToPost(context, widget.post);
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
