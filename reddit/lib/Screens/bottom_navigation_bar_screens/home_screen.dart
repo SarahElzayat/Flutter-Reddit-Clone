@@ -1,3 +1,7 @@
+/// @author Sarah El-Zayat
+/// @date 9/11/2022
+/// this is the screen fpr the main home
+///
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/cubit/app_cubit.dart';
@@ -10,13 +14,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   @override
   Widget build(BuildContext context) {
     final AppCubit cubit = AppCubit.get(context);
     return BlocConsumer<AppCubit, AppState>(
-      listener: (context, state) {
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
           body: SingleChildScrollView(
@@ -31,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Colors.grey[900],
                     child: Text(
                       cubit.homeMenuItems[index],
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
