@@ -3,11 +3,13 @@
 /// Reuasable custom button component
 
 import 'package:flutter/material.dart';
+
 import 'package:reddit/Components/Helpers/color_manager.dart';
 import '../Components/Helpers/constants.dart';
 
 /// ignore: must_be_immutable
 class Button extends StatelessWidget {
+
   final String text;
 
   /// text written in button
@@ -16,25 +18,28 @@ class Button extends StatelessWidget {
   /// color of button text
   final Color backgroundColor;
 
-  /// color of the button
+
+  /// the width of the button
   final double buttonWidth;
 
-  /// for size of button
+  /// the height of the button
   final double buttonHeight;
 
-  /// for size of button
+  /// the fontWeight of the text as the weight.
   final FontWeight? textFontWeight;
 
-  /// font size of text
+  /// the font size
   final double textFontSize;
 
-  /// weight of font (normal/bold/...)
+  /// the color of the border.
   final Color? borderColor;
 
-  /// border color if it exists
+  /// the function that should be executed when the button is pressed.
   final VoidCallback onPressed;
 
-  final bool disabled;
+  /// the width of the boarded
+  double _borderWidth = 1.0;
+
 
   /// actual function of button when pressed
   final double _borderWidth = 1.0;
@@ -75,6 +80,7 @@ class Button extends StatelessWidget {
               )),
           child: InkWell(
             onTap: onPressed,
+
             //splash effect is only present in android enviroment
             splashColor: (!isAndroid || disabled)
                 ? Colors.transparent
@@ -83,6 +89,7 @@ class Button extends StatelessWidget {
             /// color when the button is pressed
             highlightColor:
                 isAndroid ? Colors.transparent : Colors.black.withOpacity(0.1),
+
             customBorder:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
             child: Center(

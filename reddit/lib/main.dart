@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/Screens/create_community_test_screen.dart';
-import '../Components/Helpers/constants.dart';
-import 'dart:io' show Platform;
-import 'package:reddit/screens/bottom_sheet_test.dart';
-import 'package:reddit/components/button.dart';
+import 'package:reddit/screens/testing_screen.dart';
+import 'components/helpers/color_manager.dart';
+
 
 void main() {
   try {
@@ -21,6 +19,20 @@ class Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CreateCommunityTestScreen();
+
+    return MaterialApp(
+      theme: ThemeData(
+          textTheme: const TextTheme(
+              titleMedium: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: ColorManager.white,
+              ),
+              bodyMedium:
+                  TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
+      home: const TestingScreen(),
+    );
+    ;
+
   }
 }
