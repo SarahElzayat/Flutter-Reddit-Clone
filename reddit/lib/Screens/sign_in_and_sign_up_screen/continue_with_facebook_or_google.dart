@@ -1,7 +1,8 @@
 /// @author Abdelaziz Salah
 /// @date 6/11/2022
 /// these are the two buttons of continue with
-///  facebook and containue with google
+///  facebook and containue with google.
+
 import 'package:flutter/material.dart';
 import '../../components/Helpers/color_manager.dart';
 import '../../data/facebook_api/facebook_api.dart';
