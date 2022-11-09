@@ -9,7 +9,6 @@ import '../Components/Helpers/constants.dart';
 
 /// ignore: must_be_immutable
 class Button extends StatelessWidget {
-
   final String text;
 
   /// text written in button
@@ -17,7 +16,6 @@ class Button extends StatelessWidget {
 
   /// color of button text
   final Color backgroundColor;
-
 
   /// the width of the button
   final double buttonWidth;
@@ -38,11 +36,11 @@ class Button extends StatelessWidget {
   final VoidCallback onPressed;
 
   /// the width of the boarded
-  double _borderWidth = 1.0;
+  final double _borderWidth = 1.0;
 
+  final bool disabled;
 
   /// actual function of button when pressed
-  final double _borderWidth = 1.0;
 
   const Button(
       {super.key,

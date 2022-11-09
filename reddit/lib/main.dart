@@ -2,15 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:reddit/screens/testing_screen.dart';
 import 'components/helpers/color_manager.dart';
 
-
 void main() {
-  try {
-    if (Platform.isAndroid) {
-      isAndroid = true;
-    } else {
-      isAndroid = false;
-    }
-  } catch (e) {}
   runApp(const Main());
 }
 
@@ -19,7 +11,6 @@ class Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       theme: ThemeData(
           textTheme: const TextTheme(
@@ -32,7 +23,5 @@ class Main extends StatelessWidget {
                   TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
       home: const TestingScreen(),
     );
-    ;
-
   }
 }
