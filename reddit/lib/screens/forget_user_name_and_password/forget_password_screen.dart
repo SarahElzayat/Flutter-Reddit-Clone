@@ -4,6 +4,7 @@
 ///  if the user forgot his own username
 
 import 'package:flutter/material.dart';
+import 'package:reddit/data/sign_in_And_sign_up_models/validators.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/continue_button.dart';
 import 'package:reddit/screens/to_go_screens/having_trouble_screen.dart';
 import '../../data/sign_in_And_sign_up_models/login_forget_model.dart';
@@ -111,18 +112,24 @@ class ForgetPasswordScreen extends StatelessWidget {
                 ),
               ),
               ContinueButton(
-                appliedFunction: () {
-                  final user = LogInForgetModel(
-                      type: 'password',
-                      username: usernameController.text,
-                      email: emailController.text);
-                  DioHelper.postData(
-                          path: loginForgetPassword, data: user.toJson())
-                      .then((returnVal) {
-                    print(returnVal.toString());
-                  });
-                },
-              )
+                  isPressable: usernameController.text.isNotEmpty &&
+                      emailController.text.isNotEmpty,
+                  appliedFunction: () {
+                    if (Validator.validEmailValidator(emailController.text) &&
+                        Validator.validUserName(usernameController.text)) {
+                      final user = LogInForgetModel(
+                          type: 'password',
+                          username: usernameController.text,
+                          email: emailController.text);
+                      DioHelper.postData(
+                              path: loginForgetPassword, data: user.toJson())
+                          .then((returnVal) {
+                        print(returnVal.toString());
+                      });
+                    } else {
+                      print('something went wrong');
+                    }
+                  })
             ],
           ),
         ),

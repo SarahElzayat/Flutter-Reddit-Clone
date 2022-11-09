@@ -3,6 +3,7 @@
 /// this is the screen of creating new account for the users.
 
 import 'package:flutter/material.dart';
+import 'package:reddit/data/sign_in_And_sign_up_models/validators.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/continue_button.dart';
 import 'continue_with_facebook_or_google.dart';
 import 'sign_in_screen.dart';
@@ -14,12 +15,20 @@ import '../../components/helpers/color_manager.dart';
 import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
 
 // ignore: must_be_immutable
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   SignUpScreen({super.key});
 
   static const routeName = '/sign_up_route';
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController usernameController = TextEditingController();
+
   TextEditingController passwordController = TextEditingController();
+
   TextEditingController emailController = TextEditingController();
 
   @override
@@ -74,10 +83,29 @@ class SignUpScreen extends StatelessWidget {
                     DefaultTextField(
                       formController: emailController,
                       labelText: 'Email',
+                      icon: emailController.text.isNotEmpty
+                          ? IconButton(
+                              icon: const Icon(Icons.clear_rounded),
+                              onPressed: (() {
+                                setState(() {
+                                  emailController.text = '';
+                                });
+                              }))
+                          : null,
                     ),
                     DefaultTextField(
                       formController: usernameController,
                       labelText: 'Username',
+                      icon: usernameController.text.isNotEmpty ||
+                              usernameController.text != ''
+                          ? IconButton(
+                              icon: const Icon(Icons.clear_rounded),
+                              onPressed: (() {
+                                setState(() {
+                                  usernameController.text = '';
+                                });
+                              }))
+                          : null,
                     ),
                     DefaultTextField(
                       formController: passwordController,
@@ -99,18 +127,29 @@ class SignUpScreen extends StatelessWidget {
                       style: TextStyle(color: ColorManager.white),
                     ),
                     ContinueButton(
+                      isPressable: emailController.text.isNotEmpty &&
+                          usernameController.text.isNotEmpty &&
+                          passwordController.text.isNotEmpty,
                       appliedFunction: () async {
-                        /// TODO: remove this log out from here it is not its place
-                        // await FacebookLoginAPI.logOut();
-                        final user = SignUpModel(
-                            email: emailController.text,
-                            password: passwordController.text,
-                            username: usernameController.text);
+                        if (Validator.validEmailValidator(
+                                emailController.text) &&
+                            Validator.validPasswordValidation(
+                                passwordController.text) &&
+                            Validator.validUserName(usernameController.text)) {
+                          /// TODO: remove this log out from here it is not its place
+                          // await FacebookLoginAPI.logOut();
+                          final user = SignUpModel(
+                              email: emailController.text,
+                              password: passwordController.text,
+                              username: usernameController.text);
 
-                        DioHelper.postData(path: login, data: user.toJson())
-                            .then((value) {
-                          /// here we want to make sure that we got the correct response
-                        });
+                          DioHelper.postData(path: login, data: user.toJson())
+                              .then((value) {
+                            /// here we want to make sure that we got the correct response
+                          });
+                        } else {
+                          print('SomeThing went wrong');
+                        }
                       },
                     )
                   ],

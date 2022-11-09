@@ -4,6 +4,7 @@
 ///  if the user forgot his own username
 
 import 'package:flutter/material.dart';
+import 'package:reddit/data/sign_in_And_sign_up_models/validators.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/continue_button.dart';
 import 'package:reddit/screens/to_go_screens/having_trouble_screen.dart';
 import '../../networks/constant_end_points.dart';
@@ -94,15 +95,22 @@ class RecoverUserName extends StatelessWidget {
                       customAppBar.preferredSize.height,
                   width: mediaQuery.size.width,
                   padding: const EdgeInsets.all(6),
-                  child: ContinueButton(appliedFunction: () {
-                    final user = LogInForgetModel(
-                      email: emailController.text,
-                      type: 'username',
-                    );
+                  child: ContinueButton(
+                      isPressable: emailController.text.isNotEmpty,
+                      appliedFunction: () {
+                        if (Validator.validEmailValidator(
+                            emailController.text)) {
+                          final user = LogInForgetModel(
+                            email: emailController.text,
+                            type: 'username',
+                          );
 
-                    DioHelper.postData(
-                        path: loginForgetUserName, data: user.toJson());
-                  }))
+                          DioHelper.postData(
+                              path: loginForgetUserName, data: user.toJson());
+                        } else {
+                          print('Something went Wrong');
+                        }
+                      }))
             ],
           ),
         ),

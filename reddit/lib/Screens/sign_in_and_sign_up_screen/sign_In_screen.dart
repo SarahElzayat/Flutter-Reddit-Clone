@@ -3,6 +3,7 @@
 /// this is the screen of signing into the own account
 
 import 'package:flutter/material.dart';
+import 'package:reddit/data/sign_in_And_sign_up_models/validators.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/continue_button.dart';
 import '../../data/sign_in_And_sign_up_models/sign_in_model.dart';
 import '../../networks/constant_end_points.dart';
@@ -15,11 +16,17 @@ import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
 import 'continue_with_facebook_or_google.dart';
 
 // ignore: must_be_immutable
-class SignInScreen extends StatelessWidget {
+class SignInScreen extends StatefulWidget {
   SignInScreen({super.key});
   static const routeName = '/sign_in_route';
 
+  @override
+  State<SignInScreen> createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends State<SignInScreen> {
   TextEditingController usernameController = TextEditingController();
+
   TextEditingController passwordController = TextEditingController();
 
   @override
@@ -65,6 +72,14 @@ class SignInScreen extends StatelessWidget {
                     DefaultTextField(
                       formController: usernameController,
                       labelText: 'Username',
+                      icon: usernameController.text.isNotEmpty
+                          ? IconButton(
+                              icon: const Icon(Icons.clear),
+                              onPressed: () {
+                                usernameController.text = '';
+                              },
+                            )
+                          : null,
                     ),
                     DefaultTextField(
                       formController: passwordController,
@@ -102,20 +117,28 @@ class SignInScreen extends StatelessWidget {
                       style: TextStyle(color: ColorManager.white),
                     ),
                     ContinueButton(
+                      isPressable: (usernameController.text.isNotEmpty &&
+                          passwordController.text.isNotEmpty),
                       appliedFunction: () async {
                         /// TODO: remove this log out from here it is not its place
                         // await FacebookLoginAPI.logOut();
+                        if (Validator.validPasswordValidation(
+                                passwordController.text) &&
+                            Validator.validUserName(usernameController.text)) {
+                          LogInModel user = LogInModel(
+                              username: usernameController.text,
+                              password: passwordController.text);
 
-                        LogInModel user = LogInModel(
-                            username: usernameController.text,
-                            password: passwordController.text);
+                          DioHelper.postData(path: login, data: user.toJson())
+                              .then((value) {
+                            /// here we want to make sure that we got the correct response
+                          });
 
-                        DioHelper.postData(path: login, data: user.toJson())
-                            .then((value) {
-                          /// here we want to make sure that we got the correct response
-                        });
-
-                        print(user.toJson());
+                          print(user.toJson());
+                        } else {
+                          /// here we should  print
+                          print('SomeThing Went Wrong');
+                        }
                       },
                     )
                   ],
