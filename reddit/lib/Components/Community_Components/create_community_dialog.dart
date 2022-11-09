@@ -20,19 +20,20 @@ class CreateCommunityWeb extends StatefulWidget {
 class _CreateCommunityWindow extends State<CreateCommunityWeb> {
   CommunityTypes? _chosenCommunityType = CommunityTypes.public;
   bool? isAdultContent = false;
+  bool isEmpty = false;
   String communityName = '';
+  final String errorMessage = 'A community name is required';
 
   ///variables for handling the text field (still working on it)
   ///maximum number of letters a community name can have
   // ignore: prefer_final_fields
-  int _charachtersRemaining = 21;
+  int charachtersRemaining = 21;
 
   ///to control the text field
-  TextEditingController? _controller;
+  final TextEditingController _controller = TextEditingController();
 
   ///@param [communityName] current state of the text in the text field
-  ///changes continuosly while user is editin
-  _onChanged(communityName) {}
+  ///changes continuosly while user is editing
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +46,8 @@ class _CreateCommunityWindow extends State<CreateCommunityWeb> {
                 onPressed: () => _dialogBuilder(context))));
   }
 
-  ///This is the actual function that build the dialog(popup window) called in the build function
+  ///This is the actual function that build the dialog (popup window) called in the build function
   Future<void> _dialogBuilder(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
     return showDialog(
         context: context,
         builder: (BuildContext context) => StatefulBuilder(
@@ -117,18 +117,33 @@ class _CreateCommunityWindow extends State<CreateCommunityWeb> {
                           SizedBox(
                               height: 8.h,
                               child: SquareTextField(
-                                  formController: _controller,
-                                  maxLength: 21,
-                                  onChanged: _onChanged(communityName),
-                                  labelText: 'r/')),
-
+                                labelText: '',
+                                prefix: const Text('r/'),
+                                showSuffix: false,
+                                formController: _controller,
+                                maxLength: 21,
+                                onChanged: (communityName) => setState(() {
+                                  isEmpty = _controller.text.isEmpty;
+                                  charachtersRemaining =
+                                      21 - _controller.text.length;
+                                }),
+                                // validator: ,
+                              )),
+                          SizedBox(height: 2.h),
                           //Textfield
-                          Text('$_charachtersRemaining Characters remaining',
+                          Text('$charachtersRemaining Characters remaining',
                               style: TextStyle(
                                   fontSize: 11.sp,
                                   color: ColorManager.textGrey)),
-                          //const Text('data'),
-                          SizedBox(height: 5.h),
+                          //empty text field error message for now
+                          //will add validator later
+                          Text('A community name is required',
+                              style: TextStyle(
+                                  color: isEmpty
+                                      ? Colors.red
+                                      : ColorManager.greyBlack,
+                                  fontSize: 11.sp)),
+                          SizedBox(height: 2.h),
                           Text(
                             'Community type',
                             style: TextStyle(
@@ -270,9 +285,7 @@ class _CreateCommunityWindow extends State<CreateCommunityWeb> {
                       )),
                   actions: <Widget>[
                     Container(
-                      /// here you should mediaquery siize
-                      height: 60,
-
+                      height: 10.h,
                       width: double.infinity,
                       decoration: const BoxDecoration(
                           color: ColorManager.bottomWindowGrey,
@@ -299,7 +312,7 @@ class _CreateCommunityWindow extends State<CreateCommunityWeb> {
                               text: 'Create Community',
                               textColor: ColorManager.deepDarkGrey,
                               backgroundColor: ColorManager.eggshellWhite,
-                              buttonWidth: 12.w,
+                              buttonWidth: 14.w,
                               buttonHeight: 5.h,
                               textFontSize: 13.sp,
                               textFontWeight: FontWeight.bold,

@@ -24,6 +24,7 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
   /// boolean for the switch widget that indicates 18+ communities
   /// default is false
   bool isSwitched = false;
+  bool isEmpty = true;
 
   /// selected item from bottom sheet which indicate whether community
   /// is public, private, or restricted
@@ -35,6 +36,21 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
     Icons.check_circle,
     Icons.lock
   ];
+
+  final TextEditingController _controller = TextEditingController();
+  String communityName = '';
+
+  ///Disables button when text field is empty and enables it once user writes a community name
+  _onChanged() {
+    setState(() {
+      isEmpty = _controller.text.isEmpty;
+    });
+  }
+
+  ///Enabled button function to send create community request
+  _enabledButton() {
+    //do something
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +86,15 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
                     style: TextStyle(color: Colors.white, fontSize: 16.sp),
                   ),
                   SizedBox(height: 1.h),
-                  const SquareTextField(
-                      labelText: 'r/Community_name', maxLength: 21),
+                  SquareTextField(
+                    prefix: const Text('r/'),
+                    labelText: 'Community_name',
+                    maxLength: 21,
+                    formController: _controller,
+                    onChanged: (communityName) {
+                      _onChanged();
+                    },
+                  ),
                   InkWell(
                     onTap: () async {
                       _communityType = await modalBottomSheet(
@@ -132,7 +155,7 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
                         },
                         width: 15.w,
                         height: 5.h,
-                        toggleSize: 7.w,
+                        toggleSize: 4.h,
                         inactiveColor: ColorManager.darkGrey,
                         activeColor: ColorManager.darkBlueColor,
                       ),
@@ -142,12 +165,15 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
                   Button(
                       text: 'Create community',
                       textColor: Colors.white,
-                      backgroundColor: ColorManager.darkBlueColor,
+                      backgroundColor: isEmpty
+                          ? ColorManager.disabledButtonGrey
+                          : ColorManager.darkBlueColor,
                       buttonWidth: 100.w,
+                      disabled: isEmpty ? true : false,
                       buttonHeight: 7.h,
                       textFontSize: 18.sp,
                       textFontWeight: FontWeight.w600,
-                      onPressed: () {})
+                      onPressed: isEmpty ? () {} : _enabledButton)
                 ],
               ),
             ),
