@@ -1,3 +1,6 @@
+/// @author Sarah El-Zayat
+/// @date 9/11/2022
+/// The search screen on mobile
 import 'package:flutter/material.dart';
 import 'package:reddit/Screens/search/search_results_main_screen.dart';
 

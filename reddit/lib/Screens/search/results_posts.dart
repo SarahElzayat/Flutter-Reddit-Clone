@@ -1,3 +1,6 @@
+/// @author Sarah El-Zayat
+/// @date 9/11/2022
+/// this is the screen for the posts results of the main search
 import 'package:flutter/material.dart';
 
 

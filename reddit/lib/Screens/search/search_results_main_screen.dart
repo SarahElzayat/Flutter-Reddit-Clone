@@ -1,5 +1,7 @@
+/// @author Sarah El-Zayat
+/// @date 9/11/2022
+/// The screen that shows the main search results with the tab bar
 import 'package:flutter/material.dart';
-import 'package:reddit/Screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/Screens/search/results_comments.dart';
 import 'package:reddit/Screens/search/results_communities.dart';
 import 'package:reddit/Screens/search/results_media.dart';

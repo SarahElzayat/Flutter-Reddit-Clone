@@ -1,3 +1,6 @@
+/// @author Sarah El-Zayat
+/// @date 9/11/2022
+/// App bar of the application
 import 'package:flutter/material.dart';
 import 'package:reddit/components/app_bar_components.dart';
 import 'package:reddit/components/home_dropdown_menu.dart';
