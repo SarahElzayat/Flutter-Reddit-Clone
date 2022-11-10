@@ -3,7 +3,7 @@
 /// this is the screen of signing into the own account
 
 import 'package:flutter/material.dart';
-import 'package:reddit/data/sign_in_And_sign_up_models/validators.dart';
+import '../../../data/sign_in_And_sign_up_models/validators.dart';
 import '../../../data/sign_in_And_sign_up_models/sign_in_model.dart';
 import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
@@ -15,9 +15,8 @@ import '../../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/continue_button.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/continue_with_facebook_or_google.dart';
 
-// ignore: must_be_immutable
 class SignInScreen extends StatefulWidget {
-  SignInScreen({super.key});
+  const SignInScreen({super.key});
   static const routeName = '/sign_in_route';
 
   @override
@@ -28,7 +27,7 @@ class _SignInScreenState extends State<SignInScreen> {
   TextEditingController usernameController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
-
+  bool isEmptyText = true;
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -72,13 +71,25 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: Column(
                   children: [
                     DefaultTextField(
+                      onChanged: (myString) {
+                        setState(() {
+                          if (myString.isNotEmpty) {
+                            isEmptyText = false;
+                          } else {
+                            isEmptyText = true;
+                          }
+                        });
+                      },
                       formController: usernameController,
                       labelText: 'Username',
-                      icon: usernameController.text.isNotEmpty
+                      icon: !isEmptyText
                           ? IconButton(
                               icon: const Icon(Icons.clear),
                               onPressed: () {
-                                usernameController.text = '';
+                                setState(() {
+                                  usernameController.text = '';
+                                  isEmptyText = true;
+                                });
                               },
                             )
                           : null,

@@ -16,13 +16,22 @@ import '../../components/default_text_field.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
 
-// ignore: must_be_immutable
-class ForgetPasswordScreen extends StatelessWidget {
-  ForgetPasswordScreen({super.key});
+class ForgetPasswordScreen extends StatefulWidget {
+  const ForgetPasswordScreen({super.key});
   static const routeName = '/forget_password_screen_route';
 
+  @override
+  State<ForgetPasswordScreen> createState() => _ForgetPasswordScreenState();
+}
+
+class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   TextEditingController usernameController = TextEditingController();
+
   TextEditingController emailController = TextEditingController();
+
+  bool isEmptyUsername = true;
+
+  bool isEmptyEmail = true;
 
   @override
   Widget build(BuildContext context) {
@@ -60,10 +69,44 @@ class ForgetPasswordScreen extends StatelessWidget {
                       style: theme.textTheme.titleMedium,
                     ),
                     DefaultTextField(
+                      onChanged: (myString) {
+                        setState(() {
+                          if (myString.isNotEmpty) {
+                            isEmptyUsername = false;
+                          } else {
+                            isEmptyUsername = true;
+                          }
+                        });
+                      },
+                      icon: isEmptyUsername
+                          ? null
+                          : IconButton(
+                              onPressed: () => setState(() {
+                                    isEmptyUsername = true;
+                                    usernameController.text = '';
+                                  }),
+                              icon: const Icon(Icons.clear)),
                       labelText: 'Username',
                       formController: usernameController,
                     ),
                     DefaultTextField(
+                      onChanged: (myString) {
+                        setState(() {
+                          if (myString.isNotEmpty) {
+                            isEmptyEmail = false;
+                          } else {
+                            isEmptyEmail = true;
+                          }
+                        });
+                      },
+                      icon: isEmptyEmail
+                          ? null
+                          : IconButton(
+                              onPressed: () => setState(() {
+                                    isEmptyEmail = true;
+                                    emailController.text = '';
+                                  }),
+                              icon: const Icon(Icons.clear)),
                       labelText: 'Email',
                       formController: emailController,
                     ),

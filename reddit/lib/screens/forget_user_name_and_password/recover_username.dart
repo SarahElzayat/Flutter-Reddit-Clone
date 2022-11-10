@@ -15,13 +15,20 @@ import '../../components/default_text_field.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
 
-// ignore: must_be_immutable
-class RecoverUserName extends StatelessWidget {
-  RecoverUserName({super.key});
-
-  TextEditingController emailController = TextEditingController();
+class RecoverUserName extends StatefulWidget {
+  const RecoverUserName({super.key});
 
   static const routeName = '/recover_user_name_route';
+
+  @override
+  State<RecoverUserName> createState() => _RecoverUserNameState();
+}
+
+class _RecoverUserNameState extends State<RecoverUserName> {
+  TextEditingController emailController = TextEditingController();
+
+  /// detects whethere the email field is empty or not
+  bool isEmptyEmail = true;
   @override
   Widget build(BuildContext context) {
     final navigator = Navigator.of(context);
@@ -61,7 +68,25 @@ class RecoverUserName extends StatelessWidget {
                       style: theme.textTheme.titleMedium,
                     ),
                     DefaultTextField(
-                        formController: emailController, labelText: 'Email'),
+                        onChanged: (myString) {
+                          setState(() {
+                            if (myString.isNotEmpty) {
+                              isEmptyEmail = false;
+                            } else {
+                              isEmptyEmail = true;
+                            }
+                          });
+                        },
+                        icon: isEmptyEmail
+                            ? null
+                            : IconButton(
+                                onPressed: () => setState(() {
+                                      isEmptyEmail = true;
+                                      emailController.text = '';
+                                    }),
+                                icon: const Icon(Icons.clear)),
+                        formController: emailController,
+                        labelText: 'Email'),
                     Text(
                       'Unfortunately, if you have never given us your email,'
                       'we will not be able to reset your password.',

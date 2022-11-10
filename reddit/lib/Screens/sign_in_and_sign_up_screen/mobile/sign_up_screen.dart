@@ -31,6 +31,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   TextEditingController emailController = TextEditingController();
 
+  bool isEmptyEmail = true;
+  bool isEmptyUserName = true;
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -81,6 +83,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Column(
                   children: [
                     DefaultTextField(
+                      onChanged: (myString) {
+                        setState(() {
+                          if (myString.isNotEmpty) {
+                            isEmptyEmail = false;
+                          } else {
+                            isEmptyEmail = true;
+                          }
+                        });
+                      },
                       formController: emailController,
                       labelText: 'Email',
                       icon: emailController.text.isNotEmpty
@@ -89,11 +100,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               onPressed: (() {
                                 setState(() {
                                   emailController.text = '';
+                                  isEmptyEmail = true;
                                 });
                               }))
                           : null,
                     ),
                     DefaultTextField(
+                      onChanged: (myString) {
+                        setState(() {
+                          if (myString.isNotEmpty) {
+                            isEmptyUserName = false;
+                          } else {
+                            isEmptyUserName = true;
+                          }
+                        });
+                      },
                       formController: usernameController,
                       labelText: 'Username',
                       icon: usernameController.text.isNotEmpty ||
@@ -102,6 +123,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               icon: const Icon(Icons.clear_rounded),
                               onPressed: (() {
                                 setState(() {
+                                  isEmptyUserName = true;
                                   usernameController.text = '';
                                 });
                               }))
