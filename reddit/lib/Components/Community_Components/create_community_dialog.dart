@@ -7,7 +7,7 @@ import 'package:reddit/Components/Helpers/color_manager.dart';
 import 'package:reddit/Components/Helpers/enums.dart';
 import 'package:reddit/Components/square_text_field.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../Button.dart';
+import '../button.dart';
 
 class CreateCommunityWeb extends StatefulWidget {
   const CreateCommunityWeb({super.key});
