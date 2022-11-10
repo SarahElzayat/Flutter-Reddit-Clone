@@ -8,7 +8,7 @@ import '../../../data/sign_in_And_sign_up_models/sign_in_model.dart';
 import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
 import '../../../screens/forget_user_name_and_password/forget_password_screen.dart';
-import '../../../screens/sign_in_and_sign_up_screen/sign_up_screen.dart';
+import '../../../screens/sign_in_and_sign_up_screen/mobile/sign_up_screen.dart';
 import '../../../components/default_text_field.dart';
 import '../../../components/helpers/color_manager.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
@@ -63,7 +63,9 @@ class _SignInScreenState extends State<SignInScreen> {
                 flex: 2,
                 child: SizedBox(
                     height: mediaQuery.size.height * 0.18,
-                    child: const ContinueWithGoOrFB()),
+                    child: ContinueWithGoOrFB(
+                      width: mediaQuery.size.width,
+                    )),
               ),
               Expanded(
                 flex: 3,

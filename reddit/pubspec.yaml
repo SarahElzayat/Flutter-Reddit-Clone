@@ -71,6 +71,7 @@ flutter:
   assets:
     - .env
     - assets/images/Logo.png
+    - assets/images/WebSideBarBackGroundImage.png
     - assets/icons/googleIcon.png
     - assets/icons/facebookIcon.png
     - assets/icons/appIcon.png

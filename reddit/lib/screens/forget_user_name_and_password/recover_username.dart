@@ -10,7 +10,7 @@ import 'package:reddit/screens/to_go_screens/having_trouble_screen.dart';
 import '../../networks/constant_end_points.dart';
 import '../../networks/dio_helper.dart';
 import '../../data/sign_in_And_sign_up_models/login_forget_model.dart';
-import '../sign_in_and_sign_up_screen/sign_in_screen.dart';
+import '../sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import '../../components/default_text_field.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';

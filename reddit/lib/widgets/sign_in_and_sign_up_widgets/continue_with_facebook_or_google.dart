@@ -9,7 +9,9 @@ import '../../data/facebook_api/facebook_api.dart';
 import '../../data/google_api/google_sign_in_api.dart';
 
 class ContinueWithGoOrFB extends StatelessWidget {
-  const ContinueWithGoOrFB({super.key});
+  const ContinueWithGoOrFB({super.key, required this.width});
+
+  final width;
 
   Future signInWithGoogle() async {
     await GoogleSignInApi.login();
@@ -44,7 +46,7 @@ class ContinueWithGoOrFB extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: mediaQuery.size.width * 0.15,
+                  width: width * 0.15,
                 ),
                 Text(
                   'Continue with google',
@@ -74,7 +76,7 @@ class ContinueWithGoOrFB extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: mediaQuery.size.width * 0.15,
+                  width: width * 0.15,
                 ),
                 Text(
                   'Continue with facebook',
