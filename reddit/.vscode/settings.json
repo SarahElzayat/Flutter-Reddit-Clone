@@ -6,5 +6,6 @@
                 "italic": true
             }
         }
-    }
+    },
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
