@@ -41,6 +41,7 @@ dependencies:
   flutter_markdown: ^0.6.12
   flutter_svg: 
   hexcolor: ^3.0.1
+  dots_indicator:
   intl: ^0.17.0
   lint: ^1.10.0
   markdown: ^6.0.1
