@@ -1,18 +1,19 @@
-/// Author @yasmineghanem
-/// Date: 25/10/2022
+/// @author yasmineghanem
+/// @date: 25/10/2022
 /// Reuasable custom button component
 
 import 'package:flutter/material.dart';
+import 'package:reddit/Components/Helpers/color_manager.dart';
+import '../Components/Helpers/constants.dart';
 
 /// ignore: must_be_immutable
 class Button extends StatelessWidget {
-  ///text written in button
   final String text;
 
-  /// color of the text
+  /// text written in button
   final Color textColor;
 
-  /// the background color of the button
+  /// color of button text
   final Color backgroundColor;
 
   /// the width of the button
@@ -34,7 +35,11 @@ class Button extends StatelessWidget {
   final VoidCallback onPressed;
 
   /// the width of the boarded
-  double _borderWidth = 1.0;
+  final double _borderWidth = 1.0;
+
+  final bool disabled;
+
+  /// actual function of button when pressed
 
   ///boarder radius of the button
   double? boarderRadius = 50;
@@ -49,6 +54,7 @@ class Button extends StatelessWidget {
       this.textFontWeight,
       this.borderColor,
       this.boarderRadius,
+      this.disabled = false,
       required this.onPressed});
 
   @override
@@ -75,8 +81,15 @@ class Button extends StatelessWidget {
           child: InkWell(
             onTap: onPressed,
 
+            //splash effect is only present in android enviroment
+            splashColor: (!isAndroid || disabled)
+                ? Colors.transparent
+                : ColorManager.downvoteBlue,
+
             /// color when the button is pressed
-            highlightColor: Colors.black.withOpacity(0.1),
+            highlightColor:
+                isAndroid ? Colors.transparent : Colors.black.withOpacity(0.1),
+
             customBorder:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
             child: Center(
