@@ -4,8 +4,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:reddit/data/sign_in_And_sign_up_models/validators.dart';
-import 'package:reddit/screens/sign_in_and_sign_up_screen/continue_button.dart';
-import 'continue_with_facebook_or_google.dart';
+import '../../widgets/sign_in_and_sign_up_widgets/continue_button.dart';
+import '../../widgets/sign_in_and_sign_up_widgets/continue_with_facebook_or_google.dart';
 import 'sign_in_screen.dart';
 import '../../data/sign_in_And_sign_up_models/sign_up_model.dart';
 import '../../networks/constant_end_points.dart';
