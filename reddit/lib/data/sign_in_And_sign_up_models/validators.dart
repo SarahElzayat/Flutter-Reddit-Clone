@@ -1,3 +1,8 @@
+/// @author Abdelaziz Salah
+/// @date 9/11/2022
+/// this class contains the validation functions for the password and username
+/// and the email.
+
 class Validator {
   /// this is a utility function which detects whethere the password length
   /// is enough or not.
@@ -22,6 +27,6 @@ class Validator {
   /// 1- if it is not empty.
   /// and it returns [False] otherwise.
   static bool validUserName(String username) {
-    return username.isNotEmpty && (username.length > 3 && username.length < 20);
+    return username.isNotEmpty && (username.length > 2 && username.length < 21);
   }
 }

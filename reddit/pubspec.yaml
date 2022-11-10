@@ -46,7 +46,10 @@ dependencies:
 dev_dependencies:
   flutter_launcher_icons: ^0.10.0
   flutter_lints: ^2.0.0
+  mocktail: ^0.2.0
   flutter_test:
+    sdk: flutter
+  integration_test:
     sdk: flutter
 
 flutter_icons:
@@ -66,6 +69,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
 
   assets:
+    - .env
     - assets/images/Logo.png
     - assets/icons/googleIcon.png
     - assets/icons/facebookIcon.png
