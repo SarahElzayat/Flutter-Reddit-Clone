@@ -3,7 +3,6 @@
 /// Reuasable custom button component
 
 import 'package:flutter/material.dart';
-
 import 'package:reddit/Components/Helpers/color_manager.dart';
 import '../Components/Helpers/constants.dart';
 
@@ -45,7 +44,6 @@ class Button extends StatelessWidget {
   ///boarder radius of the button
   double? boarderRadius = 50;
   Button(
->>>>>>>>> Temporary merge branch 2
       {super.key,
       required this.text,
       required this.textColor,

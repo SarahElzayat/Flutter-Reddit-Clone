@@ -17,6 +17,7 @@ class SquareTextField extends StatefulWidget {
       this.formController,
       this.onChanged,
       this.onSubmitted,
+      this.onEditingComplete,
       this.validator,
       this.showSuffix = true,
       this.showPrefix = true,
@@ -49,6 +50,9 @@ class SquareTextField extends StatefulWidget {
 
   /// Called when the text is submitted.
   final void Function(String)? onSubmitted;
+
+  /// Called when the textField is finished Editing.
+  final void Function()? onEditingComplete;
 
   /// Called when [validate] is called.
   final String? Function(String?)? validator;
@@ -88,7 +92,12 @@ class SquareTextFieldState extends State<SquareTextField> {
             widget.onChanged!(value);
           }
         });
+
+        if (widget.onChanged != null) {
+          widget.onChanged!(value);
+        }
       },
+      onEditingComplete: widget.onEditingComplete,
       keyboardType: widget.keyboardType,
       onFieldSubmitted: widget.onSubmitted,
       style: const TextStyle(color: ColorManager.lightGrey),

@@ -27,7 +27,7 @@ class ColorManager {
   static const Color hoverGrey =
       Color(0xff171d21); //colorless buttons when hovered
 
-  static Color grey = const Color(0xff2f3435); //buttons when hovered
+  static const Color grey = Color(0xff2f3435); //buttons when hovered
 
   static const Color disabledButtonGrey =
       Color(0xff5f5f5f); //buttons when hovered
@@ -38,6 +38,7 @@ class ColorManager {
       Color(0xff1d1f20); //text form field when not focused
 
   static const Color eggshellWhite = Color(0xffd6d3cd); //general text
+  static const Color black = Color(0xff0a0a0a); //background color of the app
 
   static const Color blue = Color(
       0xff47aef8); //blue buttons, some borders, selected filter(hot, trending...)
