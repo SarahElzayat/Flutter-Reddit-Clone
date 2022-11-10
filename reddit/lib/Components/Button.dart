@@ -42,7 +42,9 @@ class Button extends StatelessWidget {
 
   /// actual function of button when pressed
 
-  const Button(
+  ///boarder radius of the button
+  double? boarderRadius = 50;
+  Button(
       {super.key,
       required this.text,
       required this.textColor,
@@ -53,6 +55,7 @@ class Button extends StatelessWidget {
       this.textFontWeight,
       this.borderColor,
       this.disabled = false,
+      this.boarderRadius,
       required this.onPressed});
 
   @override
@@ -67,8 +70,8 @@ class Button extends StatelessWidget {
           decoration: BoxDecoration(
               color: backgroundColor,
 
-              /// button background color
-              borderRadius: BorderRadius.circular(50),
+              ///button background color
+              borderRadius: BorderRadius.circular(boarderRadius!),
 
               /// for circular buttons
               border: Border.all(
