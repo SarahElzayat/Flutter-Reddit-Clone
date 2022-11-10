@@ -1,3 +1,4 @@
+
 name: reddit
 description: A new Flutter project.
 
@@ -29,30 +30,46 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  dio: ^4.0.6
-  google_sign_in: ^5.0.3
+  bloc: ^8.1.0
+  conditional_builder_null_safety: ^0.0.6
   cupertino_icons: ^1.0.2
+  dio: ^4.0.6
+  dots_indicator: null
+  dotted_border: null
+  dropdown_button2: ^1.8.9
+  dropdown_textfield: ^1.0.6
+  file_picker: ^4.6.0
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.1.1
+  flutter_html: ^2.2.1
   flutter_lorem: ^2.0.0
-  dotted_border: ^2.0.0+3
+  flutter_markdown: ^0.6.12
   flutter_painter: ^1.0.1
-  file_picker: ^4.6.0
-  share: ^2.0.4
-
-  responsive_sizer: ^3.1.1
+  flutter_slider_drawer: ^2.1.1
+  flutter_svg: null
   flutter_switch: ^0.3.2
-  kumi_popup_window: ^2.0.0-nullsafety
-
+  google_sign_in: ^5.0.3
+  hexcolor: ^3.0.1
+  html_editor_enhanced: ^2.5.0
   image_cropper: ^3.0.1
   image_painter: ^0.4.6
   image_picker: ^0.8.6
+  intl: ^0.17.0
+  kumi_popup_window: ^2.0.0-nullsafety
+  lint: ^1.10.0
+  markdown: ^6.0.1
   path_provider: ^2.0.11
+  photo_view: ^0.14.0
+  responsive_builder: ^0.4.3
+  responsive_sizer: ^3.1.1
+  share: ^2.0.4
+  shared_preferences: ^2.0.15
+  timeago: ^3.3.0
+  top_modal_sheet: ^2.0.1
   video_player: ^2.4.7
   video_thumbnail: ^0.5.3
   video_trimmer: ^2.0.1
-  html_editor_enhanced: ^2.5.0
-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -84,8 +101,6 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
-
-
   assets:
     - .env
     - assets/images/Logo.png

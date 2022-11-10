@@ -7,5 +7,9 @@
             }
         }
     },
+<<<<<<< HEAD
+    "java.configuration.updateBuildConfiguration": "disabled"
+=======
     "java.configuration.updateBuildConfiguration": "interactive"
+>>>>>>> Development
 }
