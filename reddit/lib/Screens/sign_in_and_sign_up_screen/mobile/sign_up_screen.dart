@@ -4,15 +4,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:reddit/data/sign_in_And_sign_up_models/validators.dart';
-import '../../widgets/sign_in_and_sign_up_widgets/continue_button.dart';
-import '../../widgets/sign_in_and_sign_up_widgets/continue_with_facebook_or_google.dart';
 import 'sign_in_screen.dart';
-import '../../data/sign_in_And_sign_up_models/sign_up_model.dart';
-import '../../networks/constant_end_points.dart';
-import '../../networks/dio_helper.dart';
-import '../../components/default_text_field.dart';
-import '../../components/helpers/color_manager.dart';
-import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
+import '../../../widgets/sign_in_and_sign_up_widgets/continue_button.dart';
+import '../../../widgets/sign_in_and_sign_up_widgets/continue_with_facebook_or_google.dart';
+import '../../../data/sign_in_And_sign_up_models/sign_up_model.dart';
+import '../../../networks/constant_end_points.dart';
+import '../../../networks/dio_helper.dart';
+import '../../../components/default_text_field.dart';
+import '../../../components/helpers/color_manager.dart';
+import '../../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
 
 // ignore: must_be_immutable
 class SignUpScreen extends StatefulWidget {
