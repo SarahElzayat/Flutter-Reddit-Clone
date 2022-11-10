@@ -294,22 +294,6 @@ class _CreateCommunityWindow extends State<CreateCommunityWeb> {
                       child: Row(
                         children: [
                           const Spacer(),
-
-                          ///
-                          ///required this.text,
-                          // required this.textColor,
-                          // required this.backgroundColor,
-                          // required this.buttonWidth,
-                          // required this.buttonHeight,
-                          // required this.textFontSize,
-                          // this.textFontWeight,
-                          // this.borderColor,
-                          // this.boarderRadius,
-                          // this.disabled = false,
-                          // required this.onPressed
-                          ///
-                          ///
-
                           Button(
                               text: 'Cancel',
                               textColor: ColorManager.eggshellWhite,
