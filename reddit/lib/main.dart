@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
+import './components/helpers/color_manager.dart';
 import './screens/forget_user_name_and_password/forget_password_screen.dart';
 import './screens/forget_user_name_and_password/recover_username.dart';
 import './screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
