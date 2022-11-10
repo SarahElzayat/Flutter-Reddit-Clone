@@ -10,10 +10,12 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'components/helpers/bloc_observer.dart';
 import 'cubit/app_cubit.dart';
 import 'screens/forget_user_name_and_password/forget_password_screen.dart';
+import 'screens/main_screen.dart';
 import 'screens/sign_in_and_sign_up_screen/sign_In_screen.dart';
 import 'screens/sign_in_and_sign_up_screen/sign_up_screen.dart';
 import 'screens/testing_screen.dart';
 import 'shared/local/shared_preferences.dart';
+import 'theme/theme_data.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,41 +63,10 @@ class Main extends StatelessWidget {
                 },
                 onUnknownRoute: (settings) {
                   return MaterialPageRoute(
-                      builder: (ctx) => const TestingScreen());
+                      builder: (ctx) => const MainScreen());
                 },
                 debugShowCheckedModeBanner: false,
-                theme: ThemeData(
-                    scaffoldBackgroundColor: ColorManager.black,
-                    inputDecorationTheme: const InputDecorationTheme(
-                      hintStyle: TextStyle(color: ColorManager.grey),
-                      alignLabelWithHint: true,
-                    ),
-                    colorScheme: const ColorScheme(
-                      onError: ColorManager.white,
-                      brightness: Brightness.dark,
-                      primaryContainer: ColorManager.blue,
-                      secondaryContainer: ColorManager.blue,
-                      inverseSurface: ColorManager.blue,
-                      errorContainer: ColorManager.white,
-                      background: ColorManager.blue,
-                      onSurface: ColorManager.white,
-                      primary: ColorManager.white,
-                      secondary: ColorManager.white,
-                      surface: ColorManager.white,
-                      error: ColorManager.white,
-                      onBackground: ColorManager.white,
-                      onPrimary: ColorManager.white,
-                      onSecondary: ColorManager.white,
-                      outline: ColorManager.white,
-                    ),
-                    textTheme: const TextTheme(
-                        titleMedium: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: ColorManager.eggshellWhite,
-                        ),
-                        bodyMedium: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold))),
+                theme: appTheme(),
               );
             },
           );
