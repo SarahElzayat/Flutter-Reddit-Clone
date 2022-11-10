@@ -1,33 +1,19 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-
-import './components/helpers/color_manager.dart';
-import './screens/forget_user_name_and_password/forget_password_screen.dart';
-import './screens/forget_user_name_and_password/recover_username.dart';
-import './screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
-import './screens/sign_in_and_sign_up_screen/mobile/sign_up_screen.dart';
-import './screens/to_go_screens/having_trouble_screen.dart';
-import './screens/to_go_screens/privacy_and_policy.dart';
-import '/screens/testing_screen.dart';
-import 'networks/dio_helper.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/Components/helpers/color_manager.dart';
-import 'package:reddit/networks/dio_helper.dart';
-import 'package:reddit/screens/forget_user_name_and_password/recover_username.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
+import 'networks/dio_helper.dart';
 import 'components/helpers/bloc_observer.dart';
 import 'cubit/app_cubit.dart';
-import 'screens/forget_user_name_and_password/forget_password_screen.dart';
-import 'screens/main_screen.dart';
-import 'screens/sign_in_and_sign_up_screen/sign_In_screen.dart';
-import 'screens/sign_in_and_sign_up_screen/sign_up_screen.dart';
-import 'screens/testing_screen.dart';
 import 'shared/local/shared_preferences.dart';
 import 'theme/theme_data.dart';
+
+import 'screens/forget_user_name_and_password/forget_password_screen.dart';
+import 'screens/forget_user_name_and_password/recover_username.dart';
+import 'screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
+import 'screens/sign_in_and_sign_up_screen/mobile/sign_up_screen.dart';
+import 'screens/main_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,7 +31,6 @@ Future<void> main() async {
     CacheHelper.putData(key: 'isAndroid', value: false);
     CacheHelper.putData(key: 'isWindows', value: true);
   }
-
 
   /// this is used to insure that every thing has been initialized well
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,11 +53,11 @@ class Main extends StatelessWidget {
               return MaterialApp(
                 initialRoute: '/',
                 routes: {
-                  RecoverUserName.routeName: (ctx) => RecoverUserName(),
+                  RecoverUserName.routeName: (ctx) => const RecoverUserName(),
                   SignUpScreen.routeName: (ctx) => SignUpScreen(),
-                  SignInScreen.routeName: (ctx) => SignInScreen(),
+                  SignInScreen.routeName: (ctx) => const SignInScreen(),
                   ForgetPasswordScreen.routeName: (ctx) =>
-                      ForgetPasswordScreen(),
+                      const ForgetPasswordScreen(),
                 },
                 onUnknownRoute: (settings) {
                   return MaterialPageRoute(
