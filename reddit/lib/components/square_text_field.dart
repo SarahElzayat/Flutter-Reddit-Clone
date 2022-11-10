@@ -3,23 +3,26 @@
 /// @author: Ahmed Atta
 
 import 'package:flutter/material.dart';
-import '../components/helpers/color_manager.dart';
+import '../Components/Helpers/color_manager.dart';
 
 class SquareTextField extends StatefulWidget {
   /// Creates an [SquareTextField].
   /// it's used in many places in the app like in Add Comment and Add Community screens
   /// the [labelText] is required.
-  const SquareTextField({
-    Key? key,
-    required this.labelText,
-    this.keyboardType = TextInputType.text,
-    this.maxLength,
-    this.formController,
-    this.onChanged,
-    this.onSubmitted,
-    this.validator,
-    this.showSuffix = true,
-  }) : super(key: key);
+  const SquareTextField(
+      {Key? key,
+      required this.labelText,
+      this.keyboardType = TextInputType.text,
+      this.maxLength,
+      this.formController,
+      this.onChanged,
+      this.onSubmitted,
+      this.onEditingComplete,
+      this.validator,
+      this.showSuffix = true,
+      this.showPrefix = true,
+      this.prefix})
+      : super(key: key);
 
   /// The text to display in the label.
   final String labelText;
@@ -38,11 +41,18 @@ class SquareTextField extends StatefulWidget {
   /// Default to [true].
   final bool showSuffix;
 
+  final bool showPrefix;
+
+  final dynamic prefix;
+
   /// Called when the text being edited changes.
   final void Function(String)? onChanged;
 
   /// Called when the text is submitted.
   final void Function(String)? onSubmitted;
+
+  /// Called when the textField is finished Editing.
+  final void Function()? onEditingComplete;
 
   /// Called when [validate] is called.
   final String? Function(String?)? validator;
@@ -78,15 +88,38 @@ class SquareTextFieldState extends State<SquareTextField> {
       onChanged: (value) {
         setState(() {
           textLength = value.length;
+          if (widget.onChanged != null) {
+            widget.onChanged!(value);
+          }
         });
+
+        if (widget.onChanged != null) {
+          widget.onChanged!(value);
+        }
       },
+      onEditingComplete: widget.onEditingComplete,
       keyboardType: widget.keyboardType,
       onFieldSubmitted: widget.onSubmitted,
       style: const TextStyle(color: ColorManager.lightGrey),
       decoration: InputDecoration(
         hintText: widget.labelText,
+        counterText: '',
         filled: true,
         fillColor: ColorManager.darkGrey,
+        // prefix: widget.showPrefix ? widget.prefix : null,
+        prefixIcon: widget.showPrefix
+            ? Padding(
+                padding: const EdgeInsets.fromLTRB(10, 8, 0, 10),
+                child: widget.prefix
+                // Text(
+                //   widget.prefix,
+                //   style: TextStyle(
+                //       color: isAndroid
+                //           ? ColorManager.lightGrey
+                //           : ColorManager.textGrey),
+                // ),
+                )
+            : null,
         suffixIconConstraints: const BoxConstraints(),
         suffixIcon: widget.showSuffix
             ? Padding(

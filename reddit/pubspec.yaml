@@ -31,6 +31,9 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   bloc: ^8.1.0
+  conditional_builder_null_safety: ^0.0.6
+  dio: ^4.0.6
+  google_sign_in: ^5.0.3
   cupertino_icons: ^1.0.2
   dropdown_button2: ^1.8.9
   dropdown_textfield: ^1.0.6
@@ -43,6 +46,38 @@ dependencies:
   share: ^2.0.4
   shared_preferences: ^2.0.15
   top_modal_sheet: ^2.0.1
+  flutter_markdown: ^0.6.12
+  flutter_svg: 
+  hexcolor: ^3.0.1
+  dots_indicator:
+  intl: ^0.17.0
+  markdown: ^6.0.1
+  photo_view: ^0.14.0
+  responsive_builder: ^0.4.3
+  responsive_sizer: ^3.1.1
+  dotted_border: 
+  flutter_painter: ^1.0.1
+  file_picker: ^4.6.0
+
+  flutter_switch: ^0.3.2
+  kumi_popup_window: ^2.0.0-nullsafety
+
+  image_cropper: ^3.0.1
+  image_painter: ^0.4.6
+  image_picker: ^0.8.6
+  path_provider: ^2.0.11
+  video_player: ^2.4.7
+  video_thumbnail: ^0.5.3
+  video_trimmer: ^2.0.1
+  html_editor_enhanced: ^2.5.0
+  timeago: ^3.3.0
+
+  
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  # cupertino_icons: ^1.0.2
+
 dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
@@ -60,6 +95,10 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+
+    
+  #   - images/a_dot_burr.jpeg
+
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
