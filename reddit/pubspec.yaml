@@ -31,8 +31,9 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   conditional_builder_null_safety: ^0.0.6
+  dio: ^4.0.6
+  google_sign_in: ^5.0.3
   cupertino_icons: ^1.0.2
-  dots_indicator: ^2.1.0
   flutter:
     sdk: flutter
   flutter_html: 

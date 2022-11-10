@@ -48,6 +48,9 @@ class ColorManager {
 
   static const Color downvoteBlue =
       Color(0xff69adff); //arrow color when downvote is pressed
+
+  static const Color darkBlue =
+      Color.fromARGB(255, 8, 57, 117); //arrow color when downvote is pressed
   static const Color upvoteRed =
       Color(0xffff581a); //arrow color when upvote is pressed
 
@@ -68,6 +71,5 @@ class ColorManager {
 
   static const Color yellow = Colors.yellow;
 
-  static const Color textFieldBackground =
-      const Color.fromARGB(255, 59, 58, 58);
+  static const Color textFieldBackground = Color.fromARGB(255, 59, 58, 58);
 }
