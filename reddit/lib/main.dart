@@ -16,6 +16,7 @@ import 'screens/testing_screen.dart';
 import 'shared/local/shared_preferences.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
   await CacheHelper.init();
   try {
