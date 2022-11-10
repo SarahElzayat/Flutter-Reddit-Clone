@@ -1,0 +1,13 @@
+{
+    "configurations": [
+        {
+            "name": "reddit",
+            "type": "dart",
+            "request": "launch",
+            "args": [
+                "--web-port",
+                "5000"
+            ]
+        }
+    ]
+}

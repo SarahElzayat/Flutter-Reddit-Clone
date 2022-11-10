@@ -3,11 +3,11 @@
 ///Create community window for web
 
 import 'package:flutter/material.dart';
+import 'package:reddit/Components/Button.dart';
 import 'package:reddit/Components/Helpers/color_manager.dart';
 import 'package:reddit/Components/Helpers/enums.dart';
 import 'package:reddit/Components/square_text_field.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../button.dart';
 
 class CreateCommunityWeb extends StatefulWidget {
   const CreateCommunityWeb({super.key});
@@ -301,11 +301,7 @@ class _CreateCommunityWindow extends State<CreateCommunityWeb> {
                               buttonWidth: 7.w,
                               buttonHeight: 5.h,
                               textFontSize: 13.sp,
-                              borderColor: ColorManager.eggshellWhite,
-                              textFontWeight: FontWeight.bold,
                               onPressed: () =>
-
-                                  ///to return to home page
                                   Navigator.pop(context, 'Cancel')),
                           SizedBox(width: 1.w),
                           Button(
