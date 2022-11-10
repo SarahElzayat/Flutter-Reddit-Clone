@@ -8,7 +8,7 @@ class ColorManager {
   static const Color primaryColor =
       Color(0xffcc3700); //primary color of the application
 
-  static const Color white = Colors.white; //white color
+  static const Color white = Colors.white; //white color of the application
 
   static const Color hoverOrange =
       Color(0xffbe3502); //orange buttons when hovered
@@ -67,4 +67,8 @@ class ColorManager {
   static const Color bottomSheetBackgound = Color(0xFF212121);
   static const Color bottomSheetTitle = Color.fromRGBO(129, 131, 132, 1);
   static const Color unselectedItem = Color.fromRGBO(86, 87, 88, 1);
+
+  static const Color yellow = Colors.yellow;
+
+  static const Color textFieldBackground = Color.fromARGB(255, 59, 58, 58);
 }
