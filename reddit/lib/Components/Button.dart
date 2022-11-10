@@ -1,43 +1,51 @@
-/// Author @yasmineghanem
-/// Date: 25/10/2022
+/// @author yasmineghanem
+/// @date: 25/10/2022
 /// Reuasable custom button component
 
 import 'package:flutter/material.dart';
+
+import 'package:reddit/Components/Helpers/color_manager.dart';
+import '../Components/Helpers/constants.dart';
 
 /// ignore: must_be_immutable
 class Button extends StatelessWidget {
   final String text;
 
-  ///text written in button
+  /// text written in button
   final Color textColor;
 
-  ///color of button text
+  /// color of button text
   final Color backgroundColor;
 
-  ///color of the button
+  /// the width of the button
   final double buttonWidth;
 
-  ///for size of button
+  /// the height of the button
   final double buttonHeight;
 
-  ///for size of button
+  /// the fontWeight of the text as the weight.
   final FontWeight? textFontWeight;
 
-  ///font size of text
+  /// the font size
   final double textFontSize;
 
-  ///weight of font (normal/bold/...)
+  /// the color of the border.
   final Color? borderColor;
 
-  ///border color if it exists
+  /// the function that should be executed when the button is pressed.
   final VoidCallback onPressed;
 
-  ///actual function of button when pressed
-  double _borderWidth = 1.0;
+  /// the width of the boarded
+  final double _borderWidth = 1.0;
+
+  final bool disabled;
+
+  /// actual function of button when pressed
 
   ///boarder radius of the button
   double? boarderRadius = 50;
   Button(
+>>>>>>>>> Temporary merge branch 2
       {super.key,
       required this.text,
       required this.textColor,
@@ -48,6 +56,7 @@ class Button extends StatelessWidget {
       this.textFontWeight,
       this.borderColor,
       this.boarderRadius,
+      this.disabled = false,
       required this.onPressed});
 
   @override
@@ -57,40 +66,51 @@ class Button extends StatelessWidget {
       width: buttonWidth,
       height: buttonHeight,
       child: Material(
-          child: Ink(
-        decoration: BoxDecoration(
-            color: backgroundColor,
+        color: Colors.transparent,
+        child: Ink(
+          decoration: BoxDecoration(
+              color: backgroundColor,
 
-            ///button background color
-            borderRadius: BorderRadius.circular(boarderRadius!),
+              ///button background color
+              borderRadius: BorderRadius.circular(boarderRadius!),
 
-            ///for circular buttons
-            border: Border.all(
-              color: borderColor ?? backgroundColor,
+              /// for circular buttons
+              border: Border.all(
+                /// if border color is not passed set it to background color
+                color: borderColor == null ? backgroundColor : borderColor!,
+                width: borderColor == null ? 0 : _borderWidth,
+              )),
+          child: InkWell(
+            onTap: onPressed,
 
-              ///if border color is not passed set it to background color
-              width: _borderWidth = borderColor == null ? 0 : _borderWidth,
-            )),
-        child: InkWell(
-          onTap: onPressed,
-          splashColor: Colors.transparent,
-          highlightColor: Colors.black.withOpacity(0.1),
+            //splash effect is only present in android enviroment
+            splashColor: (!isAndroid || disabled)
+                ? Colors.transparent
+                : ColorManager.downvoteBlue,
 
-          ///color when the button is pressed
-          customBorder: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(boarderRadius!)),
-          child: Center(
-            child: Text(
-              text,
-              style: TextStyle(
-                color: textColor,
-                fontSize: (textFontSize * fontScale),
-                fontWeight: textFontWeight ?? FontWeight.normal,
+            /// color when the button is pressed
+            highlightColor:
+                isAndroid ? Colors.transparent : Colors.black.withOpacity(0.1),
+
+            customBorder:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+            child: Center(
+              child: Text(
+                text,
+                style: TextStyle(
+                  color: textColor,
+                  fontSize: (textFontSize * fontScale),
+
+                  ///  ignore: prefer_if_null_operators
+                  fontWeight: textFontWeight == null
+                      ? FontWeight.normal
+                      : textFontWeight,
+                ),
               ),
             ),
           ),
         ),
-      )),
+      ),
     );
   }
 }

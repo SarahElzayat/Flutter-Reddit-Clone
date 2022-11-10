@@ -7,3 +7,15 @@ enum TrailingObjects {
   dropBox,
   tailingIcon,
 }
+
+enum CommunityTypes {
+  public,
+  restricted,
+  private,
+}
+
+enum SortType {
+  best,
+  newPost,
+  top,
+}
