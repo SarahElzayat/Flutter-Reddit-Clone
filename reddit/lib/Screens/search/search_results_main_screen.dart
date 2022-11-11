@@ -12,6 +12,7 @@ import 'package:reddit/components/search_field.dart';
 class SearchResults extends StatefulWidget {
   final String searchWord;
   const SearchResults({super.key, required this.searchWord});
+  static const routeName = '/search_results_route';
 
   @override
   State<SearchResults> createState() => _SearchResultsState();

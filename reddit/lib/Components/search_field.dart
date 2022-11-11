@@ -2,7 +2,6 @@
 /// @date 25/10/2022
 /// general search field to be included in home, subreddits, profiles... etc
 
-import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 import '../components/helpers/color_manager.dart';
@@ -91,8 +90,8 @@ class _SearchFiledState extends State<SearchFiled> {
         }),
 
         controller: widget.textEditingController,
-        style: const TextStyle(
-          color: ColorManager.lightGrey,
+        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+          color: ColorManager.lightGrey
         ),
         // textAlignVertical: TextAlignVertical.,
         decoration: InputDecoration(
@@ -100,6 +99,7 @@ class _SearchFiledState extends State<SearchFiled> {
           border: InputBorder.none,
 
           hintStyle: const TextStyle(
+            fontSize: 18,
               color: ColorManager.lightGrey,
               textBaseline: TextBaseline.alphabetic),
 

@@ -10,6 +10,7 @@ import 'package:reddit/shared/local/shared_preferences.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
+  static const routeName = '/main_screen_route';
 
   @override
   State<MainScreen> createState() => _MainScreenState();
