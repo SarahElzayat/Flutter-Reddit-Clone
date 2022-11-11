@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/Components/helpers/color_manager.dart';
 import 'package:reddit/Screens/bottom_navigation_bar_screens/add_post_screen.dart';
 import 'package:reddit/Screens/bottom_navigation_bar_screens/explore_screen.dart';
 import 'package:reddit/Screens/bottom_navigation_bar_screens/home_screen.dart';
@@ -20,7 +19,6 @@ import 'shared/local/shared_preferences.dart';
 import 'theme/theme_data.dart';
 
 import 'screens/forget_user_name_and_password/forget_password_screen.dart';
-import 'screens/forget_user_name_and_password/recover_username.dart';
 import 'screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import 'screens/sign_in_and_sign_up_screen/mobile/sign_up_screen.dart';
 import 'screens/main_screen.dart';

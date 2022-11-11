@@ -31,11 +31,9 @@ class _HomeDropdownMenuState extends State<HomeDropdownMenu> {
                       children: [
                         Text(
                           item,
-                          style: TextStyle(
-                              fontSize: !CacheHelper.getData(key: 'isAndroid')!
-                                  ? 14
-                                  : 20,
-                              color: ColorManager.eggshellWhite),
+                          style: !CacheHelper.getData(key: 'isAndroid')!
+                                  ? Theme.of(context).textTheme.titleSmall
+                                  : Theme.of(context).textTheme.titleLarge
                         ),
                       ],
                     ),
