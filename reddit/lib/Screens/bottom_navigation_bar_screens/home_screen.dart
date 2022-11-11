@@ -8,6 +8,8 @@ import 'package:reddit/cubit/app_cubit.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+    static const routeName = '/home_screen_route';
+
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();

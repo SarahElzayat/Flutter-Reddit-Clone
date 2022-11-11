@@ -11,6 +11,7 @@ import '../../../shared/local/shared_preferences.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
+  static const routeName = '/search_screen_route';
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();

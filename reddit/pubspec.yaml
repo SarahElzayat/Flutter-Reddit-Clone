@@ -51,7 +51,6 @@ dependencies:
   flutter_switch: ^0.3.2
   google_sign_in: ^5.0.3
   hexcolor: ^3.0.1
-  html_editor_enhanced: ^2.5.0
   image_cropper: ^3.0.1
   image_painter: ^0.4.6
   image_picker: ^0.8.6
