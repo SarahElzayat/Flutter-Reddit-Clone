@@ -3,7 +3,7 @@
 /// @Author: Ahmed Atta
 
 import 'package:flutter/material.dart';
-import '../../../Data/post_model/post_model.dart';
+import '../../../data/post_model/post_model.dart';
 import '../../../screens/posts/post_screen.dart';
 
 /// Goes to the post screen

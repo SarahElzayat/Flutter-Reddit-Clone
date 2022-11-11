@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/Screens/bottom_navigation_bar_screens/add_post_screen.dart';
@@ -10,14 +9,13 @@ import 'package:reddit/Screens/search/search_results_main_screen.dart';
 import 'package:reddit/Screens/search/search_screen.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/screens/forget_user_name_and_password/recover_username.dart';
+import 'package:reddit/screens/post_test_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 import 'Screens/bottom_navigation_bar_screens/notifications_screen.dart';
 import 'components/helpers/bloc_observer.dart';
 import 'cubit/app_cubit.dart';
 import 'shared/local/shared_preferences.dart';
 import 'theme/theme_data.dart';
-
 import 'screens/forget_user_name_and_password/forget_password_screen.dart';
 import 'screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import 'screens/sign_in_and_sign_up_screen/mobile/sign_up_screen.dart';
@@ -59,8 +57,9 @@ class Main extends StatelessWidget {
           return ResponsiveSizer(
             builder: (context, orientation, screenType) {
               return MaterialApp(
-                initialRoute:'/home_screen_route',
+                initialRoute: MainScreen.routeName,
                 routes: {
+                  PostTestScreen.routeName: (ctx) => const PostTestScreen(),
                   RecoverUserName.routeName: (ctx) => const RecoverUserName(),
                   SignUpScreen.routeName: (ctx) => SignUpScreen(),
                   SignInScreen.routeName: (ctx) => const SignInScreen(),

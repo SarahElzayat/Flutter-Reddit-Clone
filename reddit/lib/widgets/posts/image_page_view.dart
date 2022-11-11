@@ -9,7 +9,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'post_lower_bar.dart';
-import '../../Data/post_model/post_model.dart';
+import '../../data/post_model/post_model.dart';
 
 /// A widget that displays the images in all the Screen
 /// it shows images with the help of [PageView]
@@ -67,7 +67,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
     // to show them in the right size
     // i get the max aspect ratio of the images and use it so constraint their box
     for (var i = 0; i < widget.post.images!.length; i++) {
-      Image(image: NetworkImage(widget.post.images![i]))
+      Image(image: NetworkImage(widget.post.images![i].path!))
           .image
           .resolve(const ImageConfiguration())
           .addListener(ImageStreamListener((info, call) {
@@ -162,7 +162,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
                     ),
               ),
               Text(
-                timeago.format(DateTime.parse(widget.post.publishTime!),
+                timeago.format(DateTime.parse(widget.post.postedAt!),
                     locale: 'en_short'),
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       color: Colors.white,
@@ -191,7 +191,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
   ///
   /// [index] is the index of the item
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
-    final String item = widget.post.images![index];
+    final String item = widget.post.images![index].path!;
     return PhotoViewGalleryPageOptions(
       imageProvider: NetworkImage(item),
       initialScale: PhotoViewComputedScale.contained,

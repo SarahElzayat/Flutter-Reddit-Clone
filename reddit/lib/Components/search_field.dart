@@ -67,7 +67,7 @@ class _SearchFiledState extends State<SearchFiled> {
       itemCount: items.length,
       itemExtent: 30,
     );
-  }   
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,16 +90,17 @@ class _SearchFiledState extends State<SearchFiled> {
         }),
 
         controller: widget.textEditingController,
-        style: Theme.of(context).textTheme.titleLarge!.copyWith(
-          color: ColorManager.lightGrey
-        ),
+        style: Theme.of(context)
+            .textTheme
+            .titleLarge!
+            .copyWith(color: ColorManager.lightGrey),
         // textAlignVertical: TextAlignVertical.,
         decoration: InputDecoration(
           hintText: 'Search Reddit',
           border: InputBorder.none,
 
           hintStyle: const TextStyle(
-            fontSize: 18,
+              fontSize: 18,
               color: ColorManager.lightGrey,
               textBaseline: TextBaseline.alphabetic),
 

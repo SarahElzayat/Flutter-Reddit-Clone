@@ -29,12 +29,13 @@ class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _textEditingController = TextEditingController();
   dynamic _onSubmitted(String value) {
     Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => SearchResults(
-            searchWord: value,
-          ),
-        ),);
+      context,
+      MaterialPageRoute(
+        builder: (context) => SearchResults(
+          searchWord: value,
+        ),
+      ),
+    );
   }
 
   @override

@@ -1,6 +1,3 @@
-/// date: 8/11/2022
-/// @Author: Ahmed Atta
-
 class Approve {
   String? approvedBy;
   String? approvedDate;

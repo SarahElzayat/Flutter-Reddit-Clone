@@ -30,12 +30,10 @@ class _HomeDropdownMenuState extends State<HomeDropdownMenu> {
                     value: item,
                     child: Row(
                       children: [
-                        Text(
-                          item,
-                          style: kIsWeb
-                                  ? Theme.of(context).textTheme.titleLarge
-                                  : Theme.of(context).textTheme.titleSmall
-                        ),
+                        Text(item,
+                            style: kIsWeb
+                                ? Theme.of(context).textTheme.titleLarge
+                                : Theme.of(context).textTheme.titleSmall),
                       ],
                     ),
                   ))

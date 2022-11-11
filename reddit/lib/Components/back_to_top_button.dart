@@ -12,7 +12,6 @@ class BackToTopButton extends StatefulWidget {
 }
 
 class _BackToTopButtonState extends State<BackToTopButton> {
-  
   bool showbtn = false;
 
   @override
@@ -39,7 +38,7 @@ class _BackToTopButtonState extends State<BackToTopButton> {
 
   @override
   Widget build(BuildContext context) {
-        final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.of(context).size.width;
 
     return AnimatedOpacity(
       duration: const Duration(milliseconds: 500), //show/hide animation

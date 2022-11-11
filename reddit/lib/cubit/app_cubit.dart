@@ -6,7 +6,7 @@ import 'package:reddit/Screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/Screens/bottom_navigation_bar_screens/inbox_screen.dart';
 import 'package:reddit/Screens/bottom_navigation_bar_screens/notifications_screen.dart';
 
-import '../Data/temp_data/tmp_data.dart';
+import '../data/temp_data/tmp_data.dart';
 import '../widgets/posts/post_widget.dart';
 
 part 'app_state.dart';
@@ -30,7 +30,8 @@ class AppCubit extends Cubit<AppState> {
     PostWidget(post: textPost),
     PostWidget(post: textPost),
     PostWidget(post: textPost),
-    PostWidget(post: textPost),
+    PostWidget(post: oneImagePost),
+    PostWidget(post: manyImagePost),
     // PostWidget(post: oneImagePost),
     // PostWidget(post: manyImagePost),
   ];
@@ -39,7 +40,6 @@ class AppCubit extends Cubit<AppState> {
     PostWidget(post: oneImagePost),
     PostWidget(post: oneImagePost),
     PostWidget(post: oneImagePost),
-
   ];
 
   List<BottomNavigationBarItem> bottomNavBarIcons = [

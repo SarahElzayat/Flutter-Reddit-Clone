@@ -73,7 +73,8 @@ class _MainScreenState extends State<MainScreen> {
                 )
               : null,
           appBar: homeAppBar(context, cubit.currentIndex),
-          body: isAndroid? cubit.bottomNavBarScreens[cubit.currentIndex]:null,
+          body:
+              isAndroid ? cubit.bottomNavBarScreens[cubit.currentIndex] : null,
           bottomNavigationBar: isAndroid
               ? BottomNavigationBar(
                   type: BottomNavigationBarType.fixed,

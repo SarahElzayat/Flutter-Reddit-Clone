@@ -9,7 +9,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
 import 'package:reddit/widgets/posts/image_page_view.dart';
-import 'package:reddit/Data/post_model/post_model.dart';
+import 'package:reddit/data/post_model/post_model.dart';
 import '../../components/helpers/color_manager.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -53,7 +53,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
 
   @override
   void initState() {
-    Image(image: NetworkImage(widget.post.images![0]))
+    Image(image: NetworkImage(widget.post.images![0].path!))
         .image
         .resolve(const ImageConfiguration())
         .addListener(ImageStreamListener((info, call) {
@@ -179,7 +179,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
   }
 
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
-    final String item = widget.post.images![index];
+    final String item = widget.post.images![index].path!;
     return PhotoViewGalleryPageOptions(
       imageProvider: NetworkImage(item),
       initialScale: PhotoViewComputedScale.contained,

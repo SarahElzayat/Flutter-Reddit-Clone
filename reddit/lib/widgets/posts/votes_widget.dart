@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../Data/post_model/post_model.dart';
+import '../../data/post_model/post_model.dart';
 import '../../components/helpers/color_manager.dart';
 
 enum LowerPostBarState { upvoted, downvoted, none }
@@ -51,13 +51,14 @@ class _VotesPartState extends State<VotesPart> {
                 setState(() {
                   if (state == LowerPostBarState.upvoted) {
                     state = LowerPostBarState.none;
-                    widget.post.setVote(widget.post.votes! - 1);
+                    //TODO
+                    // widget.post.setVote(widget.post.votes! - 1);
                   } else if (state == LowerPostBarState.downvoted) {
                     state = LowerPostBarState.upvoted;
-                    widget.post.setVote(widget.post.votes! + 2);
+                    // widget.post.setVote(widget.post.votes! + 2);
                   } else {
                     state = LowerPostBarState.upvoted;
-                    widget.post.setVote(widget.post.votes! + 1);
+                    // widget.post.setVote(widget.post.votes! + 1);
                   }
                 });
               },
@@ -94,13 +95,13 @@ class _VotesPartState extends State<VotesPart> {
                 setState(() {
                   if (state == LowerPostBarState.downvoted) {
                     state = LowerPostBarState.none;
-                    widget.post.setVote(widget.post.votes! + 1);
+                    // widget.post.setVote(widget.post.votes! + 1);
                   } else if (state == LowerPostBarState.upvoted) {
                     state = LowerPostBarState.downvoted;
-                    widget.post.setVote(widget.post.votes! - 2);
+                    // widget.post.setVote(widget.post.votes! - 2);
                   } else {
                     state = LowerPostBarState.downvoted;
-                    widget.post.setVote(widget.post.votes! - 1);
+                    // widget.post.setVote(widget.post.votes! - 1);
                   }
                 });
               },

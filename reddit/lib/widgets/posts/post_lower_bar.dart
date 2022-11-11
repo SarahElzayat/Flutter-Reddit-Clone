@@ -3,7 +3,7 @@
 /// @Author: Ahmed Atta
 
 import 'package:flutter/material.dart';
-import 'package:reddit/Data/post_model/post_model.dart';
+import 'package:reddit/data/post_model/post_model.dart';
 import '../../Components/helpers/color_manager.dart';
 import '../../components/helpers/posts/helper_funcs.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -70,7 +70,7 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
                     size: 7.w,
                   ),
                   Text(
-                    ' ${widget.post.numberOfComments ?? 0}'
+                    ' ${widget.post.comments ?? 0}'
                     '${widget.isWeb ? ' Comments' : ''}',
                     style: TextStyle(
                       color: widget.iconColor,

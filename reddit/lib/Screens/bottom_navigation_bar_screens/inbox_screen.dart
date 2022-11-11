@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 
 class InboxScreen extends StatelessWidget {
   const InboxScreen({super.key});
-    static const routeName = '/inbox_screen_route';
-
+  static const routeName = '/inbox_screen_route';
 
   @override
   Widget build(BuildContext context) {

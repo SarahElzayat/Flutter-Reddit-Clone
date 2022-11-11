@@ -56,9 +56,9 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context, state) {
         return Scaffold(
           appBar: kIsWeb ? homeAppBar(context, 0) : null,
- 
-          floatingActionButton: kIsWeb? BackToTopButton(scrollController: scrollController):null,
-
+          floatingActionButton: kIsWeb
+              ? BackToTopButton(scrollController: scrollController)
+              : null,
           body: SingleChildScrollView(
             controller: scrollController, //set controller
 
@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Center(
                     child: SizedBox(
-                      width: kIsWeb? width * 0.5: width,
+                      width: kIsWeb ? width * 0.5 : width,
                       child: ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -80,7 +80,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemCount: cubit.homeMenuIndex == 0
                             ? cubit.homwPosts.length
                             : cubit.popularPosts.length,
-                        itemBuilder: (context, index) => Card(
+                        itemBuilder: (context, index) => Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 0, vertical: 5),
                           child: cubit.homeMenuIndex == 0
                               ? cubit.homwPosts[index]
                               : cubit.popularPosts[index],

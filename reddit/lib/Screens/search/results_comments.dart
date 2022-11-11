@@ -3,7 +3,6 @@
 /// this is the screen for the comments results of the main search
 import 'package:flutter/material.dart';
 
-
 class ResultsComments extends StatefulWidget {
   const ResultsComments({super.key});
 
@@ -12,7 +11,6 @@ class ResultsComments extends StatefulWidget {
 }
 
 class _ResultsCommentsState extends State<ResultsComments> {
-
   @override
   Widget build(BuildContext context) {
     return const Center(
