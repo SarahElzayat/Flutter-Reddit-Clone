@@ -60,7 +60,7 @@ class Main extends StatelessWidget {
           return ResponsiveSizer(
             builder: (context, orientation, screenType) {
               return MaterialApp(
-                initialRoute: '/',
+                initialRoute: '/main_screen_route',
                 routes: {
                   RecoverUserName.routeName: (ctx) => RecoverUserName(),
                   SignUpScreen.routeName: (ctx) => SignUpScreen(),

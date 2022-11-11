@@ -100,6 +100,7 @@ class _SearchFiledState extends State<SearchFiled> {
           border: InputBorder.none,
 
           hintStyle: const TextStyle(
+            fontSize: 18,
               color: ColorManager.lightGrey,
               textBaseline: TextBaseline.alphabetic),
 
