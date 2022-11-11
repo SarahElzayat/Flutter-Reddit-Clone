@@ -1,11 +1,13 @@
 {
     "configurations": [
         {
-            "name": "Flutter (lib\\main.dart)",
+            "name": "reddit",
             "type": "dart",
             "request": "launch",
-            "cwd": "reddit",
-            "program": "lib\\main.dart"
+            "args": [
+                "--web-port",
+                "5000"
+            ]
         }
     ]
 }

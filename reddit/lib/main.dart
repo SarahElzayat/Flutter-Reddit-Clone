@@ -16,13 +16,14 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'Screens/bottom_navigation_bar_screens/notifications_screen.dart';
 import 'components/helpers/bloc_observer.dart';
 import 'cubit/app_cubit.dart';
-import 'screens/forget_user_name_and_password/forget_password_screen.dart';
-import 'screens/main_screen.dart';
-import 'screens/sign_in_and_sign_up_screen/sign_In_screen.dart';
-import 'screens/sign_in_and_sign_up_screen/sign_up_screen.dart';
-import 'screens/testing_screen.dart';
 import 'shared/local/shared_preferences.dart';
 import 'theme/theme_data.dart';
+
+import 'screens/forget_user_name_and_password/forget_password_screen.dart';
+import 'screens/forget_user_name_and_password/recover_username.dart';
+import 'screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
+import 'screens/sign_in_and_sign_up_screen/mobile/sign_up_screen.dart';
+import 'screens/main_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,9 +63,9 @@ class Main extends StatelessWidget {
               return MaterialApp(
                 initialRoute: '/main_screen_route',
                 routes: {
-                  RecoverUserName.routeName: (ctx) => RecoverUserName(),
+                  RecoverUserName.routeName: (ctx) => const RecoverUserName(),
                   SignUpScreen.routeName: (ctx) => SignUpScreen(),
-                  SignInScreen.routeName: (ctx) => SignInScreen(),
+                  SignInScreen.routeName: (ctx) => const SignInScreen(),
                   ForgetPasswordScreen.routeName: (ctx) =>
                       ForgetPasswordScreen(),
 

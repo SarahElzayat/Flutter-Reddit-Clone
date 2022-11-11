@@ -4,19 +4,34 @@
 ///  if the user forgot his own username
 
 import 'package:flutter/material.dart';
+import 'package:reddit/data/sign_in_And_sign_up_models/validators.dart';
+import '../../widgets/sign_in_and_sign_up_widgets/continue_button.dart';
+import 'package:reddit/screens/to_go_screens/having_trouble_screen.dart';
+import '../../data/sign_in_And_sign_up_models/login_forget_model.dart';
+import '../../networks/constant_end_points.dart';
+import '../../networks/dio_helper.dart';
 import '../../screens/forget_user_name_and_password/recover_username.dart';
-import '../../screens/sign_in_and_sign_up_screen/sign_In_screen.dart';
+import '../sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import '../../components/default_text_field.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
-import '../../components/button.dart';
 
-class ForgetPasswordScreen extends StatelessWidget {
-  ForgetPasswordScreen({super.key});
+class ForgetPasswordScreen extends StatefulWidget {
+  const ForgetPasswordScreen({super.key});
   static const routeName = '/forget_password_screen_route';
 
+  @override
+  State<ForgetPasswordScreen> createState() => _ForgetPasswordScreenState();
+}
+
+class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   TextEditingController usernameController = TextEditingController();
+
   TextEditingController emailController = TextEditingController();
+
+  bool isEmptyUsername = true;
+
+  bool isEmptyEmail = true;
 
   @override
   Widget build(BuildContext context) {
@@ -54,10 +69,44 @@ class ForgetPasswordScreen extends StatelessWidget {
                       style: theme.textTheme.titleMedium,
                     ),
                     DefaultTextField(
+                      onChanged: (myString) {
+                        setState(() {
+                          if (myString.isNotEmpty) {
+                            isEmptyUsername = false;
+                          } else {
+                            isEmptyUsername = true;
+                          }
+                        });
+                      },
+                      icon: isEmptyUsername
+                          ? null
+                          : IconButton(
+                              onPressed: () => setState(() {
+                                    isEmptyUsername = true;
+                                    usernameController.text = '';
+                                  }),
+                              icon: const Icon(Icons.clear)),
                       labelText: 'Username',
                       formController: usernameController,
                     ),
                     DefaultTextField(
+                      onChanged: (myString) {
+                        setState(() {
+                          if (myString.isNotEmpty) {
+                            isEmptyEmail = false;
+                          } else {
+                            isEmptyEmail = true;
+                          }
+                        });
+                      },
+                      icon: isEmptyEmail
+                          ? null
+                          : IconButton(
+                              onPressed: () => setState(() {
+                                    isEmptyEmail = true;
+                                    emailController.text = '';
+                                  }),
+                              icon: const Icon(Icons.clear)),
                       labelText: 'Email',
                       formController: emailController,
                     ),
@@ -87,14 +136,15 @@ class ForgetPasswordScreen extends StatelessWidget {
                               )),
                           TextButton(
                               onPressed: () {
-                                print('Having trouble');
+                                Navigator.of(context)
+                                    .pushNamed(TroubleScreen.routeName);
                               },
                               child: SizedBox(
                                 width: mediaQuery.size.width,
-                                child: const Text(
+                                child: Text(
                                   'Having trouble?',
                                   style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 16 * mediaQuery.textScaleFactor,
                                       color: ColorManager.primaryColor),
                                 ),
                               )),
@@ -104,22 +154,25 @@ class ForgetPasswordScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(6.0),
-                child: FittedBox(
-                  child: Button(
-                      text: 'Email me',
-                      boarderRadius: 50,
-                      textColor: ColorManager.greyColor,
-                      backgroundColor: ColorManager.blue,
-                      buttonWidth: mediaQuery.size.width,
-                      buttonHeight: mediaQuery.size.height * 0.08,
-                      textFontSize: 18,
-                      onPressed: () {
-                        print('Email Me');
-                      }),
-                ),
-              )
+              ContinueButton(
+                  isPressable: usernameController.text.isNotEmpty &&
+                      emailController.text.isNotEmpty,
+                  appliedFunction: () {
+                    if (Validator.validEmailValidator(emailController.text) &&
+                        Validator.validUserName(usernameController.text)) {
+                      final user = LogInForgetModel(
+                          type: 'password',
+                          username: usernameController.text,
+                          email: emailController.text);
+                      DioHelper.postData(
+                              path: loginForgetPassword, data: user.toJson())
+                          .then((returnVal) {
+                        print(returnVal.toString());
+                      });
+                    } else {
+                      print('something went wrong');
+                    }
+                  })
             ],
           ),
         ),

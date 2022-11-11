@@ -4,19 +4,31 @@
 ///  if the user forgot his own username
 
 import 'package:flutter/material.dart';
-import '../../screens/sign_in_and_sign_up_screen/sign_In_screen.dart';
+import 'package:reddit/data/sign_in_And_sign_up_models/validators.dart';
+import '../../widgets/sign_in_and_sign_up_widgets/continue_button.dart';
+import 'package:reddit/screens/to_go_screens/having_trouble_screen.dart';
+import '../../networks/constant_end_points.dart';
+import '../../networks/dio_helper.dart';
+import '../../data/sign_in_And_sign_up_models/login_forget_model.dart';
+import '../sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import '../../components/default_text_field.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
-import '../../components/button.dart';
 
-// ignore: must_be_immutable
-class RecoverUserName extends StatelessWidget {
-  RecoverUserName({super.key});
-
-  TextEditingController emailController = TextEditingController();
+class RecoverUserName extends StatefulWidget {
+  const RecoverUserName({super.key});
 
   static const routeName = '/recover_user_name_route';
+
+  @override
+  State<RecoverUserName> createState() => _RecoverUserNameState();
+}
+
+class _RecoverUserNameState extends State<RecoverUserName> {
+  TextEditingController emailController = TextEditingController();
+
+  /// detects whethere the email field is empty or not
+  bool isEmptyEmail = true;
   @override
   Widget build(BuildContext context) {
     final navigator = Navigator.of(context);
@@ -56,7 +68,25 @@ class RecoverUserName extends StatelessWidget {
                       style: theme.textTheme.titleMedium,
                     ),
                     DefaultTextField(
-                        formController: emailController, labelText: 'Email'),
+                        onChanged: (myString) {
+                          setState(() {
+                            if (myString.isNotEmpty) {
+                              isEmptyEmail = false;
+                            } else {
+                              isEmptyEmail = true;
+                            }
+                          });
+                        },
+                        icon: isEmptyEmail
+                            ? null
+                            : IconButton(
+                                onPressed: () => setState(() {
+                                      isEmptyEmail = true;
+                                      emailController.text = '';
+                                    }),
+                                icon: const Icon(Icons.clear)),
+                        formController: emailController,
+                        labelText: 'Email'),
                     Text(
                       'Unfortunately, if you have never given us your email,'
                       'we will not be able to reset your password.',
@@ -67,7 +97,7 @@ class RecoverUserName extends StatelessWidget {
                         children: [
                           TextButton(
                               onPressed: () {
-                                print('Having trouble');
+                                navigator.pushNamed(TroubleScreen.routeName);
                               },
                               child: SizedBox(
                                 width: mediaQuery.size.width,
@@ -85,32 +115,27 @@ class RecoverUserName extends StatelessWidget {
                 ),
               ),
               Container(
-                height: mediaQuery.size.height * 0.21 -
-                    mediaQuery.padding.top -
-                    customAppBar.preferredSize.height,
-                width: mediaQuery.size.width,
-                padding: const EdgeInsets.all(6),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    FittedBox(
-                      child: Button(
-                          text: 'Email me',
-                          boarderRadius: 50,
-                          textColor: ColorManager.white,
+                  height: mediaQuery.size.height * 0.21 -
+                      mediaQuery.padding.top -
+                      customAppBar.preferredSize.height,
+                  width: mediaQuery.size.width,
+                  padding: const EdgeInsets.all(6),
+                  child: ContinueButton(
+                      isPressable: emailController.text.isNotEmpty,
+                      appliedFunction: () {
+                        if (Validator.validEmailValidator(
+                            emailController.text)) {
+                          final user = LogInForgetModel(
+                            email: emailController.text,
+                            type: 'username',
+                          );
 
-                          /// lets see how to fix that color later
-                          backgroundColor: ColorManager.blue,
-                          buttonWidth: mediaQuery.size.width,
-                          buttonHeight: mediaQuery.size.height * 0.08,
-                          textFontSize: 18 * textScaleFactor,
-                          onPressed: () {
-                            print(emailController.text);
-                          }),
-                    ),
-                  ],
-                ),
-              )
+                          DioHelper.postData(
+                              path: loginForgetUserName, data: user.toJson());
+                        } else {
+                          print('Something went Wrong');
+                        }
+                      }))
             ],
           ),
         ),
