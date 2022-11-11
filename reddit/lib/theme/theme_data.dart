@@ -51,7 +51,7 @@ ThemeData appTheme() {
       bodyMedium: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       titleSmall: TextStyle(fontSize: 12, fontWeight: FontWeight.normal,
       color: ColorManager.eggshellWhite),
-      titleLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.normal,
+      titleLarge: TextStyle(fontSize:18, fontWeight: FontWeight.normal,
       color: ColorManager.eggshellWhite),
     ),
   );
