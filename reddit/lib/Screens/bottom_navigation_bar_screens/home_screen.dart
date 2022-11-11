@@ -56,41 +56,9 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context, state) {
         return Scaffold(
           appBar: kIsWeb ? homeAppBar(context, 0) : null,
-          // floatingActionButton: AnimatedOpacity(
-          //   duration: const Duration(milliseconds: 500), //show/hide animation
-          //   opacity: showbtn ? 1.0 : 0.0, //set obacity to 1 on visible, or hide
-          //   child: MaterialButton(
-          //     hoverColor: Colors.transparent,
-          //     highlightColor: Colors.transparent,
-          //     splashColor: Colors.transparent,
-          //     onPressed: () {
-          //       scrollController.animateTo(
-          //           //go to top of scroll
-          //           0, //scroll offset to go
-          //           duration:
-          //               const Duration(milliseconds: 500), //duration of scroll
-          //           curve: Curves.fastOutSlowIn //scroll type
-          //           );
-          //     },
-          //     child: Container(
-          //       padding:
-          //           const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          //       decoration: const ShapeDecoration(
-          //         color: ColorManager.darkBlue,
-          //         // color: Colors.red,
-          //         shape: StadiumBorder(),
-          //       ),
-          //       margin: EdgeInsets.only(right: width * 0.20),
-          //       child: Text(
-          //         'Back to Top',
-          //         style: Theme.of(context).textTheme.titleLarge,
-          //       ),
-          //     ),
-          //   ),
-          // ),
+ 
           floatingActionButton: kIsWeb? BackToTopButton(scrollController: scrollController):null,
 
-          // floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterFloat,
           body: SingleChildScrollView(
             controller: scrollController, //set controller
 
@@ -103,9 +71,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
-                    // widthFactor: 20,
                     child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.5,
+                      width: kIsWeb? width * 0.5: width,
                       child: ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
