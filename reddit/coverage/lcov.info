@@ -1,4 +1,4 @@
-SF:lib\Data\sign_in_And_sign_up_models\validators.dart
+SF:lib\data\sign_in_And_sign_up_models\validators.dart
 DA:9,1
 DA:10,3
 DA:19,1
@@ -10,7 +10,7 @@ DA:30,5
 LF:8
 LH:8
 end_of_record
-SF:lib\Screens\forget_user_name_and_password\forget_password_screen.dart
+SF:lib\screens\forget_user_name_and_password\forget_password_screen.dart
 DA:20,1
 DA:23,1
 DA:24,1
@@ -123,7 +123,7 @@ DA:45,8
 LF:17
 LH:17
 end_of_record
-SF:lib\Screens\to_go_screens\having_trouble_screen.dart
+SF:lib\screens\to_go_screens\having_trouble_screen.dart
 DA:9,0
 DA:11,0
 DA:13,0
@@ -131,7 +131,7 @@ DA:14,0
 LF:4
 LH:0
 end_of_record
-SF:lib\Data\sign_in_And_sign_up_models\login_forget_model.dart
+SF:lib\data\sign_in_And_sign_up_models\login_forget_model.dart
 DA:6,0
 DA:8,0
 DA:9,0
@@ -160,7 +160,7 @@ DA:62,0
 LF:11
 LH:0
 end_of_record
-SF:lib\Screens\forget_user_name_and_password\recover_username.dart
+SF:lib\screens\forget_user_name_and_password\recover_username.dart
 DA:19,0
 DA:23,0
 DA:24,0
@@ -233,7 +233,7 @@ DA:136,0
 LF:69
 LH:0
 end_of_record
-SF:lib\Screens\sign_in_and_sign_up_screen\mobile\sign_In_screen.dart
+SF:lib\screens\sign_in_and_sign_up_screen\mobile\sign_In_screen.dart
 DA:19,0
 DA:22,0
 DA:23,0
@@ -364,7 +364,7 @@ DA:50,4
 LF:13
 LH:13
 end_of_record
-SF:lib\Data\sign_in_And_sign_up_models\sign_in_model.dart
+SF:lib\data\sign_in_And_sign_up_models\sign_in_model.dart
 DA:10,0
 DA:12,0
 DA:13,0
@@ -376,7 +376,7 @@ DA:20,0
 LF:8
 LH:0
 end_of_record
-SF:lib\Screens\forget_user_name_and_password\forget_password_screen.dart
+SF:lib\screens\forget_user_name_and_password\forget_password_screen.dart
 DA:20,0
 DA:23,0
 DA:24,0
@@ -468,7 +468,7 @@ DA:173,0
 LF:88
 LH:0
 end_of_record
-SF:lib\Screens\sign_in_and_sign_up_screen\mobile\sign_up_screen.dart
+SF:lib\screens\sign_in_and_sign_up_screen\mobile\sign_up_screen.dart
 DA:18,0
 DA:22,0
 DA:23,0
@@ -591,7 +591,7 @@ DA:96,4
 LF:36
 LH:32
 end_of_record
-SF:lib\Data\facebook_api\facebook_api.dart
+SF:lib\data\facebook_api\facebook_api.dart
 DA:9,0
 DA:12,0
 DA:16,0
@@ -617,14 +617,14 @@ DA:68,0
 LF:22
 LH:0
 end_of_record
-SF:lib\Data\google_api\google_sign_in_api.dart
+SF:lib\data\google_api\google_sign_in_api.dart
 DA:14,0
 DA:17,0
 DA:20,0
 LF:3
 LH:0
 end_of_record
-SF:lib\Data\sign_in_And_sign_up_models\sign_up_model.dart
+SF:lib\data\sign_in_And_sign_up_models\sign_up_model.dart
 DA:11,0
 DA:15,0
 DA:16,0
@@ -638,7 +638,7 @@ DA:27,0
 LF:10
 LH:0
 end_of_record
-SF:lib\Screens\sign_in_and_sign_up_screen\mobile\sign_In_screen.dart
+SF:lib\screens\sign_in_and_sign_up_screen\mobile\sign_In_screen.dart
 DA:19,0
 DA:22,0
 DA:23,0
@@ -711,7 +711,7 @@ DA:153,0
 LF:69
 LH:0
 end_of_record
-SF:lib\Screens\forget_user_name_and_password\recover_username.dart
+SF:lib\screens\forget_user_name_and_password\recover_username.dart
 DA:19,1
 DA:23,1
 DA:24,1
@@ -784,7 +784,7 @@ DA:136,0
 LF:69
 LH:48
 end_of_record
-SF:lib\Screens\sign_in_and_sign_up_screen\mobile\sign_In_screen.dart
+SF:lib\screens\sign_in_and_sign_up_screen\mobile\sign_In_screen.dart
 DA:19,1
 DA:22,1
 DA:23,1
@@ -857,7 +857,7 @@ DA:153,0
 LF:69
 LH:43
 end_of_record
-SF:lib\Screens\sign_in_and_sign_up_screen\mobile\sign_up_screen.dart
+SF:lib\screens\sign_in_and_sign_up_screen\mobile\sign_up_screen.dart
 DA:18,1
 DA:22,1
 DA:23,1
