@@ -20,7 +20,7 @@ class CacheHelper {
     }
   }
 
-  static dynamic? getData({required String key}) {
+  static dynamic getData({required String key}) {
     return sharedPreferences.get(key);
   }
 }
