@@ -61,10 +61,10 @@ class Main extends StatelessWidget {
                 routes: {
                   PostTestScreen.routeName: (ctx) => const PostTestScreen(),
                   RecoverUserName.routeName: (ctx) => const RecoverUserName(),
-                  SignUpScreen.routeName: (ctx) => SignUpScreen(),
+                  SignUpScreen.routeName: (ctx) => const SignUpScreen(),
                   SignInScreen.routeName: (ctx) => const SignInScreen(),
                   ForgetPasswordScreen.routeName: (ctx) =>
-                      ForgetPasswordScreen(),
+                      const ForgetPasswordScreen(),
 
                   MainScreen.routeName: (ctx) => const MainScreen(),
                   //bottom navigation bar screens

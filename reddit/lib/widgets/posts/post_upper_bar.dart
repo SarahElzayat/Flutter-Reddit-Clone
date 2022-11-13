@@ -6,8 +6,10 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:reddit/networks/dio_helper.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../Components/helpers/color_manager.dart';
+import '../../constants/constants.dart';
 import '../../data/post_model/post_model.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -253,15 +255,33 @@ class MenuItems {
     switch (item) {
       case MenuItems.save:
         //Do something
+        DioHelper.postData(
+          path: '$base2/save',
+          data: {
+            'id': '5f9f1b0b0b9b8c0017b0b0b1',
+          },
+        ).then((value) => print(value.data));
         break;
       case MenuItems.report:
         //Do something
         break;
       case MenuItems.hide:
         //Do something
+        DioHelper.postData(
+          path: '$base2/hide',
+          data: {
+            'id': '5f9f1b0b0b9b8c0017b0b0b1',
+          },
+        ).then((value) => print(value.data));
         break;
       case MenuItems.block:
         //Do something
+        DioHelper.postData(
+          path: '$base2/block',
+          data: {
+            'id': '5f9f1b0b0b9b8c0017b0b0b1',
+          },
+        ).then((value) => print(value.data));
         break;
     }
   }

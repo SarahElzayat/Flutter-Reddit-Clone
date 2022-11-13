@@ -36,6 +36,7 @@ class AppCubit extends Cubit<AppState> {
     // PostWidget(post: manyImagePost),
   ];
   List<Widget> popularPosts = [
+    PostWidget(post: textPost),
     PostWidget(post: oneImagePost),
     PostWidget(post: oneImagePost),
     PostWidget(post: oneImagePost),

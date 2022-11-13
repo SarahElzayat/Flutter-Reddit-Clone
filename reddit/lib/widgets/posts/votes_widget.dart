@@ -3,7 +3,9 @@
 /// @Author: Ahmed Atta
 
 import 'package:flutter/material.dart';
+import 'package:reddit/networks/dio_helper.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../constants/constants.dart';
 import '../../data/post_model/post_model.dart';
 import '../../components/helpers/color_manager.dart';
 
@@ -41,7 +43,7 @@ class _VotesPartState extends State<VotesPart> {
           : LowerPostBarState.none;
   @override
   Widget build(BuildContext context) {
-    List<Widget> _getchildren() => [
+    List<Widget> getchildren() => [
           Material(
             color: Colors.transparent,
             clipBehavior: Clip.antiAlias,
@@ -53,6 +55,7 @@ class _VotesPartState extends State<VotesPart> {
                     state = LowerPostBarState.none;
                     //TODO
                     // widget.post.setVote(widget.post.votes! - 1);
+
                   } else if (state == LowerPostBarState.downvoted) {
                     state = LowerPostBarState.upvoted;
                     // widget.post.setVote(widget.post.votes! + 2);
@@ -96,12 +99,14 @@ class _VotesPartState extends State<VotesPart> {
                   if (state == LowerPostBarState.downvoted) {
                     state = LowerPostBarState.none;
                     // widget.post.setVote(widget.post.votes! + 1);
+                    vote(1);
                   } else if (state == LowerPostBarState.upvoted) {
                     state = LowerPostBarState.downvoted;
                     // widget.post.setVote(widget.post.votes! - 2);
                   } else {
                     state = LowerPostBarState.downvoted;
                     // widget.post.setVote(widget.post.votes! - 1);
+                    vote(-1);
                   }
                 });
               },
@@ -122,11 +127,19 @@ class _VotesPartState extends State<VotesPart> {
     return !widget.isWeb
         ? Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: _getchildren(),
+            children: getchildren(),
           )
         : Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: _getchildren(),
+            children: getchildren(),
           );
+  }
+
+  void vote(int direction) {
+    DioHelper.postData(path: '${base}/vote', data: {
+      'id': widget.post.id,
+      'direction': direction,
+      'type': 'post',
+    }).then((value) => print(value.data));
   }
 }
