@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 class AddPostScreen extends StatelessWidget {
   const AddPostScreen({super.key});
+  static const routeName = '/add_post_route';
 
   @override
   Widget build(BuildContext context) {

@@ -3,14 +3,18 @@
 /// @Author: Ahmed Atta
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:reddit/networks/dio_helper.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../Components/helpers/color_manager.dart';
-import '../../Data/post_model/post_model.dart';
+import '../../constants/constants.dart';
+import '../../data/post_model/post_model.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-bool isjoined = false;
+bool isjoined = true;
+const List<String> list = <String>['One', 'Two', 'Three', 'Four'];
 
 class PostUpperBar extends StatefulWidget {
   const PostUpperBar({
@@ -33,6 +37,29 @@ class PostUpperBar extends StatefulWidget {
 }
 
 class _PostUpperBarState extends State<PostUpperBar> {
+  String dropdownValue = list.first;
+
+  static Widget _buildItem(text, icon) {
+    return Row(
+      children: [
+        Icon(
+          icon,
+          color: Colors.white,
+          size: 22,
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        Text(
+          text,
+          style: const TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -85,6 +112,33 @@ class _PostUpperBarState extends State<PostUpperBar> {
                               backgroundColor: ColorManager.blue,
                             ),
                           )
+                        else
+                          DropdownButtonHideUnderline(
+                            child: DropdownButton2(
+                              customButton: const Icon(
+                                Icons.more_vert,
+                              ),
+                              items: [
+                                ...MenuItems.allItems.map(
+                                  (item) => DropdownMenuItem<MenuItem>(
+                                    value: item,
+                                    child: MenuItems.buildItem(item),
+                                  ),
+                                ),
+                              ],
+                              onChanged: (value) {
+                                MenuItems.onChanged(context, value as MenuItem);
+                              },
+                              dropdownWidth: 40.w,
+                              dropdownPadding:
+                                  const EdgeInsets.symmetric(vertical: 6),
+                              dropdownDecoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              dropdownElevation: 8,
+                              offset: const Offset(0, 8),
+                            ),
+                          ),
                       ],
                     ),
                   ),
@@ -152,7 +206,7 @@ class _PostUpperBarState extends State<PostUpperBar> {
           ),
         ),
         Text(
-          timeago.format(DateTime.parse(widget.post.publishTime!),
+          timeago.format(DateTime.parse(widget.post.postedAt!),
               locale: 'en_short'),
           style: const TextStyle(
             color: ColorManager.greyColor,
@@ -161,5 +215,74 @@ class _PostUpperBarState extends State<PostUpperBar> {
         ),
       ],
     );
+  }
+}
+
+class MenuItem {
+  final String text;
+  final IconData icon;
+
+  const MenuItem({
+    required this.text,
+    required this.icon,
+  });
+}
+
+class MenuItems {
+  static const List<MenuItem> allItems = [save, hide, report, block];
+
+  static const save = MenuItem(text: 'Save', icon: Icons.bookmark_border);
+  static const hide = MenuItem(text: 'Hide post', icon: Icons.visibility_off);
+  static const report = MenuItem(text: 'Report', icon: Icons.flag_outlined);
+  static const block = MenuItem(text: 'Block Acount', icon: Icons.block);
+
+  static Widget buildItem(MenuItem item) {
+    return Row(
+      children: [
+        Icon(item.icon, color: Colors.white, size: 22),
+        const SizedBox(
+          width: 10,
+        ),
+        Text(
+          item.text,
+          style: const TextStyle(color: Colors.white, fontSize: 15),
+        ),
+      ],
+    );
+  }
+
+  static onChanged(BuildContext context, MenuItem item) {
+    switch (item) {
+      case MenuItems.save:
+        //Do something
+        DioHelper.postData(
+          path: '$base2/save',
+          data: {
+            'id': '5f9f1b0b0b9b8c0017b0b0b1',
+          },
+        ).then((value) => print(value.data));
+        break;
+      case MenuItems.report:
+        //Do something
+        break;
+      case MenuItems.hide:
+        //Do something
+        DioHelper.postData(
+          path: '$base2/hide',
+          data: {
+            'id': '5f9f1b0b0b9b8c0017b0b0b1',
+          },
+        ).then((value) => print(value.data));
+        break;
+      case MenuItems.block:
+        //Do something
+        DioHelper.postData(
+          path: '$base2/block',
+          data: {
+            'id': '5f9f1b0b0b9b8c0017b0b0b1',
+          },
+        ).then((value) => print(value.data));
+        break;
+    }
   }
 }

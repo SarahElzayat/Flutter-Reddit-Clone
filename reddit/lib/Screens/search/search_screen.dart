@@ -11,6 +11,7 @@ import '../../../shared/local/shared_preferences.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
+  static const routeName = '/search_screen_route';
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -28,12 +29,13 @@ class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _textEditingController = TextEditingController();
   dynamic _onSubmitted(String value) {
     Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => SearchResults(
-            searchWord: value,
-          ),
-        ),);
+      context,
+      MaterialPageRoute(
+        builder: (context) => SearchResults(
+          searchWord: value,
+        ),
+      ),
+    );
   }
 
   @override
