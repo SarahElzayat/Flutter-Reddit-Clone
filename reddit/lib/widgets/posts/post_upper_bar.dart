@@ -21,6 +21,7 @@ class PostUpperBar extends StatefulWidget {
     Key? key,
     required this.post,
     this.showSubReddit = true,
+    this.outSide = true,
   }) : super(key: key);
 
   /// The post to be displayed
@@ -31,6 +32,8 @@ class PostUpperBar extends StatefulWidget {
   /// it's passed because the post don't require the subreddit to be shown in
   /// the sunreddit screen
   final bool showSubReddit;
+
+  final bool outSide;
 
   @override
   State<PostUpperBar> createState() => _PostUpperBarState();
@@ -112,7 +115,7 @@ class _PostUpperBarState extends State<PostUpperBar> {
                               backgroundColor: ColorManager.blue,
                             ),
                           )
-                        else
+                        else if (widget.outSide)
                           DropdownButtonHideUnderline(
                             child: DropdownButton2(
                               customButton: const Icon(

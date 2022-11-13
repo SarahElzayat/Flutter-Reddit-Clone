@@ -60,7 +60,10 @@ class PostWidget extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       // A row with the Avatar, title and the subreddit
-                      PostUpperBar(post: post),
+                      PostUpperBar(
+                        post: post,
+                        outSide: outsideScreen,
+                      ),
                       // The body of the post
                       if (post.images != null && post.images!.isNotEmpty)
                         InlineImageViewer(
