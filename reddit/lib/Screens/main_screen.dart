@@ -4,6 +4,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/Screens/add_post/add_post.dart';
+import 'package:reddit/Screens/bottom_navigation_bar_screens/add_post_screen.dart';
 import 'package:reddit/components/home_app_bar.dart';
 import 'package:reddit/cubit/app_cubit.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
@@ -82,7 +84,12 @@ class _MainScreenState extends State<MainScreen> {
                   items: cubit.bottomNavBarIcons,
                   onTap: (value) {
                     setState(() {
-                      cubit.changeIndex(value);
+                      if (value == 2)
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => AddPost(),
+                        ));
+                      else
+                        cubit.changeIndex(value);
                     });
                   },
                 )

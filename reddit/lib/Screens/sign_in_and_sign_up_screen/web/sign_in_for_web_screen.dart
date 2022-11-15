@@ -1,14 +1,19 @@
 /// @author Abdelaziz Salah
 /// @date 12/11/2022
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/Screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
+import 'package:reddit/Screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../Components/Button.dart';
 import '../../../Components/Helpers/color_manager.dart';
 import '../../../Components/default_text_field.dart';
 import '../../../Screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
 import '../../../data/sign_in_And_sign_up_models/validators.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/continue_with_fb_or_google_web.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../to_go_screens/privacy_and_policy.dart';
+import '../../to_go_screens/user_agreement_screen.dart';
 
 /// this screen is built to show the UI in case that the user is using the app through the web
 class SignInForWebScreen extends StatelessWidget {
@@ -20,7 +25,7 @@ class SignInForWebScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-
+    final navigator = Navigator.of(context);
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
         return Scaffold(
@@ -63,12 +68,49 @@ class SignInForWebScreen extends StatelessWidget {
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold),
                                 )),
-                            const Text(
-                              'By continuing, you agree to our User Agreement and Privacy Policy',
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: 'Arial',
-                                  fontWeight: FontWeight.w100),
+                            RichText(
+                              text: TextSpan(children: [
+                                const TextSpan(
+                                    text: 'By continuing, you agree to our ',
+                                    style: TextStyle(
+                                      color: ColorManager.eggshellWhite,
+                                      fontSize: 14.5,
+                                    )),
+                                TextSpan(
+                                  text: 'User Agreement',
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      navigator.pushNamed(
+                                          UserAgreementScreen.routeName);
+                                    },
+                                  style: const TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    color: ColorManager.primaryColor,
+                                    fontSize: 14.5,
+                                  ),
+                                ),
+                                const TextSpan(
+                                  text: ' And ',
+                                  style: TextStyle(
+                                    color: ColorManager.eggshellWhite,
+                                    fontSize: 14.5,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: 'Privacy Policy',
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      navigator.pushNamed(
+                                          PrivacyAndPolicy.routeName);
+                                    },
+                                  style: const TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    color: ColorManager.primaryColor,
+                                    fontSize: 14.5,
+                                  ),
+                                ),
+                              ]),
+                              textAlign: TextAlign.left,
                             ),
                           ],
                         )),
@@ -109,11 +151,49 @@ class SignInForWebScreen extends StatelessWidget {
                               }),
                           Container(
                             alignment: Alignment.centerLeft,
-                            child: const Text(
-                              'Forget your username or password?',
-                              style: TextStyle(
-                                fontSize: 12,
-                              ),
+                            child: RichText(
+                              text: TextSpan(children: [
+                                const TextSpan(
+                                    text: 'Forgot your ',
+                                    style: TextStyle(
+                                      color: ColorManager.eggshellWhite,
+                                      fontSize: 14.5,
+                                    )),
+                                TextSpan(
+                                  text: 'username',
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      navigator.pushNamed(
+                                          ForgetUserNameWebScreen.routeName);
+                                    },
+                                  style: const TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    color: ColorManager.primaryColor,
+                                    fontSize: 14.5,
+                                  ),
+                                ),
+                                const TextSpan(
+                                  text: ' or ',
+                                  style: TextStyle(
+                                    color: ColorManager.eggshellWhite,
+                                    fontSize: 14.5,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: 'password',
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      navigator.pushNamed(
+                                          ForgetPasswordWebScreen.routeName);
+                                    },
+                                  style: const TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    color: ColorManager.primaryColor,
+                                    fontSize: 14.5,
+                                  ),
+                                ),
+                              ]),
+                              textAlign: TextAlign.left,
                             ),
                           ),
                           Container(
@@ -133,7 +213,7 @@ class SignInForWebScreen extends StatelessWidget {
                                     },
                                     child: const Text('SIGN UP',
                                         style: TextStyle(
-                                            color: ColorManager.blue)))
+                                            color: ColorManager.primaryColor)))
                               ],
                             ),
                           )
