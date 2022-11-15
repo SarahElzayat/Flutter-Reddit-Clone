@@ -35,6 +35,42 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   bool isEmptyEmail = true;
   bool isEmptyUserName = true;
+
+  /// this function should validate that the input to the textfields
+  /// are valid, else it will show a snackbar to the user
+  /// telling him that he has inserted something wrong.
+  bool validTextFields() {
+    if (!_formKey.currentState!.validate()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            backgroundColor: ColorManager.red,
+            content: Text('email, username or password are invalid')),
+      );
+      return false;
+    }
+    return true;
+  }
+
+  /// this function should be executed when the user presses continue button
+  /// it should validate the textFields and also should should send the request
+  /// to the backend if the textfields are valid
+  void continueFunction() async {
+    if (!validTextFields()) {
+      return;
+    }
+
+    final user = SignUpModel(
+        email: emailController.text,
+        password: passwordController.text,
+        username: usernameController.text);
+
+    DioHelper.postData(path: signUp, data: user.toJson()).then((value) {
+      print(value);
+
+      /// here we want to make sure that we got the correct response
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -84,12 +120,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: ContinueWithGoOrFB(width: mediaQuery.size.width)),
                 ),
                 Expanded(
-                  flex: 3,
+                  flex: 4,
                   child: Column(
                     children: [
                       DefaultTextField(
                         validator: (email) {
-                          if (Validator.validEmailValidator(email!)) {
+                          if (!Validator.validEmailValidator(email!)) {
                             return 'This mail format is incorrect';
                           }
                           return null;
@@ -119,7 +155,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       DefaultTextField(
                         validator: (username) {
-                          if (Validator.validUserName(username!)) {
+                          if (!Validator.validUserName(username!)) {
                             return 'The username length must be greater than 2 and less than 21';
                           }
                           return null;
@@ -148,11 +184,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             : null,
                       ),
                       DefaultTextField(
-                        // validator: (password) {
-                        //   if (Validator.validPasswordValidation(password!)) {
-                        //     return 'The password must be at least 8 characters';
-                        //   }
-                        // },
+                        validator: (password) {
+                          if (!Validator.validPasswordValidation(password!)) {
+                            return 'The password must be at least 8 characters';
+                          }
+                        },
                         formController: passwordController,
                         labelText: 'Password',
                         isPassword: true,
@@ -221,35 +257,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         isPressable: emailController.text.isNotEmpty &&
                             usernameController.text.isNotEmpty &&
                             passwordController.text.isNotEmpty,
-                        appliedFunction: () async {
-                          if (_formKey.currentState!.validate()) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Password invalid')),
-                            );
-                          }
-                          if (Validator.validEmailValidator(
-                                  emailController.text) &&
-                              Validator.validPasswordValidation(
-                                  passwordController.text) &&
-                              Validator.validUserName(
-                                  usernameController.text)) {
-                            /// TODO: remove this log out from here it is not its place
-                            // await FacebookLoginAPI.logOut();
-                            final user = SignUpModel(
-                                email: emailController.text,
-                                password: passwordController.text,
-                                username: usernameController.text);
-
-                            DioHelper.postData(path: login, data: user.toJson())
-                                .then((value) {
-                              print(value);
-
-                              /// here we want to make sure that we got the correct response
-                            });
-                          } else {
-                            print('SomeThing went wrong');
-                          }
-                        },
+                        appliedFunction: continueFunction,
                       )
                     ],
                   ),

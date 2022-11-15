@@ -1,26 +1,26 @@
 /// @author Abdelaziz Salah
 /// @date 3/11/2022
-/// this is the screen of signing into the own account
+/// this is the screen of creating new account for the users.
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/Screens/to_go_screens/privacy_and_policy.dart';
-import 'package:reddit/Screens/to_go_screens/user_agreement_screen.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
+import 'package:reddit/Screens/sign_in_and_sign_up_screen/mobile/sign_up_screen.dart';
+import '../../forget_user_name_and_password/forget_password_screen.dart';
+import '../../to_go_screens/privacy_and_policy.dart';
+import '../../to_go_screens/user_agreement_screen.dart';
 import '../../../data/sign_in_And_sign_up_models/validators.dart';
-import '../../../data/sign_in_And_sign_up_models/sign_in_model.dart';
+import '../../../widgets/sign_in_and_sign_up_widgets/continue_button.dart';
+import '../../../widgets/sign_in_and_sign_up_widgets/continue_with_facebook_or_google.dart';
+import '../../../data/sign_in_And_sign_up_models/sign_up_model.dart';
 import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
-import '../../../screens/forget_user_name_and_password/mobile/forget_password_screen.dart';
-import '../../../screens/sign_in_and_sign_up_screen/mobile/sign_up_screen.dart';
 import '../../../components/default_text_field.dart';
 import '../../../components/helpers/color_manager.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
-import '../../../widgets/sign_in_and_sign_up_widgets/continue_button.dart';
-import '../../../widgets/sign_in_and_sign_up_widgets/continue_with_facebook_or_google.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
+
   static const routeName = '/sign_in_route';
 
   @override
@@ -31,18 +31,65 @@ class _SignInScreenState extends State<SignInScreen> {
   TextEditingController usernameController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
-  bool isEmptyText = true;
+
+  /// this function should validate that the input to the textfields
+  /// are valid, else it will show a snackbar to the user
+  /// telling him that he has inserted something wrong.
+  bool validTextFields() {
+    if (!_formKey.currentState!.validate()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            backgroundColor: ColorManager.red,
+            content: Text('Password or username are invalid')),
+      );
+      return false;
+    }
+    return true;
+  }
+
+  /// this function should be executed when the user presses continue button
+  /// it should validate the textFields and also should should send the request
+  /// to the backend if the textfields are valid
+  void continueToTheHomePage() async {
+    if (!validTextFields()) return;
+
+    final user = SignUpModel(
+        email: usernameController.text,
+        password: passwordController.text,
+        username: usernameController.text);
+
+    DioHelper.postData(path: login, data: user.toJson()).then((value) {
+      print(value);
+
+      /// here we want to make sure that we got the correct response
+    });
+  }
+
+  void textChanger(myString) {
+    setState(() {
+      if (myString.isNotEmpty) {
+        isEmptyEmail = false;
+      } else {
+        isEmptyEmail = true;
+      }
+    });
+  }
+
+  final _formKey = GlobalKey<FormState>();
+  bool isEmptyEmail = true;
+  bool isEmptyUserName = true;
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final navigator = Navigator.of(context);
-    final _formKey = GlobalKey<FormState>();
+
     final customAppBar = LogInAppBar(
-        sideBarButtonText: 'Sign Up',
+        sideBarButtonText: 'SIGN UP',
         sideBarButtonAction: () {
           navigator.pushReplacementNamed(SignUpScreen.routeName);
         });
-    final theme = Theme.of(context);
+    final textScaleFactor = mediaQuery.textScaleFactor;
+
     return Scaffold(
       appBar: customAppBar,
       backgroundColor: ColorManager.darkGrey,
@@ -50,6 +97,9 @@ class _SignInScreenState extends State<SignInScreen> {
         child: Form(
           key: _formKey,
           child: Container(
+            /// the height of the screen should be the whole height of the screen
+            /// but without the height of the app bar and without the padding of
+            /// the down drag top of the phone itself
             height: mediaQuery.size.height -
                 customAppBar.preferredSize.height -
                 mediaQuery.padding.top,
@@ -61,62 +111,58 @@ class _SignInScreenState extends State<SignInScreen> {
                 Expanded(
                   child: Text(
                     textAlign: TextAlign.center,
-                    'Log in to Reddit',
-                    style: theme.textTheme.titleMedium,
+                    'Login To Reddit',
+                    // style: theme.textTheme.titleMedium,
+                    style: TextStyle(
+                      fontSize: textScaleFactor * 24,
+                      fontWeight: FontWeight.bold,
+                      color: ColorManager.white,
+                    ),
                   ),
                 ),
                 Expanded(
                   flex: 2,
                   child: SizedBox(
                       height: mediaQuery.size.height * 0.18,
-                      child: ContinueWithGoOrFB(
-                        width: mediaQuery.size.width,
-                      )),
+                      child: ContinueWithGoOrFB(width: mediaQuery.size.width)),
                 ),
                 Expanded(
                   flex: 3,
                   child: Column(
                     children: [
                       DefaultTextField(
-                        onChanged: (myString) {
-                          setState(() {
-                            if (myString.isNotEmpty) {
-                              isEmptyText = false;
-                            } else {
-                              isEmptyText = true;
-                            }
-                          });
-                        },
                         validator: (username) {
-                          if (Validator.validUserName(username!)) {
-                            return 'The username length must be greater than 2 and less than 21';
+                          if (!Validator.validUserName(username!)) {
+                            return 'The username length should be less than 21 and greater than 2 ';
                           }
                           return null;
                         },
+                        keyboardType: TextInputType.emailAddress,
+                        onChanged: (myString) => textChanger(myString),
                         formController: usernameController,
                         labelText: 'Username',
-                        icon: !isEmptyText
+                        icon: usernameController.text.isNotEmpty
                             ? IconButton(
-                                icon: const Icon(Icons.clear),
-                                onPressed: () {
+                                icon: const Icon(Icons.clear_rounded),
+                                onPressed: (() {
                                   setState(() {
                                     usernameController.text = '';
-                                    isEmptyText = true;
+                                    isEmptyEmail = true;
                                   });
-                                },
-                              )
+                                }))
                             : null,
                       ),
                       DefaultTextField(
+                        validator: (password) {
+                          if (!Validator.validPasswordValidation(password!)) {
+                            return 'The password must be at least 8 characters';
+                          } else {
+                            return null;
+                          }
+                        },
                         formController: passwordController,
                         labelText: 'Password',
                         isPassword: true,
-                        keyboardType: TextInputType.visiblePassword,
-                        validator: (password) {
-                          if (!Validator.validPasswordValidation(password!)) {
-                            return 'password length must be greater 7';
-                          }
-                        },
                       ),
                       Container(
                         alignment: Alignment.centerLeft,
@@ -136,11 +182,15 @@ class _SignInScreenState extends State<SignInScreen> {
                     ],
                   ),
                 ),
+
+                /// the bottom part of the code
                 Expanded(
                   flex: 2,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      // this button is unreasonable but okay
+                      // just to be same as the app.
                       ElevatedButton(
                         style: const ButtonStyle(
                             backgroundColor: MaterialStatePropertyAll(
@@ -192,38 +242,9 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ),
                       ContinueButton(
-                        isPressable: (usernameController.text.isNotEmpty &&
-                            passwordController.text.isNotEmpty),
-                        appliedFunction: () async {
-                          if (_formKey.currentState!.validate()) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Password invalid')),
-                            );
-                          }
-
-                          /// TODO: remove this log out from here it is not its place
-                          // await FacebookLoginAPI.logOut();
-                          if (Validator.validPasswordValidation(
-                                  passwordController.text) &&
-                              Validator.validUserName(
-                                  usernameController.text)) {
-                            LogInModel user = LogInModel(
-                                username: usernameController.text,
-                                password: passwordController.text);
-                            DioHelper.postData(path: login, data: user.toJson())
-                                .then((value) {
-                              print(value);
-                              // print(value['token'].toString());
-                              // CacheHelper.putData(
-                              //     key: 'token', value: value.data[0]);
-                              // print(CacheHelper.getData(key: 'token'));
-                            });
-                          } else {
-                            /// here we should  print
-                            print('SomeThing Went Wrong');
-                          }
-                        },
-                      )
+                          isPressable: usernameController.text.isNotEmpty &&
+                              passwordController.text.isNotEmpty,
+                          appliedFunction: continueToTheHomePage)
                     ],
                   ),
                 )

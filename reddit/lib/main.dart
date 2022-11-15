@@ -46,7 +46,9 @@ class Main extends StatelessWidget {
           return ResponsiveSizer(
             builder: (context, orientation, screenType) {
               return MaterialApp(
-                initialRoute: SignInForWebScreen.routeName,
+                initialRoute: CacheHelper.getData(key: 'isWindows')
+                    ? SignInForWebScreen.routeName
+                    : SignInScreen.routeName,
                 routes: myRoutes,
                 onUnknownRoute: (settings) {
                   return MaterialPageRoute(
