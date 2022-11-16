@@ -22,6 +22,8 @@ class _SearchResultsState extends State<SearchResults>
     with TickerProviderStateMixin {
   late TabController _tabController;
 
+
+  /// initial state of the stateful widget
   @override
   void initState() {
     super.initState();
