@@ -3,7 +3,6 @@
 /// this is the screen for the communities results of the main search
 import 'package:flutter/material.dart';
 
-
 class ResultsCommunities extends StatefulWidget {
   const ResultsCommunities({super.key});
 

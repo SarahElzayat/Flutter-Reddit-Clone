@@ -12,7 +12,7 @@ import '../../widgets/posts/inline_image_viewer.dart';
 import '../../widgets/posts/votes_widget.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../components/helpers/posts/helper_funcs.dart';
-import '../../Data/post_model/post_model.dart';
+import '../../data/post_model/post_model.dart';
 
 /// The widget that displays the post
 ///
@@ -37,8 +37,8 @@ class PostWidget extends StatelessWidget {
         bool isWeb =
             sizingInformation.deviceScreenType == DeviceScreenType.tablet;
         return Container(
-          color: ColorManager.darkGrey,
-          margin: const EdgeInsets.symmetric(vertical: 5),
+          color: ColorManager.darkGreyBlack,
+          // margin: const EdgeInsets.symmetric(vertical: 5),
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,8 +81,8 @@ class PostWidget extends StatelessWidget {
                               '#': Style(
                                 color: outsideScreen
                                     ? ColorManager.greyColor
-                                    : ColorManager.white,
-                                fontSize: FontSize(15),
+                                    : ColorManager.eggshellWhite,
+                                fontSize: const FontSize(15),
                                 maxLines: outsideScreen ? 3 : null,
                                 textOverflow: outsideScreen
                                     ? TextOverflow.ellipsis

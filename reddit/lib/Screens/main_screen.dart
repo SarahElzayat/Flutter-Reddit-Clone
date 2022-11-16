@@ -4,12 +4,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/Screens/add_post/add_post.dart';
+import 'package:reddit/Screens/bottom_navigation_bar_screens/add_post_screen.dart';
 import 'package:reddit/components/home_app_bar.dart';
 import 'package:reddit/cubit/app_cubit.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
+  static const routeName = '/main_screen_route';
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -72,7 +75,8 @@ class _MainScreenState extends State<MainScreen> {
                 )
               : null,
           appBar: homeAppBar(context, cubit.currentIndex),
-          body: isAndroid? cubit.bottomNavBarScreens[cubit.currentIndex]:null,
+          body:
+              isAndroid ? cubit.bottomNavBarScreens[cubit.currentIndex] : null,
           bottomNavigationBar: isAndroid
               ? BottomNavigationBar(
                   type: BottomNavigationBarType.fixed,
@@ -80,7 +84,12 @@ class _MainScreenState extends State<MainScreen> {
                   items: cubit.bottomNavBarIcons,
                   onTap: (value) {
                     setState(() {
-                      cubit.changeIndex(value);
+                      if (value == 2)
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => AddPost(),
+                        ));
+                      else
+                        cubit.changeIndex(value);
                     });
                   },
                 )

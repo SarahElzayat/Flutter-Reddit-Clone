@@ -2,14 +2,14 @@
 /// @date 9/11/2022
 /// App cubit for handling application's state management
 
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/Screens/bottom_navigation_bar_screens/add_post_screen.dart';
 import 'package:reddit/Screens/bottom_navigation_bar_screens/explore_screen.dart';
 import 'package:reddit/Screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/Screens/bottom_navigation_bar_screens/inbox_screen.dart';
 import 'package:reddit/Screens/bottom_navigation_bar_screens/notifications_screen.dart';
+import '../data/temp_data/tmp_data.dart';
+import '../screens/bottom_navigation_bar_screens/add_post_screen.dart';
+import '../widgets/posts/post_widget.dart';
 
 part 'app_state.dart';
 
@@ -24,8 +24,26 @@ class AppCubit extends Cubit<AppState> {
     const HomeScreen(),
     const ExploreScreen(),
     const AddPostScreen(),
+    // const AddPost(),
     const InboxScreen(),
     const NotificationsScreen()
+  ];
+
+  List<Widget> homwPosts = [
+    PostWidget(post: textPost),
+    PostWidget(post: textPost),
+    PostWidget(post: textPost),
+    PostWidget(post: oneImagePost),
+    PostWidget(post: manyImagePost),
+    // PostWidget(post: oneImagePost),
+    // PostWidget(post: manyImagePost),
+  ];
+  List<Widget> popularPosts = [
+    PostWidget(post: textPost),
+    PostWidget(post: oneImagePost),
+    PostWidget(post: oneImagePost),
+    PostWidget(post: oneImagePost),
+    PostWidget(post: oneImagePost),
   ];
 
   List<BottomNavigationBarItem> bottomNavBarIcons = [
@@ -50,7 +68,6 @@ class AppCubit extends Cubit<AppState> {
   bool homeMenuDropdown = false;
   List homeMenuItems = ['Home', 'Popular'];
   int homeMenuIndex = 0;
-
 
   /// the function changes the state of the home/popular dropdown menu
   void changeHomeMenuState() {

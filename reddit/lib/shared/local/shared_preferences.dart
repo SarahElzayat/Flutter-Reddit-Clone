@@ -1,3 +1,7 @@
+/// @author Sarah Elzayat
+/// @date 3/11/2022
+/// @description This control the cache of the app
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CacheHelper {

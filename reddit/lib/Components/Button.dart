@@ -39,6 +39,9 @@ class Button extends StatelessWidget {
 
   final bool disabled;
 
+  /// if we need to add the icon to the button
+  String? imagePath = '';
+
   /// actual function of button when pressed
 
   ///boarder radius of the button
@@ -46,6 +49,7 @@ class Button extends StatelessWidget {
   Button(
       {super.key,
       required this.text,
+      this.imagePath = '',
       required this.textColor,
       required this.backgroundColor,
       required this.buttonWidth,
@@ -92,20 +96,43 @@ class Button extends StatelessWidget {
 
             customBorder:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-            child: Center(
-              child: Text(
-                text,
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: (textFontSize * fontScale),
+            child: imagePath!.isNotEmpty
+                ? Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Image.asset(imagePath!),
+                      ),
+                      Center(
+                        child: Text(
+                          text,
+                          style: TextStyle(
+                            color: textColor,
+                            fontSize: (textFontSize * fontScale),
 
-                  ///  ignore: prefer_if_null_operators
-                  fontWeight: textFontWeight == null
-                      ? FontWeight.normal
-                      : textFontWeight,
-                ),
-              ),
-            ),
+                            ///  ignore: prefer_if_null_operators
+                            fontWeight: textFontWeight == null
+                                ? FontWeight.normal
+                                : textFontWeight,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : Center(
+                    child: Text(
+                      text,
+                      style: TextStyle(
+                        color: textColor,
+                        fontSize: (textFontSize * fontScale),
+
+                        ///  ignore: prefer_if_null_operators
+                        fontWeight: textFontWeight == null
+                            ? FontWeight.normal
+                            : textFontWeight,
+                      ),
+                    ),
+                  ),
           ),
         ),
       ),

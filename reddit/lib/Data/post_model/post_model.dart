@@ -1,100 +1,113 @@
-/// The Post model
-/// date: 8/11/2022
-/// @Author: Ahmed Atta
-
 import 'flair.dart';
-import 'moderation/moderation.dart';
-
-enum LowerPostBarState { upvoted, downvoted, none }
+import 'image.dart';
+import 'moderation.dart';
 
 class PostModel {
   String? id;
+  String? kind;
   String? subreddit;
-  String? postedBy;
-  String? title;
-  String? type;
   String? content;
-  int? votes;
-  int? numberOfComments;
-  Flair? flair;
-  String? editTime;
-  String? publishTime;
-  bool? inYourSubreddit;
-  Moderation? moderation;
+  List<Image>? images;
   bool? nsfw;
   bool? spoiler;
+  String? title;
+  String? sharePostId;
+  Flair? flair;
+  int? comments;
+  int? votes;
+  String? postedAt;
+  String? deletedAt;
+  String? editedAt;
+  String? postedBy;
+  int? votingType;
   bool? saved;
-  int? vote;
-  final List<String>? images;
+  bool? followed;
+  bool? hidden;
+  bool? spammed;
+  bool? inYourSubreddit;
+  Moderation? moderation;
 
   PostModel({
     this.id,
+    this.kind,
     this.subreddit,
-    this.postedBy,
-    this.title,
-    this.type,
     this.content,
-    this.votes,
-    this.numberOfComments,
-    this.flair,
-    this.editTime,
-    this.publishTime,
-    this.inYourSubreddit,
-    this.moderation,
+    this.images,
     this.nsfw,
     this.spoiler,
+    this.title,
+    this.sharePostId,
+    this.flair,
+    this.comments,
+    this.votes,
+    this.postedAt,
+    this.deletedAt,
+    this.editedAt,
+    this.postedBy,
+    this.votingType,
     this.saved,
-    this.vote,
-    this.images,
+    this.followed,
+    this.hidden,
+    this.spammed,
+    this.inYourSubreddit,
+    this.moderation,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
-        id: json['id'] as String?,
-        subreddit: json['data']['subreddit'] as String?,
-        postedBy: json['data']['postedBy'] as String?,
-        title: json['data']['title'] as String?,
-        type: json['data']['type'] as String?,
-        content: json['data']['content'] as String?,
-        votes: json['data']['votes'] as int?,
-        numberOfComments: json['data']['numberOfComments'] as int?,
-        flair: json['data']['flair'] == null
+        id: json['id'],
+        kind: json['kind'] as String?,
+        subreddit: json['subreddit'] as String?,
+        content: json['content'] as String?,
+        images: (json['images'] as List<dynamic>?)
+            ?.map((e) => Image.fromJson(e as Map<String, dynamic>))
+            .toList(),
+        nsfw: json['nsfw'] as bool?,
+        spoiler: json['spoiler'] as bool?,
+        title: json['title'] as String?,
+        sharePostId: json['sharePostId'] as String?,
+        flair: json['flair'] == null
             ? null
             : Flair.fromJson(json['flair'] as Map<String, dynamic>),
-        editTime: json['data']['editTime'] as String?,
-        publishTime: json['data']['publishTime'] as String?,
-        inYourSubreddit: json['data']['inYourSubreddit'] as bool?,
-        moderation: json['data']['moderation'] == null
+        comments: json['comments'] as int?,
+        votes: json['votes'] as int?,
+        postedAt: json['postedAt'] as String?,
+        deletedAt: json['deletedAt'] as String?,
+        editedAt: json['editedAt'] as String?,
+        postedBy: json['postedBy'] as String?,
+        votingType: json['votingType'] as int?,
+        saved: json['saved'] as bool?,
+        followed: json['followed'] as bool?,
+        hidden: json['hidden'] as bool?,
+        spammed: json['spammed'] as bool?,
+        inYourSubreddit: json['inYourSubreddit'] as bool?,
+        moderation: json['moderation'] == null
             ? null
             : Moderation.fromJson(json['moderation'] as Map<String, dynamic>),
-        nsfw: json['data']['nsfw'] as bool?,
-        spoiler: json['data']['spoiler'] as bool?,
-        saved: json['data']['saved'] as bool?,
-        vote: json['data']['vote'] as int?,
-        images: json['data']['images'].cast<String>(),
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
+        'kind': kind,
         'subreddit': subreddit,
-        'postedBy': postedBy,
-        'title': title,
-        'type': type,
         'content': content,
-        'votes': votes,
-        'numberOfComments': numberOfComments,
-        'flair': flair?.toJson(),
-        'editTime': editTime,
-        'publishTime': publishTime,
-        'inYourSubreddit': inYourSubreddit,
-        'moderation': moderation?.toJson(),
+        'images': images?.map((e) => e.toJson()).toList(),
         'nsfw': nsfw,
         'spoiler': spoiler,
+        'title': title,
+        'sharePostId': sharePostId,
+        'flair': flair?.toJson(),
+        'comments': comments,
+        'votes': votes,
+        'postedAt': postedAt,
+        'deletedAt': deletedAt,
+        'editedAt': editedAt,
+        'postedBy': postedBy,
+        'votingType': votingType,
         'saved': saved,
-        'vote': vote,
-        'images': images,
+        'followed': followed,
+        'hidden': hidden,
+        'spammed': spammed,
+        'inYourSubreddit': inYourSubreddit,
+        'moderation': moderation?.toJson(),
       };
-
-  void setVote(int vote) {
-    votes = vote;
-  }
 }
