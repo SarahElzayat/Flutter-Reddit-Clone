@@ -3,6 +3,8 @@
 /// App cubit for handling application's state management
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:reddit/Screens/bottom_navigation_bar_screens/explore_screen.dart';
 import 'package:reddit/Screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/Screens/bottom_navigation_bar_screens/inbox_screen.dart';
