@@ -2,6 +2,8 @@
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -75,7 +77,7 @@ class _VotesPartState extends State<VotesPart> {
                     ? ColorManager.hoverOrange
                     : widget.iconColor,
               ),
-              iconSize: 7.w,
+              iconSize: min(5.5.w, 30),
             ),
           ),
           Text(
@@ -119,7 +121,7 @@ class _VotesPartState extends State<VotesPart> {
                     ? ColorManager.downvoteBlue
                     : widget.iconColor,
               ),
-              iconSize: 7.w,
+              iconSize: min(5.5.w, 30),
             ),
           ),
         ];

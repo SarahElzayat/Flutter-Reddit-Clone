@@ -2,6 +2,8 @@
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:reddit/data/post_model/post_model.dart';
 import '../../Components/helpers/color_manager.dart';
@@ -67,14 +69,14 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
                   Icon(
                     Icons.comment_outlined,
                     color: widget.iconColor,
-                    size: 7.w,
+                    size: min(5.5.w, 30),
                   ),
                   Text(
                     ' ${widget.post.comments ?? 0}'
                     '${widget.isWeb ? ' Comments' : ''}',
                     style: TextStyle(
                       color: widget.iconColor,
-                      fontSize: 15.sp,
+                      fontSize: 15,
                     ),
                   ),
                 ],
@@ -92,7 +94,7 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
                         Icon(
                           Icons.share,
                           color: widget.iconColor,
-                          size: 7.w,
+                          size: min(5.5.w, 30),
                         ),
                         Text(
                           'Share',

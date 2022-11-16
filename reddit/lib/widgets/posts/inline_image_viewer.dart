@@ -133,7 +133,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                       margin: const EdgeInsets.only(right: 10),
                       child: CircleAvatar(
                         backgroundColor: ColorManager.darkGrey,
-                        radius: 5.w,
+                        radius: min(5.5.w, 30),
                         child: IconButton(
                           icon: const Icon(Icons.arrow_forward_ios_outlined),
                           color: Colors.white,
@@ -155,7 +155,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                       margin: const EdgeInsets.only(left: 10),
                       child: CircleAvatar(
                         backgroundColor: ColorManager.darkGrey,
-                        radius: 5.w,
+                        radius: min(5.w, 50),
                         child: IconButton(
                           icon: const Icon(Icons.arrow_back_ios_new),
                           color: Colors.white,
