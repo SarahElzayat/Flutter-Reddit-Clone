@@ -9,6 +9,9 @@ import 'package:reddit/Screens/bottom_navigation_bar_screens/explore_screen.dart
 import 'package:reddit/Screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/Screens/bottom_navigation_bar_screens/inbox_screen.dart';
 import 'package:reddit/Screens/bottom_navigation_bar_screens/notifications_screen.dart';
+
+import '../Components/Helpers/color_manager.dart';
+import '../Screens/add_post/add_post.dart';
 import '../data/temp_data/tmp_data.dart';
 import '../screens/bottom_navigation_bar_screens/add_post_screen.dart';
 import '../widgets/posts/post_widget.dart';
@@ -86,4 +89,49 @@ class AppCubit extends Cubit<AppState> {
   void changeEndDrawer() {
     emit(ChangeEndDrawerState());
   }
+
+  ///Left drawer 'moderating' list state management
+  bool moderatingListOpen = true;
+  List<Widget> moderatingListItems = [
+    const Text(
+      'moderating 1 ',
+      style: TextStyle(color: ColorManager.eggshellWhite),
+    ),
+    const Text(
+      'moderating 2 ',
+      style: TextStyle(color: ColorManager.eggshellWhite),
+    ),
+    const Text(
+      'moderating 3 ',
+      style: TextStyle(color: ColorManager.eggshellWhite),
+    ),
+  ];
+
+  void changeModeratingListState() {
+    moderatingListOpen = !moderatingListOpen;
+    emit(ChangeModeratingListState());
+  }
+
+  ///Left drawer 'your communitites' list state management
+  bool yourCommunitiesistOpen = true;
+
+  void changeYourCommunitiesState() {
+    yourCommunitiesistOpen = !yourCommunitiesistOpen;
+    emit(ChangeYourCommunitiesState());
+  }
+
+  List<Widget> yourCommunitiesList = [
+    const Text(
+      'community 1 ',
+      style: TextStyle(color: ColorManager.eggshellWhite),
+    ),
+    const Text(
+      'community 2 ',
+      style: TextStyle(color: ColorManager.eggshellWhite),
+    ),
+    const Text(
+      'community 3 ',
+      style: TextStyle(color: ColorManager.eggshellWhite),
+    ),
+  ];
 }

@@ -6,9 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/Screens/add_post/add_post.dart';
 import 'package:reddit/Screens/bottom_navigation_bar_screens/add_post_screen.dart';
+import 'package:reddit/components/home%20components/left_drawer.dart';
 import 'package:reddit/components/home_app_bar.dart';
 import 'package:reddit/cubit/app_cubit.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
+
+import '../Components/Helpers/color_manager.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -33,15 +36,15 @@ class _MainScreenState extends State<MainScreen> {
   List<Widget> items = [
     const Text(
       'Test ',
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color: ColorManager.eggshellWhite),
     ),
     const Text(
       'Test ',
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color: ColorManager.eggshellWhite),
     ),
     const Text(
       'Test ',
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color: ColorManager.eggshellWhite),
     ),
   ];
   @override
@@ -59,12 +62,13 @@ class _MainScreenState extends State<MainScreen> {
           key: _scaffoldKey,
           drawer: isAndroid
               ? SafeArea(
-                  child: Drawer(
-                    child: ListView(
-                      padding: EdgeInsets.zero,
-                      children: items,
-                    ),
-                  ),
+                  // child: Drawer(
+                  //   child: ListView(
+                  //     padding: EdgeInsets.zero,
+                  //     children: items,
+                  //   ),
+                  // ),
+                  child: LeftDrawer(),
                 )
               : null,
           endDrawer: isAndroid
