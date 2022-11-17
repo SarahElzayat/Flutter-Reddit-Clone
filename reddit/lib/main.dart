@@ -13,8 +13,10 @@ import 'screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'shared/local/shared_preferences.dart';
 import 'theme/theme_data.dart';
 
+
 Future<void> main() async {
   /// this is used to insure that every thing has been initialized well
+
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
 
