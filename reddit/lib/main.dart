@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/Screens/sign_in_and_sign_up_screen/mobile/sign_In_screen.dart';
+import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/screens/main_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'components/helpers/mocks/functions.dart';
@@ -43,8 +44,15 @@ class Main extends StatelessWidget {
   const Main({super.key});
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AppCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AppCubit(),
+        ),
+        BlocProvider(
+          create: (context) => PostNotifierCubit(),
+        ),
+      ],
       child: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {
           return ResponsiveSizer(

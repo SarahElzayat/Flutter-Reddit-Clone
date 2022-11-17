@@ -4,10 +4,13 @@
 
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'cubit/post_state.dart';
 import 'post_lower_bar.dart';
 import '../../data/post_model/post_model.dart';
 import 'votes_widget.dart';
@@ -85,61 +88,68 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(context),
-      body: GestureDetector(
-        onVerticalDragStart: (details) {
-          initialInDragging = details.globalPosition.dy;
-        },
-        onVerticalDragUpdate: (details) {
-          /// TODO: to be implemented
-          // double diff = details.globalPosition.dy - diffInDragging;
-          // debugPrint('diff:' + diff.toString());
-        },
-        onVerticalDragEnd: (details) {
-          /// TODO: to be implemented
-          // debugPrint('speed: ' + details.primaryVelocity.toString());
-        },
-        child: Container(
-          decoration: widget.backgroundDecoration,
-          constraints: BoxConstraints.expand(
-            height: MediaQuery.of(context).size.height,
-          ),
-          child: Stack(
-            children: [
-              PhotoViewGallery.builder(
-                scrollPhysics: const BouncingScrollPhysics(),
-                builder: _buildItem,
-                itemCount: widget.post.images!.length,
-                // loadingBuilder: widget.loadingBuilder,
-                backgroundDecoration: widget.backgroundDecoration,
-                pageController: widget.pageController,
-                onPageChanged: onPageChanged,
-                scrollDirection: Axis.horizontal,
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  color: Colors.black.withOpacity(0.5),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          flex: 1,
-                          child: VotesPart(
-                            post: widget.post,
-                            iconColor: ColorManager.eggshellWhite,
-                          )),
-                      Expanded(
-                        flex: 2,
-                        child: PostLowerBarWithoutVotes(
-                          post: widget.post,
-                          iconColor: ColorManager.eggshellWhite,
+      body: BlocProvider(
+        create: (context) => PostCubit(widget.post),
+        child: BlocBuilder<PostCubit, PostState>(
+          builder: (context, state) {
+            return GestureDetector(
+              onVerticalDragStart: (details) {
+                initialInDragging = details.globalPosition.dy;
+              },
+              onVerticalDragUpdate: (details) {
+                /// TODO: to be implemented
+                // double diff = details.globalPosition.dy - diffInDragging;
+                // debugPrint('diff:' + diff.toString());
+              },
+              onVerticalDragEnd: (details) {
+                /// TODO: to be implemented
+                // debugPrint('speed: ' + details.primaryVelocity.toString());
+              },
+              child: Container(
+                decoration: widget.backgroundDecoration,
+                constraints: BoxConstraints.expand(
+                  height: MediaQuery.of(context).size.height,
+                ),
+                child: Stack(
+                  children: [
+                    PhotoViewGallery.builder(
+                      scrollPhysics: const BouncingScrollPhysics(),
+                      builder: _buildItem,
+                      itemCount: widget.post.images!.length,
+                      // loadingBuilder: widget.loadingBuilder,
+                      backgroundDecoration: widget.backgroundDecoration,
+                      pageController: widget.pageController,
+                      onPageChanged: onPageChanged,
+                      scrollDirection: Axis.horizontal,
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        color: Colors.black.withOpacity(0.5),
+                        child: Row(
+                          children: [
+                            Expanded(
+                                flex: 1,
+                                child: VotesPart(
+                                  post: widget.post,
+                                  iconColor: ColorManager.eggshellWhite,
+                                )),
+                            Expanded(
+                              flex: 2,
+                              child: PostLowerBarWithoutVotes(
+                                post: widget.post,
+                                iconColor: ColorManager.eggshellWhite,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-              )
-            ],
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

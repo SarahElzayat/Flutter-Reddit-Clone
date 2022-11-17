@@ -33,8 +33,6 @@ class AppCubit extends Cubit<AppState> {
 
   List<Widget> homwPosts = [
     PostWidget(post: textPost),
-    PostWidget(post: textPost),
-    PostWidget(post: textPost),
     PostWidget(post: oneImagePost),
     PostWidget(post: manyImagePost),
     // PostWidget(post: oneImagePost),

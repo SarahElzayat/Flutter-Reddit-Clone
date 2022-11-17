@@ -14,4 +14,13 @@ void prepareMocks() {
       requestOptions: RequestOptions(path: '$base/posts'),
       data: [textPostS, oneImagePostS, manyImagePostS],
       statusCode: 200)));
+
+  when(mockDio.post('$base/vote', data: anyNamed('data')))
+      .thenAnswer((_) => Future.value(Response(
+          requestOptions: RequestOptions(path: '$base/posts'),
+          data: {
+            'id': 1,
+            'type': 'post',
+          },
+          statusCode: 200)));
 }

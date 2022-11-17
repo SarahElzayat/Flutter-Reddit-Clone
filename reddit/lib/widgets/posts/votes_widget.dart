@@ -5,11 +5,13 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/cubit/posts_cubit/posts_state.dart';
+import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
+import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../cubit/posts_cubit/posts_cubit.dart';
 import '../../data/post_model/post_model.dart';
 import '../../components/helpers/color_manager.dart';
+import 'cubit/post_cubit.dart';
+import 'cubit/post_state.dart';
 
 class VotesPart extends StatelessWidget {
   const VotesPart({
@@ -31,8 +33,8 @@ class VotesPart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> getchildren() {
-      var cubit = PostsCubit.get(context);
-      int dir = cubit.getVotingType(postId: post.id!);
+      var cubit = PostCubit.get(context);
+      int dir = cubit.getVotingType();
       return [
         Material(
           color: Colors.transparent,
@@ -40,10 +42,13 @@ class VotesPart extends StatelessWidget {
           shape: const CircleBorder(),
           child: IconButton(
             onPressed: () async {
-              PostsCubit.get(context).vote(
+              PostCubit.get(context)
+                  .vote(
                 direction: 1,
-                postId: post.id!,
-              );
+              )
+                  .then((value) {
+                PostNotifierCubit.get(context).changedPost();
+              });
             },
             constraints: const BoxConstraints(),
             padding: const EdgeInsets.all(0),
@@ -57,7 +62,7 @@ class VotesPart extends StatelessWidget {
           ),
         ),
         Text(
-          cubit.getVotesCount(postId: post.id!).toString(),
+          cubit.getVotesCount().toString(),
           style: TextStyle(
             color: dir == 0
                 ? iconColor
@@ -73,7 +78,9 @@ class VotesPart extends StatelessWidget {
           shape: const CircleBorder(),
           child: IconButton(
             onPressed: () {
-              cubit.vote(direction: -1, postId: post.id!);
+              cubit.vote(direction: -1).then((value) {
+                PostNotifierCubit.get(context).changedPost();
+              });
             },
             constraints: const BoxConstraints(),
             padding: const EdgeInsets.all(0),
@@ -88,16 +95,21 @@ class VotesPart extends StatelessWidget {
       ];
     }
 
-    return BlocBuilder<PostsCubit, PostsState>(builder: (context, state) {
-      return !isWeb
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: getchildren(),
-            )
-          : Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: getchildren(),
-            );
-    });
+    return BlocBuilder<PostCubit, PostState>(
+      builder: (context, state) {
+        return BlocBuilder<PostNotifierCubit, PostNotifierState>(
+            builder: (context, state) {
+          return !isWeb
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: getchildren(),
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: getchildren(),
+                );
+        });
+      },
+    );
   }
 }
