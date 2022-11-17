@@ -28,6 +28,8 @@ var textPost = PostModel(
   comments: 10,
 );
 
+String textPostS = textPost.toJson().toString();
+
 var oneImagePost = PostModel(
   id: '12',
   title: 'That\'s a Post with only image inside it',
@@ -48,6 +50,8 @@ var oneImagePost = PostModel(
   ],
   comments: 90,
 );
+
+String oneImagePostS = oneImagePost.toJson().toString();
 
 var manyImagePost = PostModel(
   id: '12',
@@ -95,3 +99,5 @@ var manyImagePost = PostModel(
   ],
   comments: 100,
 );
+
+String ManyImagePostS = manyImagePost.toJson().toString();

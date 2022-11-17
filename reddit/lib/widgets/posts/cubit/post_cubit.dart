@@ -2,16 +2,13 @@
 /// date: 16/11/2022
 /// @Author: Ahmed Atta
 
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import '../../../data/post_model/post_model.dart';
-import '../../../networks/dio_helper.mocks.dart';
 import 'post_cubit_state.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
 
-@GenerateMocks([DioHelper])
 class PostCubit extends Cubit<PostCubitState> {
   PostModel currentPost;
   PostCubit(this.currentPost) : super(PostCubitInitial());
@@ -40,8 +37,6 @@ class PostCubit extends Cubit<PostCubitState> {
       currentPost.votingType = (currentPost.votingType ?? 0) + direction;
       currentPost.votes = (currentPost.votes ?? 0) + direction;
 
-      final dd = MockDioHelper();
-      // when(dd.getData(path: 'sss', query: {})).thenAnswer((_) async => 'succ');
       emit(PostCubitvoted());
     }).catchError((error) {
       emit(PostCubitvotedError());

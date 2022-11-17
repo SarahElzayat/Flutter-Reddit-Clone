@@ -1,8 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/Data/post_model/post_model.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/networks/dio_helper.dart';
-
+import '../../components/helpers/mocks/functions.dart';
 import 'posts_state.dart';
 
 class PostsCubit extends Cubit<PostsState> {
@@ -14,8 +15,7 @@ class PostsCubit extends Cubit<PostsState> {
   Map<String, PostModel> postsMap = {};
 
   void getPostsForHome() async {
-    emit(PostsLoading());
-    DioHelper.getData(path: '$base/posts').then((value) {
+     mockDio.get('$base/posts').then((value) {
       posts = [];
       postsMap = {};
       value.data.forEach((element) {
@@ -27,6 +27,20 @@ class PostsCubit extends Cubit<PostsState> {
     }).catchError((error) {
       emit(PostsError());
     });
+
+    emit(PostsLoading());
+    // DioHelper.getData(path: '$base/posts').then((value) {
+    //   posts = [];
+    //   postsMap = {};
+    //   value.data.forEach((element) {
+    //     PostModel post = PostModel.fromJson(element);
+    //     posts.add(post);
+    //     postsMap[post.id!] = post;
+    //   });
+    //   emit(PostsLoaded());
+    // }).catchError((error) {
+    //   emit(PostsError());
+    // });
   }
 
   /// this function is used to vote on a post
