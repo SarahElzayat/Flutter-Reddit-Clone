@@ -59,6 +59,48 @@ class PostCubit extends Cubit<PostState> {
     });
   }
 
+  Future save() {
+    return mockDio.post(
+      '$base/save',
+      data: {
+        'id': post.id,
+      },
+    ).then((value) {
+      print(post.saved);
+      post.saved = !post.saved!;
+      emit(PostsSaved());
+    }).catchError((error) {
+      emit(PostsSavedError());
+    });
+  }
+
+  Future hide() {
+    return mockDio.post(
+      '$base/hide',
+      data: {
+        'id': post.id,
+      },
+    ).then((value) => print(value.data));
+  }
+
+  Future blockUser() {
+    return mockDio.post(
+      '$base/block',
+      data: {
+        'id': post.id,
+      },
+    ).then((value) => print(value.data));
+  }
+
+  Future delete() {
+    return mockDio.post(
+      '$base/delete',
+      data: {
+        'id': post.id,
+      },
+    ).then((value) => print(value.data));
+  }
+
   int getVotingType() {
     return post.votingType ?? 0;
   }

@@ -7,10 +7,13 @@ import 'dart:math';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../Components/helpers/color_manager.dart';
+import '../../cubit/post_notifier/post_notifier_cubit.dart';
+import '../../cubit/post_notifier/post_notifier_state.dart';
 import '../../data/post_model/post_model.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'dropdown_list.dart';
@@ -97,9 +100,15 @@ class _PostUpperBarState extends State<PostUpperBar> {
                             ),
                           )
                         else if (widget.outSide)
-                          DropDownList(
-                            postId: widget.post.id!,
-                            itemClass: ItemsClass.public,
+                          BlocBuilder<PostNotifierCubit, PostNotifierState>(
+                            builder: (context, state) {
+                              return DropDownList(
+                                postId: widget.post.id!,
+                                itemClass: (widget.post.saved ?? true)
+                                    ? ItemsClass.publicSaved
+                                    : ItemsClass.public,
+                              );
+                            },
                           ),
                       ],
                     ),

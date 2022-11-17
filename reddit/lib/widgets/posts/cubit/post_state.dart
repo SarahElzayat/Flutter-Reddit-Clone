@@ -8,6 +8,8 @@ class PostsVotedError extends PostState {}
 
 class PostsSaved extends PostState {}
 
+class PostsSavedError extends PostState {}
+
 class PostsHideChange extends PostState {}
 
 class PostsReported extends PostState {}
