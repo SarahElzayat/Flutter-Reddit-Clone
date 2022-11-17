@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/Screens/main_screen.dart';
 import 'package:reddit/Screens/sign_in_and_sign_up_screen/mobile/sign_In_screen.dart';
+import 'package:reddit/screens/main_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'Screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'Screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
@@ -10,11 +11,14 @@ import 'data/routes.dart';
 import 'networks/dio_helper.dart';
 import 'components/helpers/bloc_observer.dart';
 import 'cubit/app_cubit.dart';
+import 'screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'shared/local/shared_preferences.dart';
 import 'theme/theme_data.dart';
 
+
 Future<void> main() async {
   /// this is used to insure that every thing has been initialized well
+
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
 

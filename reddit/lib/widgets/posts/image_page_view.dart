@@ -10,6 +10,7 @@ import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'post_lower_bar.dart';
 import '../../data/post_model/post_model.dart';
+import 'votes_widget.dart';
 
 /// A widget that displays the images in all the Screen
 /// it shows images with the help of [PageView]
@@ -116,10 +117,25 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: PostLowerBarWithoutVotes(
-                  post: widget.post,
-                  backgroundColor: Colors.black.withOpacity(0.5),
-                  iconColor: ColorManager.eggshellWhite,
+                child: Container(
+                  color: Colors.black.withOpacity(0.5),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: VotesPart(
+                            post: widget.post,
+                            iconColor: ColorManager.eggshellWhite,
+                          )),
+                      Expanded(
+                        flex: 2,
+                        child: PostLowerBarWithoutVotes(
+                          post: widget.post,
+                          iconColor: ColorManager.eggshellWhite,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               )
             ],

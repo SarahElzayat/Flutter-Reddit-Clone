@@ -2,6 +2,8 @@
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
 
+import 'dart:math';
+
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +23,7 @@ class PostUpperBar extends StatefulWidget {
     Key? key,
     required this.post,
     this.showSubReddit = true,
+    this.outSide = true,
   }) : super(key: key);
 
   /// The post to be displayed
@@ -31,6 +34,8 @@ class PostUpperBar extends StatefulWidget {
   /// it's passed because the post don't require the subreddit to be shown in
   /// the sunreddit screen
   final bool showSubReddit;
+
+  final bool outSide;
 
   @override
   State<PostUpperBar> createState() => _PostUpperBarState();
@@ -70,15 +75,14 @@ class _PostUpperBarState extends State<PostUpperBar> {
           ConditionalBuilder(
               condition: widget.showSubReddit,
               builder: (context) => SizedBox(
-                    height: 15.w,
                     child: Row(
                       children: [
                         CircleAvatar(
-                          radius: 5.5.w,
+                          radius: min(5.5.w, 30),
                           child: const Icon(Icons.category_sharp),
                         ),
                         SizedBox(
-                          width: 3.w,
+                          width: min(3.w, 10.dp),
                         ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -112,7 +116,7 @@ class _PostUpperBarState extends State<PostUpperBar> {
                               backgroundColor: ColorManager.blue,
                             ),
                           )
-                        else
+                        else if (widget.outSide)
                           DropdownButtonHideUnderline(
                             child: DropdownButton2(
                               customButton: const Icon(
