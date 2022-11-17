@@ -11,9 +11,10 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../Components/helpers/color_manager.dart';
-import '../../constants/constants.dart';
 import '../../data/post_model/post_model.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'dropdown_list.dart';
+import 'menu_items.dart' as mi;
 
 bool isjoined = true;
 const List<String> list = <String>['One', 'Two', 'Three', 'Four'];
@@ -43,27 +44,6 @@ class PostUpperBar extends StatefulWidget {
 
 class _PostUpperBarState extends State<PostUpperBar> {
   String dropdownValue = list.first;
-
-  static Widget _buildItem(text, icon) {
-    return Row(
-      children: [
-        Icon(
-          icon,
-          color: Colors.white,
-          size: 22,
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        Text(
-          text,
-          style: const TextStyle(
-            color: Colors.white,
-          ),
-        ),
-      ],
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,31 +97,9 @@ class _PostUpperBarState extends State<PostUpperBar> {
                             ),
                           )
                         else if (widget.outSide)
-                          DropdownButtonHideUnderline(
-                            child: DropdownButton2(
-                              customButton: const Icon(
-                                Icons.more_vert,
-                              ),
-                              items: [
-                                ...MenuItems.allItems.map(
-                                  (item) => DropdownMenuItem<MenuItem>(
-                                    value: item,
-                                    child: MenuItems.buildItem(item),
-                                  ),
-                                ),
-                              ],
-                              onChanged: (value) {
-                                MenuItems.onChanged(context, value as MenuItem);
-                              },
-                              dropdownWidth: 40.w,
-                              dropdownPadding:
-                                  const EdgeInsets.symmetric(vertical: 6),
-                              dropdownDecoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              dropdownElevation: 8,
-                              offset: const Offset(0, 8),
-                            ),
+                          DropDownList(
+                            postId: widget.post.id!,
+                            itemClass: ItemsClass.public,
                           ),
                       ],
                     ),
@@ -219,74 +177,5 @@ class _PostUpperBarState extends State<PostUpperBar> {
         ),
       ],
     );
-  }
-}
-
-class MenuItem {
-  final String text;
-  final IconData icon;
-
-  const MenuItem({
-    required this.text,
-    required this.icon,
-  });
-}
-
-class MenuItems {
-  static const List<MenuItem> allItems = [save, hide, report, block];
-
-  static const save = MenuItem(text: 'Save', icon: Icons.bookmark_border);
-  static const hide = MenuItem(text: 'Hide post', icon: Icons.visibility_off);
-  static const report = MenuItem(text: 'Report', icon: Icons.flag_outlined);
-  static const block = MenuItem(text: 'Block Acount', icon: Icons.block);
-
-  static Widget buildItem(MenuItem item) {
-    return Row(
-      children: [
-        Icon(item.icon, color: Colors.white, size: 22),
-        const SizedBox(
-          width: 10,
-        ),
-        Text(
-          item.text,
-          style: const TextStyle(color: Colors.white, fontSize: 15),
-        ),
-      ],
-    );
-  }
-
-  static onChanged(BuildContext context, MenuItem item) {
-    switch (item) {
-      case MenuItems.save:
-        //Do something
-        DioHelper.postData(
-          path: '$base2/save',
-          data: {
-            'id': '5f9f1b0b0b9b8c0017b0b0b1',
-          },
-        ).then((value) => print(value.data));
-        break;
-      case MenuItems.report:
-        //Do something
-        break;
-      case MenuItems.hide:
-        //Do something
-        DioHelper.postData(
-          path: '$base2/hide',
-          data: {
-            'id': '5f9f1b0b0b9b8c0017b0b0b1',
-          },
-        ).then((value) => print(value.data));
-        break;
-      case MenuItems.block:
-        //Do something
-        DioHelper.postData(
-          path: '$base2/block',
-          data: {
-            'id': '5f9f1b0b0b9b8c0017b0b0b1',
-          },
-        ).then((value) => print(value.data));
-        break;
-    }
   }
 }

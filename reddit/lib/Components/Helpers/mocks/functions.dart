@@ -17,7 +17,43 @@ void prepareMocks() {
 
   when(mockDio.post('$base/vote', data: anyNamed('data')))
       .thenAnswer((_) => Future.value(Response(
-          requestOptions: RequestOptions(path: '$base/posts'),
+          requestOptions: RequestOptions(path: '$base/vote'),
+          data: {
+            'id': 1,
+            'type': 'post',
+          },
+          statusCode: 200)));
+
+  when(mockDio.post('$base/save', data: anyNamed('data')))
+      .thenAnswer((_) => Future.value(Response(
+          requestOptions: RequestOptions(path: '$base/save'),
+          data: {
+            'id': 1,
+            'type': 'post',
+          },
+          statusCode: 200)));
+
+  when(mockDio.post('$base/hide', data: anyNamed('data')))
+      .thenAnswer((_) => Future.value(Response(
+          requestOptions: RequestOptions(path: '$base/hide'),
+          data: {
+            'id': 1,
+            'type': 'post',
+          },
+          statusCode: 200)));
+
+  when(mockDio.post('$base/block', data: anyNamed('data')))
+      .thenAnswer((_) => Future.value(Response(
+          requestOptions: RequestOptions(path: '$base/block'),
+          data: {
+            'id': 1,
+            'type': 'post',
+          },
+          statusCode: 200)));
+
+  when(mockDio.post('$base/delete', data: anyNamed('data')))
+      .thenAnswer((_) => Future.value(Response(
+          requestOptions: RequestOptions(path: 'path'),
           data: {
             'id': 1,
             'type': 'post',

@@ -51,7 +51,6 @@ class PostCubit extends Cubit<PostState> {
       'direction': newDir,
       'type': 'post',
     }).then((value) {
-      print(value);
       post.votingType = (post.votingType ?? 0) + direction;
       post.votes = (post.votes ?? 0) + direction;
       emit(PostsVoted());
