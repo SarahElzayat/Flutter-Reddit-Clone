@@ -4,7 +4,7 @@ import 'package:reddit/data/post_model/image.dart';
 import 'package:reddit/data/post_model/post_model.dart';
 
 var textPost = PostModel(
-  id: '12',
+  id: '1852',
   title: 'This is a title',
   content: ''' This is a content <br />
       **This IS BOLD** <br />
@@ -28,7 +28,7 @@ var textPost = PostModel(
   comments: 10,
 );
 
-String textPostS = textPost.toJson().toString();
+final textPostS = textPost.toJson();
 
 var oneImagePost = PostModel(
   id: '12',
@@ -51,10 +51,10 @@ var oneImagePost = PostModel(
   comments: 90,
 );
 
-String oneImagePostS = oneImagePost.toJson().toString();
+final oneImagePostS = oneImagePost.toJson();
 
 var manyImagePost = PostModel(
-  id: '12',
+  id: '55',
   title: 'That\'s a Post with Many image inside it',
   content: lorem(paragraphs: 1, words: 50),
   subreddit: 'Flutter',
@@ -100,4 +100,4 @@ var manyImagePost = PostModel(
   comments: 100,
 );
 
-String ManyImagePostS = manyImagePost.toJson().toString();
+final manyImagePostS = manyImagePost.toJson();

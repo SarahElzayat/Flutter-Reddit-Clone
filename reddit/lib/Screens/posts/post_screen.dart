@@ -3,7 +3,10 @@
 /// @Author: Ahmed Atta
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/cubit/posts_cubit/posts_cubit.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
+import '../../cubit/posts_cubit/posts_state.dart';
 import '../../data/post_model/post_model.dart';
 
 /// The Screen that displays the indvidual Posts

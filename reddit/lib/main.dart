@@ -13,7 +13,8 @@ import 'shared/local/shared_preferences.dart';
 import 'theme/theme_data.dart';
 
 Future<void> main() async {
-  prepare_mocks();
+  /// it defines the mocks APIS endpoints
+  prepareMocks();
 
   /// this is used to insure that every thing has been initialized well
   WidgetsFlutterBinding.ensureInitialized();

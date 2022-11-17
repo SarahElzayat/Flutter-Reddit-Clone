@@ -8,6 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/back_to_top_button.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/app_cubit.dart';
+import 'package:reddit/cubit/posts_cubit/posts_cubit.dart';
+import 'package:reddit/cubit/posts_cubit/posts_state.dart';
+import 'package:reddit/widgets/posts/post_widget.dart';
 
 import '../../components/home_app_bar.dart';
 
@@ -72,24 +75,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Center(
                     child: SizedBox(
-                      width: kIsWeb ? width * 0.5 : width,
-                      child: ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount: cubit.homeMenuIndex == 0
-                            ? cubit.homwPosts.length
-                            : cubit.popularPosts.length,
-                        itemBuilder: (context, index) => Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 0, vertical: 5),
-                          child: cubit.homeMenuIndex == 0
-                              ? cubit.homwPosts[index]
-                              : cubit.popularPosts[index],
-                        ),
-                      ),
-                    ),
-                  ),
+                        width: kIsWeb ? width * 0.5 : width,
+                        child: ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemCount: cubit.homeMenuIndex == 0
+                                  ? cubit.homwPosts.length
+                                  : cubit.popularPosts.length,
+                              itemBuilder: (context, index) => Container(
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 5),
+                                child: cubit.homeMenuIndex == 0
+                                    ? cubit.homwPosts[index]
+                                    : cubit.popularPosts[index],
+                              ),
+                            ),
+                  ),),
                   if (kIsWeb)
                     SizedBox(
                       height: 500,
