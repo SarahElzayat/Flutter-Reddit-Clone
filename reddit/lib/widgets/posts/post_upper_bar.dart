@@ -141,13 +141,12 @@ class _PostUpperBarState extends State<PostUpperBar> {
                   child: AnyLinkPreview.builder(
                     errorWidget: Image.network(
                         'https://cdn-icons-png.flaticon.com/512/3388/3388466.png'),
-                    link: 'https://pub.dev/packages/any_link_preview/example',
+                    link: widget.post.content ?? '',
                     placeholderWidget: Image.network(
                         'https://cdn-icons-png.flaticon.com/512/3388/3388466.png'),
                     cache: const Duration(hours: 1),
                     itemBuilder: (BuildContext ctx, Metadata md,
                         ImageProvider<Object>? ip) {
-                      print('md: $md');
                       return Stack(
                         children: [
                           Image.network(md.image ?? ''),
@@ -158,10 +157,13 @@ class _PostUpperBarState extends State<PostUpperBar> {
                               color: Colors.black.withOpacity(0.5),
                               child: Text(
                                 (widget.post.content ?? '')
-                                    .replaceAll(RegExp('.*www.'), ''),
+                                    .replaceAll('https://', '')
+                                    .replaceAll('www.', ''),
                                 style: const TextStyle(
                                   color: ColorManager.eggshellWhite,
                                 ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ),
