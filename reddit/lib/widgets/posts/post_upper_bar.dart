@@ -4,6 +4,7 @@
 
 import 'dart:math';
 
+import 'package:any_link_preview/any_link_preview.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,6 @@ import '../../cubit/post_notifier/post_notifier_state.dart';
 import '../../data/post_model/post_model.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'dropdown_list.dart';
-import 'menu_items.dart' as mi;
 
 bool isjoined = true;
 const List<String> list = <String>['One', 'Two', 'Three', 'Four'];
@@ -115,53 +115,116 @@ class _PostUpperBarState extends State<PostUpperBar> {
                   ),
               fallback: (context) => userRow()),
 
-          if (widget.post.nsfw ?? false)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: Row(
-                children: const [
-                  Icon(Icons.eighteen_up_rating, color: ColorManager.red),
-                  Text('NSFW',
-                      style: TextStyle(
-                        color: ColorManager.red,
-                        fontSize: 15,
-                      )),
-                ],
-              ),
-            ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: _tagsRow(),
+          ),
 
           // The title of the post
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4.0),
-            child: Text(
-              widget.post.title ?? '',
-              style: const TextStyle(
-                color: ColorManager.eggshellWhite,
-                fontSize: 20,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-          if (widget.post.flair != null)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: HexColor(
-                      widget.post.flair!.backgroundColor ?? '#FF00000'),
-                  borderRadius: BorderRadius.circular(40),
-                ),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
                 child: Text(
-                  widget.post.flair!.flairText ?? '',
-                  style: TextStyle(
-                      color:
-                          HexColor(widget.post.flair!.textColor ?? '#FFFFFF')),
+                  widget.post.title ?? '',
+                  style: const TextStyle(
+                    color: ColorManager.eggshellWhite,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
-            )
+              const Spacer(),
+              if (widget.post.kind == 'link')
+                SizedBox(
+                  width: min(30.w, 50.dp),
+                  child: AnyLinkPreview.builder(
+                    errorWidget: Image.network(
+                        'https://cdn-icons-png.flaticon.com/512/3388/3388466.png'),
+                    link: 'https://pub.dev/packages/any_link_preview/example',
+                    placeholderWidget: Image.network(
+                        'https://cdn-icons-png.flaticon.com/512/3388/3388466.png'),
+                    cache: const Duration(hours: 1),
+                    itemBuilder: (BuildContext ctx, Metadata md,
+                        ImageProvider<Object>? ip) {
+                      print('md: $md');
+                      return Stack(
+                        children: [
+                          Image.network(md.image ?? ''),
+                          Positioned(
+                            bottom: 0,
+                            child: Container(
+                              width: min(30.w, 50.dp),
+                              color: Colors.black.withOpacity(0.5),
+                              child: Text(
+                                (widget.post.content ?? '')
+                                    .replaceAll(RegExp('.*www.'), ''),
+                                style: const TextStyle(
+                                  color: ColorManager.eggshellWhite,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+            ],
+          ),
+          if (widget.post.flair != null &&
+              !(widget.post.kind == 'link' && widget.outSide))
+            _flairWidget()
         ],
+      ),
+    );
+  }
+
+  Row _tagsRow() {
+    return Row(
+      children: [
+        if (widget.post.nsfw ?? false)
+          Row(
+            children: const [
+              Icon(Icons.eighteen_up_rating, color: ColorManager.red, size: 20),
+              Text('NSFW',
+                  style: TextStyle(
+                    color: ColorManager.red,
+                    fontSize: 13,
+                  )),
+            ],
+          ),
+        if (widget.post.nsfw ?? false) const SizedBox(width: 5),
+        if (widget.post.spoiler ?? false)
+          Row(
+            children: const [
+              Icon(Icons.privacy_tip_outlined,
+                  color: ColorManager.eggshellWhite, size: 20),
+              Text('Spoiler',
+                  style: TextStyle(
+                    color: ColorManager.eggshellWhite,
+                    fontSize: 13,
+                  )),
+            ],
+          ),
+      ],
+    );
+  }
+
+  Widget _flairWidget() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: BoxDecoration(
+          color: HexColor(widget.post.flair!.backgroundColor ?? '#FF00000'),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          widget.post.flair!.flairText ?? '',
+          style: TextStyle(
+              color: HexColor(widget.post.flair!.textColor ?? '#FFFFFF')),
+        ),
       ),
     );
   }

@@ -5,6 +5,7 @@ import 'package:reddit/data/post_model/post_model.dart';
 
 var textPost = PostModel(
   id: '1852',
+  kind: 'text',
   title: 'This is a title',
   content: ''' This is a content <br />
       **This IS BOLD** <br />
@@ -22,6 +23,7 @@ var textPost = PostModel(
     textColor: '#0E0EEE',
   ),
   saved: false,
+  spoiler: true,
   inYourSubreddit: false,
   nsfw: false,
   votes: 100,
@@ -32,6 +34,7 @@ final textPostS = textPost.toJson();
 
 var oneImagePost = PostModel(
   id: '12',
+  kind: 'image',
   title: 'That\'s a Post with only image inside it',
   content: lorem(paragraphs: 1, words: 50),
   subreddit: 'Flutter',
@@ -39,6 +42,7 @@ var oneImagePost = PostModel(
   postedAt: '2019-08-24T14:15:22Z',
   editedAt: '2019-08-24T14:15:22Z',
   nsfw: true,
+  spoiler: true,
   saved: false,
   inYourSubreddit: false,
   votes: 100,
@@ -56,6 +60,7 @@ final oneImagePostS = oneImagePost.toJson();
 var manyImagePost = PostModel(
   id: '55',
   title: 'That\'s a Post with Many image inside it',
+  kind: 'image',
   content: lorem(paragraphs: 1, words: 50),
   subreddit: 'Flutter',
   postedBy: 'username',
@@ -101,3 +106,28 @@ var manyImagePost = PostModel(
 );
 
 final manyImagePostS = manyImagePost.toJson();
+
+var linkPost = PostModel(
+  id: '185223',
+  kind: 'link',
+  title: 'LINK POST',
+  content: '''www.reddit.com''',
+  subreddit: 'Flutter',
+  postedBy: 'username',
+  postedAt: '2019-08-24T14:15:22Z',
+  editedAt: '2019-08-24T14:15:22Z',
+  flair: Flair(
+    flairId: '123',
+    flairText: 'flair',
+    backgroundColor: '#FFAA00',
+    textColor: '#0E0EEE',
+  ),
+  saved: false,
+  spoiler: true,
+  inYourSubreddit: false,
+  nsfw: false,
+  votes: 100,
+  comments: 10,
+);
+
+final linkPostS = linkPost.toJson();

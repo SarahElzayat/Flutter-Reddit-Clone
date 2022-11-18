@@ -46,6 +46,7 @@ class PostWidget extends StatelessWidget {
             color: ColorManager.darkGreyBlack,
             // margin: const EdgeInsets.symmetric(vertical: 5),
             padding: const EdgeInsets.symmetric(vertical: 5),
+            // a Row that contains the votes column and post
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -71,12 +72,13 @@ class PostWidget extends StatelessWidget {
                           outSide: outsideScreen,
                         ),
                         // The body of the post
-                        if (post.images != null && post.images!.isNotEmpty)
+                        if (post.images?.isNotEmpty ?? false)
                           InlineImageViewer(
                             post: post,
                           ),
 
-                        if (post.images == null || !outsideScreen)
+                        // The body text of the post
+                        if (post.kind == 'text' || !outsideScreen)
                           Padding(
                             padding: const EdgeInsets.only(
                               left: 5,
