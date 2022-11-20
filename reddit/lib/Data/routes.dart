@@ -1,3 +1,7 @@
+/// @author Abdelaziz Salah
+/// @date 1/11/2022
+/// this file containes all our routes in order to avoid destraction in the main file.
+
 import 'package:flutter/material.dart';
 import '../../Screens/sign_in_and_sign_up_screen/web/continue_sign_up_screen.dart';
 import '../../Screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
@@ -24,6 +28,8 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   RecoverUserName.routeName: (ctx) => const RecoverUserName(),
   SignInForWebScreen.routeName: (ctx) => SignInForWebScreen(),
   SignUpForWebScreen.routeName: (ctx) => const SignUpForWebScreen(),
+
+  /// TODO: here we should send the email to the continueSign up this problem will be avoided when using cubit state management
   ContinueSignUpScreen.routeName: (ctx) => const ContinueSignUpScreen(),
   SignUpScreen.routeName: (ctx) => const SignUpScreen(),
   SignInScreen.routeName: (ctx) => const SignInScreen(),
