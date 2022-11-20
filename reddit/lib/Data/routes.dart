@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../Screens/sign_in_and_sign_up_screen/web/continue_sign_up_screen.dart';
 import '../../Screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
 import '../../Screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
 import '../../Screens/main_screen.dart';
@@ -22,7 +23,8 @@ import '../screens/sign_in_and_sign_up_screen/mobile/sign_up_screen.dart';
 Map<String, Widget Function(BuildContext)> myRoutes = {
   RecoverUserName.routeName: (ctx) => const RecoverUserName(),
   SignInForWebScreen.routeName: (ctx) => SignInForWebScreen(),
-  SignUpForWebScreen.routeName: (ctx) => SignUpForWebScreen(),
+  SignUpForWebScreen.routeName: (ctx) => const SignUpForWebScreen(),
+  ContinueSignUpScreen.routeName: (ctx) => const ContinueSignUpScreen(),
   SignUpScreen.routeName: (ctx) => const SignUpScreen(),
   SignInScreen.routeName: (ctx) => const SignInScreen(),
   ForgetUserNameWebScreen.routeName: (ctx) => ForgetUserNameWebScreen(),
