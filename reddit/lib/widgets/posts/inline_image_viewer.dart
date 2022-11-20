@@ -10,6 +10,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
 import 'package:reddit/widgets/posts/image_page_view.dart';
 import 'package:reddit/data/post_model/post_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../components/helpers/color_manager.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -73,8 +74,8 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
             openImage(context, currentIndex);
           },
           child: SizedBox(
-            /// expand the image to the width of the screen with max height of 60% of the screen
-            height: min(60.h, aspectRatio * constraints.maxWidth),
+            // expand the image to the width of the screen with max height of 60% of the screen
+            height: min(70.h, aspectRatio * constraints.maxWidth),
             child: Stack(
               children: [
                 PhotoViewGallery.builder(
@@ -170,6 +171,57 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                       ),
                     ),
                   ),
+                if (widget.post.images![currentIndex].caption != null)
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                        constraints: const BoxConstraints(
+                          minHeight: 40,
+                        ),
+                        color: ColorManager.grey,
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(5),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              widget.post.images![currentIndex].caption!,
+                              style: const TextStyle(
+                                color: ColorManager.eggshellWhite,
+                                fontSize: 15,
+                              ),
+                            ),
+                            const Spacer(),
+                            if (widget.post.images![currentIndex].link != null)
+                              TextButton(
+                                style: ButtonStyle(
+                                  foregroundColor: MaterialStateProperty.all(
+                                      ColorManager.blue),
+                                  overlayColor: MaterialStateProperty.all(
+                                      Colors.transparent),
+                                  padding: MaterialStateProperty.all(
+                                      const EdgeInsets.all(0)),
+                                  minimumSize: MaterialStateProperty.all(
+                                      const Size(20, 20)),
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                onPressed: () async {
+                                  await launchUrl(Uri.parse(widget
+                                          .post.images![currentIndex].link!))
+                                      .catchError((err) {});
+                                },
+                                child: Row(
+                                  children: [
+                                    Text(widget
+                                        .post.images![currentIndex].link!),
+                                    const Icon(Icons.open_in_new),
+                                  ],
+                                ),
+                              )
+                          ],
+                        )),
+                  )
               ],
             ),
           ),

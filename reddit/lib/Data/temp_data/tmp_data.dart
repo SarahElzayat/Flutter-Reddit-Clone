@@ -50,6 +50,8 @@ var oneImagePost = PostModel(
     Image(
       path:
           'https://64.media.tumblr.com/7d77944920bae961e2a65f6d514a7f25/7540b63eed43b6ed-9f/s640x960/68699e754f8f1594af48a195ec689a3280ae7a86.jpg',
+      caption: 'This is a caption',
+      link: 'https://www.google.com',
     ),
   ],
   comments: 90,
@@ -79,6 +81,8 @@ var manyImagePost = PostModel(
     Image(
       path:
           'https://64.media.tumblr.com/9ea589bdca3e1f1040eb3c2c273b7dda/2301f59dbcdbbb03-da/s250x400/7091c7b7bbdaff9eb063d9ecc9aca8b095231ca8.pnj',
+      caption: 'This is a caption',
+      link: 'https://www.google.com',
     ),
     Image(
       path:
@@ -88,6 +92,8 @@ var manyImagePost = PostModel(
     Image(
       path:
           'https://64.media.tumblr.com/a793d94cf38c3578abca78b4727d4103/2301f59dbcdbbb03-c8/s1280x1920/ef7033154e2846f3363707dc80d40ea1fda358ac.pnj',
+      caption: 'This is a caption',
+      link: 'https://www.google.com',
     ),
     Image(
       path:
@@ -96,6 +102,8 @@ var manyImagePost = PostModel(
     Image(
       path:
           'https://64.media.tumblr.com/5e21c9103fc32397c2db50a5b41a20ba/2301f59dbcdbbb03-bb/s250x400/dbbdacfe8e1110b50a98e317533fdb35dd6aed81.pnj',
+      caption: 'This is a caption',
+      link: 'https://www.google.com',
     ),
     Image(
       path:

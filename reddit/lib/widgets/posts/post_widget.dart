@@ -79,8 +79,6 @@ class PostWidget extends StatelessWidget {
                           ),
 
                         // The body text of the post
-
-                        // normalContent(),
                         ConditionalSwitch.single(
                           context: context,
                           valueBuilder: (context) {
@@ -175,7 +173,7 @@ class PostWidget extends StatelessWidget {
               ),
               const Spacer(),
               Icon(
-                Icons.arrow_forward_ios,
+                Icons.open_in_new,
                 color: ColorManager.eggshellWhite,
                 size: 15.sp,
               )
