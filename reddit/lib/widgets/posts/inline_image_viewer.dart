@@ -14,6 +14,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../components/helpers/color_manager.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../components/helpers/posts/helper_funcs.dart';
+
 class InlineImageViewer extends StatefulWidget {
   InlineImageViewer({
     required this.post,
@@ -193,32 +195,8 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                             ),
                             const Spacer(),
                             if (widget.post.images![currentIndex].link != null)
-                              TextButton(
-                                style: ButtonStyle(
-                                  foregroundColor: MaterialStateProperty.all(
-                                      ColorManager.blue),
-                                  overlayColor: MaterialStateProperty.all(
-                                      Colors.transparent),
-                                  padding: MaterialStateProperty.all(
-                                      const EdgeInsets.all(0)),
-                                  minimumSize: MaterialStateProperty.all(
-                                      const Size(20, 20)),
-                                  tapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                ),
-                                onPressed: () async {
-                                  await launchUrl(Uri.parse(widget
-                                          .post.images![currentIndex].link!))
-                                      .catchError((err) {});
-                                },
-                                child: Row(
-                                  children: [
-                                    Text(widget
-                                        .post.images![currentIndex].link!),
-                                    const Icon(Icons.open_in_new),
-                                  ],
-                                ),
-                              )
+                              linkRow(widget.post.images![currentIndex].link!,
+                                  ColorManager.blue)
                           ],
                         )),
                   )

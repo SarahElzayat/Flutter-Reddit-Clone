@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/components/helpers/posts/helper_funcs.dart';
 import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'cubit/post_state.dart';
@@ -124,25 +125,51 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
                     ),
                     Align(
                       alignment: Alignment.bottomCenter,
-                      child: Container(
-                        color: Colors.black.withOpacity(0.5),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                flex: 1,
-                                child: VotesPart(
-                                  post: widget.post,
-                                  iconColor: ColorManager.eggshellWhite,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (widget.post.images![currentIndex].caption != null)
+                            Container(
+                                alignment: Alignment.centerLeft,
+                                padding: const EdgeInsets.all(8.0),
+                                color: Colors.black.withOpacity(0.5),
+                                child: Text(
+                                  widget.post.images![currentIndex].caption!,
+                                  style: const TextStyle(
+                                      color: ColorManager.eggshellWhite,
+                                      fontSize: 15),
                                 )),
-                            Expanded(
-                              flex: 2,
-                              child: PostLowerBarWithoutVotes(
-                                post: widget.post,
-                                iconColor: ColorManager.eggshellWhite,
-                              ),
+                          if (widget.post.images![currentIndex].link != null)
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              padding: const EdgeInsets.all(8.0),
+                              color: Colors.black.withOpacity(0.5),
+                              child: linkRow(
+                                  widget.post.images![currentIndex].link!,
+                                  ColorManager.eggshellWhite),
                             ),
-                          ],
-                        ),
+                          Container(
+                            alignment: Alignment.bottomCenter,
+                            color: Colors.black.withOpacity(0.5),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                    flex: 1,
+                                    child: VotesPart(
+                                      post: widget.post,
+                                      iconColor: ColorManager.eggshellWhite,
+                                    )),
+                                Expanded(
+                                  flex: 2,
+                                  child: PostLowerBarWithoutVotes(
+                                    post: widget.post,
+                                    iconColor: ColorManager.eggshellWhite,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     )
                   ],
