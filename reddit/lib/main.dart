@@ -7,7 +7,6 @@ import 'package:reddit/screens/main_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'components/helpers/mocks/functions.dart';
 import 'Screens/bottom_navigation_bar_screens/home_screen.dart';
-import 'Screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
 import 'data/routes.dart';
 import 'networks/dio_helper.dart';
 import 'components/helpers/bloc_observer.dart';

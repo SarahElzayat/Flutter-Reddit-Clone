@@ -111,7 +111,7 @@ var linkPost = PostModel(
   id: '185223',
   kind: 'link',
   title: 'LINK POST',
-  content: 'https://pub.dev/packages/any_link_preview/example',
+  content: 'https://github.com/',
   subreddit: 'Flutter',
   postedBy: 'username',
   postedAt: '2019-08-24T14:15:22Z',

@@ -68,9 +68,11 @@ dependencies:
   shared_preferences: ^2.0.15
   timeago: ^3.3.0
   top_modal_sheet: ^2.0.1
+  url_launcher: ^6.1.6
   video_player: ^2.4.7
   video_thumbnail: ^0.5.3
   video_trimmer: ^2.0.1
+
 dev_dependencies:
   build_runner: null
   flutter_launcher_icons: ^0.10.0

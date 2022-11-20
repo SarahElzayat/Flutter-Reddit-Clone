@@ -4,12 +4,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:markdown/markdown.dart';
-import 'package:reddit/cubit/posts_cubit/posts_cubit.dart';
+import 'package:markdown/markdown.dart' as md;
 import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import '../../cubit/posts_cubit/posts_state.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'post_lower_bar.dart';
 import 'post_upper_bar.dart';
 import '../../widgets/posts/inline_image_viewer.dart';
@@ -78,33 +79,25 @@ class PostWidget extends StatelessWidget {
                           ),
 
                         // The body text of the post
-                        if (post.kind == 'text' || !outsideScreen)
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 5,
-                              right: 5,
-                              top: 5,
-                            ),
-                            child: Html(
-                              data: markdownToHtml(post.content ?? ''),
-                              shrinkWrap: true,
-                              style: {
-                                '#': Style(
-                                  color: outsideScreen
-                                      ? ColorManager.greyColor
-                                      : ColorManager.eggshellWhite,
-                                  fontSize: const FontSize(15),
-                                  maxLines: outsideScreen ? 3 : null,
-                                  textOverflow: outsideScreen
-                                      ? TextOverflow.ellipsis
-                                      : null,
-                                  // margin: EdgeInsets.zero,
-                                  padding: EdgeInsets.zero,
-                                ),
-                              },
-                            ),
-                          ),
 
+                        // normalContent(),
+                        ConditionalSwitch.single(
+                          context: context,
+                          valueBuilder: (context) {
+                            if ((post.kind == 'text' || !outsideScreen) &&
+                                post.kind != 'link') {
+                              return 'text';
+                            } else if (post.kind == 'link' && !outsideScreen) {
+                              return 'link';
+                            }
+                            return 'notAny';
+                          },
+                          caseBuilders: {
+                            'text': (context) => normalContent(),
+                            'link': (context) => linkContent(),
+                          },
+                          fallbackBuilder: (context) => Container(),
+                        ),
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -129,6 +122,65 @@ class PostWidget extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+  Widget normalContent() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 5,
+        right: 5,
+        top: 5,
+      ),
+      child: Html(
+        data: md.markdownToHtml(post.content ?? ''),
+        shrinkWrap: true,
+        style: {
+          '#': Style(
+            color: outsideScreen
+                ? ColorManager.greyColor
+                : ColorManager.eggshellWhite,
+            fontSize: const FontSize(15),
+            maxLines: outsideScreen ? 3 : null,
+            textOverflow: outsideScreen ? TextOverflow.ellipsis : null,
+            // margin: EdgeInsets.zero,
+            padding: EdgeInsets.zero,
+          ),
+        },
+      ),
+    );
+  }
+
+  Widget linkContent() {
+    return InkWell(
+      onTap: () async {
+        await launchUrl(Uri.parse(post.content!));
+      },
+      child: Container(
+          constraints: const BoxConstraints(
+            minHeight: 40,
+          ),
+          color: ColorManager.grey,
+          width: double.infinity,
+          padding: const EdgeInsets.all(5),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                post.content ?? '',
+                style: const TextStyle(
+                  color: ColorManager.eggshellWhite,
+                  fontSize: 15,
+                ),
+              ),
+              const Spacer(),
+              Icon(
+                Icons.arrow_forward_ios,
+                color: ColorManager.eggshellWhite,
+                size: 15.sp,
+              )
+            ],
+          )),
     );
   }
 }

@@ -6,12 +6,11 @@ import 'dart:math';
 
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:reddit/networks/dio_helper.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:url_launcher/url_launcher.dart';
 import '../../Components/helpers/color_manager.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_state.dart';
@@ -122,6 +121,7 @@ class _PostUpperBarState extends State<PostUpperBar> {
 
           // The title of the post
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -135,41 +135,24 @@ class _PostUpperBarState extends State<PostUpperBar> {
                 ),
               ),
               const Spacer(),
-              if (widget.post.kind == 'link')
-                SizedBox(
-                  width: min(30.w, 50.dp),
-                  child: AnyLinkPreview.builder(
-                    errorWidget: Image.network(
-                        'https://cdn-icons-png.flaticon.com/512/3388/3388466.png'),
-                    link: widget.post.content ?? '',
-                    placeholderWidget: Image.network(
-                        'https://cdn-icons-png.flaticon.com/512/3388/3388466.png'),
-                    cache: const Duration(hours: 1),
-                    itemBuilder: (BuildContext ctx, Metadata md,
-                        ImageProvider<Object>? ip) {
-                      return Stack(
-                        children: [
-                          Image.network(md.image ?? ''),
-                          Positioned(
-                            bottom: 0,
-                            child: Container(
-                              width: min(30.w, 50.dp),
-                              color: Colors.black.withOpacity(0.5),
-                              child: Text(
-                                (widget.post.content ?? '')
-                                    .replaceAll('https://', '')
-                                    .replaceAll('www.', ''),
-                                style: const TextStyle(
-                                  color: ColorManager.eggshellWhite,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
+              if (widget.post.kind == 'link' && widget.outSide)
+                InkWell(
+                  onTap: () async {
+                    await launchUrl(Uri.parse(widget.post.content!));
+                  },
+                  child: SizedBox(
+                    width: min(30.w, 120),
+                    height: min(30.w, 100),
+                    child: AnyLinkPreview.builder(
+                      errorWidget: imageWithUrl(
+                          'https://cdn-icons-png.flaticon.com/512/3388/3388466.png'),
+                      link: widget.post.content ?? '',
+                      cache: const Duration(hours: 1),
+                      itemBuilder: (BuildContext ctx, Metadata md,
+                          ImageProvider<Object>? ip) {
+                        return imageWithUrl(md.image ?? '');
+                      },
+                    ),
                   ),
                 ),
             ],
@@ -179,6 +162,31 @@ class _PostUpperBarState extends State<PostUpperBar> {
             _flairWidget()
         ],
       ),
+    );
+  }
+
+  Stack imageWithUrl(image) {
+    return Stack(
+      children: [
+        Image.network(image ?? ''),
+        Positioned(
+          bottom: 0,
+          child: Container(
+            width: min(30.w, 50.dp),
+            color: Colors.black.withOpacity(0.5),
+            child: Text(
+              (widget.post.content ?? '')
+                  .replaceAll('https://', '')
+                  .replaceAll('www.', ''),
+              style: const TextStyle(
+                color: ColorManager.eggshellWhite,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
