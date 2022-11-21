@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/Screens/main_screen.dart';
+import 'package:reddit/Screens/sign_in_and_sign_up_screen/mobile/sign_In_screen.dart';
+import 'package:reddit/Screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
 import 'package:reddit/cubit/add_post.dart/cubit/add_post_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'data/routes.dart';
@@ -52,8 +54,8 @@ class Main extends StatelessWidget {
             builder: (context, orientation, screenType) {
               return MaterialApp(
                 initialRoute: CacheHelper.getData(key: 'isWindows')
-                    ? HomeScreen.routeName
-                    : MainScreen.routeName,
+                    ? SignInForWebScreen.routeName
+                    : SignInScreen.routeName,
                 routes: myRoutes,
                 onUnknownRoute: (settings) {
                   return MaterialPageRoute(
