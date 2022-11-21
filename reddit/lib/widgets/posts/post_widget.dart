@@ -71,6 +71,7 @@ class PostWidget extends StatelessWidget {
                         PostUpperBar(
                           post: post,
                           outSide: outsideScreen,
+                          showRowsSelect: ShowingOtions.onlySubreddit,
                         ),
                         // The body of the post
                         if (post.images?.isNotEmpty ?? false)
