@@ -74,15 +74,13 @@ class _SignUpForWebScreenState extends State<SignUpForWebScreen> {
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold),
                                     )),
-                                const Text(
-                                  'By continuing, you are setting up a Reddit account and '
-                                  'agree to our User Agreement and Privace Policy',
-                                  style: TextStyle(
-                                      color: ColorManager.eggshellWhite,
-                                      fontSize: 14,
-                                      fontFamily: 'Arial',
-                                      fontWeight: FontWeight.w100),
-                                ),
+                                Text(
+                                    'By continuing, you are setting up a Reddit account and '
+                                    'agree to our User Agreement and Privace Policy',
+
+                                    /// lw 3auz t3dl ay haga
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge),
                               ],
                             )),
                         Container(
