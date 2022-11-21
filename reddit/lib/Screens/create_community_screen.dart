@@ -60,10 +60,10 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
         elevation: 3.sp,
         shadowColor: Colors.white,
         backgroundColor: ColorManager.darkGrey,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {},
-        ),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_back),
+        //   onPressed: () {},
+        // ),
         title: const Text('Create a community'),
         centerTitle: true,
         leadingWidth: 6.h,
@@ -162,18 +162,18 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
                     ],
                   ),
                   SizedBox(height: 3.h),
-                  Button(
-                      text: 'Create community',
-                      textColor: Colors.white,
-                      backgroundColor: isEmpty
-                          ? ColorManager.disabledButtonGrey
-                          : ColorManager.darkBlueColor,
-                      buttonWidth: 100.w,
-                      disabled: isEmpty ? true : false,
-                      buttonHeight: 7.h,
-                      textFontSize: 18.sp,
-                      textFontWeight: FontWeight.w600,
-                      onPressed: isEmpty ? () {} : _enabledButton)
+                  // Button(
+                  //     text: 'Create community',
+                  //     textColor: Colors.white,
+                  //     backgroundColor: isEmpty
+                  //         ? ColorManager.disabledButtonGrey
+                  //         : ColorManager.darkBlueColor,
+                  //     buttonWidth: 100.w,
+                  //     disabled: isEmpty ? true : false,
+                  //     buttonHeight: 7.h,
+                  //     textFontSize: 18.sp,
+                  //     textFontWeight: FontWeight.w600,
+                  //     onPressed: isEmpty ? () {} : _enabledButton)
                 ],
               ),
             ),

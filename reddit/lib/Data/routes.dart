@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reddit/Screens/saved/saved_screen.dart';
 import '../../Screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
 import '../../Screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
 import '../../Screens/main_screen.dart';
@@ -41,6 +42,7 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   NotificationsScreen.routeName: (ctx) => const NotificationsScreen(),
 
   SearchScreen.routeName: (ctx) => const SearchScreen(),
+  SavedScreen.routeName: (ctx) => const SavedScreen(),
   SearchResults.routeName: (ctx) => const SearchResults(
         searchWord: '',
       ),

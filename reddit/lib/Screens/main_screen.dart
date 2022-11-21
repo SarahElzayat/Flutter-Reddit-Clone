@@ -5,8 +5,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/Screens/add_post/add_post.dart';
-import 'package:reddit/Screens/bottom_navigation_bar_screens/add_post_screen.dart';
 import 'package:reddit/components/home%20components/left_drawer.dart';
+import 'package:reddit/components/home%20components/right_drawer.dart';
 import 'package:reddit/components/home_app_bar.dart';
 import 'package:reddit/cubit/app_cubit.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
@@ -60,27 +60,10 @@ class _MainScreenState extends State<MainScreen> {
       builder: (context, state) {
         return Scaffold(
           key: _scaffoldKey,
-          drawer: isAndroid
-              ? SafeArea(
-                  // child: Drawer(
-                  //   child: ListView(
-                  //     padding: EdgeInsets.zero,
-                  //     children: items,
-                  //   ),
-                  // ),
-                  child: LeftDrawer(),
-                )
-              : null,
-          endDrawer: isAndroid
-              ? SafeArea(
-                  child: Drawer(
-                    child: ListView(padding: EdgeInsets.zero, children: items),
-                  ),
-                )
-              : null,
+          drawer:const LeftDrawer() ,//: null,
+          endDrawer:  const RightDrawer(),// : null,
           appBar: homeAppBar(context, cubit.currentIndex),
-          body:
-              isAndroid ? cubit.bottomNavBarScreens[cubit.currentIndex] : null,
+          body: cubit.bottomNavBarScreens[cubit.currentIndex] ,//: null,
           bottomNavigationBar: isAndroid
               ? BottomNavigationBar(
                   type: BottomNavigationBarType.fixed,
@@ -88,12 +71,13 @@ class _MainScreenState extends State<MainScreen> {
                   items: cubit.bottomNavBarIcons,
                   onTap: (value) {
                     setState(() {
-                      if (value == 2)
+                      if (value == 2) {
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => AddPost(),
+                          builder: (context) => const AddPost(),
                         ));
-                      else
+                      } else {
                         cubit.changeIndex(value);
+                      }
                     });
                   },
                 )

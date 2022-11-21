@@ -3,8 +3,8 @@
 ///@description left drawer to add to main screen
 
 import 'package:flutter/material.dart';
-import 'package:reddit/Components/Helpers/color_manager.dart';
-import 'package:reddit/Screens/home/all_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/Screens/to_be_done_screen.dart';
 import 'package:reddit/components/home%20components/components.dart';
 import 'package:reddit/cubit/app_cubit.dart';
 
@@ -15,38 +15,31 @@ class LeftDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppCubit cubit = AppCubit.get(context);
 
-    return SafeArea(
-        child: Drawer(
-      child: Column(
-        children: [
-          listButton(context, 'Moderating', cubit.moderatingListItems,
-              cubit.changeModeratingListState, cubit.moderatingListOpen),
-          listButton(context, 'Your Communities', cubit.yourCommunitiesList,
-              cubit.changeYourCommunitiesState, cubit.yourCommunitiesistOpen),
-
-          ///TODO use/make a reusable component
-          TextButton(
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const AllScreen(),
-              ),
-            ),
-            child: Row(
-              children: [
-                const Icon(Icons.align_vertical_bottom_rounded,
-                    color: ColorManager.eggshellWhite),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'All',
-                    style: Theme.of(context).textTheme.displaySmall,
-                  ),
-                ),
-              ],
-            ),
+    return BlocBuilder<AppCubit, AppState>(
+      builder: (context, state) {
+        return SafeArea(
+            child: Drawer(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (cubit.moderatingListItems.isNotEmpty)
+                listButton(context, 'Moderating', cubit.moderatingListItems,
+                    cubit.changeModeratingListState, cubit.moderatingListOpen,
+                    isModerating: true),
+              if (cubit.yourCommunitiesList.isNotEmpty)
+                listButton(
+                    context,
+                    'Your Communities',
+                    cubit.yourCommunitiesList,
+                    cubit.changeYourCommunitiesState,
+                    cubit.yourCommunitiesistOpen,
+                    isCommunity: true),
+              genericTextButton(context, Icons.bar_chart_rounded, 'All',
+                  const ToBeDoneScreen(text: 'All'))
+            ],
           ),
-        ],
-      ),
-    ));
+        ));
+      },
+    );
   }
 }

@@ -62,7 +62,8 @@ ThemeData appTheme() {
           fontWeight: FontWeight.normal,
           color: ColorManager.eggshellWhite),
     displaySmall: TextStyle(
-          fontSize: 14,
+          fontSize: 16,
+          
           fontWeight: FontWeight.normal,
           color: ColorManager.eggshellWhite),
     
