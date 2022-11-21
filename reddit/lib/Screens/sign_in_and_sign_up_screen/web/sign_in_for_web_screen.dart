@@ -3,14 +3,12 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/Data/sign_in_And_sign_up_models/sign_in_model.dart';
 import 'package:reddit/Screens/bottom_navigation_bar_screens/home_screen.dart';
-import 'package:reddit/Screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
-import 'package:reddit/Screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
-import 'package:reddit/Screens/main_screen.dart';
+import 'package:reddit/data/sign_in_And_sign_up_models/sign_in_model.dart';
+import 'package:reddit/screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
+import 'package:reddit/screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../Components/Button.dart';
-
 import '../../../Components/Helpers/color_manager.dart';
 import '../../../Components/default_text_field.dart';
 import '../../../Screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
@@ -24,7 +22,7 @@ import '../../to_go_screens/user_agreement_screen.dart';
 
 /// this screen is built to show the UI in case that the user is using the app through the web
 class SignInForWebScreen extends StatefulWidget {
-  SignInForWebScreen({super.key});
+  const SignInForWebScreen({super.key});
 
   static const routeName = '/sign_in_for_web_screen_route';
 

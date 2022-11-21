@@ -3,8 +3,13 @@
 /// @Author: Ahmed Atta
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
+import '../../cubit/post_notifier/post_notifier_cubit.dart';
+import '../../cubit/post_notifier/post_notifier_state.dart';
 import '../../data/post_model/post_model.dart';
+import '../../widgets/posts/dropdown_list.dart';
 
 /// The Screen that displays the indvidual Posts
 ///
@@ -27,9 +32,18 @@ class _PostScreenState extends State<PostScreen> {
       appBar: AppBar(
         title: Text(widget.post.title!),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.more_vert),
+          BlocProvider(
+            create: (context) => PostCubit(widget.post),
+            child: BlocBuilder<PostNotifierCubit, PostNotifierState>(
+              builder: (context, state) {
+                return DropDownList(
+                  postId: widget.post.id!,
+                  itemClass: (widget.post.saved ?? true)
+                      ? ItemsClass.publicSaved
+                      : ItemsClass.public,
+                );
+              },
+            ),
           ),
         ],
       ),
