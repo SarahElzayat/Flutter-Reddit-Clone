@@ -18,6 +18,7 @@ import '../../cubit/add_post.dart/cubit/add_post_cubit.dart';
 class TrimmerView extends StatefulWidget {
   /// [file] Video file
   final File file;
+  static const routeName = '/trimmerView_screen_route';
 
   const TrimmerView(this.file, {super.key});
 

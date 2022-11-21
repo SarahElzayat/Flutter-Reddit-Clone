@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:reddit/Screens/add_post/image_screen.dart';
+import 'package:reddit/Screens/add_post/video_trimmer.dart';
 import '../Components/Button.dart';
 import '../Components/Helpers/color_manager.dart';
 import '../cubit/add_post.dart/cubit/add_post_cubit.dart';
@@ -31,7 +33,9 @@ imageFunc(BuildContext context, ImageSource source) async {
     //   },
     // ));
     addPostCubit.editableImage = images[0];
-    Navigator.of(context).pushNamed('/previewImage');
+
+    /// TODO: This should be removed from the async
+    Navigator.of(context).pushNamed(ImageScreen.routeName);
   } else if (images.length > 1) {
     addPostCubit.addImages(images: images);
   }
@@ -86,7 +90,7 @@ videoFunc(BuildContext context) async {
   );
   if (result != null) {
     File file = File(result.path);
-    Navigator.of(context).pushNamed('/trimmerView', arguments: file);
+    Navigator.of(context).pushNamed(TrimmerView.routeName, arguments: file);
   }
 }
 

@@ -13,6 +13,8 @@ class PostSimpleScreen extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  static const routeName = '/post_simple_screen_route';
+
   @override
   Widget build(BuildContext context) {
     final addPostCubit = BlocProvider.of<AddPostCubit>(context);

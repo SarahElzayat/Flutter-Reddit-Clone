@@ -2,7 +2,6 @@
 /// @author Haitham Mohamed
 /// @date 4/11/2022
 
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import '../../cubit/add_post.dart/cubit/add_post_cubit.dart';
@@ -15,6 +14,7 @@ import '../../widgets/add_post/post_type_widget.dart';
 
 class AddPost extends StatelessWidget {
   const AddPost({Key? key}) : super(key: key);
+  static const routeName = '/add_post_screen_route';
 
   @override
   Widget build(BuildContext context) {

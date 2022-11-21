@@ -43,6 +43,8 @@ class AppRouter {
           final file = routeSettings.arguments as File;
           return BlocProvider.value(
             value: _addPostCubit,
+
+            /// TODO: remove this file from the constructor.
             child: TrimmerView(file),
           );
         });

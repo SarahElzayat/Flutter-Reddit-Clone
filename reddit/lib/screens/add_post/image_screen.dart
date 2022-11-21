@@ -4,6 +4,7 @@
 
 import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/Screens/add_post/paint_screen.dart';
 import 'package:reddit/cubit/add_post.dart/cubit/add_post_cubit.dart';
 
 import '../../functions/add_post.dart';
@@ -19,6 +20,7 @@ import 'package:path/path.dart' as p;
 
 // ignore: must_be_immutable
 class ImageScreen extends StatelessWidget {
+  static const routeName = '/image_screen_route';
   ImageScreen({Key? key}) : super(key: key);
 
   /// [imageKey] The key That used when editing
@@ -48,7 +50,7 @@ class ImageScreen extends StatelessWidget {
               IconButton(
                   onPressed: () async {
                     navigator.pushNamed(
-                      '/paintScreen',
+                      PaintScreen.routeName,
                     );
                   },
                   icon: const Icon(Icons.draw_rounded)),
@@ -85,6 +87,8 @@ class ImageScreen extends StatelessWidget {
                 child: IconButton(
                     onPressed: () async {
                       const folderName = 'Pictures';
+
+                      ///TODO: check on the emulated path.
                       final path = Directory('storage/emulated/0/$folderName');
                       if ((await path.exists())) {
                         File image = File(addPostCubit.editableImage.path);
@@ -96,6 +100,8 @@ class ImageScreen extends StatelessWidget {
                         image.copy(
                             '${path.path}/${DateTime.now().millisecondsSinceEpoch}${p.extension(image.path)}');
                       }
+
+                      /// TODO: remove this from the async
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Image Saved Successful')));
                     },

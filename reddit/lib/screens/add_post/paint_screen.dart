@@ -16,6 +16,7 @@ import '../../cubit/add_post.dart/cubit/add_post_cubit.dart';
 class PaintScreen extends StatelessWidget {
   /// [imageKey] The key That used when editing
   final GlobalKey<ImagePainterState> imageKey = GlobalKey<ImagePainterState>();
+  static const routeName = '/paint_screen_route';
 
   PaintScreen({Key? key}) : super(key: key);
 
