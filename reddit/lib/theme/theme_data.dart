@@ -50,7 +50,6 @@ ThemeData appTheme() {
         fontWeight: FontWeight.bold,
         color: ColorManager.eggshellWhite,
       ),
-      bodyMedium: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       titleSmall: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.normal,

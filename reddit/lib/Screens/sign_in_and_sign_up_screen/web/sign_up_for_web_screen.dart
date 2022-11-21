@@ -2,6 +2,7 @@
 /// @date 11/11/20222
 
 import 'package:flutter/material.dart';
+import '../../../Screens/sign_in_and_sign_up_screen/web/continue_sign_up_screen.dart';
 import '../../../Components/Button.dart';
 import '../../../Components/Helpers/color_manager.dart';
 import '../../../Components/default_text_field.dart';
@@ -73,15 +74,13 @@ class _SignUpForWebScreenState extends State<SignUpForWebScreen> {
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold),
                                     )),
-                                const Text(
-                                  'By continuing, you are setting up a Reddit account and '
-                                  'agree to our User Agreement and Privace Policy',
-                                  style: TextStyle(
-                                      color: ColorManager.eggshellWhite,
-                                      fontSize: 14,
-                                      fontFamily: 'Arial',
-                                      fontWeight: FontWeight.w100),
-                                ),
+                                Text(
+                                    'By continuing, you are setting up a Reddit account and '
+                                    'agree to our User Agreement and Privace Policy',
+
+                                    /// lw 3auz t3dl ay haga
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge),
                               ],
                             )),
                         Container(
@@ -132,6 +131,8 @@ class _SignUpForWebScreenState extends State<SignUpForWebScreen> {
                                     } else {
                                       print('inValidMail');
                                     }
+                                    Navigator.of(context).pushReplacementNamed(
+                                        ContinueSignUpScreen.routeName);
                                   }),
                               Container(
                                 margin: const EdgeInsets.only(top: 10),

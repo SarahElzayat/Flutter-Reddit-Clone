@@ -9,7 +9,6 @@ import 'package:reddit/Screens/bottom_navigation_bar_screens/explore_screen.dart
 import 'package:reddit/Screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/Screens/bottom_navigation_bar_screens/inbox_screen.dart';
 import 'package:reddit/Screens/bottom_navigation_bar_screens/notifications_screen.dart';
-import 'package:reddit/components/home%20components/components.dart';
 
 import '../Components/Helpers/color_manager.dart';
 import '../data/temp_data/tmp_data.dart';
@@ -151,5 +150,4 @@ class AppCubit extends Cubit<AppState> {
   ];
   String profilePicture = 'assets/images/Logo.png';
   String username = 'r/sarsora';
-
 }
