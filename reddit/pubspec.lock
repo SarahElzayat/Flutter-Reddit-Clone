@@ -225,6 +225,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.6"
+  dismissible_page:
+    dependency: "direct main"
+    description:
+      name: dismissible_page
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.3"
   dots_indicator:
     dependency: "direct main"
     description:

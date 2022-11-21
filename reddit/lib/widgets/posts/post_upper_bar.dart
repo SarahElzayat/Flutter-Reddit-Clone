@@ -94,7 +94,7 @@ class _PostUpperBarState extends State<PostUpperBar> {
             children: [
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
                   child: Text(
                     widget.post.title ?? '',
                     style: const TextStyle(

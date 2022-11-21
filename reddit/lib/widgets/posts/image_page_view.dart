@@ -3,6 +3,7 @@
 /// @Author: Ahmed Atta
 
 import 'dart:math';
+import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_view/photo_view.dart';
@@ -57,7 +58,6 @@ class WholeScreenImageViewer extends StatefulWidget {
 class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
   late int currentIndex = widget.initialIndex;
   double aspectRatio = 1.0;
-  double initialInDragging = 0.0;
   bool ghosted = false;
 
   /// called when the page is changed
@@ -100,18 +100,6 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
                   ghosted = !ghosted;
                 });
               },
-              onVerticalDragStart: (details) {
-                initialInDragging = details.globalPosition.dy;
-              },
-              onVerticalDragUpdate: (details) {
-                /// TODO: to be implemented
-                // double diff = details.globalPosition.dy - diffInDragging;
-                // debugPrint('diff:' + diff.toString());
-              },
-              onVerticalDragEnd: (details) {
-                /// TODO: to be implemented
-                // debugPrint('speed: ' + details.primaryVelocity.toString());
-              },
               child: Container(
                 decoration: widget.backgroundDecoration,
                 constraints: BoxConstraints.expand(
@@ -126,15 +114,20 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
                     Expanded(
                       child: Stack(
                         children: [
-                          PhotoViewGallery.builder(
-                            scrollPhysics: const BouncingScrollPhysics(),
-                            builder: _buildItem,
-                            itemCount: widget.post.images!.length,
-                            // loadingBuilder: widget.loadingBuilder,
-                            backgroundDecoration: widget.backgroundDecoration,
-                            pageController: widget.pageController,
-                            onPageChanged: onPageChanged,
-                            scrollDirection: Axis.horizontal,
+                          DismissiblePage(
+                            onDismissed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: PhotoViewGallery.builder(
+                              scrollPhysics: const BouncingScrollPhysics(),
+                              builder: _buildItem,
+                              itemCount: widget.post.images!.length,
+                              // loadingBuilder: widget.loadingBuilder,
+                              backgroundDecoration: widget.backgroundDecoration,
+                              pageController: widget.pageController,
+                              onPageChanged: onPageChanged,
+                              scrollDirection: Axis.horizontal,
+                            ),
                           ),
                           AnimatedOpacity(
                             opacity: ghosted ? 0 : 1,

@@ -134,7 +134,7 @@ class PostWidget extends StatelessWidget {
   Widget normalContent() {
     return Padding(
       padding: const EdgeInsets.only(
-        left: 5,
+        left: 2,
         right: 5,
         top: 5,
       ),
@@ -147,6 +147,7 @@ class PostWidget extends StatelessWidget {
                 ? ColorManager.greyColor
                 : ColorManager.eggshellWhite,
             fontSize: const FontSize(15),
+            fontWeight: FontWeight.w500,
             maxLines: outsideScreen ? 3 : null,
             textOverflow: outsideScreen ? TextOverflow.ellipsis : null,
             // margin: EdgeInsets.zero,
