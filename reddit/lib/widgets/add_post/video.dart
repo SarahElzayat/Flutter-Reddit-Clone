@@ -5,7 +5,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../Components/Helpers/color_manager.dart';
+import '../../components/helpers/color_manager.dart';
 import '../../functions/add_post.dart';
 import '../../variable/global_varible.dart';
 

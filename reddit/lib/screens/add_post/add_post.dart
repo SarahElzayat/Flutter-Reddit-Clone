@@ -9,7 +9,7 @@ import 'package:image_painter/image_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../Components/Helpers/color_manager.dart';
+import '../../components/helpers/color_manager.dart';
 import '../../../variable/global_varible.dart';
 import '../../../widgets/add_post/add_post_textfield.dart';
 import '../../../widgets/add_post/post_type_widget.dart';

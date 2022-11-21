@@ -3,8 +3,8 @@
 /// Reuasable custom button component
 
 import 'package:flutter/material.dart';
-import 'package:reddit/Components/Helpers/color_manager.dart';
-import '../Components/Helpers/constants.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
+import '../components/helpers/constants.dart';
 
 /// ignore: must_be_immutable
 class Button extends StatelessWidget {

@@ -3,8 +3,8 @@
 ///@description left drawer to add to main screen
 
 import 'package:flutter/material.dart';
-import 'package:reddit/Components/Helpers/color_manager.dart';
-import 'package:reddit/Screens/home/all_screen.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/screens/home/all_screen.dart';
 import 'package:reddit/components/home%20components/components.dart';
 import 'package:reddit/cubit/app_cubit.dart';
 

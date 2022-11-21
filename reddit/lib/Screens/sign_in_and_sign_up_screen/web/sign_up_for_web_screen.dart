@@ -2,10 +2,10 @@
 /// @date 11/11/20222
 
 import 'package:flutter/material.dart';
-import '../../../Components/Button.dart';
-import '../../../Components/Helpers/color_manager.dart';
-import '../../../Components/default_text_field.dart';
-import '../../../Screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
+import '../../../components/Button.dart';
+import '../../../components/helpers/color_manager.dart';
+import '../../../components/default_text_field.dart';
+import '../../../screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
 import '../../../data/sign_in_And_sign_up_models/validators.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/continue_with_fb_or_google_web.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
