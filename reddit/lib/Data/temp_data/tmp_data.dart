@@ -44,7 +44,7 @@ var oneImagePost = PostModel(
   nsfw: true,
   spoiler: true,
   saved: false,
-  inYourSubreddit: false,
+  inYourSubreddit: true,
   votes: 100,
   images: [
     Image(
@@ -132,7 +132,7 @@ var linkPost = PostModel(
   ),
   saved: false,
   spoiler: true,
-  inYourSubreddit: false,
+  inYourSubreddit: true,
   nsfw: false,
   votes: 100,
   comments: 10,
