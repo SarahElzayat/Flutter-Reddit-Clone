@@ -4,6 +4,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/Data/sign_in_And_sign_up_models/sign_in_model.dart';
+import 'package:reddit/Screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/Screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
 import 'package:reddit/Screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
 import 'package:reddit/Screens/main_screen.dart';
@@ -64,7 +65,7 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
       print(value);
     });
 
-    Navigator.of(context).pushReplacementNamed(MainScreen.routeName);
+    Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
   }
 
   @override

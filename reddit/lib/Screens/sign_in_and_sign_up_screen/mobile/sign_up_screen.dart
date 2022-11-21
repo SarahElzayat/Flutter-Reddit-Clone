@@ -4,6 +4,7 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import '../../main_screen.dart';
 import '../../to_go_screens/privacy_and_policy.dart';
 import '../../to_go_screens/user_agreement_screen.dart';
 import 'sign_in_screen.dart';
@@ -68,6 +69,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       print(value);
 
       /// here we want to make sure that we got the correct response
+
+      // navigating to the main screen
+      Navigator.of(context).pushReplacementNamed(MainScreen.routeName);
     });
   }
 

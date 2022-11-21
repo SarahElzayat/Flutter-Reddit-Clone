@@ -1,4 +1,4 @@
-# reddit
+# Reddit
 
 A new Flutter project.
 

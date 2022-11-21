@@ -14,6 +14,7 @@ import '../../../Data/sign_in_And_sign_up_models/validators.dart';
 import '../../../Screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
 import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
+import '../../bottom_navigation_bar_screens/home_screen.dart';
 
 class ContinueSignUpScreen extends StatefulWidget {
   final email;
@@ -69,7 +70,7 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
     });
 
     // navigating to the home page after siging up
-    Navigator.of(context).pushReplacementNamed(MainScreen.routeName);
+    Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
   }
 
   @override
