@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/Screens/create_community_screen.dart';
+import 'package:reddit/Screens/moderation/general_screens/description.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'networks/dio_helper.dart';
 import 'components/helpers/bloc_observer.dart';
@@ -61,7 +63,7 @@ class Main extends StatelessWidget {
                 },
                 onUnknownRoute: (settings) {
                   return MaterialPageRoute(
-                      builder: (ctx) => const MainScreen());
+                      builder: (ctx) => const Description());
                 },
                 debugShowCheckedModeBanner: false,
                 theme: appTheme(),
