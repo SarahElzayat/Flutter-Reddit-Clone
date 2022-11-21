@@ -2,7 +2,7 @@
 /// @date 11/11/20222
 
 import 'package:flutter/material.dart';
-import 'package:reddit/Screens/sign_in_and_sign_up_screen/web/continue_sign_up_screen.dart';
+import '../../../Screens/sign_in_and_sign_up_screen/web/continue_sign_up_screen.dart';
 import '../../../Components/Button.dart';
 import '../../../Components/Helpers/color_manager.dart';
 import '../../../Components/default_text_field.dart';
