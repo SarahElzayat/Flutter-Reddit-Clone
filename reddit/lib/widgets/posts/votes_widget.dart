@@ -41,6 +41,7 @@ class VotesPart extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           shape: const CircleBorder(),
           child: IconButton(
+            key: const Key('upvoteButton'),
             onPressed: () async {
               PostCubit.get(context)
                   .vote(
@@ -77,6 +78,7 @@ class VotesPart extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           shape: const CircleBorder(),
           child: IconButton(
+            key: const Key('downvoteButton'),
             onPressed: () {
               cubit.vote(direction: -1).then((value) {
                 PostNotifierCubit.get(context).changedPost();

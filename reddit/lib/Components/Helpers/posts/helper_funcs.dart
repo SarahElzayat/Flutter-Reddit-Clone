@@ -18,6 +18,7 @@ void goToPost(BuildContext context, PostModel post) {
   );
 }
 
+/// A row with link that opens the url in the browser
 TextButton linkRow(String link, Color textColor) {
   return TextButton(
     style: ButtonStyle(

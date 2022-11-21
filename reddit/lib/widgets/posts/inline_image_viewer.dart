@@ -10,7 +10,6 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
 import 'package:reddit/widgets/posts/image_page_view.dart';
 import 'package:reddit/data/post_model/post_model.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../components/helpers/color_manager.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 

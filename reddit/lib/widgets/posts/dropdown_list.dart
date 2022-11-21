@@ -1,8 +1,10 @@
+/// The Post's DropDown List Widget that has Alot of options depending on the post
+/// date: 8/11/2022
+/// @Author: Ahmed Atta
+
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
-import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'cubit/post_state.dart';
@@ -10,14 +12,20 @@ import 'menu_items.dart' as mi;
 
 enum ItemsClass { public, publicSaved, myPost }
 
+/// The DropDown List Widget that has Alot of options depending on the post
 class DropDownList extends StatelessWidget {
   const DropDownList({
     Key? key,
     required this.postId,
-    required this.itemClass,
+    this.itemClass = ItemsClass.public,
   }) : super(key: key);
 
+  /// The Post's ID
   final String postId;
+
+  /// The Class of the Post
+  /// depends on the post's status
+  /// defaults to [ItemsClass.public]
   final ItemsClass itemClass;
 
   List<mi.MenuItem> getList() {

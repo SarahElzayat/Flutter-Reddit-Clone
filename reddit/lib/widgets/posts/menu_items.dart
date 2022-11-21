@@ -1,18 +1,22 @@
-import 'package:flutter/material.dart';
-import 'package:reddit/components/helpers/mocks/functions.dart';
-import 'package:reddit/constants/constants.dart';
-import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
+/// the menu items manager in the post DropDownList
+/// date: 8/11/2022
+/// @Author: Ahmed Atta
 
+import 'package:flutter/material.dart';
+import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 
 class MenuItem {
-  final String text;
-  final IconData icon;
-
   const MenuItem({
     required this.text,
     required this.icon,
   });
+
+  /// The text of the menu item
+  final String text;
+
+  /// The icon of the menu item
+  final IconData icon;
 }
 
 class MenuItems {
@@ -20,6 +24,7 @@ class MenuItems {
   static const List<MenuItem> publicItemsSaved = [unsave, hide, report, block];
   static const List<MenuItem> myPostsItems = [save, share, delete];
 
+  // all the menu items that we choose from
   static const save = MenuItem(text: 'Save', icon: Icons.bookmark_border);
   static const unsave = MenuItem(text: 'UnSave', icon: Icons.bookmark);
   static const hide = MenuItem(text: 'Hide post', icon: Icons.visibility_off);

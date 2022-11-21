@@ -118,6 +118,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
                             onDismissed: () {
                               Navigator.of(context).pop();
                             },
+                            minScale: 1,
                             child: PhotoViewGallery.builder(
                               scrollPhysics: const BouncingScrollPhysics(),
                               builder: _buildItem,

@@ -5,8 +5,8 @@ import 'package:reddit/constants/constants.dart';
 import 'package:reddit/components/helpers/mocks/post_cubit.mocks.dart';
 import 'package:reddit/data/temp_data/tmp_data.dart';
 
-MockDio mockDio = MockDio();
 @GenerateMocks([Dio])
+MockDio mockDio = MockDio();
 
 /// it's used to prepare the endpoints for the MockServer
 void prepareMocks() {

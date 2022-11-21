@@ -4,14 +4,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/cubit/posts_cubit/posts_cubit.dart';
 import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_state.dart';
-import '../../cubit/posts_cubit/posts_state.dart';
 import '../../data/post_model/post_model.dart';
-import '../../widgets/posts/cubit/post_state.dart';
 import '../../widgets/posts/dropdown_list.dart';
 
 /// The Screen that displays the indvidual Posts

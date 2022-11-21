@@ -1,9 +1,11 @@
+/// The post cubit that handles the post state independently
+/// date: 8/11/2022
+/// @Author: Ahmed Atta
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/mocks/functions.dart';
 import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/constants/constants.dart';
-import 'package:reddit/networks/dio_helper.dart';
-
 import 'post_state.dart';
 
 class PostCubit extends Cubit<PostState> {
@@ -32,7 +34,6 @@ class PostCubit extends Cubit<PostState> {
 
   /// this function is used to vote on a post
   /// @param [direction] the direction of the wanted vote
-  /// @param [postId] the id of post to be voted on
   Future vote({
     required int direction,
   }) {
@@ -51,14 +52,20 @@ class PostCubit extends Cubit<PostState> {
       'direction': newDir,
       'type': 'post',
     }).then((value) {
-      post.votingType = (post.votingType ?? 0) + direction;
-      post.votes = (post.votes ?? 0) + direction;
-      emit(PostsVoted());
+      if (value.statusCode == 200) {
+        post.votingType = (post.votingType ?? 0) + direction;
+        post.votes = (post.votes ?? 0) + direction;
+        emit(PostsVoted());
+      } else {
+        emit(PostsVotedError());
+      }
     }).catchError((error) {
+      print(error);
       emit(PostsVotedError());
     });
   }
 
+  /// this function is used to vote on a post
   Future save() {
     return mockDio.post(
       '$base/save',
@@ -74,6 +81,7 @@ class PostCubit extends Cubit<PostState> {
     });
   }
 
+  /// this function is used to hide a post
   Future hide() {
     return mockDio.post(
       '$base/hide',
@@ -83,6 +91,7 @@ class PostCubit extends Cubit<PostState> {
     ).then((value) => print(value.data));
   }
 
+  /// this function is used to block the author of a post
   Future blockUser() {
     return mockDio.post(
       '$base/block',
@@ -92,6 +101,7 @@ class PostCubit extends Cubit<PostState> {
     ).then((value) => print(value.data));
   }
 
+  /// this function is used to delete a post
   Future delete() {
     return mockDio.post(
       '$base/delete',
@@ -101,10 +111,12 @@ class PostCubit extends Cubit<PostState> {
     ).then((value) => print(value.data));
   }
 
+  /// gets the voting type of the post (up, down ,..)
   int getVotingType() {
     return post.votingType ?? 0;
   }
 
+  /// gets the number of votes of the post
   int getVotesCount() {
     return post.votes ?? 0;
   }
