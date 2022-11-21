@@ -6,7 +6,7 @@ import 'package:reddit/data/post_model/post_model.dart';
 var textPost = PostModel(
   id: '1852',
   kind: 'text',
-  title: lorem(paragraphs: 1, words: 15),
+  title: 'this is the title',
   content: ''' This is a content <br />
       **This IS BOLD** <br />
       *this is italic* <br />

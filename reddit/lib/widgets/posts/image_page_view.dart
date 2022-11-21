@@ -58,6 +58,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
   late int currentIndex = widget.initialIndex;
   double aspectRatio = 1.0;
   double initialInDragging = 0.0;
+  bool ghosted = false;
 
   /// called when the page is changed
   void onPageChanged(int index) {
@@ -88,12 +89,17 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(context),
+      // appBar: appBar(context),
       body: BlocProvider(
         create: (context) => PostCubit(widget.post),
         child: BlocBuilder<PostCubit, PostState>(
           builder: (context, state) {
             return GestureDetector(
+              onTap: () {
+                setState(() {
+                  ghosted = !ghosted;
+                });
+              },
               onVerticalDragStart: (details) {
                 initialInDragging = details.globalPosition.dy;
               },
@@ -111,67 +117,88 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
                 constraints: BoxConstraints.expand(
                   height: MediaQuery.of(context).size.height,
                 ),
-                child: Stack(
+                child: Column(
                   children: [
-                    PhotoViewGallery.builder(
-                      scrollPhysics: const BouncingScrollPhysics(),
-                      builder: _buildItem,
-                      itemCount: widget.post.images!.length,
-                      // loadingBuilder: widget.loadingBuilder,
-                      backgroundDecoration: widget.backgroundDecoration,
-                      pageController: widget.pageController,
-                      onPageChanged: onPageChanged,
-                      scrollDirection: Axis.horizontal,
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
+                    AnimatedOpacity(
+                        opacity: ghosted ? 0 : 1,
+                        duration: const Duration(milliseconds: 300),
+                        child: appBar(context)),
+                    Expanded(
+                      child: Stack(
                         children: [
-                          if (widget.post.images![currentIndex].caption != null)
-                            Container(
-                                alignment: Alignment.centerLeft,
-                                padding: const EdgeInsets.all(8.0),
-                                color: Colors.black.withOpacity(0.5),
-                                child: Text(
-                                  widget.post.images![currentIndex].caption!,
-                                  style: const TextStyle(
-                                      color: ColorManager.eggshellWhite,
-                                      fontSize: 15),
-                                )),
-                          if (widget.post.images![currentIndex].link != null)
-                            Container(
-                              alignment: Alignment.centerLeft,
-                              padding: const EdgeInsets.all(8.0),
-                              color: Colors.black.withOpacity(0.5),
-                              child: linkRow(
-                                  widget.post.images![currentIndex].link!,
-                                  ColorManager.eggshellWhite),
-                            ),
-                          Container(
-                            alignment: Alignment.bottomCenter,
-                            color: Colors.black.withOpacity(0.5),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                    flex: 1,
-                                    child: VotesPart(
-                                      post: widget.post,
-                                      iconColor: ColorManager.eggshellWhite,
-                                    )),
-                                Expanded(
-                                  flex: 2,
-                                  child: PostLowerBarWithoutVotes(
-                                    post: widget.post,
-                                    iconColor: ColorManager.eggshellWhite,
-                                  ),
-                                ),
-                              ],
-                            ),
+                          PhotoViewGallery.builder(
+                            scrollPhysics: const BouncingScrollPhysics(),
+                            builder: _buildItem,
+                            itemCount: widget.post.images!.length,
+                            // loadingBuilder: widget.loadingBuilder,
+                            backgroundDecoration: widget.backgroundDecoration,
+                            pageController: widget.pageController,
+                            onPageChanged: onPageChanged,
+                            scrollDirection: Axis.horizontal,
                           ),
+                          AnimatedOpacity(
+                            opacity: ghosted ? 0 : 1,
+                            duration: const Duration(milliseconds: 300),
+                            child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  if (widget
+                                          .post.images![currentIndex].caption !=
+                                      null)
+                                    Container(
+                                        alignment: Alignment.centerLeft,
+                                        padding: const EdgeInsets.all(8.0),
+                                        color: Colors.black.withOpacity(0.5),
+                                        child: Text(
+                                          widget.post.images![currentIndex]
+                                              .caption!,
+                                          style: const TextStyle(
+                                              color: ColorManager.eggshellWhite,
+                                              fontSize: 15),
+                                        )),
+                                  if (widget.post.images![currentIndex].link !=
+                                      null)
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding: const EdgeInsets.all(8.0),
+                                      color: Colors.black.withOpacity(0.5),
+                                      child: linkRow(
+                                          widget
+                                              .post.images![currentIndex].link!,
+                                          ColorManager.eggshellWhite),
+                                    ),
+                                  Container(
+                                    alignment: Alignment.bottomCenter,
+                                    color: Colors.black.withOpacity(0.5),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 1,
+                                            child: VotesPart(
+                                              post: widget.post,
+                                              iconColor:
+                                                  ColorManager.eggshellWhite,
+                                            )),
+                                        Expanded(
+                                          flex: 2,
+                                          child: PostLowerBarWithoutVotes(
+                                            post: widget.post,
+                                            iconColor:
+                                                ColorManager.eggshellWhite,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
