@@ -1,20 +1,19 @@
-
 import 'package:flutter/material.dart';
 import 'package:reddit/Components/Helpers/color_manager.dart';
 
 class SavedScreen extends StatefulWidget {
   const SavedScreen({super.key});
-    static const routeName = '/saved_screen_route';
-
+  static const routeName = '/saved_screen_route';
 
   @override
   State<SavedScreen> createState() => _SavedScreenState();
 }
 
-class _SavedScreenState extends State<SavedScreen> with TickerProviderStateMixin {
+class _SavedScreenState extends State<SavedScreen>
+    with TickerProviderStateMixin {
   late TabController _tabController;
 
-   /// initial state of the stateful widget
+  /// initial state of the stateful widget
   @override
   void initState() {
     super.initState();
@@ -24,10 +23,10 @@ class _SavedScreenState extends State<SavedScreen> with TickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      appBar: AppBar(
-        title: const Center(child: Text('Saved')),
-        bottom: TabBar(
+    return Scaffold(
+        appBar: AppBar(
+          title: const Center(child: Text('Saved')),
+          bottom: TabBar(
             controller: _tabController,
             labelStyle: const TextStyle(fontSize: 14),
             indicatorWeight: 1,
@@ -41,20 +40,15 @@ class _SavedScreenState extends State<SavedScreen> with TickerProviderStateMixin
               Tab(
                 text: 'Comments',
               ),
-              
             ],
           ),
-      ),
-
-       body: TabBarView(
+        ),
+        body: TabBarView(
           controller: _tabController,
           children: const [
             //TODO Add screens depeneding on category
             //TODO Add models to each screen
-            Po
-            
           ],
-        )
-    );
+        ));
   }
 }

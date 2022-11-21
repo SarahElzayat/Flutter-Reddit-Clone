@@ -22,8 +22,6 @@ ThemeData appTheme() {
     ),
     drawerTheme: const DrawerThemeData(
         backgroundColor: ColorManager.black, elevation: 10),
-    // ColorManager.deepDarkGrey)
-
     inputDecorationTheme: const InputDecorationTheme(
       hintStyle: TextStyle(color: ColorManager.grey),
       alignLabelWithHint: true,
@@ -48,7 +46,7 @@ ThemeData appTheme() {
     ),
     textTheme: const TextTheme(
       titleMedium: TextStyle(
-        fontSize: 28,
+        fontSize: 12,
         fontWeight: FontWeight.bold,
         color: ColorManager.eggshellWhite,
       ),
@@ -61,12 +59,10 @@ ThemeData appTheme() {
           fontSize: 22,
           fontWeight: FontWeight.normal,
           color: ColorManager.eggshellWhite),
-    displaySmall: TextStyle(
+      displaySmall: TextStyle(
           fontSize: 16,
-          
           fontWeight: FontWeight.normal,
           color: ColorManager.eggshellWhite),
-    
     ),
   );
 }
