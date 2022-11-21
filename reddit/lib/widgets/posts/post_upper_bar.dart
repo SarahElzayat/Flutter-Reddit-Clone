@@ -64,13 +64,15 @@ class _PostUpperBarState extends State<PostUpperBar> {
                 return _singleRow(
                     name: widget.post.postedBy!,
                     timeAgo: widget.post.postedAt!,
-                    sub: false);
+                    sub: false,
+                    showIcon: true);
               },
               ShowingOtions.onlySubreddit: (_) {
                 return _singleRow(
                     name: widget.post.subreddit!,
                     timeAgo: widget.post.postedAt!,
-                    sub: true);
+                    sub: true,
+                    showIcon: true);
               },
               ShowingOtions.both: (_) {
                 return _bothRows();
@@ -90,18 +92,20 @@ class _PostUpperBarState extends State<PostUpperBar> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4.0),
-                child: Text(
-                  widget.post.title ?? '',
-                  style: const TextStyle(
-                    color: ColorManager.eggshellWhite,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w400,
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  child: Text(
+                    widget.post.title ?? '',
+                    style: const TextStyle(
+                      color: ColorManager.eggshellWhite,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                 ),
               ),
-              const Spacer(),
+              // const Spacer(),
               if (widget.post.kind == 'link' && widget.outSide)
                 InkWell(
                   onTap: () async {
@@ -176,18 +180,22 @@ class _PostUpperBarState extends State<PostUpperBar> {
               ),
             )
           else if (widget.outSide)
-            BlocBuilder<PostNotifierCubit, PostNotifierState>(
-              builder: (context, state) {
-                return DropDownList(
-                  postId: widget.post.id!,
-                  itemClass: (widget.post.saved ?? true)
-                      ? ItemsClass.publicSaved
-                      : ItemsClass.public,
-                );
-              },
-            ),
+            dropDownDots(),
         ],
       ),
+    );
+  }
+
+  BlocBuilder<PostNotifierCubit, PostNotifierState> dropDownDots() {
+    return BlocBuilder<PostNotifierCubit, PostNotifierState>(
+      builder: (context, state) {
+        return DropDownList(
+          postId: widget.post.id!,
+          itemClass: (widget.post.saved ?? true)
+              ? ItemsClass.publicSaved
+              : ItemsClass.public,
+        );
+      },
     );
   }
 
@@ -273,14 +281,18 @@ class _PostUpperBarState extends State<PostUpperBar> {
     );
   }
 
-  Row _singleRow(
-      {required String name, required String timeAgo, bool sub = false}) {
+  Widget _singleRow(
+      {required String name,
+      required String timeAgo,
+      bool sub = false,
+      bool showIcon = false}) {
     return Row(
       children: [
-        subredditAvatar(small: true),
-        SizedBox(
-          width: min(5.w, 0.2.dp),
-        ),
+        if (showIcon) subredditAvatar(small: true),
+        if (showIcon)
+          SizedBox(
+            width: min(5.w, 0.2.dp),
+          ),
         Text(
           '${sub ? 'r' : 'u'}/$name • ',
           style: const TextStyle(
@@ -295,6 +307,8 @@ class _PostUpperBarState extends State<PostUpperBar> {
             fontSize: 15,
           ),
         ),
+        if (showIcon) const Spacer(),
+        if (showIcon) dropDownDots()
       ],
     );
   }

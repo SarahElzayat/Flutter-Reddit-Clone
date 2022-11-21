@@ -27,6 +27,7 @@ class PostWidget extends StatelessWidget {
     super.key,
     required this.post,
     this.outsideScreen = true,
+    this.upperRowType = ShowingOtions.both,
   });
 
   /// determines if the post is in the home page or in the post screen
@@ -34,6 +35,12 @@ class PostWidget extends StatelessWidget {
 
   /// the post to show
   final PostModel post;
+
+  /// if the single or a detailed row should be shown in the upper part of the post
+  ///
+  /// it's passed because the post don't require the subreddit to be shown in
+  /// the sunreddit screen for example
+  final ShowingOtions upperRowType;
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +78,7 @@ class PostWidget extends StatelessWidget {
                         PostUpperBar(
                           post: post,
                           outSide: outsideScreen,
-                          showRowsSelect: ShowingOtions.onlySubreddit,
+                          showRowsSelect: upperRowType,
                         ),
                         // The body of the post
                         if (post.images?.isNotEmpty ?? false)

@@ -24,14 +24,14 @@ class InlineImageViewer extends StatefulWidget {
     this.backgroundDecoration = const BoxDecoration(
       color: ColorManager.black,
     ),
-  }) : pageController =
-            PageController(initialPage: initialIndex, keepPage: true);
+  })  :
+        // that initial A Page Controller with the passed index
+        assert(post.images != null),
+        // it asserts the passed Values and images can't be null
+        assert(initialIndex >= 0); // the initial index can't be less than 0
 
   /// The initial page to show when first creating the [InlineImageViewer].
   final int initialIndex;
-
-  /// The controller for the page view.
-  final PageController pageController;
 
   /// The decoration to paint behind the child if the is a gap.
   ///
@@ -48,6 +48,9 @@ class InlineImageViewer extends StatefulWidget {
 class _InlineImageViewerState extends State<InlineImageViewer> {
   late int currentIndex = widget.initialIndex;
   double aspectRatio = 0;
+
+  /// The controller for the page view.
+  late PageController pageController;
   void onPageChanged(int index) {
     setState(() {
       currentIndex = index;
@@ -56,6 +59,8 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
 
   @override
   void initState() {
+    pageController =
+        PageController(initialPage: widget.initialIndex, keepPage: true);
     Image(image: NetworkImage(widget.post.images![0].path!))
         .image
         .resolve(const ImageConfiguration())
@@ -64,6 +69,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
         aspectRatio = info.image.height / info.image.width;
       });
     }));
+
     super.initState();
   }
 
@@ -83,12 +89,12 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                 PhotoViewGallery.builder(
                   scrollPhysics: const BouncingScrollPhysics(),
                   builder: _buildItem,
+                  wantKeepAlive: true,
                   itemCount: widget.post.images!.length,
                   // loadingBuilder: widget.loadingBuilder,
                   backgroundDecoration: widget.backgroundDecoration,
-                  pageController: widget.pageController,
+                  pageController: pageController,
                   onPageChanged: onPageChanged,
-
                   // allowImplicitScrolling: true,
                   scrollDirection: Axis.horizontal,
                 ),
@@ -142,10 +148,12 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                           color: Colors.white,
                           padding: EdgeInsets.zero,
                           onPressed: () {
-                            widget.pageController.nextPage(
+                            // if (widget.pageController.hasClients) {
+                            pageController.nextPage(
                               duration: const Duration(milliseconds: 400),
                               curve: Curves.easeInOut,
                             );
+                            // }
                           },
                         ),
                       ),
@@ -158,16 +166,18 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                       margin: const EdgeInsets.only(left: 10),
                       child: CircleAvatar(
                         backgroundColor: ColorManager.darkGrey,
-                        radius: min(5.w, 50),
+                        radius: min(5.5.w, 30),
                         child: IconButton(
                           icon: const Icon(Icons.arrow_back_ios_new),
                           color: Colors.white,
                           padding: EdgeInsets.zero,
                           onPressed: () {
-                            widget.pageController.previousPage(
-                              duration: const Duration(milliseconds: 400),
-                              curve: Curves.easeInOut,
-                            );
+                            if (pageController.hasClients) {
+                              pageController.previousPage(
+                                duration: const Duration(milliseconds: 400),
+                                curve: Curves.easeInOut,
+                              );
+                            }
                           },
                         ),
                       ),
@@ -206,6 +216,13 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    pageController.dispose();
+    super.dispose();
   }
 
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
