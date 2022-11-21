@@ -38,7 +38,7 @@ class SquareTextField extends StatefulWidget {
   final TextEditingController? formController;
 
   /// its used to show or hide the suffix whitch contains the number of line left.
-  /// Default to [true].
+  /// Default to true.
   final bool showSuffix;
 
   final bool showPrefix;
@@ -88,6 +88,7 @@ class SquareTextFieldState extends State<SquareTextField> {
       onChanged: (value) {
         setState(() {
           textLength = value.length;
+
           if (widget.onChanged != null) {
             widget.onChanged!(value);
           }
@@ -109,22 +110,14 @@ class SquareTextFieldState extends State<SquareTextField> {
         // prefix: widget.showPrefix ? widget.prefix : null,
         prefixIcon: widget.showPrefix
             ? Padding(
-                padding: const EdgeInsets.fromLTRB(10, 8, 0, 10),
-                child: widget.prefix
-                // Text(
-                //   widget.prefix,
-                //   style: TextStyle(
-                //       color: isAndroid
-                //           ? ColorManager.lightGrey
-                //           : ColorManager.textGrey),
-                // ),
-                )
+                padding: const EdgeInsets.only(left: 10, top: 14),
+                child: widget.prefix)
             : null,
         suffixIconConstraints: const BoxConstraints(),
         suffixIcon: widget.showSuffix
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Text('${widget.maxLength ?? 0 - textLength}',
+                child: Text('${(widget.maxLength ?? 0) - textLength}',
                     style: const TextStyle(color: ColorManager.greyColor)),
               )
             : null,

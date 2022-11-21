@@ -100,8 +100,8 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
                 ),
                 SizedBox(height: 1.h),
                 SquareTextField(
-                  prefix: const Text('r/'),
-                  labelText: 'Community_name',
+                  prefix: const Text('r/', style: TextStyle(fontSize: 20)),
+                  labelText: 'Community name',
                   maxLength: 21,
                   formController: _controller,
                   onChanged: (communityName) {

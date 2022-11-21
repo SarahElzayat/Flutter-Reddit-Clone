@@ -21,7 +21,7 @@ ThemeData appTheme() {
       // ColorManager.deepDarkGrey)
 
       inputDecorationTheme: const InputDecorationTheme(
-        hintStyle: TextStyle(color: ColorManager.grey),
+        hintStyle: TextStyle(color: ColorManager.grey, fontSize: 20),
         alignLabelWithHint: true,
       ),
       colorScheme: const ColorScheme(

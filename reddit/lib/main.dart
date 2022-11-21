@@ -63,7 +63,7 @@ class Main extends StatelessWidget {
                 },
                 onUnknownRoute: (settings) {
                   return MaterialPageRoute(
-                      builder: (ctx) => const Description());
+                      builder: (ctx) => const CreateCommunityScreen());
                 },
                 debugShowCheckedModeBanner: false,
                 theme: appTheme(),
