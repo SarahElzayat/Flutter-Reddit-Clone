@@ -40,5 +40,33 @@ void main() {
         expect(post.votes, 100);
       });
     });
+
+    test('downvote', () async {
+      var post = oneImagePost;
+      var cubit = PostCubit(post);
+      expect(post.votes, 100);
+
+      await cubit.vote(direction: -1).then((value) {
+        expect(post.votes, 99);
+      });
+
+      await cubit.vote(direction: -1).then((value) {
+        expect(post.votes, 100);
+      });
+
+      // testing an invalid status code
+      when(mockDio.post('$base/vote', data: anyNamed('data')))
+          .thenAnswer((_) => Future.value(Response(
+              requestOptions: RequestOptions(path: '$base/vote'),
+              data: {
+                'id': 1,
+                'type': 'post',
+              },
+              statusCode: 400)));
+
+      await cubit.vote(direction: -1).then((value) {
+        expect(post.votes, 100);
+      });
+    });
   });
 }
