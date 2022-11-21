@@ -26,10 +26,10 @@ class DioHelper {
         /// before ending the connection, depending on the internet speed
         /// note that time is in milli.
         /// I want it to wait 10 seconds before ending
-        connectTimeout: 10 * 1000,
+        // connectTimeout: 10 * 1000,
 
-        /// time waited to recieve something from the server
-        receiveTimeout: 20 * 1000,
+        // /// time waited to recieve something from the server
+        // receiveTimeout: 20 * 1000,
 
         /// this is a map of headers
         headers: {'Content-Type': 'application/json; charset=utf-8'},

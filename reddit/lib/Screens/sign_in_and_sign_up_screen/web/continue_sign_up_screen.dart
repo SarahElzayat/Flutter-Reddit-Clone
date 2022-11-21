@@ -14,6 +14,7 @@ import '../../../Data/sign_in_And_sign_up_models/validators.dart';
 import '../../../Screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
 import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
+import '../../../shared/local/shared_preferences.dart';
 import '../../bottom_navigation_bar_screens/home_screen.dart';
 
 class ContinueSignUpScreen extends StatefulWidget {
@@ -67,10 +68,18 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
 
     DioHelper.postData(path: signUp, data: user.toJson()).then((value) {
       print(value);
-    });
+      if (value.statusCode == 200) {
+        CacheHelper.putData(key: 'token', value: value.data['token']);
+        CacheHelper.putData(key: 'username', value: value.data['username']);
 
-    // navigating to the home page after siging up
-    Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+        // navigating to the main screen
+        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      } else {
+        // TODO: think what should you do here ....
+        /// 1- existing username -> show snackbar
+        /// 2-
+      }
+    });
   }
 
   @override
