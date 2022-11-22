@@ -4,6 +4,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/data/sign_in_And_sign_up_models/sign_in_model.dart';
+import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
 import 'package:reddit/screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
 
@@ -205,6 +206,7 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
                               labelText: 'PASSWORD',
                             ),
                             Button(
+                                textFontWeight: FontWeight.normal,
                                 text: 'LOG IN',
                                 textColor:
                                     (usernameController.text.isNotEmpty &&
@@ -217,7 +219,7 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
                                         ? ColorManager.darkGrey
                                         : ColorManager.hoverOrange,
                                 buttonWidth: 25.w,
-                                boarderRadius: 5,
+                                borderRadius: 5,
                                 buttonHeight: 40,
                                 textFontSize: 14,
                                 onPressed:
