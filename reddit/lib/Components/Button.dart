@@ -1,26 +1,103 @@
 /// @author yasmineghanem
 /// @date: 25/10/2022
 /// Reuasable custom button component
-
 import 'package:flutter/material.dart';
 import 'package:reddit/Components/Helpers/color_manager.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 
-Widget buttonWidget(
-        {text = 'Button',
-        textColor = ColorManager.white,
-        backgroundColor = ColorManager.blue,
-        splashColor = ColorManager.white,
-        buttonWidth = 10.0,
-        buttonHeight = 5.0,
-        textFontWeight = FontWeight.normal,
-        textFontSize = 10.0,
-        borderColor,
-        borderRadius = 50.0,
-        borderWidth = 1.0,
-        disabled = false,
-        required onPressed}) =>
-    Container(
+// Widget Button(
+//         {text = 'Button',
+//         textColor = ColorManager.white,
+//         backgroundColor = ColorManager.blue,
+//         splashColor = ColorManager.white,
+//         buttonWidth = 10.0,
+//         buttonHeight = 5.0,
+//         textFontWeight = FontWeight.normal,
+//         textFontSize = 10.0,
+//         borderColor,
+//         borderRadius = 50.0,
+//         borderWidth = 1.0,
+//         disabled = false,
+//         required onPressed}) => Container(
+//       decoration: BoxDecoration(
+//           borderRadius: BorderRadius.circular(borderRadius),
+
+//           /// for circular buttons
+//           border: Border.all(
+//             /// if border color is not passed set it to background color
+//             color: borderColor == null ? backgroundColor : borderColor!,
+//             width: borderColor == null ? 0 : borderWidth,
+//           )),
+//       child: MaterialButton(
+//         minWidth: buttonWidth,
+//         height: buttonHeight,
+//         onPressed: onPressed,
+//         elevation: 0,
+//         disabledElevation: 0,
+//         shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.all(Radius.circular(borderRadius))),
+//         highlightElevation: 0,
+//         color: backgroundColor,
+//         splashColor: (disabled || (CacheHelper.getData(key: 'isWindows')!))
+//             ? Colors.transparent
+//             : splashColor,
+//         highlightColor: (CacheHelper.getData(key: 'isAndroid')!)
+//             ? Colors.transparent
+//             : Colors.black.withOpacity(0.1),
+//         child: Text(text,
+//             style: TextStyle(
+//                 fontSize: textFontSize,
+//                 fontWeight: textFontWeight,
+//                 color: textColor)),
+//       ),
+//     );
+
+class Button extends StatelessWidget {
+  /*
+
+text: 'Cancel',
+                              textColor: ColorManager.eggshellWhite,
+                              backgroundColor: ColorManager.grey,
+                              buttonWidth: 7.w,
+                              buttonHeight: 5.h,
+                              textFontSize: 13.sp,
+                              onPressed: () =>
+
+  */
+  Button({
+    super.key,
+    required this.text,
+    required this.textColor,
+    required this.backgroundColor,
+    required this.buttonWidth,
+    required this.buttonHeight,
+    required this.textFontWeight,
+    required this.textFontSize,
+    this.splashColor = ColorManager.white,
+    this.borderColor,
+    this.borderRadius = 50.0,
+    this.borderWidth = 1.0,
+    this.disabled = false,
+    required this.onPressed,
+  });
+
+  var text = 'Button';
+  var textColor = ColorManager.white;
+  var backgroundColor = ColorManager.blue;
+  var splashColor = ColorManager.white;
+  var buttonWidth = 10.0;
+  var buttonHeight = 5.0;
+  var textFontWeight = FontWeight.normal;
+  final textFontSize;
+  var borderColor;
+  var borderRadius = 50.0;
+  var borderWidth = 1.0;
+  var disabled = false;
+  final onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(borderRadius),
 
@@ -53,8 +130,11 @@ Widget buttonWidget(
                 color: textColor)),
       ),
     );
+  }
+}
 
-/// ignore: must_be_immutable
+
+// // / ignore: must_be_immutable
 // class Button extends StatelessWidget {
 //   final String text;
 

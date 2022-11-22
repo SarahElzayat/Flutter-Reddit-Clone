@@ -9,6 +9,7 @@ import 'package:reddit/screens/forget_user_name_and_password/web/forget_user_nam
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../components/Button.dart';
 
+import '../../../components/button.dart';
 import '../../../components/helpers/color_manager.dart';
 import '../../../components/default_text_field.dart';
 import '../../../screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';

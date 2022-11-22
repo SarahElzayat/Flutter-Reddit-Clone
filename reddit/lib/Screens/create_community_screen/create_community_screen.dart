@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:reddit/components/bottom_sheet.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../components/square_text_field.dart';
-import '../../components/Button.dart';
+import '../../components/button.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 

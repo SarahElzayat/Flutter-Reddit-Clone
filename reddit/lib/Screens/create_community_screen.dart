@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:reddit/components/bottom_sheet.dart';
+import '../components/button.dart';
 import '../components/helpers/color_manager.dart';
 import '../components/square_text_field.dart';
 import '../components/Button.dart';
