@@ -27,7 +27,7 @@ class ColorManager {
   static const Color hoverGrey =
       Color(0xff171d21); //colorless buttons when hovered
 
-  static Color grey = const Color(0xff2f3435); //buttons when hovered
+  static const Color grey = Color(0xff2f3435); //buttons when hovered
 
   static const Color disabledButtonGrey =
       Color(0xff5f5f5f); //buttons when hovered
@@ -38,6 +38,8 @@ class ColorManager {
       Color(0xff1d1f20); //text form field when not focused
 
   static const Color eggshellWhite = Color(0xffd6d3cd); //general text
+  static const Color darkBlack =
+      Color(0xff0a0a0a); //background color of the app
 
   static const Color blue = Color(
       0xff47aef8); //blue buttons, some borders, selected filter(hot, trending...)
@@ -47,6 +49,9 @@ class ColorManager {
 
   static const Color downvoteBlue =
       Color(0xff69adff); //arrow color when downvote is pressed
+
+  static const Color darkBlue =
+      Color.fromARGB(255, 8, 57, 117); //arrow color when downvote is pressed
   static const Color upvoteRed =
       Color(0xffff581a); //arrow color when upvote is pressed
 
@@ -64,4 +69,17 @@ class ColorManager {
   static const Color bottomSheetBackgound = Color(0xFF212121);
   static const Color bottomSheetTitle = Color.fromRGBO(129, 131, 132, 1);
   static const Color unselectedItem = Color.fromRGBO(86, 87, 88, 1);
+
+  static const Color black = Color.fromARGB(255, 10, 9, 10);
+
+  //Create community window colors
+  static const Color greyBlack = Color.fromRGBO(26, 27, 26, 1);
+  static const Color darkGreyBlack = Color.fromRGBO(18, 17, 18, 1);
+  static const Color bottomWindowGrey = Color.fromRGBO(53, 52, 54, 1);
+  static const Color textGrey = Color.fromRGBO(112, 114, 115, 1);
+  //rgba(112,114,115,255)
+
+  static const Color yellow = Colors.yellow;
+
+  static const Color textFieldBackground = Color.fromARGB(255, 59, 58, 58);
 }

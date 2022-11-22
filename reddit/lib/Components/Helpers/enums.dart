@@ -8,6 +8,12 @@ enum TrailingObjects {
   tailingIcon,
 }
 
+enum CommunityTypes {
+  public,
+  restricted,
+  private,
+}
+
 enum SortType {
   best,
   newPost,
