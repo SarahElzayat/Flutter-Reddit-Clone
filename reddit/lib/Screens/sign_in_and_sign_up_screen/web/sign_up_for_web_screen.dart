@@ -2,10 +2,12 @@
 /// @date 11/11/20222
 
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/web/continue_sign_up_screen.dart';
 import '../../../components/Button.dart';
 import '../../../components/helpers/color_manager.dart';
 import '../../../components/default_text_field.dart';
 import '../../../screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
+
 import '../../../data/sign_in_And_sign_up_models/validators.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/continue_with_fb_or_google_web.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -73,15 +75,13 @@ class _SignUpForWebScreenState extends State<SignUpForWebScreen> {
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold),
                                     )),
-                                const Text(
-                                  'By continuing, you are setting up a Reddit account and '
-                                  'agree to our User Agreement and Privace Policy',
-                                  style: TextStyle(
-                                      color: ColorManager.eggshellWhite,
-                                      fontSize: 14,
-                                      fontFamily: 'Arial',
-                                      fontWeight: FontWeight.w100),
-                                ),
+                                Text(
+                                    'By continuing, you are setting up a Reddit account and '
+                                    'agree to our User Agreement and Privace Policy',
+
+                                    /// lw 3auz t3dl ay haga
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge),
                               ],
                             )),
                         Container(
@@ -110,11 +110,12 @@ class _SignUpForWebScreenState extends State<SignUpForWebScreen> {
                                 labelText: 'Email',
                               ),
                               Button(
+                                  textFontWeight: FontWeight.normal,
                                   text: 'CONTINUE',
                                   textColor: ColorManager.white,
                                   backgroundColor: ColorManager.hoverOrange,
                                   buttonWidth: 25.w,
-                                  boarderRadius: 5,
+                                  borderRadius: 5,
                                   buttonHeight: 40,
                                   textFontSize: 14,
                                   onPressed: () {
@@ -132,6 +133,8 @@ class _SignUpForWebScreenState extends State<SignUpForWebScreen> {
                                     } else {
                                       print('inValidMail');
                                     }
+                                    Navigator.of(context).pushReplacementNamed(
+                                        ContinueSignUpScreen.routeName);
                                   }),
                               Container(
                                 margin: const EdgeInsets.only(top: 10),

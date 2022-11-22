@@ -252,7 +252,11 @@ packages:
       name: dropdown_button2
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "1.9.1"
+=======
+    version: "1.9.0"
+>>>>>>> feature/home_and_search
   dropdown_textfield:
     dependency: "direct main"
     description:
@@ -536,7 +540,11 @@ packages:
       name: google_sign_in_android
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "6.1.3"
+=======
+    version: "6.1.2"
+>>>>>>> feature/home_and_search
   google_sign_in_ios:
     dependency: transitive
     description:

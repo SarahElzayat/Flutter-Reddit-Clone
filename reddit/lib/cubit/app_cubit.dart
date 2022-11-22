@@ -11,6 +11,7 @@ import 'package:reddit/screens/bottom_navigation_bar_screens/inbox_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/notifications_screen.dart';
 import 'package:reddit/widgets/posts/post_upper_bar.dart';
 import '../components/helpers/color_manager.dart';
+
 import '../data/temp_data/tmp_data.dart';
 import '../screens/bottom_navigation_bar_screens/add_post_screen.dart';
 import '../widgets/posts/post_widget.dart';
@@ -22,7 +23,7 @@ class AppCubit extends Cubit<AppState> {
   static AppCubit get(context) => BlocProvider.of(context);
 
   List screensNames = ['Home', 'Discover', 'Create', 'Chat', 'Inbox'];
-
+  late BuildContext mainScreenContext;
   int currentIndex = 0;
   List<Widget> bottomNavBarScreens = [
     const HomeScreen(),
@@ -90,20 +91,29 @@ class AppCubit extends Cubit<AppState> {
     emit(ChangeEndDrawerState());
   }
 
+  ///@param [context] is the context of the desired screen
+  void getMainScreenContext(context) {
+    mainScreenContext = context;
+  }
+
   ///Left drawer 'moderating' list state management
   bool moderatingListOpen = true;
+
   List<Widget> moderatingListItems = [
     const Text(
       'moderating 1 ',
-      style: TextStyle(color: ColorManager.eggshellWhite),
+      style: TextStyle(
+          color: ColorManager.eggshellWhite, fontWeight: FontWeight.w400),
     ),
     const Text(
       'moderating 2 ',
-      style: TextStyle(color: ColorManager.eggshellWhite),
+      style: TextStyle(
+          color: ColorManager.eggshellWhite, fontWeight: FontWeight.w400),
     ),
     const Text(
       'moderating 3 ',
-      style: TextStyle(color: ColorManager.eggshellWhite),
+      style: TextStyle(
+          color: ColorManager.eggshellWhite, fontWeight: FontWeight.w400),
     ),
   ];
 
@@ -121,17 +131,23 @@ class AppCubit extends Cubit<AppState> {
   }
 
   List<Widget> yourCommunitiesList = [
+    //
     const Text(
       'community 1 ',
-      style: TextStyle(color: ColorManager.eggshellWhite),
+      style: TextStyle(
+          color: ColorManager.eggshellWhite, fontWeight: FontWeight.w400),
     ),
     const Text(
       'community 2 ',
-      style: TextStyle(color: ColorManager.eggshellWhite),
+      style: TextStyle(
+          color: ColorManager.eggshellWhite, fontWeight: FontWeight.w400),
     ),
     const Text(
       'community 3 ',
-      style: TextStyle(color: ColorManager.eggshellWhite),
+      style: TextStyle(
+          color: ColorManager.eggshellWhite, fontWeight: FontWeight.w400),
     ),
   ];
+  String profilePicture = 'assets/images/Logo.png';
+  String username = 'r/sarsora';
 }
