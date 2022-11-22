@@ -97,7 +97,7 @@ class ForgetUserNameWebScreen extends StatelessWidget {
                                 textColor: ColorManager.white,
                                 backgroundColor: ColorManager.hoverOrange,
                                 buttonWidth: 13.5.w,
-                                boarderRadius: 5,
+                                borderRadius: 5,
                                 textFontWeight: FontWeight.bold,
                                 buttonHeight: 4.h,
                                 textFontSize: 16,
