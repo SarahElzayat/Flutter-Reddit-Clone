@@ -3,7 +3,7 @@
 /// @date 4/11/2022
 
 import 'dart:io';
-import '../../Components/Helpers/color_manager.dart';
+import '../../components/helpers/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_trimmer/video_trimmer.dart';

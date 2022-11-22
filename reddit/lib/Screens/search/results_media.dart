@@ -3,7 +3,6 @@
 /// this is the screen for the media results of the main search
 import 'package:flutter/material.dart';
 
-
 class ResultsMedia extends StatefulWidget {
   const ResultsMedia({super.key});
 

@@ -9,7 +9,7 @@ import 'package:image_painter/image_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../Components/Helpers/color_manager.dart';
+import '../../components/helpers/color_manager.dart';
 import '../../../variable/global_varible.dart';
 import '../../../widgets/add_post/add_post_textfield.dart';
 import '../../../widgets/add_post/post_type_widget.dart';
@@ -60,7 +60,7 @@ class _AddPostState extends State<AddPost> {
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               onPressed: () {
-                SystemNavigator.pop();
+                Navigator.of(context).pop();
                 // because this is the first screen this button exit the app
                 // when mearge this it will not be the first screen so
                 // remove the previous line code and uncomment the next line
@@ -81,7 +81,7 @@ class _AddPostState extends State<AddPost> {
         ),
         body: SizedBox(
           height: mediaQuery.size.height,
-          child: ListView(children: [
+          child: Column(children: [
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: AddPostTextField(

@@ -3,7 +3,6 @@
 /// this is the screen for the people results of the main search
 import 'package:flutter/material.dart';
 
-
 class ResultsPeople extends StatefulWidget {
   const ResultsPeople({super.key});
 

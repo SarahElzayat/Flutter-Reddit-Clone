@@ -2,16 +2,17 @@
 /// @date 9/11/2022
 /// The screen that shows the main search results with the tab bar
 import 'package:flutter/material.dart';
-import 'package:reddit/Screens/search/results_comments.dart';
-import 'package:reddit/Screens/search/results_communities.dart';
-import 'package:reddit/Screens/search/results_media.dart';
-import 'package:reddit/Screens/search/results_people.dart';
-import 'package:reddit/Screens/search/results_posts.dart';
+import 'package:reddit/screens/search/results_comments.dart';
+import 'package:reddit/screens/search/results_communities.dart';
+import 'package:reddit/screens/search/results_media.dart';
+import 'package:reddit/screens/search/results_people.dart';
+import 'package:reddit/screens/search/results_posts.dart';
 import 'package:reddit/components/search_field.dart';
 
 class SearchResults extends StatefulWidget {
   final String searchWord;
   const SearchResults({super.key, required this.searchWord});
+  static const routeName = '/search_results_route';
 
   @override
   State<SearchResults> createState() => _SearchResultsState();
@@ -20,7 +21,6 @@ class SearchResults extends StatefulWidget {
 class _SearchResultsState extends State<SearchResults>
     with TickerProviderStateMixin {
   late TabController _tabController;
-
 
   /// initial state of the stateful widget
   @override

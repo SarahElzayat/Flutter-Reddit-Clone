@@ -3,7 +3,6 @@
 /// this is the screen for the comments results of the main search
 import 'package:flutter/material.dart';
 
-
 class ResultsComments extends StatefulWidget {
   const ResultsComments({super.key});
 
