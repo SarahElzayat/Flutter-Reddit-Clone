@@ -13,7 +13,7 @@ import '../../components/helpers/color_manager.dart';
 import '../../../variable/global_varible.dart';
 import '../../../widgets/add_post/add_post_textfield.dart';
 import '../../../widgets/add_post/post_type_widget.dart';
-import '../../widgets/add_post/button.dart';
+
 import '../../widgets/add_post/post_type_buttons.dart';
 
 /// This is the main screen in Add Post
