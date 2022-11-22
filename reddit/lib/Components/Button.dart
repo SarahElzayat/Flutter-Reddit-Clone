@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:reddit/Components/Helpers/color_manager.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 
-Widget Button(
+Widget buttonWidget(
         {text = 'Button',
         textColor = ColorManager.white,
         backgroundColor = ColorManager.blue,

@@ -2,15 +2,16 @@
 /// @date 9/11/2022
 /// The search screen on mobile
 import 'package:flutter/material.dart';
-import 'package:reddit/Screens/search/search_results_main_screen.dart';
+import 'package:reddit/screens/search/search_results_main_screen.dart';
 
-import 'package:reddit/components/Helpers/color_manager.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/search_field.dart';
 
 import '../../../shared/local/shared_preferences.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
+  static const routeName = '/search_screen_route';
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -28,12 +29,13 @@ class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _textEditingController = TextEditingController();
   dynamic _onSubmitted(String value) {
     Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => SearchResults(
-            searchWord: value,
-          ),
-        ),);
+      context,
+      MaterialPageRoute(
+        builder: (context) => SearchResults(
+          searchWord: value,
+        ),
+      ),
+    );
   }
 
   @override

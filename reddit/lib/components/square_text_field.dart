@@ -3,7 +3,7 @@
 /// @author: Ahmed Atta
 
 import 'package:flutter/material.dart';
-import '../Components/Helpers/color_manager.dart';
+import '../components/helpers/color_manager.dart';
 
 class SquareTextField extends StatefulWidget {
   /// Creates an [SquareTextField].
@@ -54,7 +54,7 @@ class SquareTextField extends StatefulWidget {
   /// Called when the textField is finished Editing.
   final void Function()? onEditingComplete;
 
-  /// Called when [validate] is called.
+  /// Called when validate is called.
   final String? Function(String?)? validator;
 
   @override

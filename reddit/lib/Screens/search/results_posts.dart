@@ -3,7 +3,6 @@
 /// this is the screen for the posts results of the main search
 import 'package:flutter/material.dart';
 
-
 class ResultsPosts extends StatefulWidget {
   const ResultsPosts({super.key});
 
