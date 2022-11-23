@@ -3,9 +3,11 @@
 ///Create Community Screen
 
 import 'package:flutter/material.dart';
+import 'package:reddit/Screens/main_screen.dart';
 import 'package:reddit/components/bottom_sheet.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
+import 'package:reddit/shared/local/shared_preferences.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../components/square_text_field.dart';
 import '../../components/button.dart';
@@ -71,7 +73,9 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
         backgroundColor: ColorManager.darkGrey,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushNamed(MainScreen.routeName);
+          },
         ),
         title: const Text('Create a community'),
         centerTitle: true,

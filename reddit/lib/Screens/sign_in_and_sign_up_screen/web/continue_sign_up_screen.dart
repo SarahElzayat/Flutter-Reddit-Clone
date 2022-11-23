@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:reddit/Screens/main_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../../../Components/Helpers/color_manager.dart';
-import '../../../Components/default_text_field.dart';
-import '../../../Data/sign_in_And_sign_up_models/sign_up_model.dart';
-import '../../../Data/sign_in_And_sign_up_models/validators.dart';
+import '../../../components/Helpers/color_manager.dart';
+import '../../../components/default_text_field.dart';
+import '../../../data/sign_in_And_sign_up_models/sign_up_model.dart';
+import '../../../data/sign_in_And_sign_up_models/validators.dart';
 import '../../../Screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
 import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
