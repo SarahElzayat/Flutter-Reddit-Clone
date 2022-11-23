@@ -29,7 +29,7 @@ class ContinueWithGoogleOrFbWeb extends StatelessWidget {
             borderRadius: 10,
             borderColor: ColorManager.blue,
             buttonHeight: 55,
-            imagePath: 'assets/icons/googleIcon.png',
+            // imagePath: 'assets/icons/googleIcon.png',
             textFontSize: 16,
             onPressed: signInWithGoogle),
         const SizedBox(
@@ -43,7 +43,7 @@ class ContinueWithGoogleOrFbWeb extends StatelessWidget {
             borderRadius: 10,
             borderColor: ColorManager.blue,
             buttonHeight: 55,
-            imagePath: 'assets/icons/facebookIcon.png',
+            // imagePath: 'assets/icons/facebookIcon.png',
             textFontSize: 16,
             onPressed: signInWithFacebook)
       ],

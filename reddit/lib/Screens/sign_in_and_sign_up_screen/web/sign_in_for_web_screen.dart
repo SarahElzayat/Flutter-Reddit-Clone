@@ -3,11 +3,12 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/Screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
+import 'package:reddit/components/Button.dart';
 import 'package:reddit/data/sign_in_And_sign_up_models/sign_in_model.dart';
+import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
-import 'package:reddit/screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../../Components/Button.dart';
 
 import '../../../components/helpers/color_manager.dart';
 import '../../../components/default_text_field.dart';
@@ -15,6 +16,7 @@ import '../../../screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.d
 import '../../../data/sign_in_And_sign_up_models/validators.dart';
 import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
+import '../../../shared/local/shared_preferences.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/continue_with_fb_or_google_web.dart';
 import '../../to_go_screens/privacy_and_policy.dart';
 import '../../to_go_screens/user_agreement_screen.dart';
@@ -61,6 +63,18 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
 
     DioHelper.postData(path: login, data: user.toJson()).then((value) {
       print(value);
+
+      if (value.statusCode == 200) {
+        CacheHelper.putData(key: 'token', value: value.data['token']);
+        CacheHelper.putData(key: 'username', value: value.data['username']);
+
+        // navigating to the main screen
+        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      } else {
+        // TODO: think what should you do here ....
+        /// 1- existing username -> show snackbar
+        /// 2-
+      }
     });
   }
 
@@ -191,6 +205,7 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
                               labelText: 'PASSWORD',
                             ),
                             Button(
+                                textFontWeight: FontWeight.normal,
                                 text: 'LOG IN',
                                 textColor:
                                     (usernameController.text.isNotEmpty &&
@@ -200,8 +215,8 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
                                 backgroundColor:
                                     (usernameController.text.isNotEmpty &&
                                             passwordController.text.isNotEmpty)
-                                        ? ColorManager.hoverOrange
-                                        : ColorManager.darkGrey,
+                                        ? ColorManager.darkGrey
+                                        : ColorManager.hoverOrange,
                                 buttonWidth: 25.w,
                                 borderRadius: 5,
                                 buttonHeight: 40,

@@ -298,6 +298,7 @@ class _CreateCommunityWindow extends State<CreateCommunityWeb> {
                               text: 'Cancel',
                               textColor: ColorManager.eggshellWhite,
                               backgroundColor: ColorManager.grey,
+                              textFontWeight: FontWeight.bold,
                               buttonWidth: 7.w,
                               buttonHeight: 5.h,
                               textFontSize: 13.sp,

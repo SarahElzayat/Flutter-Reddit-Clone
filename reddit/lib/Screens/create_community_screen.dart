@@ -3,13 +3,13 @@
 ///Create Community Screen
 
 import 'package:flutter/material.dart';
-import 'package:reddit/Data/create_community_model/create_community_model.dart';
+import '../../components/button.dart';
+import 'package:reddit/data/create_community_model/create_community_model.dart';
 import 'package:reddit/components/bottom_sheet.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import '../components/helpers/color_manager.dart';
 import '../components/square_text_field.dart';
-import '../Components/Button.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -74,6 +74,7 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
       type: _communityType,
       nsfw: isSwitched,
     );
+
     DioHelper.postData(path: createCommunity, data: community.toJson());
   }
 
@@ -85,10 +86,10 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
         elevation: 3.sp,
         shadowColor: Colors.white,
         backgroundColor: ColorManager.darkGrey,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {},
-        ),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_back),
+        //   onPressed: () {},
+        // ),
         title: const Text('Create a community'),
         centerTitle: true,
         leadingWidth: 6.h,
