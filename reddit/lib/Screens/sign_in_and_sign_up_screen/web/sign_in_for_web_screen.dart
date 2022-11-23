@@ -7,7 +7,7 @@ import 'package:reddit/data/sign_in_And_sign_up_models/sign_in_model.dart';
 import 'package:reddit/screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
 import 'package:reddit/screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../../components/Button.dart';
+import '../../../Components/Button.dart';
 
 import '../../../components/helpers/color_manager.dart';
 import '../../../components/default_text_field.dart';
@@ -203,7 +203,7 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
                                         ? ColorManager.hoverOrange
                                         : ColorManager.darkGrey,
                                 buttonWidth: 25.w,
-                                boarderRadius: 5,
+                                borderRadius: 5,
                                 buttonHeight: 40,
                                 textFontSize: 14,
                                 onPressed:

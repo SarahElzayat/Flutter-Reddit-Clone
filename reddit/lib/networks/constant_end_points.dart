@@ -10,3 +10,4 @@ const signUp = '/signup';
 const login = '/login';
 const loginForgetPassword = '/login/forget-password';
 const loginForgetUserName = '/login/forget-username';
+const createCommunity = '/create-subreddit';

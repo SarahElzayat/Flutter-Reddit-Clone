@@ -8,7 +8,7 @@ import 'package:reddit/screens/sign_in_and_sign_up_screen/web/sign_in_for_web_sc
 import 'package:reddit/screens/to_go_screens/having_trouble_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../../../components/Button.dart';
+import '../../../Components/Button.dart';
 import '../../../components/helpers/color_manager.dart';
 import '../../../components/default_text_field.dart';
 import '../../../data/sign_in_And_sign_up_models/validators.dart';
@@ -103,7 +103,7 @@ class ForgetPasswordWebScreen extends StatelessWidget {
                                 textColor: ColorManager.white,
                                 backgroundColor: ColorManager.hoverOrange,
                                 buttonWidth: 13.5.w,
-                                boarderRadius: 5,
+                                borderRadius: 5,
                                 textFontWeight: FontWeight.bold,
                                 buttonHeight: 4.h,
                                 textFontSize: 16,

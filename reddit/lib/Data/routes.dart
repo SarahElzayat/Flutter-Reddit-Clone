@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reddit/Screens/create_community_screen.dart';
 import '../../screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
 import '../../screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
 import '../../screens/main_screen.dart';
@@ -44,4 +45,5 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   SearchResults.routeName: (ctx) => const SearchResults(
         searchWord: '',
       ),
+  CreateCommunityScreen.routeName: (ctx) => const HomeScreen(),
 };

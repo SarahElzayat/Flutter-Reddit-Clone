@@ -2,7 +2,7 @@
 /// @date 11/11/20222
 
 import 'package:flutter/material.dart';
-import '../../../components/Button.dart';
+import '../../../Components/Button.dart';
 import '../../../components/helpers/color_manager.dart';
 import '../../../components/default_text_field.dart';
 import '../../../screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
@@ -114,7 +114,7 @@ class _SignUpForWebScreenState extends State<SignUpForWebScreen> {
                                   textColor: ColorManager.white,
                                   backgroundColor: ColorManager.hoverOrange,
                                   buttonWidth: 25.w,
-                                  boarderRadius: 5,
+                                  borderRadius: 5,
                                   buttonHeight: 40,
                                   textFontSize: 14,
                                   onPressed: () {

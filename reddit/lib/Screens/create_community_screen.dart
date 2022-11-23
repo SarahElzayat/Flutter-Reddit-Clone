@@ -3,14 +3,18 @@
 ///Create Community Screen
 
 import 'package:flutter/material.dart';
+import 'package:reddit/Data/create_community_model/create_community_model.dart';
 import 'package:reddit/components/bottom_sheet.dart';
+import 'package:reddit/networks/constant_end_points.dart';
+import 'package:reddit/networks/dio_helper.dart';
 import '../components/helpers/color_manager.dart';
 import '../components/square_text_field.dart';
-import '../components/Button.dart';
+import '../Components/Button.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class CreateCommunityScreen extends StatefulWidget {
+  static const String routeName = 'create_community_screen';
   const CreateCommunityScreen({super.key});
 
   @override
@@ -65,6 +69,12 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
   ///Enabled button function to send create community request
   _enabledButton() {
     //do something
+    final community = CreateCommunityModel(
+      subredditName: communityName,
+      type: _communityType,
+      nsfw: isSwitched,
+    );
+    DioHelper.postData(path: createCommunity, data: community.toJson());
   }
 
   @override
