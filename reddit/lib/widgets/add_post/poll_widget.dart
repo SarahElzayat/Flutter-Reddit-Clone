@@ -4,7 +4,7 @@
 /// @author Haitham Mohamed
 /// @date 4/11/2022
 
-import '../../Components/Helpers/color_manager.dart';
+import '../../components/helpers/color_manager.dart';
 import 'package:flutter/material.dart';
 
 import 'add_post_textfield.dart';

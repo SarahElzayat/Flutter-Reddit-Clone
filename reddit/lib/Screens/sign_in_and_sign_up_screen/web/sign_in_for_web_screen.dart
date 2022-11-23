@@ -4,14 +4,14 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/data/sign_in_And_sign_up_models/sign_in_model.dart';
-import 'package:reddit/Screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
-import 'package:reddit/Screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
+import 'package:reddit/screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
+import 'package:reddit/screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../../Components/Button.dart';
+import '../../../components/Button.dart';
 
-import '../../../Components/Helpers/color_manager.dart';
-import '../../../Components/default_text_field.dart';
-import '../../../Screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
+import '../../../components/helpers/color_manager.dart';
+import '../../../components/default_text_field.dart';
+import '../../../screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
 import '../../../data/sign_in_And_sign_up_models/validators.dart';
 import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';

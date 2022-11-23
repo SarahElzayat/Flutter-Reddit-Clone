@@ -1,12 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/Screens/sign_in_and_sign_up_screen/mobile/sign_In_screen.dart';
+import 'package:reddit/screens/create_community_screen.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/sign_In_screen.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/screens/main_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'components/helpers/mocks/functions.dart';
-import 'Screens/bottom_navigation_bar_screens/home_screen.dart';
+import 'screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'data/routes.dart';
 import 'networks/dio_helper.dart';
 import 'components/helpers/bloc_observer.dart';

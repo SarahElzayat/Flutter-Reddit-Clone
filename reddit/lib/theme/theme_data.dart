@@ -61,11 +61,10 @@ ThemeData appTheme() {
           fontSize: 22,
           fontWeight: FontWeight.normal,
           color: ColorManager.eggshellWhite),
-    displaySmall: TextStyle(
+      displaySmall: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.normal,
           color: ColorManager.eggshellWhite),
-    
     ),
   );
 }

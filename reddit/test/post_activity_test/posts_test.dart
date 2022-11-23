@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:reddit/Data/temp_data/tmp_data.dart';
+import 'package:reddit/data/temp_data/tmp_data.dart';
 import 'package:reddit/components/helpers/mocks/functions.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/networks/dio_helper.dart';
@@ -14,6 +14,8 @@ void main() {
 
   group('votes in posts', () {
     test('upvote', () async {
+      prepareMocks();
+
       var post = textPost;
       var cubit = PostCubit(post);
       expect(post.votes, 100);
@@ -40,8 +42,9 @@ void main() {
         expect(post.votes, 100);
       });
     });
-
     test('downvote', () async {
+      prepareMocks();
+
       var post = oneImagePost;
       var cubit = PostCubit(post);
       expect(post.votes, 100);
@@ -59,7 +62,7 @@ void main() {
           .thenAnswer((_) => Future.value(Response(
               requestOptions: RequestOptions(path: '$base/vote'),
               data: {
-                'id': 1,
+                'id': 71,
                 'type': 'post',
               },
               statusCode: 400)));

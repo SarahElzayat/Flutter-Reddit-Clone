@@ -13,7 +13,7 @@ import '../../widgets/posts/dropdown_list.dart';
 
 /// The Screen that displays the indvidual Posts
 ///
-/// it will contain the [PostWidget] and the [Comments]
+/// it will contain the [PostWidget] and the Comments
 class PostScreen extends StatefulWidget {
   static const String routeName = 'post_screen';
   const PostScreen({super.key, required this.post});

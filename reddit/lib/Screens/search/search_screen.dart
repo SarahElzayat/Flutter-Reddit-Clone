@@ -2,9 +2,9 @@
 /// @date 9/11/2022
 /// The search screen on mobile
 import 'package:flutter/material.dart';
-import 'package:reddit/Screens/search/search_results_main_screen.dart';
+import 'package:reddit/screens/search/search_results_main_screen.dart';
 
-import 'package:reddit/components/Helpers/color_manager.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/search_field.dart';
 
 import '../../../shared/local/shared_preferences.dart';

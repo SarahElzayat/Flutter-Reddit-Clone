@@ -4,7 +4,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import '../../Components/Helpers/color_manager.dart';
+import '../../components/helpers/color_manager.dart';
 import 'package:flutter/material.dart';
 
 import 'package:image_painter/image_painter.dart';

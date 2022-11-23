@@ -5,12 +5,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:reddit/Screens/bottom_navigation_bar_screens/explore_screen.dart';
-import 'package:reddit/Screens/bottom_navigation_bar_screens/home_screen.dart';
-import 'package:reddit/Screens/bottom_navigation_bar_screens/inbox_screen.dart';
-import 'package:reddit/Screens/bottom_navigation_bar_screens/notifications_screen.dart';
+import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart';
+import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
+import 'package:reddit/screens/bottom_navigation_bar_screens/inbox_screen.dart';
+import 'package:reddit/screens/bottom_navigation_bar_screens/notifications_screen.dart';
 import 'package:reddit/widgets/posts/post_upper_bar.dart';
-import '../Components/Helpers/color_manager.dart';
+import '../components/helpers/color_manager.dart';
 import '../data/temp_data/tmp_data.dart';
 import '../screens/bottom_navigation_bar_screens/add_post_screen.dart';
 import '../widgets/posts/post_widget.dart';

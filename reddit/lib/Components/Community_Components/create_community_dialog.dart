@@ -3,10 +3,10 @@
 ///Create community window for web
 
 import 'package:flutter/material.dart';
-import 'package:reddit/Components/Button.dart';
-import 'package:reddit/Components/Helpers/color_manager.dart';
-import 'package:reddit/Components/Helpers/enums.dart';
-import 'package:reddit/Components/square_text_field.dart';
+import 'package:reddit/components/Button.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/components/helpers/enums.dart';
+import 'package:reddit/components/square_text_field.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class CreateCommunityWeb extends StatefulWidget {
