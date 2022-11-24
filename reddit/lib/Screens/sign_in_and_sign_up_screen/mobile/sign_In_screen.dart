@@ -5,7 +5,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/sign_up_screen.dart';
+import '../../../shared/local/shared_preferences.dart';
 import '../../forget_user_name_and_password/forget_password_screen.dart';
+import '../../main_screen.dart';
 import '../../to_go_screens/privacy_and_policy.dart';
 import '../../to_go_screens/user_agreement_screen.dart';
 import '../../../data/sign_in_And_sign_up_models/validators.dart';
@@ -61,7 +63,17 @@ class _SignInScreenState extends State<SignInScreen> {
     DioHelper.postData(path: login, data: user.toJson()).then((value) {
       print(value);
 
-      /// here we want to make sure that we got the correct response
+      if (value.statusCode == 200) {
+        CacheHelper.putData(key: 'token', value: value.data['token']);
+        CacheHelper.putData(key: 'username', value: value.data['username']);
+
+        // navigating to the main screen
+        Navigator.of(context).pushReplacementNamed(MainScreen.routeName);
+      } else {
+        // TODO: think what should you do here ....
+        /// 1- existing username -> show snackbar
+        /// 2-
+      }
     });
   }
 

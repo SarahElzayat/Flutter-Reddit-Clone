@@ -26,10 +26,10 @@ class DioHelper {
         /// before ending the connection, depending on the internet speed
         /// note that time is in milli.
         /// I want it to wait 10 seconds before ending
-        connectTimeout: 10 * 1000,
+        // connectTimeout: 10 * 1000,
 
-        /// time waited to recieve something from the server
-        receiveTimeout: 20 * 1000,
+        // /// time waited to recieve something from the server
+        // receiveTimeout: 20 * 1000,
 
         /// this is a map of headers
         headers: {'Content-Type': 'application/json; charset=utf-8'},
@@ -46,11 +46,52 @@ class DioHelper {
 
     /// which is the content of the JSON
     Map<String, dynamic>? query,
+    String? token,
 
     /// aditional query
   }) async {
-    return await dio.post(path, data: data, queryParameters: query);
+    var options = Options(
+      headers: {
+        'Authorization': 'Bearer ${token ?? ''}',
+        'Content-Type': 'application/json; charset=utf-8'
+      },
+    );
+
+    return await dio.post(
+      path,
+      data: data,
+      options: options,
+      queryParameters: query,
+    );
   }
+
+  static Future<Response> patchData({
+    required String path, // the added path to the baseURL
+    required Map<String, dynamic> data,
+
+    /// which is the content of the JSON
+    Map<String, dynamic>? query,
+    String? token,
+
+    /// aditional query
+  }) async {
+    var options = Options(
+      headers: {
+        'Authorization': 'Bearer ${token ?? ''}',
+        'Content-Type': 'application/json; charset=utf-8'
+      },
+    );
+
+    return await dio.patch(
+      path,
+      data: data,
+      options: options,
+      queryParameters: query,
+    );
+  }
+
+  /// this is a function used to send get request with certain body.
+  /// patch function
 
   /// this is a function used to send get request
   /// @param [query] which is the query we are asking for <optional>

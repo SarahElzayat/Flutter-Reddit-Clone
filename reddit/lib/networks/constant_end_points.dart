@@ -3,10 +3,11 @@
 /// this is a file contaning the constant baseURL and the endpoints of the API
 
 const portNumber = String.fromEnvironment('portNumber', defaultValue: '5000');
-// const baseUrl = String.fromEnvironment('baseURL',
-//     defaultValue: 'https://54efd1bb-baf6-4622-9692-b43958dee9f0.mock.pstmn.io');
-const baseUrl = 'https://56518a9b-3e47-4235-8283-e465893f3f94.mock.pstmn.io';
+const baseUrl = String.fromEnvironment(
+    'https://1e17bacf-d3d2-4464-91d6-20b686dd823a.mock.pstmn.io',
+    defaultValue: 'http://10.0.2.2:3000');
 const signUp = '/signup';
 const login = '/login';
 const loginForgetPassword = '/login/forget-password';
 const loginForgetUserName = '/login/forget-username';
+const createCommunity = '/create-subreddit';

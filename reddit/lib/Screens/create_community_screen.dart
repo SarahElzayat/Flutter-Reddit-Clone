@@ -2,15 +2,21 @@
 ///@date 3/11/2022
 ///Create Community Screen
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/shared/local/shared_preferences.dart';
+import '../../components/button.dart';
+import 'package:reddit/data/create_community_model/create_community_model.dart';
 import 'package:reddit/components/bottom_sheet.dart';
+import 'package:reddit/networks/constant_end_points.dart';
+import 'package:reddit/networks/dio_helper.dart';
 import '../components/helpers/color_manager.dart';
 import '../components/square_text_field.dart';
-import '../components/Button.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class CreateCommunityScreen extends StatefulWidget {
+  static const String routeName = 'create_community_screen';
   const CreateCommunityScreen({super.key});
 
   @override
@@ -62,9 +68,31 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
     });
   }
 
-  ///Enabled button function to send create community request
+  /// Enabled button function to send create community request
   _enabledButton() {
     //do something
+    final community = CreateCommunityModel(
+      subredditName: communityName,
+      type: _communityType,
+      nsfw: isSwitched,
+    );
+    var token = CacheHelper.getData(key: 'token') ??
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzdlYTA3Mzk2NjRjMzJjYTk4ZmRlYzYiLCJ1c2VybmFtZSI6ImFobWVkYXR0YTMzIiwiaWF0IjoxNjY5MjQyOTk1fQ.DZDPE1su3Pss2izCyv8G2WAdAlBT97mhga5ku-Y2K-U';
+
+    DioHelper.postData(
+            token: '$token',
+            path: createCommunity,
+            data: community.toJson())
+        .then((value) {
+      if (value.statusCode != 201) {
+        //
+
+      }
+    }).catchError((err) {
+      err = err as DioError;
+      print(err.message);
+      print(err.response!.data['error']);
+    });
   }
 
   @override
@@ -75,10 +103,10 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
         elevation: 3.sp,
         shadowColor: Colors.white,
         backgroundColor: ColorManager.darkGrey,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {},
-        ),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_back),
+        //   onPressed: () {},
+        // ),
         title: const Text('Create a community'),
         centerTitle: true,
         leadingWidth: 6.h,

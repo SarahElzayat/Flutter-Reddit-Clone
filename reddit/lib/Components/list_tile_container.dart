@@ -1,3 +1,6 @@
+///@author yassmine ghanem
+///@date 20/11/2022
+
 import 'package:flutter/widgets.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/list_tile.dart';

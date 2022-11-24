@@ -153,6 +153,7 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
               SimpleDialogOption(
                 onPressed: () {
                   Navigator.pop(context, ModOPtions.spoiler);
+                  
                 },
                 child: _buildItem(Icons.privacy_tip_outlined, 'Mark Spoiler'),
               ),

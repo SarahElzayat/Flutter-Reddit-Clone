@@ -56,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
       listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
+          
           appBar: kIsWeb ? homeAppBar(context, 0) : null,
           floatingActionButton: kIsWeb
               ? BackToTopButton(scrollController: scrollController)
@@ -73,23 +74,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Center(
                     child: SizedBox(
-                        width: kIsWeb ? width * 0.5 : width,
-                        child: ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              itemCount: cubit.homeMenuIndex == 0
-                                  ? cubit.homwPosts.length
-                                  : cubit.popularPosts.length,
-                              itemBuilder: (context, index) => Container(
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 0, vertical: 5),
-                                child: cubit.homeMenuIndex == 0
-                                    ? cubit.homwPosts[index]
-                                    : cubit.popularPosts[index],
-                              ),
-                            ),
-                  ),),
+                      width: kIsWeb ? width * 0.5 : width,
+                      child: ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemCount: cubit.homeMenuIndex == 0
+                            ? cubit.homwPosts.length
+                            : cubit.popularPosts.length,
+                        itemBuilder: (context, index) => Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 0, vertical: 5),
+                          child: cubit.homeMenuIndex == 0
+                              ? cubit.homwPosts[index]
+                              : cubit.popularPosts[index],
+                        ),
+                      ),
+                    ),
+                  ),
                   if (kIsWeb)
                     SizedBox(
                       height: 500,

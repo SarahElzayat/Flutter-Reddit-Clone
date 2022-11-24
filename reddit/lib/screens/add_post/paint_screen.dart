@@ -5,45 +5,32 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import '../../components/helpers/color_manager.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-
 import 'package:image_painter/image_painter.dart';
-
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import '../../cubit/add_post.dart/cubit/add_post_cubit.dart';
 
-import '../../variable/global_varible.dart';
+/// Paint Screen
 
-// ignore: must_be_immutable
-class PaintScreen extends StatefulWidget {
-  /// [image] images that you are selecting <List>
-  List<XFile> image;
-  BuildContext context;
-
+class PaintScreen extends StatelessWidget {
   /// [imageKey] The key That used when editing
-  GlobalKey<ImagePainterState> imageKey;
-  PaintScreen({
-    Key? key,
-    required this.image,
-    required this.context,
-    required this.imageKey,
-  }) : super(key: key);
+  final GlobalKey<ImagePainterState> imageKey = GlobalKey<ImagePainterState>();
+  static const routeName = '/paint_screen_route';
 
-  @override
-  State<PaintScreen> createState() => _PaintScreenState();
-}
+  PaintScreen({Key? key}) : super(key: key);
 
-class _PaintScreenState extends State<PaintScreen> {
   @override
   Widget build(BuildContext context) {
-    File file = File(widget.image[0].path);
+    final addPostCubit = BlocProvider.of<AddPostCubit>(context);
+    File file = File(addPostCubit.editableImage.path);
     return SafeArea(
       child: Scaffold(
         /// Button to save the editing in file
         floatingActionButton: MaterialButton(
           onPressed: () async {
-            Uint8List? byteArray =
-                await widget.imageKey.currentState!.exportImage();
+            Uint8List? byteArray = await imageKey.currentState!.exportImage();
             if (byteArray != null) {
               final image = byteArray;
               final path = (await getApplicationDocumentsDirectory()).path;
@@ -52,13 +39,10 @@ class _PaintScreenState extends State<PaintScreen> {
                   '$path/sample/${DateTime.now().millisecondsSinceEpoch}.png';
               final paintedImage = File(fullPath);
               paintedImage.writeAsBytesSync(image);
-              setState(() {
-                widget.image[0] = XFile(paintedImage.path);
-                GlobalVarible.isPainted.value = true;
-                GlobalVarible.isPainted.notifyListeners();
-              });
-            } else {
-              GlobalVarible.isPainted.value = false;
+
+              addPostCubit.editableImage = XFile(paintedImage.path);
+
+              addPostCubit.imagePaintedOrCropped();
             }
             Navigator.of(context).pop();
           },
@@ -69,7 +53,7 @@ class _PaintScreenState extends State<PaintScreen> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: ImagePainter.file(file,
-                clearAllIcon: null, key: widget.imageKey, scalable: false),
+                clearAllIcon: null, key: imageKey, scalable: false),
           ),
         ),
       ),

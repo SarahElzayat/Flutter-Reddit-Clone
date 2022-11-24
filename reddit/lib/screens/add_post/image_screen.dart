@@ -3,8 +3,11 @@
 /// @date 6/11/2022
 
 import 'dart:io';
-import 'paint_screen.dart';
-import '../../../variable/global_varible.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/Screens/add_post/paint_screen.dart';
+import 'package:reddit/cubit/add_post.dart/cubit/add_post_cubit.dart';
+
+import '../../functions/add_post.dart';
 
 import 'package:flutter/material.dart';
 import 'package:image_painter/image_painter.dart';
@@ -13,41 +16,29 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:path/path.dart' as p;
 
-import 'add_post.dart';
-
 /// Image Screen that Perview the Image After Select it
+
 // ignore: must_be_immutable
-class ImageScreen extends StatefulWidget {
-  /// [image] images that you are selecting <List>
-  List<XFile> image;
+class ImageScreen extends StatelessWidget {
+  static const routeName = '/image_screen_route';
+  ImageScreen({Key? key}) : super(key: key);
 
   /// [imageKey] The key That used when editing
-  GlobalKey<ImagePainterState> imageKey;
-  ImageScreen({
-    Key? key,
-    required this.image,
-    required this.imageKey,
-  }) : super(key: key);
+  GlobalKey<ImagePainterState> imageKey = GlobalKey<ImagePainterState>();
 
-  @override
-  State<ImageScreen> createState() => _ImageScreenState();
-}
-
-class _ImageScreenState extends State<ImageScreen> {
   @override
   Widget build(BuildContext context) {
     final navigator = Navigator.of(context);
     final mediaQuery = MediaQuery.of(context);
+    final addPostCubit = BlocProvider.of<AddPostCubit>(context);
     return Scaffold(
       body: SafeArea(
         child: Column(children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              /// Remove Image and Go back
               IconButton(
                   onPressed: () {
-                    widget.image.removeAt(0);
                     navigator.pop();
                   },
                   icon: const Icon(Icons.arrow_back)),
@@ -58,12 +49,9 @@ class _ImageScreenState extends State<ImageScreen> {
               /// The button that navigate to Paint Screen
               IconButton(
                   onPressed: () async {
-                    navigator.push(MaterialPageRoute(
-                        builder: ((context) => PaintScreen(
-                              context: context,
-                              image: widget.image,
-                              imageKey: widget.imageKey,
-                            ))));
+                    navigator.pushNamed(
+                      PaintScreen.routeName,
+                    );
                   },
                   icon: const Icon(Icons.draw_rounded)),
 
@@ -71,22 +59,22 @@ class _ImageScreenState extends State<ImageScreen> {
               IconButton(
                   onPressed: () async {
                     XFile croppedImage =
-                        await cropFunc(widget.image[0], context);
-                    setState(() {
-                      widget.image[0] = croppedImage;
-                    });
+                        await cropFunc(addPostCubit.editableImage, context);
+                    addPostCubit.editableImage = croppedImage;
+                    addPostCubit.imagePaintedOrCropped();
                   },
                   icon: const Icon(Icons.crop))
             ],
           ),
 
           /// Preview image (rebuild widget if any edit in image)
-          ValueListenableBuilder(
-              valueListenable: GlobalVarible.isPainted,
-              builder: (context, value, child) {
-                return Expanded(
-                    child: Image(image: FileImage(File(widget.image[0].path))));
-              }),
+          BlocBuilder<AddPostCubit, AddPostState>(
+            builder: (context, state) {
+              return Expanded(
+                  child: Image(
+                      image: FileImage(File(addPostCubit.editableImage.path))));
+            },
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -99,17 +87,21 @@ class _ImageScreenState extends State<ImageScreen> {
                 child: IconButton(
                     onPressed: () async {
                       const folderName = 'Pictures';
+
+                      ///TODO: check on the emulated path.
                       final path = Directory('storage/emulated/0/$folderName');
                       if ((await path.exists())) {
-                        File image = File(widget.image[0].path);
+                        File image = File(addPostCubit.editableImage.path);
                         image.copy(
                             '${path.path}/${DateTime.now().millisecondsSinceEpoch}${p.extension(image.path)}');
                       } else {
                         path.create();
-                        File image = File(widget.image[0].path);
+                        File image = File(addPostCubit.editableImage.path);
                         image.copy(
                             '${path.path}/${DateTime.now().millisecondsSinceEpoch}${p.extension(image.path)}');
                       }
+
+                      /// TODO: remove this from the async
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Image Saved Successful')));
                     },
@@ -119,11 +111,7 @@ class _ImageScreenState extends State<ImageScreen> {
               /// Add Image To List
               MaterialButton(
                   onPressed: () {
-                    for (var element in widget.image) {
-                      GlobalVarible.images.value.add(element);
-                    }
-
-                    GlobalVarible.images.notifyListeners();
+                    addPostCubit.addImage(image: addPostCubit.editableImage);
                     navigator.pop();
                   },
                   child: const Text('Add')),
