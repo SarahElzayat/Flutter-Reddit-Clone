@@ -37,6 +37,7 @@ class _PostScreenState extends State<PostScreen> {
             child: BlocBuilder<PostNotifierCubit, PostNotifierState>(
               builder: (context, state) {
                 return DropDownList(
+                  key: const Key('dropDownList-button'),
                   postId: widget.post.id!,
                   itemClass: (widget.post.saved ?? true)
                       ? ItemsClass.publicSaved

@@ -83,6 +83,7 @@ class PostWidget extends StatelessWidget {
                         // The body of the post
                         if (post.images?.isNotEmpty ?? false)
                           InlineImageViewer(
+                            key: const Key('inline-image-viewer'),
                             post: post,
                           ),
 
@@ -160,6 +161,7 @@ class PostWidget extends StatelessWidget {
 
   Widget linkContent() {
     return InkWell(
+      key: const Key('link-content'),
       onTap: () async {
         await launchUrl(Uri.parse(post.content!));
       },

@@ -55,6 +55,7 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
               : MainAxisAlignment.spaceEvenly,
           children: [
             InkWell(
+              key: const Key('comment-button'),
               onTap: () {
                 //
                 // goToPost(context, widget.post);
@@ -95,6 +96,7 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
                 children: isMod
                     ? [
                         Icon(
+                          key: const Key('mod-icon'),
                           Icons.shield_outlined,
                           color: widget.iconColor,
                         ),
@@ -108,6 +110,7 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
                       ]
                     : [
                         Icon(
+                          key: const Key('share-icon'),
                           Icons.share,
                           color: widget.iconColor,
                           size: min(5.5.w, 30),
@@ -151,43 +154,49 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
           return SimpleDialog(
             children: <Widget>[
               SimpleDialogOption(
+                key: const Key('spoiler-option'),
                 onPressed: () {
                   Navigator.pop(context, ModOPtions.spoiler);
-                  
                 },
                 child: _buildItem(Icons.privacy_tip_outlined, 'Mark Spoiler'),
               ),
               SimpleDialogOption(
+                key: const Key('nsfw-option'),
                 onPressed: () {
                   Navigator.pop(context, ModOPtions.nsfw);
                 },
                 child: _buildItem(Icons.eighteen_up_rating, 'Mark NSFW'),
               ),
               SimpleDialogOption(
+                key: const Key('lock-option'),
                 onPressed: () {
                   Navigator.pop(context, ModOPtions.lock);
                 },
                 child: _buildItem(Icons.lock, 'Lock Comments'),
               ),
               SimpleDialogOption(
+                key: const Key('unsticky-option'),
                 onPressed: () {
                   Navigator.pop(context, ModOPtions.unsticky);
                 },
                 child: _buildItem(Icons.push_pin_outlined, 'Unsticky Post'),
               ),
               SimpleDialogOption(
+                key: const Key('remove-option'),
                 onPressed: () {
                   Navigator.pop(context, ModOPtions.remove);
                 },
                 child: _buildItem(Icons.cancel, 'Remove Post'),
               ),
               SimpleDialogOption(
+                key: const Key('spam-option'),
                 onPressed: () {
                   Navigator.pop(context, ModOPtions.spam);
                 },
                 child: _buildItem(Icons.delete, 'Remove as Spam'),
               ),
               SimpleDialogOption(
+                key: const Key('approve-option'),
                 onPressed: () {
                   Navigator.pop(context, ModOPtions.approve);
                 },
