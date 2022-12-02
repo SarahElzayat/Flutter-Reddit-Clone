@@ -3,11 +3,8 @@
 /// this is a DioHelper which is a class used to connect us to the backend
 /// and deal with the server
 import 'package:dio/dio.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
 import 'constant_end_points.dart';
 
-@GenerateNiceMocks([MockSpec<DioHelper>()])
 class DioHelper {
   static late Dio dio;
 
@@ -29,10 +26,10 @@ class DioHelper {
         /// before ending the connection, depending on the internet speed
         /// note that time is in milli.
         /// I want it to wait 10 seconds before ending
-        connectTimeout: 10 * 1000,
+        // connectTimeout: 10 * 1000,
 
-        /// time waited to recieve something from the server
-        receiveTimeout: 20 * 1000,
+        // /// time waited to recieve something from the server
+        // receiveTimeout: 20 * 1000,
 
         /// this is a map of headers
         headers: {'Content-Type': 'application/json; charset=utf-8'},

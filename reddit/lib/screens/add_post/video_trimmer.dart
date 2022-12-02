@@ -3,54 +3,22 @@
 /// @date 4/11/2022
 
 import 'dart:io';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../Components/Helpers/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_trimmer/video_trimmer.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../variable/global_varible.dart';
-
-/// Trimmer Screen
-
-class TrimmerScreen extends StatelessWidget {
-  /// [_picker] The key That used when editing
-  final ImagePicker _picker = ImagePicker();
-
-  TrimmerScreen({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Video Trimmer'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          child: const Text('LOAD VIDEO'),
-          onPressed: () async {
-            XFile? result = await _picker.pickVideo(
-              source: ImageSource.gallery,
-            );
-            if (result != null) {
-              File file = File(result.path);
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) {
-                  return TrimmerView(file);
-                }),
-              );
-            }
-          },
-        ),
-      ),
-    );
-  }
-}
+import '../../cubit/add_post.dart/cubit/add_post_cubit.dart';
 
 /// TrimmerView that can edit the video
 
 class TrimmerView extends StatefulWidget {
   /// [file] Video file
   final File file;
+  static const routeName = '/trimmerView_screen_route';
 
   const TrimmerView(this.file, {super.key});
 
@@ -69,7 +37,7 @@ class _TrimmerViewState extends State<TrimmerView> {
 
   late VideoPlayerController _controller;
 
-  Future<String?> _saveVideo() async {
+  Future<String?> _saveVideo(AddPostCubit addPostCubit) async {
     setState(() {
       _progressVisibility = true;
     });
@@ -84,11 +52,12 @@ class _TrimmerViewState extends State<TrimmerView> {
           _progressVisibility = false;
           _value = outputPath;
           if (_value != null) {
-            GlobalVarible.video.value = XFile(_value!);
-            GlobalVarible.video.notifyListeners();
+            addPostCubit.addVideo(XFile(_value!));
+            // GlobalVarible.video.notifyListeners();
+          } else {
+            print('Error To Save Video');
           }
         }));
-    ;
 
     return _value;
   }
@@ -108,6 +77,7 @@ class _TrimmerViewState extends State<TrimmerView> {
 
   @override
   Widget build(BuildContext context) {
+    final addPostCubit = BlocProvider.of<AddPostCubit>(context);
     return Scaffold(
       body: Builder(
         builder: (context) => Center(
@@ -188,8 +158,7 @@ class _TrimmerViewState extends State<TrimmerView> {
                       onPressed: _progressVisibility
                           ? null
                           : () async {
-                              String? path = await _saveVideo();
-                              if (path != null) {}
+                              await _saveVideo(addPostCubit);
 
                               Navigator.of(context).pop();
                             },

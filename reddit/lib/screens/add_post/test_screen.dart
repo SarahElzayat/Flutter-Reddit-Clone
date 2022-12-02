@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../screens/add_post/add_post.dart';
+import 'package:reddit/router.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Add Post Test Screen',
       theme: ThemeData(
         primarySwatch: Colors.grey,
         primaryColor: Colors.black,
@@ -21,7 +20,9 @@ class MyApp extends StatelessWidget {
         backgroundColor: const Color(0xFF212121),
         dividerColor: Colors.black12,
       ),
-      home: const AddPost(),
+      onGenerateRoute: AppRouter.onGenerateRoute,
+      // home: BlocProvider(
+      //     create: ((context) => AddPostCubit()), child: const AddPost()),
     );
   }
 }

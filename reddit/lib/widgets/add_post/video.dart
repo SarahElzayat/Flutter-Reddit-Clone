@@ -3,25 +3,22 @@
 /// @date 8/11/2022
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../Components/Helpers/color_manager.dart';
+import '../../cubit/add_post.dart/cubit/add_post_cubit.dart';
 import '../../functions/add_post.dart';
-import '../../variable/global_varible.dart';
 
 /// This widget Show video (video Thumbnail) in Add post Screen
 /// You allow to add one video only
 
 /// ignore: must_be_immutable
 class VideoPost extends StatelessWidget {
-  /// [picker] Image Picker use to get image or video from gallery or Camera
-  ImagePicker picker;
-  VideoPost({
+  const VideoPost({
     Key? key,
-    required this.picker,
   }) : super(key: key);
 
   Widget buildDotted(context) {
+    final mediaQuery = MediaQuery.of(context);
     return Align(
       alignment: Alignment.topLeft,
       child: DottedBorder(
@@ -29,14 +26,14 @@ class VideoPost extends StatelessWidget {
         dashPattern: const [4, 4],
         color: ColorManager.eggshellWhite,
         child: MaterialButton(
-          onPressed: () => videoFunc(context, picker),
-          child: const SizedBox(
-            height: 150,
-            width: 130,
+          onPressed: () => videoFunc(context),
+          child: SizedBox(
+            height: mediaQuery.size.height * 0.2,
+            width: mediaQuery.size.width * 0.38,
             child: Icon(
               Icons.add_outlined,
               color: ColorManager.blue,
-              size: 50,
+              size: mediaQuery.size.width * 0.1,
             ),
           ),
         ),
@@ -44,7 +41,7 @@ class VideoPost extends StatelessWidget {
     );
   }
 
-  Widget buildStack(context, width, height, value) {
+  Widget buildStack(context, width, height, AddPostCubit addPostCubit) {
     return Align(
       alignment: Alignment.topLeft,
       child: Stack(children: [
@@ -52,7 +49,7 @@ class VideoPost extends StatelessWidget {
           width: width * 0.4,
           height: height * 0.23,
           child: Image.memory(
-            value,
+            addPostCubit.videoThumbnail!,
             fit: BoxFit.fill,
           ),
         ),
@@ -77,11 +74,7 @@ class VideoPost extends StatelessWidget {
                   size: 25,
                 ),
                 onTap: () {
-                  GlobalVarible.video.value = null;
-                  GlobalVarible.videoThumbnail.value = null;
-                  GlobalVarible.video.notifyListeners();
-
-                  GlobalVarible.videoThumbnail.notifyListeners();
+                  addPostCubit.removeVideo();
                 },
               ),
             ),
@@ -94,21 +87,15 @@ class VideoPost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    double height = mediaQuery.size.height;
-    double width = mediaQuery.size.width;
-    return ValueListenableBuilder(
-        valueListenable: GlobalVarible.video,
-        builder: (context, value, child) {
-          if (value != null) {
-            getThumbnail();
-          }
-
-          return ValueListenableBuilder(
-              valueListenable: GlobalVarible.videoThumbnail,
-              builder: (context, value, child) => Container(
-                  child: (value == null)
-                      ? buildDotted(context)
-                      : buildStack(context, width, height, value)));
-        });
+    final addPostCubit = BlocProvider.of<AddPostCubit>(context);
+    return BlocBuilder<AddPostCubit, AddPostState>(
+      buildWhen: ((previous, current) => current is VideoAddedOrRemoved),
+      builder: (context, state) {
+        return (state is VideoAddedOrRemoved && state.isAdded)
+            ? buildStack(context, mediaQuery.size.width, mediaQuery.size.height,
+                addPostCubit)
+            : buildDotted(context);
+      },
+    );
   }
 }

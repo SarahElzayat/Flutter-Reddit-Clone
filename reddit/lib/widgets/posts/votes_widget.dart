@@ -3,21 +3,15 @@
 /// @Author: Ahmed Atta
 
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/networks/dio_helper.dart';
-import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
+import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
+import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../constants/constants.dart';
 import '../../data/post_model/post_model.dart';
 import '../../components/helpers/color_manager.dart';
-import 'cubit/post_cubit_state.dart';
-
-enum LowerPostBarState { upvoted, downvoted, none }
-
-bool isUpvoted = false;
-bool isDownvoted = false;
+import 'cubit/post_cubit.dart';
+import 'cubit/post_state.dart';
 
 class VotesPart extends StatelessWidget {
   const VotesPart({
@@ -40,15 +34,22 @@ class VotesPart extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> getchildren() {
       var cubit = PostCubit.get(context);
-      int dir = cubit.currentPost.votingType ?? 0;
+      int dir = cubit.getVotingType();
       return [
         Material(
           color: Colors.transparent,
           clipBehavior: Clip.antiAlias,
           shape: const CircleBorder(),
           child: IconButton(
-            onPressed: () {
-              PostCubit.get(context).vote(1);
+            key: const Key('upvoteButton'),
+            onPressed: () async {
+              PostCubit.get(context)
+                  .vote(
+                direction: 1,
+              )
+                  .then((value) {
+                PostNotifierCubit.get(context).changedPost();
+              });
             },
             constraints: const BoxConstraints(),
             padding: const EdgeInsets.all(0),
@@ -62,7 +63,7 @@ class VotesPart extends StatelessWidget {
           ),
         ),
         Text(
-          cubit.currentPost.votes!.toString(),
+          cubit.getVotesCount().toString(),
           style: TextStyle(
             color: dir == 0
                 ? iconColor
@@ -77,8 +78,11 @@ class VotesPart extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           shape: const CircleBorder(),
           child: IconButton(
+            key: const Key('downvoteButton'),
             onPressed: () {
-              cubit.vote(-1);
+              cubit.vote(direction: -1).then((value) {
+                PostNotifierCubit.get(context).changedPost();
+              });
             },
             constraints: const BoxConstraints(),
             padding: const EdgeInsets.all(0),
@@ -93,16 +97,21 @@ class VotesPart extends StatelessWidget {
       ];
     }
 
-    return BlocBuilder<PostCubit, PostCubitState>(builder: (context, state) {
-      return !isWeb
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: getchildren(),
-            )
-          : Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: getchildren(),
-            );
-    });
+    return BlocBuilder<PostCubit, PostState>(
+      builder: (context, state) {
+        return BlocBuilder<PostNotifierCubit, PostNotifierState>(
+            builder: (context, state) {
+          return !isWeb
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: getchildren(),
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: getchildren(),
+                );
+        });
+      },
+    );
   }
 }
