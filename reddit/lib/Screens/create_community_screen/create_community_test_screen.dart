@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../components/community_Components/create_community_dialog.dart';
+import '../../components/community_components/create_community_dialog.dart';
 import '../../components/helpers/constants.dart';
 import 'create_community_screen.dart';
 
