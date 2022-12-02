@@ -2,13 +2,19 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:reddit/Screens/main_screen.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../../../Components/Button.dart';
 import '../../../Components/Helpers/color_manager.dart';
+import '../../../constants/constants.dart';
+import '../../../networks/constant_end_points.dart';
+import '../../../networks/dio_helper.dart';
+import '../../../shared/local/shared_preferences.dart';
 
 part 'add_post_state.dart';
 
@@ -59,10 +65,19 @@ class AddPostCubit extends Cubit<AddPostState> {
     TextEditingController()
   ];
 
+  String? subredditName;
+
+  bool nsfw = false;
+  bool spoiler = false;
+
   void changePostType({required int postTypeIndex}) {
     postType = postTypeIndex;
     checkPostValidation();
     emit(PostTypeChanged(postType: postTypeIndex));
+  }
+
+  void addSubredditName(String subredditName) {
+    this.subredditName = subredditName;
   }
 
   /// Add Image To The List And Rebuild The widget
@@ -203,6 +218,9 @@ class AddPostCubit extends Cubit<AddPostState> {
   /// Check if Any Exist data before change the post type
   /// if Exist it notify User if would to remove data and continue or Not
   bool discardCheck() {
+    nsfw = false;
+    spoiler = false;
+    subredditName = null;
     switch (postType) {
       case 0:
         return (images.isNotEmpty);
@@ -395,10 +413,130 @@ class AddPostCubit extends Cubit<AddPostState> {
                     buttonWidth: mediaQuery.size.width * 0.3,
                     buttonHeight: 40,
                     textFontSize: 15,
-                    boarderRadius: 20,
                   ),
                 ),
               ],
             )));
+  }
+  /// Upload Post To Backend
+  Future createPost(BuildContext context) async {
+    Map<String, dynamic> body = {};
+    List<MultipartFile> imagesData = [];
+
+    // if (postType == 0) {
+    //   for (var item in images) {
+    //     print(item.path);
+    //     MultipartFile file = await MultipartFile.fromFile(
+    //       item.path,
+    //       filename: item.path.split('/').last,
+    //     );
+    //     imagesData.add(file);
+    //   }
+    //   imagesData.forEach((element) {
+    //     print(element.filename);
+    //   });
+    //   List<String> imageCaptions = [];
+    //   for (int index = 0; index < captionController.length; index++) {
+    //     imageCaptions.add(captionController[index].text);
+    //   }
+    //   List<String> imageLinks = [];
+    //   for (int index = 0; index < captionController.length; index++) {
+    //     imageLinks.add(imagesLinkController[index].text);
+    //   }
+    //   body = {
+    //     'kind': postTypes[postType],
+    //     'subreddit': subredditName,
+    //     'inSubreddit': true,
+    //     'title': title.text,
+    //     'images': imagesData,
+    //     'imageCaptions': imageCaptions,
+    //     'imageLinks': imageLinks,
+    //     'nsfw': nsfw,
+    //     'spoiler': spoiler,
+    //   };
+    // } else if (postType == 1) {
+    //   body = {
+    //     'kind': postTypes[postType],
+    //     'subreddit': subredditName,
+    //     'inSubreddit': true,
+    //     'title': title.text,
+    //     'videos': await MultipartFile.fromFile(
+    //       video!.path,
+    //       filename: video!.path.split('/').last,
+    //     ),
+    //     'nsfw': nsfw,
+    //     'spoiler': spoiler,
+    //   };} else
+    if (postType == 2) {
+      body = {
+        'kind': postTypes[postType],
+        'subreddit': subredditName,
+        'inSubreddit': true,
+        'title': title.text,
+        'texts': [
+          <String, dynamic>{
+            'text': optionalText.text,
+            'index': 0,
+          }
+        ],
+        'nsfw': nsfw,
+        'spoiler': spoiler,
+      };
+    } else if (postType == 3) {
+      body = {
+        'kind': postTypes[postType],
+        'subreddit': subredditName,
+        'inSubreddit': true,
+        'title': title.text,
+        'link': link.text,
+        'nsfw': nsfw,
+        'spoiler': spoiler,
+      };
+    } else if (postType == 5) {
+      body = {
+        'kind': postTypes[postType],
+        'subreddit': subredditName,
+        'inSubreddit': true,
+        'title': title.text,
+        'texts': [
+          <String, dynamic>{
+            'text': optionalText.text,
+            'index': 0,
+          }
+        ],
+        'nsfw': nsfw,
+        'spoiler': spoiler,
+      };
+    }
+    print(body);
+    var formData = FormData.fromMap(body);
+    print('Toke : ${CacheHelper.getData(key: 'token')}');
+    await DioHelper.postData(
+            path: submitPost,
+            data: (postType == 0 || postType == 1) ? formData : body,
+            token: CacheHelper.getData(key: 'token'))
+        .then((value) {
+      print(value);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            backgroundColor: ColorManager.eggshellWhite,
+            content: Text('Post success')),
+      );
+      if (value.statusCode == 200) {
+        print('Post success');
+        Navigator.of(context).pushReplacementNamed(MainScreen.routeName);
+      } else if (value.statusCode == 400) {
+        print(value);
+      } else if (value.statusCode == 401) {
+        print('User not allowed to post in this subreddit');
+      } else if (value.statusCode == 404) {
+        print('Subreddit not found');
+      } else if (value.statusCode == 500) {
+        print('Server Error');
+      }
+    }).catchError((error) {
+      print("The errorrr isss :::::: ${error.toString()}");
+    });
+    emit(PostCreated());
   }
 }

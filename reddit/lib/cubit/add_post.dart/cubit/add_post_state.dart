@@ -43,3 +43,5 @@ class ImageCaptionOrLinkEdited extends AddPostState {
 }
 
 class PreviewImage extends AddPostState {}
+
+class PostCreated extends AddPostState {}

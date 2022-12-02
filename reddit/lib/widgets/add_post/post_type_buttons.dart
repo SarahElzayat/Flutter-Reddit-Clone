@@ -64,7 +64,7 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: [
-                          for (int index = 0; index < 5; index++)
+                          for (int index = 0; index < 4; index++)
                             InkWell(
                               onTap: (() {
                                 onTapFunc(
@@ -91,7 +91,7 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
                     )
                   : Column(
                       children: [
-                        for (int index = 0; index < 5; index++)
+                        for (int index = 0; index < 4; index++)
                           InkWell(
                             onTap: (() {
                               onTapFunc(

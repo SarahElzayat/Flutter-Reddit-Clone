@@ -75,7 +75,6 @@ class _AddImageCaptionState extends State<AddImageCaption> {
                   widget.isEdited = state.isChange;
                 }
                 return Button(
-                    boarderRadius: 20,
                     text: 'Save',
                     textColor:
                         widget.isEdited ? ColorManager.blue : ColorManager.grey,

@@ -88,7 +88,7 @@ text: 'Cancel',
   var buttonWidth = 10.0;
   var buttonHeight = 5.0;
   var textFontWeight = FontWeight.normal;
-  final textFontSize;
+  final double textFontSize;
   var borderColor;
   var borderRadius = 50.0;
   var borderWidth = 1.0;
