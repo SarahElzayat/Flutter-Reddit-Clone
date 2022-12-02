@@ -3,7 +3,7 @@
 /// utility button to press continue and apply certain function
 import 'package:flutter/material.dart';
 
-import '../../components/Helpers/color_manager.dart';
+import '../../components/helpers/color_manager.dart';
 
 class ContinueButton extends StatelessWidget {
   const ContinueButton(

@@ -5,13 +5,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
-import '../../../Screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
-import '../../../Screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
-import '../../../Screens/to_go_screens/having_trouble_screen.dart';
-import '../../../Components/Button.dart';
-import '../../../Components/Helpers/color_manager.dart';
-import '../../../Components/default_text_field.dart';
+import '../../../screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
+import '../../../screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
+import '../../../screens/to_go_screens/having_trouble_screen.dart';
+import '../../../components/Button.dart';
+import '../../../components/helpers/color_manager.dart';
+import '../../../components/default_text_field.dart';
 import '../../../data/sign_in_And_sign_up_models/validators.dart';
 import '../../sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
 
@@ -115,7 +114,7 @@ class _ForgetPasswordWebScreenState extends State<ForgetPasswordWebScreen> {
                                 textColor: ColorManager.white,
                                 backgroundColor: ColorManager.hoverOrange,
                                 buttonWidth: 13.5.w,
-                                boarderRadius: 5,
+                                borderRadius: 5,
                                 textFontWeight: FontWeight.bold,
                                 buttonHeight: 4.h,
                                 textFontSize: 16,

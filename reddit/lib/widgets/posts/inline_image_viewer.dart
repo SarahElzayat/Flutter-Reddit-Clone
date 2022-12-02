@@ -13,6 +13,8 @@ import 'package:reddit/data/post_model/post_model.dart';
 import '../../components/helpers/color_manager.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../components/helpers/posts/helper_funcs.dart';
+
 class InlineImageViewer extends StatefulWidget {
   InlineImageViewer({
     required this.post,
@@ -21,14 +23,14 @@ class InlineImageViewer extends StatefulWidget {
     this.backgroundDecoration = const BoxDecoration(
       color: ColorManager.black,
     ),
-  }) : pageController =
-            PageController(initialPage: initialIndex, keepPage: true);
+  })  :
+        // that initial A Page Controller with the passed index
+        assert(post.images != null),
+        // it asserts the passed Values and images can't be null
+        assert(initialIndex >= 0); // the initial index can't be less than 0
 
   /// The initial page to show when first creating the [InlineImageViewer].
   final int initialIndex;
-
-  /// The controller for the page view.
-  final PageController pageController;
 
   /// The decoration to paint behind the child if the is a gap.
   ///
@@ -45,6 +47,9 @@ class InlineImageViewer extends StatefulWidget {
 class _InlineImageViewerState extends State<InlineImageViewer> {
   late int currentIndex = widget.initialIndex;
   double aspectRatio = 0;
+
+  /// The controller for the page view.
+  late PageController pageController;
   void onPageChanged(int index) {
     setState(() {
       currentIndex = index;
@@ -53,6 +58,8 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
 
   @override
   void initState() {
+    pageController =
+        PageController(initialPage: widget.initialIndex, keepPage: true);
     Image(image: NetworkImage(widget.post.images![0].path!))
         .image
         .resolve(const ImageConfiguration())
@@ -61,6 +68,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
         aspectRatio = info.image.height / info.image.width;
       });
     }));
+
     super.initState();
   }
 
@@ -73,19 +81,19 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
             openImage(context, currentIndex);
           },
           child: SizedBox(
-            /// expand the image to the width of the screen with max height of 60% of the screen
-            height: min(60.h, aspectRatio * constraints.maxWidth),
+            // expand the image to the width of the screen with max height of 60% of the screen
+            height: min(70.h, aspectRatio * constraints.maxWidth),
             child: Stack(
               children: [
                 PhotoViewGallery.builder(
                   scrollPhysics: const BouncingScrollPhysics(),
                   builder: _buildItem,
+                  wantKeepAlive: true,
                   itemCount: widget.post.images!.length,
                   // loadingBuilder: widget.loadingBuilder,
                   backgroundDecoration: widget.backgroundDecoration,
-                  pageController: widget.pageController,
+                  pageController: pageController,
                   onPageChanged: onPageChanged,
-
                   // allowImplicitScrolling: true,
                   scrollDirection: Axis.horizontal,
                 ),
@@ -133,16 +141,18 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                       margin: const EdgeInsets.only(right: 10),
                       child: CircleAvatar(
                         backgroundColor: ColorManager.darkGrey,
-                        radius: 5.w,
+                        radius: min(5.5.w, 30),
                         child: IconButton(
                           icon: const Icon(Icons.arrow_forward_ios_outlined),
                           color: Colors.white,
                           padding: EdgeInsets.zero,
                           onPressed: () {
-                            widget.pageController.nextPage(
+                            // if (widget.pageController.hasClients) {
+                            pageController.nextPage(
                               duration: const Duration(milliseconds: 400),
                               curve: Curves.easeInOut,
                             );
+                            // }
                           },
                         ),
                       ),
@@ -155,27 +165,63 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                       margin: const EdgeInsets.only(left: 10),
                       child: CircleAvatar(
                         backgroundColor: ColorManager.darkGrey,
-                        radius: 5.w,
+                        radius: min(5.5.w, 30),
                         child: IconButton(
                           icon: const Icon(Icons.arrow_back_ios_new),
                           color: Colors.white,
                           padding: EdgeInsets.zero,
                           onPressed: () {
-                            widget.pageController.previousPage(
-                              duration: const Duration(milliseconds: 400),
-                              curve: Curves.easeInOut,
-                            );
+                            if (pageController.hasClients) {
+                              pageController.previousPage(
+                                duration: const Duration(milliseconds: 400),
+                                curve: Curves.easeInOut,
+                              );
+                            }
                           },
                         ),
                       ),
                     ),
                   ),
+                if (widget.post.images![currentIndex].caption != null)
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                        constraints: const BoxConstraints(
+                          minHeight: 40,
+                        ),
+                        color: ColorManager.grey,
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(5),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              widget.post.images![currentIndex].caption!,
+                              style: const TextStyle(
+                                color: ColorManager.eggshellWhite,
+                                fontSize: 15,
+                              ),
+                            ),
+                            const Spacer(),
+                            if (widget.post.images![currentIndex].link != null)
+                              linkRow(widget.post.images![currentIndex].link!,
+                                  ColorManager.blue)
+                          ],
+                        )),
+                  )
               ],
             ),
           ),
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    pageController.dispose();
+    super.dispose();
   }
 
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {

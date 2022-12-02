@@ -33,7 +33,7 @@ class DefaultTextField extends StatefulWidget {
   final IconButton? icon;
 
   /// indicates Whether the text being edited is obscured.
-  /// Defaults to [false].
+  /// Defaults to false.
   final bool obscureText;
 
   /// Called when the text being edited changes.
@@ -42,7 +42,7 @@ class DefaultTextField extends StatefulWidget {
   /// Called when the text is submitted.
   final void Function(String)? onSubmitted;
 
-  /// Called when [validate] is called.
+  /// Called when validate is called.
   final String? Function(String?)? validator;
 
   /// The type of keyboard to use for editing the text.
@@ -56,7 +56,7 @@ class DefaultTextField extends StatefulWidget {
   final int? maxLength;
 
   /// indicates Whether the text field should be multiline.
-  /// Defaults to [false].
+  /// Defaults to false.
   final bool multiLine;
 
   @override

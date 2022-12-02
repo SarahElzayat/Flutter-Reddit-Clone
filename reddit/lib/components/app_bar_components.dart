@@ -3,7 +3,7 @@
 /// The file contains helping components for the app bar
 import 'package:flutter/material.dart';
 
-import '../Screens/search/search_screen.dart';
+import '../screens/search/search_screen.dart';
 
 Widget avatar({image}) {
   return Padding(

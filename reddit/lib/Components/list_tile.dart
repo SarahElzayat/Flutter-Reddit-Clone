@@ -137,22 +137,35 @@ class _ListTileWidgetState extends State<ListTileWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      child: ListTile(
+      child: Material(
+        color: ColorManager.darkGrey,
+        child: InkWell(
+          onTap: (() => {widget.handler}),
+          child: ListTile(
+              //background color of list tile
+              tileColor: ColorManager.darkGrey,
 
-          /// This is the first el
-          leading: widget.leadingIcon,
-          title: Text(widget.title),
+              /// This is the first el
+              leading: widget.leadingIcon,
+              title: Text(
+                widget.title,
+                style: TextStyle(
+                    color: ColorManager.eggshellWhite,
+                    fontSize: 15 * MediaQuery.of(context).textScaleFactor),
+              ),
 
-          /// to set some space between items
-          contentPadding: const EdgeInsets.only(left: 10),
+              /// to set some space between items
+              contentPadding: const EdgeInsets.only(left: 10),
 
-          /// min width for the fitst item
-          minLeadingWidth: 10,
-          trailing: (widget.tailingObj == TrailingObjects.switchButton)
-              ? buildSwitch(context)
-              : (widget.tailingObj == TrailingObjects.tailingIcon)
-                  ? buildIconButton(context)
-                  : buildDropDown(context)),
+              /// min width for the fitst item
+              minLeadingWidth: 10,
+              trailing: (widget.tailingObj == TrailingObjects.switchButton)
+                  ? buildSwitch(context)
+                  : (widget.tailingObj == TrailingObjects.tailingIcon)
+                      ? buildIconButton(context)
+                      : buildDropDown(context)),
+        ),
+      ),
     );
   }
 }

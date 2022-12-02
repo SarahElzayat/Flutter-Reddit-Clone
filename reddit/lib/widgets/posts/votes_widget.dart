@@ -2,19 +2,18 @@
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
 
+import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:reddit/networks/dio_helper.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
+import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../constants/constants.dart';
 import '../../data/post_model/post_model.dart';
 import '../../components/helpers/color_manager.dart';
+import 'cubit/post_cubit.dart';
+import 'cubit/post_state.dart';
 
-enum LowerPostBarState { upvoted, downvoted, none }
-
-bool isUpvoted = false;
-bool isDownvoted = false;
-
-class VotesPart extends StatefulWidget {
+class VotesPart extends StatelessWidget {
   const VotesPart({
     super.key,
     required this.post,
@@ -32,114 +31,87 @@ class VotesPart extends StatefulWidget {
   final bool isWeb;
 
   @override
-  State<VotesPart> createState() => _VotesPartState();
-}
-
-class _VotesPartState extends State<VotesPart> {
-  LowerPostBarState state = isUpvoted
-      ? LowerPostBarState.upvoted
-      : isDownvoted
-          ? LowerPostBarState.downvoted
-          : LowerPostBarState.none;
-  @override
   Widget build(BuildContext context) {
-    List<Widget> getchildren() => [
-          Material(
-            color: Colors.transparent,
-            clipBehavior: Clip.antiAlias,
-            shape: const CircleBorder(),
-            child: IconButton(
-              onPressed: () {
-                setState(() {
-                  if (state == LowerPostBarState.upvoted) {
-                    state = LowerPostBarState.none;
-                    //TODO
-                    // widget.post.setVote(widget.post.votes! - 1);
-
-                  } else if (state == LowerPostBarState.downvoted) {
-                    state = LowerPostBarState.upvoted;
-                    // widget.post.setVote(widget.post.votes! + 2);
-                  } else {
-                    state = LowerPostBarState.upvoted;
-                    // widget.post.setVote(widget.post.votes! + 1);
-                  }
-                });
-              },
-              constraints: const BoxConstraints(),
-              padding: const EdgeInsets.all(0),
-              splashColor: ColorManager.hoverOrange,
-              color: ColorManager.hoverOrange,
-              icon: Icon(
-                Icons.arrow_upward,
-                color: state == LowerPostBarState.upvoted
+    List<Widget> getchildren() {
+      var cubit = PostCubit.get(context);
+      int dir = cubit.getVotingType();
+      return [
+        Material(
+          color: Colors.transparent,
+          clipBehavior: Clip.antiAlias,
+          shape: const CircleBorder(),
+          child: IconButton(
+            key: const Key('upvoteButton'),
+            onPressed: () async {
+              PostCubit.get(context)
+                  .vote(
+                direction: 1,
+              )
+                  .then((value) {
+                PostNotifierCubit.get(context).changedPost();
+              });
+            },
+            constraints: const BoxConstraints(),
+            padding: const EdgeInsets.all(0),
+            splashColor: ColorManager.hoverOrange,
+            color: ColorManager.hoverOrange,
+            icon: Icon(
+              Icons.arrow_upward,
+              color: dir == 1 ? ColorManager.hoverOrange : iconColor,
+            ),
+            iconSize: min(5.5.w, 30),
+          ),
+        ),
+        Text(
+          cubit.getVotesCount().toString(),
+          style: TextStyle(
+            color: dir == 0
+                ? iconColor
+                : dir == 1
                     ? ColorManager.hoverOrange
-                    : widget.iconColor,
-              ),
-              iconSize: 7.w,
-            ),
+                    : ColorManager.downvoteBlue,
+            fontSize: 15,
           ),
-          Text(
-            widget.post.votes!.toString(),
-            style: TextStyle(
-              color: state == LowerPostBarState.none
-                  ? widget.iconColor
-                  : state == LowerPostBarState.upvoted
-                      ? ColorManager.hoverOrange
-                      : ColorManager.downvoteBlue,
-              fontSize: 15,
+        ),
+        Material(
+          color: Colors.transparent,
+          clipBehavior: Clip.antiAlias,
+          shape: const CircleBorder(),
+          child: IconButton(
+            key: const Key('downvoteButton'),
+            onPressed: () {
+              cubit.vote(direction: -1).then((value) {
+                PostNotifierCubit.get(context).changedPost();
+              });
+            },
+            constraints: const BoxConstraints(),
+            padding: const EdgeInsets.all(0),
+            splashColor: ColorManager.downvoteBlue,
+            icon: Icon(
+              Icons.arrow_downward,
+              color: dir == -1 ? ColorManager.downvoteBlue : iconColor,
             ),
+            iconSize: min(5.5.w, 30),
           ),
-          Material(
-            color: Colors.transparent,
-            clipBehavior: Clip.antiAlias,
-            shape: const CircleBorder(),
-            child: IconButton(
-              onPressed: () {
-                setState(() {
-                  if (state == LowerPostBarState.downvoted) {
-                    state = LowerPostBarState.none;
-                    // widget.post.setVote(widget.post.votes! + 1);
-                    vote(1);
-                  } else if (state == LowerPostBarState.upvoted) {
-                    state = LowerPostBarState.downvoted;
-                    // widget.post.setVote(widget.post.votes! - 2);
-                  } else {
-                    state = LowerPostBarState.downvoted;
-                    // widget.post.setVote(widget.post.votes! - 1);
-                    vote(-1);
-                  }
-                });
-              },
-              constraints: const BoxConstraints(),
-              padding: const EdgeInsets.all(0),
-              splashColor: ColorManager.downvoteBlue,
-              icon: Icon(
-                Icons.arrow_downward,
-                color: state == LowerPostBarState.downvoted
-                    ? ColorManager.downvoteBlue
-                    : widget.iconColor,
-              ),
-              iconSize: 7.w,
-            ),
-          ),
-        ];
+        ),
+      ];
+    }
 
-    return !widget.isWeb
-        ? Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: getchildren(),
-          )
-        : Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: getchildren(),
-          );
-  }
-
-  void vote(int direction) {
-    DioHelper.postData(path: '${base}/vote', data: {
-      'id': widget.post.id,
-      'direction': direction,
-      'type': 'post',
-    }).then((value) => print(value.data));
+    return BlocBuilder<PostCubit, PostState>(
+      builder: (context, state) {
+        return BlocBuilder<PostNotifierCubit, PostNotifierState>(
+            builder: (context, state) {
+          return !isWeb
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: getchildren(),
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: getchildren(),
+                );
+        });
+      },
+    );
   }
 }

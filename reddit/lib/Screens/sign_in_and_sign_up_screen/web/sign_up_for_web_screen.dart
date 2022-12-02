@@ -2,14 +2,14 @@
 /// @date 11/11/20222
 
 import 'package:flutter/material.dart';
-import '../../../Screens/sign_in_and_sign_up_screen/web/continue_sign_up_screen.dart';
-import '../../../Components/Button.dart';
-import '../../../Components/Helpers/color_manager.dart';
-import '../../../Components/default_text_field.dart';
-import '../../../Screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/web/continue_sign_up_screen.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../../components/button.dart';
+import '../../../components/helpers/color_manager.dart';
+import '../../../components/default_text_field.dart';
+import '../../../screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
 import '../../../data/sign_in_And_sign_up_models/validators.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/continue_with_fb_or_google_web.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 
 /// this is a screen for rendering the app on the web
 class SignUpForWebScreen extends StatefulWidget {
@@ -109,11 +109,12 @@ class _SignUpForWebScreenState extends State<SignUpForWebScreen> {
                               ),
                               Button(
                                   key: const Key('ContinueButton'),
+                                  textFontWeight: FontWeight.normal,
                                   text: 'CONTINUE',
                                   textColor: ColorManager.white,
                                   backgroundColor: ColorManager.hoverOrange,
                                   buttonWidth: 25.w,
-                                  boarderRadius: 5,
+                                  borderRadius: 5,
                                   buttonHeight: 40,
                                   textFontSize: 14,
                                   // TODO: This Logic Should be separated in separate function

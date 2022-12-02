@@ -4,7 +4,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/components/Helpers/color_manager.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 
 import '../cubit/app_cubit.dart';

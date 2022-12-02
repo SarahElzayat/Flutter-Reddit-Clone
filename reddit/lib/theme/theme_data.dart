@@ -45,20 +45,23 @@ ThemeData appTheme() {
       outline: ColorManager.white,
     ),
     textTheme: const TextTheme(
-      titleLarge: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.normal,
-          color: ColorManager.eggshellWhite),
       titleMedium: TextStyle(
-        fontSize: 16,
+        fontSize: 12,
         fontWeight: FontWeight.bold,
         color: ColorManager.eggshellWhite,
       ),
       titleSmall: TextStyle(
-          fontSize: 12,
+          fontSize: 18,
           fontWeight: FontWeight.normal,
           color: ColorManager.eggshellWhite),
-      bodyMedium: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      titleLarge: TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.normal,
+          color: ColorManager.eggshellWhite),
+      displaySmall: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.normal,
+          color: ColorManager.eggshellWhite),
     ),
   );
 }
