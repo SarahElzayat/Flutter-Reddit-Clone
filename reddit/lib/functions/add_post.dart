@@ -167,6 +167,7 @@ void chooseSourceWidget(
                   buttonWidth: mediaQuery.size.width * 0.3,
                   buttonHeight: 40,
                   textFontSize: 15,
+                  borderRadius: 20,
                   // boarderRadius: 20,
                 ),
               ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:reddit/constants/constants.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../components/community_components/create_community_dialog.dart';
-import '../../components/helpers/constants.dart';
+import '../../components/community components/create_community_dialog.dart';
 import 'create_community_screen.dart';
 
 class CreateCommunityTestScreen extends StatelessWidget {
@@ -20,7 +20,7 @@ class CreateCommunityTestScreen extends StatelessWidget {
               backgroundColor: const Color(0xFF212121),
               dividerColor: Colors.black12,
               splashColor: Colors.transparent),
-          home: (isAndroid == true)
+          home: (isMobile == true)
               ? const CreateCommunityScreen()
               : const CreateCommunityWeb());
     });
