@@ -15,15 +15,16 @@ class CommunitySearch extends StatefulWidget {
   @override
   State<CommunitySearch> createState() => _CommunitySearchState();
   static const routeName = '/community_search_route';
-  final List<String> subreddits = [
-    'news',
-  ];
+
   final List<double> memberNumbers = [15000];
 }
 
 /// Screen that you search for the subreddit that will share the post into it
 class _CommunitySearchState extends State<CommunitySearch> {
   TextEditingController controller = TextEditingController();
+  List<String> subreddits = [
+    'news',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -72,15 +73,15 @@ class _CommunitySearchState extends State<CommunitySearch> {
         ),
         Expanded(
           child: ListView.builder(
-            itemCount: widget.subreddits.length,
+            itemCount: subreddits.length,
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
                 onTap: () {
-                  addPostCubit.addSubredditName(widget.subreddits[index]);
+                  addPostCubit.addSubredditName(subreddits[index]);
                   navigator.pushNamed(PostRules.routeName);
                 },
                 title: Text(
-                  widget.subreddits[index],
+                  subreddits[index],
                   style: TextStyle(fontSize: 18 * mediaQuery.textScaleFactor),
                 ),
                 subtitle: Text(memberNumber(widget.memberNumbers[index])),

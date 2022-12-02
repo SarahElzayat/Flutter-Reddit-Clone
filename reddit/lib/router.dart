@@ -1,12 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:reddit/Screens/add_post/add_post.dart';
 import 'package:reddit/Screens/add_post/post.dart';
-import 'package:reddit/Screens/add_post/video_trimmer.dart';
 import 'package:reddit/cubit/add_post.dart/cubit/add_post_cubit.dart';
+import 'package:reddit/screens/add_post/video_trimmer.dart';
 
 import 'Screens/add_post/image_screen.dart';
 import 'Screens/add_post/paint_screen.dart';

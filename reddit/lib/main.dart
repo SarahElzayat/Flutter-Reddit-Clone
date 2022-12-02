@@ -22,13 +22,12 @@ Future<void> main() async {
   prepareMocks();
 
   /// this is used to insure that every thing has been initialized well
-  
+
   // enableFlutterDriverExtension();
 
   WidgetsFlutterBinding.ensureInitialized();
 
   Bloc.observer = MyBlocObserver();
-
   await CacheHelper.init();
   try {
     if (Platform.isAndroid) {
@@ -45,6 +44,7 @@ Future<void> main() async {
 
   /// and this is used to initialize Dio
   DioHelper.init();
+  print(CacheHelper.getData(key: 'token'));
 
   runApp(const Main());
 }
@@ -71,7 +71,7 @@ class Main extends StatelessWidget {
               return MaterialApp(
                 /// TODO: this should be changed to be checked automatically
                 initialRoute: CacheHelper.getData(key: 'token') != null
-                    ? HomeScreen.routeName
+                    ? MainScreen.routeName
                     : SignInScreen.routeName,
                 routes: myRoutes,
                 onUnknownRoute: (settings) {
