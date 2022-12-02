@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:reddit/Screens/forget_user_name_and_password/forget_password_screen.dart';
+import 'package:reddit/Screens/forget_user_name_and_password/mobile/forget_password_screen.dart';
 
 void main() {
   setUp(() {});
@@ -8,7 +8,7 @@ void main() {
   /// in testing we need to tell the app to rebuild the widget tree explicitly.
   testWidgets('Forget your password? text exist', (WidgetTester tester) async {
     /// here we must build the UI first
-    await tester.pumpWidget(MaterialApp(
+    await tester.pumpWidget(const MaterialApp(
       home: ForgetPasswordScreen(),
     ));
 
@@ -18,7 +18,7 @@ void main() {
 
   testWidgets('Unfortunately text exists', (WidgetTester tester) async {
     /// here we must build the UI first
-    await tester.pumpWidget(MaterialApp(
+    await tester.pumpWidget(const MaterialApp(
       home: ForgetPasswordScreen(),
     ));
 
@@ -37,24 +37,24 @@ void main() {
   });
 
   testWidgets('there is a Log In button', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(home: ForgetPasswordScreen()));
+    await tester.pumpWidget(const MaterialApp(home: ForgetPasswordScreen()));
     expect(find.text('Log In'), findsOneWidget);
   });
   testWidgets('there is username textfield', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(home: ForgetPasswordScreen()));
+    await tester.pumpWidget(const MaterialApp(home: ForgetPasswordScreen()));
     expect(find.text('Username'), findsOneWidget);
   });
   testWidgets('there is Email textfield', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(home: ForgetPasswordScreen()));
+    await tester.pumpWidget(const MaterialApp(home: ForgetPasswordScreen()));
     expect(find.text('Email'), findsOneWidget);
   });
   testWidgets('there is Forget username button exists',
       (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(home: ForgetPasswordScreen()));
+    await tester.pumpWidget(const MaterialApp(home: ForgetPasswordScreen()));
     expect(find.text('Forget username?'), findsOneWidget);
   });
   testWidgets('there is Having trouble textfield', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(home: ForgetPasswordScreen()));
+    await tester.pumpWidget(const MaterialApp(home: ForgetPasswordScreen()));
     expect(find.text('Having trouble?'), findsOneWidget);
   });
 }
