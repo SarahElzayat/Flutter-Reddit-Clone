@@ -3,6 +3,7 @@
 /// this is the screen of creating new account for the users.
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../../../screens/sign_in_and_sign_up_screen/mobile/sign_up_screen.dart';

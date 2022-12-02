@@ -69,7 +69,7 @@ class Main extends StatelessWidget {
               return MaterialApp(
                 /// TODO: this should be changed to be checked automatically
                 initialRoute: CacheHelper.getData(key: 'token') != null
-                    ? HomeScreen.routeName
+                    ? MainScreen.routeName
                     : SignInScreen.routeName,
                 routes: myRoutes,
                 onUnknownRoute: (settings) {
