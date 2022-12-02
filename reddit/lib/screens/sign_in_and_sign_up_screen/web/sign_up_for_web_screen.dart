@@ -3,14 +3,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/web/continue_sign_up_screen.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../components/button.dart';
 import '../../../components/helpers/color_manager.dart';
 import '../../../components/default_text_field.dart';
 import '../../../screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
-
 import '../../../data/sign_in_And_sign_up_models/validators.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/continue_with_fb_or_google_web.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 
 /// this is a screen for rendering the app on the web
 class SignUpForWebScreen extends StatefulWidget {
@@ -78,8 +77,6 @@ class _SignUpForWebScreenState extends State<SignUpForWebScreen> {
                                 Text(
                                     'By continuing, you are setting up a Reddit account and '
                                     'agree to our User Agreement and Privace Policy',
-
-                                    /// lw 3auz t3dl ay haga
                                     style:
                                         Theme.of(context).textTheme.bodyLarge),
                               ],
@@ -99,6 +96,7 @@ class _SignUpForWebScreenState extends State<SignUpForWebScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               DefaultTextField(
+                                key: const Key('EmailTextField'),
                                 validator: (email) {
                                   if (!Validator.validEmailValidator(email!)) {
                                     return 'email must follow this formate:\nexample@aything.com';
@@ -110,6 +108,7 @@ class _SignUpForWebScreenState extends State<SignUpForWebScreen> {
                                 labelText: 'Email',
                               ),
                               Button(
+                                  key: const Key('ContinueButton'),
                                   textFontWeight: FontWeight.normal,
                                   text: 'CONTINUE',
                                   textColor: ColorManager.white,
@@ -118,6 +117,7 @@ class _SignUpForWebScreenState extends State<SignUpForWebScreen> {
                                   borderRadius: 5,
                                   buttonHeight: 40,
                                   textFontSize: 14,
+                                  // TODO: This Logic Should be separated in separate function
                                   onPressed: () {
                                     if (!_myKey.currentState!.validate()) {
                                       ScaffoldMessenger.of(context)
@@ -147,6 +147,7 @@ class _SignUpForWebScreenState extends State<SignUpForWebScreen> {
                                           fontWeight: FontWeight.w200),
                                     ),
                                     TextButton(
+                                        key: const Key('LoginButton'),
                                         onPressed: () {
                                           Navigator.pushReplacementNamed(
                                               context,

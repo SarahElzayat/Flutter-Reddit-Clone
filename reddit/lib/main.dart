@@ -62,6 +62,7 @@ class Main extends StatelessWidget {
           return ResponsiveSizer(
             builder: (context, orientation, screenType) {
               return MaterialApp(
+                /// TODO: this should be changed to be checked automatically
                 initialRoute: CacheHelper.getData(key: 'isWindows')
                     ? MainScreen.routeName
                     : MainScreen.routeName,

@@ -33,12 +33,15 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
   bool isEmptyEmail = true;
 
+  final _formkey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final navigator = Navigator.of(context);
     final theme = Theme.of(context);
     final customAppBar = LogInAppBar(
+        key: const Key('LogInButton'),
         sideBarButtonText: 'Log In',
         sideBarButtonAction: () {
           navigator.pushReplacementNamed(SignInScreen.routeName);
@@ -46,134 +49,157 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     return Scaffold(
       appBar: customAppBar,
       body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(14),
-          decoration: const BoxDecoration(color: ColorManager.darkGrey),
-          height: mediaQuery.size.height -
-              mediaQuery.padding.top -
-              customAppBar.preferredSize.height,
-          width: mediaQuery.size.width,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                height: mediaQuery.size.height * 0.7 -
-                    mediaQuery.padding.top -
-                    customAppBar.preferredSize.height,
-                width: mediaQuery.size.width,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      'Forgot your password?',
-                      style: theme.textTheme.titleMedium,
-                    ),
-                    DefaultTextField(
-                      onChanged: (myString) {
-                        setState(() {
-                          if (myString.isNotEmpty) {
-                            isEmptyUsername = false;
-                          } else {
-                            isEmptyUsername = true;
-                          }
-                        });
-                      },
-                      icon: isEmptyUsername
-                          ? null
-                          : IconButton(
-                              onPressed: () => setState(() {
-                                    isEmptyUsername = true;
-                                    usernameController.text = '';
-                                  }),
-                              icon: const Icon(Icons.clear)),
-                      labelText: 'Username',
-                      formController: usernameController,
-                    ),
-                    DefaultTextField(
-                      onChanged: (myString) {
-                        setState(() {
-                          if (myString.isNotEmpty) {
-                            isEmptyEmail = false;
-                          } else {
-                            isEmptyEmail = true;
-                          }
-                        });
-                      },
-                      icon: isEmptyEmail
-                          ? null
-                          : IconButton(
-                              onPressed: () => setState(() {
-                                    isEmptyEmail = true;
-                                    emailController.text = '';
-                                  }),
-                              icon: const Icon(Icons.clear)),
-                      labelText: 'Email',
-                      formController: emailController,
-                    ),
-                    Text(
-                      'Unfortunately, if you have never given us your email,'
-                      'we will not be able to reset your password.',
-                      style: theme.textTheme.bodyMedium,
-                    ),
-                    SizedBox(
-                      child: Column(
-                        children: [
-                          TextButton(
-                              onPressed: () {
-                                navigator.pushReplacementNamed(
-                                    RecoverUserName.routeName);
-                              },
-                              child: SizedBox(
-                                width: mediaQuery.size.width,
-                                child: Text(
-                                  'Forget username?',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      color: ColorManager.primaryColor,
-                                      fontSize:
-                                          16 * mediaQuery.textScaleFactor),
-                                ),
-                              )),
-                          TextButton(
-                              onPressed: () {
-                                Navigator.of(context)
-                                    .pushNamed(TroubleScreen.routeName);
-                              },
-                              child: SizedBox(
-                                width: mediaQuery.size.width,
-                                child: Text(
-                                  'Having trouble?',
-                                  style: TextStyle(
-                                      fontSize: 16 * mediaQuery.textScaleFactor,
-                                      color: ColorManager.primaryColor),
-                                ),
-                              )),
-                        ],
+        child: Form(
+          key: _formkey,
+          child: Container(
+            padding: const EdgeInsets.all(14),
+            decoration: const BoxDecoration(color: ColorManager.darkGrey),
+            height: mediaQuery.size.height -
+                mediaQuery.padding.top -
+                customAppBar.preferredSize.height,
+            width: mediaQuery.size.width,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  height: mediaQuery.size.height * 0.7 -
+                      mediaQuery.padding.top -
+                      customAppBar.preferredSize.height,
+                  width: mediaQuery.size.width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        'Forgot your password?',
+                        style: theme.textTheme.titleMedium,
                       ),
-                    )
-                  ],
+                      DefaultTextField(
+                        labelText: 'Username',
+                        validator: (username) {
+                          if (!Validator.validUserName(username!)) {
+                            return 'The username length should be less than 21 and greater than 2 ';
+                          }
+                          return null;
+                        },
+                        onChanged: (myString) {
+                          setState(() {
+                            if (myString.isNotEmpty) {
+                              isEmptyUsername = false;
+                            } else {
+                              isEmptyUsername = true;
+                            }
+                          });
+                        },
+                        icon: isEmptyUsername
+                            ? null
+                            : IconButton(
+                                key: const Key('ClearUsernameButton'),
+                                onPressed: () => setState(() {
+                                      isEmptyUsername = true;
+                                      usernameController.text = '';
+                                    }),
+                                icon: const Icon(Icons.clear)),
+                        formController: usernameController,
+                      ),
+                      DefaultTextField(
+                        key: const Key('EmailTextField'),
+                        labelText: 'Email',
+                        validator: (email) {
+                          if (!Validator.validEmailValidator(email!)) {
+                            return 'This mail format is incorrect';
+                          }
+                          return null;
+                        },
+                        onChanged: (myString) {
+                          setState(() {
+                            if (myString.isNotEmpty) {
+                              isEmptyEmail = false;
+                            } else {
+                              isEmptyEmail = true;
+                            }
+                          });
+                        },
+                        icon: isEmptyEmail
+                            ? null
+                            : IconButton(
+                                key: const Key('ClearEmailButton'),
+                                onPressed: () => setState(() {
+                                      isEmptyEmail = true;
+                                      emailController.text = '';
+                                    }),
+                                icon: const Icon(Icons.clear)),
+                        formController: emailController,
+                      ),
+                      Text(
+                        'Unfortunately, if you have never given us your email,'
+                        'we will not be able to reset your password.',
+                        style: theme.textTheme.bodyMedium,
+                      ),
+                      SizedBox(
+                        child: Column(
+                          children: [
+                            TextButton(
+                                key: const Key('ForgetUserNameButton'),
+                                onPressed: () {
+                                  navigator.pushReplacementNamed(
+                                      RecoverUserName.routeName);
+                                },
+                                child: SizedBox(
+                                  width: mediaQuery.size.width,
+                                  child: Text(
+                                    'Forget username?',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: ColorManager.primaryColor,
+                                        fontSize:
+                                            16 * mediaQuery.textScaleFactor),
+                                  ),
+                                )),
+                            TextButton(
+                                key: const Key('HavingTroubleButton'),
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pushNamed(TroubleScreen.routeName);
+                                },
+                                child: SizedBox(
+                                  width: mediaQuery.size.width,
+                                  child: Text(
+                                    'Having trouble?',
+                                    style: TextStyle(
+                                        fontSize:
+                                            16 * mediaQuery.textScaleFactor,
+                                        color: ColorManager.primaryColor),
+                                  ),
+                                )),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              ContinueButton(
-                  isPressable: usernameController.text.isNotEmpty &&
-                      emailController.text.isNotEmpty,
-                  appliedFunction: () {
-                    if (Validator.validEmailValidator(emailController.text) &&
-                        Validator.validUserName(usernameController.text)) {
-                      final user = LogInForgetModel(
-                          type: 'password',
-                          username: usernameController.text,
-                          email: emailController.text);
-                      DioHelper.postData(
-                              path: loginForgetPassword, data: user.toJson())
-                          .then((returnVal) {
-                        print(returnVal.toString());
-                      });
-                    } else {
-                      print('something went wrong');
-                    }
-                  })
-            ],
+                ContinueButton(
+                    key: const Key('ContinueButton'),
+                    isPressable: usernameController.text.isNotEmpty &&
+                        emailController.text.isNotEmpty,
+                    //TODO: This logic should be written in a separte function
+                    appliedFunction: () {
+                      if (Validator.validEmailValidator(emailController.text) &&
+                          Validator.validUserName(usernameController.text)) {
+                        final user = LogInForgetModel(
+                            type: 'password',
+                            username: usernameController.text,
+                            email: emailController.text);
+                        DioHelper.postData(
+                                path: loginForgetPassword, data: user.toJson())
+                            .then((returnVal) {
+                          print(returnVal.toString());
+                        });
+                      } else {
+                        print('something went wrong');
+                      }
+                    })
+              ],
+            ),
           ),
         ),
       ),

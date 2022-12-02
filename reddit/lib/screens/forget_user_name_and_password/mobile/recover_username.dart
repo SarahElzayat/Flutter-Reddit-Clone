@@ -36,6 +36,7 @@ class _RecoverUserNameState extends State<RecoverUserName> {
     final theme = Theme.of(context);
     final textScaleFactor = mediaQuery.textScaleFactor;
     final customAppBar = LogInAppBar(
+        key: const Key('LoginButton'),
         sideBarButtonText: 'Log In',
         sideBarButtonAction: () {
           navigator.pushReplacementNamed(
@@ -68,6 +69,7 @@ class _RecoverUserNameState extends State<RecoverUserName> {
                       style: theme.textTheme.titleMedium,
                     ),
                     DefaultTextField(
+                        key: const Key('EmailTextField'),
                         onChanged: (myString) {
                           setState(() {
                             if (myString.isNotEmpty) {
@@ -80,6 +82,7 @@ class _RecoverUserNameState extends State<RecoverUserName> {
                         icon: isEmptyEmail
                             ? null
                             : IconButton(
+                                key: const Key('ClearEmailButton'),
                                 onPressed: () => setState(() {
                                       isEmptyEmail = true;
                                       emailController.text = '';
@@ -96,6 +99,7 @@ class _RecoverUserNameState extends State<RecoverUserName> {
                       child: Column(
                         children: [
                           TextButton(
+                              key: const Key('HavingATroubleButton'),
                               onPressed: () {
                                 navigator.pushNamed(TroubleScreen.routeName);
                               },
@@ -121,6 +125,7 @@ class _RecoverUserNameState extends State<RecoverUserName> {
                   width: mediaQuery.size.width,
                   padding: const EdgeInsets.all(6),
                   child: ContinueButton(
+                      key: const Key('ContinueButton'),
                       isPressable: emailController.text.isNotEmpty,
                       appliedFunction: () {
                         if (Validator.validEmailValidator(
