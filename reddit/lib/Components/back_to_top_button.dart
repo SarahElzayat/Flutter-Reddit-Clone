@@ -1,3 +1,4 @@
+///@author Sarah Elzayat
 import 'package:flutter/material.dart';
 import 'package:reddit/components/Helpers/color_manager.dart';
 
