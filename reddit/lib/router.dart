@@ -24,28 +24,26 @@ class AppRouter {
                   value: _addPostCubit,
                   child: const AddPost(),
                 ));
-      case '/previewImage':
+      case '/image_screen_route':
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
                   value: _addPostCubit,
                   child: ImageScreen(),
                 ));
 
-      case '/paintScreen':
+      case '/paint_screen_route':
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
                   value: _addPostCubit,
                   child: PaintScreen(),
                 ));
 
-      case '/trimmerView':
+      case '/trimmerView_screen_route':
         return MaterialPageRoute(builder: (_) {
-          final file = routeSettings.arguments as File;
+          print('Go to Video Trimeer');
           return BlocProvider.value(
             value: _addPostCubit,
-
-            /// TODO: remove this file from the constructor.
-            child: TrimmerView(file),
+            child: const TrimmerView(),
           );
         });
 

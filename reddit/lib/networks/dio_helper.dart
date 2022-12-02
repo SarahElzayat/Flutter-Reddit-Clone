@@ -38,11 +38,10 @@ class DioHelper {
   }
 
   /// now we need to define the web Services
-
   /// this is a function used to send post request with certain body.
   static Future<Response> postData({
     required String path, // the added path to the baseURL
-    required Map<String, dynamic> data,
+    required dynamic data,
 
     /// which is the content of the JSON
     Map<String, dynamic>? query,
@@ -90,9 +89,12 @@ class DioHelper {
     );
   }
 
+
   /// this is a function used to send get request with certain body.
   /// patch function
 
+  /// this is a function used to send get request with certain body.
+  /// patch function
   /// this is a function used to send get request
   /// @param [query] which is the query we are asking for <optional>
   /// @param [path] string defining the end point
