@@ -5,11 +5,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/data/sign_in_And_sign_up_models/sign_in_model.dart';
+import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
+import 'package:reddit/screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
-import '../../../data/sign_in_And_sign_up_models/sign_in_model.dart';
-import '../../../screens/bottom_navigation_bar_screens/home_screen.dart';
-import '../../../screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
 import '../../../screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
 import '../../../components/button.dart';
 import '../../../components/helpers/color_manager.dart';

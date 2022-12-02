@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/components/button.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
-
 import '../../data/facebook_api/facebook_api.dart';
 import '../../data/google_api/google_sign_in_api.dart';
 
