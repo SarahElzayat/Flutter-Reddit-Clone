@@ -3,7 +3,6 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
 import 'package:reddit/screens/to_go_screens/having_trouble_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -15,12 +14,11 @@ import '../../../data/sign_in_And_sign_up_models/validators.dart';
 import '../../sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
 
 /// this screen is built to show the UI in case that the user is using the app through the web
-class ForgetPasswordWebScreen extends StatelessWidget {
-  ForgetPasswordWebScreen({super.key});
+class ForgetUserNameWebScreen extends StatelessWidget {
+  ForgetUserNameWebScreen({super.key});
 
-  static const routeName = '/forget_password_web_screen_route';
+  static const routeName = '/forget_username_web_screen_route';
   TextEditingController emailController = TextEditingController();
-  TextEditingController usernameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -33,7 +31,6 @@ class ForgetPasswordWebScreen extends StatelessWidget {
             children: [
               // the image box
               SizedBox(
-
                   // in the website it is fixed not relative
                   width: mediaQuery.size.width > 600 ? 140 : 120,
                   height: 100.h,
@@ -54,7 +51,7 @@ class ForgetPasswordWebScreen extends StatelessWidget {
                     // the text container
                     Container(
                         alignment: Alignment.centerLeft,
-                        margin: const EdgeInsets.only(top: 190),
+                        margin: const EdgeInsets.only(top: 260),
                         height: 20.h,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -67,7 +64,7 @@ class ForgetPasswordWebScreen extends StatelessWidget {
                             Container(
                                 alignment: Alignment.centerLeft,
                                 child: const Text(
-                                  'Reset your password',
+                                  'Recover your username',
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold),
@@ -76,30 +73,28 @@ class ForgetPasswordWebScreen extends StatelessWidget {
                               'Tell us the username and email address associated with your Reddit account, and we’ll send you an email with a link to reset your password. ',
                               style: TextStyle(
                                   height: 1.3,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w300),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w200),
                             )
                           ],
                         )),
                     SizedBox(
-                      height: 35.h,
+                      height: 20.h,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           DefaultTextField(
-                            formController: usernameController,
-                            labelText: 'USERNAME',
-                          ),
-                          DefaultTextField(
+                            key: const Key('EmailTextField'),
                             keyboardType: TextInputType.emailAddress,
                             formController: emailController,
-                            labelText: 'PASSWORD',
+                            labelText: 'Email Address',
                           ),
                           Container(
                             margin: const EdgeInsets.only(top: 10),
                             alignment: Alignment.centerLeft,
                             child: Button(
-                                text: 'Reset Password',
+                                key: const Key('EmailMeButton'),
+                                text: 'EMAIL ME',
                                 textColor: ColorManager.white,
                                 backgroundColor: ColorManager.hoverOrange,
                                 buttonWidth: 13.5.w,
@@ -108,33 +103,13 @@ class ForgetPasswordWebScreen extends StatelessWidget {
                                 buttonHeight: 4.h,
                                 textFontSize: 16,
                                 onPressed: () {
-                                  if ((Validator.validUserName(
-                                          usernameController.text) &&
-                                      Validator.validEmailValidator(
-                                          emailController.text))) {
+                                  if ((Validator.validEmailValidator(
+                                      emailController.text))) {
                                     debugPrint('valid');
                                   } else {
                                     debugPrint('Invalid');
                                   }
                                 }),
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: TextButton(
-                                style: const ButtonStyle(
-                                    foregroundColor: MaterialStatePropertyAll(
-                                        ColorManager.primaryColor)),
-                                onPressed: () {
-                                  navigator.pushReplacementNamed(
-                                      ForgetUserNameWebScreen.routeName);
-                                },
-                                child: const Text(
-                                  'FORGOT USERNAME?',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold),
-                                )),
                           ),
                           Container(
                             alignment: Alignment.centerLeft,

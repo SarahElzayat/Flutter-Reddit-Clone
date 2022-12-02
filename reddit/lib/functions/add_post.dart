@@ -10,7 +10,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reddit/Screens/add_post/image_screen.dart';
 import 'package:reddit/Screens/add_post/video_trimmer.dart';
-import '../Components/Button.dart';
+import '../Components/button.dart';
 import '../Components/Helpers/color_manager.dart';
 import '../cubit/add_post.dart/cubit/add_post_cubit.dart';
 
@@ -152,6 +152,7 @@ void chooseSourceWidget(
                 )
               ],
             ),
+            //
             actions: [
               SizedBox(
                 width: mediaQuery.size.width * 0.42,
@@ -167,6 +168,7 @@ void chooseSourceWidget(
                   buttonHeight: 40,
                   textFontSize: 15,
                   borderRadius: 20,
+                  // boarderRadius: 20,
                 ),
               ),
             ],

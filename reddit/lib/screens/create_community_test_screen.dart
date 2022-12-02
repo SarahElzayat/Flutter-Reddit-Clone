@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:reddit/constants/constants.dart';
 import '../screens/create_community_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../components/community components/create_community_dialog.dart';
+import '../components/community_components/create_community_dialog.dart';
 
 class CreateCommunityTestScreen extends StatelessWidget {
   const CreateCommunityTestScreen({Key? key}) : super(key: key);
