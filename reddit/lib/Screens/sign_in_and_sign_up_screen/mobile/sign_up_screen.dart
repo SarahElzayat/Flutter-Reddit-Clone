@@ -2,6 +2,7 @@
 /// @date 3/11/2022
 /// this is the screen of creating new account for the users.
 
+import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
@@ -57,30 +58,44 @@ class _SignUpScreenState extends State<SignUpScreen> {
   /// it should validate the textFields and also should should send the request
   /// to the backend if the textfields are valid
   void continueFunction() async {
+    // check whether the text fields are filled correctly or not.
     if (!validTextFields()) {
       return;
     }
 
+    // creating a model to be in the shape of json
     final user = SignUpModel(
         email: emailController.text,
         password: passwordController.text,
         username: usernameController.text);
 
     DioHelper.postData(path: signUp, data: user.toJson()).then((value) {
-      print(value.statusCode);
       if (value.statusCode == 200) {
         CacheHelper.putData(key: 'token', value: value.data['token']);
         CacheHelper.putData(key: 'username', value: value.data['username']);
 
         // navigating to the main screen
         Navigator.of(context).pushReplacementNamed(MainScreen.routeName);
-      } else {
-        // TODO: think what should you do here ....
-        /// 1- existing username -> show snackbar
-        /// 2-
       }
     }).catchError((error) {
-      debugPrint("The errorrr isss :::::: ${error.toString()}");
+      // casting the error as a dio error to be able to use its content
+      error = error as DioError;
+      // checking for our main error, which is that the user trying to insert
+      // username which is already taken
+      if (error.message.toString() == 'Http status error [400]') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              backgroundColor: ColorManager.red,
+              content: Text('Username is already in use')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              backgroundColor: ColorManager.red,
+              content: Text(
+                  'Something went wrong!, please change the inputs and try again')),
+        );
+      }
     });
   }
 
@@ -90,6 +105,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final navigator = Navigator.of(context);
 
     final customAppBar = LogInAppBar(
+        key: const Key('LogInButton'),
         sideBarButtonText: 'Log in',
         sideBarButtonAction: () {
           navigator.pushReplacementNamed(SignInScreen.routeName);
@@ -103,9 +119,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: Form(
           key: _formKey,
           child: Container(
-            /// the height of the screen should be the whole height of the screen
-            /// but without the height of the app bar and without the padding of
-            /// the down drag top of the phone itself
+            // the height of the screen should be the whole height of the screen
+            // but without the height of the app bar and without the padding of
+            // the down drag top of the phone itself
             height: mediaQuery.size.height -
                 customAppBar.preferredSize.height -
                 mediaQuery.padding.top,
@@ -137,6 +153,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Column(
                     children: [
                       DefaultTextField(
+                        labelText: 'Email',
+                        key: const Key('EmailTextField'),
                         validator: (email) {
                           if (!Validator.validEmailValidator(email!)) {
                             return 'This mail format is incorrect';
@@ -154,7 +172,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           });
                         },
                         formController: emailController,
-                        labelText: 'Email',
                         icon: emailController.text.isNotEmpty
                             ? IconButton(
                                 icon: const Icon(Icons.clear_rounded),
@@ -167,6 +184,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             : null,
                       ),
                       DefaultTextField(
+                        key: const Key('UsernameTextField'),
                         validator: (username) {
                           if (!Validator.validUserName(username!)) {
                             return 'The username length must be greater than 2 and less than 21';
@@ -197,10 +215,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             : null,
                       ),
                       DefaultTextField(
+                        key: const Key('PasswordTextField'),
                         validator: (password) {
                           if (!Validator.validPasswordValidation(password!)) {
                             return 'The password must be at least 8 characters';
                           }
+                          return null;
                         },
                         formController: passwordController,
                         labelText: 'Password',
@@ -267,6 +287,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       ContinueButton(
+                        key: const Key('ContinueButton'),
                         isPressable: emailController.text.isNotEmpty &&
                             usernameController.text.isNotEmpty &&
                             passwordController.text.isNotEmpty,
