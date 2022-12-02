@@ -34,30 +34,37 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
   bool isEmpty = true;
   bool isValidated = false;
   String? category = 'Sports';
+  // late SavedCategoriesModel myCategories = SavedCategoriesModel(categories: []);
 
-  // var categories = DioHelper.getData(path: savedCategories).then((value) {
-  //   if (value.statusCode != 200) {
-  //     switch (value.statusCode) {
-  //       case 400:
-  //         //invalid request
-  //         break;
-  //       case 401:
-  //         //unauthorized acces
-  //         break;
-  //       case 404:
-  //         //page not found
-  //         break;
-  //       default:
-  //       //500 Server not found
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   DioHelper.getData(path: savedCategories).then((value) {
+  //     if (value.statusCode == 200) {
+  //       print(value.statusCode);
+  //       print(value.data);
+  //       // print(value.data['categories']);
+  //       final myMap = value.data;
+  //       myCategories = SavedCategoriesModel.fromJson(myMap);
+  //       myCategories = value.data;
+  //       print(myCategories);
   //     }
-  //   }
-  // }).catchError((err) {
-  //   err = err as DioError;
-  //   print(err.message);
-  //   print(err.response!.data['error']);
-  // });
+  //   }).catchError((err) {
+  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //       content: Text(
+  //         'Something went wrong',
+  //         style: TextStyle(color: ColorManager.white),
+  //       ),
+  //       shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.all(Radius.circular(10))),
+  //       backgroundColor: ColorManager.darkGrey,
+  //       behavior: SnackBarBehavior.floating,
+  //       margin: EdgeInsets.all(8.0),
+  //     ));
+  //   });
+  // }
 
-  ///Categories of subreddits in our app
+  //Categories of subreddits in our app
   var categories = [
     'Sports',
     'Gaming',
@@ -90,8 +97,6 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
     'Vroom',
     'Wholesome',
   ];
-
-  var categories2 = DioHelper.getData(path: savedCategories);
 
   /// selected item from bottom sheet which indicate whether community
   /// is public, private, or restricted
@@ -131,11 +136,19 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
 
   /// Enabled button function to send create community request
   _enabledButton() {
-    //do something
+    // creates a new community model which is sent in a post request
     final community = CreateCommunityModel(
+
+        //new community name
         subredditName: communityName,
+
+        //new community type
         type: _communityType,
+
+        //whether the community is nsfw or not
         nsfw: isSwitched,
+
+        //the category of the new community
         category: category);
     var token = CacheHelper.getData(key: 'token') ??
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzdlYTA3Mzk2NjRjMzJjYTk4ZmRlYzYiLCJ1c2VybmFtZSI6ImFobWVkYXR0YTMzIiwiaWF0IjoxNjY5MjQyOTk1fQ.DZDPE1su3Pss2izCyv8G2WAdAlBT97mhga5ku-Y2K-U';
@@ -167,10 +180,6 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
         elevation: 3.sp,
         shadowColor: Colors.white,
         backgroundColor: ColorManager.darkGrey,
-        // leading: IconButton(
-        //   icon: const Icon(Icons.arrow_back),
-        //   onPressed: () {},
-        // ),
         title: const Text('Create a community'),
         centerTitle: true,
         leadingWidth: 6.h,
@@ -267,11 +276,8 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
                     style: TextStyle(color: Colors.white, fontSize: 16.sp)),
                 DropdownButton(
                     value: category,
-                    items: categories.map((String items) {
-                      return DropdownMenuItem(
-                        value: items,
-                        child: Text(items),
-                      );
+                    items: categories.map((items) {
+                      return DropdownMenuItem(value: items, child: Text(items));
                     }).toList(),
                     onChanged: (chosenCategory) {
                       setState(() {

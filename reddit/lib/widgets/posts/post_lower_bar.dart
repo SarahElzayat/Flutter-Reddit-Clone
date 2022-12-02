@@ -225,59 +225,142 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
           DioHelper.postData(
                   token: '$token', path: markSpoiler, data: spoiler.toJson())
               .then((value) {
-            print(value);
-            if (value.statusCode != 200) {
-              //Error
+            if (value.statusCode == 200) {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: Text('Sorry please try again later')));
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text('The post is now marked spoiler')));
             }
           }).catchError((err) {
             err = err as DioError;
-            print(err.message);
-            print(err.response!.data['error']);
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text('The post is now marked spoiler')));
           });
         };
         break;
+      // sends request to mark a post as nsfw
       case ModOPtions.nsfw:
         // marks the post as nsfw
         () {
           final nsfw = MarkNSFWModel(id: widget.post.id);
           var token = CacheHelper.getData(key: 'token') ??
               'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzdlYTA3Mzk2NjRjMzJjYTk4ZmRlYzYiLCJ1c2VybmFtZSI6ImFobWVkYXR0YTMzIiwiaWF0IjoxNjY5MjQyOTk1fQ.DZDPE1su3Pss2izCyv8G2WAdAlBT97mhga5ku-Y2K-U';
+          DioHelper.postData(
+                  token: '$token', path: markNSFW, data: nsfw.toJson())
+              .then((value) {
+            if (value.statusCode == 200) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text('The post is now marked spoiler')));
+            }
+          }).catchError((err) {
+            err = err as DioError;
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Sorry please try again later')));
+          });
         };
         break;
       case ModOPtions.lock:
         // locks comments on a post so no one can comment
         () {
-          final lock_comments = LockModel(id: widget.post.id, type: 'comment');
+          final lockComments = LockModel(id: widget.post.id, type: 'comment');
+          var token = CacheHelper.getData(key: 'token') ??
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzdlYTA3Mzk2NjRjMzJjYTk4ZmRlYzYiLCJ1c2VybmFtZSI6ImFobWVkYXR0YTMzIiwiaWF0IjoxNjY5MjQyOTk1fQ.DZDPE1su3Pss2izCyv8G2WAdAlBT97mhga5ku-Y2K-U';
+
+          DioHelper.postData(
+                  token: '$token', path: lock, data: lockComments.toJson())
+              .then((value) {
+            if (value.statusCode == 200) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Comments are now locked')));
+            }
+          }).catchError((err) {
+            err = err as DioError;
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Sorry please try again later')));
+          });
         };
         break;
+
       case ModOPtions.unsticky:
         // pins or unpins a post to or from a subreddit
         () {
-          final stick_unstick_post =
-              PinPostModel(id: widget.post.id, pin: false);
+          final stickUnstickPost = PinPostModel(id: widget.post.id, pin: false);
+
+          var token = CacheHelper.getData(key: 'token') ??
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzdlYTA3Mzk2NjRjMzJjYTk4ZmRlYzYiLCJ1c2VybmFtZSI6ImFobWVkYXR0YTMzIiwiaWF0IjoxNjY5MjQyOTk1fQ.DZDPE1su3Pss2izCyv8G2WAdAlBT97mhga5ku-Y2K-U';
+
+          DioHelper.postData(
+                  token: '$token',
+                  path: pinPost,
+                  data: stickUnstickPost.toJson())
+              .then((value) {
+            if (value.statusCode == 200) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Post is now unstickied')));
+            }
+          }).catchError((err) {
+            err = err as DioError;
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Sorry please try again later')));
+          });
         };
         break;
       case ModOPtions.remove:
         // removes a post from subreddit
         () {
-          final remove_post = RemoveModel(id: widget.post.id, type: 'post');
+          final removePost = RemoveModel(id: widget.post.id, type: 'post');
+          var token = CacheHelper.getData(key: 'token') ??
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzdlYTA3Mzk2NjRjMzJjYTk4ZmRlYzYiLCJ1c2VybmFtZSI6ImFobWVkYXR0YTMzIiwiaWF0IjoxNjY5MjQyOTk1fQ.DZDPE1su3Pss2izCyv8G2WAdAlBT97mhga5ku-Y2K-U';
+          DioHelper.postData(
+                  token: '$token', path: remove, data: removePost.toJson())
+              .then((value) {
+            if (value.statusCode == 200) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Post is removed')));
+            }
+          }).catchError((err) {
+            err = err as DioError;
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Sorry please try again later')));
+          });
         };
         break;
       case ModOPtions.spam:
         // removes post or comment as spam
         () {
-          final remove_as_spam = RemoveModel(id: widget.post.id, type: 'post');
+          final removeAsSpam = RemoveModel(id: widget.post.id, type: 'post');
+          var token = CacheHelper.getData(key: 'token') ??
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzdlYTA3Mzk2NjRjMzJjYTk4ZmRlYzYiLCJ1c2VybmFtZSI6ImFobWVkYXR0YTMzIiwiaWF0IjoxNjY5MjQyOTk1fQ.DZDPE1su3Pss2izCyv8G2WAdAlBT97mhga5ku-Y2K-U';
+          DioHelper.postData(
+                  token: '$token', path: remove, data: removeAsSpam.toJson())
+              .then((value) {
+            if (value.statusCode == 200) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Post is removed as spam')));
+            }
+          }).catchError((err) {
+            err = err as DioError;
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Sorry please try again later')));
+          });
         };
         break;
       case ModOPtions.approve:
         // approves a post to be posted in a subreddit
         () {
-          final approve_post = ApproveModel(id: widget.post.id, type: 'post');
+          final approvePost = ApproveModel(id: widget.post.id, type: 'post');
+          var token = CacheHelper.getData(key: 'token') ??
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzdlYTA3Mzk2NjRjMzJjYTk4ZmRlYzYiLCJ1c2VybmFtZSI6ImFobWVkYXR0YTMzIiwiaWF0IjoxNjY5MjQyOTk1fQ.DZDPE1su3Pss2izCyv8G2WAdAlBT97mhga5ku-Y2K-U';
+          DioHelper.postData(
+                  token: '$token', path: approve, data: approvePost.toJson())
+              .then((value) {
+            if (value.statusCode == 200) {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(const SnackBar(content: Text('Post approved')));
+            }
+          }).catchError((err) {
+            err = err as DioError;
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Sorry please try again later')));
+          });
         };
         break;
       case null:
