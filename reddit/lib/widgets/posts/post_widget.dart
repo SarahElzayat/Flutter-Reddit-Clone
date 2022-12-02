@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:markdown/markdown.dart' as md;
+import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -41,6 +42,11 @@ class PostWidget extends StatelessWidget {
   /// it's passed because the post don't require the subreddit to be shown in
   /// the sunreddit screen for example
   final ShowingOtions upperRowType;
+
+  /// the view type of the post
+  /// it's either a card or a classic view
+  /// defaults to [postView.classic]
+  final PostView postView = PostView.classic;
 
   @override
   Widget build(BuildContext context) {
