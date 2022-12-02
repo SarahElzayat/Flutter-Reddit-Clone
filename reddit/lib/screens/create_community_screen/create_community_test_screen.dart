@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../components/community components/create_community_dialog.dart';
+import '../../components/community_components/create_community_dialog.dart';
 import 'create_community_screen.dart';
 
 class CreateCommunityTestScreen extends StatelessWidget {
