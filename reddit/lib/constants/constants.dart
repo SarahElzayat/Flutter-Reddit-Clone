@@ -6,8 +6,15 @@ const base2 = 'https://6e2c5270-ca4f-4bb5-bd95-0db35da6091e.mock.pstmn.io';
 const List<String> labels = ['Image', 'Video', 'Text', 'Link', 'Poll'];
 const List<IconData> icons = [
   Icons.image_outlined,
-  Icons.slideshow_outlined,
+  Icons.play_circle_outline,
   Icons.article_outlined,
+  Icons.add_link_outlined,
+  Icons.format_list_bulleted_outlined,
+];
+const List<IconData> selectedIcons = [
+  Icons.image_rounded,
+  Icons.play_circle_fill_rounded,
+  Icons.article,
   Icons.add_link_outlined,
   Icons.format_list_bulleted_outlined,
 ];

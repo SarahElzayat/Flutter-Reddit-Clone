@@ -43,6 +43,9 @@ class AddPost extends StatelessWidget {
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: AddPostTextField(
+                    onChanged: ((string) {
+                      addPostCubit.checkPostValidation();
+                    }),
                     controller: addPostCubit.title,
                     mltiline: false,
                     isBold: true,

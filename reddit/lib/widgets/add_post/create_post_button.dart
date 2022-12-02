@@ -34,9 +34,8 @@ class CreatePostButton extends StatelessWidget {
             boarderRadius: 30,
             textColor:
                 (isDisabled) ? ColorManager.unselectedItem : ColorManager.white,
-            backgroundColor: isDisabled
-                ? ColorManager.textFieldBackground
-                : ColorManager.blue,
+            backgroundColor:
+                isDisabled ? ColorManager.darkGrey : ColorManager.blue,
             buttonWidth: 80,
             buttonHeight: 30,
             textFontSize: 17,
