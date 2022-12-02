@@ -70,7 +70,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         username: usernameController.text);
 
     DioHelper.postData(path: signUp, data: user.toJson()).then((value) {
-      if (value.statusCode == 200) {
+      if (value.statusCode == 201) {
         CacheHelper.putData(key: 'token', value: value.data['token']);
         CacheHelper.putData(key: 'username', value: value.data['username']);
 
