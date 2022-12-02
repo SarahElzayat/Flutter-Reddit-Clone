@@ -16,7 +16,7 @@ class CreateCommunityWeb extends StatefulWidget {
   State<CreateCommunityWeb> createState() => _CreateCommunityWindow();
 }
 
-/// this widget creates a window to create a community in the web.
+/// this widget creates a window to create a community in the web.  
 class _CreateCommunityWindow extends State<CreateCommunityWeb> {
   CommunityTypes? _chosenCommunityType = CommunityTypes.public;
   bool? isAdultContent = false;
