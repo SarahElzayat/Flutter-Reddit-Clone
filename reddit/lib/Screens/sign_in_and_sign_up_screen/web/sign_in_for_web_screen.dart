@@ -1,13 +1,14 @@
 /// @author Abdelaziz Salah
 /// @date 12/11/2022
+/// this screen is built to show the UI in case that the user is using the app through the web
 
+import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/Data/sign_in_And_sign_up_models/sign_in_model.dart';
 import 'package:reddit/Screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/Screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
 import 'package:reddit/Screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
-import 'package:reddit/Screens/main_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../Components/Button.dart';
 
@@ -22,9 +23,8 @@ import '../../../widgets/sign_in_and_sign_up_widgets/continue_with_fb_or_google_
 import '../../to_go_screens/privacy_and_policy.dart';
 import '../../to_go_screens/user_agreement_screen.dart';
 
-/// this screen is built to show the UI in case that the user is using the app through the web
 class SignInForWebScreen extends StatefulWidget {
-  SignInForWebScreen({super.key});
+  const SignInForWebScreen({super.key});
 
   static const routeName = '/sign_in_for_web_screen_route';
 
@@ -63,19 +63,33 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
         password: passwordController.text, username: usernameController.text);
 
     DioHelper.postData(path: login, data: user.toJson()).then((value) {
-      print(value);
-
+      // if valid request then we can navigate to another screen after sending the data to the backend
       if (value.statusCode == 200) {
         CacheHelper.putData(key: 'token', value: value.data['token']);
         CacheHelper.putData(key: 'username', value: value.data['username']);
 
         // navigating to the main screen
         Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-      } else {
-        // TODO: think what should you do here ....
-        /// 1- existing username -> show snackbar
-        /// 2-
       }
+    }).catchError((error) {
+      // casting the error as a dio error to be able to use its content
+      error = error as DioError;
+      // checking for our main error, which is that the user trying to insert
+      // username which is already taken
+      // if (error.message.toString() == 'Http status error [400]') {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(
+      //         backgroundColor: ColorManager.red,
+      //         content: Text('Username is already in use')),
+      //   );
+      // } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            backgroundColor: ColorManager.red,
+            content: Text(
+                'Something went wrong!, please change the inputs and try again')),
+      );
+      // }
     });
   }
 
@@ -183,6 +197,7 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             DefaultTextField(
+                              key: const Key('UsernameTextField'),
                               validator: (username) {
                                 if (!Validator.validUserName(username!)) {
                                   return 'username length must be less than 21 and greater 2';
@@ -194,6 +209,7 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
                               labelText: 'USERNAME',
                             ),
                             DefaultTextField(
+                              key: const Key('passwordTextField'),
                               validator: (password) {
                                 if (!Validator.validPasswordValidation(
                                     password!)) {
@@ -206,6 +222,7 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
                               labelText: 'PASSWORD',
                             ),
                             Button(
+                                key: const Key('LoginButton'),
                                 text: 'LOG IN',
                                 textColor:
                                     (usernameController.text.isNotEmpty &&
@@ -284,6 +301,7 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
                                         fontWeight: FontWeight.w200),
                                   ),
                                   TextButton(
+                                      key: const Key('SignUpButton'),
                                       onPressed: () {
                                         Navigator.pushReplacementNamed(context,
                                             SignUpForWebScreen.routeName);

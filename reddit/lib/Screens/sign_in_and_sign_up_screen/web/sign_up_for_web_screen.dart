@@ -77,8 +77,6 @@ class _SignUpForWebScreenState extends State<SignUpForWebScreen> {
                                 Text(
                                     'By continuing, you are setting up a Reddit account and '
                                     'agree to our User Agreement and Privace Policy',
-
-                                    /// lw 3auz t3dl ay haga
                                     style:
                                         Theme.of(context).textTheme.bodyLarge),
                               ],
@@ -98,6 +96,7 @@ class _SignUpForWebScreenState extends State<SignUpForWebScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               DefaultTextField(
+                                key: const Key('EmailTextField'),
                                 validator: (email) {
                                   if (!Validator.validEmailValidator(email!)) {
                                     return 'email must follow this formate:\nexample@aything.com';
@@ -109,6 +108,7 @@ class _SignUpForWebScreenState extends State<SignUpForWebScreen> {
                                 labelText: 'Email',
                               ),
                               Button(
+                                  key: const Key('ContinueButton'),
                                   text: 'CONTINUE',
                                   textColor: ColorManager.white,
                                   backgroundColor: ColorManager.hoverOrange,
@@ -116,6 +116,7 @@ class _SignUpForWebScreenState extends State<SignUpForWebScreen> {
                                   boarderRadius: 5,
                                   buttonHeight: 40,
                                   textFontSize: 14,
+                                  // TODO: This Logic Should be separated in separate function
                                   onPressed: () {
                                     if (!_myKey.currentState!.validate()) {
                                       ScaffoldMessenger.of(context)
@@ -145,6 +146,7 @@ class _SignUpForWebScreenState extends State<SignUpForWebScreen> {
                                           fontWeight: FontWeight.w200),
                                     ),
                                     TextButton(
+                                        key: const Key('LoginButton'),
                                         onPressed: () {
                                           Navigator.pushReplacementNamed(
                                               context,

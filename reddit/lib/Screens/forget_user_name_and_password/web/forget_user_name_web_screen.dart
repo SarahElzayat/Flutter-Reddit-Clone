@@ -31,7 +31,6 @@ class ForgetUserNameWebScreen extends StatelessWidget {
             children: [
               // the image box
               SizedBox(
-
                   // in the website it is fixed not relative
                   width: mediaQuery.size.width > 600 ? 140 : 120,
                   height: 100.h,
@@ -85,6 +84,7 @@ class ForgetUserNameWebScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           DefaultTextField(
+                            key: const Key('EmailTextField'),
                             keyboardType: TextInputType.emailAddress,
                             formController: emailController,
                             labelText: 'Email Address',
@@ -93,6 +93,7 @@ class ForgetUserNameWebScreen extends StatelessWidget {
                             margin: const EdgeInsets.only(top: 10),
                             alignment: Alignment.centerLeft,
                             child: Button(
+                                key: const Key('EmailMeButton'),
                                 text: 'EMAIL ME',
                                 textColor: ColorManager.white,
                                 backgroundColor: ColorManager.hoverOrange,

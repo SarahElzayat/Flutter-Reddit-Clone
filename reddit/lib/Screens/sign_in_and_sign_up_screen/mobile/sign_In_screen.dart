@@ -2,11 +2,12 @@
 /// @date 3/11/2022
 /// this is the screen of creating new account for the users.
 
+import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/Screens/sign_in_and_sign_up_screen/mobile/sign_up_screen.dart';
 import '../../../shared/local/shared_preferences.dart';
-import '../../forget_user_name_and_password/forget_password_screen.dart';
+import '../../forget_user_name_and_password/mobile/forget_password_screen.dart';
 import '../../main_screen.dart';
 import '../../to_go_screens/privacy_and_policy.dart';
 import '../../to_go_screens/user_agreement_screen.dart';
@@ -61,8 +62,6 @@ class _SignInScreenState extends State<SignInScreen> {
         username: usernameController.text);
 
     DioHelper.postData(path: login, data: user.toJson()).then((value) {
-      print(value);
-
       if (value.statusCode == 200) {
         CacheHelper.putData(key: 'token', value: value.data['token']);
         CacheHelper.putData(key: 'username', value: value.data['username']);
@@ -70,13 +69,36 @@ class _SignInScreenState extends State<SignInScreen> {
         // navigating to the main screen
         Navigator.of(context).pushReplacementNamed(MainScreen.routeName);
       } else {
-        // TODO: think what should you do here ....
-        /// 1- existing username -> show snackbar
-        /// 2-
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              backgroundColor: ColorManager.red,
+              content: Text(value.data['error'].toString())),
+        );
       }
+    }).catchError((error) {
+      // casting the error as a dio error to be able to use its content
+      error = error as DioError;
+      // checking for our main error, which is that the user trying to insert
+      // username which is already taken
+      // if (error.message.toString() == 'Http status error [400]') {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(
+      //         backgroundColor: ColorManager.red,
+      //         content: Text('Username is already in use')),
+      //   );
+      // } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            backgroundColor: ColorManager.red,
+            content: Text(
+                'Something went wrong!, please change the inputs and try again')),
+      );
+      // }
     });
   }
 
+  /// this function is used to toggle the isEmpty boolean to reflect it on the GUI
+  /// @param myString which is the emailContent
   void textChanger(myString) {
     setState(() {
       if (myString.isNotEmpty) {
@@ -96,6 +118,7 @@ class _SignInScreenState extends State<SignInScreen> {
     final navigator = Navigator.of(context);
 
     final customAppBar = LogInAppBar(
+        key: const Key('SignUpButton'),
         sideBarButtonText: 'SIGN UP',
         sideBarButtonAction: () {
           navigator.pushReplacementNamed(SignUpScreen.routeName);
@@ -136,7 +159,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   flex: 2,
                   child: SizedBox(
                       height: mediaQuery.size.height * 0.18,
-                      child: ContinueWithGoOrFB(width: mediaQuery.size.width)),
+                      child: ContinueWithGoOrFB(
+                          key: GlobalKey(), width: mediaQuery.size.width)),
                 ),
                 Expanded(
                   flex: 3,
@@ -165,6 +189,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             : null,
                       ),
                       DefaultTextField(
+                        key: const Key('PasswordTextField'),
                         validator: (password) {
                           if (!Validator.validPasswordValidation(password!)) {
                             return 'The password must be at least 8 characters';
@@ -184,6 +209,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               navigator.pushReplacementNamed(
                                   ForgetPasswordScreen.routeName);
                             },
+                            key: const Key('ForgetPasswordButton'),
                             child: Text(
                               'Forgot password',
                               style: TextStyle(
@@ -254,6 +280,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ),
                       ContinueButton(
+                          key: const Key('ContinueButton'),
                           isPressable: usernameController.text.isNotEmpty &&
                               passwordController.text.isNotEmpty,
                           appliedFunction: continueToTheHomePage)

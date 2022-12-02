@@ -3,8 +3,8 @@
 /// this is the screen which the user navigate to when
 /// he enter his email, and to continue the sign up process
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/Screens/main_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../Components/Helpers/color_manager.dart';
@@ -41,7 +41,6 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
   /// are valid, else it will show a snackbar to the user
   /// telling him that he has inserted something wrong.
   bool validTextFields() {
-    print('Enter Validations');
     if (!_myKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -56,8 +55,6 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
   /// this function is used to validate that the user has inserted the right
   /// input formate and also send the request to the api
   void loginChecker() async {
-    print('checker');
-
     if (!validTextFields()) return;
 
     final user = SignUpModel(
@@ -67,30 +64,43 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
         username: usernameController.text);
 
     DioHelper.postData(path: signUp, data: user.toJson()).then((value) {
-      print(value);
       if (value.statusCode == 200) {
         CacheHelper.putData(key: 'token', value: value.data['token']);
         CacheHelper.putData(key: 'username', value: value.data['username']);
 
         // navigating to the main screen
         Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      }
+    }).catchError((error) {
+      // casting the error as a dio error to be able to use its content
+      error = error as DioError;
+      // checking for our main error, which is that the user trying to insert
+      // username which is already taken
+      if (error.message.toString() == 'Http status error [400]') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              backgroundColor: ColorManager.red,
+              content: Text('Username is already in use')),
+        );
       } else {
-        // TODO: think what should you do here ....
-        /// 1- existing username -> show snackbar
-        /// 2-
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              backgroundColor: ColorManager.red,
+              content: Text(
+                  'Something went wrong!, please change the inputs and try again')),
+        );
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
     final navigator = Navigator.of(context);
     return Scaffold(
       body: ResponsiveSizer(
         builder: (context, orientation, screenType) {
           return Container(
-            constraints: BoxConstraints(minWidth: 1000),
+            constraints: const BoxConstraints(minWidth: 1000),
             height: 100.h,
             width: 100.w,
             child: Form(
@@ -119,6 +129,7 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                                   child: Column(
                                     children: [
                                       DefaultTextField(
+                                        key: const Key('UsernameTextField'),
                                         validator: (username) {
                                           if (!Validator.validUserName(
                                               username!)) {
@@ -131,6 +142,7 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                                         labelText: 'CHOOSE A USERNAME',
                                       ),
                                       DefaultTextField(
+                                        key: const Key('PasswordTextField'),
                                         validator: (password) {
                                           if (!Validator
                                               .validPasswordValidation(
@@ -163,6 +175,7 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                                                   const Icon(Icons.restart_alt))
                                         ],
                                       ),
+                                      // TODO: These things should be done with loop not manually.
                                       TextButton(
                                           onPressed: () =>
                                               selectUsernameFromSuggestions(
@@ -233,6 +246,7 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             TextButton(
+                                key: const Key('BackButton'),
                                 onPressed: () {
                                   navigator.pushReplacementNamed(
                                       SignUpForWebScreen.routeName);
@@ -243,9 +257,11 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                               padding: const EdgeInsets.all(5),
                               width: 140,
                               child: ElevatedButton(
+                                  key: const Key('SignUpButton'),
                                   style: const ButtonStyle(
                                       backgroundColor: MaterialStatePropertyAll(
                                           ColorManager.blue)),
+                                  // TODO: this logic should be done in the separate function
                                   onPressed: () {
                                     print(
                                         'username = ${usernameController.text} and password = ${passwordController.text}');
