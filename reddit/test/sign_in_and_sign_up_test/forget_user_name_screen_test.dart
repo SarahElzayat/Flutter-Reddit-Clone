@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:reddit/Screens/forget_user_name_and_password/recover_username.dart';
+import 'package:reddit/screens/forget_user_name_and_password/recover_username.dart';
 
 void main() {
   setUp(() {});

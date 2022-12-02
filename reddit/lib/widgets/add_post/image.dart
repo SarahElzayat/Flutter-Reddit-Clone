@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/Screens/add_post/image_captions.dart';
 import 'package:reddit/cubit/add_post.dart/cubit/add_post_cubit.dart';
 
-import '../../Components/Helpers/color_manager.dart';
+import '../../components/helpers/color_manager.dart';
 
 /// This Widget Shows the images after selected
 ///  shows them in row (in main add post Screen)

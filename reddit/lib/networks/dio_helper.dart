@@ -3,11 +3,8 @@
 /// this is a DioHelper which is a class used to connect us to the backend
 /// and deal with the server
 import 'package:dio/dio.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
 import 'constant_end_points.dart';
 
-@GenerateNiceMocks([MockSpec<DioHelper>()])
 class DioHelper {
   static late Dio dio;
 

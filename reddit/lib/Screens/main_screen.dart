@@ -4,14 +4,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/Screens/add_post/add_post.dart';
+import 'package:reddit/screens/add_post/add_post.dart';
 import 'package:reddit/components/home%20components/left_drawer.dart';
 import 'package:reddit/components/home%20components/right_drawer.dart';
 import 'package:reddit/components/home_app_bar.dart';
 import 'package:reddit/cubit/app_cubit.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 
-import '../Components/Helpers/color_manager.dart';
+import '../components/helpers/color_manager.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -60,10 +60,10 @@ class _MainScreenState extends State<MainScreen> {
       builder: (context, state) {
         return Scaffold(
           key: _scaffoldKey,
-          drawer:const LeftDrawer() ,//: null,
-          endDrawer:  const RightDrawer(),// : null,
+          drawer: const LeftDrawer(), //: null,
+          endDrawer: const RightDrawer(), // : null,
           appBar: homeAppBar(context, cubit.currentIndex),
-          body: cubit.bottomNavBarScreens[cubit.currentIndex] ,//: null,
+          body: cubit.bottomNavBarScreens[cubit.currentIndex], //: null,
           bottomNavigationBar: isAndroid
               ? BottomNavigationBar(
                   type: BottomNavigationBarType.fixed,

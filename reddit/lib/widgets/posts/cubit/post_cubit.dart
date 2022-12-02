@@ -1,28 +1,43 @@
-/// this defines the Cubit that controls the state of each Post individually
-/// date: 16/11/2022
+/// The post cubit that handles the post state independently
+/// date: 8/11/2022
 /// @Author: Ahmed Atta
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/components/helpers/mocks/functions.dart';
+import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/constants/constants.dart';
-import 'package:reddit/networks/dio_helper.dart';
-import '../../../data/post_model/post_model.dart';
-import '../../../networks/dio_helper.mocks.dart';
-import 'post_cubit_state.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+import 'post_state.dart';
 
-@GenerateMocks([DioHelper])
-class PostCubit extends Cubit<PostCubitState> {
-  PostModel currentPost;
-  PostCubit(this.currentPost) : super(PostCubitInitial());
+class PostCubit extends Cubit<PostState> {
+  final PostModel post;
+  PostCubit(this.post) : super(PostsInitial());
 
-  /// this is used to get an instance of the post cubit
   static PostCubit get(context) => BlocProvider.of(context);
+
+  // void getPostsForHome() async {
+  //   mockDio.get('$base/posts').then((value) {
+  //     posts = [];
+  //     postsMap = {};
+  //     value.data.forEach((element) {
+  //       PostModel post = PostModel.fromJson(element);
+  //       posts.add(post);
+  //       postsMap[post.id!] = post;
+  //     });
+  //     emit(PostsLoaded());
+  //   }).catchError((error) {
+  //     debugPrint('error in getPosts: $error');
+  //     emit(PostsError());
+  //   });
+
+  //   emit(PostsLoading());
+  // }
 
   /// this function is used to vote on a post
   /// @param [direction] the direction of the wanted vote
-  void vote(int direction) {
-    int postState = currentPost.votingType ?? 0;
+  Future vote({
+    required int direction,
+  }) {
+    int postState = post.votingType ?? 0;
     if (postState == direction) {
       // clicked the same button again
       direction = -direction;
@@ -32,19 +47,77 @@ class PostCubit extends Cubit<PostCubitState> {
     }
     int newDir = postState + direction;
 
-    DioHelper.postData(path: '$base/vote', data: {
-      'id': currentPost.id,
+    return mockDio.post('$base/vote', data: {
+      'id': post.id,
       'direction': newDir,
       'type': 'post',
     }).then((value) {
-      currentPost.votingType = (currentPost.votingType ?? 0) + direction;
-      currentPost.votes = (currentPost.votes ?? 0) + direction;
-
-      final dd = MockDioHelper();
-      // when(dd.getData(path: 'sss', query: {})).thenAnswer((_) async => 'succ');
-      emit(PostCubitvoted());
+      if (value.statusCode == 200) {
+        post.votingType = (post.votingType ?? 0) + direction;
+        post.votes = (post.votes ?? 0) + direction;
+        emit(PostsVoted());
+      } else {
+        emit(PostsVotedError());
+      }
     }).catchError((error) {
-      emit(PostCubitvotedError());
+      print(error);
+      emit(PostsVotedError());
     });
+  }
+
+  /// this function is used to vote on a post
+  Future save() {
+    return mockDio.post(
+      '$base/save',
+      data: {
+        'id': post.id,
+      },
+    ).then((value) {
+      print(post.saved);
+      post.saved = !post.saved!;
+      emit(PostsSaved());
+    }).catchError((error) {
+      emit(PostsSavedError());
+    });
+  }
+
+  /// this function is used to hide a post
+  Future hide() {
+    return mockDio.post(
+      '$base/hide',
+      data: {
+        'id': post.id,
+      },
+    ).then((value) => print(value.data));
+  }
+
+  /// this function is used to block the author of a post
+  Future blockUser() {
+    return mockDio.post(
+      '$base/block',
+      data: {
+        'id': post.id,
+      },
+    ).then((value) => print(value.data));
+  }
+
+  /// this function is used to delete a post
+  Future delete() {
+    return mockDio.post(
+      '$base/delete',
+      data: {
+        'id': post.id,
+      },
+    ).then((value) => print(value.data));
+  }
+
+  /// gets the voting type of the post (up, down ,..)
+  int getVotingType() {
+    return post.votingType ?? 0;
+  }
+
+  /// gets the number of votes of the post
+  int getVotesCount() {
+    return post.votes ?? 0;
   }
 }

@@ -31,7 +31,7 @@ class CreatePostButton extends StatelessWidget {
         if (state is CanCreatePost) isDisabled = !(state.canPost);
         return Button(
             text: 'Next',
-            boarderRadius: 30,
+            borderRadius: 30,
             textColor:
                 (isDisabled) ? ColorManager.unselectedItem : ColorManager.white,
             backgroundColor:

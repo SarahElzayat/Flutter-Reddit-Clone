@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../Components/Community_Components/create_community_dialog.dart';
-import '../../Components/Helpers/constants.dart';
+import '../../components/community_Components/create_community_dialog.dart';
+import '../../components/helpers/constants.dart';
 import 'create_community_screen.dart';
 
 class CreateCommunityTestScreen extends StatelessWidget {

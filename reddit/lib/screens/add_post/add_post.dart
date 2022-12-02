@@ -4,11 +4,13 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+
+import '../../../widgets/add_post/add_post_textfield.dart';
+import '../../../widgets/add_post/post_type_widget.dart';
+
 import '../../cubit/add_post.dart/cubit/add_post_cubit.dart';
-import '../../widgets/add_post/add_post_textfield.dart';
 import '../../widgets/add_post/create_post_button.dart';
 import '../../widgets/add_post/post_type_buttons.dart';
-import '../../widgets/add_post/post_type_widget.dart';
 
 /// This is the main screen in Add Post
 

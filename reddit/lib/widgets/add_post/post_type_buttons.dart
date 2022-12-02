@@ -2,16 +2,15 @@
 /// @author Haitham Mohamed
 /// @date 4/11/2022
 
+import '../../Screens/add_post/image_screen.dart';
+import '../../components/button.dart';
+import '../../components/helpers/color_manager.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/Components/Button.dart';
 import 'package:reddit/cubit/add_post.dart/cubit/add_post_cubit.dart';
-
-import '../../Components/Helpers/color_manager.dart';
 import 'package:flutter/material.dart';
 
-import '../../Screens/add_post/image_screen.dart';
-import '../../screens/add_post/video_trimmer.dart';
 import '../../constants/constants.dart';
+import '../../screens/add_post/video_trimmer.dart';
 
 /// Post Type Buttons is the Widget that can select the post type
 /// That on the Bottom of the add post Screeen
@@ -160,6 +159,7 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
                   SizedBox(
                     width: mediaQuery.size.width * 0.42,
                     child: Button(
+                      textFontWeight: FontWeight.normal,
                       onPressed: () {
                         navigator.pop();
                         return;
@@ -170,12 +170,13 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
                       buttonWidth: mediaQuery.size.width * 0.42,
                       buttonHeight: 40,
                       textFontSize: 15,
-                      boarderRadius: 20,
+                      borderRadius: 20,
                     ),
                   ),
                   SizedBox(
                     width: mediaQuery.size.width * 0.42,
                     child: Button(
+                      textFontWeight: FontWeight.normal,
                       onPressed: () {
                         addPostCubit.removeExistData();
 
@@ -195,7 +196,7 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
                       buttonWidth: mediaQuery.size.width * 0.42,
                       buttonHeight: 40,
                       textFontSize: 15,
-                      boarderRadius: 20,
+                      borderRadius: 20,
                     ),
                   ),
                 ],

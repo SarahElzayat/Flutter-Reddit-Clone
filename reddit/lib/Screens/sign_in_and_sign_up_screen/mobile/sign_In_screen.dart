@@ -4,7 +4,7 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/Screens/sign_in_and_sign_up_screen/mobile/sign_up_screen.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/sign_up_screen.dart';
 import '../../../shared/local/shared_preferences.dart';
 import '../../forget_user_name_and_password/forget_password_screen.dart';
 import '../../main_screen.dart';
