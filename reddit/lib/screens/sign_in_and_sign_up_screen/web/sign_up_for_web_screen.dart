@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/web/continue_sign_up_screen.dart';
-import '../../../components/Button.dart';
+import '../../../components/button.dart';
 import '../../../components/helpers/color_manager.dart';
 import '../../../components/default_text_field.dart';
 import '../../../screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';

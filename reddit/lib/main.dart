@@ -63,8 +63,8 @@ class Main extends StatelessWidget {
             builder: (context, orientation, screenType) {
               return MaterialApp(
                 initialRoute: CacheHelper.getData(key: 'isWindows')
-                    ? SignInForWebScreen.routeName
-                    : SignInScreen.routeName,
+                    ? MainScreen.routeName
+                    : MainScreen.routeName,
                 routes: myRoutes,
                 onUnknownRoute: (settings) {
                   return MaterialPageRoute(

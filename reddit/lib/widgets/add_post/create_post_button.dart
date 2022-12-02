@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/Screens/add_post/post.dart';
 import 'package:reddit/cubit/add_post.dart/cubit/add_post_cubit.dart';
 
-import '../../Components/Button.dart';
+import '../../Components/button.dart';
 import '../../Components/Helpers/color_manager.dart';
 import 'package:flutter/material.dart';
 

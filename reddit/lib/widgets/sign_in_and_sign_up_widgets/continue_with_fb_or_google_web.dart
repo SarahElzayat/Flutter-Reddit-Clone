@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/components/Button.dart';
+import 'package:reddit/components/button.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 
 import '../../data/facebook_api/facebook_api.dart';
