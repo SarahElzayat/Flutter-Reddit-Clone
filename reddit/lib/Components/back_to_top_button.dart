@@ -1,7 +1,6 @@
+///@author Sarah Elzayat
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:reddit/Components/Helpers/color_manager.dart';
+import 'package:reddit/components/Helpers/color_manager.dart';
 
 class BackToTopButton extends StatefulWidget {
   final ScrollController scrollController;

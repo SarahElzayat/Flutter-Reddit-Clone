@@ -3,8 +3,9 @@
 /// @date 12/11/2022
 import 'dart:io';
 import 'dart:typed_data';
+
+import '../../components/helpers/color_manager.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../Components/Helpers/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:image_painter/image_painter.dart';
 import 'package:image_picker/image_picker.dart';

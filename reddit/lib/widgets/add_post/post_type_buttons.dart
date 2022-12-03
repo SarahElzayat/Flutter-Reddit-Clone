@@ -2,17 +2,15 @@
 /// @author Haitham Mohamed
 /// @date 4/11/2022
 
+import '../../Screens/add_post/image_screen.dart';
+import '../../components/button.dart';
+import '../../components/helpers/color_manager.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/Components/Button.dart';
 import 'package:reddit/cubit/add_post.dart/cubit/add_post_cubit.dart';
-
-import '../../Components/Helpers/color_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:image_painter/image_painter.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../constants/constants.dart';
-import '../../functions/add_post.dart';
+import '../../screens/add_post/video_trimmer.dart';
 
 /// Post Type Buttons is the Widget that can select the post type
 /// That on the Bottom of the add post Screeen
@@ -38,8 +36,15 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
     final navigator = Navigator.of(context);
     final addPostCubit = BlocProvider.of<AddPostCubit>(context);
     return Container(
-        color: ColorManager.textFieldBackground,
-        child: BlocBuilder<AddPostCubit, AddPostState>(
+        color: ColorManager.darkGrey,
+        child: BlocConsumer<AddPostCubit, AddPostState>(
+          listener: (context, state) {
+            if (state is EditVideo) {
+              Navigator.of(context).pushNamed(TrimmerView.routeName);
+            } else if (state is PreviewImage) {
+              navigator.pushNamed(ImageScreen.routeName);
+            }
+          },
           buildWhen: ((previous, current) {
             if (current is PostTypeChanged) {
               if (previous is PostTypeChanged &&
@@ -59,7 +64,7 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: [
-                          for (int index = 0; index < 5; index++)
+                          for (int index = 0; index < 4; index++)
                             InkWell(
                               onTap: (() {
                                 onTapFunc(
@@ -69,7 +74,10 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 15),
                                 child: Icon(
-                                  icons[index],
+                                  (state is PostTypeChanged &&
+                                          index == state.getPostType)
+                                      ? selectedIcons[index]
+                                      : icons[index],
                                   size: 32 * mediaQuery.textScaleFactor,
                                   color: (state is PostTypeChanged &&
                                           index == state.getPostType)
@@ -83,7 +91,7 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
                     )
                   : Column(
                       children: [
-                        for (int index = 0; index < 5; index++)
+                        for (int index = 0; index < 4; index++)
                           InkWell(
                             onTap: (() {
                               onTapFunc(
@@ -97,13 +105,20 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10),
                                     child: Icon(
-                                      icons[index],
+                                      (state is PostTypeChanged &&
+                                              index == state.getPostType)
+                                          ? selectedIcons[index]
+                                          : icons[index],
                                       size: 25 * mediaQuery.textScaleFactor,
                                     ),
                                   ),
                                   Text(
                                     labels[index],
                                     style: TextStyle(
+                                        fontWeight: (state is PostTypeChanged &&
+                                                index == state.getPostType)
+                                            ? FontWeight.w700
+                                            : FontWeight.w200,
                                         fontSize:
                                             20 * mediaQuery.textScaleFactor),
                                   ),
@@ -129,7 +144,7 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
   /// Post type it Show Pop-up to Choose if continue and remove the data or Not
   onTapFunc(int index, AddPostCubit addPostCubit, NavigatorState navigator,
       MediaQueryData mediaQuery) {
-    if (addPostCubit.discardCheck()) {
+    if (addPostCubit.postType != index && addPostCubit.discardCheck()) {
       showDialog(
           context: context,
           builder: ((context) => AlertDialog(
@@ -144,6 +159,7 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
                   SizedBox(
                     width: mediaQuery.size.width * 0.42,
                     child: Button(
+                      textFontWeight: FontWeight.normal,
                       onPressed: () {
                         navigator.pop();
                         return;
@@ -154,21 +170,23 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
                       buttonWidth: mediaQuery.size.width * 0.42,
                       buttonHeight: 40,
                       textFontSize: 15,
-                      boarderRadius: 20,
+                      borderRadius: 20,
                     ),
                   ),
                   SizedBox(
                     width: mediaQuery.size.width * 0.42,
                     child: Button(
+                      textFontWeight: FontWeight.normal,
                       onPressed: () {
                         addPostCubit.removeExistData();
 
                         navigator.pop();
                         if (index == 0 && addPostCubit.postType != index) {
-                          chooseSourceWidget(context, mediaQuery, navigator);
+                          addPostCubit.chooseSourceWidget(
+                              context, mediaQuery, navigator);
                         } else if (index == 1 &&
                             addPostCubit.postType != index) {
-                          videoFunc(context);
+                          addPostCubit.pickVideo(true);
                         }
                         addPostCubit.changePostType(postTypeIndex: index);
                       },
@@ -178,20 +196,21 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
                       buttonWidth: mediaQuery.size.width * 0.42,
                       buttonHeight: 40,
                       textFontSize: 15,
-                      boarderRadius: 20,
+                      borderRadius: 20,
                     ),
                   ),
                 ],
               )));
     } else {
       if (index == 0 && addPostCubit.postType != index) {
-        chooseSourceWidget(
+        addPostCubit.chooseSourceWidget(
           context,
           mediaQuery,
           navigator,
         );
       } else if (index == 1 && addPostCubit.postType != index) {
-        videoFunc(context);
+        addPostCubit.pickVideo(true);
+        // videoFunc(context);
       }
       addPostCubit.changePostType(postTypeIndex: index);
     }

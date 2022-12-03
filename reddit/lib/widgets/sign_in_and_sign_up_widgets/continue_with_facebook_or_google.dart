@@ -4,7 +4,7 @@
 ///  facebook and containue with google.
 
 import 'package:flutter/material.dart';
-import '../../components/Helpers/color_manager.dart';
+import '../../components/helpers/color_manager.dart';
 import '../../data/facebook_api/facebook_api.dart';
 import '../../data/google_api/google_sign_in_api.dart';
 
@@ -31,6 +31,7 @@ class ContinueWithGoOrFB extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           ElevatedButton(
+              key: const Key('GoogleButton'),
               style: const ButtonStyle(
                   shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -60,6 +61,7 @@ class ContinueWithGoOrFB extends StatelessWidget {
                 ],
               )),
           ElevatedButton(
+              key: const Key('FacebookButton'),
               style: const ButtonStyle(
                   shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(15)),

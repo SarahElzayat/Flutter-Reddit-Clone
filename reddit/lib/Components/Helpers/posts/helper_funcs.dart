@@ -21,6 +21,7 @@ void goToPost(BuildContext context, PostModel post) {
 /// A row with link that opens the url in the browser
 TextButton linkRow(String link, Color textColor) {
   return TextButton(
+    key: const Key('linkRow-button'),
     style: ButtonStyle(
       foregroundColor: MaterialStateProperty.all(textColor),
       overlayColor: MaterialStateProperty.all(Colors.transparent),
