@@ -89,12 +89,52 @@ class _PostUpperBarState extends State<PostUpperBar> {
           ),
 
           // The title of the post
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                  child: Text(
+                    widget.post.title ?? '',
+                    style: const TextStyle(
+                      color: ColorManager.eggshellWhite,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ),
+              // const Spacer(),
+              if (widget.post.kind == 'link' && widget.outSide)
+                InkWell(
+                  onTap: () async {
+                    await launchUrl(Uri.parse(widget.post.content!));
+                  },
+                  child: SizedBox(
+                    width: min(30.w, 120),
+                    height: min(30.w, 100),
+                    child: AnyLinkPreview.builder(
+                      errorWidget: imageWithUrl(
+                          'https://cdn-icons-png.flaticon.com/512/3388/3388466.png'),
+                      link: widget.post.content ?? '',
+                      cache: const Duration(hours: 1),
+                      itemBuilder: (BuildContext ctx, Metadata md,
+                          ImageProvider<Object>? ip) {
+                        return imageWithUrl(md.image ?? '');
+                      },
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          if (widget.post.flair != null &&
+              !(widget.post.kind == 'link' && widget.outSide))
+            _flairWidget()
         ],
       ),
     );
   }
-
-  
 
   SizedBox _bothRows() {
     return SizedBox(
@@ -167,6 +207,30 @@ class _PostUpperBarState extends State<PostUpperBar> {
     );
   }
 
+  Stack imageWithUrl(image) {
+    return Stack(
+      children: [
+        Image.network(image ?? ''),
+        Positioned(
+          bottom: 0,
+          child: Container(
+            width: min(30.w, 50.dp),
+            color: Colors.black.withOpacity(0.5),
+            child: Text(
+              (widget.post.content ?? '')
+                  .replaceAll('https://', '')
+                  .replaceAll('www.', ''),
+              style: const TextStyle(
+                color: ColorManager.eggshellWhite,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   Row _tagsRow() {
     return Row(
@@ -199,6 +263,23 @@ class _PostUpperBarState extends State<PostUpperBar> {
     );
   }
 
+  Widget _flairWidget() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: BoxDecoration(
+          color: HexColor(widget.post.flair!.backgroundColor ?? '#FF00000'),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          widget.post.flair!.flairText ?? '',
+          style: TextStyle(
+              color: HexColor(widget.post.flair!.textColor ?? '#FFFFFF')),
+        ),
+      ),
+    );
+  }
 
   Widget _singleRow(
       {required String name,

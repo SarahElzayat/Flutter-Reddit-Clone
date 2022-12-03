@@ -23,7 +23,6 @@ class AddPostTextField extends StatefulWidget {
 
   /// Text Field Controller
   final TextEditingController controller;
-  void Function(String)? onChanged;
 
   int? index;
   AddPostTextField({
@@ -34,7 +33,6 @@ class AddPostTextField extends StatefulWidget {
     required this.fontSize,
     required this.hintText,
     this.index,
-    required this.onChanged,
     required this.controller,
   }) : super(key: key);
 
@@ -47,7 +45,9 @@ class _AddPostTextFieldState extends State<AddPostTextField> {
   Widget build(BuildContext context) {
     final addPostCubit = BlocProvider.of<AddPostCubit>(context);
     return TextFormField(
-      onChanged: widget.onChanged,
+      onChanged: ((value) {
+        addPostCubit.checkPostValidation();
+      }),
       keyboardType:
           (widget.mltiline) ? TextInputType.multiline : TextInputType.text,
       maxLines: (widget.mltiline) ? null : 1,

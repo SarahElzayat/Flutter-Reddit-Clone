@@ -1,7 +1,6 @@
 ///@author yassmine ghanem
 ///@date 20/11/2022
-/// this is a common container for the list tiles because
-/// it is used alot in the mod tools
+
 import 'package:flutter/widgets.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/list_tile.dart';
@@ -16,6 +15,8 @@ class ListTileContainer extends StatelessWidget {
   final List<String> listTileTitles;
 
   final List<IconData> listTileIcons;
+
+  // final List<ListTileWidget> listTiles;
 
   const ListTileContainer(
       {super.key,

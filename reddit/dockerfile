@@ -40,8 +40,7 @@ COPY . /app/
 WORKDIR /app/ 
 
 RUN flutter pub get
-# RUN flutter clean
-# RUN flutter build web
+RUN flutter build web
 
 # Record the exposed port
 EXPOSE 5000
@@ -49,4 +48,4 @@ EXPOSE 5000
 # make server startup script executable and start the web server
 RUN ["chmod", "+x", "/app/server/server.sh"]
 
-# ENTRYPOINT [ "/app/server/server.sh"]
+ENTRYPOINT [ "/app/server/server.sh"]

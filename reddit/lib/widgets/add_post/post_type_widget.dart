@@ -49,9 +49,6 @@ class PostTypeWidget extends StatelessWidget {
 
             case 2:
               return AddPostTextField(
-                  onChanged: ((string) {
-                    addPostCubit.checkPostValidation();
-                  }),
                   controller: addPostCubit.optionalText,
                   mltiline: true,
                   isBold: false,
@@ -59,9 +56,6 @@ class PostTypeWidget extends StatelessWidget {
                   hintText: 'Add optional body text');
             case 3:
               return AddPostTextField(
-                  onChanged: ((string) {
-                    addPostCubit.checkPostValidation();
-                  }),
                   controller: addPostCubit.link,
                   mltiline: true,
                   isBold: false,

@@ -1,5 +1,5 @@
-///@author Sarah Elzayat
 import 'package:flutter/material.dart';
+
 import '../../Screens/to_be_done_screen.dart';
 import '../../cubit/app_cubit.dart';
 import '../Helpers/color_manager.dart';
@@ -14,6 +14,10 @@ class RightDrawer extends StatelessWidget {
     List<Widget> rightDrawerItems = [
       genericTextButton(context, Icons.person, 'My profile', null),
       genericTextButton(context, Icons.add, 'Create a community', null),
+      genericTextButton(
+          context, Icons.monetization_on_outlined, 'Reddit Coins', null),
+      genericTextButton(
+          context, Icons.workspace_premium, 'Reddit Premium', null),
       genericTextButton(context, Icons.bookmark_border_rounded, 'Saved', null),
       genericTextButton(
           context, Icons.history_toggle_off_rounded, 'History', null),
