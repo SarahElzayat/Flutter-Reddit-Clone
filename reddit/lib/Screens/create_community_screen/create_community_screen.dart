@@ -28,12 +28,16 @@ class CreateCommunityScreen extends StatefulWidget {
 ///This screen is used when user is creating a new subreddit
 
 class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
-  /// boolean for the switch widget that indicates 18+ communities
+  /// boolean for the switch widget that indicates nsfw communities
   /// default is false
   bool isSwitched = false;
+
+  ///boolean for the text field validation
   bool isEmpty = true;
+
+  ///boolean for text field validation and disables or enables button
   bool isValidated = false;
-  String? category = 'Sports';
+
   // late SavedCategoriesModel myCategories = SavedCategoriesModel(categories: []);
 
   // @override
@@ -64,7 +68,10 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
   //   });
   // }
 
-  //Categories of subreddits in our app
+  ///default value for the category list
+  String? category = 'Sports';
+
+  ///Categories of subreddits in our app
   var categories = [
     'Sports',
     'Gaming',
@@ -99,7 +106,7 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
   ];
 
   /// selected item from bottom sheet which indicate whether community
-  /// is public, private, or restricted
+  /// is public, private, or restricted and their descriptions
   /// default is public
   late dynamic _communityType = 'Public';
   final List<String> _communityTypes = ['Public', 'Restricted', 'Private'];
@@ -119,8 +126,13 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
   ///form key to validate the community name text field
   final _formKey = GlobalKey<FormState>();
 
+  ///text field controller
   final TextEditingController _controller = TextEditingController();
+
+  ///new created subreddit nama
   String communityName = '';
+
+  ///regecp used for community name validation
   final regexp = RegExp(r'^[A-Za-z0-9_]*$');
 
   ///Disables button when text field is empty and enables it once user writes a community name
@@ -174,6 +186,7 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //create community screen
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
