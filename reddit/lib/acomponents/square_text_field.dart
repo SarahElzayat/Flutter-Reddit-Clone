@@ -3,7 +3,7 @@
 /// @author: Ahmed Atta
 import 'package:flutter/material.dart';
 
-import '../components/helpers/color_manager.dart';
+import 'helpers/color_manager.dart';
 
 class SquareTextField extends StatefulWidget {
   /// Creates an [SquareTextField].

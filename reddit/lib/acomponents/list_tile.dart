@@ -4,7 +4,7 @@
 /// built to be a reuseable widget for further uses
 import 'package:flutter/material.dart';
 
-import '../components/helpers/color_manager.dart';
+import 'helpers/color_manager.dart';
 import 'helpers/enums.dart';
 
 // ignore: must_be_immutable

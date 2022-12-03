@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
-import '../components/helpers/color_manager.dart';
+import 'helpers/color_manager.dart';
 
 class SearchFiled extends StatefulWidget {
   final String? labelText;
