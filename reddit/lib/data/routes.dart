@@ -26,7 +26,6 @@ import '../../screens/to_go_screens/user_agreement_screen.dart';
 import '../screens/add_post/image_screen.dart';
 import '../screens/add_post/paint_screen.dart';
 import '../screens/add_post/post.dart';
-import '../screens/add_post/post_rules.dart';
 import '../screens/add_post/video_trimmer.dart';
 import '../screens/bottom_navigation_bar_screens/notifications_screen.dart';
 import '../screens/forget_user_name_and_password/mobile/forget_password_screen.dart';

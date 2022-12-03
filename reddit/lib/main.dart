@@ -70,12 +70,12 @@ class Main extends StatelessWidget {
           return ResponsiveSizer(
             builder: (context, orientation, screenType) {
               return MaterialApp(
-                /// TODO: this should be changed to be checked automatically
                 initialRoute: token != null
-                    ? MainScreen.routeName
-                    : SignInScreen.routeName,
+                    ? SignInForWebScreen.routeName
+                    : SignInForWebScreen.routeName,
                 routes: myRoutes,
                 onUnknownRoute: (settings) {
+                  
                   return MaterialPageRoute(
                       builder: (ctx) => const MainScreen());
                 },

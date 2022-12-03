@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
-import '../../../components/Button.dart';
+import '../../../components/asdasutton.dart';
 import '../../../components/helpers/color_manager.dart';
 import '../../../constants/constants.dart';
 import '../../../networks/constant_end_points.dart';
