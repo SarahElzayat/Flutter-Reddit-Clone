@@ -4,7 +4,9 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/mocks/functions.dart';
+import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/post_model/post_model.dart';
+import 'package:reddit/networks/dio_helper.dart';
 import '../../../networks/constant_end_points.dart';
 import 'post_state.dart';
 
@@ -47,11 +49,15 @@ class PostCubit extends Cubit<PostState> {
     }
     int newDir = postState + direction;
 
-    return mockDio.post('$baseUrl/vote', data: {
-      'id': post.id,
-      'direction': newDir,
-      'type': 'post',
-    }).then((value) {
+    return DioHelper.postData(
+      path: '/vote',
+      data: {
+        'id': post.id,
+        'direction': newDir,
+        'type': 'post',
+      },
+      token: token,
+    ).then((value) {
       if (value.statusCode == 200) {
         post.votingType = (post.votingType ?? 0) + direction;
         post.votes = (post.votes ?? 0) + direction;
@@ -61,7 +67,7 @@ class PostCubit extends Cubit<PostState> {
       }
     }).catchError((error) {
       print(error);
-      emit(PostsVotedError());
+      emit(PostsVotedError(error: error));
     });
   }
 
@@ -77,7 +83,7 @@ class PostCubit extends Cubit<PostState> {
       post.saved = !post.saved!;
       emit(PostsSaved());
     }).catchError((error) {
-      emit(PostsSavedError());
+      emit(PostsVotedError(error: error));
     });
   }
 

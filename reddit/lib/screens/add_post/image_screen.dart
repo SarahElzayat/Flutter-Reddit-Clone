@@ -13,7 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as p;
 
 import 'package:reddit/Screens/add_post/paint_screen.dart';
-import 'package:reddit/cubit/add_post.dart/cubit/add_post_cubit.dart';
+import 'package:reddit/cubit/add_post/cubit/add_post_cubit.dart';
 
 import '../../Components/Helpers/color_manager.dart';
 

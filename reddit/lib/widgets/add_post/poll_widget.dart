@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter/material.dart';
 
-import '../../cubit/add_post.dart/cubit/add_post_cubit.dart';
+import '../../cubit/add_post/cubit/add_post_cubit.dart';
 import 'add_post_textfield.dart';
 
 /// Poll widget that show the options and can add or delete

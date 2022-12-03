@@ -11,7 +11,7 @@ import 'package:reddit/Components/Button.dart';
 import 'package:reddit/Components/Helpers/color_manager.dart';
 import 'package:reddit/widgets/add_post/add_post_textfield.dart';
 
-import '../../cubit/add_post.dart/cubit/add_post_cubit.dart';
+import '../../cubit/add_post/cubit/add_post_cubit.dart';
 
 class AddImageCaption extends StatefulWidget {
   AddImageCaption({

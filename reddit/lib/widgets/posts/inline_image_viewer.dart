@@ -219,7 +219,6 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     pageController.dispose();
     super.dispose();
   }
@@ -231,7 +230,6 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
       initialScale: PhotoViewComputedScale.contained,
       minScale: PhotoViewComputedScale.contained * (0.5),
       maxScale: PhotoViewComputedScale.covered * 4.1,
-      // TODO: Add hero tag to the image
       heroAttributes: PhotoViewHeroAttributes(tag: item),
     );
   }

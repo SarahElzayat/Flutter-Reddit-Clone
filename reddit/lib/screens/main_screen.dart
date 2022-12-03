@@ -5,13 +5,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../screens/add_post/add_post.dart';
-import '../../../components/home%20components/left_drawer.dart';
-import '../../../components/home%20components/right_drawer.dart';
 import '../../../components/home_app_bar.dart';
 import '../../../cubit/app_cubit.dart';
 import '../../../shared/local/shared_preferences.dart';
 
 import '../components/helpers/color_manager.dart';
+import '../components/home_components/left_drawer.dart';
+import '../components/home_components/right_drawer.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

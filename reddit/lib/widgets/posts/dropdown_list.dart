@@ -5,6 +5,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/Data/post_model/post_model.dart';
 import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'cubit/post_state.dart';
@@ -20,7 +21,7 @@ class DropDownList extends StatelessWidget {
     this.itemClass = ItemsClass.public,
   }) : super(key: key);
 
-  /// The Post's ID
+  /// The [PostModel.id] of targeted Post
   final String postId;
 
   /// The Class of the Post

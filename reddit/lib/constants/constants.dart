@@ -1,5 +1,6 @@
 /// @author Haitham
 import 'package:flutter/material.dart';
+import 'package:reddit/shared/local/shared_preferences.dart';
 
 const bool isMobile = true;
 const List<String> labels = ['Image', 'Video', 'Text', 'Link', 'Poll'];
@@ -17,3 +18,5 @@ const List<IconData> selectedIcons = [
 ];
 
 const List<String> postTypes = ['image', 'video', 'hybrid', 'link', 'hybrid'];
+
+String? token;
