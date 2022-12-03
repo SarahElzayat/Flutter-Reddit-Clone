@@ -18,12 +18,15 @@ import '../../screens/bottom_navigation_bar_screens/inbox_screen.dart';
 import '../../screens/search/search_results_main_screen.dart';
 import '../../screens/search/search_screen.dart';
 import 'package:reddit/Screens/add_post/add_post.dart';
+import 'package:reddit/Screens/add_post/community_search.dart';
+import 'package:reddit/Screens/add_post/post_rules.dart';
 import 'package:reddit/Screens/saved/saved_screen.dart';
 import '../../screens/sign_in_and_sign_up_screen/web/continue_sign_up_screen.dart';
 import '../../screens/forget_user_name_and_password/mobile/recover_username.dart';
 import '../screens/add_post/image_screen.dart';
 import '../screens/add_post/paint_screen.dart';
 import '../screens/add_post/post.dart';
+import '../screens/add_post/video_trimmer.dart';
 import '../screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
 import '../screens/bottom_navigation_bar_screens/notifications_screen.dart';
 import '../screens/forget_user_name_and_password/mobile/forget_password_screen.dart';
@@ -64,8 +67,8 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   AddPost.routeName: (ctx) => const AddPost(),
   ImageScreen.routeName: (ctx) => ImageScreen(),
   PaintScreen.routeName: (ctx) => PaintScreen(),
-
-  ///TODO: remove this comment ya haitham
-  // TrimmerView.routeName: (ctx) => TrimmerView(),
+  TrimmerView.routeName: (ctx) => const TrimmerView(),
   PostSimpleScreen.routeName: (ctx) => const PostSimpleScreen(),
+  CommunitySearch.routeName: (ctx) => CommunitySearch(),
+  PostRules.routeName: (ctx) => PostRules(),
 };

@@ -15,7 +15,7 @@ import 'screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
 import 'shared/local/shared_preferences.dart';
 import 'theme/theme_data.dart';
 import 'package:reddit/cubit/add_post.dart/cubit/add_post_cubit.dart';
-import 'package:flutter_driver/driver_extension.dart';
+// import 'package:flutter_driver/driver_extension.dart';
 
 Future<void> main() async {
   /// it defines the mocks APIS endpoints
@@ -26,7 +26,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   Bloc.observer = MyBlocObserver();
-
   await CacheHelper.init();
   try {
     if (Platform.isAndroid) {
@@ -43,6 +42,7 @@ Future<void> main() async {
 
   /// and this is used to initialize Dio
   DioHelper.init();
+  print(CacheHelper.getData(key: 'token'));
 
   runApp(const Main());
 }

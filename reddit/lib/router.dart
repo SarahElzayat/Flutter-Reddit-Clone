@@ -1,12 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:reddit/Screens/add_post/add_post.dart';
 import 'package:reddit/Screens/add_post/post.dart';
-import 'package:reddit/Screens/add_post/video_trimmer.dart';
 import 'package:reddit/cubit/add_post.dart/cubit/add_post_cubit.dart';
+import 'package:reddit/screens/add_post/video_trimmer.dart';
 
 import 'Screens/add_post/image_screen.dart';
 import 'Screens/add_post/paint_screen.dart';
@@ -24,28 +21,26 @@ class AppRouter {
                   value: _addPostCubit,
                   child: const AddPost(),
                 ));
-      case '/previewImage':
+      case '/image_screen_route':
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
                   value: _addPostCubit,
                   child: ImageScreen(),
                 ));
 
-      case '/paintScreen':
+      case '/paint_screen_route':
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
                   value: _addPostCubit,
                   child: PaintScreen(),
                 ));
 
-      case '/trimmerView':
+      case '/trimmerView_screen_route':
         return MaterialPageRoute(builder: (_) {
-          final file = routeSettings.arguments as File;
+          print('Go to Video Trimeer');
           return BlocProvider.value(
             value: _addPostCubit,
-
-            /// TODO: remove this file from the constructor.
-            child: TrimmerView(file),
+            child: const TrimmerView(),
           );
         });
 
