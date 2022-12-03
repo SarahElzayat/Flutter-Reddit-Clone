@@ -232,7 +232,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 ),
                 ContinueButton(
                     buttonContent: 'Email me',
-                    key: const Key('ContinueButton'),
+                    key: const Key('EmailMeButton'),
                     isPressable: usernameController.text.isNotEmpty &&
                         emailController.text.isNotEmpty,
                     appliedFunction: sendRequest)
