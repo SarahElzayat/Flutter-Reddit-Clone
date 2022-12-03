@@ -1,7 +1,7 @@
 import 'package:flutter_lorem/flutter_lorem.dart';
-import '../../data/post_model/flair.dart';
-import '../../data/post_model/image.dart';
-import '../../data/post_model/post_model.dart';
+import '../post_model/flair.dart';
+import '../post_model/image.dart';
+import '../post_model/post_model.dart';
 
 var textPost = PostModel(
   id: '1852',
