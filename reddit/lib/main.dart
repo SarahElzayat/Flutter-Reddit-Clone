@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/data/temp_data/tmp_data.dart';
 import 'constants/constants.dart';
 import 'cubit/post_notifier/post_notifier_cubit.dart';
 import 'screens/main_screen.dart';
@@ -45,6 +46,7 @@ Future<void> main() async {
   token = CacheHelper.getData(key: 'token');
   print('current Saved TOKEN:: $token');
 
+  print(tryData.toJson());
   runApp(const Main());
 }
 
