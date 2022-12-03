@@ -78,7 +78,7 @@ class _RecoverUserNameState extends State<RecoverUserName> {
   /// detects whethere the email field is empty or not
   bool isEmptyEmail = true;
 
-  GlobalKey<FormState> _formKey = GlobalKey();
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final navigator = Navigator.of(context);
