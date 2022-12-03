@@ -20,6 +20,7 @@ class Button extends StatelessWidget {
   final bool disabled;
   final String? imagePath;
   final onPressed;
+  bool isPressable = true;
 
   Button({
     super.key,
@@ -36,6 +37,7 @@ class Button extends StatelessWidget {
     this.borderWidth = 1.0,
     this.disabled = false,
     this.imagePath,
+    this.isPressable = true,
     required this.onPressed,
   });
 
@@ -45,14 +47,14 @@ class Button extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(borderRadius),
 
-          /// for circular buttons
+          // for circular buttons
           border: Border.all(
-            /// if border color is not passed set it to background color
+            // if border color is not passed set it to background color
             color: borderColor == null ? backgroundColor : borderColor!,
             width: borderColor == null ? 0 : borderWidth,
           )),
       child: MaterialButton(
-        onPressed: onPressed,
+        onPressed: isPressable ? onPressed : () {},
         minWidth: buttonWidth,
         height: buttonHeight,
         elevation: 0,
@@ -60,18 +62,33 @@ class Button extends StatelessWidget {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(borderRadius))),
         highlightElevation: 0,
-        color: backgroundColor,
+        color: isPressable ? backgroundColor : ColorManager.grey,
         splashColor: (disabled || (CacheHelper.getData(key: 'isWindows')!))
             ? Colors.transparent
             : splashColor,
         highlightColor: (CacheHelper.getData(key: 'isAndroid')!)
             ? Colors.transparent
             : Colors.black.withOpacity(0.1),
-        child: Text(text,
-            style: TextStyle(
-                fontSize: textFontSize,
-                fontWeight: textFontWeight,
-                color: textColor)),
+        child: Row(
+          mainAxisAlignment: imagePath != null
+              ? MainAxisAlignment.spaceAround
+              : MainAxisAlignment.center,
+          children: [
+            imagePath == null
+                ? const SizedBox(
+                    width: 0,
+                    height: 0,
+                  )
+                : SizedBox(
+                    height: 25,
+                    child: Image.asset(imagePath!, fit: BoxFit.contain)),
+            Text(text,
+                style: TextStyle(
+                    fontSize: textFontSize,
+                    fontWeight: textFontWeight,
+                    color: textColor)),
+          ],
+        ),
       ),
     );
   }

@@ -5,10 +5,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/data/sign_in_And_sign_up_models/sign_in_model.dart';
-import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
-import 'package:reddit/screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
+import '../../../data/sign_in_And_sign_up_models/sign_in_model.dart';
+import '../../../screens/bottom_navigation_bar_screens/home_screen.dart';
+import '../../../screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
 import '../../../screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
 import '../../../components/button.dart';
 import '../../../components/helpers/color_manager.dart';
@@ -62,6 +63,8 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
         password: passwordController.text, username: usernameController.text);
 
     DioHelper.postData(path: login, data: user.toJson()).then((value) {
+      print('Im here');
+
       // if valid request then we can navigate to another screen after sending the data to the backend
       if (value.statusCode == 200) {
         CacheHelper.putData(key: 'token', value: value.data['token']);
@@ -205,6 +208,11 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
                                 }
                               },
                               formController: usernameController,
+                              onChanged: (string) {
+                                setState(
+                                    () {}); // this empty set state to be able to change the color of the button
+                                // whenever the user enter any string in the field
+                              },
                               labelText: 'USERNAME',
                             ),
                             DefaultTextField(
@@ -217,6 +225,11 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
                                   return null;
                                 }
                               },
+                              onChanged: (string) {
+                                setState(
+                                    () {}); // this empty set state to be able to change the color of the button
+                                // whenever the user enter any string in the field
+                              },
                               formController: passwordController,
                               labelText: 'PASSWORD',
                             ),
@@ -224,25 +237,25 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
                                 key: const Key('LoginButton'),
                                 textFontWeight: FontWeight.normal,
                                 text: 'LOG IN',
+                                isPressable:
+                                    usernameController.text.isNotEmpty &&
+                                        passwordController.text.isNotEmpty,
                                 textColor:
                                     (usernameController.text.isNotEmpty &&
                                             passwordController.text.isNotEmpty)
                                         ? ColorManager.white
                                         : ColorManager.eggshellWhite,
-                                backgroundColor:
-                                    (usernameController.text.isNotEmpty &&
-                                            passwordController.text.isNotEmpty)
-                                        ? ColorManager.darkGrey
-                                        : ColorManager.hoverOrange,
+                                backgroundColor: ColorManager.upvoteRed,
+                                borderColor:
+                                    usernameController.text.isNotEmpty &&
+                                            passwordController.text.isNotEmpty
+                                        ? ColorManager.upvoteRed
+                                        : ColorManager.grey,
                                 buttonWidth: 25.w,
                                 borderRadius: 5,
                                 buttonHeight: 40,
                                 textFontSize: 14,
-                                onPressed:
-                                    (usernameController.text.isNotEmpty &&
-                                            passwordController.text.isNotEmpty)
-                                        ? loginChecker
-                                        : () {}),
+                                onPressed: loginChecker),
                             Container(
                               alignment: Alignment.centerLeft,
                               child: RichText(

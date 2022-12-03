@@ -73,7 +73,7 @@ class Main extends StatelessWidget {
                     //  CacheHelper.getData(key: 'token') != null
                     //     ? MainScreen.routeName
                     //     :
-                    SignInScreen.routeName,
+                    SignInForWebScreen.routeName,
                 routes: myRoutes,
                 onUnknownRoute: (settings) {
                   return MaterialPageRoute(
