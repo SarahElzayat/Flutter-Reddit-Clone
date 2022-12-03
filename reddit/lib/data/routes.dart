@@ -32,7 +32,7 @@ import '../screens/sign_in_and_sign_up_screen/mobile/sign_up_screen.dart';
 
 Map<String, Widget Function(BuildContext)> myRoutes = {
   RecoverUserName.routeName: (ctx) => const RecoverUserName(),
-  SignInForWebScreen.routeName: (ctx) => SignInForWebScreen(),
+  SignInForWebScreen.routeName: (ctx) => const SignInForWebScreen(),
   SignUpForWebScreen.routeName: (ctx) => const SignUpForWebScreen(),
 
   /// TODO: here we should send the email to the continueSign up this problem will be avoided when using cubit state management

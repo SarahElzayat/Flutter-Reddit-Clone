@@ -45,7 +45,8 @@ class _SignUpForWebScreenState extends State<SignUpForWebScreen> {
   void loginChecker() {
     if (!validTextFields()) return;
 
-    Navigator.of(context).pushReplacementNamed(ContinueSignUpScreen.routeName);
+    Navigator.of(context).pushReplacementNamed(ContinueSignUpScreen.routeName,
+        arguments: emailController.text);
   }
 
   final _myKey = GlobalKey<FormState>();

@@ -5,6 +5,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/main_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../data/sign_in_And_sign_up_models/sign_in_model.dart';
@@ -71,7 +72,7 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
         CacheHelper.putData(key: 'username', value: value.data['username']);
 
         // navigating to the main screen
-        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+        Navigator.of(context).pushReplacementNamed(MainScreen.routeName);
       }
     }).catchError((error) {
       // casting the error as a dio error to be able to use its content
