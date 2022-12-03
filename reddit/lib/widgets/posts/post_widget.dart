@@ -106,26 +106,12 @@ class PostWidget extends StatelessWidget {
                             return 'notAny';
                           },
                           caseBuilders: {
-                            'text': (context) => normalContent(),
-                            'link': (context) => linkContent(),
+                            'text': (context) => _bodyText(),
+                            'link': (context) => _linkBar(),
                           },
                           fallbackBuilder: (context) => Container(),
                         ),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (!isWeb)
-                              Expanded(flex: 1, child: VotesPart(post: post)),
-                            Expanded(
-                              flex: 2,
-                              child: PostLowerBarWithoutVotes(
-                                  post: post,
-                                  isWeb: isWeb,
-                                  pad: const EdgeInsets.symmetric(
-                                      horizontal: 5.0, vertical: 10)),
-                            ),
-                          ],
-                        )
+                        _lowerPart(isWeb)
                       ],
                     ),
                   ),
@@ -138,7 +124,26 @@ class PostWidget extends StatelessWidget {
     );
   }
 
-  Widget normalContent() {
+  Row _lowerPart(bool isWeb) {
+    return Row(
+                        
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (!isWeb)
+                            Expanded(flex: 1, child: VotesPart(post: post)),
+                          Expanded(
+                            flex: 2,
+                            child: PostLowerBarWithoutVotes(
+                                post: post,
+                                isWeb: isWeb,
+                                pad: const EdgeInsets.symmetric(
+                                    horizontal: 5.0, vertical: 10)),
+                          ),
+                        ],
+                      );
+  }
+
+  Widget _bodyText() {
     return Padding(
       padding: const EdgeInsets.only(
         left: 2,
@@ -165,7 +170,7 @@ class PostWidget extends StatelessWidget {
     );
   }
 
-  Widget linkContent() {
+  Widget _linkBar() {
     return InkWell(
       key: const Key('link-content'),
       onTap: () async {
