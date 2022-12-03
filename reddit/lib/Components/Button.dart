@@ -6,19 +6,48 @@ import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 
 class Button extends StatelessWidget {
+  Key? key;
+
+  ///the text on the button
   final String text;
+
+  ///color of the text
   final Color? textColor;
+
+  ///button background color
   final Color backgroundColor;
+
+  ///splash color of button for android
   final Color? splashColor;
+
+  ///width of the button
   final double? buttonWidth;
+
+  ///height of the button
   final double? buttonHeight;
+
+  /// fontweight of the text
   final FontWeight textFontWeight;
+
+  ///font size of text
   final double? textFontSize;
+
+  ///border color of button border
   final Color? borderColor;
+
+  ///circular radius of border
   final double borderRadius;
+
+  ///thickness of border
   final double borderWidth;
+
+  ///bool to check for validation, disables button when not validated
   final bool disabled;
+
+  ///image path to add image to button
   final String? imagePath;
+
+  ///function of the pressed button
   final onPressed;
   bool isPressable = true;
 
@@ -44,9 +73,9 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: buttonHeight,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(borderRadius),
-
+          borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
           // for circular buttons
           border: Border.all(
             // if border color is not passed set it to background color
