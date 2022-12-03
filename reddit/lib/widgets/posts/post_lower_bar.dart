@@ -1,7 +1,6 @@
 /// The Lower Bar of the Post that contains the Comments and the Share Button and any other necessary buttons
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
-
 import 'dart:math';
 
 import 'package:dio/dio.dart';

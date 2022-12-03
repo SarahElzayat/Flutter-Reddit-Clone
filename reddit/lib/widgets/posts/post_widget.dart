@@ -1,7 +1,6 @@
 /// The Main Post Widget that shows in the home and other places
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
-
 import 'dart:math';
 
 import 'package:any_link_preview/any_link_preview.dart';
@@ -16,13 +15,14 @@ import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'post_lower_bar.dart';
-import 'post_upper_bar.dart';
-import '../../widgets/posts/inline_image_viewer.dart';
-import '../../widgets/posts/votes_widget.dart';
+
 import '../../components/helpers/color_manager.dart';
 import '../../components/helpers/posts/helper_funcs.dart';
 import '../../data/post_model/post_model.dart';
+import '../../widgets/posts/inline_image_viewer.dart';
+import '../../widgets/posts/votes_widget.dart';
+import 'post_lower_bar.dart';
+import 'post_upper_bar.dart';
 
 /// The widget that displays the post
 ///

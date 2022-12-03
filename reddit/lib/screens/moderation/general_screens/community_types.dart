@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+
 import '../../../components/button.dart';
 import '../../../components/helpers/color_manager.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 
 class CommunityType extends StatefulWidget {
   const CommunityType({super.key});

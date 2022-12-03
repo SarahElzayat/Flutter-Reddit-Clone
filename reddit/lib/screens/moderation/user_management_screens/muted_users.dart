@@ -1,5 +1,5 @@
-import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+
 import '../../../widgets/moderation/user_management.dart';
 
 class MutedUsers extends StatelessWidget {
