@@ -18,8 +18,8 @@ class DioHelper {
         /// this is the base url for our dio connections
         baseUrl: baseUrl,
 
-        /// this allow receving data even if the status was error
-        /// also allows be to read the debug errors if any has occured
+        /// this allow receiving data even if the status was error
+        /// also allows be to read the debug errors if any has occurred
         receiveDataWhenStatusError: true,
 
         /// this allows me to define how much time I should wait
@@ -28,7 +28,7 @@ class DioHelper {
         /// I want it to wait 10 seconds before ending
         // connectTimeout: 10 * 1000,
 
-        // /// time waited to recieve something from the server
+        // /// time waited to receive something from the server
         // receiveTimeout: 20 * 1000,
 
         /// this is a map of headers
@@ -47,7 +47,7 @@ class DioHelper {
     Map<String, dynamic>? query,
     String? token,
 
-    /// aditional query
+    /// additional query
   }) async {
     var options = Options(
       headers: {
@@ -72,7 +72,7 @@ class DioHelper {
     Map<String, dynamic>? query,
     String? token,
 
-    /// aditional query
+    /// additional query
   }) async {
     var options = Options(
       headers: {
@@ -89,7 +89,6 @@ class DioHelper {
     );
   }
 
-
   /// this is a function used to send get request with certain body.
   /// patch function
 
@@ -100,8 +99,26 @@ class DioHelper {
   /// @param [path] string defining the end point
   static Future<Response> getData({
     Map<String, dynamic>? query,
+    String? token,
+    // String?
     required String path,
   }) async {
-    return await dio.get(path, queryParameters: query);
+    Options options;
+    if (token != null) {
+      options = Options(
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json; charset=utf-8'
+        },
+      );
+    } else {
+      options = Options(
+        headers: {
+          'Authorization': 'Bearer ${token ?? ''}',
+          'Content-Type': 'application/json; charset=utf-8'
+        },
+      );
+    }
+    return await dio.get(path, queryParameters: query, options: options,);
   }
 }

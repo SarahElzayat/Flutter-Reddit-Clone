@@ -2,16 +2,21 @@
 /// @date 9/11/2022
 /// App cubit for handling application's state management
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/networks/constant_end_points.dart';
+import 'package:reddit/networks/dio_helper.dart';
 
 import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/inbox_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/notifications_screen.dart';
+import 'package:reddit/shared/local/shared_preferences.dart';
 import 'package:reddit/widgets/posts/post_upper_bar.dart';
 import '../components/helpers/color_manager.dart';
 
+import '../data/post_model/post_model.dart';
 import '../data/temp_data/tmp_data.dart';
 import '../screens/bottom_navigation_bar_screens/add_post_screen.dart';
 import '../widgets/posts/post_widget.dart';
@@ -20,6 +25,7 @@ part 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
   AppCubit() : super(AppInitial());
+
   static AppCubit get(context) => BlocProvider.of(context);
 
   List screensNames = ['Home', 'Discover', 'Create', 'Chat', 'Inbox'];
@@ -34,7 +40,7 @@ class AppCubit extends Cubit<AppState> {
     const NotificationsScreen()
   ];
 
-  List<Widget> homwPosts = [
+  List<Widget> homePosts = [
     PostWidget(post: textPost),
     PostWidget(post: linkPost, upperRowType: ShowingOtions.onlyUser),
     PostWidget(post: oneImagePost),
@@ -148,6 +154,99 @@ class AppCubit extends Cubit<AppState> {
           color: ColorManager.eggshellWhite, fontWeight: FontWeight.w400),
     ),
   ];
+
+
   String profilePicture = 'assets/images/Logo.png';
-  String username = 'r/sarsora';
+  String username ='';//= CacheHelper.getData(key: 'username');
+  void getUsername(){
+    username = CacheHelper.getData(key: 'username');
+  }
+
+
+  List<PostModel> recentHistoryList =[];
+  void getRecentHistoryList() {
+    DioHelper.getData(
+        path: '$user/$username$recentHistory',
+        token: CacheHelper.getData(key: 'token'),
+      query: {
+          // 'after'
+      },
+    ).then((value) {
+      // print('value ${value.data['children'][0]}');
+    for (int i=0; i< value.data['children'].length; i++){
+
+      recentHistoryList.add(PostModel.fromJson(value.data['children'][i]));
+    }
+    if (kDebugMode) {
+      print(recentHistoryList[0].toJson());
+    }
+    }).onError((error, stackTrace) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+    });
+  }
+
+
+  List<PostModel> upvotedHistoryList =[];
+  void getUpvotedHistoryList() {
+    DioHelper.getData(
+      path: '$user/$username$upvotedHistory',
+      token: CacheHelper.getData(key: 'token'),
+      query: {
+        // 'after'
+      },
+    ).then((value) {
+      // print('value ${value.data['children'][0]}');
+      for (int i=0; i< value.data['children'].length; i++){
+        upvotedHistoryList.add(PostModel.fromJson(value.data['children'][i]));
+      }
+      // print(recentHistoryList[0].toJson());
+    }).onError((error, stackTrace) {
+      // print(error.toString());
+    });
+  }
+
+
+  List<PostModel> downvotedHistoryList =[];
+  void getDownvotedHistoryList() {
+    DioHelper.getData(
+      path: '$user/$username$downvotedHistoryList',
+      token: CacheHelper.getData(key: 'token'),
+      query: {
+        // 'after'
+      },
+    ).then((value) {
+      // print('value ${value.data['children'][0]}');
+      for (int i=0; i< value.data['children'].length; i++){
+        downvotedHistoryList.add(PostModel.fromJson(value.data['children'][i]));
+      }
+      // print(recentHistoryList[0].toJson());
+    }).onError((error, stackTrace) {
+      // print(error.toString());
+    });
+
+
+     List<ListTile> historyCategories =  [
+      ListTile(
+        leading: Icon(Icons.timelapse),
+        title: Text('Recents'),
+      ),
+      ListTile(
+        leading: Icon(Icons.arrow_circle_up_rounded),
+        title: Text('Upvoted'),
+      ),
+      ListTile(
+        leading: Icon(Icons.arrow_circle_down_rounded),
+        title: Text('Downvoted'),
+      ),
+      ListTile(
+        leading: Icon(Icons.hide_image_outlined),
+        title: Text('Hidden'),
+      )
+    ];
+    void changeHistoryCategory(index){
+
+    }
+  }
 }

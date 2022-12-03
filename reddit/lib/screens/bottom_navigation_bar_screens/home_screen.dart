@@ -80,13 +80,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         itemCount: cubit.homeMenuIndex == 0
-                            ? cubit.homwPosts.length
+                            ? cubit.homePosts.length
                             : cubit.popularPosts.length,
                         itemBuilder: (context, index) => Container(
                           margin: const EdgeInsets.symmetric(
                               horizontal: 0, vertical: 5),
                           child: cubit.homeMenuIndex == 0
-                              ? cubit.homwPosts[index]
+                              ? cubit.homePosts[index]
                               : cubit.popularPosts[index],
                         ),
                       ),

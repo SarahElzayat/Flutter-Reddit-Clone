@@ -49,7 +49,7 @@ class _MainScreenState extends State<MainScreen> {
   ];
   @override
   Widget build(BuildContext context) {
-    final AppCubit cubit = AppCubit.get(context);
+    final AppCubit cubit = AppCubit.get(context)..getUsername();
 
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {
