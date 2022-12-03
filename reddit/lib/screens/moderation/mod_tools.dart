@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/components/list_tile_container.dart';
+import '../../components/helpers/color_manager.dart';
+import '../../components/helpers/enums.dart';
+import '../../components/list_tile_container.dart';
 
 class ModTools extends StatelessWidget {
   ModTools({super.key});

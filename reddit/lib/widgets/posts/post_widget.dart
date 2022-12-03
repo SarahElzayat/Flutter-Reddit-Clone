@@ -211,6 +211,7 @@ class PostWidget extends StatelessWidget {
 
   Widget _titleWithFlairs() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,

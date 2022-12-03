@@ -1,7 +1,6 @@
 /// Modle Image Screen
 /// @author Haitham Mohamed
 /// @date 6/11/2022
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -11,11 +10,10 @@ import 'package:image_painter/image_painter.dart';
 import 'package:image_picker/image_picker.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as p;
+import 'package:reddit/cubit/add_post/cubit/add_post_cubit.dart';
+import 'package:reddit/screens/add_post/paint_screen.dart';
 
-import 'package:reddit/Screens/add_post/paint_screen.dart';
-import 'package:reddit/cubit/add_post.dart/cubit/add_post_cubit.dart';
-
-import '../../Components/Helpers/color_manager.dart';
+import '../../components/helpers/color_manager.dart';
 
 /// Image Screen that Perview the Image After Select it
 

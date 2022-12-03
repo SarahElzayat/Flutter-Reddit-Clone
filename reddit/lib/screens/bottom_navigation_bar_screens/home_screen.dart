@@ -6,9 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/back_to_top_button.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/app_cubit.dart';
-import 'package:reddit/widgets/posts/post_widget.dart';
 
 import '../../components/home_app_bar.dart';
 

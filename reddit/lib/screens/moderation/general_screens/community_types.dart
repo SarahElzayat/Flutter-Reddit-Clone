@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/Components/button.dart';
-import 'package:reddit/Components/Helpers/color_manager.dart';
+import '../../../components/button.dart';
+import '../../../components/helpers/color_manager.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class CommunityType extends StatefulWidget {

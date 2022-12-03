@@ -3,7 +3,6 @@
 /// Reuasable custom button component
 import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
 
 class Button extends StatelessWidget {
   Key? key;
@@ -48,9 +47,12 @@ class Button extends StatelessWidget {
   final String? imagePath;
 
   ///function of the pressed button
-  final onPressed;
+  dynamic onPressed;
+
+  /// [bool] to check if button is pressable
   bool isPressable = true;
 
+  bool isAndroid;
   Button({
     super.key,
     this.text = 'Button',
@@ -67,9 +69,9 @@ class Button extends StatelessWidget {
     this.disabled = false,
     this.imagePath,
     this.isPressable = true,
+    this.isAndroid = true,
     required this.onPressed,
   });
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -92,12 +94,10 @@ class Button extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(borderRadius))),
         highlightElevation: 0,
         color: isPressable ? backgroundColor : ColorManager.grey,
-        splashColor: (disabled || (CacheHelper.getData(key: 'isWindows')!))
-            ? Colors.transparent
-            : splashColor,
-        highlightColor: (CacheHelper.getData(key: 'isAndroid')!)
-            ? Colors.transparent
-            : Colors.black.withOpacity(0.1),
+        splashColor:
+            (disabled || !isAndroid) ? Colors.transparent : splashColor,
+        highlightColor:
+            isAndroid ? Colors.transparent : Colors.black.withOpacity(0.1),
         child: Row(
           mainAxisAlignment: imagePath != null
               ? MainAxisAlignment.spaceAround
