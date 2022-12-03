@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'screens/add_post/video_trimmer.dart';
 
-import 'Screens/add_post/image_screen.dart';
-import 'Screens/add_post/paint_screen.dart';
 import 'cubit/add_post/cubit/add_post_cubit.dart';
 import 'screens/add_post/add_post.dart';
 import 'screens/add_post/post.dart';
+import 'screens/add_post/image_screen.dart';
+import 'screens/add_post/paint_screen.dart';
 
 class AppRouter {
   static final AddPostCubit _addPostCubit = AddPostCubit();

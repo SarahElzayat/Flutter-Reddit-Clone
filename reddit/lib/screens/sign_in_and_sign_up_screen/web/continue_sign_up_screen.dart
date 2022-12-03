@@ -14,11 +14,10 @@ import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
 import '../../../screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
 import '../../../shared/local/shared_preferences.dart';
-import '../../bottom_navigation_bar_screens/home_screen.dart';
+import '../../main_screen.dart';
 
 class ContinueSignUpScreen extends StatefulWidget {
-  final email;
-  const ContinueSignUpScreen({super.key, @required this.email});
+  const ContinueSignUpScreen({super.key});
   static const routeName = '/continue_sign_up_for_web_screen_route';
 
   @override
@@ -53,22 +52,21 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
 
   /// this function is used to validate that the user has inserted the right
   /// input formate and also send the request to the api
-  void loginChecker() async {
+  void loginChecker(_myMail) async {
     if (!validTextFields()) return;
 
     final user = SignUpModel(
-        // email: widget.email,
-        email: 'widget.email',
+        email: _myMail, // we get it from the navigation
         password: passwordController.text,
         username: usernameController.text);
 
     DioHelper.postData(path: signUp, data: user.toJson()).then((value) {
-      if (value.statusCode == 200) {
+      if (value.statusCode == 201) {
         CacheHelper.putData(key: 'token', value: value.data['token']);
         CacheHelper.putData(key: 'username', value: value.data['username']);
 
         // navigating to the main screen
-        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+        Navigator.of(context).pushReplacementNamed(MainScreen.routeName);
       }
     }).catchError((error) {
       // casting the error as a dio error to be able to use its content
@@ -92,8 +90,19 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
     });
   }
 
+  // these names should be returned from the backend but they
+  // haven't implemented this endpoint yet
+  List<String> dummyNames = [
+    'Name1',
+    'Name2',
+    'Name3',
+    'Name4',
+    'Name5',
+  ];
+
   @override
   Widget build(BuildContext context) {
+    final _myMail = ModalRoute.of(context)!.settings.arguments as String;
     final navigator = Navigator.of(context);
     return Scaffold(
       body: ResponsiveSizer(
@@ -128,6 +137,7 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                                   child: Column(
                                     children: [
                                       DefaultTextField(
+                                        onChanged: (p0) => setState(() {}),
                                         key: const Key('UsernameTextField'),
                                         validator: (username) {
                                           if (!Validator.validUserName(
@@ -141,6 +151,7 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                                         labelText: 'CHOOSE A USERNAME',
                                       ),
                                       DefaultTextField(
+                                        onChanged: (p0) => setState(() {}),
                                         key: const Key('PasswordTextField'),
                                         validator: (password) {
                                           if (!Validator
@@ -174,62 +185,20 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                                                   const Icon(Icons.restart_alt))
                                         ],
                                       ),
-                                      // TODO: These things should be done with loop not manually.
-                                      TextButton(
+                                      ...dummyNames.map((item) {
+                                        return TextButton(
                                           onPressed: () =>
                                               selectUsernameFromSuggestions(
-                                                  'Name1'),
-                                          child: const Text(
-                                            'Name1',
-                                            style: TextStyle(
+                                                  item),
+                                          child: Text(
+                                            item,
+                                            style: const TextStyle(
                                                 color: ColorManager.blue,
                                                 decoration:
                                                     TextDecoration.underline),
-                                          )),
-                                      TextButton(
-                                          onPressed: () =>
-                                              selectUsernameFromSuggestions(
-                                                  'Name2'),
-                                          child: const Text(
-                                            'Name2',
-                                            style: TextStyle(
-                                                color: ColorManager.blue,
-                                                decoration:
-                                                    TextDecoration.underline),
-                                          )),
-                                      TextButton(
-                                          onPressed: () =>
-                                              selectUsernameFromSuggestions(
-                                                  'Name3'),
-                                          child: const Text(
-                                            'Name3',
-                                            style: TextStyle(
-                                                color: ColorManager.blue,
-                                                decoration:
-                                                    TextDecoration.underline),
-                                          )),
-                                      TextButton(
-                                          onPressed: () =>
-                                              selectUsernameFromSuggestions(
-                                                  'Name4'),
-                                          child: const Text(
-                                            'Name4',
-                                            style: TextStyle(
-                                                color: ColorManager.blue,
-                                                decoration:
-                                                    TextDecoration.underline),
-                                          )),
-                                      TextButton(
-                                          onPressed: () =>
-                                              selectUsernameFromSuggestions(
-                                                  'Name5'),
-                                          child: const Text(
-                                            'Name5',
-                                            style: TextStyle(
-                                                color: ColorManager.blue,
-                                                decoration:
-                                                    TextDecoration.underline),
-                                          ))
+                                          ),
+                                        );
+                                      }).toList(),
                                     ],
                                   ),
                                 ),
@@ -257,18 +226,25 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                               width: 140,
                               child: ElevatedButton(
                                   key: const Key('SignUpButton'),
-                                  style: const ButtonStyle(
+                                  style: ButtonStyle(
+                                      foregroundColor: MaterialStatePropertyAll(
+                                        (usernameController.text.isNotEmpty &&
+                                                passwordController
+                                                    .text.isNotEmpty)
+                                            ? ColorManager.white
+                                            : ColorManager.eggshellWhite,
+                                      ),
                                       backgroundColor: MaterialStatePropertyAll(
-                                          ColorManager.blue)),
-                                  // TODO: this logic should be done in the separate function
+                                        (usernameController.text.isNotEmpty &&
+                                                passwordController
+                                                    .text.isNotEmpty)
+                                            ? ColorManager.blue
+                                            : ColorManager.grey,
+                                      )),
                                   onPressed: () {
-                                    print(
-                                        'username = ${usernameController.text} and password = ${passwordController.text}');
-                                    print(usernameController.text.isNotEmpty &&
-                                        passwordController.text.isNotEmpty);
                                     (usernameController.text.isNotEmpty &&
                                             passwordController.text.isNotEmpty)
-                                        ? loginChecker()
+                                        ? loginChecker(_myMail)
                                         : () {};
                                   },
                                   child: const Text('SIGN UP')),

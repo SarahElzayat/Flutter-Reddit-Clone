@@ -2,6 +2,7 @@
 /// @date 3/11/2022
 /// this is the screen of creating new account for the users.
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -132,9 +133,9 @@ class _SignInScreenState extends State<SignInScreen> {
         child: Form(
           key: _formKey,
           child: Container(
-            /// the height of the screen should be the whole height of the screen
-            /// but without the height of the app bar and without the padding of
-            /// the down drag top of the phone itself
+            // the height of the screen should be the whole height of the screen
+            // but without the height of the app bar and without the padding of
+            // the down drag top of the phone itself
             height: mediaQuery.size.height -
                 customAppBar.preferredSize.height -
                 mediaQuery.padding.top,
@@ -147,7 +148,6 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: Text(
                     textAlign: TextAlign.center,
                     'Login To Reddit',
-                    // style: theme.textTheme.titleMedium,
                     style: TextStyle(
                       fontSize: textScaleFactor * 24,
                       fontWeight: FontWeight.bold,
@@ -175,8 +175,6 @@ class _SignInScreenState extends State<SignInScreen> {
                         },
                         keyboardType: TextInputType.emailAddress,
                         onChanged: (myString) => textChanger(myString),
-
-                        /// 7amada
                         formController: usernameController,
                         labelText: 'Username',
                         icon: usernameController.text.isNotEmpty
@@ -223,7 +221,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
 
-                /// the bottom part of the code
+                // the bottom part of the code
                 Expanded(
                   flex: 2,
                   child: Column(

@@ -14,7 +14,7 @@ import 'package:reddit/components/helpers/color_manager.dart';
 Widget listButton(context, text, list, onPressed, isOpen,
     {isCommunity = false, isModerating = false}) {
   return Container(
-    decoration: BoxDecoration(
+    decoration: const BoxDecoration(
         border: BorderDirectional(
             end: BorderSide.none,
             start: BorderSide.none,

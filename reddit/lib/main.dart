@@ -23,9 +23,7 @@ Future<void> main() async {
   prepareMocks();
 
   /// this is used to insure that every thing has been initialized well
-
   // enableFlutterDriverExtension();
-
   WidgetsFlutterBinding.ensureInitialized();
 
   Bloc.observer = MyBlocObserver();
