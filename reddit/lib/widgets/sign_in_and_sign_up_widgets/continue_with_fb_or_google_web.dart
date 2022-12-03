@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/components/Button.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-
+import '../../../components/button.dart';
+import '../../../components/helpers/color_manager.dart';
 import '../../data/facebook_api/facebook_api.dart';
 import '../../data/google_api/google_sign_in_api.dart';
 
@@ -29,7 +28,7 @@ class ContinueWithGoogleOrFbWeb extends StatelessWidget {
             borderRadius: 10,
             borderColor: ColorManager.blue,
             buttonHeight: 55,
-            // imagePath: 'assets/icons/googleIcon.png',
+            imagePath: 'assets/icons/googleIcon.png',
             textFontSize: 16,
             onPressed: signInWithGoogle),
         const SizedBox(
@@ -43,7 +42,7 @@ class ContinueWithGoogleOrFbWeb extends StatelessWidget {
             borderRadius: 10,
             borderColor: ColorManager.blue,
             buttonHeight: 55,
-            // imagePath: 'assets/icons/facebookIcon.png',
+            imagePath: 'assets/icons/facebookIcon.png',
             textFontSize: 16,
             onPressed: signInWithFacebook)
       ],
