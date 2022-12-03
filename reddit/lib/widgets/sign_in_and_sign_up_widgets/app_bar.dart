@@ -3,8 +3,8 @@
 /// this is the appBar model for the Login
 ///and sign up and forget user name and also and we may use it later
 ///instead of creating it every single time.
-
 import 'package:flutter/material.dart';
+
 import '../../components/helpers/color_manager.dart';
 
 class LogInAppBar extends StatelessWidget implements PreferredSizeWidget {
