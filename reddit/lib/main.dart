@@ -71,11 +71,10 @@ class Main extends StatelessWidget {
             builder: (context, orientation, screenType) {
               return MaterialApp(
                 initialRoute: token != null
-                    ? SignInForWebScreen.routeName
-                    : SignInForWebScreen.routeName,
+                    ? MainScreen.routeName
+                    : SignInScreen.routeName,
                 routes: myRoutes,
                 onUnknownRoute: (settings) {
-                  
                   return MaterialPageRoute(
                       builder: (ctx) => const MainScreen());
                 },
