@@ -3,23 +3,22 @@
 /// this is the screen which the user navigate to when
 /// he enter his email, and to continue the sign up process
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/Screens/main_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../../../components/Helpers/color_manager.dart';
+import '../../../components/helpers/color_manager.dart';
 import '../../../components/default_text_field.dart';
+import '../../../screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
+import '../../../screens/main_screen.dart';
 import '../../../data/sign_in_And_sign_up_models/sign_up_model.dart';
 import '../../../data/sign_in_And_sign_up_models/validators.dart';
-import '../../../Screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
 import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
 import '../../../shared/local/shared_preferences.dart';
-import '../../bottom_navigation_bar_screens/home_screen.dart';
 
 class ContinueSignUpScreen extends StatefulWidget {
-  final email;
-  const ContinueSignUpScreen({super.key, @required this.email});
+  const ContinueSignUpScreen({super.key});
   static const routeName = '/continue_sign_up_for_web_screen_route';
 
   @override
@@ -41,7 +40,6 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
   /// are valid, else it will show a snackbar to the user
   /// telling him that he has inserted something wrong.
   bool validTextFields() {
-    print('Enter Validations');
     if (!_myKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -55,42 +53,63 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
 
   /// this function is used to validate that the user has inserted the right
   /// input formate and also send the request to the api
-  void loginChecker() async {
-    print('checker');
-
+  void loginChecker(_myMail) async {
     if (!validTextFields()) return;
 
     final user = SignUpModel(
-        // email: widget.email,
-        email: 'widget.email',
+        email: _myMail, // we get it from the navigation
         password: passwordController.text,
         username: usernameController.text);
 
     DioHelper.postData(path: signUp, data: user.toJson()).then((value) {
-      print(value);
-      if (value.statusCode == 200) {
+      if (value.statusCode == 201) {
         CacheHelper.putData(key: 'token', value: value.data['token']);
         CacheHelper.putData(key: 'username', value: value.data['username']);
 
         // navigating to the main screen
-        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+        Navigator.of(context).pushReplacementNamed(MainScreen.routeName);
+      }
+    }).catchError((error) {
+      // casting the error as a dio error to be able to use its content
+      error = error as DioError;
+      // checking for our main error, which is that the user trying to insert
+      // username which is already taken
+      if (error.message.toString() == 'Http status error [400]') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              backgroundColor: ColorManager.red,
+              content: Text('Username is already in use')),
+        );
       } else {
-        // TODO: think what should you do here ....
-        /// 1- existing username -> show snackbar
-        /// 2-
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              backgroundColor: ColorManager.red,
+              content: Text(
+                  'Something went wrong!, please change the inputs and try again')),
+        );
       }
     });
   }
 
+  // these names should be returned from the backend but they
+  // haven't implemented this endpoint yet
+  List<String> dummyNames = [
+    'Name1',
+    'Name2',
+    'Name3',
+    'Name4',
+    'Name5',
+  ];
+
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
+    final _myMail = ModalRoute.of(context)!.settings.arguments as String;
     final navigator = Navigator.of(context);
     return Scaffold(
       body: ResponsiveSizer(
         builder: (context, orientation, screenType) {
           return Container(
-            constraints: BoxConstraints(minWidth: 1000),
+            constraints: const BoxConstraints(minWidth: 1000),
             height: 100.h,
             width: 100.w,
             child: Form(
@@ -119,6 +138,8 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                                   child: Column(
                                     children: [
                                       DefaultTextField(
+                                        onChanged: (p0) => setState(() {}),
+                                        key: const Key('UsernameTextField'),
                                         validator: (username) {
                                           if (!Validator.validUserName(
                                               username!)) {
@@ -131,6 +152,8 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                                         labelText: 'CHOOSE A USERNAME',
                                       ),
                                       DefaultTextField(
+                                        onChanged: (p0) => setState(() {}),
+                                        key: const Key('PasswordTextField'),
                                         validator: (password) {
                                           if (!Validator
                                               .validPasswordValidation(
@@ -163,61 +186,20 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                                                   const Icon(Icons.restart_alt))
                                         ],
                                       ),
-                                      TextButton(
+                                      ...dummyNames.map((item) {
+                                        return TextButton(
                                           onPressed: () =>
                                               selectUsernameFromSuggestions(
-                                                  'Name1'),
-                                          child: const Text(
-                                            'Name1',
-                                            style: TextStyle(
+                                                  item),
+                                          child: Text(
+                                            item,
+                                            style: const TextStyle(
                                                 color: ColorManager.blue,
                                                 decoration:
                                                     TextDecoration.underline),
-                                          )),
-                                      TextButton(
-                                          onPressed: () =>
-                                              selectUsernameFromSuggestions(
-                                                  'Name2'),
-                                          child: const Text(
-                                            'Name2',
-                                            style: TextStyle(
-                                                color: ColorManager.blue,
-                                                decoration:
-                                                    TextDecoration.underline),
-                                          )),
-                                      TextButton(
-                                          onPressed: () =>
-                                              selectUsernameFromSuggestions(
-                                                  'Name3'),
-                                          child: const Text(
-                                            'Name3',
-                                            style: TextStyle(
-                                                color: ColorManager.blue,
-                                                decoration:
-                                                    TextDecoration.underline),
-                                          )),
-                                      TextButton(
-                                          onPressed: () =>
-                                              selectUsernameFromSuggestions(
-                                                  'Name4'),
-                                          child: const Text(
-                                            'Name4',
-                                            style: TextStyle(
-                                                color: ColorManager.blue,
-                                                decoration:
-                                                    TextDecoration.underline),
-                                          )),
-                                      TextButton(
-                                          onPressed: () =>
-                                              selectUsernameFromSuggestions(
-                                                  'Name5'),
-                                          child: const Text(
-                                            'Name5',
-                                            style: TextStyle(
-                                                color: ColorManager.blue,
-                                                decoration:
-                                                    TextDecoration.underline),
-                                          ))
+                                          ),
+                                        );
+                                      }).toList(),
                                     ],
                                   ),
                                 ),
@@ -233,6 +215,7 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             TextButton(
+                                key: const Key('BackButton'),
                                 onPressed: () {
                                   navigator.pushReplacementNamed(
                                       SignUpForWebScreen.routeName);
@@ -243,17 +226,26 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                               padding: const EdgeInsets.all(5),
                               width: 140,
                               child: ElevatedButton(
-                                  style: const ButtonStyle(
+                                  key: const Key('SignUpButton'),
+                                  style: ButtonStyle(
+                                      foregroundColor: MaterialStatePropertyAll(
+                                        (usernameController.text.isNotEmpty &&
+                                                passwordController
+                                                    .text.isNotEmpty)
+                                            ? ColorManager.white
+                                            : ColorManager.eggshellWhite,
+                                      ),
                                       backgroundColor: MaterialStatePropertyAll(
-                                          ColorManager.blue)),
+                                        (usernameController.text.isNotEmpty &&
+                                                passwordController
+                                                    .text.isNotEmpty)
+                                            ? ColorManager.blue
+                                            : ColorManager.grey,
+                                      )),
                                   onPressed: () {
-                                    print(
-                                        'username = ${usernameController.text} and password = ${passwordController.text}');
-                                    print(usernameController.text.isNotEmpty &&
-                                        passwordController.text.isNotEmpty);
                                     (usernameController.text.isNotEmpty &&
                                             passwordController.text.isNotEmpty)
-                                        ? loginChecker()
+                                        ? loginChecker(_myMail)
                                         : () {};
                                   },
                                   child: const Text('SIGN UP')),

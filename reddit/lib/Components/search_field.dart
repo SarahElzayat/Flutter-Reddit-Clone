@@ -61,13 +61,13 @@ class _SearchFiledState extends State<SearchFiled> {
     debugPrint('Focus: ${_focus.hasFocus.toString()}');
   }
 
-  Widget _showTrending(List<String> items) {
-    return ListView.builder(
-      itemBuilder: (context, index) => Text(items[index]),
-      itemCount: items.length,
-      itemExtent: 30,
-    );
-  }
+  // Widget _showTrending(List<String> items) {
+  //   return ListView.builder(
+  //     itemBuilder: (context, index) => Text(items[index]),
+  //     itemCount: items.length,
+  //     itemExtent: 30,
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -119,8 +119,8 @@ class _SearchFiledState extends State<SearchFiled> {
                 if (widget.isSubreddit || widget.isProfile && isPrefix)
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
-                    decoration: ShapeDecoration(
-                      shape: const StadiumBorder(),
+                    decoration: const ShapeDecoration(
+                      shape: StadiumBorder(),
                       color: ColorManager.grey,
                     ),
                     // margin: const EdgeInsets.only(right: 15),

@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:mockito/mockito.dart';
+// ignore: depend_on_referenced_packages
 import 'package:mockito/annotations.dart';
+// ignore: depend_on_referenced_packages
+import 'package:mockito/mockito.dart';
 import 'package:reddit/components/helpers/mocks/post_cubit.mocks.dart';
 import 'package:reddit/data/temp_data/tmp_data.dart';
 

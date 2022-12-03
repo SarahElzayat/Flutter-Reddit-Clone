@@ -6,12 +6,18 @@ import 'package:flutter/material.dart';
 import '../../components/helpers/color_manager.dart';
 
 class ContinueButton extends StatelessWidget {
-  const ContinueButton(
-      {super.key, required this.appliedFunction, required this.isPressable});
+  ContinueButton(
+      {super.key,
+      required this.appliedFunction,
+      required this.isPressable,
+      this.buttonContent = 'Continue'});
 
   /// this is the function that should be executed
-  /// when the user presses continue
+  /// when the user presses continue.
   final appliedFunction;
+
+  /// this is the text that should be displayed on the button.
+  String buttonContent = 'Continue';
 
   /// this is a bool to detect whether the button should be pressed or not.
   final isPressable;
@@ -36,7 +42,7 @@ class ContinueButton extends StatelessWidget {
           child: SizedBox(
             width: mediaQuery.size.width,
             child: Text(
-              'Continue',
+              buttonContent,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: isPressable == false
