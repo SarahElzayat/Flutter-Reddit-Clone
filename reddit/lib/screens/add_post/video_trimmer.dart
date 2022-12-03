@@ -11,7 +11,7 @@ import 'package:video_player/video_player.dart';
 import 'package:video_trimmer/video_trimmer.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../cubit/add_post.dart/cubit/add_post_cubit.dart';
+import '../../cubit/add_post/cubit/add_post_cubit.dart';
 
 /// TrimmerView that can edit the video
 

@@ -65,10 +65,8 @@ class DioHelper {
   }
 
   static Future<Response> patchData({
-    required String path, // the added path to the baseURL
+    required String path,
     required Map<String, dynamic> data,
-
-    /// which is the content of the JSON
     Map<String, dynamic>? query,
     String? token,
 
@@ -88,6 +86,9 @@ class DioHelper {
       queryParameters: query,
     );
   }
+
+  /// this is a function used to send get request with certain body.
+  /// patch function
 
   /// this is a function used to send get request with certain body.
   /// patch function

@@ -1,8 +1,8 @@
 /// date: 23/10/2022
 /// @Author: Ahmed Atta
-
 import 'package:flutter/material.dart';
-import '../components/helpers/color_manager.dart';
+
+import 'helpers/color_manager.dart';
 
 class DefaultTextField extends StatefulWidget {
   /// Creates an [DefaultTextField].
