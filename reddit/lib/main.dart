@@ -22,9 +22,7 @@ Future<void> main() async {
   prepareMocks();
 
   /// this is used to insure that every thing has been initialized well
-
   // enableFlutterDriverExtension();
-
   WidgetsFlutterBinding.ensureInitialized();
 
   Bloc.observer = MyBlocObserver();
@@ -69,10 +67,13 @@ class Main extends StatelessWidget {
           return ResponsiveSizer(
             builder: (context, orientation, screenType) {
               return MaterialApp(
-                /// TODO: this should be changed to be checked automatically
-                initialRoute: CacheHelper.getData(key: 'token') != null
-                    ? MainScreen.routeName
-                    : SignInScreen.routeName,
+                initialRoute:
+
+                    ///TODO: clear comments, but it is working btw :)
+                    //  CacheHelper.getData(key: 'token') != null
+                    //     ? MainScreen.routeName
+                    //     :
+                    SignInForWebScreen.routeName,
                 routes: myRoutes,
                 onUnknownRoute: (settings) {
                   return MaterialPageRoute(

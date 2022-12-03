@@ -3,7 +3,11 @@
 /// this is a file contaning the constant baseURL and the endpoints of the API
 import 'package:flutter/foundation.dart' show kIsWeb, kReleaseMode;
 
-const portNumber = 5000;
+const portNumber = String.fromEnvironment('FLUTTER_PORT', defaultValue: '5000');
+// const baseUrl = String.fromEnvironment('BASE_URL',
+//     defaultValue: 'http://localhost:3000'); // for the web
+// String.fromEnvironment('BASE_URL', defaultValue: 'http://10.0.2.2:3000'); // for mobile
+// const portNumber = 5000;
 const baseUrl = kReleaseMode
     ? 'http://www.read-it.live/api'
     : kIsWeb
