@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/widgets/moderation/user_management.dart';
+import '../../../widgets/moderation/user_management.dart';
 
 class ApprovedUsers extends StatelessWidget {
   const ApprovedUsers({super.key});

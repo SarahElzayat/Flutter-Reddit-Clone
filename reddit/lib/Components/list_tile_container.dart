@@ -2,11 +2,11 @@
 ///@date 20/11/2022
 /// this is a common container for the list tiles because
 /// it is used alot in the mod tools
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/components/list_tile.dart';
-import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/enums.dart';
+import 'package:reddit/components/list_tile.dart';
 
 class ListTileContainer extends StatelessWidget {
   final String title;

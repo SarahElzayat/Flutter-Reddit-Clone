@@ -1,18 +1,18 @@
 /// The inline image viewer
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
-
 import 'dart:math';
+
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
-import 'package:reddit/widgets/posts/image_page_view.dart';
 import 'package:reddit/data/post_model/post_model.dart';
-import '../../components/helpers/color_manager.dart';
+import 'package:reddit/widgets/posts/image_page_view.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../components/helpers/color_manager.dart';
 import '../../components/helpers/posts/helper_funcs.dart';
 
 class InlineImageViewer extends StatefulWidget {

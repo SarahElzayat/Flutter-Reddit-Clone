@@ -1,7 +1,6 @@
 /// Author @SarahElzayat
 /// Date: 23/10/2022
 /// Color palette static const Colorants of Reddit
-
 import 'package:flutter/material.dart';
 
 class ColorManager {

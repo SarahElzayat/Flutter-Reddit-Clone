@@ -2,18 +2,17 @@
 /// @date 20/11/2022
 /// this is the screen which the user navigate to when
 /// he enter his email, and to continue the sign up process
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../../../components/helpers/color_manager.dart';
 import '../../../components/default_text_field.dart';
+import '../../../components/helpers/color_manager.dart';
 import '../../../data/sign_in_And_sign_up_models/sign_up_model.dart';
 import '../../../data/sign_in_And_sign_up_models/validators.dart';
-import '../../../screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
 import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
+import '../../../screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
 import '../../../shared/local/shared_preferences.dart';
 import '../../bottom_navigation_bar_screens/home_screen.dart';
 

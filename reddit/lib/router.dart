@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/screens/add_post/video_trimmer.dart';
+import 'screens/add_post/video_trimmer.dart';
 
 import 'Screens/add_post/image_screen.dart';
 import 'Screens/add_post/paint_screen.dart';

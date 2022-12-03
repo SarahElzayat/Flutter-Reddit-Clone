@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/components/search_field.dart';
+import '../../../components/helpers/color_manager.dart';
+import '../../../components/search_field.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:reddit/components/list_tile.dart';
+import '../../../components/list_tile.dart';
 
 class Moderators extends StatelessWidget {
   const Moderators({super.key});

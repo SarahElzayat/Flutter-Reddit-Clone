@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
+import '../../../components/helpers/color_manager.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 

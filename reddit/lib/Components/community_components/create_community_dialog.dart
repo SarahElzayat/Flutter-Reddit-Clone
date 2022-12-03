@@ -1,7 +1,6 @@
 ///@author Yasmine Ghanem
 ///@date 8/11/2022
 ///Create community window for web
-
 import 'package:flutter/material.dart';
 import 'package:reddit/components/Button.dart';
 import 'package:reddit/components/helpers/color_manager.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/components/default_text_field.dart';
+import '../../../components/default_text_field.dart';
 import '/components/Button.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
+import '../../../components/helpers/color_manager.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class Description extends StatefulWidget {
