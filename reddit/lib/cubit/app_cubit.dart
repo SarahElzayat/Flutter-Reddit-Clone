@@ -35,7 +35,7 @@ class AppCubit extends Cubit<AppState> {
   ];
 
   List<Widget> homwPosts = [
-    PostWidget(post: textPost),
+    PostWidget(post: textPost, upperRowType: ShowingOtions.onlySubreddit),
     PostWidget(post: linkPost, upperRowType: ShowingOtions.onlyUser),
     PostWidget(post: oneImagePost),
     PostWidget(post: manyImagePost),

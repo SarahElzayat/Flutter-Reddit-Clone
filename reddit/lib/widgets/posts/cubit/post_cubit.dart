@@ -5,7 +5,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/mocks/functions.dart';
 import 'package:reddit/data/post_model/post_model.dart';
-import '../../../networks/constant_end_points.dart';
+import 'package:reddit/constants/constants.dart';
 import 'post_state.dart';
 
 class PostCubit extends Cubit<PostState> {
@@ -47,7 +47,7 @@ class PostCubit extends Cubit<PostState> {
     }
     int newDir = postState + direction;
 
-    return mockDio.post('$baseUrl/vote', data: {
+    return mockDio.post('$base/vote', data: {
       'id': post.id,
       'direction': newDir,
       'type': 'post',
@@ -68,7 +68,7 @@ class PostCubit extends Cubit<PostState> {
   /// this function is used to vote on a post
   Future save() {
     return mockDio.post(
-      '$baseUrl/save',
+      '$base/save',
       data: {
         'id': post.id,
       },
@@ -84,7 +84,7 @@ class PostCubit extends Cubit<PostState> {
   /// this function is used to hide a post
   Future hide() {
     return mockDio.post(
-      '$baseUrl/hide',
+      '$base/hide',
       data: {
         'id': post.id,
       },
@@ -94,7 +94,7 @@ class PostCubit extends Cubit<PostState> {
   /// this function is used to block the author of a post
   Future blockUser() {
     return mockDio.post(
-      '$baseUrl/block',
+      '$base/block',
       data: {
         'id': post.id,
       },
@@ -104,7 +104,7 @@ class PostCubit extends Cubit<PostState> {
   /// this function is used to delete a post
   Future delete() {
     return mockDio.post(
-      '$baseUrl/delete',
+      '$base/delete',
       data: {
         'id': post.id,
       },

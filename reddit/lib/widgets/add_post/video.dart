@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../../components/helpers/color_manager.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../cubit/add_post.dart/cubit/add_post_cubit.dart';
+import '../../functions/add_post.dart';
 
 /// This widget Show video (video Thumbnail) in Add post Screen
 /// You allow to add one video only
@@ -16,7 +17,7 @@ class VideoPost extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  Widget buildDotted(context, AddPostCubit addPostCubit) {
+  Widget buildDotted(context) {
     final mediaQuery = MediaQuery.of(context);
     return Align(
       alignment: Alignment.topLeft,
@@ -25,7 +26,7 @@ class VideoPost extends StatelessWidget {
         dashPattern: const [4, 4],
         color: ColorManager.eggshellWhite,
         child: MaterialButton(
-          onPressed: () => addPostCubit.pickVideo(true),
+          onPressed: () => videoFunc(context),
           child: SizedBox(
             height: mediaQuery.size.height * 0.2,
             width: mediaQuery.size.width * 0.38,
@@ -59,78 +60,26 @@ class VideoPost extends StatelessWidget {
           width: width * 0.4,
           height: height * 0.23,
           color: Colors.transparent,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: Container(
-                  margin: const EdgeInsets.all(7),
-                  padding: const EdgeInsets.all(2),
-                  decoration: const BoxDecoration(
-                      color: Color.fromARGB(100, 0, 0, 0),
-                      borderRadius: BorderRadius.all(Radius.circular(50))),
-                  child: InkWell(
-                    child: const Icon(
-                      Icons.close,
-                      color: Colors.white,
-                      size: 25,
-                    ),
-                    onTap: () {
-                      print('Remove widget');
-                      addPostCubit.removeVideo();
-                    },
-                  ),
+          child: Align(
+            alignment: Alignment.topRight,
+            child: Container(
+              margin: const EdgeInsets.all(7),
+              decoration: const BoxDecoration(
+                  color: Color.fromARGB(130, 0, 0, 0),
+                  borderRadius: BorderRadius.all(Radius.circular(50))),
+              child: InkWell(
+                child: const Icon(
+                  Icons.close,
+                  color: Colors.white,
+                  size: 25,
                 ),
+                onTap: () {
+                  addPostCubit.removeVideo();
+                },
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Container(
-                      margin: const EdgeInsets.all(7),
-                      padding: const EdgeInsets.all(2),
-                      decoration: const BoxDecoration(
-                          color: Color.fromARGB(100, 0, 0, 0),
-                          borderRadius: BorderRadius.all(Radius.circular(50))),
-                      child: InkWell(
-                        child: const Icon(
-                          Icons.play_arrow_outlined,
-                          color: Colors.white,
-                          size: 40,
-                        ),
-                        onTap: () {
-                          // addPostCubit.pickVideo(false);
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Align(
-                alignment: Alignment.topRight,
-                child: Container(
-                  margin: const EdgeInsets.all(7),
-                  padding: const EdgeInsets.all(2),
-                  decoration: const BoxDecoration(
-                      color: Color.fromARGB(100, 0, 0, 0),
-                      borderRadius: BorderRadius.all(Radius.circular(50))),
-                  child: InkWell(
-                    child: const Icon(
-                      Icons.edit,
-                      color: Colors.white,
-                      size: 25,
-                    ),
-                    onTap: () {
-                      addPostCubit.pickVideo(false);
-                    },
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+        )
       ]),
     );
   }
@@ -145,7 +94,7 @@ class VideoPost extends StatelessWidget {
         return (state is VideoAddedOrRemoved && state.isAdded)
             ? buildStack(context, mediaQuery.size.width, mediaQuery.size.height,
                 addPostCubit)
-            : buildDotted(context, addPostCubit);
+            : buildDotted(context);
       },
     );
   }

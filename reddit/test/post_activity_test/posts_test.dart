@@ -4,7 +4,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:reddit/data/temp_data/tmp_data.dart';
 import 'package:reddit/components/helpers/mocks/functions.dart';
-import 'package:reddit/networks/constant_end_points.dart';
+import 'package:reddit/constants/constants.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
 
@@ -29,9 +29,9 @@ void main() {
       });
 
       // testing an invalid status code
-      when(mockDio.post('$baseUrl/vote', data: anyNamed('data')))
+      when(mockDio.post('$base/vote', data: anyNamed('data')))
           .thenAnswer((_) => Future.value(Response(
-              requestOptions: RequestOptions(path: '$baseUrl/vote'),
+              requestOptions: RequestOptions(path: '$base/vote'),
               data: {
                 'id': 1,
                 'type': 'post',
@@ -58,9 +58,9 @@ void main() {
       });
 
       // testing an invalid status code
-      when(mockDio.post('$baseUrl/vote', data: anyNamed('data')))
+      when(mockDio.post('$base/vote', data: anyNamed('data')))
           .thenAnswer((_) => Future.value(Response(
-              requestOptions: RequestOptions(path: '$baseUrl/vote'),
+              requestOptions: RequestOptions(path: '$base/vote'),
               data: {
                 'id': 71,
                 'type': 'post',

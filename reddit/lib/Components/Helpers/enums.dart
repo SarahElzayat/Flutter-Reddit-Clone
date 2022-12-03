@@ -19,8 +19,3 @@ enum SortType {
   newPost,
   top,
 }
-
-enum PostView {
-  classic,
-  card,
-}

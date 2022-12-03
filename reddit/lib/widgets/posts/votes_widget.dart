@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../data/post_model/post_model.dart';
 import '../../components/helpers/color_manager.dart';
@@ -38,11 +37,11 @@ class VotesPart extends StatelessWidget {
       int dir = cubit.getVotingType();
       return [
         Material(
-          key: const Key('upvoteButton'),
           color: Colors.transparent,
           clipBehavior: Clip.antiAlias,
           shape: const CircleBorder(),
           child: IconButton(
+            key: const Key('upvoteButton'),
             onPressed: () async {
               PostCubit.get(context)
                   .vote(
@@ -64,7 +63,6 @@ class VotesPart extends StatelessWidget {
           ),
         ),
         Text(
-          key: const Key('votesNumber-text'),
           cubit.getVotesCount().toString(),
           style: TextStyle(
             color: dir == 0
@@ -76,11 +74,11 @@ class VotesPart extends StatelessWidget {
           ),
         ),
         Material(
-          key: const Key('downvoteButton'),
           color: Colors.transparent,
           clipBehavior: Clip.antiAlias,
           shape: const CircleBorder(),
           child: IconButton(
+            key: const Key('downvoteButton'),
             onPressed: () {
               cubit.vote(direction: -1).then((value) {
                 PostNotifierCubit.get(context).changedPost();

@@ -16,11 +16,11 @@ import '../../cubit/add_post.dart/cubit/add_post_cubit.dart';
 /// TrimmerView that can edit the video
 
 class TrimmerView extends StatefulWidget {
-  // /// [file] Video file
-  // final File file;
+  /// [file] Video file
+  final File file;
   static const routeName = '/trimmerView_screen_route';
 
-  const TrimmerView({super.key});
+  const TrimmerView(this.file, {super.key});
 
   @override
   _TrimmerViewState createState() => _TrimmerViewState();
@@ -35,16 +35,14 @@ class _TrimmerViewState extends State<TrimmerView> {
   bool _isPlaying = false;
   bool _progressVisibility = false;
 
-  bool _isLoaded = false;
-
-  // late VideoPlayerController _controller;
+  late VideoPlayerController _controller;
 
   Future<String?> _saveVideo(AddPostCubit addPostCubit) async {
     setState(() {
       _progressVisibility = true;
     });
 
-    String? value;
+    String? _value;
 
     /// This function save video to file
     await _trimmer.saveTrimmedVideo(
@@ -52,41 +50,34 @@ class _TrimmerViewState extends State<TrimmerView> {
         endValue: _endValue,
         onSave: ((outputPath) {
           _progressVisibility = false;
-          value = outputPath;
-          if (value != null) {
-            addPostCubit.addVideo(XFile(value!));
+          _value = outputPath;
+          if (_value != null) {
+            addPostCubit.addVideo(XFile(_value!));
             // GlobalVarible.video.notifyListeners();
           } else {
             print('Error To Save Video');
           }
         }));
 
-    return value;
+    return _value;
   }
 
-  void _loadVideo(File file) {
-    _trimmer.loadVideo(videoFile: file);
+  void _loadVideo() {
+    _trimmer.loadVideo(videoFile: widget.file);
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
+  @override
+  void initState() {
+    super.initState();
 
-  //   _controller = VideoPlayerController.file(widget.file);
+    _controller = VideoPlayerController.file(widget.file);
 
-  //   _loadVideo();
-  // }
+    _loadVideo();
+  }
 
   @override
   Widget build(BuildContext context) {
     final addPostCubit = BlocProvider.of<AddPostCubit>(context);
-    // print('Video PAth = ${addPostCubit.vidoePath}');
-    // _controller = VideoPlayerController.file(file);
-    if (!_isLoaded) {
-      File file = File(addPostCubit.vidoePath!);
-      _loadVideo(file);
-      _isLoaded = true;
-    }
     return Scaffold(
       body: Builder(
         builder: (context) => Center(
@@ -115,9 +106,8 @@ class _TrimmerViewState extends State<TrimmerView> {
                     trimmer: _trimmer,
                     viewerHeight: 50.0,
                     viewerWidth: MediaQuery.of(context).size.width,
-                    maxVideoLength: Duration(
-                        seconds: addPostCubit
-                            .vidoeController!.value.duration.inSeconds),
+                    maxVideoLength:
+                        Duration(seconds: _controller.value.duration.inSeconds),
                     onChangeStart: (value) => _startValue = value,
                     onChangeEnd: (value) => _endValue = value,
                     onChangePlaybackState: (value) =>

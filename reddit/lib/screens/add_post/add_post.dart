@@ -28,8 +28,6 @@ class AddPost extends StatelessWidget {
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               onPressed: () {
-                addPostCubit.removeExistData();
-                addPostCubit.title.text = '';
                 Navigator.of(context).pop();
                 // because this is the first screen this button exit the app
                 // when mearge this it will not be the first screen so
@@ -47,9 +45,6 @@ class AddPost extends StatelessWidget {
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: AddPostTextField(
-                    onChanged: ((string) {
-                      addPostCubit.checkPostValidation();
-                    }),
                     controller: addPostCubit.title,
                     mltiline: false,
                     isBold: true,

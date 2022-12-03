@@ -31,7 +31,6 @@ class ContinueWithGoOrFB extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           ElevatedButton(
-              key: const Key('GoogleButton'),
               style: const ButtonStyle(
                   shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -61,7 +60,6 @@ class ContinueWithGoOrFB extends StatelessWidget {
                 ],
               )),
           ElevatedButton(
-              key: const Key('FacebookButton'),
               style: const ButtonStyle(
                   shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(15)),

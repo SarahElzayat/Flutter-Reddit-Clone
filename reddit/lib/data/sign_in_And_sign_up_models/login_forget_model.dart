@@ -1,5 +1,4 @@
 class LogInForgetModel {
-  // the type here represent whethere he forgot password or username
   String? type;
   String? username;
   String? email;

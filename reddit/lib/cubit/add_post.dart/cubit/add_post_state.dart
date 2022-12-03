@@ -32,16 +32,3 @@ class CanCreatePost extends AddPostState {
     required this.canPost,
   });
 }
-
-class EditVideo extends AddPostState {}
-
-class ImageCaptionOrLinkEdited extends AddPostState {
-  bool isChange;
-  ImageCaptionOrLinkEdited({
-    required this.isChange,
-  });
-}
-
-class PreviewImage extends AddPostState {}
-
-class PostCreated extends AddPostState {}
