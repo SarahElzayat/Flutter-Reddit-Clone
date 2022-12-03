@@ -2,12 +2,12 @@
 /// @date 9/11/2022
 /// The screen that shows the main search results with the tab bar
 import 'package:flutter/material.dart';
+import 'package:reddit/components/search_field.dart';
 import 'package:reddit/screens/search/results_comments.dart';
 import 'package:reddit/screens/search/results_communities.dart';
 import 'package:reddit/screens/search/results_media.dart';
 import 'package:reddit/screens/search/results_people.dart';
 import 'package:reddit/screens/search/results_posts.dart';
-import 'package:reddit/components/search_field.dart';
 
 class SearchResults extends StatefulWidget {
   final String searchWord;

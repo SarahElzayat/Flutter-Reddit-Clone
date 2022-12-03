@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 
+/// Class of a single Menu item
+/// it contains the icon and the text used
 class MenuItem {
   const MenuItem({
     required this.text,
@@ -19,6 +21,7 @@ class MenuItem {
   final IconData icon;
 }
 
+/// container class of all the menu items that are shown iin the dropDownList
 class MenuItems {
   static const List<MenuItem> publicItems = [save, hide, report, block];
   static const List<MenuItem> publicItemsSaved = [unsave, hide, report, block];
@@ -35,6 +38,7 @@ class MenuItems {
   static const edit = MenuItem(text: 'Edit', icon: Icons.edit);
   static const copy = MenuItem(text: 'Copy', icon: Icons.copy);
 
+  /// builds the row of the menu Item
   static Widget buildItem(MenuItem item) {
     return Row(
       children: [
@@ -50,6 +54,7 @@ class MenuItems {
     );
   }
 
+  /// exexutes the onChanged of each Item
   static onChanged(BuildContext context, MenuItem item, String postId) {
     var cubit = PostCubit.get(context);
     switch (item) {

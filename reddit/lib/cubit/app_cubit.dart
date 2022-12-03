@@ -1,23 +1,21 @@
 /// @author Sarah El-Zayat
 /// @date 9/11/2022
 /// App cubit for handling application's state management
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/networks/constant_end_points.dart';
-import 'package:reddit/networks/dio_helper.dart';
-
 import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/inbox_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/notifications_screen.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 import 'package:reddit/widgets/posts/post_upper_bar.dart';
-import '../components/helpers/color_manager.dart';
 
+import '../components/helpers/color_manager.dart';
 import '../data/post_model/post_model.dart';
 import '../data/temp_data/tmp_data.dart';
+import '../networks/constant_end_points.dart';
+import '../networks/dio_helper.dart';
 import '../screens/bottom_navigation_bar_screens/add_post_screen.dart';
 import '../widgets/posts/post_widget.dart';
 

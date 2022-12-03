@@ -1,21 +1,21 @@
 /// @author Abdelaziz Salah
 /// @date 11/11/20222
-
 import 'package:flutter/material.dart';
-import 'package:reddit/screens/sign_in_and_sign_up_screen/web/continue_sign_up_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
 import '../../../components/button.dart';
-import '../../../components/helpers/color_manager.dart';
 import '../../../components/default_text_field.dart';
-import '../../../screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
+import '../../../components/helpers/color_manager.dart';
 import '../../../data/sign_in_And_sign_up_models/validators.dart';
+import '../../../screens/sign_in_and_sign_up_screen/web/continue_sign_up_screen.dart';
+import '../../../screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/continue_with_fb_or_google_web.dart';
 
 /// this is a screen for rendering the app on the web
 class SignUpForWebScreen extends StatefulWidget {
   const SignUpForWebScreen({super.key});
 
-  static const routeName = '/sign_un_for_web_screen_route';
+  static const routeName = '/sign_up_for_web_screen_route';
 
   @override
   State<SignUpForWebScreen> createState() => _SignUpForWebScreenState();
@@ -23,6 +23,30 @@ class SignUpForWebScreen extends StatefulWidget {
 
 class _SignUpForWebScreenState extends State<SignUpForWebScreen> {
   TextEditingController emailController = TextEditingController();
+
+  /// this function should validate that the input to the textfields
+  /// are valid, else it will show a snackbar to the user
+  /// telling him that he has inserted something wrong.
+  bool validTextFields() {
+    if (!_myKey.currentState!.validate()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            backgroundColor: ColorManager.red,
+            content: Text('Email is invalid')),
+      );
+      return false;
+    }
+    return true;
+  }
+
+  /// this function is used to validate that the user has inserted the right
+  /// input formate and also send the request to the api
+  void loginChecker() {
+    if (!validTextFields()) return;
+
+    Navigator.of(context).pushReplacementNamed(ContinueSignUpScreen.routeName,
+        arguments: emailController.text);
+  }
 
   final _myKey = GlobalKey<FormState>();
   @override
@@ -104,38 +128,27 @@ class _SignUpForWebScreenState extends State<SignUpForWebScreen> {
                                     return null;
                                   }
                                 },
+                                onChanged: (p0) => setState(() {}),
                                 formController: emailController,
                                 labelText: 'Email',
                               ),
                               Button(
+                                  isPressable: emailController.text.isNotEmpty,
                                   key: const Key('ContinueButton'),
                                   textFontWeight: FontWeight.normal,
                                   text: 'CONTINUE',
-                                  textColor: ColorManager.white,
-                                  backgroundColor: ColorManager.hoverOrange,
+                                  borderColor: emailController.text.isEmpty
+                                      ? ColorManager.grey
+                                      : ColorManager.upvoteRed,
+                                  textColor: emailController.text.isNotEmpty
+                                      ? ColorManager.white
+                                      : ColorManager.eggshellWhite,
+                                  backgroundColor: ColorManager.upvoteRed,
                                   buttonWidth: 25.w,
                                   borderRadius: 5,
                                   buttonHeight: 40,
                                   textFontSize: 14,
-                                  // TODO: This Logic Should be separated in separate function
-                                  onPressed: () {
-                                    if (!_myKey.currentState!.validate()) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                        content: Text('invalid mail'),
-                                        backgroundColor: ColorManager.red,
-                                      ));
-                                    }
-
-                                    if (Validator.validEmailValidator(
-                                        emailController.text)) {
-                                      print('validMail');
-                                    } else {
-                                      print('inValidMail');
-                                    }
-                                    Navigator.of(context).pushReplacementNamed(
-                                        ContinueSignUpScreen.routeName);
-                                  }),
+                                  onPressed: loginChecker),
                               Container(
                                 margin: const EdgeInsets.only(top: 10),
                                 child: Row(

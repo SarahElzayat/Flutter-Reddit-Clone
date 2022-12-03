@@ -1,25 +1,26 @@
 /// @author Abdelaziz Salah
 /// @date 3/11/2022
 /// this is the screen of creating new account for the users.
-
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
+import '../../../components/default_text_field.dart';
+import '../../../components/helpers/color_manager.dart';
+import '../../../data/sign_in_And_sign_up_models/sign_up_model.dart';
+import '../../../data/sign_in_And_sign_up_models/validators.dart';
+import '../../../networks/constant_end_points.dart';
+import '../../../networks/dio_helper.dart';
 import '../../../screens/sign_in_and_sign_up_screen/mobile/sign_up_screen.dart';
 import '../../../shared/local/shared_preferences.dart';
+import '../../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
+import '../../../widgets/sign_in_and_sign_up_widgets/continue_button.dart';
+import '../../../widgets/sign_in_and_sign_up_widgets/continue_with_facebook_or_google.dart';
 import '../../forget_user_name_and_password/mobile/forget_password_screen.dart';
 import '../../main_screen.dart';
 import '../../to_go_screens/privacy_and_policy.dart';
 import '../../to_go_screens/user_agreement_screen.dart';
-import '../../../data/sign_in_And_sign_up_models/validators.dart';
-import '../../../widgets/sign_in_and_sign_up_widgets/continue_button.dart';
-import '../../../widgets/sign_in_and_sign_up_widgets/continue_with_facebook_or_google.dart';
-import '../../../data/sign_in_And_sign_up_models/sign_up_model.dart';
-import '../../../networks/constant_end_points.dart';
-import '../../../networks/dio_helper.dart';
-import '../../../components/default_text_field.dart';
-import '../../../components/helpers/color_manager.dart';
-import '../../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -132,9 +133,9 @@ class _SignInScreenState extends State<SignInScreen> {
         child: Form(
           key: _formKey,
           child: Container(
-            /// the height of the screen should be the whole height of the screen
-            /// but without the height of the app bar and without the padding of
-            /// the down drag top of the phone itself
+            // the height of the screen should be the whole height of the screen
+            // but without the height of the app bar and without the padding of
+            // the down drag top of the phone itself
             height: mediaQuery.size.height -
                 customAppBar.preferredSize.height -
                 mediaQuery.padding.top,
@@ -147,7 +148,6 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: Text(
                     textAlign: TextAlign.center,
                     'Login To Reddit',
-                    // style: theme.textTheme.titleMedium,
                     style: TextStyle(
                       fontSize: textScaleFactor * 24,
                       fontWeight: FontWeight.bold,
@@ -175,8 +175,6 @@ class _SignInScreenState extends State<SignInScreen> {
                         },
                         keyboardType: TextInputType.emailAddress,
                         onChanged: (myString) => textChanger(myString),
-
-                        /// 7amada
                         formController: usernameController,
                         labelText: 'Username',
                         icon: usernameController.text.isNotEmpty
@@ -223,7 +221,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
 
-                /// the bottom part of the code
+                // the bottom part of the code
                 Expanded(
                   flex: 2,
                   child: Column(

@@ -1,9 +1,8 @@
 ///@author Yasmine Ghanem
 ///@date 8/11/2022
 ///Create community window for web
-
 import 'package:flutter/material.dart';
-import 'package:reddit/Components/Button.dart';
+import 'package:reddit/components/button.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/components/square_text_field.dart';
@@ -16,7 +15,7 @@ class CreateCommunityWeb extends StatefulWidget {
   State<CreateCommunityWeb> createState() => _CreateCommunityWindow();
 }
 
-/// this widget creates a window to create a community in the web.  
+/// this widget creates a window to create a community in the web.
 class _CreateCommunityWindow extends State<CreateCommunityWeb> {
   CommunityTypes? _chosenCommunityType = CommunityTypes.public;
   bool? isAdultContent = false;

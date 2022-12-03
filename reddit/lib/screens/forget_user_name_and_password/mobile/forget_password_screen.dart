@@ -5,7 +5,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:reddit/data/sign_in_And_sign_up_models/validators.dart';
-import 'package:reddit/screens/to_go_screens/having_trouble_screen.dart';
+import '../../../screens/to_go_screens/having_trouble_screen.dart';
 import '../../sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/continue_button.dart';
 import '../../../data/sign_in_And_sign_up_models/login_forget_model.dart';
@@ -33,7 +33,58 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
   bool isEmptyEmail = true;
 
-  final _formkey = GlobalKey<FormState>();
+  /// this is the key for the implemented form, in order to be able to apply
+  /// some validatations in the forms and show some animations.
+  final _formKey = GlobalKey<FormState>();
+
+  /// this is a utility function used to check whethere
+  /// the user has inserted correct formate for the mail or not
+  /// @return [True] if the formate of the email is correct
+  /// @return [False] otherwise
+  bool _validateTextFields() {
+    if (!_formKey.currentState!.validate()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            backgroundColor: ColorManager.red,
+            content: Text(
+                'Try inserting a valid and existing email address and user name.')),
+      );
+      return false;
+    }
+    return true;
+  }
+
+  /// this method is responsible for sending the request to the backend
+  /// to send a mail to the user in order to restore his username.
+  void sendRequest() {
+    if (!_validateTextFields()) {
+      return;
+    } else {
+      // creating a model
+      final user = LogInForgetModel(
+        email: emailController.text,
+        username: usernameController.text,
+        type: 'password',
+      );
+
+      // sending a request
+      DioHelper.postData(path: loginForgetUserName, data: user.toJson())
+          .then((response) {
+        // if the request has been sent successfully?
+        if (response.statusCode == 200) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Email has been sent!'),
+            backgroundColor: ColorManager.green,
+          ));
+        }
+      }).catchError((error) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('this email or username doesn\'t exists'),
+          backgroundColor: ColorManager.red,
+        ));
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +101,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       appBar: customAppBar,
       body: SingleChildScrollView(
         child: Form(
-          key: _formkey,
+          key: _formKey,
           child: Container(
             padding: const EdgeInsets.all(14),
             decoration: const BoxDecoration(color: ColorManager.darkGrey),
@@ -81,6 +132,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                           }
                           return null;
                         },
+                        // here if the controller detected any words i toggle the
+                        // boolean
                         onChanged: (myString) {
                           setState(() {
                             if (myString.isNotEmpty) {
@@ -178,26 +231,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   ),
                 ),
                 ContinueButton(
-                    key: const Key('ContinueButton'),
+                    buttonContent: 'Email me',
+                    key: const Key('EmailMeButton'),
                     isPressable: usernameController.text.isNotEmpty &&
                         emailController.text.isNotEmpty,
-                    //TODO: This logic should be written in a separte function
-                    appliedFunction: () {
-                      if (Validator.validEmailValidator(emailController.text) &&
-                          Validator.validUserName(usernameController.text)) {
-                        final user = LogInForgetModel(
-                            type: 'password',
-                            username: usernameController.text,
-                            email: emailController.text);
-                        DioHelper.postData(
-                                path: loginForgetPassword, data: user.toJson())
-                            .then((returnVal) {
-                          print(returnVal.toString());
-                        });
-                      } else {
-                        print('something went wrong');
-                      }
-                    })
+                    appliedFunction: sendRequest)
               ],
             ),
           ),

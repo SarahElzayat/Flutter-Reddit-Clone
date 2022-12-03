@@ -17,3 +17,5 @@ const List<IconData> selectedIcons = [
 ];
 
 const List<String> postTypes = ['image', 'video', 'hybrid', 'link', 'hybrid'];
+
+String? token;

@@ -1,17 +1,15 @@
 /// ModelTrimmer Screen
 /// @author Haitham Mohamed
 /// @date 4/11/2022
-
 import 'dart:io';
-import '../../components/helpers/color_manager.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
-import 'package:video_trimmer/video_trimmer.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:video_trimmer/video_trimmer.dart';
 
-import '../../cubit/add_post.dart/cubit/add_post_cubit.dart';
+import '../../components/helpers/color_manager.dart';
+import '../../cubit/add_post/cubit/add_post_cubit.dart';
 
 /// TrimmerView that can edit the video
 

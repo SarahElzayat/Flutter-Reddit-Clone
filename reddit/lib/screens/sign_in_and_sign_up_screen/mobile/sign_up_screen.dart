@@ -1,24 +1,24 @@
 /// @author Abdelaziz Salah
 /// @date 3/11/2022
 /// this is the screen of creating new account for the users.
-
 import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
+
+import '../../../components/default_text_field.dart';
+import '../../../components/helpers/color_manager.dart';
+import '../../../data/sign_in_And_sign_up_models/sign_up_model.dart';
+import '../../../data/sign_in_And_sign_up_models/validators.dart';
+import '../../../networks/constant_end_points.dart';
+import '../../../networks/dio_helper.dart';
+import '../../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
+import '../../../widgets/sign_in_and_sign_up_widgets/continue_button.dart';
+import '../../../widgets/sign_in_and_sign_up_widgets/continue_with_facebook_or_google.dart';
 import '../../main_screen.dart';
 import '../../to_go_screens/privacy_and_policy.dart';
 import '../../to_go_screens/user_agreement_screen.dart';
 import 'sign_in_screen.dart';
-import '../../../data/sign_in_And_sign_up_models/validators.dart';
-import '../../../widgets/sign_in_and_sign_up_widgets/continue_button.dart';
-import '../../../widgets/sign_in_and_sign_up_widgets/continue_with_facebook_or_google.dart';
-import '../../../data/sign_in_And_sign_up_models/sign_up_model.dart';
-import '../../../networks/constant_end_points.dart';
-import '../../../networks/dio_helper.dart';
-import '../../../components/default_text_field.dart';
-import '../../../components/helpers/color_manager.dart';
-import '../../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});

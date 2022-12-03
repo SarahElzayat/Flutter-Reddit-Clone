@@ -4,13 +4,10 @@
 
 import 'dart:math';
 
-import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional_switch.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:url_launcher/url_launcher.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_state.dart';
