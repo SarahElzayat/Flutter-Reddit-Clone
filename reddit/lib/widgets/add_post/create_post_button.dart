@@ -3,12 +3,12 @@
 /// @date 4/11/2022
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/Screens/add_post/community_search.dart';
-import 'package:reddit/Screens/add_post/post.dart';
+import 'package:reddit/screens/add_post/community_search.dart';
+import 'package:reddit/screens/add_post/post.dart';
 import 'package:reddit/cubit/add_post/cubit/add_post_cubit.dart';
 
-import '../../Components/button.dart';
-import '../../Components/Helpers/color_manager.dart';
+import '../../components/button.dart';
+import '../../components/helpers/color_manager.dart';
 import 'package:flutter/material.dart';
 
 /// Button that navigate to the post screen after check the validation

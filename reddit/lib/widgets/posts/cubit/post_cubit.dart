@@ -49,15 +49,20 @@ class PostCubit extends Cubit<PostState> {
     }
     int newDir = postState + direction;
 
-    return DioHelper.postData(
-      path: '/vote',
-      data: {
-        'id': post.id,
-        'direction': newDir,
-        'type': 'post',
-      },
-      token: token,
-    ).then((value) {
+    return mockDio.post('$baseUrl/vote', data: {
+      'id': post.id,
+      'direction': newDir,
+      'type': 'post',
+    }
+        // return DioHelper.postData(
+        //   path: '/vote',
+        //   data: {
+        //     'id': post.id,
+        //     'direction': newDir,
+        //     'type': 'post',
+        //   },
+        //   token: token,
+        ).then((value) {
       if (value.statusCode == 200) {
         post.votingType = (post.votingType ?? 0) + direction;
         post.votes = (post.votes ?? 0) + direction;
@@ -100,7 +105,7 @@ class PostCubit extends Cubit<PostState> {
   /// this function is used to block the author of a post
   Future blockUser() {
     return mockDio.post(
-      '$baseUrl/block',
+      '$baseUrl/block-user',
       data: {
         'id': post.id,
       },

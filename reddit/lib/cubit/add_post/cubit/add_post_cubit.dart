@@ -5,12 +5,12 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:reddit/Screens/main_screen.dart';
+import 'package:reddit/screens/main_screen.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
-import '../../../Components/Button.dart';
-import '../../../Components/Helpers/color_manager.dart';
+import '../../../components/Button.dart';
+import '../../../components/helpers/color_manager.dart';
 import '../../../constants/constants.dart';
 import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
@@ -418,6 +418,7 @@ class AddPostCubit extends Cubit<AddPostState> {
               ],
             )));
   }
+
   /// Upload Post To Backend
   Future createPost(BuildContext context) async {
     Map<String, dynamic> body = {};

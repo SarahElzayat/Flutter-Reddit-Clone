@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-import 'package:reddit/Components/Button.dart';
-import 'package:reddit/Components/Helpers/color_manager.dart';
+import 'package:reddit/components/Button.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/widgets/add_post/add_post_textfield.dart';
 
 import '../../cubit/add_post/cubit/add_post_cubit.dart';

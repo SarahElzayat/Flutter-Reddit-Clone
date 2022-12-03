@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/Components/Helpers/color_manager.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
 
 class SavedScreen extends StatefulWidget {
   const SavedScreen({super.key});

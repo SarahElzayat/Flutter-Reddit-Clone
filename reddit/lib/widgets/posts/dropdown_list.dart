@@ -5,7 +5,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/Data/post_model/post_model.dart';
+import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'cubit/post_state.dart';

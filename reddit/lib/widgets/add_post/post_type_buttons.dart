@@ -2,7 +2,7 @@
 /// @author Haitham Mohamed
 /// @date 4/11/2022
 
-import '../../Screens/add_post/image_screen.dart';
+import '../../screens/add_post/image_screen.dart';
 import '../../components/button.dart';
 import '../../components/helpers/color_manager.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

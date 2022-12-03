@@ -3,7 +3,7 @@
 ///Create Community Screen
 
 import 'package:flutter/material.dart';
-import 'package:reddit/Screens/main_screen.dart';
+import 'package:reddit/screens/main_screen.dart';
 import 'package:reddit/components/bottom_sheet.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
@@ -13,7 +13,7 @@ import '../../components/square_text_field.dart';
 import '../../components/button.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../Data/create_community_model/create_community_model.dart';
+import '../../data/create_community_model/create_community_model.dart';
 
 ///To test create community for android call [CreateCommunityScreen] in main
 class CreateCommunityScreen extends StatefulWidget {
