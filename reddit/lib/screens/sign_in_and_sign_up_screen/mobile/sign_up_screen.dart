@@ -68,7 +68,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         email: emailController.text,
         password: passwordController.text,
         username: usernameController.text);
-
+    print(baseUrl);
     DioHelper.postData(path: signUp, data: user.toJson()).then((value) {
       if (value.statusCode == 201) {
         CacheHelper.putData(key: 'token', value: value.data['token']);
@@ -82,6 +82,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       error = error as DioError;
       // checking for our main error, which is that the user trying to insert
       // username which is already taken
+      print(error.message);
+
       if (error.message.toString() == 'Http status error [400]') {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

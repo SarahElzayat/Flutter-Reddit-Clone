@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
+import 'package:reddit/shared/local/shared_preferences.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../data/post_model/post_model.dart';
 import '../../components/helpers/color_manager.dart';
