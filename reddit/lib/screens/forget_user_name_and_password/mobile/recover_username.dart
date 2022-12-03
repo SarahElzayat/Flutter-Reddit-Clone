@@ -125,6 +125,7 @@ class _RecoverUserNameState extends State<RecoverUserName> {
                   width: mediaQuery.size.width,
                   padding: const EdgeInsets.all(6),
                   child: ContinueButton(
+                      buttonContent: 'Email me',
                       key: const Key('ContinueButton'),
                       isPressable: emailController.text.isNotEmpty,
                       appliedFunction: () {

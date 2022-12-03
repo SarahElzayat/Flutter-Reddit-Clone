@@ -5,7 +5,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:reddit/data/sign_in_And_sign_up_models/validators.dart';
-import 'package:reddit/screens/to_go_screens/having_trouble_screen.dart';
+import '../../../screens/to_go_screens/having_trouble_screen.dart';
 import '../../sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/continue_button.dart';
 import '../../../data/sign_in_And_sign_up_models/login_forget_model.dart';
@@ -33,6 +33,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
   bool isEmptyEmail = true;
 
+  /// this is the key for the implemented form, in order to be able to apply
+  /// some validatations in the forms and show some animations.
   final _formkey = GlobalKey<FormState>();
 
   @override
@@ -81,6 +83,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                           }
                           return null;
                         },
+                        // here if the controller detected any words i toggle the
+                        // boolean
                         onChanged: (myString) {
                           setState(() {
                             if (myString.isNotEmpty) {
@@ -178,6 +182,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   ),
                 ),
                 ContinueButton(
+                    buttonContent: 'Email me',
                     key: const Key('ContinueButton'),
                     isPressable: usernameController.text.isNotEmpty &&
                         emailController.text.isNotEmpty,
