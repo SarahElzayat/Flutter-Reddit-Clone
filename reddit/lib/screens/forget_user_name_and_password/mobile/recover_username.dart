@@ -3,7 +3,6 @@
 /// this is the screen of recovering the username
 ///  if the user forgot his own username
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/data/sign_in_And_sign_up_models/validators.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/continue_button.dart';
