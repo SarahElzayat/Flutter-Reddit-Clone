@@ -217,7 +217,7 @@ class _PostUpperBarState extends State<PostUpperBar> {
           ),
         ),
         Text(
-          timeago.format(DateTime.parse(timeAgo), locale: 'en_short'),
+          timeago.format(DateTime.tryParse(timeAgo)??DateTime.now(), locale: 'en_short'),
           style: const TextStyle(
             color: ColorManager.greyColor,
             fontSize: 15,

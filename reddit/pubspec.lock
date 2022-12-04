@@ -193,6 +193,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.0"
+  conditional_builder:
+    dependency: "direct main"
+    description:
+      name: conditional_builder
+      sha256: e9e388550c03c03b65adc304c95943811e5b53f5339c62cec1982cf4602e5c70
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   conditional_builder_null_safety:
     dependency: "direct main"
     description:
@@ -1565,5 +1573,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.18.2 <4.0.0"
+  dart: ">=2.18.2 <3.0.0"
   flutter: ">=3.0.0"

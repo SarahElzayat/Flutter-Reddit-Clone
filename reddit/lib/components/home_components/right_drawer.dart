@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 import '../../cubit/app_cubit.dart';
+import '../../screens/history/history_screen.dart';
 import '../../screens/to_be_done_screen.dart';
 import '../helpers/color_manager.dart';
 import 'components.dart';
@@ -17,7 +18,7 @@ class RightDrawer extends StatelessWidget {
       genericTextButton(context, Icons.add, 'Create a community', null),
       genericTextButton(context, Icons.bookmark_border_rounded, 'Saved', null),
       genericTextButton(
-          context, Icons.history_toggle_off_rounded, 'History', const HistoryScreen()),
+          context, Icons.history_toggle_off_rounded, 'History',  const HistoryScreen()),
       genericTextButton(context, Icons.pending_outlined, 'Pending Posts', null),
       genericTextButton(context, Icons.drafts_outlined, 'Drafts', null),
     ];
