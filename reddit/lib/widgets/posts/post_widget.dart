@@ -171,7 +171,8 @@ class PostWidget extends StatelessWidget {
                           ),
                       ],
                     ),
-                    _lowerPart(isWeb)
+                    _lowerPart(isWeb),
+                    _modRow(),
                   ],
                 ),
               );
@@ -193,6 +194,82 @@ class PostWidget extends StatelessWidget {
               post: post,
               isWeb: isWeb,
               pad: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10)),
+        ),
+      ],
+    );
+  }
+
+  Widget _modRow() {
+    return Row(
+      children: [
+        // a row of approve and delete icons
+        // that are only visible to mods
+        Material(
+          color: Colors.transparent,
+          clipBehavior: Clip.antiAlias,
+          shape: const CircleBorder(),
+          child: IconButton(
+            onPressed: () {},
+            constraints: const BoxConstraints(),
+            padding: const EdgeInsets.all(0),
+            icon: const Icon(
+              Icons.check,
+              color: ColorManager.greyColor,
+            ),
+            iconSize: min(5.5.w, 30),
+          ),
+        ),
+        SizedBox(
+          width: 2.w,
+        ),
+        Material(
+          color: Colors.transparent,
+          clipBehavior: Clip.antiAlias,
+          shape: const CircleBorder(),
+          child: IconButton(
+            onPressed: () {},
+            constraints: const BoxConstraints(),
+            padding: const EdgeInsets.all(0),
+            icon: const Icon(
+              Icons.block,
+              color: ColorManager.greyColor,
+            ),
+            iconSize: min(5.5.w, 30),
+          ),
+        ),
+        SizedBox(
+          width: 2.w,
+        ),
+        Material(
+          color: Colors.transparent,
+          clipBehavior: Clip.antiAlias,
+          shape: const CircleBorder(),
+          child: IconButton(
+            onPressed: () {},
+            constraints: const BoxConstraints(),
+            padding: const EdgeInsets.all(0),
+            icon: const Icon(
+              Icons.delete,
+              color: ColorManager.greyColor,
+            ),
+            iconSize: min(5.5.w, 30),
+          ),
+        ),
+        const Spacer(),
+        Material(
+          color: Colors.transparent,
+          clipBehavior: Clip.antiAlias,
+          shape: const CircleBorder(),
+          child: IconButton(
+            onPressed: () {},
+            constraints: const BoxConstraints(),
+            padding: const EdgeInsets.all(0),
+            icon: const Icon(
+              Icons.menu,
+              color: ColorManager.greyColor,
+            ),
+            iconSize: min(5.5.w, 30),
+          ),
         ),
       ],
     );

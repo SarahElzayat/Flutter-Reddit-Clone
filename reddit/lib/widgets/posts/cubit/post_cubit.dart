@@ -2,7 +2,7 @@
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/components/helpers/mocks/functions.dart';
+import 'package:reddit/components/helpers/mocks/mock_functions.dart';
 import 'package:reddit/data/post_model/post_model.dart';
 
 import '../../../networks/constant_end_points.dart';

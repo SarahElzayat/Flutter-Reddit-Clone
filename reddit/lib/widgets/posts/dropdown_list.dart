@@ -57,7 +57,7 @@ class DropDownList extends StatelessWidget {
               ...getList().map(
                 (item) => DropdownMenuItem<mi.MenuItem>(
                   value: item,
-                  child: mi.MenuItems.buildItem(item),
+                  child: mi.MenuItems.buildDropMenuItem(item),
                 ),
               ),
             ],

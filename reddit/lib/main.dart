@@ -7,7 +7,7 @@ import 'cubit/post_notifier/post_notifier_cubit.dart';
 import 'screens/main_screen.dart';
 import 'screens/sign_in_and_sign_up_screen/mobile/sign_In_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'components/helpers/mocks/functions.dart';
+import 'components/helpers/mocks/mock_functions.dart';
 import 'cubit/add_post/cubit/add_post_cubit.dart';
 import 'data/routes.dart';
 import 'networks/dio_helper.dart';
