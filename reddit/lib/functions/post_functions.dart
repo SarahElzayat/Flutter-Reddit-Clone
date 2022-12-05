@@ -133,10 +133,11 @@ Future<void> showModOperations({
         }
       }).catchError((err) {
         err = err as DioError;
+        print(err);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: ColorManager.red,
             content:
-                Text('Sorry, please try again later\nerror: ${err.message}')));
+                Text('Sorry, please try again later\nError: ${err.response}')));
       });
 
       break;

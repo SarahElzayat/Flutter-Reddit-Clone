@@ -11,6 +11,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:reddit/components/helpers/enums.dart';
+import 'package:reddit/functions/post_functions.dart';
 import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
 import 'package:reddit/widgets/posts/post_lower_bar.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -172,7 +173,7 @@ class PostWidget extends StatelessWidget {
                       ],
                     ),
                     _lowerPart(isWeb),
-                    _modRow(),
+                    _modRow(context),
                   ],
                 ),
               );
@@ -199,7 +200,7 @@ class PostWidget extends StatelessWidget {
     );
   }
 
-  Widget _modRow() {
+  Widget _modRow(context) {
     return Row(
       children: [
         // a row of approve and delete icons
@@ -261,7 +262,9 @@ class PostWidget extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           shape: const CircleBorder(),
           child: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              showModOperations(context: context, post: post);
+            },
             constraints: const BoxConstraints(),
             padding: const EdgeInsets.all(0),
             icon: const Icon(
