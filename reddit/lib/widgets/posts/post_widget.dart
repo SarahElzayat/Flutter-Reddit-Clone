@@ -67,7 +67,7 @@ class PostWidget extends StatelessWidget {
               return Container(
                 color: ColorManager.darkGreyBlack,
                 // margin: const EdgeInsets.symmetric(vertical: 5),
-                padding: const EdgeInsets.symmetric(vertical: 5),
+                padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
                 // a Row that contains the votes column and post
                 child: Column(
                   children: [
