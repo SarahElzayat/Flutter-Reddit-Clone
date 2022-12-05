@@ -9,6 +9,7 @@ import 'package:reddit/widgets/posts/post_widget.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_state.dart';
 import '../../data/post_model/post_model.dart';
+import '../../widgets/comments/comment.dart';
 import '../../widgets/posts/dropdown_list.dart';
 import '../../widgets/posts/post_upper_bar.dart';
 
@@ -67,6 +68,7 @@ class _PostScreenState extends State<PostScreen> {
               outsideScreen: false,
               upperRowType: widget.upperRowType,
             ),
+            Comment(),
           ],
         ),
       ),

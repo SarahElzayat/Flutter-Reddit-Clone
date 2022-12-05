@@ -1,6 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../components/helpers/color_manager.dart';
+import '../cubit/post_notifier/post_notifier_state.dart';
 import '../data/post_model/post_model.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/data/mod_in_post_models/approve_model.dart';
@@ -13,8 +18,66 @@ import 'package:reddit/data/mod_in_post_models/unsticky_post_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
+import 'package:timeago/timeago.dart' as timeago;
+
+import '../widgets/posts/dropdown_list.dart';
 
 enum ModOPtions { spoiler, nsfw, lock, unsticky, remove, spam, approve }
+
+BlocBuilder<PostNotifierCubit, PostNotifierState> dropDownDots(post) {
+  return BlocBuilder<PostNotifierCubit, PostNotifierState>(
+    builder: (context, state) {
+      return DropDownList(
+        postId: post.id!,
+        itemClass:
+            (post.saved ?? true) ? ItemsClass.publicSaved : ItemsClass.public,
+      );
+    },
+  );
+}
+
+CircleAvatar subredditAvatar({small = false}) {
+  return CircleAvatar(
+    radius: small ? min(3.w, 15) : min(5.5.w, 30),
+    backgroundColor: Colors.transparent,
+    backgroundImage: const NetworkImage(
+        'https://styles.redditmedia.com/t5_2qh87/styles/communityIcon_ub69d1lpjlf51.png?width=256&s=920c352b6d0c69518b6978ba8b456176a8d63c25'),
+  );
+}
+
+Widget singleRow({
+  bool sub = false,
+  bool showIcon = false,
+  bool showDots = true,
+  required PostModel post,
+}) {
+  return Row(
+    children: [
+      if (showIcon) subredditAvatar(small: true),
+      if (showIcon)
+        SizedBox(
+          width: min(5.w, 0.2.dp),
+        ),
+      Text(
+        '${sub ? 'r' : 'u'}/${post.postedBy} • ',
+        style: const TextStyle(
+          color: ColorManager.greyColor,
+          fontSize: 15,
+        ),
+      ),
+      Text(
+        timeago.format(DateTime.tryParse(post.postedAt ?? '') ?? DateTime.now(),
+            locale: 'en_short'),
+        style: const TextStyle(
+          color: ColorManager.greyColor,
+          fontSize: 15,
+        ),
+      ),
+      if (showIcon) const Spacer(),
+      if (showDots) dropDownDots(post)
+    ],
+  );
+}
 
 Widget buildModItem(icon, text, {bool disabled = false}) {
   return Row(
@@ -133,7 +196,6 @@ Future<void> showModOperations({
         }
       }).catchError((err) {
         err = err as DioError;
-        print(err);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: ColorManager.red,
             content:

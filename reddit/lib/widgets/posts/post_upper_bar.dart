@@ -7,13 +7,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional_switch.dart';
-import 'package:timeago/timeago.dart' as timeago;
 import '../../components/helpers/color_manager.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_state.dart';
 import '../../data/post_model/post_model.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'dropdown_list.dart';
+import '../../functions/post_functions.dart';
 
 bool isjoined = true;
 
@@ -56,18 +55,16 @@ class _PostUpperBarState extends State<PostUpperBar> {
           },
           caseBuilders: {
             ShowingOtions.onlyUser: (ctx) {
-              return _singleRow(
-                  name: widget.post.postedBy!,
-                  timeAgo: widget.post.postedAt!,
+              return singleRow(
                   sub: false,
-                  showIcon: true);
+                  showIcon: true,
+                  post: widget.post);
             },
             ShowingOtions.onlySubreddit: (_) {
-              return _singleRow(
-                  name: widget.post.subreddit!,
-                  timeAgo: widget.post.postedAt!,
+              return singleRow(
                   sub: true,
-                  showIcon: true);
+                  showIcon: true,
+                  post: widget.post);
             },
             ShowingOtions.both: (_) {
               return _bothRows();
@@ -111,10 +108,10 @@ class _PostUpperBarState extends State<PostUpperBar> {
                   fontSize: 15,
                 ),
               ),
-              _singleRow(
-                  name: widget.post.postedBy ?? '',
-                  timeAgo: widget.post.postedAt ?? '',
-                  sub: false),
+              singleRow(
+                  sub: false,
+                  showDots: false,
+                  post: widget.post),
             ],
           ),
           const Spacer(),
@@ -136,31 +133,9 @@ class _PostUpperBarState extends State<PostUpperBar> {
               ),
             )
           else if (widget.outSide)
-            dropDownDots(),
+            dropDownDots(widget.post),
         ],
       ),
-    );
-  }
-
-  BlocBuilder<PostNotifierCubit, PostNotifierState> dropDownDots() {
-    return BlocBuilder<PostNotifierCubit, PostNotifierState>(
-      builder: (context, state) {
-        return DropDownList(
-          postId: widget.post.id!,
-          itemClass: (widget.post.saved ?? true)
-              ? ItemsClass.publicSaved
-              : ItemsClass.public,
-        );
-      },
-    );
-  }
-
-  CircleAvatar subredditAvatar({small = false}) {
-    return CircleAvatar(
-      radius: small ? min(3.w, 15) : min(5.5.w, 30),
-      backgroundColor: Colors.transparent,
-      backgroundImage: const NetworkImage(
-          'https://styles.redditmedia.com/t5_2qh87/styles/communityIcon_ub69d1lpjlf51.png?width=256&s=920c352b6d0c69518b6978ba8b456176a8d63c25'),
     );
   }
 
@@ -191,38 +166,6 @@ class _PostUpperBarState extends State<PostUpperBar> {
                   )),
             ],
           ),
-      ],
-    );
-  }
-
-  Widget _singleRow(
-      {required String name,
-      required String timeAgo,
-      bool sub = false,
-      bool showIcon = false}) {
-    return Row(
-      children: [
-        if (showIcon) subredditAvatar(small: true),
-        if (showIcon)
-          SizedBox(
-            width: min(5.w, 0.2.dp),
-          ),
-        Text(
-          '${sub ? 'r' : 'u'}/$name • ',
-          style: const TextStyle(
-            color: ColorManager.greyColor,
-            fontSize: 15,
-          ),
-        ),
-        Text(
-          timeago.format(DateTime.parse(timeAgo), locale: 'en_short'),
-          style: const TextStyle(
-            color: ColorManager.greyColor,
-            fontSize: 15,
-          ),
-        ),
-        if (showIcon) const Spacer(),
-        if (showIcon) dropDownDots()
       ],
     );
   }
