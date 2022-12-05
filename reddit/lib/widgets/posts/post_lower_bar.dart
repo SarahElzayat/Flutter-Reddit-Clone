@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/data/mod_in_post_models/approve_model.dart';
 import 'package:reddit/data/mod_in_post_models/lock_model.dart';
 import 'package:reddit/data/mod_in_post_models/mark_nsfw_model.dart';
@@ -157,7 +158,7 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
   }
 
   Future<void> _askedToLead() async {
-    switch (await showDialog<ModOPtions>(
+    var returnedOption = await showDialog<ModOPtions>(
         context: context,
         builder: (BuildContext context) {
           return SimpleDialog(
@@ -167,21 +168,24 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
                 onPressed: () {
                   Navigator.pop(context, ModOPtions.spoiler);
                 },
-                child: _buildItem(Icons.privacy_tip_outlined, 'Mark Spoiler'),
+                child: _buildItem(Icons.privacy_tip_outlined,
+                    '${widget.post.spoiler ?? false ? 'Unmark' : 'Mark'}Spoiler'),
               ),
               SimpleDialogOption(
                 key: const Key('nsfw-option'),
                 onPressed: () {
                   Navigator.pop(context, ModOPtions.nsfw);
                 },
-                child: _buildItem(Icons.eighteen_up_rating, 'Mark NSFW'),
+                child: _buildItem(Icons.eighteen_up_rating,
+                    '${widget.post.nsfw ?? false ? 'Unmark' : 'Mark'} NSFW'),
               ),
               SimpleDialogOption(
                 key: const Key('lock-option'),
                 onPressed: () {
                   Navigator.pop(context, ModOPtions.lock);
                 },
-                child: _buildItem(Icons.lock, 'Lock Comments'),
+                child: _buildItem(Icons.lock,
+                    '${widget.post.moderation?.lock ?? false ? 'Unlock' : 'Lock'} Comments'),
               ),
               SimpleDialogOption(
                 key: const Key('unsticky-option'),
@@ -213,27 +217,33 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
               ),
             ],
           );
-        })) {
+        });
+    debugPrint(returnedOption.toString());
+    switch (returnedOption) {
       case ModOPtions.spoiler:
-        // marks a post as a spoiler to blur the post
-        () {
-          final spoiler = MarkSpoilerModel(id: widget.post.id);
-          var token = CacheHelper.getData(key: 'token') ??
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzdlYTA3Mzk2NjRjMzJjYTk4ZmRlYzYiLCJ1c2VybmFtZSI6ImFobWVkYXR0YTMzIiwiaWF0IjoxNjY5MjQyOTk1fQ.DZDPE1su3Pss2izCyv8G2WAdAlBT97mhga5ku-Y2K-U';
+        final spoilerObj = MarkSpoilerModel(id: widget.post.id);
+        String? token = CacheHelper.getData(key: 'token');
 
-          DioHelper.postData(
-                  token: '$token', path: markSpoiler, data: spoiler.toJson())
-              .then((value) {
-            if (value.statusCode == 200) {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text('Sorry please try again later')));
-            }
-          }).catchError((err) {
-            err = err as DioError;
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text('The post is now marked spoiler')));
-          });
-        };
+        String finalPath =
+            widget.post.spoiler ?? false ? unmarkSpoiler : markSpoiler;
+
+        DioHelper.patchData(
+                token: token, path: finalPath, data: spoilerObj.toJson())
+            .then((value) {
+          if (value.statusCode == 200) {
+            // togle the spoiler in the post
+            widget.post.spoiler = !widget.post.spoiler!;
+            //NOTE -  You have to update the POSTS after any change in the post that modifies the UI
+            PostNotifierCubit.get(context).NotifyPosts();
+          }
+        }).catchError((err) {
+          err = err as DioError;
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: ColorManager.red,
+              content: Text(
+                  'Sorry, please try again later\nerror: ${err.message}')));
+        });
+
         break;
       // sends request to mark a post as nsfw
       case ModOPtions.nsfw:
@@ -260,6 +270,7 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
         // locks comments on a post so no one can comment
         () {
           final lockComments = LockModel(id: widget.post.id, type: 'comment');
+
           var token = CacheHelper.getData(key: 'token') ??
               'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzdlYTA3Mzk2NjRjMzJjYTk4ZmRlYzYiLCJ1c2VybmFtZSI6ImFobWVkYXR0YTMzIiwiaWF0IjoxNjY5MjQyOTk1fQ.DZDPE1su3Pss2izCyv8G2WAdAlBT97mhga5ku-Y2K-U';
 
@@ -363,6 +374,7 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
         };
         break;
       case null:
+
         // dialog dismissed
         break;
     }

@@ -80,9 +80,13 @@ class _PostUpperBarState extends State<PostUpperBar> {
             },
           ),
 
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: _tagsRow(),
+          BlocBuilder<PostNotifierCubit, PostNotifierState>(
+            builder: (context, state) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: _tagsRow(),
+              );
+            },
           ),
 
           // The title of the post
@@ -90,8 +94,6 @@ class _PostUpperBarState extends State<PostUpperBar> {
       ),
     );
   }
-
-  
 
   SizedBox _bothRows() {
     return SizedBox(
@@ -164,7 +166,6 @@ class _PostUpperBarState extends State<PostUpperBar> {
     );
   }
 
-
   Row _tagsRow() {
     return Row(
       children: [
@@ -195,7 +196,6 @@ class _PostUpperBarState extends State<PostUpperBar> {
       ],
     );
   }
-
 
   Widget _singleRow(
       {required String name,

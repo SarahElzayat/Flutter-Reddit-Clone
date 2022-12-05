@@ -62,7 +62,7 @@ class MenuItems {
       case MenuItems.unsave:
         //Do something
         cubit.save().then((value) {
-          PostNotifierCubit.get(context).changedPost();
+          PostNotifierCubit.get(context).NotifyPosts();
         });
         break;
       case MenuItems.report:
@@ -71,13 +71,13 @@ class MenuItems {
       case MenuItems.hide:
         //Do something
         cubit.save().then((value) {
-          PostNotifierCubit.get(context).changedPost();
+          PostNotifierCubit.get(context).NotifyPosts();
         });
         break;
       case MenuItems.block:
         //Do something
         cubit.blockUser().then((value) {
-          PostNotifierCubit.get(context).changedPost();
+          PostNotifierCubit.get(context).NotifyPosts();
         });
 
         break;
@@ -87,7 +87,7 @@ class MenuItems {
       case MenuItems.delete:
         //Do something
         cubit.delete();
-        PostNotifierCubit.get(context).changedPost();
+        PostNotifierCubit.get(context).NotifyPosts();
 
         break;
     }

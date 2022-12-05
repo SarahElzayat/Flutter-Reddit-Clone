@@ -5,7 +5,7 @@ import '../post_model/image.dart';
 import '../post_model/post_model.dart';
 
 var textPost = PostModel(
-  id: '1852',
+  id: '638a5f147341d9e893f38b72',
   kind: 'text',
   title: 'this is the title',
   content: ''' This is a content <br />
@@ -33,8 +33,34 @@ var textPost = PostModel(
 
 final textPostS = textPost.toJson();
 
+var smalltextPost = PostModel(
+  id: '638a5f147341d9e893f38b72',
+  kind: 'text',
+  title: 'this is the title',
+  content: ''' This is a content <br />
+      ''',
+  subreddit: 'Flutter',
+  postedBy: 'username',
+  postedAt: '2019-08-24T14:15:22Z',
+  editedAt: '2019-08-24T14:15:22Z',
+  flair: Flair(
+    flairId: '123',
+    flairText: 'flair',
+    backgroundColor: '#FFAA00',
+    textColor: '#0E0EEE',
+  ),
+  saved: false,
+  spoiler: true,
+  inYourSubreddit: false,
+  nsfw: false,
+  votes: 100,
+  comments: 10,
+);
+
+final smalltextPostS = smalltextPost.toJson();
+
 var oneImagePost = PostModel(
-  id: '12',
+  id: '638a5f147341d9e893f38b72',
   kind: 'image',
   title: 'That\'s a Post with only image inside it',
   content: lorem(paragraphs: 1, words: 50),
@@ -61,7 +87,7 @@ var oneImagePost = PostModel(
 final oneImagePostS = oneImagePost.toJson();
 
 var manyImagePost = PostModel(
-  id: '55',
+  id: '638a5f147341d9e893f38b72',
   title: 'That\'s a Post with Many image inside it',
   kind: 'image',
   content: lorem(paragraphs: 1, words: 50),
@@ -117,7 +143,7 @@ var manyImagePost = PostModel(
 final manyImagePostS = manyImagePost.toJson();
 
 var linkPost = PostModel(
-  id: '185223',
+  id: '638a5f147341d9e893f38b72',
   kind: 'link',
   title: lorem(paragraphs: 1, words: 24),
   content: 'https://github.com/',

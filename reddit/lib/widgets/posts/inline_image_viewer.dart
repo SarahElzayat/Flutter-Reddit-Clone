@@ -201,7 +201,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                             constraints: const BoxConstraints(
                               minHeight: 40,
                             ),
-                            color: ColorManager.grey,
+                            color: ColorManager.betterDarkGrey,
                             width: double.infinity,
                             padding: const EdgeInsets.all(5),
                             child: Row(
