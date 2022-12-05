@@ -154,32 +154,24 @@ class AppCubit extends Cubit<AppState> {
   ];
 
   String profilePicture = 'assets/images/Logo.png';
-  String username = ''; //= CacheHelper.getData(key: 'username');
+  String username = 'Anonymous';
   void getUsername() {
     username = CacheHelper.getData(key: 'username');
   }
 
-  List<PostModel> recentHistoryList = [];
+  List<PostModel> history = [];
 
-  void getRecentHistoryList() {
+  void getHistory(path) {
+    emit(LoadingHistoryState());
+    history.clear();
     DioHelper.getData(
-      path: '$user/$username$recentHistory',
+      path: '$user/$username$path',
       token: CacheHelper.getData(key: 'token'),
-      query: {
-        // 'after'
-      },
+      query: {},
     ).then((value) {
-      print('value ${value.data['children'][0]}');
-      recentHistoryList.clear();
       for (int i = 0; i < value.data['children'].length; i++) {
-        recentHistoryList
-            .add(PostModel.fromJsonwithData(value.data['children'][i]));
-        // print(value.data.toString());
+        history.add(PostModel.fromJsonwithData(value.data['children'][i]));
         emit(LoadedHistoryState());
-
-      }
-      if (kDebugMode) {
-        print(recentHistoryList[0].toJson());
       }
     }).onError((error, stackTrace) {
       if (kDebugMode) {
@@ -188,76 +180,6 @@ class AppCubit extends Cubit<AppState> {
     });
   }
 
-  List<PostModel> upvotedHistoryList = [];
-
-  void getUpvotedHistoryList() {
-    DioHelper.getData(
-      path: '$user/$username$upvotedHistory',
-      token: CacheHelper.getData(key: 'token'),
-      query: {
-        // 'after'
-      },
-    ).then((value) {
-      // print('value ${value.data['children'][0]}');
-      upvotedHistoryList.clear();
-      for (int i = 0; i < value.data['children'].length; i++) {
-        upvotedHistoryList.add(PostModel.fromJsonwithData(value.data['children'][i]));
-      }
-      // print(recentHistoryList[0].toJson());
-
-      emit(LoadedHistoryState());
-    }).onError((error, stackTrace) {
-      // print(error.toString());
-    });
-  }
-
-  List<PostModel> downvotedHistoryList = [];
-
-  void getDownvotedHistoryList() {
-    DioHelper.getData(
-      path: '$user/$username$downvotedHistory',
-      token: CacheHelper.getData(key: 'token'),
-      query: {
-        // 'after'
-      },
-    ).then((value) {
-      print(value.data.toString());
-      print('value ${value.data['children'][0]}');
-      downvotedHistoryList.clear();
-      for (int i = 0; i < value.data['children'].length; i++) {
-        downvotedHistoryList.add(PostModel.fromJsonwithData(value.data['children'][i]));
-      }
-      print(recentHistoryList[0].toJson());
-      emit(LoadedHistoryState());
-
-    }).onError((error, stackTrace) {
-      // print(error.toString());
-    });
-  }
-
-  List<PostModel> hiddenHistoryList = [];
-
-  void getHiddenHistoryList() {
-    DioHelper.getData(
-      path: '$user/$username$hiddenHistory',
-      token: CacheHelper.getData(key: 'token'),
-      query: {
-        // 'after'
-      },
-    ).then((value) {
-      print(value.data.toString());
-      print('value ${value.data['children'][0]}');
-      hiddenHistoryList.clear();
-      for (int i = 0; i < value.data['children'].length; i++) {
-        downvotedHistoryList.add(PostModel.fromJsonwithData(value.data['children'][i]));
-      }
-      print(recentHistoryList[0].toJson());
-    }).onError((error, stackTrace) {
-      // print(error.toString());
-    });
-  }
-
-
   int historyCategoryIndex = 0;
   List<String> historyCategoriesNames = [
     'Recent',
@@ -265,32 +187,30 @@ class AppCubit extends Cubit<AppState> {
     'Downvoted',
     'Hidden'
   ];
+  List<Icon> historyCategoriesIcons = [
+    const Icon(Icons.timelapse),
+    const Icon(Icons.arrow_circle_up_rounded),
+    const Icon(Icons.arrow_circle_down_rounded),
+    const Icon(Icons.hide_image_outlined),
+  ];
 
-  // List<PostModel> history = recentHistoryList;
-  List<PostModel> history = [];
   void changeHistoryCategory(index) {
     historyCategoryIndex = index;
-    switch(index){
+    switch (index) {
       case 0:
-        getRecentHistoryList();
-        history = recentHistoryList;
-        print('HISTORRRRYYY ${history.length}' );
-      break;
-      case 1: getUpvotedHistoryList();
-        history = upvotedHistoryList;
-      break;
-      case 2: getDownvotedHistoryList();
-        history = downvotedHistoryList;
-      break;
-      case 3: getHiddenHistoryList();
-        history = hiddenHistoryList;
-      break;
-      }
+        getHistory(recentHistory);
+        break;
+      case 1:
+        getHistory(upvotedHistory);
+        break;
+      case 2:
+        getHistory(downvotedHistory);
+        break;
+      case 3:
+        getHistory(hiddenHistory);
+        break;
+    }
 
     emit(ChangeHistoryCategoryState());
   }
-
-
-
-
 }

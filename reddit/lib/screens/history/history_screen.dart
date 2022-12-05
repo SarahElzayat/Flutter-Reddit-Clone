@@ -3,10 +3,8 @@
 ///@description: the screen that shows the history of the user
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_conditional_rendering/conditional.dart';
 import 'package:reddit/Components/Helpers/color_manager.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:reddit/screens/posts/post_screen.dart';
 import 'package:reddit/widgets/posts/post_upper_bar.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
 
@@ -23,6 +21,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     final AppCubit cubit = AppCubit.get(context)..changeHistoryCategory(0);
+
     List<ListTile> historyCategories = [
       ListTile(
         leading: const Icon(Icons.timelapse),
@@ -38,7 +37,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
         onTap: () {
           cubit.changeHistoryCategory(1);
           Navigator.pop(context);
-
         },
       ),
       ListTile(
@@ -47,7 +45,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
         onTap: () {
           cubit.changeHistoryCategory(2);
           Navigator.pop(context);
-
         },
       ),
       ListTile(
@@ -56,15 +53,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
         onTap: () {
           cubit.changeHistoryCategory(3);
           Navigator.pop(context);
-
         },
       )
     ];
 
     return BlocConsumer<AppCubit, AppState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
@@ -83,7 +77,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 builder: (context) {
                                   return Container(
                                       height:
-                                          MediaQuery.of(context).size.height * 0.4,
+                                          MediaQuery.of(context).size.height *
+                                              0.4,
                                       color: ColorManager.black,
                                       child: ListView.builder(
                                         itemBuilder: (context, index) =>
@@ -92,40 +87,55 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       ));
                                 },
                               ),
-                          child: Text(cubit
-                              .historyCategoriesNames[cubit.historyCategoryIndex])),
+                          child: Row(
+                            children: [
+                             cubit.historyCategoriesIcons[cubit.historyCategoryIndex],
+                             Padding(
+                               padding: const EdgeInsets.only(left:8.0),
+                               child: Text(cubit.historyCategoriesNames[
+                                    cubit.historyCategoryIndex]),
+                             ),
+                            ],
+                          ),
+                          ),
                       const Spacer(),
                       TextButton(
                           onPressed: () {},
                           child: const Icon(Icons.crop_square_outlined)),
                     ],
                   ),
-                  // ConditionalBuilder(
-                  //   condition: state is! LoadedHistoryState,
-                  //   fallback:(context) =>  const Center(child: CircularProgressIndicator(
-                  //     color: ColorManager.blue,
-                  //   )),
-                  //   builder: (context) =>
-                  if(cubit.history.isEmpty)
+                  if (cubit.history.isEmpty)
                     Padding(
-                      padding:  EdgeInsets.only(top: MediaQuery.of(context).size.height*0.4),
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.4),
                       child: Center(
                         child: Text(
-                          'Wow, such empty'
-                        ,style: Theme.of(context).textTheme.bodyMedium,
+                          'Wow, such empty',
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ),
                     ),
-              if(cubit.history.isNotEmpty)
-              ListView.builder(
-                      itemBuilder: (context, index) => PostWidget(post: cubit.history[index],
-                      upperRowType: cubit.history[index].subreddit!=null? ShowingOtions.both :ShowingOtions.onlyUser ,
-                      ),
-                      itemCount: cubit.history.length,
-
-                      shrinkWrap: true,
-                    // ),
-                  ),
+                  if (cubit.history.isNotEmpty)
+                    ConditionalBuilder(
+                        condition: state is! LoadingHistoryState,
+                        fallback: (context) => const Center(
+                                child: CircularProgressIndicator(
+                              color: ColorManager.blue,
+                            )),
+                        builder: (context) {
+                          return ListView.builder(
+                            itemBuilder: (context, index) => PostWidget(
+                              post: cubit.history[index],
+                              upperRowType:
+                                  cubit.history[index].subreddit != null
+                                      ? ShowingOtions.both
+                                      : ShowingOtions.onlyUser,
+                            ),
+                            itemCount: cubit.history.length,
+                            shrinkWrap: true,
+                            // ),
+                          );
+                        })
                 ],
               ),
             ),
