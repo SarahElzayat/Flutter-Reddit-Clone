@@ -188,8 +188,6 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                               decorator: const DotsDecorator(
                                 color: Colors.transparent,
                                 spacing: EdgeInsets.all(5),
-
-                                
                                 activeColor: ColorManager.white,
                                 shape: RoundedRectangleBorder(
                                     borderRadius:
@@ -260,7 +258,8 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
     final String item = widget.post.images![index].path!;
     return PhotoViewGalleryPageOptions(
       imageProvider: NetworkImage(item),
-      initialScale: PhotoViewComputedScale.contained,
+      //NOTE - i changed this to covered so that the image fits small containers
+      initialScale: PhotoViewComputedScale.covered,
       minScale: PhotoViewComputedScale.contained * (0.5),
       maxScale: PhotoViewComputedScale.covered * 4.1,
       // heroAttributes: PhotoViewHeroAttributes(tag: item),
