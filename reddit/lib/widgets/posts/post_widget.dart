@@ -12,6 +12,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
+import 'package:reddit/widgets/posts/post_lower_bar.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -21,7 +22,6 @@ import '../../components/helpers/posts/helper_funcs.dart';
 import '../../data/post_model/post_model.dart';
 import '../../widgets/posts/inline_image_viewer.dart';
 import '../../widgets/posts/votes_widget.dart';
-import 'post_lower_bar.dart';
 import 'post_upper_bar.dart';
 
 /// The widget that displays the post
@@ -34,6 +34,7 @@ class PostWidget extends StatelessWidget {
     required this.post,
     this.outsideScreen = true,
     this.upperRowType = ShowingOtions.both,
+    this.postView = PostView.card,
   });
 
   /// determines if the post is in the home page or in the post screen
@@ -50,8 +51,8 @@ class PostWidget extends StatelessWidget {
 
   /// the view type of the post
   /// it's either a card or a classic view
-  /// defaults to [PostView.classic]
-  final PostView postView = PostView.classic;
+  /// defaults to [PostView.card]
+  final PostView postView;
 
   @override
   Widget build(BuildContext context) {
@@ -61,71 +62,109 @@ class PostWidget extends StatelessWidget {
         builder: (buildContext, sizingInformation) {
           bool isWeb =
               sizingInformation.deviceScreenType != DeviceScreenType.mobile;
-          return Container(
-            color: ColorManager.darkGreyBlack,
-            // margin: const EdgeInsets.symmetric(vertical: 5),
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            // a Row that contains the votes column and post
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (isWeb)
-                  VotesPart(
-                    post: post,
-                    isWeb: isWeb,
-                  ),
-                Expanded(
-                  child: InkWell(
-                    onTap: outsideScreen
-                        ? () {
-                            goToPost(context, post);
-                          }
-                        : null,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // A row with the Avatar, title and the subreddit
-                        PostUpperBar(
-                          post: post,
-                          outSide: outsideScreen,
-                          showRowsSelect: upperRowType,
+          return LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              return Container(
+                color: ColorManager.darkGreyBlack,
+                // margin: const EdgeInsets.symmetric(vertical: 5),
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                // a Row that contains the votes column and post
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (isWeb)
+                      VotesPart(
+                        post: post,
+                        isWeb: isWeb,
+                      ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: outsideScreen
+                            ? () {
+                                goToPost(
+                                  context,
+                                  post,
+                                  upperRowType,
+                                );
+                              }
+                            : null,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            // A row with the Avatar, title and the subreddit
+                            PostUpperBar(
+                              post: post,
+                              outSide: outsideScreen,
+                              showRowsSelect: upperRowType,
+                            ),
+                            // title and flairs
+                            _titleWithFlairs(),
+
+                            // image or video viewrs
+                            if (postView == PostView.card)
+                              ConditionalSwitch.single(
+                                context: context,
+                                valueBuilder: (context) {
+                                  return post.kind;
+                                },
+                                caseBuilders: {
+                                  // 'text': (context) => ,
+                                  // 'link': (context) => ,
+                                  'image': (context) => InlineImageViewer(
+                                        key: const Key('inline-image-viewer'),
+                                        post: post,
+                                      ),
+                                  'hybrid': (context) => InlineImageViewer(
+                                        key: const Key('inline-image-viewer'),
+                                        post: post,
+                                      ),
+                                  'video': (context) => Container(),
+                                },
+                                fallbackBuilder: (context) => Container(),
+                              ),
+                            // the body text or the link bar
+                            ConditionalSwitch.single(
+                              context: context,
+                              valueBuilder: (context) {
+                                if ((post.kind == 'text' || !outsideScreen) &&
+                                    post.kind != 'link') {
+                                  return 'text';
+                                } else if (post.kind == 'link' &&
+                                    !outsideScreen) {
+                                  return 'link';
+                                }
+                                return 'notAny';
+                              },
+                              caseBuilders: {
+                                'text': (context) => _bodyText(),
+                                'link': (context) => _linkBar(),
+                              },
+                              fallbackBuilder: (context) => Container(),
+                            ),
+                            _lowerPart(isWeb)
+                          ],
                         ),
-
-                        _titleWithFlairs(),
-
-                        // The body of the post
-                        if (post.images?.isNotEmpty ?? false)
-                          InlineImageViewer(
-                            key: const Key('inline-image-viewer'),
-                            post: post,
-                          ),
-
-                        // The body text of the post
-                        ConditionalSwitch.single(
-                          context: context,
-                          valueBuilder: (context) {
-                            if ((post.kind == 'text' || !outsideScreen) &&
-                                post.kind != 'link') {
-                              return 'text';
-                            } else if (post.kind == 'link' && !outsideScreen) {
-                              return 'link';
-                            }
-                            return 'notAny';
-                          },
-                          caseBuilders: {
-                            'text': (context) => _bodyText(),
-                            'link': (context) => _linkBar(),
-                          },
-                          fallbackBuilder: (context) => Container(),
-                        ),
-                        _lowerPart(isWeb)
-                      ],
+                      ),
                     ),
-                  ),
+                    if (post.kind == 'image' && postView == PostView.classic)
+                      Container(
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        width: constraints.maxWidth * 0.2,
+                        height: constraints.maxWidth * 0.2,
+                        child: InlineImageViewer(
+                          key: const Key('inline-image-viewer'),
+                          post: post,
+                          postView: postView,
+                        ),
+                      ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            },
           );
         },
       ),

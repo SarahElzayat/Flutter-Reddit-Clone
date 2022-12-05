@@ -3,6 +3,7 @@
 /// App cubit for handling application's state management
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/inbox_screen.dart';
@@ -35,8 +36,9 @@ class AppCubit extends Cubit<AppState> {
   List<Widget> homwPosts = [
     PostWidget(post: textPost),
     PostWidget(post: linkPost, upperRowType: ShowingOtions.onlyUser),
-    PostWidget(post: oneImagePost),
-    PostWidget(post: manyImagePost),
+    PostWidget(post: oneImagePost, postView: PostView.classic),
+    PostWidget(post: manyImagePost, postView: PostView.classic),
+    PostWidget(post: manyImagePost, postView: PostView.card),
     // PostWidget(post: oneImagePost),
     // PostWidget(post: manyImagePost),
   ];

@@ -13,6 +13,7 @@ import 'package:reddit/widgets/posts/image_page_view.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../components/helpers/color_manager.dart';
+import '../../components/helpers/enums.dart';
 import '../../components/helpers/posts/helper_funcs.dart';
 
 class InlineImageViewer extends StatefulWidget {
@@ -23,6 +24,7 @@ class InlineImageViewer extends StatefulWidget {
     this.backgroundDecoration = const BoxDecoration(
       color: ColorManager.black,
     ),
+    this.postView = PostView.card,
   })  :
         // that initial A Page Controller with the passed index
         assert(post.images != null),
@@ -40,6 +42,9 @@ class InlineImageViewer extends StatefulWidget {
   /// The post to show
   final PostModel post;
 
+  /// it's either a card or a classic view
+  /// defaults to [PostView.card]
+  final PostView postView;
   @override
   State<InlineImageViewer> createState() => _InlineImageViewerState();
 }
@@ -89,12 +94,14 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                   scrollPhysics: const BouncingScrollPhysics(),
                   builder: _buildItem,
                   wantKeepAlive: true,
+
                   itemCount: widget.post.images!.length,
                   // loadingBuilder: widget.loadingBuilder,
                   backgroundDecoration: widget.backgroundDecoration,
                   pageController: pageController,
                   onPageChanged: onPageChanged,
                   // allowImplicitScrolling: true,
+
                   scrollDirection: Axis.horizontal,
                 ),
                 if (widget.post.images!.length > 1)
@@ -116,23 +123,6 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                         ),
                       ),
                     ),
-                  ),
-                if (defaultTargetPlatform == TargetPlatform.android &&
-                    widget.post.images!.length > 1)
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: DotsIndicator(
-                        dotsCount: widget.post.images!.length,
-                        position: currentIndex.toDouble(),
-                        decorator: const DotsDecorator(
-                          color: Colors.transparent,
-                          activeColor: ColorManager.white,
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0)),
-                              side: BorderSide(
-                                  width: 1.1, color: ColorManager.white)),
-                        )),
                   ),
                 if (kIsWeb && currentIndex != widget.post.images!.length - 1)
                   Align(
@@ -182,39 +172,82 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                       ),
                     ),
                   ),
-                if (widget.post.images![currentIndex].caption != null)
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                        constraints: const BoxConstraints(
-                          minHeight: 40,
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (defaultTargetPlatform == TargetPlatform.android &&
+                          widget.post.images!.length > 1)
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: DotsIndicator(
+                              dotsCount: _dotsCount(),
+                              position: min(
+                                  currentIndex.toDouble(), _dotsCount() - 1),
+                              decorator: const DotsDecorator(
+                                color: Colors.transparent,
+                                spacing: EdgeInsets.all(5),
+
+                                
+                                activeColor: ColorManager.white,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                    side: BorderSide(
+                                        width: 1.1, color: ColorManager.white)),
+                              )),
                         ),
-                        color: ColorManager.grey,
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(5),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              widget.post.images![currentIndex].caption!,
-                              style: const TextStyle(
-                                color: ColorManager.eggshellWhite,
-                                fontSize: 15,
-                              ),
+                      if (_haveCaptions() && widget.postView == PostView.card)
+                        Container(
+                            constraints: const BoxConstraints(
+                              minHeight: 40,
                             ),
-                            const Spacer(),
-                            if (widget.post.images![currentIndex].link != null)
-                              linkRow(widget.post.images![currentIndex].link!,
-                                  ColorManager.blue)
-                          ],
-                        )),
-                  )
+                            color: ColorManager.grey,
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(5),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  widget.post.images![currentIndex].caption ??
+                                      '',
+                                  style: const TextStyle(
+                                    color: ColorManager.eggshellWhite,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                const Spacer(),
+                                if (widget.post.images![currentIndex].link !=
+                                    null)
+                                  linkRow(
+                                      widget.post.images![currentIndex].link!,
+                                      ColorManager.blue)
+                              ],
+                            )),
+                    ],
+                  ),
+                )
               ],
             ),
           ),
         );
       },
     );
+  }
+
+  bool _haveCaptions() {
+    for (var image in widget.post.images!) {
+      if (image.caption != null) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  int _dotsCount() {
+    if (widget.postView == PostView.card) return widget.post.images!.length;
+    return min(widget.post.images!.length, 3);
   }
 
   @override
@@ -230,7 +263,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
       initialScale: PhotoViewComputedScale.contained,
       minScale: PhotoViewComputedScale.contained * (0.5),
       maxScale: PhotoViewComputedScale.covered * 4.1,
-      heroAttributes: PhotoViewHeroAttributes(tag: item),
+      // heroAttributes: PhotoViewHeroAttributes(tag: item),
     );
   }
 
