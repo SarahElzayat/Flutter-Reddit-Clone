@@ -141,20 +141,34 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
     );
   }
 
-  static Widget _buildItem(icon, text) {
+  static Widget _buildItem(icon, text, {bool disabled = false}) {
     return Row(
       children: [
-        Icon(icon, color: ColorManager.eggshellWhite, size: 22),
+        Icon(icon,
+            color: disabled
+                ? ColorManager.disabledButtonGrey
+                : ColorManager.eggshellWhite,
+            size: 22),
         const SizedBox(
           width: 10,
         ),
         Text(
           text,
-          style:
-              const TextStyle(color: ColorManager.eggshellWhite, fontSize: 15),
+          style: TextStyle(
+              color: disabled
+                  ? ColorManager.disabledButtonGrey
+                  : ColorManager.eggshellWhite,
+              fontSize: 15),
         ),
       ],
     );
+  }
+
+  bool _isApproved() {
+    if (widget.post.moderation?.approve?.approvedBy == null) {
+      return false;
+    }
+    return true;
   }
 
   Future<void> _askedToLead() async {
@@ -210,10 +224,14 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
               ),
               SimpleDialogOption(
                 key: const Key('approve-option'),
-                onPressed: () {
-                  Navigator.pop(context, ModOPtions.approve);
-                },
-                child: _buildItem(Icons.check, 'Approve Post'),
+                onPressed: _isApproved()
+                    ? null
+                    : () {
+                        Navigator.pop(context, ModOPtions.approve);
+                      },
+                child: _buildItem(
+                    Icons.check, 'Approve${_isApproved() ? 'd' : ''} Post',
+                    disabled: true),
               ),
             ],
           );
