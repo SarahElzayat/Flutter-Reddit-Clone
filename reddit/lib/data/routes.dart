@@ -4,6 +4,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:reddit/screens/create_community_screen/create_community_screen.dart';
+import 'package:reddit/screens/moderation/content_and_regulation/create_flair.dart';
+import 'package:reddit/screens/moderation/content_and_regulation/post_flair.dart';
+import 'package:reddit/screens/moderation/general_screens/archive_posts.dart';
+import 'package:reddit/screens/moderation/general_screens/community_types.dart';
+import 'package:reddit/screens/moderation/general_screens/description.dart';
+import 'package:reddit/screens/moderation/general_screens/discovery/choose_language.dart';
+import 'package:reddit/screens/moderation/general_screens/discovery/discovery.dart';
+import 'package:reddit/screens/moderation/general_screens/post_types.dart';
+import 'package:reddit/screens/moderation/general_screens/topics.dart';
+import 'package:reddit/screens/moderation/general_screens/welcome_message/add_edit_message.dart';
+import 'package:reddit/screens/moderation/general_screens/welcome_message/welcome_message.dart';
+import 'package:reddit/screens/moderation/mod_tools.dart';
 import '../../screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
 import '../../screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
 import '../../screens/main_screen.dart';
@@ -35,7 +47,8 @@ import '../screens/sign_in_and_sign_up_screen/mobile/sign_up_screen.dart';
 
 Map<String, Widget Function(BuildContext)> myRoutes = {
   RecoverUserName.routeName: (ctx) => const RecoverUserName(),
-  SignInForWebScreen.routeName: (ctx) => const SignInForWebScreen(),
+  // SignInForWebScreen.routeName: (ctx) => const SignInForWebScreen(),
+  SignInForWebScreen.routeName: (ctx) => SignInForWebScreen(),
   SignUpForWebScreen.routeName: (ctx) => const SignUpForWebScreen(),
 
   /// TODO: here we should send the email to the continueSign up this problem will be avoided when using cubit state management
@@ -67,8 +80,21 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   AddPost.routeName: (ctx) => const AddPost(),
   ImageScreen.routeName: (ctx) => ImageScreen(),
   PaintScreen.routeName: (ctx) => PaintScreen(),
-  TrimmerView.routeName: (ctx) => const TrimmerView(),
+  // TrimmerView.routeName: (ctx) => const TrimmerView(),
   PostSimpleScreen.routeName: (ctx) => const PostSimpleScreen(),
   CommunitySearch.routeName: (ctx) => CommunitySearch(),
-  PostRules.routeName: (ctx) => PostRules(),
+  PostRules.routeName: (ctx) => const PostRules(),
+
+  //Moderation routes
+  ModTools.routeName: (ctx) => ModTools(),
+  Description.routeName: (ctx) => const Description(),
+  CommunityType.routeName: (ctx) => const CommunityType(),
+  ArchivePosts.routeName: (ctx) => const ArchivePosts(),
+  Topics.routeName: (ctx) => const Topics(),
+  PostTypes.routeName: (ctx) => PostTypes(),
+  WelcomeMessage.routeName: (ctx) => const WelcomeMessage(),
+  AddEditMessage.routeName: (ctx) => const AddEditMessage(),
+  Discovery.routeName: (ctx) => const Discovery(),
+  ChooseLanguage.routeName: (ctx) => const ChooseLanguage(),
+  PostFlair.routeName: (ctx) => const PostFlair()
 };

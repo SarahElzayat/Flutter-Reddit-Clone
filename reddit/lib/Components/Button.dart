@@ -57,7 +57,7 @@ class Button extends StatelessWidget {
     this.textColor = ColorManager.white,
     this.backgroundColor = ColorManager.blue,
     this.buttonWidth = 10.0,
-    this.buttonHeight = 5.0,
+    this.buttonHeight = 20.0,
     this.textFontSize = 16,
     this.textFontWeight = FontWeight.normal,
     this.splashColor = ColorManager.white,
@@ -74,6 +74,7 @@ class Button extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: buttonHeight,
+      // width: buttonWidth,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
           // for circular buttons

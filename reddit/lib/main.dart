@@ -4,6 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/main_screen.dart';
+import 'package:reddit/screens/moderation/content_and_regulation/post_flair.dart';
+import 'package:reddit/screens/moderation/general_screens/community_types.dart';
+import 'package:reddit/screens/moderation/general_screens/discovery/choose_language.dart';
+import 'package:reddit/screens/moderation/general_screens/discovery/discovery.dart';
+import 'package:reddit/screens/moderation/general_screens/post_types.dart';
+import 'package:reddit/screens/moderation/general_screens/topics.dart';
+import 'package:reddit/screens/moderation/general_screens/welcome_message/add_edit_message.dart';
+import 'package:reddit/screens/moderation/general_screens/welcome_message/welcome_message.dart';
+import 'package:reddit/screens/moderation/mod_tools.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/sign_In_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'components/helpers/mocks/functions.dart';
@@ -73,7 +82,7 @@ class Main extends StatelessWidget {
                     //  CacheHelper.getData(key: 'token') != null
                     //     ? MainScreen.routeName
                     //     :
-                    SignInForWebScreen.routeName,
+                    PostFlair.routeName,
                 routes: myRoutes,
                 onUnknownRoute: (settings) {
                   return MaterialPageRoute(

@@ -4,6 +4,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 
 class ArchivePosts extends StatefulWidget {
+  static const String routeName = 'archive_posts';
   const ArchivePosts({super.key});
 
   @override

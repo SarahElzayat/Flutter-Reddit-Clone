@@ -5,6 +5,7 @@ import 'package:reddit/Components/Helpers/color_manager.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class Description extends StatefulWidget {
+  static const String routeName = 'description';
   const Description({super.key});
 
   @override

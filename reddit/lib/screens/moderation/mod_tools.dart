@@ -2,10 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/components/list_tile_container.dart';
+import 'package:reddit/screens/moderation/general_screens/description.dart';
 
-class ModTools extends StatelessWidget {
+class ModTools extends StatefulWidget {
+  static const String routeName = 'mod_tools';
   ModTools({super.key});
 
+  @override
+  State<ModTools> createState() => _ModToolsState();
+}
+
+class _ModToolsState extends State<ModTools> {
   final List<String> generalTitles = [
     'Description',
     'Welcome message',
@@ -78,6 +85,31 @@ class ModTools extends StatelessWidget {
     Icons.reddit_outlined
   ];
 
+  final List<dynamic> generalFunctions = [
+    (context) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const Description()));
+    },
+    (context) => null,
+    (context) => null,
+    (context) => null,
+    (context) => null,
+    (context) => null,
+    (context) => null,
+    (context) => null,
+    (context) => null,
+    (context) => null,
+    (context) => null,
+    (context) => null,
+    (context) => null
+  ];
+
+  final List<dynamic> userManagementFunctions = [];
+
+  final List<dynamic> contentAndRegulationsFunctions = [];
+
+  final List<dynamic> resourceLinksFunctions = [];
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -97,34 +129,38 @@ class ModTools extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                height: height * 0.83,
+                height: height * 0.88,
                 child: ListTileContainer(
                     title: '      GENERAL',
                     listTileTitles: generalTitles,
                     listTileIcons: generalIcons,
-                    trailingObject: TrailingObjects.tailingIcon),
+                    trailingObject: TrailingObjects.tailingIcon,
+                    listTileFunctions: []),
               ),
               SizedBox(
-                height: height * 0.19,
+                height: height * 0.24,
                 child: ListTileContainer(
                     title: '      CONTENT & REGULATIONS',
                     listTileTitles: contentAndRegulationsTitles,
+                    listTileFunctions: [],
                     listTileIcons: contentAndRegulationsIcons,
                     trailingObject: TrailingObjects.tailingIcon),
               ),
               SizedBox(
-                height: height * 0.38,
+                height: height * 0.42,
                 child: ListTileContainer(
                     title: '      USER MANAGEMENT',
                     listTileTitles: userManagementTitles,
+                    listTileFunctions: [],
                     listTileIcons: userManagementIcons,
                     trailingObject: TrailingObjects.tailingIcon),
               ),
               SizedBox(
-                height: height * 0.38,
+                height: height * 0.42,
                 child: ListTileContainer(
                     title: '      RSOURCE LINKS',
                     listTileTitles: resourceLinksTitles,
+                    listTileFunctions: [],
                     listTileIcons: resourceLinksIcons,
                     trailingObject: TrailingObjects.tailingIcon),
               ),

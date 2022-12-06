@@ -7,8 +7,9 @@ import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/enums.dart';
+import 'package:reddit/screens/moderation/general_screens/description.dart';
 
-class ListTileContainer extends StatelessWidget {
+class ListTileContainer extends StatefulWidget {
   final String title;
 
   final TrailingObjects trailingObject;
@@ -17,13 +18,21 @@ class ListTileContainer extends StatelessWidget {
 
   final List<IconData> listTileIcons;
 
+  final List<Function>? listTileFunctions;
+
   const ListTileContainer(
       {super.key,
       required this.title,
       required this.listTileTitles,
       required this.listTileIcons,
-      required this.trailingObject});
+      required this.trailingObject,
+      this.listTileFunctions});
 
+  @override
+  State<ListTileContainer> createState() => _ListTileContainerState();
+}
+
+class _ListTileContainerState extends State<ListTileContainer> {
   @override
   Widget build(BuildContext context) {
     double fontScale = MediaQuery.of(context).textScaleFactor;
@@ -33,7 +42,7 @@ class ListTileContainer extends StatelessWidget {
       children: [
         SizedBox(height: height * 0.02),
         Text(
-          title,
+          widget.title,
           style: TextStyle(
               color: ColorManager.lightGrey, fontSize: 12 * fontScale),
         ),
@@ -42,13 +51,14 @@ class ListTileContainer extends StatelessWidget {
           child: ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
-              itemCount: listTileTitles.length,
+              itemCount: widget.listTileTitles.length,
               itemBuilder: (BuildContext context, int index) {
                 return ListTileWidget(
-                    leadingIcon: Icon(listTileIcons[index]),
-                    title: listTileTitles[index],
-                    handler: null,
-                    tailingObj: trailingObject);
+                  leadingIcon: Icon(widget.listTileIcons[index]),
+                  title: widget.listTileTitles[index],
+                  handler: null,
+                  tailingObj: widget.trailingObject,
+                );
               }),
         ),
       ],
