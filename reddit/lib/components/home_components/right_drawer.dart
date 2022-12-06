@@ -14,13 +14,24 @@ class RightDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppCubit cubit = AppCubit.get(context);
     List<Widget> rightDrawerItems = [
-      genericTextButton(context, Icons.person, 'My profile', null),
-      genericTextButton(context, Icons.add, 'Create a community', null),
-      genericTextButton(context, Icons.bookmark_border_rounded, 'Saved', null),
+      genericTextButton(context, Icons.person, 'My profile', null,
+          isLeftDrawer: false),
+      genericTextButton(context, Icons.add, 'Create a community', null,
+          isLeftDrawer: false),
+      genericTextButton(context, Icons.bookmark_border_rounded, 'Saved', null,
+          isLeftDrawer: false),
       genericTextButton(
-          context, Icons.history_toggle_off_rounded, 'History',  HistoryScreen(bottomNavBarScreenIndex: cubit.currentIndex,)),
-      genericTextButton(context, Icons.pending_outlined, 'Pending Posts', null),
-      genericTextButton(context, Icons.drafts_outlined, 'Drafts', null),
+          context,
+          Icons.history_toggle_off_rounded,
+          'History',
+          HistoryScreen(
+            bottomNavBarScreenIndex: cubit.currentIndex,
+          ),
+          isLeftDrawer: false),
+      genericTextButton(context, Icons.pending_outlined, 'Pending Posts', null,
+          isLeftDrawer: false),
+      genericTextButton(context, Icons.drafts_outlined, 'Drafts', null,
+          isLeftDrawer: false),
     ];
     return SafeArea(
         child: Drawer(
@@ -41,9 +52,13 @@ class RightDrawer extends StatelessWidget {
                     context,
                     Icons.keyboard_arrow_down,
                     cubit.username,
-                    const ToBeDoneScreen(text: 'account options')),
+                    const ToBeDoneScreen(text: 'account options'),
+                    isLeftDrawer: false),
+
                 genericTextButton(context, null, 'Online / offline',
-                    const ToBeDoneScreen(text: 'online/offline')),
+                    const ToBeDoneScreen(text: 'online/offline'),
+                    isLeftDrawer: false),
+
                 Container(
                   width: MediaQuery.of(context).size.width * 0.7,
                   decoration: const ShapeDecoration(
@@ -79,7 +94,8 @@ class RightDrawer extends StatelessWidget {
               children: rightDrawerItems,
             ),
             genericTextButton(context, Icons.settings_outlined, 'Settings',
-                const ToBeDoneScreen(text: 'Settings'))
+                const ToBeDoneScreen(text: 'Settings'),
+                isLeftDrawer: false),
           ],
         ),
       ),

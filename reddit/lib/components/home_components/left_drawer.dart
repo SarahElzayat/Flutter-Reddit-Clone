@@ -35,7 +35,8 @@ class LeftDrawer extends StatelessWidget {
                     cubit.yourCommunitiesistOpen,
                     isCommunity: true),
               genericTextButton(context, Icons.bar_chart_rounded, 'All',
-                  const ToBeDoneScreen(text: 'All'))
+                  const ToBeDoneScreen(text: 'All'),
+                  isLeftDrawer: true)
             ],
           ),
         ));

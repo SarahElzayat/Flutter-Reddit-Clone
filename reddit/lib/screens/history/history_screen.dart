@@ -61,19 +61,23 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {
-        if(state is ChangeBottomNavBarState) {
-          Navigator.push(context,MaterialPageRoute(builder: (context) =>  const MainScreen(),));
+        if (state is ChangeBottomNavBarState) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MainScreen(),
+              ));
         }
       },
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title:  const Center(child: Text('History')),
-              leading: IconButton(icon: const Icon(Icons.arrow_back),
-                onPressed:() {
-                cubit.changeIndex(widget.bottomNavBarScreenIndex);
-                },
-              )
+            title: const Center(child: Text('History')),
+            // leading: IconButton(icon: const Icon(Icons.arrow_back),
+            //   onPressed:() {
+            //   cubit.changeIndex(widget.bottomNavBarScreenIndex);
+            //   },
+            // )
           ),
           bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
@@ -99,32 +103,32 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   Row(
                     children: [
                       TextButton(
-                          onPressed: () => showModalBottomSheet(
-                                context: context,
-                                builder: (context) {
-                                  return Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.4,
-                                      color: ColorManager.black,
-                                      child: ListView.builder(
-                                        itemBuilder: (context, index) =>
-                                            historyCategories[index],
-                                        itemCount: historyCategories.length,
-                                      ));
-                                },
-                              ),
-                          child: Row(
-                            children: [
-                             cubit.historyCategoriesIcons[cubit.historyCategoryIndex],
-                             Padding(
-                               padding: const EdgeInsets.only(left:8.0),
-                               child: Text(cubit.historyCategoriesNames[
-                                    cubit.historyCategoryIndex]),
-                             ),
-                            ],
-                          ),
-                          ),
+                        onPressed: () => showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.4,
+                                color: ColorManager.black,
+                                child: ListView.builder(
+                                  itemBuilder: (context, index) =>
+                                      historyCategories[index],
+                                  itemCount: historyCategories.length,
+                                ));
+                          },
+                        ),
+                        child: Row(
+                          children: [
+                            cubit.historyCategoriesIcons[
+                                cubit.historyCategoryIndex],
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(cubit.historyCategoriesNames[
+                                  cubit.historyCategoryIndex]),
+                            ),
+                          ],
+                        ),
+                      ),
                       const Spacer(),
                       TextButton(
                           onPressed: () {},

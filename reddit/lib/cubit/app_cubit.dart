@@ -91,8 +91,11 @@ class AppCubit extends Cubit<AppState> {
     emit(ChangeHomeMenuIndex());
   }
 
-  void changeEndDrawer() {
-    emit(ChangeEndDrawerState());
+  void changeRightDrawer() {
+    emit(ChangeRightDrawerState());
+  }
+    void changeLeftDrawer() {
+    emit(ChangeLeftDrawerState());
   }
 
   ///@param [context] is the context of the desired screen
