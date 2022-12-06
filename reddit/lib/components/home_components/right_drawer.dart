@@ -1,5 +1,7 @@
 ///@author Sarah Elzayat
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/Screens/history/history_screen_for_web.dart';
 
 import '../../cubit/app_cubit.dart';
 import '../../screens/history/history_screen.dart';
@@ -24,6 +26,8 @@ class RightDrawer extends StatelessWidget {
           context,
           Icons.history_toggle_off_rounded,
           'History',
+          // kIsWeb?
+          // const HistoryScreenForWeb():
           HistoryScreen(
             bottomNavBarScreenIndex: cubit.currentIndex,
           ),
@@ -36,6 +40,7 @@ class RightDrawer extends StatelessWidget {
     return SafeArea(
         child: Drawer(
       child: SingleChildScrollView(
+        padding: const EdgeInsets.all(8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

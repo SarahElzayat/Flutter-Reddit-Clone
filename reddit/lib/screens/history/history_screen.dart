@@ -73,11 +73,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
         return Scaffold(
           appBar: AppBar(
             title: const Center(child: Text('History')),
-            // leading: IconButton(icon: const Icon(Icons.arrow_back),
-            //   onPressed:() {
-            //   cubit.changeIndex(widget.bottomNavBarScreenIndex);
-            //   },
-            // )
           ),
           bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
