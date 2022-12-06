@@ -1,19 +1,18 @@
 /// @author Sarah El-Zayat
 /// @date 9/11/2022
 /// App bar of the application
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/components/app_bar_components.dart';
 import 'package:reddit/components/home_dropdown_menu.dart';
 import 'package:reddit/components/search_field.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
 
 import '../cubit/app_cubit.dart';
 
 AppBar homeAppBar(context, index) {
   final AppCubit cubit = AppCubit.get(context);
-  bool isAndroid = CacheHelper.getData(key: 'isAndroid')!;
 
-  if (isAndroid) {
+  if (!kIsWeb) {
     return AppBar(
       titleSpacing: 0,
       title: cubit.screensNames[index] == 'Home'
@@ -36,22 +35,25 @@ AppBar homeAppBar(context, index) {
                         onPressed: () {},
                         icon: const Icon(Icons.add_comment_outlined))
                     : const Text(''),
-        InkWell(
-            // padding: EdgeInsets.zero,
-            onTap: () => cubit.changeRightDrawer(),
-            //Scaffold.of(context).isEndDrawerOpen? Scaffold.of(context).closeEndDrawer():Scaffold.of(context).openDrawer(),
-            child: avatar())
+        InkWell(onTap: () => cubit.changeRightDrawer(), child: avatar())
       ],
     );
   } else {
     return AppBar(
+      // leading: null,
+actions: [Container()],
+      automaticallyImplyLeading: false,
+      
       title: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Row(
           children: [
-            Image.asset(
-              'assets/images/Reddit_Lockup_OnDark.png',
-              scale: 6,
+            InkWell(
+              onTap: () => cubit.changeLeftDrawer(),
+              child: Image.asset(
+                'assets/images/Reddit_Lockup_OnDark.png',
+                scale: 6,
+              ),
             ),
             const HomeDropdownMenu(),
             SizedBox(
@@ -79,7 +81,7 @@ AppBar homeAppBar(context, index) {
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
             ),
-            avatar(),
+            InkWell(onTap: () => cubit.changeRightDrawer(), child: avatar())
           ],
         ),
       ),
