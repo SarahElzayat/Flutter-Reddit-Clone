@@ -1,8 +1,9 @@
 /// The post cubit that handles the post state independently
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/components/helpers/mocks/functions.dart';
+import 'package:reddit/components/helpers/mocks/mock_functions.dart';
 import 'package:reddit/data/post_model/post_model.dart';
 
 import '../../../networks/constant_end_points.dart';
@@ -128,5 +129,30 @@ class PostCubit extends Cubit<PostState> {
   /// gets the number of votes of the post
   int getVotesCount() {
     return post.votes ?? 0;
+  }
+
+  static final List<String> labels = ['Best', 'Top', 'New', 'Old'];
+  static final List<IconData> icons = [
+    Icons.rocket_outlined,
+    Icons.star_border_outlined,
+    Icons.new_releases_outlined,
+    Icons.access_time_outlined,
+  ];
+
+  static final Map<String, IconData> sortIcons = {
+    labels[0]: icons[0],
+    labels[1]: icons[1],
+    labels[2]: icons[2],
+    labels[3]: icons[3],
+  };
+
+  String selectedItem = 'Best';
+  IconData getSelectedIcon() {
+    return sortIcons[selectedItem]!;
+  }
+
+  void changeSortType(String item) {
+    selectedItem = item;
+    emit(CommentsSortTypeChanged());
   }
 }

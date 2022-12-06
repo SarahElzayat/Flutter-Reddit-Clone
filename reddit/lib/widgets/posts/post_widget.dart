@@ -11,17 +11,20 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:reddit/components/helpers/enums.dart';
+import 'package:reddit/functions/post_functions.dart';
 import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
 import 'package:reddit/widgets/posts/post_lower_bar.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../components/bottom_sheet.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../components/helpers/posts/helper_funcs.dart';
 import '../../data/post_model/post_model.dart';
 import '../../widgets/posts/inline_image_viewer.dart';
 import '../../widgets/posts/votes_widget.dart';
+import 'cubit/post_state.dart';
 import 'post_upper_bar.dart';
 
 /// The widget that displays the post
@@ -29,7 +32,7 @@ import 'post_upper_bar.dart';
 /// it's inteded to be used in the HOME PAGE
 //TODO - Refactor the code
 class PostWidget extends StatelessWidget {
-  const PostWidget({
+  PostWidget({
     super.key,
     required this.post,
     this.outsideScreen = true,
@@ -171,7 +174,9 @@ class PostWidget extends StatelessWidget {
                           ),
                       ],
                     ),
-                    _lowerPart(isWeb)
+                    _lowerPart(isWeb),
+                    _modRow(context),
+                    _commentsRow(context),
                   ],
                 ),
               );
@@ -195,6 +200,152 @@ class PostWidget extends StatelessWidget {
               pad: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10)),
         ),
       ],
+    );
+  }
+
+  Widget _modRow(context) {
+    return Row(
+      children: [
+        // a row of approve and delete icons
+        // that are only visible to mods
+        Material(
+          color: Colors.transparent,
+          clipBehavior: Clip.antiAlias,
+          shape: const CircleBorder(),
+          child: IconButton(
+            onPressed: () {},
+            constraints: const BoxConstraints(),
+            padding: const EdgeInsets.all(0),
+            icon: const Icon(
+              Icons.check,
+              color: ColorManager.greyColor,
+            ),
+            iconSize: min(5.5.w, 30),
+          ),
+        ),
+        SizedBox(
+          width: 2.w,
+        ),
+        Material(
+          color: Colors.transparent,
+          clipBehavior: Clip.antiAlias,
+          shape: const CircleBorder(),
+          child: IconButton(
+            onPressed: () {},
+            constraints: const BoxConstraints(),
+            padding: const EdgeInsets.all(0),
+            icon: const Icon(
+              Icons.block,
+              color: ColorManager.greyColor,
+            ),
+            iconSize: min(5.5.w, 30),
+          ),
+        ),
+        SizedBox(
+          width: 2.w,
+        ),
+        Material(
+          color: Colors.transparent,
+          clipBehavior: Clip.antiAlias,
+          shape: const CircleBorder(),
+          child: IconButton(
+            onPressed: () {},
+            constraints: const BoxConstraints(),
+            padding: const EdgeInsets.all(0),
+            icon: const Icon(
+              Icons.delete,
+              color: ColorManager.greyColor,
+            ),
+            iconSize: min(5.5.w, 30),
+          ),
+        ),
+        const Spacer(),
+        Material(
+          color: Colors.transparent,
+          clipBehavior: Clip.antiAlias,
+          shape: const CircleBorder(),
+          child: IconButton(
+            onPressed: () {
+              showModOperations(context: context, post: post);
+            },
+            constraints: const BoxConstraints(),
+            padding: const EdgeInsets.all(0),
+            icon: const Icon(
+              Icons.menu,
+              color: ColorManager.greyColor,
+            ),
+            iconSize: min(5.5.w, 30),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _commentsRow(BuildContext context) {
+// a row with a button to choose the sorting type and an icon button for MOD
+// operations
+    return BlocBuilder<PostCubit, PostState>(
+      builder: (context, state) {
+        return Row(
+          children: [
+            ElevatedButton.icon(
+              onPressed: () async {
+                await modalBottomSheet(
+                  context: context,
+                  selectedItem: PostCubit.get(context).selectedItem,
+                  text: PostCubit.labels,
+                  title: 'SORT COMMENTS BY',
+                  selectedIcons: PostCubit.icons,
+                  unselectedIcons: PostCubit.icons,
+                ).then((value) {
+                  PostCubit.get(context).changeSortType(value);
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(),
+                padding: const EdgeInsets.all(0),
+                backgroundColor: Colors.transparent,
+              ),
+              icon: Icon(
+                PostCubit.get(context).getSelectedIcon(),
+                color: ColorManager.greyColor,
+              ),
+              label: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    PostCubit.get(context).selectedItem,
+                    style: const TextStyle(
+                      color: ColorManager.greyColor,
+                    ),
+                  ),
+                  const Icon(
+                    Icons.arrow_drop_down,
+                    color: ColorManager.greyColor,
+                  ),
+                ],
+              ),
+            ),
+            const Spacer(),
+            Material(
+              color: Colors.transparent,
+              clipBehavior: Clip.antiAlias,
+              shape: const CircleBorder(),
+              child: IconButton(
+                onPressed: () {},
+                constraints: const BoxConstraints(),
+                padding: const EdgeInsets.all(0),
+                icon: const Icon(
+                  Icons.shield_outlined,
+                  color: ColorManager.greyColor,
+                ),
+                iconSize: min(6.w, 30),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 

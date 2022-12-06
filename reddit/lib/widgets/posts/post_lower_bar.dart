@@ -3,23 +3,13 @@
 /// @Author: Ahmed Atta
 import 'dart:math';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
-import 'package:reddit/data/mod_in_post_models/approve_model.dart';
-import 'package:reddit/data/mod_in_post_models/lock_model.dart';
-import 'package:reddit/data/mod_in_post_models/mark_nsfw_model.dart';
-import 'package:reddit/data/mod_in_post_models/mark_spoiler_model.dart';
-import 'package:reddit/data/mod_in_post_models/remove_model.dart';
-import 'package:reddit/data/mod_in_post_models/unsticky_post_model.dart';
+
 import 'package:reddit/data/post_model/post_model.dart';
-import 'package:reddit/networks/constant_end_points.dart';
-import 'package:reddit/networks/dio_helper.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-enum ModOPtions { spoiler, nsfw, lock, unsticky, remove, spam, approve }
+import '../../functions/post_functions.dart';
 
 class PostLowerBarWithoutVotes extends StatefulWidget {
   const PostLowerBarWithoutVotes({
@@ -95,7 +85,10 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
             InkWell(
               onTap: () {
                 if (isMod) {
-                  _askedToLead();
+                  showModOperations(
+                    context: context,
+                    post: widget.post,
+                  );
                 } else {
                   // TODO
                   // sharePost(context, widget.post);
@@ -139,262 +132,5 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
         ),
       ),
     );
-  }
-
-  static Widget _buildItem(icon, text, {bool disabled = false}) {
-    return Row(
-      children: [
-        Icon(icon,
-            color: disabled
-                ? ColorManager.disabledButtonGrey
-                : ColorManager.eggshellWhite,
-            size: 22),
-        const SizedBox(
-          width: 10,
-        ),
-        Text(
-          text,
-          style: TextStyle(
-              color: disabled
-                  ? ColorManager.disabledButtonGrey
-                  : ColorManager.eggshellWhite,
-              fontSize: 15),
-        ),
-      ],
-    );
-  }
-
-  bool _isApproved() {
-    if (widget.post.moderation?.approve?.approvedBy == null) {
-      return false;
-    }
-    return true;
-  }
-
-  Future<void> _askedToLead() async {
-    var returnedOption = await showDialog<ModOPtions>(
-        context: context,
-        builder: (BuildContext context) {
-          return SimpleDialog(
-            children: <Widget>[
-              SimpleDialogOption(
-                key: const Key('spoiler-option'),
-                onPressed: () {
-                  Navigator.pop(context, ModOPtions.spoiler);
-                },
-                child: _buildItem(Icons.privacy_tip_outlined,
-                    '${widget.post.spoiler ?? false ? 'Unmark' : 'Mark'}Spoiler'),
-              ),
-              SimpleDialogOption(
-                key: const Key('nsfw-option'),
-                onPressed: () {
-                  Navigator.pop(context, ModOPtions.nsfw);
-                },
-                child: _buildItem(Icons.eighteen_up_rating,
-                    '${widget.post.nsfw ?? false ? 'Unmark' : 'Mark'} NSFW'),
-              ),
-              SimpleDialogOption(
-                key: const Key('lock-option'),
-                onPressed: () {
-                  Navigator.pop(context, ModOPtions.lock);
-                },
-                child: _buildItem(Icons.lock,
-                    '${widget.post.moderation?.lock ?? false ? 'Unlock' : 'Lock'} Comments'),
-              ),
-              SimpleDialogOption(
-                key: const Key('unsticky-option'),
-                onPressed: () {
-                  Navigator.pop(context, ModOPtions.unsticky);
-                },
-                child: _buildItem(Icons.push_pin_outlined, 'Unsticky Post'),
-              ),
-              SimpleDialogOption(
-                key: const Key('remove-option'),
-                onPressed: () {
-                  Navigator.pop(context, ModOPtions.remove);
-                },
-                child: _buildItem(Icons.cancel, 'Remove Post'),
-              ),
-              SimpleDialogOption(
-                key: const Key('spam-option'),
-                onPressed: () {
-                  Navigator.pop(context, ModOPtions.spam);
-                },
-                child: _buildItem(Icons.delete, 'Remove as Spam'),
-              ),
-              SimpleDialogOption(
-                key: const Key('approve-option'),
-                onPressed: _isApproved()
-                    ? null
-                    : () {
-                        Navigator.pop(context, ModOPtions.approve);
-                      },
-                child: _buildItem(
-                    Icons.check, 'Approve${_isApproved() ? 'd' : ''} Post',
-                    disabled: true),
-              ),
-            ],
-          );
-        });
-    debugPrint(returnedOption.toString());
-    switch (returnedOption) {
-      case ModOPtions.spoiler:
-        final spoilerObj = MarkSpoilerModel(id: widget.post.id);
-        String? token = CacheHelper.getData(key: 'token');
-
-        String finalPath =
-            widget.post.spoiler ?? false ? unmarkSpoiler : markSpoiler;
-
-        DioHelper.patchData(
-                token: token, path: finalPath, data: spoilerObj.toJson())
-            .then((value) {
-          if (value.statusCode == 200) {
-            // togle the spoiler in the post
-            widget.post.spoiler = !widget.post.spoiler!;
-            //NOTE -  You have to update the POSTS after any change in the post that modifies the UI
-            PostNotifierCubit.get(context).NotifyPosts();
-          }
-        }).catchError((err) {
-          err = err as DioError;
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              backgroundColor: ColorManager.red,
-              content: Text(
-                  'Sorry, please try again later\nerror: ${err.message}')));
-        });
-
-        break;
-      // sends request to mark a post as nsfw
-      case ModOPtions.nsfw:
-        // marks the post as nsfw
-        () {
-          final nsfw = MarkNSFWModel(id: widget.post.id);
-          var token = CacheHelper.getData(key: 'token') ??
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzdlYTA3Mzk2NjRjMzJjYTk4ZmRlYzYiLCJ1c2VybmFtZSI6ImFobWVkYXR0YTMzIiwiaWF0IjoxNjY5MjQyOTk1fQ.DZDPE1su3Pss2izCyv8G2WAdAlBT97mhga5ku-Y2K-U';
-          DioHelper.postData(
-                  token: '$token', path: markNSFW, data: nsfw.toJson())
-              .then((value) {
-            if (value.statusCode == 200) {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text('The post is now marked spoiler')));
-            }
-          }).catchError((err) {
-            err = err as DioError;
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Sorry please try again later')));
-          });
-        };
-        break;
-      case ModOPtions.lock:
-        // locks comments on a post so no one can comment
-        () {
-          final lockComments = LockModel(id: widget.post.id, type: 'comment');
-
-          var token = CacheHelper.getData(key: 'token') ??
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzdlYTA3Mzk2NjRjMzJjYTk4ZmRlYzYiLCJ1c2VybmFtZSI6ImFobWVkYXR0YTMzIiwiaWF0IjoxNjY5MjQyOTk1fQ.DZDPE1su3Pss2izCyv8G2WAdAlBT97mhga5ku-Y2K-U';
-
-          DioHelper.postData(
-                  token: '$token', path: lock, data: lockComments.toJson())
-              .then((value) {
-            if (value.statusCode == 200) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Comments are now locked')));
-            }
-          }).catchError((err) {
-            err = err as DioError;
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Sorry please try again later')));
-          });
-        };
-        break;
-
-      case ModOPtions.unsticky:
-        // pins or unpins a post to or from a subreddit
-        () {
-          final stickUnstickPost = PinPostModel(id: widget.post.id, pin: false);
-
-          var token = CacheHelper.getData(key: 'token') ??
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzdlYTA3Mzk2NjRjMzJjYTk4ZmRlYzYiLCJ1c2VybmFtZSI6ImFobWVkYXR0YTMzIiwiaWF0IjoxNjY5MjQyOTk1fQ.DZDPE1su3Pss2izCyv8G2WAdAlBT97mhga5ku-Y2K-U';
-
-          DioHelper.postData(
-                  token: '$token',
-                  path: pinPost,
-                  data: stickUnstickPost.toJson())
-              .then((value) {
-            if (value.statusCode == 200) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Post is now unstickied')));
-            }
-          }).catchError((err) {
-            err = err as DioError;
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Sorry please try again later')));
-          });
-        };
-        break;
-      case ModOPtions.remove:
-        // removes a post from subreddit
-        () {
-          final removePost = RemoveModel(id: widget.post.id, type: 'post');
-          var token = CacheHelper.getData(key: 'token') ??
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzdlYTA3Mzk2NjRjMzJjYTk4ZmRlYzYiLCJ1c2VybmFtZSI6ImFobWVkYXR0YTMzIiwiaWF0IjoxNjY5MjQyOTk1fQ.DZDPE1su3Pss2izCyv8G2WAdAlBT97mhga5ku-Y2K-U';
-          DioHelper.postData(
-                  token: '$token', path: remove, data: removePost.toJson())
-              .then((value) {
-            if (value.statusCode == 200) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Post is removed')));
-            }
-          }).catchError((err) {
-            err = err as DioError;
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Sorry please try again later')));
-          });
-        };
-        break;
-      case ModOPtions.spam:
-        // removes post or comment as spam
-        () {
-          final removeAsSpam = RemoveModel(id: widget.post.id, type: 'post');
-          var token = CacheHelper.getData(key: 'token') ??
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzdlYTA3Mzk2NjRjMzJjYTk4ZmRlYzYiLCJ1c2VybmFtZSI6ImFobWVkYXR0YTMzIiwiaWF0IjoxNjY5MjQyOTk1fQ.DZDPE1su3Pss2izCyv8G2WAdAlBT97mhga5ku-Y2K-U';
-          DioHelper.postData(
-                  token: '$token', path: remove, data: removeAsSpam.toJson())
-              .then((value) {
-            if (value.statusCode == 200) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Post is removed as spam')));
-            }
-          }).catchError((err) {
-            err = err as DioError;
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Sorry please try again later')));
-          });
-        };
-        break;
-      case ModOPtions.approve:
-        // approves a post to be posted in a subreddit
-        () {
-          final approvePost = ApproveModel(id: widget.post.id, type: 'post');
-          var token = CacheHelper.getData(key: 'token') ??
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzdlYTA3Mzk2NjRjMzJjYTk4ZmRlYzYiLCJ1c2VybmFtZSI6ImFobWVkYXR0YTMzIiwiaWF0IjoxNjY5MjQyOTk1fQ.DZDPE1su3Pss2izCyv8G2WAdAlBT97mhga5ku-Y2K-U';
-          DioHelper.postData(
-                  token: '$token', path: approve, data: approvePost.toJson())
-              .then((value) {
-            if (value.statusCode == 200) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(const SnackBar(content: Text('Post approved')));
-            }
-          }).catchError((err) {
-            err = err as DioError;
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Sorry please try again later')));
-          });
-        };
-        break;
-      case null:
-
-        // dialog dismissed
-        break;
-    }
   }
 }

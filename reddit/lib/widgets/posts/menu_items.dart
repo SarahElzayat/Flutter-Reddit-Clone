@@ -4,8 +4,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
-import 'package:reddit/widgets/posts/post_lower_bar.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
+import '../../functions/post_functions.dart';
 
 /// Class of a single Menu item
 /// it contains the icon and the text used
@@ -40,7 +40,7 @@ class MenuItems {
   static const markNSFW = MenuItem(text: 'Mark NSFW', icon: Icons.flag);
 
   /// builds the row of the menu Item
-  static Widget buildItem(MenuItem item) {
+  static Widget buildDropMenuItem(MenuItem item) {
     return Row(
       children: [
         Icon(item.icon, color: Colors.white, size: 22),
