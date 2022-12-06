@@ -38,7 +38,7 @@ AppBar homeAppBar(context, index) {
                     : const Text(''),
         InkWell(
             // padding: EdgeInsets.zero,
-            onTap: () => cubit.changeEndDrawer(),
+            onTap: () => cubit.changeRightDrawer(),
             //Scaffold.of(context).isEndDrawerOpen? Scaffold.of(context).closeEndDrawer():Scaffold.of(context).openDrawer(),
             child: avatar())
       ],

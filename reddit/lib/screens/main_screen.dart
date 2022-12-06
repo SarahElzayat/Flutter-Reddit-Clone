@@ -30,6 +30,13 @@ class _MainScreenState extends State<MainScreen> {
         : _scaffoldKey.currentState?.openEndDrawer();
   }
 
+  ///The method changes the drawer state from open to closed and vice versa
+  void _changeLeftDrawer() {
+    _scaffoldKey.currentState!.isDrawerOpen
+        ? _scaffoldKey.currentState?.closeDrawer()
+        : _scaffoldKey.currentState?.openDrawer();
+  }
+
   bool isAndroid = CacheHelper.getData(key: 'isAndroid')!;
 
   List<Widget> items = [
@@ -52,8 +59,11 @@ class _MainScreenState extends State<MainScreen> {
 
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {
-        if (state is ChangeEndDrawerState) {
+        if (state is ChangeRightDrawerState) {
           _changeEndDrawer();
+        }
+        if (state is ChangeLeftDrawerState) {
+          _changeLeftDrawer();
         }
       },
       builder: (context, state) {
