@@ -70,7 +70,8 @@ class Main extends StatelessWidget {
           return ResponsiveSizer(
             builder: (context, orientation, screenType) {
               return MaterialApp(
-                initialRoute: token != null
+                /// TODO: this should be changed to be checked automatically
+                initialRoute: CacheHelper.getData(key: 'token') != null
                     ? MainScreen.routeName
                     : SignInScreen.routeName,
                 routes: myRoutes,
