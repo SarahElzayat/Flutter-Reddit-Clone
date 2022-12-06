@@ -3,6 +3,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/components/home_app_bar.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
 
@@ -15,10 +16,9 @@ class HistoryScreenForWeb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppCubit cubit = AppCubit.get(context)..changeHistoryCategory(0);
+    final AppCubit cubit = AppCubit.get(context)..changeHistoryCategory(HistoyCategory.recent);
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {
-        // TODO: implement listener
       },
       builder: (context, state) {
         return Scaffold(
@@ -29,20 +29,20 @@ class HistoryScreenForWeb extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   MaterialButton(
-                    onPressed: () => cubit.changeHistoryCategory(0),
-                    child: Text('History'),
+                    onPressed: () => cubit.changeHistoryCategory(HistoyCategory.recent),
+                    child: const Text('History'),
                   ),
                   MaterialButton(
-                    onPressed: () => cubit.changeHistoryCategory(1),
-                    child: Text('Upvoted'),
+                    onPressed: () => cubit.changeHistoryCategory(HistoyCategory.upvoted),
+                    child: const Text('Upvoted'),
                   ),
                   MaterialButton(
-                    onPressed: () => cubit.changeHistoryCategory(2),
-                    child: Text('Downvoted'),
+                    onPressed: () => cubit.changeHistoryCategory(HistoyCategory.downvoted),
+                    child: const Text('Downvoted'),
                   ),
                   MaterialButton(
-                    onPressed: () => cubit.changeHistoryCategory(3),
-                    child: Text('Hiddden'),
+                    onPressed: () => cubit.changeHistoryCategory(HistoyCategory.hidden),
+                    child: const Text('Hiddden'),
                   ),
           
                 ],

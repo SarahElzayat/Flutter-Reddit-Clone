@@ -1,4 +1,5 @@
 ///@author Sarah Elzayat
+///@description the right (end) drawer that's present through the whole application
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/Screens/history/history_screen_for_web.dart';
@@ -14,7 +15,10 @@ class RightDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
     final AppCubit cubit = AppCubit.get(context);
+
+    ///@param [rightDrawerItems] the list of right drawer items
     List<Widget> rightDrawerItems = [
       genericTextButton(context, Icons.person, 'My profile', null,
           isLeftDrawer: false),
@@ -37,6 +41,8 @@ class RightDrawer extends StatelessWidget {
       genericTextButton(context, Icons.drafts_outlined, 'Drafts', null,
           isLeftDrawer: false),
     ];
+
+    
     return SafeArea(
         child: Drawer(
       child: SingleChildScrollView(

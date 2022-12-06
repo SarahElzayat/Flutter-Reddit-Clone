@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/Components/home_app_bar.dart';
 import 'package:reddit/data/temp_data/tmp_data.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
@@ -72,6 +73,7 @@ class Main extends StatelessWidget {
           return ResponsiveSizer(
             builder: (context, orientation, screenType) {
               return MaterialApp(
+                
                 /// TODO: this should be changed to be checked automatically
                 initialRoute: CacheHelper.getData(key: 'token') != null
                     ? kIsWeb?HomeScreen.routeName: MainScreen.routeName
@@ -84,6 +86,7 @@ class Main extends StatelessWidget {
                 },
                 debugShowCheckedModeBanner: false,
                 theme: appTheme(),
+                
               );
             },
           );
