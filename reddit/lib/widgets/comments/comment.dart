@@ -1,6 +1,8 @@
+import 'dart:convert';
+
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/data/temp_data/tmp_data.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:reddit/functions/post_functions.dart';
 
 import '../../data/post_model/post_model.dart';
@@ -24,7 +26,12 @@ class Comment extends StatefulWidget {
 
 class _CommentState extends State<Comment> {
   bool isCompressed = false;
-
+  final QuillController _controller = QuillController(
+    document: Document.fromDelta(
+      Delta()..insert('White\n', {'color': '#cccccc'}),
+    ),
+    selection: const TextSelection.collapsed(offset: 0),
+  );
   @override
   Widget build(BuildContext context) {
     return ConditionalBuilder(
@@ -32,7 +39,7 @@ class _CommentState extends State<Comment> {
       builder: (context) {
         return Row(
           children: [
-            singleRow(post: widget.post),
+            singleRow(post: widget.post, showIcon: true),
           ],
         );
       },
@@ -41,11 +48,24 @@ class _CommentState extends State<Comment> {
           children: [
             Row(
               children: [
-                singleRow(
-                  post: widget.post,
-                  showDots: false,
+                Expanded(
+                  child: singleRow(
+                    post: widget.post,
+                    showDots: false,
+                    showIcon: true,
+                  ),
                 ),
               ],
+            ),
+            QuillEditor(
+              controller: _controller,
+              readOnly: true,
+              autoFocus: false,
+              expands: false,
+              scrollable: false,
+              scrollController: ScrollController(),
+              focusNode: FocusNode(),
+              padding: EdgeInsets.zero,
             ),
           ],
         );
