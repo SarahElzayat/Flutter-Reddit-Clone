@@ -16,6 +16,8 @@ class ColorManager {
 
   static const Color darkGrey =
       Color(0xff181a1b); //posts background, colorless buttons
+  static const Color betterDarkGrey =
+      Color(0xff1e1e1e); //posts background, colorless buttons
 
   static const Color lightGrey =
       Color(0xff8d857b); //text in appbar, small headlines and icons

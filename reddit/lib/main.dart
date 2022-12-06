@@ -49,7 +49,6 @@ Future<void> main() async {
   token = CacheHelper.getData(key: 'token');
   print('current Saved TOKEN:: $token');
 
-  print(tryData.toJson());
   runApp(const Main());
 }
 

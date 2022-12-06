@@ -46,52 +46,51 @@ class PostUpperBar extends StatefulWidget {
 class _PostUpperBarState extends State<PostUpperBar> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ConditionalSwitch.single<ShowingOtions>(
-            context: context,
-            valueBuilder: (BuildContext context) {
-              return widget.showRowsSelect;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ConditionalSwitch.single<ShowingOtions>(
+          context: context,
+          valueBuilder: (BuildContext context) {
+            return widget.showRowsSelect;
+          },
+          caseBuilders: {
+            ShowingOtions.onlyUser: (ctx) {
+              return _singleRow(
+                  name: widget.post.postedBy!,
+                  timeAgo: widget.post.postedAt!,
+                  sub: false,
+                  showIcon: true);
             },
-            caseBuilders: {
-              ShowingOtions.onlyUser: (ctx) {
-                return _singleRow(
-                    name: widget.post.postedBy!,
-                    timeAgo: widget.post.postedAt!,
-                    sub: false,
-                    showIcon: true);
-              },
-              ShowingOtions.onlySubreddit: (_) {
-                return _singleRow(
-                    name: widget.post.subreddit!,
-                    timeAgo: widget.post.postedAt!,
-                    sub: true,
-                    showIcon: true);
-              },
-              ShowingOtions.both: (_) {
-                return _bothRows();
-              },
+            ShowingOtions.onlySubreddit: (_) {
+              return _singleRow(
+                  name: widget.post.subreddit!,
+                  timeAgo: widget.post.postedAt!,
+                  sub: true,
+                  showIcon: true);
             },
-            fallbackBuilder: (BuildContext context) {
+            ShowingOtions.both: (_) {
               return _bothRows();
             },
-          ),
+          },
+          fallbackBuilder: (BuildContext context) {
+            return _bothRows();
+          },
+        ),
 
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: _tagsRow(),
-          ),
+        BlocBuilder<PostNotifierCubit, PostNotifierState>(
+          builder: (context, state) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: _tagsRow(),
+            );
+          },
+        ),
 
-          // The title of the post
-        ],
-      ),
+        // The title of the post
+      ],
     );
   }
-
-  
 
   SizedBox _bothRows() {
     return SizedBox(
@@ -158,12 +157,12 @@ class _PostUpperBarState extends State<PostUpperBar> {
 
   CircleAvatar subredditAvatar({small = false}) {
     return CircleAvatar(
-      radius: small ? min(4.w, 15) : min(5.5.w, 30),
-      child: Image.network(
+      radius: small ? min(3.w, 15) : min(5.5.w, 30),
+      backgroundColor: Colors.transparent,
+      backgroundImage: const NetworkImage(
           'https://styles.redditmedia.com/t5_2qh87/styles/communityIcon_ub69d1lpjlf51.png?width=256&s=920c352b6d0c69518b6978ba8b456176a8d63c25'),
     );
   }
-
 
   Row _tagsRow() {
     return Row(
@@ -195,7 +194,6 @@ class _PostUpperBarState extends State<PostUpperBar> {
       ],
     );
   }
-
 
   Widget _singleRow(
       {required String name,
