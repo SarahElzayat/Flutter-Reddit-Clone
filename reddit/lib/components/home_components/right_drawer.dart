@@ -18,7 +18,7 @@ class RightDrawer extends StatelessWidget {
       genericTextButton(context, Icons.add, 'Create a community', null),
       genericTextButton(context, Icons.bookmark_border_rounded, 'Saved', null),
       genericTextButton(
-          context, Icons.history_toggle_off_rounded, 'History',  const HistoryScreen()),
+          context, Icons.history_toggle_off_rounded, 'History',  HistoryScreen(bottomNavBarScreenIndex: cubit.currentIndex,)),
       genericTextButton(context, Icons.pending_outlined, 'Pending Posts', null),
       genericTextButton(context, Icons.drafts_outlined, 'Drafts', null),
     ];
