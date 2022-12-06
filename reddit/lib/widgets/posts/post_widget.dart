@@ -30,9 +30,8 @@ import 'post_upper_bar.dart';
 /// The widget that displays the post
 ///
 /// it's inteded to be used in the HOME PAGE
-//TODO - Refactor the code
 class PostWidget extends StatelessWidget {
-  PostWidget({
+  const PostWidget({
     super.key,
     required this.post,
     this.outsideScreen = true,
@@ -175,8 +174,18 @@ class PostWidget extends StatelessWidget {
                       ],
                     ),
                     _lowerPart(isWeb),
-                    _modRow(context),
-                    _commentsRow(context),
+                    BlocBuilder<PostCubit, PostState>(
+                      builder: (context, state) {
+                        return AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            child: (PostCubit.get(context).showModTools)
+                                ? _modRow(context)
+                                : Container(
+                                    key: const Key('mod-row-empty'),
+                                  ));
+                      },
+                    ),
+                    if (!outsideScreen) _commentsRow(context),
                   ],
                 ),
               );
@@ -205,6 +214,7 @@ class PostWidget extends StatelessWidget {
 
   Widget _modRow(context) {
     return Row(
+      key: const Key('mod-row'),
       children: [
         // a row of approve and delete icons
         // that are only visible to mods
@@ -328,21 +338,31 @@ class PostWidget extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            Material(
-              color: Colors.transparent,
-              clipBehavior: Clip.antiAlias,
-              shape: const CircleBorder(),
-              child: IconButton(
-                onPressed: () {},
-                constraints: const BoxConstraints(),
-                padding: const EdgeInsets.all(0),
-                icon: const Icon(
-                  Icons.shield_outlined,
-                  color: ColorManager.greyColor,
+            if (PostCubit.get(context).post.inYourSubreddit ?? false)
+              Material(
+                color: Colors.transparent,
+                clipBehavior: Clip.antiAlias,
+                shape: const CircleBorder(),
+                child: BlocBuilder<PostCubit, PostState>(
+                  builder: (context, state) {
+                    var cubit = PostCubit.get(context);
+                    return IconButton(
+                      onPressed: () {
+                        cubit.toggleModTools();
+                      },
+                      constraints: const BoxConstraints(),
+                      padding: const EdgeInsets.all(0),
+                      icon: Icon(
+                        cubit.showModTools
+                            ? Icons.shield
+                            : Icons.shield_outlined,
+                        color: ColorManager.greyColor,
+                      ),
+                      iconSize: min(6.w, 30),
+                    );
+                  },
                 ),
-                iconSize: min(6.w, 30),
               ),
-            ),
           ],
         );
       },

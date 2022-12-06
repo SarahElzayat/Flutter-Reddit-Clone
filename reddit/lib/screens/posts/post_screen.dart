@@ -68,7 +68,9 @@ class _PostScreenState extends State<PostScreen> {
               outsideScreen: false,
               upperRowType: widget.upperRowType,
             ),
-            Comment(),
+            Comment(
+              post: widget.post,
+            ),
           ],
         ),
       ),

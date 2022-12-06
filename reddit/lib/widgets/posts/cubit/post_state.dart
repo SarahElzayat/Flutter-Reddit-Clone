@@ -31,3 +31,5 @@ class PostsLoaded extends PostState {}
 class PostsLoading extends PostState {}
 
 class CommentsSortTypeChanged extends PostState {}
+
+class CommentsModToolsToggled extends PostState {}

@@ -155,4 +155,10 @@ class PostCubit extends Cubit<PostState> {
     selectedItem = item;
     emit(CommentsSortTypeChanged());
   }
+
+  bool showModTools = false;
+  void toggleModTools() {
+    showModTools = !showModTools;
+    emit(CommentsModToolsToggled());
+  }
 }
