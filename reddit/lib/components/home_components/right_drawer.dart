@@ -26,8 +26,8 @@ class RightDrawer extends StatelessWidget {
           context,
           Icons.history_toggle_off_rounded,
           'History',
-          kIsWeb?
-          const HistoryScreenForWeb():
+          // kIsWeb?
+          // const HistoryScreenForWeb():
           HistoryScreen(
             bottomNavBarScreenIndex: cubit.currentIndex,
           ),
