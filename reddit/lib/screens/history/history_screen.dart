@@ -130,7 +130,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           child: const Icon(Icons.crop_square_outlined)),
                     ],
                   ),
-                  if (cubit.history.isEmpty)
+                  state is HistoryEmptyState?
                     Padding(
                       padding: EdgeInsets.only(
                           top: MediaQuery.of(context).size.height * 0.4),
@@ -140,8 +140,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ),
-                    ),
-                  if (cubit.history.isNotEmpty)
+                    ):
+                  
                     ConditionalBuilder(
                         condition: state is! LoadingHistoryState,
                         fallback: (context) => const Center(

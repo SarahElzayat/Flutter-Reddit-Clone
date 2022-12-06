@@ -98,7 +98,8 @@ class AppCubit extends Cubit<AppState> {
   void changeRightDrawer() {
     emit(ChangeRightDrawerState());
   }
-    void changeLeftDrawer() {
+
+  void changeLeftDrawer() {
     emit(ChangeLeftDrawerState());
   }
 
@@ -176,9 +177,14 @@ class AppCubit extends Cubit<AppState> {
       token: CacheHelper.getData(key: 'token'),
       query: {},
     ).then((value) {
-      for (int i = 0; i < value.data['children'].length; i++) {
-        history.add(PostModel.fromJsonwithData(value.data['children'][i]));
-        emit(LoadedHistoryState());
+      // print('KOSSOM EL VALUE' + value.data.toString());
+      if (value.data['children'].length == 0) {
+        emit(HistoryEmptyState());
+      } else {
+        for (int i = 0; i < value.data['children'].length; i++) {
+          history.add(PostModel.fromJsonwithData(value.data['children'][i]));
+          emit(LoadedHistoryState());
+        }
       }
     }).onError((error, stackTrace) {
       if (kDebugMode) {

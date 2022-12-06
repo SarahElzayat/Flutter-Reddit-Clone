@@ -41,9 +41,9 @@ AppBar homeAppBar(context, index) {
   } else {
     return AppBar(
       // leading: null,
-actions: [Container()],
+      actions: [Container()],
       automaticallyImplyLeading: false,
-      
+
       title: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Row(
