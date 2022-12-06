@@ -18,9 +18,10 @@ enum CommunityTypes {
 
 /// this enum is used to determine the type of the sort
 enum SortType {
-  best,
-  newPost,
-  top,
+  bestType,
+  topType,
+  newType,
+  hotType,
 }
 
 /// controls the view of the post in the posts list
