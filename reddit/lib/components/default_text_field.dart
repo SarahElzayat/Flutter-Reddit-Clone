@@ -1,4 +1,3 @@
-/// A widget that displays a text field with a label.
 /// date: 23/10/2022
 /// @Author: Ahmed Atta
 
@@ -20,8 +19,11 @@ class DefaultTextField extends StatefulWidget {
     this.keyboardType = TextInputType.text,
     this.formController,
     this.maxLength,
+    this.isPassword,
     this.validator,
   }) : super(key: key);
+
+  final bool? isPassword;
 
   /// The text to display in the label.
   /// it's required.
@@ -31,7 +33,7 @@ class DefaultTextField extends StatefulWidget {
   final IconButton? icon;
 
   /// indicates Whether the text being edited is obscured.
-  /// Defaults to [false].
+  /// Defaults to false.
   final bool obscureText;
 
   /// Called when the text being edited changes.
@@ -40,7 +42,7 @@ class DefaultTextField extends StatefulWidget {
   /// Called when the text is submitted.
   final void Function(String)? onSubmitted;
 
-  /// Called when [validate] is called.
+  /// Called when validate is called.
   final String? Function(String?)? validator;
 
   /// The type of keyboard to use for editing the text.
@@ -54,7 +56,7 @@ class DefaultTextField extends StatefulWidget {
   final int? maxLength;
 
   /// indicates Whether the text field should be multiline.
-  /// Defaults to [false].
+  /// Defaults to false.
   final bool multiLine;
 
   @override
@@ -63,6 +65,9 @@ class DefaultTextField extends StatefulWidget {
 
 class DefaultTextFieldState extends State<DefaultTextField> {
   late FocusNode _focusNode;
+
+  /// used to detect wethere the user want to see the password or not
+  bool _isPressed = false;
 
   @override
   void initState() {
@@ -79,18 +84,37 @@ class DefaultTextFieldState extends State<DefaultTextField> {
     super.dispose();
   }
 
+  bool showPassIcon() {
+    return widget.isPassword != null && widget.isPassword!;
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       focusNode: _focusNode,
       controller: widget.formController,
-      obscureText: widget.obscureText,
+
+      /// if pressed then it should be false
+      obscureText: (!_isPressed && showPassIcon()),
+
       onChanged: widget.onChanged,
       keyboardType:
           widget.multiLine ? TextInputType.multiline : widget.keyboardType,
       onFieldSubmitted: widget.onSubmitted,
-      style: const TextStyle(color: ColorManager.lightGrey),
+      style: Theme.of(context).textTheme.bodyMedium,
       decoration: InputDecoration(
+        suffix: showPassIcon()
+            ? InkWell(
+                child: showPassIcon()
+                    ? const Icon(Icons.visibility)
+                    : const Icon(Icons.visibility_off),
+                onTap: () {
+                  setState(() {
+                    _isPressed = !_isPressed;
+                  });
+                },
+              )
+            : null,
         enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: ColorManager.greyColor, width: 2.0),
         ),
