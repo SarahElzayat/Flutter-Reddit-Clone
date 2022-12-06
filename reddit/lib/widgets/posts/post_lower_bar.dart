@@ -99,42 +99,38 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
               },
               child: BlocBuilder<PostCubit, PostState>(
                 builder: (context, state) {
-                  return AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children:
-                          (isMod && !(PostCubit.get(context).showModTools))
-                              ? [
-                                  Icon(
-                                    key: const Key('mod-icon'),
-                                    Icons.shield_outlined,
-                                    color: widget.iconColor,
-                                  ),
-                                  Text(
-                                    'Mod',
-                                    style: TextStyle(
-                                      color: widget.iconColor,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                ]
-                              : [
-                                  Icon(
-                                    key: const Key('share-icon'),
-                                    Icons.share,
-                                    color: widget.iconColor,
-                                    size: min(5.5.w, 30),
-                                  ),
-                                  Text(
-                                    'Share',
-                                    style: TextStyle(
-                                      color: widget.iconColor,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                ],
-                    ),
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: (isMod && !(PostCubit.get(context).showModTools))
+                        ? [
+                            Icon(
+                              key: const Key('mod-icon'),
+                              Icons.shield_outlined,
+                              color: widget.iconColor,
+                            ),
+                            Text(
+                              'Mod',
+                              style: TextStyle(
+                                color: widget.iconColor,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ]
+                        : [
+                            Icon(
+                              key: const Key('share-icon'),
+                              Icons.share,
+                              color: widget.iconColor,
+                              size: min(5.5.w, 30),
+                            ),
+                            Text(
+                              'Share',
+                              style: TextStyle(
+                                color: widget.iconColor,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
                   );
                 },
               ),
