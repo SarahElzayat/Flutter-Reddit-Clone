@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/sign_In_screen.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/signin_screen.dart';
 
 void main() {
   setUp(() {});
