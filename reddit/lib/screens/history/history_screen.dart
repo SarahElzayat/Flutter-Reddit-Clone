@@ -74,7 +74,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const MainScreen(),
+                builder: (context) => const HomeScreenForMobile(),
               ));
         }
       },

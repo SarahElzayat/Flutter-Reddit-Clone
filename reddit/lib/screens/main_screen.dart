@@ -12,15 +12,15 @@ import '../components/helpers/color_manager.dart';
 import '../components/home_components/left_drawer.dart';
 import '../components/home_components/right_drawer.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+class HomeScreenForMobile extends StatefulWidget {
+  const HomeScreenForMobile({super.key});
   static const routeName = '/main_screen_route';
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  State<HomeScreenForMobile> createState() => _HomeScreenForMobileState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   ///The method changes the end drawer state from open to closed and vice versa

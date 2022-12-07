@@ -66,7 +66,7 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
         CacheHelper.putData(key: 'username', value: value.data['username']);
 
         // navigating to the main screen
-        Navigator.of(context).pushReplacementNamed(MainScreen.routeName);
+        Navigator.of(context).pushReplacementNamed(HomeScreenForMobile.routeName);
       }
     }).catchError((error) {
       // casting the error as a dio error to be able to use its content
