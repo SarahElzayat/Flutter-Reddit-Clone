@@ -15,6 +15,8 @@ import '../add_post/add_post.dart';
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key, required this.bottomNavBarScreenIndex});
   final int bottomNavBarScreenIndex;
+  static const routeName = '/history_screen';
+
   @override
   State<HistoryScreen> createState() => _HistoryScreenState();
 }
@@ -23,6 +25,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     
+
     ///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
     final AppCubit cubit = AppCubit.get(context)
       ..changeHistoryCategory(HistoyCategory.recent);

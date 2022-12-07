@@ -10,6 +10,7 @@ import '../../screens/to_be_done_screen.dart';
 import '../helpers/color_manager.dart';
 import 'components.dart';
 
+///TODO try changing it into a scaffold 
 class RightDrawer extends StatelessWidget {
   const RightDrawer({super.key});
 

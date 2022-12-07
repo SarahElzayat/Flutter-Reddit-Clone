@@ -2,6 +2,8 @@
 /// @date 1/11/2022
 /// this file containes all our routes in order to avoid destraction in the main file.
 import 'package:flutter/material.dart';
+import 'package:reddit/Screens/history/history_screen.dart';
+import 'package:reddit/Screens/history/history_screen_for_web.dart';
 import 'package:reddit/screens/add_post/add_post.dart';
 import 'package:reddit/screens/add_post/community_search.dart';
 import 'package:reddit/screens/add_post/post_rules.dart';
@@ -70,5 +72,7 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   TrimmerView.routeName: (ctx) => const TrimmerView(),
   PostSimpleScreen.routeName: (ctx) => const PostSimpleScreen(),
   CommunitySearch.routeName: (ctx) => CommunitySearch(),
-  PostRules.routeName: (ctx) => PostRules(),
+  PostRules.routeName: (ctx) => const PostRules(),
+  HistoryScreen.routeName: (ctx) => const HistoryScreen(bottomNavBarScreenIndex: 0),
+  HistoryScreenForWeb.routeName: (ctx) => const HistoryScreenForWeb(),
 };

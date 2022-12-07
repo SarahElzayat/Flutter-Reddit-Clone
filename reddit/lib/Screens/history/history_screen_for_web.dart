@@ -13,6 +13,8 @@ import '../../widgets/posts/post_upper_bar.dart';
 
 class HistoryScreenForWeb extends StatelessWidget {
   const HistoryScreenForWeb({super.key});
+    static const routeName = '/history_screen_web';
+
 
   @override
   Widget build(BuildContext context) {

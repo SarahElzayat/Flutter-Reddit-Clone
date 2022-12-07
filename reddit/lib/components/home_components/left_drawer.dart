@@ -1,6 +1,6 @@
 ///@author Sarah Elzayat
 ///@date 16/11/2022
-///@description left drawer to add to main screen
+///@description the left drawer that's present through the whole application
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +13,7 @@ class LeftDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
     final AppCubit cubit = AppCubit.get(context);
 
     return BlocBuilder<AppCubit, AppState>(

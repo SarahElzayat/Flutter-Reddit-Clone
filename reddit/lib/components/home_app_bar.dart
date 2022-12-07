@@ -3,15 +3,24 @@
 /// App bar of the application
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/Screens/create_community_screen/create_community_screen.dart';
 import 'package:reddit/components/app_bar_components.dart';
 import 'package:reddit/components/home_dropdown_menu.dart';
 import 'package:reddit/components/search_field.dart';
 
 import '../cubit/app_cubit.dart';
 
+
+///@param [index] is the index of the bottom navigation bar screen
+///@param [context] is the context of the parent widget
+/// returns the app bar of the screen
 AppBar homeAppBar(context, index) {
+
+  ///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
   final AppCubit cubit = AppCubit.get(context);
 
+  ///checks if the it's mobile
+  ///depending on the given index the title and actions are changed
   if (!kIsWeb) {
     return AppBar(
       titleSpacing: 0,
@@ -38,9 +47,10 @@ AppBar homeAppBar(context, index) {
         InkWell(onTap: () => cubit.changeRightDrawer(), child: avatar())
       ],
     );
-  } else {
+  }
+  ///if it's web then display the following
+   else {
     return AppBar(
-      // leading: null,
       actions: [Container()],
       automaticallyImplyLeading: false,
 
@@ -76,7 +86,7 @@ AppBar homeAppBar(context, index) {
               splashColor: Colors.transparent,
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateCommunityScreen(),)),
               icon: const Icon(Icons.add),
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
