@@ -91,8 +91,6 @@ class _PostUpperBarState extends State<PostUpperBar> {
     );
   }
 
-  
-
   SizedBox _bothRows() {
     return SizedBox(
       child: Row(
@@ -164,7 +162,6 @@ class _PostUpperBarState extends State<PostUpperBar> {
     );
   }
 
-
   Row _tagsRow() {
     return Row(
       children: [
@@ -195,7 +192,6 @@ class _PostUpperBarState extends State<PostUpperBar> {
       ],
     );
   }
-
 
   Widget _singleRow(
       {required String name,

@@ -54,7 +54,6 @@ class _HomeScreenState extends State<HomeScreen> {
       listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
-          
           appBar: kIsWeb ? homeAppBar(context, 0) : null,
           floatingActionButton: kIsWeb
               ? BackToTopButton(scrollController: scrollController)
