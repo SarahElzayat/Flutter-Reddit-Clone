@@ -16,6 +16,7 @@ import 'package:reddit/screens/moderation/general_screens/topics.dart';
 import 'package:reddit/screens/moderation/general_screens/welcome_message/add_edit_message.dart';
 import 'package:reddit/screens/moderation/general_screens/welcome_message/welcome_message.dart';
 import 'package:reddit/screens/moderation/mod_tools.dart';
+import 'package:reddit/screens/moderation/user_management_screens/add_moderator.dart';
 import '../../screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
 import '../../screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
 import '../../screens/main_screen.dart';
@@ -96,5 +97,6 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   AddEditMessage.routeName: (ctx) => const AddEditMessage(),
   Discovery.routeName: (ctx) => const Discovery(),
   ChooseLanguage.routeName: (ctx) => const ChooseLanguage(),
-  PostFlair.routeName: (ctx) => const PostFlair()
+  PostFlair.routeName: (ctx) => const PostFlair(),
+  AddModerator.routeName: (ctx) => AddModerator(),
 };

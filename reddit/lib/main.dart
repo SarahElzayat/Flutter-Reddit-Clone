@@ -13,6 +13,7 @@ import 'package:reddit/screens/moderation/general_screens/topics.dart';
 import 'package:reddit/screens/moderation/general_screens/welcome_message/add_edit_message.dart';
 import 'package:reddit/screens/moderation/general_screens/welcome_message/welcome_message.dart';
 import 'package:reddit/screens/moderation/mod_tools.dart';
+import 'package:reddit/screens/moderation/user_management_screens/add_moderator.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/sign_In_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'components/helpers/mocks/functions.dart';
@@ -82,7 +83,7 @@ class Main extends StatelessWidget {
                     //  CacheHelper.getData(key: 'token') != null
                     //     ? MainScreen.routeName
                     //     :
-                    PostFlair.routeName,
+                    AddModerator.routeName,
                 routes: myRoutes,
                 onUnknownRoute: (settings) {
                   return MaterialPageRoute(
