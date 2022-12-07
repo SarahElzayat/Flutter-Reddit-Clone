@@ -1,26 +1,26 @@
 /// @author Sarah Elzayat
 /// @date 3/11/2022
 /// @description This screen is the main one that has the bottom navigation bar, the main app bar, drawer and end drawer
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../components/home_app_bar.dart';
 import '../../../cubit/app_cubit.dart';
 import '../../../screens/add_post/add_post.dart';
-import '../../../shared/local/shared_preferences.dart';
 import '../components/helpers/color_manager.dart';
 import '../components/home_components/left_drawer.dart';
 import '../components/home_components/right_drawer.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+class HomeScreenForMobile extends StatefulWidget {
+  const HomeScreenForMobile({super.key});
   static const routeName = '/main_screen_route';
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  State<HomeScreenForMobile> createState() => _HomeScreenForMobileState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   ///The method changes the end drawer state from open to closed and vice versa
@@ -30,7 +30,14 @@ class _MainScreenState extends State<MainScreen> {
         : _scaffoldKey.currentState?.openEndDrawer();
   }
 
-  bool isAndroid = CacheHelper.getData(key: 'isAndroid')!;
+  ///The method changes the drawer state from open to closed and vice versa
+  void _changeLeftDrawer() {
+    _scaffoldKey.currentState!.isDrawerOpen
+        ? _scaffoldKey.currentState?.closeDrawer()
+        : _scaffoldKey.currentState?.openDrawer();
+  }
+
+  bool isAndroid = !kIsWeb;
 
   List<Widget> items = [
     const Text(
@@ -48,12 +55,15 @@ class _MainScreenState extends State<MainScreen> {
   ];
   @override
   Widget build(BuildContext context) {
-    final AppCubit cubit = AppCubit.get(context);
+    final AppCubit cubit = AppCubit.get(context)..getUsername();
 
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {
-        if (state is ChangeEndDrawerState) {
+        if (state is ChangeRightDrawerState) {
           _changeEndDrawer();
+        }
+        if (state is ChangeLeftDrawerState) {
+          _changeLeftDrawer();
         }
       },
       builder: (context, state) {

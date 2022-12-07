@@ -29,3 +29,5 @@ class PostsError extends PostState {}
 class PostsLoaded extends PostState {}
 
 class PostsLoading extends PostState {}
+
+class CommentsSortTypeChanged extends PostState {}

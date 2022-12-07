@@ -8,7 +8,7 @@ import '../../../data/post_model/post_model.dart';
 import '../../../screens/posts/post_screen.dart';
 
 /// Goes to the post screen
-void goToPost(BuildContext context, PostModel post) {
+void goToPost(BuildContext context, PostModel post, upperRowType) {
   Navigator.of(context).push(
     MaterialPageRoute(
       builder: (context) => PostScreen(

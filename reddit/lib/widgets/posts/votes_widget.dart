@@ -48,7 +48,7 @@ class VotesPart extends StatelessWidget {
                 direction: 1,
               )
                   .then((value) {
-                PostNotifierCubit.get(context).changedPost();
+                PostNotifierCubit.get(context).NotifyPosts();
               });
             },
             constraints: const BoxConstraints(),
@@ -82,7 +82,7 @@ class VotesPart extends StatelessWidget {
           child: IconButton(
             onPressed: () {
               cubit.vote(direction: -1).then((value) {
-                PostNotifierCubit.get(context).changedPost();
+                PostNotifierCubit.get(context).NotifyPosts();
               });
             },
             constraints: const BoxConstraints(),

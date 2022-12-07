@@ -7,13 +7,13 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional_switch.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:reddit/widgets/posts/dropdown_list.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_state.dart';
 import '../../data/post_model/post_model.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'dropdown_list.dart';
+import '../../functions/post_functions.dart';
 
 bool isjoined = true;
 
@@ -46,48 +46,41 @@ class PostUpperBar extends StatefulWidget {
 class _PostUpperBarState extends State<PostUpperBar> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ConditionalSwitch.single<ShowingOtions>(
-            context: context,
-            valueBuilder: (BuildContext context) {
-              return widget.showRowsSelect;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ConditionalSwitch.single<ShowingOtions>(
+          context: context,
+          valueBuilder: (BuildContext context) {
+            return widget.showRowsSelect;
+          },
+          caseBuilders: {
+            ShowingOtions.onlyUser: (ctx) {
+              return singleRow(sub: false, showIcon: true, post: widget.post);
             },
-            caseBuilders: {
-              ShowingOtions.onlyUser: (ctx) {
-                return _singleRow(
-                    name: widget.post.postedBy!,
-                    timeAgo: widget.post.postedAt!,
-                    sub: false,
-                    showIcon: true);
-              },
-              ShowingOtions.onlySubreddit: (_) {
-                return _singleRow(
-                    name: widget.post.subreddit!,
-                    timeAgo: widget.post.postedAt!,
-                    sub: true,
-                    showIcon: true);
-              },
-              ShowingOtions.both: (_) {
-                return _bothRows();
-              },
+            ShowingOtions.onlySubreddit: (_) {
+              return singleRow(sub: true, showIcon: true, post: widget.post);
             },
-            fallbackBuilder: (BuildContext context) {
+            ShowingOtions.both: (_) {
               return _bothRows();
             },
-          ),
+          },
+          fallbackBuilder: (BuildContext context) {
+            return _bothRows();
+          },
+        ),
 
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: _tagsRow(),
-          ),
+        BlocBuilder<PostNotifierCubit, PostNotifierState>(
+          builder: (context, state) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: _tagsRow(),
+            );
+          },
+        ),
 
-          // The title of the post
-        ],
-      ),
+        // The title of the post
+      ],
     );
   }
 
@@ -110,10 +103,7 @@ class _PostUpperBarState extends State<PostUpperBar> {
                   fontSize: 15,
                 ),
               ),
-              _singleRow(
-                  name: widget.post.postedBy ?? '',
-                  timeAgo: widget.post.postedAt ?? '',
-                  sub: false),
+              singleRow(sub: false, showDots: false, post: widget.post),
             ],
           ),
           const Spacer(),
@@ -135,13 +125,14 @@ class _PostUpperBarState extends State<PostUpperBar> {
               ),
             )
           else if (widget.outSide)
-            dropDownDots(),
+            dropDownDots(widget.post),
         ],
       ),
     );
   }
 
-  BlocBuilder<PostNotifierCubit, PostNotifierState> dropDownDots() {
+  BlocBuilder<PostNotifierCubit, PostNotifierState> dropDownDots(
+      PostModel post) {
     return BlocBuilder<PostNotifierCubit, PostNotifierState>(
       builder: (context, state) {
         return DropDownList(
@@ -189,38 +180,6 @@ class _PostUpperBarState extends State<PostUpperBar> {
                   )),
             ],
           ),
-      ],
-    );
-  }
-
-  Widget _singleRow(
-      {required String name,
-      required String timeAgo,
-      bool sub = false,
-      bool showIcon = false}) {
-    return Row(
-      children: [
-        if (showIcon) subredditAvatar(small: true),
-        if (showIcon)
-          SizedBox(
-            width: min(5.w, 0.2.dp),
-          ),
-        Text(
-          '${sub ? 'r' : 'u'}/$name • ',
-          style: const TextStyle(
-            color: ColorManager.greyColor,
-            fontSize: 15,
-          ),
-        ),
-        Text(
-          timeago.format(DateTime.parse(timeAgo), locale: 'en_short'),
-          style: const TextStyle(
-            color: ColorManager.greyColor,
-            fontSize: 15,
-          ),
-        ),
-        if (showIcon) const Spacer(),
-        if (showIcon) dropDownDots()
       ],
     );
   }
