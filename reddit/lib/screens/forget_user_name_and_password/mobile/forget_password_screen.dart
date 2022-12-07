@@ -6,7 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/data/sign_in_And_sign_up_models/validators.dart';
 import '../../../screens/to_go_screens/having_trouble_screen.dart';
-import '../../sign_in_and_sign_up_screen/mobile/mobile_signin_screen.dart';
+import '../../sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/continue_button.dart';
 import '../../../data/sign_in_And_sign_up_models/login_forget_model.dart';
 import '../../../networks/constant_end_points.dart';

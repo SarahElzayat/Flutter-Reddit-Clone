@@ -18,7 +18,7 @@ import '../../../widgets/sign_in_and_sign_up_widgets/continue_with_facebook_or_g
 import '../../main_screen.dart';
 import '../../to_go_screens/privacy_and_policy.dart';
 import '../../to_go_screens/user_agreement_screen.dart';
-import 'mobile_signin_screen.dart';
+import 'sign_in_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
