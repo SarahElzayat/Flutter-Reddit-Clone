@@ -4,7 +4,7 @@
 
 import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/Screens/add_post/paint_screen.dart';
+import 'package:reddit/screens/add_post/paint_screen.dart';
 import 'package:reddit/cubit/add_post.dart/cubit/add_post_cubit.dart';
 
 import '../../functions/add_post.dart';

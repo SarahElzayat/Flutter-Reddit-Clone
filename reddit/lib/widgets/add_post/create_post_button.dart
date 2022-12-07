@@ -3,7 +3,7 @@
 /// @date 4/11/2022
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/Screens/add_post/post.dart';
+import 'package:reddit/screens/add_post/post.dart';
 import 'package:reddit/cubit/add_post.dart/cubit/add_post_cubit.dart';
 
 import '../../Components/Button.dart';

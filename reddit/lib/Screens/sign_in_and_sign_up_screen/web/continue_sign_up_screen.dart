@@ -4,14 +4,14 @@
 /// he enter his email, and to continue the sign up process
 
 import 'package:flutter/material.dart';
-import 'package:reddit/Screens/main_screen.dart';
+import 'package:reddit/screens/main_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../Components/Helpers/color_manager.dart';
 import '../../../Components/default_text_field.dart';
 import '../../../Data/sign_in_And_sign_up_models/sign_up_model.dart';
 import '../../../Data/sign_in_And_sign_up_models/validators.dart';
-import '../../../Screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
+import '../../../screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
 import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
 import '../../../shared/local/shared_preferences.dart';

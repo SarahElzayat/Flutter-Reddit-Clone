@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:reddit/Screens/add_post/image_screen.dart';
-import 'package:reddit/Screens/add_post/video_trimmer.dart';
+import 'package:reddit/screens/add_post/image_screen.dart';
+import 'package:reddit/screens/add_post/video_trimmer.dart';
 import '../Components/Button.dart';
 import '../Components/Helpers/color_manager.dart';
 import '../cubit/add_post.dart/cubit/add_post_cubit.dart';
@@ -166,7 +166,7 @@ void chooseSourceWidget(
                   buttonWidth: mediaQuery.size.width * 0.3,
                   buttonHeight: 40,
                   textFontSize: 15,
-                  boarderRadius: 20,
+                  borderRadius: 20,
                 ),
               ),
             ],

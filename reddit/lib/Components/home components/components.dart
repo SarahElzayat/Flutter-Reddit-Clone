@@ -3,8 +3,8 @@
 ///@description this file has some reusable components to use in the home screen
 import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/Screens/create_community_screen.dart';
-import 'package:reddit/Screens/to_be_done_screen.dart';
+import 'package:reddit/screens/create_community_screen.dart';
+import 'package:reddit/screens/to_be_done_screen.dart';
 
 /// a reusable button with a dropdown list to use in drawer
 /// @param [text] is the name of the list
