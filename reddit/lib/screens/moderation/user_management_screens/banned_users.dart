@@ -1,6 +1,6 @@
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:reddit/widgets/moderation/user_management.dart';
+import '../../../widgets/moderation/user_management.dart';
 
 class BannedUsers extends StatelessWidget {
   const BannedUsers({super.key});

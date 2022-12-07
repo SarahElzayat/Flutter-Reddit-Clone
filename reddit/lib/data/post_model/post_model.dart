@@ -1,4 +1,5 @@
 import 'flair.dart';
+import 'hybrid_content.dart';
 import 'image.dart';
 import 'moderation.dart';
 
@@ -26,6 +27,12 @@ class PostModel {
   bool? spammed;
   bool? inYourSubreddit;
   Moderation? moderation;
+  String? link;
+  String? video;
+  List<HybridContent>? hybridContent;
+  bool? sendReplies;
+  bool? markedSpam;
+  String? suggestedSort;
 
   PostModel({
     this.id,
@@ -51,7 +58,54 @@ class PostModel {
     this.spammed,
     this.inYourSubreddit,
     this.moderation,
+    this.link,
+    this.video,
+    this.hybridContent,
+    this.sendReplies,
+    this.markedSpam,
+    this.suggestedSort,
   });
+
+  factory PostModel.fromJsonwithData(Map<String, dynamic> json) {
+    return PostModel(
+      id: json['id'],
+      kind: json['data']['kind'] as String?,
+      title: json['data']['title'] as String?,
+      subreddit: json['data']['subreddit'] as String?,
+      link: json['data']['link'] as String?,
+      images: (json['data']['images'] as List<dynamic>?)
+          ?.map((e) => Image.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      video: json['data']['video'] as String?,
+      hybridContent: (json['data']['hybridContent'] as List<dynamic>?)
+          ?.map((e) => HybridContent.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      nsfw: json['data']['nsfw'] as bool?,
+      spoiler: json['data']['spoiler'] as bool?,
+      sharePostId: json['data']['sharePostId'] as String?,
+      flair: json['data']['flair'] == null
+          ? null
+          : Flair.fromJson(json['data']['flair'] as Map<String, dynamic>),
+      comments: json['data']['comments'] as int?,
+      votes: json['data']['votes'] as int?,
+      postedAt: json['data']['postedAt'] as String?,
+      sendReplies: json['data']['sendReplies'] as bool?,
+      markedSpam: json['data']['markedSpam'] as bool?,
+      suggestedSort: json['data']['suggestedSort'] as String?,
+      editedAt: json['data']['editedAt'] as String?,
+      postedBy: json['data']['postedBy'] as String?,
+      votingType: json['data']['votingType'] as int?,
+      saved: json['data']['saved'] as bool?,
+      followed: json['data']['followed'] as bool?,
+      hidden: json['data']['hidden'] as bool?,
+      spammed: json['data']['spammed'] as bool?,
+      inYourSubreddit: json['data']['inYourSubreddit'] as bool?,
+      moderation: json['data']['moderation'] == null
+          ? null
+          : Moderation.fromJson(
+              json['data']['moderation'] as Map<String, dynamic>),
+    );
+  }
 
   factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
         id: json['id'],
@@ -110,7 +164,7 @@ class PostModel {
         'inYourSubreddit': inYourSubreddit,
         'moderation': moderation?.toJson(),
       };
-
+  //TODO - add more fields
   PostModel copyWith({
     String? id,
     String? kind,
@@ -160,6 +214,9 @@ class PostModel {
       spammed: spammed ?? this.spammed,
       inYourSubreddit: inYourSubreddit ?? this.inYourSubreddit,
       moderation: moderation ?? this.moderation,
+      suggestedSort: suggestedSort,
+      video: video,
+      hybridContent: hybridContent,
     );
   }
 }

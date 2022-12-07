@@ -1,12 +1,14 @@
 /// The Post's DropDown List Widget that has Alot of options depending on the post
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
-
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
 import 'cubit/post_state.dart';
 import 'menu_items.dart' as mi;
 
@@ -20,7 +22,7 @@ class DropDownList extends StatelessWidget {
     this.itemClass = ItemsClass.public,
   }) : super(key: key);
 
-  /// The Post's ID
+  /// The [PostModel.id] of targeted Post
   final String postId;
 
   /// The Class of the Post
@@ -49,12 +51,13 @@ class DropDownList extends StatelessWidget {
           child: DropdownButton2(
             customButton: const Icon(
               Icons.more_vert,
+              color: ColorManager.greyColor,
             ),
             items: [
               ...getList().map(
                 (item) => DropdownMenuItem<mi.MenuItem>(
                   value: item,
-                  child: mi.MenuItems.buildItem(item),
+                  child: mi.MenuItems.buildDropMenuItem(item),
                 ),
               ),
             ],

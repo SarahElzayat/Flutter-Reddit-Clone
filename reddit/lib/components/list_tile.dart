@@ -2,9 +2,9 @@
 /// @date 26/10/2022
 /// This is a listTile bluePrint which is
 /// built to be a reuseable widget for further uses
-
 import 'package:flutter/material.dart';
-import '../components/helpers/color_manager.dart';
+
+import 'helpers/color_manager.dart';
 import 'helpers/enums.dart';
 
 // ignore: must_be_immutable

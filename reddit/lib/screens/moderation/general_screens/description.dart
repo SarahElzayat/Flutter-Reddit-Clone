@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/Components/default_text_field.dart';
-import '/Components/Button.dart';
-import 'package:reddit/Components/Helpers/color_manager.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
+import '../../../components/button.dart';
+import '../../../components/default_text_field.dart';
+import '../../../components/helpers/color_manager.dart';
 
 class Description extends StatefulWidget {
   static const String routeName = 'description';

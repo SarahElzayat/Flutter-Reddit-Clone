@@ -1,14 +1,14 @@
 /// Model Post Rules Screen
 /// @author Haitham Mohamed
 /// @date 2/12/2022
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/screens/main_screen.dart';
+
 import '../../components/button.dart';
 import '../../constants/constants.dart';
-import '../../cubit/add_post.dart/cubit/add_post_cubit.dart';
+import '../../cubit/add_post/cubit/add_post_cubit.dart';
 
 class PostRules extends StatefulWidget {
   const PostRules({Key? key}) : super(key: key);

@@ -45,7 +45,7 @@ void prepareMocks() {
           },
           statusCode: 200)));
 
-  when(mockDio.post('$baseUrl/block', data: anyNamed('data')))
+  when(mockDio.post('$baseUrl/block-user', data: anyNamed('data')))
       .thenAnswer((_) => Future.value(Response(
           requestOptions: RequestOptions(path: '$baseUrl/block'),
           data: {

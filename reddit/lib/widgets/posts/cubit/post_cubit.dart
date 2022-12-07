@@ -1,10 +1,11 @@
 /// The post cubit that handles the post state independently
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
-
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/components/helpers/mocks/functions.dart';
+import 'package:reddit/components/helpers/mocks/mock_functions.dart';
 import 'package:reddit/data/post_model/post_model.dart';
+
 import '../../../networks/constant_end_points.dart';
 import 'post_state.dart';
 
@@ -51,7 +52,16 @@ class PostCubit extends Cubit<PostState> {
       'id': post.id,
       'direction': newDir,
       'type': 'post',
-    }).then((value) {
+    }
+        // return DioHelper.postData(
+        //   path: '/vote',
+        //   data: {
+        //     'id': post.id,
+        //     'direction': newDir,
+        //     'type': 'post',
+        //   },
+        //   token: token,
+        ).then((value) {
       if (value.statusCode == 200) {
         post.votingType = (post.votingType ?? 0) + direction;
         post.votes = (post.votes ?? 0) + direction;
@@ -61,7 +71,7 @@ class PostCubit extends Cubit<PostState> {
       }
     }).catchError((error) {
       print(error);
-      emit(PostsVotedError());
+      emit(PostsVotedError(error: error));
     });
   }
 
@@ -77,7 +87,7 @@ class PostCubit extends Cubit<PostState> {
       post.saved = !post.saved!;
       emit(PostsSaved());
     }).catchError((error) {
-      emit(PostsSavedError());
+      emit(PostsVotedError(error: error));
     });
   }
 
@@ -94,7 +104,7 @@ class PostCubit extends Cubit<PostState> {
   /// this function is used to block the author of a post
   Future blockUser() {
     return mockDio.post(
-      '$baseUrl/block',
+      '$baseUrl/block-user',
       data: {
         'id': post.id,
       },
@@ -119,5 +129,36 @@ class PostCubit extends Cubit<PostState> {
   /// gets the number of votes of the post
   int getVotesCount() {
     return post.votes ?? 0;
+  }
+
+  static final List<String> labels = ['Best', 'Top', 'New', 'Old'];
+  static final List<IconData> icons = [
+    Icons.rocket_outlined,
+    Icons.star_border_outlined,
+    Icons.new_releases_outlined,
+    Icons.access_time_outlined,
+  ];
+
+  static final Map<String, IconData> sortIcons = {
+    labels[0]: icons[0],
+    labels[1]: icons[1],
+    labels[2]: icons[2],
+    labels[3]: icons[3],
+  };
+
+  String selectedItem = 'Best';
+  IconData getSelectedIcon() {
+    return sortIcons[selectedItem]!;
+  }
+
+  void changeSortType(String item) {
+    selectedItem = item;
+    emit(CommentsSortTypeChanged());
+  }
+
+  bool showModTools = false;
+  void toggleModTools() {
+    showModTools = !showModTools;
+    emit(CommentsModToolsToggled());
   }
 }

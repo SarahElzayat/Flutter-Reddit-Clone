@@ -1,10 +1,10 @@
 /// @author SarahElzayat
 /// @date 25/10/2022
 /// general search field to be included in home, subreddits, profiles... etc
-
 import 'package:flutter/material.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
-import '../components/helpers/color_manager.dart';
+
+import 'helpers/color_manager.dart';
 
 class SearchFiled extends StatefulWidget {
   final String? labelText;

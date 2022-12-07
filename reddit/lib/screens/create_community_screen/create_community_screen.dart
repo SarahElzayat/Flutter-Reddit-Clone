@@ -4,18 +4,17 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/screens/bottom_navigation_bar_screens/add_post_screen.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/components/square_text_field.dart';
-import 'package:reddit/data/create_community_model/saved_categories_model.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
-import '../../components/button.dart';
-import 'package:reddit/data/create_community_model/create_community_model.dart';
 import 'package:reddit/components/bottom_sheet.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../components/button.dart';
+import '../../components/helpers/color_manager.dart';
+import '../../components/square_text_field.dart';
+import '../../data/create_community_model/create_community_model.dart';
+import '../../shared/local/shared_preferences.dart';
+import '../bottom_navigation_bar_screens/add_post_screen.dart';
 
 class CreateCommunityScreen extends StatefulWidget {
   static const String routeName = 'create_community_screen';

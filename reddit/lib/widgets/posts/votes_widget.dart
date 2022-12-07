@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../data/post_model/post_model.dart';
 import '../../components/helpers/color_manager.dart';
@@ -49,7 +48,7 @@ class VotesPart extends StatelessWidget {
                 direction: 1,
               )
                   .then((value) {
-                PostNotifierCubit.get(context).changedPost();
+                PostNotifierCubit.get(context).NotifyPosts();
               });
             },
             constraints: const BoxConstraints(),
@@ -83,7 +82,7 @@ class VotesPart extends StatelessWidget {
           child: IconButton(
             onPressed: () {
               cubit.vote(direction: -1).then((value) {
-                PostNotifierCubit.get(context).changedPost();
+                PostNotifierCubit.get(context).NotifyPosts();
               });
             },
             constraints: const BoxConstraints(),

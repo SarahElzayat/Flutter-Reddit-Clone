@@ -5,20 +5,23 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
+import '../../functions/post_functions.dart';
 
+/// Class of a single Menu item
+/// it contains the icon and the text used
 class MenuItem {
-  const MenuItem({
-    required this.text,
-    required this.icon,
-  });
+  const MenuItem({required this.text, required this.icon, this.modOPtions});
 
   /// The text of the menu item
   final String text;
 
   /// The icon of the menu item
   final IconData icon;
+
+  final ModOPtions? modOPtions;
 }
 
+/// container class of all the menu items that are shown iin the dropDownList
 class MenuItems {
   static const List<MenuItem> publicItems = [save, hide, report, block];
   static const List<MenuItem> publicItemsSaved = [unsave, hide, report, block];
@@ -33,9 +36,11 @@ class MenuItems {
   static const share = MenuItem(text: 'Share', icon: Icons.share);
   static const delete = MenuItem(text: 'Delete', icon: Icons.delete);
   static const edit = MenuItem(text: 'Edit', icon: Icons.edit);
-  static const copy = MenuItem(text: 'Copy', icon: Icons.copy);
+  static const copy = MenuItem(text: 'Copy text', icon: Icons.copy);
+  static const markNSFW = MenuItem(text: 'Mark NSFW', icon: Icons.flag);
 
-  static Widget buildItem(MenuItem item) {
+  /// builds the row of the menu Item
+  static Widget buildDropMenuItem(MenuItem item) {
     return Row(
       children: [
         Icon(item.icon, color: Colors.white, size: 22),
@@ -50,6 +55,7 @@ class MenuItems {
     );
   }
 
+  /// exexutes the onChanged of each Item
   static onChanged(BuildContext context, MenuItem item, String postId) {
     var cubit = PostCubit.get(context);
     switch (item) {
@@ -57,7 +63,7 @@ class MenuItems {
       case MenuItems.unsave:
         //Do something
         cubit.save().then((value) {
-          PostNotifierCubit.get(context).changedPost();
+          PostNotifierCubit.get(context).NotifyPosts();
         });
         break;
       case MenuItems.report:
@@ -66,13 +72,13 @@ class MenuItems {
       case MenuItems.hide:
         //Do something
         cubit.save().then((value) {
-          PostNotifierCubit.get(context).changedPost();
+          PostNotifierCubit.get(context).NotifyPosts();
         });
         break;
       case MenuItems.block:
         //Do something
         cubit.blockUser().then((value) {
-          PostNotifierCubit.get(context).changedPost();
+          PostNotifierCubit.get(context).NotifyPosts();
         });
 
         break;
@@ -82,7 +88,7 @@ class MenuItems {
       case MenuItems.delete:
         //Do something
         cubit.delete();
-        PostNotifierCubit.get(context).changedPost();
+        PostNotifierCubit.get(context).NotifyPosts();
 
         break;
     }

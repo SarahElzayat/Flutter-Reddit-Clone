@@ -74,3 +74,4 @@ const List<String> topicsTitles = [
   'World News',
   'None of these topics'
 ];
+String? token;

@@ -1,9 +1,9 @@
 /// Model Bottom Sheet
 /// @author Haitham Mohamed
 /// @date 26/10/2022
-
-import '../components/helpers/color_manager.dart';
 import 'package:flutter/material.dart';
+
+import 'helpers/color_manager.dart';
 
 /// This function Shows the proper bottom sheet depends on the inputs
 ///
