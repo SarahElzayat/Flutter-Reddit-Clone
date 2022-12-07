@@ -2,12 +2,18 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
 import 'constants/constants.dart';
 import 'cubit/post_notifier/post_notifier_cubit.dart';
 import 'screens/main_screen.dart';
 import 'screens/sign_in_and_sign_up_screen/mobile/sign_In_screen.dart';
+
+import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
+import 'constants/constants.dart';
+import 'cubit/post_notifier/post_notifier_cubit.dart';
+import 'screens/main_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'components/helpers/mocks/mock_functions.dart';
 
@@ -18,7 +24,6 @@ import 'components/helpers/bloc_observer.dart';
 import 'cubit/app_cubit.dart';
 import 'shared/local/shared_preferences.dart';
 import 'theme/theme_data.dart';
-// import 'package:flutter_driver/driver_extension.dart';
 
 Future<void> main() async {
   /// it defines the mocks APIS endpoints
@@ -73,10 +78,12 @@ class Main extends StatelessWidget {
               return MaterialApp(
                 
                 /// TODO: this should be changed to be checked automatically
+
                 initialRoute: CacheHelper.getData(key: 'token') != null
                     ? kIsWeb?HomeScreen.routeName: HomeScreenForMobile.routeName
                     : !kIsWeb? 
                     SignInScreen.routeName: SignInForWebScreen.routeName,
+
                 routes: myRoutes,
                 onUnknownRoute: (settings) {
                   return MaterialPageRoute(
