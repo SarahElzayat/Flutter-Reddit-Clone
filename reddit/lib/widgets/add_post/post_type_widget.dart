@@ -3,7 +3,8 @@
 /// @date 4/11/2022
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../cubit/add_post.dart/cubit/add_post_cubit.dart';
+
+import '../../cubit/add_post/cubit/add_post_cubit.dart';
 import 'add_post_textfield.dart';
 import 'image.dart';
 import 'poll_widget.dart';
@@ -49,6 +50,9 @@ class PostTypeWidget extends StatelessWidget {
 
             case 2:
               return AddPostTextField(
+                  onChanged: ((string) {
+                    addPostCubit.checkPostValidation();
+                  }),
                   controller: addPostCubit.optionalText,
                   mltiline: true,
                   isBold: false,
@@ -56,6 +60,9 @@ class PostTypeWidget extends StatelessWidget {
                   hintText: 'Add optional body text');
             case 3:
               return AddPostTextField(
+                  onChanged: ((string) {
+                    addPostCubit.checkPostValidation();
+                  }),
                   controller: addPostCubit.link,
                   mltiline: true,
                   isBold: false,

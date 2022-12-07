@@ -34,10 +34,13 @@ RUN flutter config --enable-web
 
 # Copy files to container and build
 RUN mkdir /app/
-COPY . /app/
-WORKDIR /app/
+COPY pubspec.yaml /app/
+# similar to cd
+WORKDIR /app/ 
 
 RUN flutter pub get
+# RUN flutter clean
+COPY . /app/
 RUN flutter build web
 
 # Record the exposed port

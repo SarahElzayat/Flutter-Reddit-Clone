@@ -1,13 +1,11 @@
 /// Model Poll Widget
 /// @author Haitham Mohamed
 /// @date 4/11/2022
-
-import '../../components/helpers/color_manager.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:flutter/material.dart';
-
-import '../../cubit/add_post.dart/cubit/add_post_cubit.dart';
+import '../../components/helpers/color_manager.dart';
+import '../../cubit/add_post/cubit/add_post_cubit.dart';
 import 'add_post_textfield.dart';
 
 /// Poll widget that show the options and can add or delete
@@ -40,6 +38,9 @@ class _PollState extends State<Poll> {
             child: ListView(
               children: [
                 AddPostTextField(
+                  onChanged: ((string) {
+                    addPostCubit.checkPostValidation();
+                  }),
                   controller: addPostCubit.optionalText,
                   mltiline: true,
                   isBold: false,
@@ -63,6 +64,9 @@ class _PollState extends State<Poll> {
                                       const EdgeInsets.symmetric(horizontal: 8),
                                   color: ColorManager.textFieldBackground,
                                   child: AddPostTextField(
+                                    onChanged: ((string) {
+                                      addPostCubit.checkPostValidation();
+                                    }),
                                     controller: addPostCubit.poll[index],
                                     // textfieldType: TextfieldType.poll,
                                     mltiline: false,

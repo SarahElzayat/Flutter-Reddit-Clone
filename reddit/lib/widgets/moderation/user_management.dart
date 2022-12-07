@@ -3,8 +3,8 @@
 ///User management widget
 
 import 'package:flutter/material.dart';
-import 'package:reddit/Components/Helpers/color_manager.dart';
-import 'package:reddit/Components/search_field.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/components/search_field.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../components/list_tile.dart';
 
