@@ -45,13 +45,13 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   SignUpScreen.routeName: (ctx) => const SignUpScreen(),
   SignInScreen.routeName: (ctx) => const SignInScreen(),
   ForgetUserNameWebScreen.routeName: (ctx) => ForgetUserNameWebScreen(),
-  ForgetPasswordWebScreen.routeName: (ctx) => ForgetPasswordWebScreen(),
+  ForgetPasswordWebScreen.routeName: (ctx) => const ForgetPasswordWebScreen(),
   TroubleScreen.routeName: (ctx) => const TroubleScreen(),
   PrivacyAndPolicy.routeName: (ctx) => const PrivacyAndPolicy(),
   UserAgreementScreen.routeName: (ctx) => const UserAgreementScreen(),
   ForgetPasswordScreen.routeName: (ctx) => const ForgetPasswordScreen(),
 
-  MainScreen.routeName: (ctx) => const MainScreen(),
+  HomeScreenForMobile.routeName: (ctx) => const HomeScreenForMobile(),
   //bottom navigation bar screens
   HomeScreen.routeName: (ctx) => const HomeScreen(),
   InboxScreen.routeName: (ctx) => const InboxScreen(),

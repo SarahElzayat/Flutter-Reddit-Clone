@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
+import 'Screens/main_screen.dart';
 import 'constants/constants.dart';
 import 'cubit/post_notifier/post_notifier_cubit.dart';
-import 'screens/main_screen.dart';
 import 'screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'components/helpers/mocks/mock_functions.dart';
@@ -46,7 +46,9 @@ Future<void> main() async {
   /// and this is used to initialize Dio
   DioHelper.init();
   token = CacheHelper.getData(key: 'token');
-  print('current Saved TOKEN:: $token');
+  if (kDebugMode) {
+    print('current Saved TOKEN:: $token');
+  }
 
   runApp(const Main());
 }
@@ -74,13 +76,13 @@ class Main extends StatelessWidget {
                 
                 /// TODO: this should be changed to be checked automatically
                 initialRoute: CacheHelper.getData(key: 'token') != null
-                    ? kIsWeb?HomeScreen.routeName: MainScreen.routeName
+                    ? kIsWeb?HomeScreen.routeName: HomeScreenForMobile.routeName
                     : !kIsWeb? 
                     SignInScreen.routeName: SignInForWebScreen.routeName,
                 routes: myRoutes,
                 onUnknownRoute: (settings) {
                   return MaterialPageRoute(
-                      builder: (ctx) => kIsWeb? const HomeScreen(): const MainScreen());
+                      builder: (ctx) => kIsWeb? const HomeScreen(): const HomeScreenForMobile());
                 },
                 debugShowCheckedModeBanner: false,
                 theme: appTheme(),

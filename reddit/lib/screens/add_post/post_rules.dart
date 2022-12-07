@@ -29,7 +29,7 @@ class _PostRulesState extends State<PostRules> {
     return BlocListener<AddPostCubit, AddPostState>(
       listener: (context, state) {
         if (state is PostCreated) {
-          navigator.pushReplacementNamed(MainScreen.routeName);
+          navigator.pushReplacementNamed(HomeScreenForMobile.routeName);
         }
       },
       child: Scaffold(
