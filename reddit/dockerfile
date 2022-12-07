@@ -1,4 +1,4 @@
-# Install Operating system and dependencies -> 
+# Install Operating system and dependencies
 FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND noninteractive
