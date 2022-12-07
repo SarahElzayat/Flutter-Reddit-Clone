@@ -10,10 +10,6 @@ import 'cubit/post_notifier/post_notifier_cubit.dart';
 import 'screens/main_screen.dart';
 import 'screens/sign_in_and_sign_up_screen/mobile/sign_In_screen.dart';
 
-import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
-import 'constants/constants.dart';
-import 'cubit/post_notifier/post_notifier_cubit.dart';
-import 'screens/main_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'components/helpers/mocks/mock_functions.dart';
 
@@ -76,22 +72,25 @@ class Main extends StatelessWidget {
           return ResponsiveSizer(
             builder: (context, orientation, screenType) {
               return MaterialApp(
-                
                 /// TODO: this should be changed to be checked automatically
 
                 initialRoute: CacheHelper.getData(key: 'token') != null
-                    ? kIsWeb?HomeScreen.routeName: HomeScreenForMobile.routeName
-                    : !kIsWeb? 
-                    SignInScreen.routeName: SignInForWebScreen.routeName,
+                    ? kIsWeb
+                        ? HomeScreen.routeName
+                        : HomeScreenForMobile.routeName
+                    : !kIsWeb
+                        ? SignInScreen.routeName
+                        : SignInForWebScreen.routeName,
 
                 routes: myRoutes,
                 onUnknownRoute: (settings) {
                   return MaterialPageRoute(
-                      builder: (ctx) => kIsWeb? const HomeScreen(): const HomeScreenForMobile());
+                      builder: (ctx) => kIsWeb
+                          ? const HomeScreen()
+                          : const HomeScreenForMobile());
                 },
                 debugShowCheckedModeBanner: false,
                 theme: appTheme(),
-                
               );
             },
           );
