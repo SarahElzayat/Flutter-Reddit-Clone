@@ -1,11 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import 'constants/constants.dart';
 import 'cubit/post_notifier/post_notifier_cubit.dart';
 import 'screens/main_screen.dart';
-import 'screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'components/helpers/mocks/functions.dart';
 import 'cubit/add_post/cubit/add_post_cubit.dart';
@@ -15,7 +14,6 @@ import 'components/helpers/bloc_observer.dart';
 import 'cubit/app_cubit.dart';
 import 'shared/local/shared_preferences.dart';
 import 'theme/theme_data.dart';
-// import 'package:flutter_driver/driver_extension.dart';
 
 Future<void> main() async {
   /// it defines the mocks APIS endpoints
@@ -44,8 +42,6 @@ Future<void> main() async {
   /// and this is used to initialize Dio
   DioHelper.init();
   token = CacheHelper.getData(key: 'token');
-  print('current Saved TOKEN:: $token');
-
   runApp(const Main());
 }
 
@@ -73,7 +69,7 @@ class Main extends StatelessWidget {
                 // initialRoute: CacheHelper.getData(key: 'token') != null
                 // ? MainScreen.routeName
                 // : SignInScreen.routeName,
-                initialRoute: SignInForWebScreen.routeName,
+                initialRoute: SignInScreen.routeName,
                 routes: myRoutes,
                 onUnknownRoute: (settings) {
                   return MaterialPageRoute(
