@@ -7,6 +7,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional_switch.dart';
+import 'package:reddit/widgets/posts/dropdown_list.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_state.dart';
@@ -55,16 +56,10 @@ class _PostUpperBarState extends State<PostUpperBar> {
           },
           caseBuilders: {
             ShowingOtions.onlyUser: (ctx) {
-              return singleRow(
-                  sub: false,
-                  showIcon: true,
-                  post: widget.post);
+              return singleRow(sub: false, showIcon: true, post: widget.post);
             },
             ShowingOtions.onlySubreddit: (_) {
-              return singleRow(
-                  sub: true,
-                  showIcon: true,
-                  post: widget.post);
+              return singleRow(sub: true, showIcon: true, post: widget.post);
             },
             ShowingOtions.both: (_) {
               return _bothRows();
@@ -108,10 +103,7 @@ class _PostUpperBarState extends State<PostUpperBar> {
                   fontSize: 15,
                 ),
               ),
-              singleRow(
-                  sub: false,
-                  showDots: false,
-                  post: widget.post),
+              singleRow(sub: false, showDots: false, post: widget.post),
             ],
           ),
           const Spacer(),
@@ -139,7 +131,8 @@ class _PostUpperBarState extends State<PostUpperBar> {
     );
   }
 
-  BlocBuilder<PostNotifierCubit, PostNotifierState> dropDownDots() {
+  BlocBuilder<PostNotifierCubit, PostNotifierState> dropDownDots(
+      PostModel post) {
     return BlocBuilder<PostNotifierCubit, PostNotifierState>(
       builder: (context, state) {
         return DropDownList(
@@ -190,5 +183,4 @@ class _PostUpperBarState extends State<PostUpperBar> {
       ],
     );
   }
-
-
+}
