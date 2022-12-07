@@ -13,7 +13,7 @@ import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/continue_button.dart';
-import '../../sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
+import '../../sign_in_and_sign_up_screen/mobile/mobile_signin_screen.dart';
 
 class RecoverUserName extends StatefulWidget {
   const RecoverUserName({super.key});

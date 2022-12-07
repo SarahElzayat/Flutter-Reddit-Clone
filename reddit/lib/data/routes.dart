@@ -29,7 +29,7 @@ import '../screens/add_post/video_trimmer.dart';
 import '../screens/bottom_navigation_bar_screens/notifications_screen.dart';
 import '../screens/create_community_screen/create_community_screen.dart';
 import '../screens/forget_user_name_and_password/mobile/forget_password_screen.dart';
-import '../screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
+import '../screens/sign_in_and_sign_up_screen/mobile/mobile_signin_screen.dart';
 import '../screens/sign_in_and_sign_up_screen/mobile/sign_up_screen.dart';
 import '../screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
 
