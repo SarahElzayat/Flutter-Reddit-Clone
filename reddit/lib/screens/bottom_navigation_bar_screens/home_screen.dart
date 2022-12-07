@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/back_to_top_button.dart';
+import 'package:reddit/components/home_components/left_drawer.dart';
+import 'package:reddit/components/home_components/right_drawer.dart';
 import 'package:reddit/cubit/app_cubit.dart';
 
 import '../../components/home_app_bar.dart';
@@ -21,6 +23,21 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   ScrollController scrollController = ScrollController();
   bool showbtn = false;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  ///The method changes the end drawer state from open to closed and vice versa
+  void _changeEndDrawer() {
+    _scaffoldKey.currentState!.isEndDrawerOpen
+        ? _scaffoldKey.currentState?.closeEndDrawer()
+        : _scaffoldKey.currentState?.openEndDrawer();
+  }
+
+  ///The method changes the drawer state from open to closed and vice versa
+  void _changeLeftDrawer() {
+    _scaffoldKey.currentState!.isDrawerOpen
+        ? _scaffoldKey.currentState?.closeDrawer()
+        : _scaffoldKey.currentState?.openDrawer();
+  }
 
   @override
   void initState() {
@@ -48,16 +65,26 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    final AppCubit cubit = AppCubit.get(context);
+    final AppCubit cubit = AppCubit.get(context)..getUsername();
 
     return BlocConsumer<AppCubit, AppState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is ChangeRightDrawerState) {
+          _changeEndDrawer();
+        }
+        if (state is ChangeLeftDrawerState) {
+          _changeLeftDrawer();
+        }
+      },
       builder: (context, state) {
         return Scaffold(
+          key: _scaffoldKey,
           appBar: kIsWeb ? homeAppBar(context, 0) : null,
           floatingActionButton: kIsWeb
               ? BackToTopButton(scrollController: scrollController)
               : null,
+          drawer: kIsWeb ? const LeftDrawer() : null,
+          endDrawer: kIsWeb ? const RightDrawer() : null,
           body: SingleChildScrollView(
             controller: scrollController, //set controller
 
@@ -77,13 +104,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         itemCount: cubit.homeMenuIndex == 0
-                            ? cubit.homwPosts.length
+                            ? cubit.homePosts.length
                             : cubit.popularPosts.length,
                         itemBuilder: (context, index) => Container(
                           margin: const EdgeInsets.symmetric(
                               horizontal: 0, vertical: 5),
                           child: cubit.homeMenuIndex == 0
-                              ? cubit.homwPosts[index]
+                              ? cubit.homePosts[index]
                               : cubit.popularPosts[index],
                         ),
                       ),

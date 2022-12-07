@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:reddit/data/temp_data/tmp_data.dart';
-import 'package:reddit/components/helpers/mocks/functions.dart';
+import 'package:reddit/components/helpers/mocks/mock_functions.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/widgets/posts/cubit/post_cubit.dart';

@@ -1,29 +1,53 @@
 ///@author Sarah Elzayat
+///@description the right (end) drawer that's present through the whole application
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/Screens/history/history_screen_for_web.dart';
 
 import '../../cubit/app_cubit.dart';
+import '../../screens/history/history_screen.dart';
 import '../../screens/to_be_done_screen.dart';
 import '../helpers/color_manager.dart';
 import 'components.dart';
 
+///TODO try changing it into a scaffold 
 class RightDrawer extends StatelessWidget {
   const RightDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
+    ///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
     final AppCubit cubit = AppCubit.get(context);
+
+    ///@param [rightDrawerItems] the list of right drawer items
     List<Widget> rightDrawerItems = [
-      genericTextButton(context, Icons.person, 'My profile', null),
-      genericTextButton(context, Icons.add, 'Create a community', null),
-      genericTextButton(context, Icons.bookmark_border_rounded, 'Saved', null),
+      genericTextButton(context, Icons.person, 'My profile', null,
+          isLeftDrawer: false),
+      genericTextButton(context, Icons.add, 'Create a community', null,
+          isLeftDrawer: false),
+      genericTextButton(context, Icons.bookmark_border_rounded, 'Saved', null,
+          isLeftDrawer: false),
       genericTextButton(
-          context, Icons.history_toggle_off_rounded, 'History', null),
-      genericTextButton(context, Icons.pending_outlined, 'Pending Posts', null),
-      genericTextButton(context, Icons.drafts_outlined, 'Drafts', null),
+          context,
+          Icons.history_toggle_off_rounded,
+          'History',
+          kIsWeb?
+          const HistoryScreenForWeb():
+          HistoryScreen(
+            bottomNavBarScreenIndex: cubit.currentIndex,
+          ),
+          isLeftDrawer: false),
+      genericTextButton(context, Icons.pending_outlined, 'Pending Posts', null,
+          isLeftDrawer: false),
+      genericTextButton(context, Icons.drafts_outlined, 'Drafts', null,
+          isLeftDrawer: false),
     ];
+
+    
     return SafeArea(
         child: Drawer(
       child: SingleChildScrollView(
+        padding: const EdgeInsets.all(8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -40,9 +64,13 @@ class RightDrawer extends StatelessWidget {
                     context,
                     Icons.keyboard_arrow_down,
                     cubit.username,
-                    const ToBeDoneScreen(text: 'account options')),
+                    const ToBeDoneScreen(text: 'account options'),
+                    isLeftDrawer: false),
+
                 genericTextButton(context, null, 'Online / offline',
-                    const ToBeDoneScreen(text: 'online/offline')),
+                    const ToBeDoneScreen(text: 'online/offline'),
+                    isLeftDrawer: false),
+
                 Container(
                   width: MediaQuery.of(context).size.width * 0.7,
                   decoration: const ShapeDecoration(
@@ -78,7 +106,8 @@ class RightDrawer extends StatelessWidget {
               children: rightDrawerItems,
             ),
             genericTextButton(context, Icons.settings_outlined, 'Settings',
-                const ToBeDoneScreen(text: 'Settings'))
+                const ToBeDoneScreen(text: 'Settings'),
+                isLeftDrawer: false),
           ],
         ),
       ),
