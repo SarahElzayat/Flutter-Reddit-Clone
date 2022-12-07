@@ -1,14 +1,13 @@
 /// Model Button
 /// @author Haitham Mohamed
 /// @date 4/11/2022
-
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/screens/add_post/post.dart';
-import 'package:reddit/cubit/add_post.dart/cubit/add_post_cubit.dart';
-
-import '../../Components/Button.dart';
-import '../../Components/Helpers/color_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/cubit/add_post/cubit/add_post_cubit.dart';
+import 'package:reddit/screens/add_post/community_search.dart';
+
+import '../../components/button.dart';
+import '../../components/helpers/color_manager.dart';
 
 /// Button that navigate to the post screen after check the validation
 class CreatePostButton extends StatelessWidget {
@@ -19,6 +18,7 @@ class CreatePostButton extends StatelessWidget {
     /// Boolean To Check the Validation
     bool isDisabled = true;
     final navigator = Navigator.of(context);
+    final mediaQuery = MediaQuery.of(context);
     return BlocBuilder<AddPostCubit, AddPostState>(
       buildWhen: (previous, current) {
         if (current is CanCreatePost) {
@@ -32,18 +32,18 @@ class CreatePostButton extends StatelessWidget {
         return Button(
             text: 'Next',
             borderRadius: 30,
+            splashColor: Colors.transparent,
             textColor:
                 (isDisabled) ? ColorManager.unselectedItem : ColorManager.white,
-            backgroundColor: isDisabled
-                ? ColorManager.textFieldBackground
-                : ColorManager.blue,
+            backgroundColor:
+                isDisabled ? ColorManager.darkGrey : ColorManager.blue,
             buttonWidth: 80,
             buttonHeight: 30,
-            textFontSize: 17,
+            textFontSize: 17.0 * mediaQuery.textScaleFactor,
             onPressed: isDisabled
                 ? () {}
                 : (() {
-                    navigator.pushNamed(PostSimpleScreen.routeName);
+                    navigator.pushNamed(CommunitySearch.routeName);
                   }));
       },
     );

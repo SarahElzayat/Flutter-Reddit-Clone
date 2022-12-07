@@ -5,7 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../cubit/add_post.dart/cubit/add_post_cubit.dart';
+import '../../cubit/add_post/cubit/add_post_cubit.dart';
 
 /// Simple Post Screen That Show only Details of the post
 class PostSimpleScreen extends StatelessWidget {

@@ -37,11 +37,11 @@ class VotesPart extends StatelessWidget {
       int dir = cubit.getVotingType();
       return [
         Material(
+          key: const Key('upvoteButton'),
           color: Colors.transparent,
           clipBehavior: Clip.antiAlias,
           shape: const CircleBorder(),
           child: IconButton(
-            key: const Key('upvoteButton'),
             onPressed: () async {
               PostCubit.get(context)
                   .vote(
@@ -63,6 +63,7 @@ class VotesPart extends StatelessWidget {
           ),
         ),
         Text(
+          key: const Key('votesNumber-text'),
           cubit.getVotesCount().toString(),
           style: TextStyle(
             color: dir == 0
@@ -74,11 +75,11 @@ class VotesPart extends StatelessWidget {
           ),
         ),
         Material(
+          key: const Key('downvoteButton'),
           color: Colors.transparent,
           clipBehavior: Clip.antiAlias,
           shape: const CircleBorder(),
           child: IconButton(
-            key: const Key('downvoteButton'),
             onPressed: () {
               cubit.vote(direction: -1).then((value) {
                 PostNotifierCubit.get(context).changedPost();

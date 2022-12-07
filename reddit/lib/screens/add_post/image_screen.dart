@@ -1,20 +1,19 @@
 /// Modle Image Screen
 /// @author Haitham Mohamed
 /// @date 6/11/2022
-
 import 'dart:io';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/screens/add_post/paint_screen.dart';
-import 'package:reddit/cubit/add_post.dart/cubit/add_post_cubit.dart';
-
-import '../../functions/add_post.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_painter/image_painter.dart';
-
 import 'package:image_picker/image_picker.dart';
-
+// ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as p;
+import 'package:reddit/cubit/add_post/cubit/add_post_cubit.dart';
+import 'package:reddit/screens/add_post/paint_screen.dart';
+
+import '../../components/helpers/color_manager.dart';
 
 /// Image Screen that Perview the Image After Select it
 
@@ -100,10 +99,6 @@ class ImageScreen extends StatelessWidget {
                         image.copy(
                             '${path.path}/${DateTime.now().millisecondsSinceEpoch}${p.extension(image.path)}');
                       }
-
-                      /// TODO: remove this from the async
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Image Saved Successful')));
                     },
                     icon: const Icon(Icons.download)),
               ),
@@ -120,5 +115,46 @@ class ImageScreen extends StatelessWidget {
         ]),
       ),
     );
+  }
+
+  /// This function takes the Image and Navigate to the crop Screen
+  /// It returns the image even if you do not make any change
+
+  /// [image] The Image That you want to make edit on it
+
+  Future<XFile> cropFunc(XFile image, BuildContext context) async {
+    File file = File(image.path);
+    CroppedFile? croppedImage = await ImageCropper().cropImage(
+      sourcePath: file.path,
+      aspectRatioPresets: [
+        CropAspectRatioPreset.original,
+        CropAspectRatioPreset.square,
+        CropAspectRatioPreset.ratio16x9,
+        CropAspectRatioPreset.ratio3x2,
+        CropAspectRatioPreset.ratio5x3,
+        CropAspectRatioPreset.ratio4x3,
+      ],
+      uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            showCropGrid: false,
+            activeControlsWidgetColor: ColorManager.darkGrey,
+            toolbarColor: ColorManager.darkGrey,
+            toolbarWidgetColor: ColorManager.eggshellWhite,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        IOSUiSettings(
+          title: 'Cropper',
+        ),
+        WebUiSettings(
+          context: context,
+        ),
+      ],
+    );
+    if (croppedImage != null) {
+      return XFile(croppedImage.path);
+    } else {
+      return image;
+    }
   }
 }

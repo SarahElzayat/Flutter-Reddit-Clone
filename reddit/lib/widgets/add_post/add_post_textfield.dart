@@ -4,7 +4,7 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../cubit/add_post.dart/cubit/add_post_cubit.dart';
+import '../../cubit/add_post/cubit/add_post_cubit.dart';
 import 'package:flutter/material.dart';
 
 /// Special Text Field that used in Add Post Screen
@@ -23,6 +23,7 @@ class AddPostTextField extends StatefulWidget {
 
   /// Text Field Controller
   final TextEditingController controller;
+  void Function(String)? onChanged;
 
   int? index;
   AddPostTextField({
@@ -33,6 +34,7 @@ class AddPostTextField extends StatefulWidget {
     required this.fontSize,
     required this.hintText,
     this.index,
+    required this.onChanged,
     required this.controller,
   }) : super(key: key);
 
@@ -45,9 +47,7 @@ class _AddPostTextFieldState extends State<AddPostTextField> {
   Widget build(BuildContext context) {
     final addPostCubit = BlocProvider.of<AddPostCubit>(context);
     return TextFormField(
-      onChanged: ((value) {
-        addPostCubit.checkPostValidation();
-      }),
+      onChanged: widget.onChanged,
       keyboardType:
           (widget.mltiline) ? TextInputType.multiline : TextInputType.text,
       maxLines: (widget.mltiline) ? null : 1,

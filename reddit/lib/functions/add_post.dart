@@ -12,7 +12,7 @@ import 'package:reddit/screens/add_post/image_screen.dart';
 import 'package:reddit/screens/add_post/video_trimmer.dart';
 import '../Components/Button.dart';
 import '../Components/Helpers/color_manager.dart';
-import '../cubit/add_post.dart/cubit/add_post_cubit.dart';
+import '../cubit/add_post/cubit/add_post_cubit.dart';
 
 /// This function allow you to choose images
 /// if the number of images is one so it will navigate to Preview Screen that can make edit in image
