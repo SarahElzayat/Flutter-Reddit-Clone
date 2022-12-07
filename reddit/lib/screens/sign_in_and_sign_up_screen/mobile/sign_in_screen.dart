@@ -2,7 +2,6 @@
 /// @date 3/11/2022
 /// this is the screen of creating new account for the users.
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
