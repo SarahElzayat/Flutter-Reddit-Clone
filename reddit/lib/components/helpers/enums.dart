@@ -29,3 +29,10 @@ enum PostView {
   classic,
   card,
 }
+
+enum HistoyCategory {
+  recent,
+  upvoted,
+  downvoted,
+  hidden
+}

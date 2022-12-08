@@ -1,4 +1,5 @@
 ///@author Sarah Elzayat
+///@description the back to top button is present in web, it appears after scrolling through a few posts
 import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 
@@ -13,6 +14,7 @@ class BackToTopButton extends StatefulWidget {
 class _BackToTopButtonState extends State<BackToTopButton> {
   bool showbtn = false;
 
+  ///the initial state of the widget
   @override
   void initState() {
     widget.scrollController.addListener(() {

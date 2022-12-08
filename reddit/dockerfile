@@ -1,4 +1,4 @@
-# Install Operating system and dependencies -> 
+# Install Operating system and dependencies
 FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -34,14 +34,14 @@ RUN flutter config --enable-web
 
 # Copy files to container and build
 RUN mkdir /app/
-COPY . /app/
-
+COPY pubspec.yaml /app/
 # similar to cd
 WORKDIR /app/ 
 
 RUN flutter pub get
 # RUN flutter clean
-# RUN flutter build web
+COPY . /app/
+RUN flutter build web
 
 # Record the exposed port
 EXPOSE 5000
@@ -49,4 +49,4 @@ EXPOSE 5000
 # make server startup script executable and start the web server
 RUN ["chmod", "+x", "/app/server/server.sh"]
 
-# ENTRYPOINT [ "/app/server/server.sh"]
+ENTRYPOINT [ "/app/server/server.sh"]

@@ -2,6 +2,7 @@
 ///@date 16/11/2022
 ///@description this file has some reusable components to use in the home screen
 import 'package:flutter/material.dart';
+import 'package:reddit/cubit/app_cubit.dart';
 import 'package:reddit/screens/to_be_done_screen.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 
@@ -49,7 +50,9 @@ Widget listButton(context, text, list, onPressed, isOpen,
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             if (isCommunity)
               genericTextButton(context, Icons.add, 'Create a community',
-                  const CreateCommunityScreen()),
+                  const CreateCommunityScreen(),
+                  isLeftDrawer: true),
+
             if (isModerating)
               genericTextButton(
                   context,
@@ -57,7 +60,9 @@ Widget listButton(context, text, list, onPressed, isOpen,
                   'Mod Feed',
                   const ToBeDoneScreen(
                     text: 'Mod Feed',
-                  )),
+                  ),
+                  isLeftDrawer: true),
+
             if (isModerating)
               genericTextButton(
                   context,
@@ -65,15 +70,16 @@ Widget listButton(context, text, list, onPressed, isOpen,
                   'Mod Queue',
                   const ToBeDoneScreen(
                     text: 'Mod Queue',
-                  )),
-            if (isModerating)
-              genericTextButton(
-                  context,
-                  Icons.mail_outline_rounded,
-                  'Modmail',
-                  const ToBeDoneScreen(
-                    text: 'Modmail',
-                  )),
+                  ),
+                  isLeftDrawer: true),
+            // if (isModerating)
+            //   genericTextButton(
+            //       context,
+            //       Icons.mail_outline_rounded,
+            //       'Modmail',
+            //       const ToBeDoneScreen(
+            //         text: 'Modmail',
+            //       )),
             if (isCommunity)
               genericTextButton(
                   context,
@@ -81,7 +87,9 @@ Widget listButton(context, text, list, onPressed, isOpen,
                   'Custom Feeds',
                   const ToBeDoneScreen(
                     text: 'Custom Feeds',
-                  )),
+                  ),
+                  isLeftDrawer: true),
+
             ListView(
               padding: const EdgeInsets.only(left: 10),
               children: list,
@@ -94,23 +102,32 @@ Widget listButton(context, text, list, onPressed, isOpen,
 }
 
 /// resuable text button with a prefix icon to navigate to another route
-Widget genericTextButton(context, icon, text, route) => TextButton(
-    onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => route,
-        )),
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(
-          icon,
-          color: ColorManager.eggshellWhite,
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: Text(
-            text,
-            style: Theme.of(context).textTheme.displaySmall,
-          ),
-        )
-      ],
-    ));
+Widget genericTextButton(context, icon, text, route, {required isLeftDrawer}) =>
+    TextButton(
+        onPressed: () {
+          if (isLeftDrawer) {
+            AppCubit.get(context).changeLeftDrawer();
+          } else {
+            AppCubit.get(context).changeRightDrawer();
+          }
+          // AppCubit.get(context)();
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => route,
+          ));
+        },
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              color: ColorManager.eggshellWhite,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Text(
+                text,
+                style: Theme.of(context).textTheme.displaySmall,
+              ),
+            )
+          ],
+        ));
