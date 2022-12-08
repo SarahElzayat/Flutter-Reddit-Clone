@@ -14,13 +14,13 @@ class ToBeDoneScreen extends StatefulWidget {
 class _ToBeDoneScreenState extends State<ToBeDoneScreen> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      appBar: AppBar(),
-      body: Center(
-      child: Text(
-        widget.text,
-        style: const TextStyle(color: Colors.white, fontSize: 50),
-      ),
-    ));
+    return Scaffold(
+        appBar: AppBar(),
+        body: Center(
+          child: Text(
+            widget.text,
+            style: const TextStyle(color: Colors.white, fontSize: 50),
+          ),
+        ));
   }
 }

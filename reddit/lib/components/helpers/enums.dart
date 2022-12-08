@@ -30,14 +30,6 @@ enum PostView {
   card,
 }
 
-enum HistoyCategory {
-  recent,
-  upvoted,
-  downvoted,
-  hidden
-}
+enum HistoyCategory { recent, upvoted, downvoted, hidden }
 
-enum HistoyPostsView {
-  card,
-  classic
-}
+enum HistoyPostsView { card, classic }

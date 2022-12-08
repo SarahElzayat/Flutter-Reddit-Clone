@@ -63,7 +63,7 @@ class RightDrawer extends StatelessWidget {
                     backgroundImage: AssetImage(
                       cubit.profilePicture,
                     )),
-                    // Text
+                // Text
                 genericTextButton(
                     context,
                     Icons.keyboard_arrow_down,

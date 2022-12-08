@@ -525,7 +525,8 @@ class AddPostCubit extends Cubit<AddPostState> {
       );
       if (value.statusCode == 200) {
         print('Post success');
-        Navigator.of(context).pushReplacementNamed(HomeScreenForMobile.routeName);
+        Navigator.of(context)
+            .pushReplacementNamed(HomeScreenForMobile.routeName);
       } else if (value.statusCode == 400) {
         print(value);
       } else if (value.statusCode == 401) {

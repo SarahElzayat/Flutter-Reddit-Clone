@@ -73,6 +73,7 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   PostSimpleScreen.routeName: (ctx) => const PostSimpleScreen(),
   CommunitySearch.routeName: (ctx) => CommunitySearch(),
   PostRules.routeName: (ctx) => const PostRules(),
-  HistoryScreen.routeName: (ctx) => const HistoryScreen(bottomNavBarScreenIndex: 0),
+  HistoryScreen.routeName: (ctx) =>
+      const HistoryScreen(bottomNavBarScreenIndex: 0),
   HistoryScreenForWeb.routeName: (ctx) => const HistoryScreenForWeb(),
 };

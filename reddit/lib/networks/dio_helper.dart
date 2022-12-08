@@ -117,6 +117,10 @@ class DioHelper {
         },
       );
     }
-    return await dio.get(path, queryParameters: query, options: options,);
+    return await dio.get(
+      path,
+      queryParameters: query,
+      options: options,
+    );
   }
 }

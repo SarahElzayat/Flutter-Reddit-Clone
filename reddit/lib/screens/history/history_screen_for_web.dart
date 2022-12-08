@@ -12,7 +12,8 @@ import '../../cubit/app_cubit.dart';
 import '../../widgets/posts/post_upper_bar.dart';
 
 class HistoryScreenForWeb extends StatelessWidget {
-  const HistoryScreenForWeb({super.key, this.histoyCategory = HistoyCategory.recent});
+  const HistoryScreenForWeb(
+      {super.key, this.histoyCategory = HistoyCategory.recent});
   static const routeName = '/history_screen_web';
   final HistoyCategory histoyCategory;
 

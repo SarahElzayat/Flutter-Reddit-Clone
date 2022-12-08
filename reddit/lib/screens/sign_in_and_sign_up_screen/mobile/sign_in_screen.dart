@@ -67,7 +67,8 @@ class _SignInScreenState extends State<SignInScreen> {
         CacheHelper.putData(key: 'username', value: value.data['username']);
 
         // navigating to the main screen
-        Navigator.of(context).pushReplacementNamed(HomeScreenForMobile.routeName);
+        Navigator.of(context)
+            .pushReplacementNamed(HomeScreenForMobile.routeName);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

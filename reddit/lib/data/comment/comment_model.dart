@@ -1,0 +1,69 @@
+class CommentModel {
+  String? commentId;
+  String? commentedBy;
+  String? userImage;
+  String? editTime;
+  String? publishTime;
+  String? commentBody;
+  int? votes;
+  bool? saved;
+  bool? followed;
+  int? vote;
+  String? parent;
+  int? level;
+  int? numberofChildren;
+  List<CommentModel>? children;
+
+  CommentModel({
+    this.commentId,
+    this.commentedBy,
+    this.userImage,
+    this.editTime,
+    this.publishTime,
+    this.commentBody,
+    this.votes,
+    this.saved,
+    this.followed,
+    this.vote,
+    this.parent,
+    this.level,
+    this.numberofChildren,
+    this.children,
+  });
+
+  factory CommentModel.fromJson(Map<String, dynamic> json) => CommentModel(
+        commentId: json['commentId'] as String?,
+        commentedBy: json['commentedBy'] as String?,
+        userImage: json['userImage'] as String?,
+        editTime: json['editTime'] as String?,
+        publishTime: json['publishTime'] as String?,
+        commentBody: json['commentBody'] as String?,
+        votes: json['votes'] as int?,
+        saved: json['saved'] as bool?,
+        followed: json['followed'] as bool?,
+        vote: json['vote'] as int?,
+        parent: json['parent'] as String?,
+        level: json['level'] as int?,
+        numberofChildren: json['numberofChildren'] as int?,
+        children: (json['children'] as List<dynamic>?)
+            ?.map((e) => CommentModel.fromJson(e as Map<String, dynamic>))
+            .toList(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'commentId': commentId,
+        'commentedBy': commentedBy,
+        'userImage': userImage,
+        'editTime': editTime,
+        'publishTime': publishTime,
+        'commentBody': commentBody,
+        'votes': votes,
+        'saved': saved,
+        'followed': followed,
+        'vote': vote,
+        'parent': parent,
+        'level': level,
+        'numberofChildren': numberofChildren,
+        'children': children?.map((e) => e.toJson()).toList(),
+      };
+}
