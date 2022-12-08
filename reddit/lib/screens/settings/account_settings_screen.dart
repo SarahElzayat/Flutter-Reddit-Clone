@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/components/list_tile_container.dart';
+import 'package:reddit/screens/settings/update_email_address_screen.dart';
 
 class AccountSettingsScreen extends StatelessWidget {
   static const routeName = 'account_settings_screen_route';
@@ -9,7 +10,7 @@ class AccountSettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-
+    final navigator = Navigator.of(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Account Settings'),
@@ -22,7 +23,9 @@ class AccountSettingsScreen extends StatelessWidget {
                 flex: 2,
                 child: ListTileContainer(
                   title: 'BASIC SETTINGS',
-                  handler: () {},
+                  handler: () {
+                    navigator.pushNamed(UpdateEmailAddressScreen.routeName);
+                  },
                   listTileIcons: const [
                     Icons.settings,
                     Icons.settings,
