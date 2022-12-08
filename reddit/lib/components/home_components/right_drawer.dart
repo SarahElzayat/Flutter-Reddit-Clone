@@ -3,6 +3,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/Screens/history/history_screen_for_web.dart';
+import 'package:reddit/screens/create_community_screen/create_community_screen.dart';
+import 'package:reddit/screens/saved/saved_screen.dart';
 
 import '../../cubit/app_cubit.dart';
 import '../../screens/history/history_screen.dart';
@@ -10,7 +12,7 @@ import '../../screens/to_be_done_screen.dart';
 import '../helpers/color_manager.dart';
 import 'components.dart';
 
-///TODO try changing it into a scaffold 
+///TODO try changing it into a scaffold
 class RightDrawer extends StatelessWidget {
   const RightDrawer({super.key});
 
@@ -23,19 +25,21 @@ class RightDrawer extends StatelessWidget {
     List<Widget> rightDrawerItems = [
       genericTextButton(context, Icons.person, 'My profile', null,
           isLeftDrawer: false),
-      genericTextButton(context, Icons.add, 'Create a community', null,
+      genericTextButton(context, Icons.add, 'Create a community',
+          const CreateCommunityScreen(),
           isLeftDrawer: false),
-      genericTextButton(context, Icons.bookmark_border_rounded, 'Saved', null,
+      genericTextButton(
+          context, Icons.bookmark_border_rounded, 'Saved', const SavedScreen(),
           isLeftDrawer: false),
       genericTextButton(
           context,
           Icons.history_toggle_off_rounded,
           'History',
-          kIsWeb?
-          const HistoryScreenForWeb():
-          HistoryScreen(
-            bottomNavBarScreenIndex: cubit.currentIndex,
-          ),
+          kIsWeb
+              ? const HistoryScreenForWeb()
+              : HistoryScreen(
+                  bottomNavBarScreenIndex: cubit.currentIndex,
+                ),
           isLeftDrawer: false),
       genericTextButton(context, Icons.pending_outlined, 'Pending Posts', null,
           isLeftDrawer: false),
@@ -43,7 +47,6 @@ class RightDrawer extends StatelessWidget {
           isLeftDrawer: false),
     ];
 
-    
     return SafeArea(
         child: Drawer(
       child: SingleChildScrollView(
@@ -60,6 +63,7 @@ class RightDrawer extends StatelessWidget {
                     backgroundImage: AssetImage(
                       cubit.profilePicture,
                     )),
+                    // Text
                 genericTextButton(
                     context,
                     Icons.keyboard_arrow_down,
@@ -67,9 +71,9 @@ class RightDrawer extends StatelessWidget {
                     const ToBeDoneScreen(text: 'account options'),
                     isLeftDrawer: false),
 
-                genericTextButton(context, null, 'Online / offline',
-                    const ToBeDoneScreen(text: 'online/offline'),
-                    isLeftDrawer: false),
+                // genericTextButton(context, null, 'Online / offline',
+                //     const ToBeDoneScreen(text: 'online/offline'),
+                //     isLeftDrawer: false),
 
                 Container(
                   width: MediaQuery.of(context).size.width * 0.7,

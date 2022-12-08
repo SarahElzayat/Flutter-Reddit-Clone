@@ -9,6 +9,7 @@ import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/inbox_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/notifications_screen.dart';
+import 'package:reddit/screens/saved/saved_comments.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 import 'package:reddit/widgets/posts/post_upper_bar.dart';
 import '../components/helpers/color_manager.dart';
@@ -17,6 +18,7 @@ import '../data/temp_data/tmp_data.dart';
 import '../networks/constant_end_points.dart';
 import '../networks/dio_helper.dart';
 import '../screens/bottom_navigation_bar_screens/add_post_screen.dart';
+import '../screens/saved/saved_posts.dart';
 import '../widgets/posts/post_widget.dart';
 
 part 'app_state.dart';
@@ -227,7 +229,7 @@ class AppCubit extends Cubit<AppState> {
   ];
 
   ///@param [historyCategoryIndex] is the index of the chosen history category
-  int historyCategoryIndex = 0 ;
+  int historyCategoryIndex = 0;
 
   ///@param [category] is an enum that corresponds to the history category item
   /// the function clears the [history] list and fills it with the designated category and emits a state after doing so
@@ -249,5 +251,61 @@ class AppCubit extends Cubit<AppState> {
     }
 
     emit(ChangeHistoryCategoryState());
+  }
+
+  List<Icon> historyPostViewsIcons = [
+    const Icon(Icons.crop_square_outlined),
+    const Icon(Icons.view_list),
+  ];
+
+  int historyPostViewIconIndex = 0;
+  HistoyPostsView histoyPostsView = HistoyPostsView.card;
+  void changeHistoryPostView(HistoyPostsView view) {
+    historyPostViewIconIndex = view.index;
+    histoyPostsView = view;
+    print(histoyPostsView.toString());
+    emit(ChangeHistoryPostViewState());
+  }
+
+  List<Tab> savedTabBarTabs = [
+    const Tab(
+      text: 'Posts',
+    ),
+    const Tab(
+      text: 'Comments',
+    ),
+  ];
+
+  List<Widget> savedTabBarScreens = const [
+    SavedPostsScreen(),
+    SavedCommentsScreen()
+  ];
+
+  List<PostModel> savedPostsList = [];
+
+  /// the function gets the history of the specified path (recent, upvoted, downvoted, hidden) history
+  /// emits some corresponding states and fills [savedPostsList] list
+  void getSavedPosts(path) {
+    emit(LoadingHistoryState());
+    history.clear();
+    DioHelper.getData(
+      path: '$user/$username$path',
+      token: CacheHelper.getData(key: 'token'),
+      query: {},
+    ).then((value) {
+      // print('KOSSOM EL VALUE' + value.data.toString());
+      if (value.data['children'].length == 0) {
+        emit(HistoryEmptyState());
+      } else {
+        for (int i = 0; i < value.data['children'].length; i++) {
+          history.add(PostModel.fromJsonwithData(value.data['children'][i]));
+          emit(LoadedHistoryState());
+        }
+      }
+    }).onError((error, stackTrace) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+    });
   }
 }

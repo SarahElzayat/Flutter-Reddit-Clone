@@ -6,10 +6,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/Components/Helpers/color_manager.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:reddit/components/helpers/enums.dart';
+import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/screens/main_screen.dart';
 import 'package:reddit/widgets/posts/post_upper_bar.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
 import '../../cubit/app_cubit.dart';
+import '../../cubit/post_notifier/post_notifier_state.dart';
 import '../add_post/add_post.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -24,8 +26,6 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
-    
-
     ///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
     final AppCubit cubit = AppCubit.get(context)
       ..changeHistoryCategory(HistoyCategory.recent);
@@ -66,6 +66,24 @@ class _HistoryScreenState extends State<HistoryScreen> {
       )
     ];
 
+    List<ListTile> historyView = [
+      ListTile(
+        leading: const Icon(Icons.crop_square_outlined),
+        title: const Text('Card'),
+        onTap: () {
+          cubit.changeHistoryPostView(HistoyPostsView.card);
+          Navigator.pop(context);
+        },
+      ),
+      ListTile(
+        leading: const Icon(Icons.view_list_outlined),
+        title: const Text('Classic'),
+        onTap: () {
+          cubit.changeHistoryPostView(HistoyPostsView.classic);
+          Navigator.pop(context);
+        },
+      ),
+    ];
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {
         /// Listening to the app states, if the bottom navigation bar state is changed (a bottom navigation bar has been pressed)
@@ -141,7 +159,21 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
                       //TODO change the history view (card-classic)
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () => showModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.4,
+                                      color: ColorManager.black,
+                                      child: ListView.builder(
+                                        itemBuilder: (context, index) =>
+                                            historyView[index],
+                                        itemCount: historyView.length,
+                                      ));
+                                },
+                              ),
                           child: const Icon(Icons.crop_square_outlined)),
                     ],
                   ),
@@ -171,17 +203,28 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             color: ColorManager.blue,
                           )),
                           builder: (context) {
-                            return ListView.builder(
-                              itemBuilder: (context, index) => PostWidget(
-                                post: cubit.history[index],
-                                upperRowType:
-                                    cubit.history[index].subreddit != null
-                                        ? ShowingOtions.both
-                                        : ShowingOtions.onlyUser,
-                              ),
-                              itemCount: cubit.history.length,
-                              shrinkWrap: true,
-                              // ),
+                            return BlocConsumer<PostNotifierCubit,
+                                PostNotifierState>(
+                              listener: (context, state) {
+                                // TODO: implement listener
+                              },
+                              builder: (context, state) {
+                                return ListView.builder(
+                                  itemBuilder: (context, index) => PostWidget(
+                                    postView: cubit.histoyPostsView ==
+                                            HistoyPostsView.card
+                                        ? PostView.card
+                                        : PostView.classic,
+                                    post: cubit.history[index],
+                                    upperRowType:
+                                        cubit.history[index].subreddit != null
+                                            ? ShowingOtions.both
+                                            : ShowingOtions.onlyUser,
+                                  ),
+                                  itemCount: cubit.history.length,
+                                  shrinkWrap: true,
+                                );
+                              },
                             );
                           },
                         ),

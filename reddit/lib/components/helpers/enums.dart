@@ -36,3 +36,8 @@ enum HistoyCategory {
   downvoted,
   hidden
 }
+
+enum HistoyPostsView {
+  card,
+  classic
+}

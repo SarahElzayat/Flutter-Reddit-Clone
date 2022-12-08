@@ -72,14 +72,7 @@ Widget listButton(context, text, list, onPressed, isOpen,
                     text: 'Mod Queue',
                   ),
                   isLeftDrawer: true),
-            // if (isModerating)
-            //   genericTextButton(
-            //       context,
-            //       Icons.mail_outline_rounded,
-            //       'Modmail',
-            //       const ToBeDoneScreen(
-            //         text: 'Modmail',
-            //       )),
+
             if (isCommunity)
               genericTextButton(
                   context,

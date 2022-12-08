@@ -19,6 +19,7 @@ class ChangeModeratingListState extends AppState {}
 class ChangeYourCommunitiesState extends AppState {}
 
 class ChangeHistoryCategoryState extends AppState{}
+class ChangeHistoryPostViewState extends AppState{}
 class LoadingHistoryState extends AppState{}
 class HistoryEmptyState extends AppState{}
 class LoadedHistoryState extends AppState{}
