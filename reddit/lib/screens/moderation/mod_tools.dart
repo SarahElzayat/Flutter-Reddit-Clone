@@ -100,34 +100,38 @@ class ModTools extends StatelessWidget {
               SizedBox(
                 height: height * 0.83,
                 child: ListTileContainer(
+                    handler: () {},
                     title: '      GENERAL',
                     listTileTitles: generalTitles,
                     listTileIcons: generalIcons,
-                    trailingObject: TrailingObjects.tailingIcon),
+                    trailingObject: const [TrailingObjects.tailingIcon]),
               ),
               SizedBox(
                 height: height * 0.19,
                 child: ListTileContainer(
+                    handler: () {},
                     title: '      CONTENT & REGULATIONS',
                     listTileTitles: contentAndRegulationsTitles,
                     listTileIcons: contentAndRegulationsIcons,
-                    trailingObject: TrailingObjects.tailingIcon),
+                    trailingObject: const [TrailingObjects.tailingIcon]),
               ),
               SizedBox(
                 height: height * 0.38,
                 child: ListTileContainer(
+                    handler: () {},
                     title: '      USER MANAGEMENT',
                     listTileTitles: userManagementTitles,
                     listTileIcons: userManagementIcons,
-                    trailingObject: TrailingObjects.tailingIcon),
+                    trailingObject: const [TrailingObjects.tailingIcon]),
               ),
               SizedBox(
                 height: height * 0.38,
                 child: ListTileContainer(
+                    handler: () {},
                     title: '      RSOURCE LINKS',
                     listTileTitles: resourceLinksTitles,
                     listTileIcons: resourceLinksIcons,
-                    trailingObject: TrailingObjects.tailingIcon),
+                    trailingObject: const [TrailingObjects.tailingIcon]),
               ),
               const Padding(
                 padding: EdgeInsets.all(10),

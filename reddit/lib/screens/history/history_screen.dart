@@ -24,8 +24,6 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
-    
-
     ///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
     final AppCubit cubit = AppCubit.get(context)
       ..changeHistoryCategory(HistoyCategory.recent);
@@ -81,7 +79,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: const Center(child: Text('History')),
+            centerTitle: true,
+            title: const Text('History'),
           ),
 
           //TODO make it a fucking reusable zeft

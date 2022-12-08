@@ -31,16 +31,16 @@ import '../screens/add_post/video_trimmer.dart';
 import '../screens/bottom_navigation_bar_screens/notifications_screen.dart';
 import '../screens/create_community_screen/create_community_screen.dart';
 import '../screens/forget_user_name_and_password/mobile/forget_password_screen.dart';
+import '../screens/settings/settings_main_screen.dart';
 import '../screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import '../screens/sign_in_and_sign_up_screen/mobile/sign_up_screen.dart';
 import '../screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
 
 Map<String, Widget Function(BuildContext)> myRoutes = {
+  // sign in sign up screens
   RecoverUserName.routeName: (ctx) => const RecoverUserName(),
   SignInForWebScreen.routeName: (ctx) => const SignInForWebScreen(),
   SignUpForWebScreen.routeName: (ctx) => const SignUpForWebScreen(),
-
-  /// TODO: here we should send the email to the continueSign up this problem will be avoided when using cubit state management
   ContinueSignUpScreen.routeName: (ctx) => const ContinueSignUpScreen(),
   SignUpScreen.routeName: (ctx) => const SignUpScreen(),
   SignInScreen.routeName: (ctx) => const SignInScreen(),
@@ -50,7 +50,10 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   PrivacyAndPolicy.routeName: (ctx) => const PrivacyAndPolicy(),
   UserAgreementScreen.routeName: (ctx) => const UserAgreementScreen(),
   ForgetPasswordScreen.routeName: (ctx) => const ForgetPasswordScreen(),
+  // settings screens
+  SettingsMainScreen.routeName: (ctx) => const SettingsMainScreen(),
 
+  // home screens
   HomeScreenForMobile.routeName: (ctx) => const HomeScreenForMobile(),
   //bottom navigation bar screens
   HomeScreen.routeName: (ctx) => const HomeScreen(),
@@ -73,6 +76,7 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   PostSimpleScreen.routeName: (ctx) => const PostSimpleScreen(),
   CommunitySearch.routeName: (ctx) => CommunitySearch(),
   PostRules.routeName: (ctx) => const PostRules(),
-  HistoryScreen.routeName: (ctx) => const HistoryScreen(bottomNavBarScreenIndex: 0),
+  HistoryScreen.routeName: (ctx) =>
+      const HistoryScreen(bottomNavBarScreenIndex: 0),
   HistoryScreenForWeb.routeName: (ctx) => const HistoryScreenForWeb(),
 };

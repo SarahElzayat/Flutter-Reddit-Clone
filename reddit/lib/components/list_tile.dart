@@ -21,7 +21,7 @@ class ListTileWidget extends StatefulWidget {
   ///   3.3- IconButton
   final TrailingObjects tailingObj;
 
-  /// The items that we are gonna show.
+  /// The items that we are gonna show if we have a dropBox.
   List<String>? items;
 
   /// function handler which should be executed whenever something is changed
@@ -140,7 +140,7 @@ class _ListTileWidgetState extends State<ListTileWidget> {
       child: Material(
         color: ColorManager.darkGrey,
         child: InkWell(
-          onTap: (() => {widget.handler}),
+          onTap: widget.handler,
           child: ListTile(
               //background color of list tile
               tileColor: ColorManager.darkGrey,
