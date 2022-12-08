@@ -6,7 +6,7 @@ import '../post_model/post_model.dart';
 
 var textPost = PostModel(
   id: '638a5f147341d9e893f38b72',
-  kind: 'text',
+  kind: 'hybrid',
   title: 'this is the title',
   content: ''' This is a content <br />
       **This IS BOLD** <br />
@@ -35,7 +35,7 @@ final textPostS = textPost.toJson();
 
 var smalltextPost = PostModel(
   id: '638a5f147341d9e893f38b72',
-  kind: 'text',
+  kind: 'hybrid',
   title: 'this is the title',
   content: ''' This is a content <br />
       ''',

@@ -129,6 +129,7 @@ class PostWidget extends StatelessWidget {
                                     },
                                     fallbackBuilder: (context) => Container(),
                                   ),
+
                                 // the body text or the link bar
                                 ConditionalSwitch.single(
                                   context: context,
@@ -136,7 +137,7 @@ class PostWidget extends StatelessWidget {
                                     if ((!outsideScreen &&
                                             post.kind != 'link') ||
                                         (outsideScreen &&
-                                            post.kind == 'text' &&
+                                            post.kind == 'hybrid' &&
                                             ((post.content ?? '').length >
                                                 90))) {
                                       return 'bodytext';
@@ -156,7 +157,7 @@ class PostWidget extends StatelessWidget {
                             ),
                           ),
                         ),
-                        if (post.kind == 'image' &&
+                        if ((post.kind != 'link') &&
                             postView == PostView.classic)
                           Container(
                             clipBehavior: Clip.antiAlias,
