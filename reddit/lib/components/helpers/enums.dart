@@ -4,6 +4,7 @@
 
 /// this enum is used to determine the type of the trailing posts
 enum TrailingObjects {
+  /// TODO: here we should add a button
   switchButton,
   dropBox,
   tailingIcon,
@@ -30,9 +31,4 @@ enum PostView {
   card,
 }
 
-enum HistoyCategory {
-  recent,
-  upvoted,
-  downvoted,
-  hidden
-}
+enum HistoyCategory { recent, upvoted, downvoted, hidden }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/components/list_tile_container.dart';
+import 'package:reddit/screens/settings/account_settings_screen.dart';
 import '../../../components/helpers/enums.dart';
 
 class SettingsMainScreen extends StatelessWidget {
@@ -10,6 +11,7 @@ class SettingsMainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+    final navigator = Navigator.of(context);
     return Scaffold(
       appBar: AppBar(title: const Text('Settings')),
       body: SizedBox(
@@ -19,7 +21,9 @@ class SettingsMainScreen extends StatelessWidget {
             Expanded(
               flex: 1,
               child: ListTileContainer(
-                  handler: () {},
+                  handler: () {
+                    navigator.pushNamed(AccountSettingsScreen.routeName);
+                  },
                   title: 'General',
                   listTileTitles: const [
                     'Account Settings',

@@ -25,6 +25,8 @@ class ListTileContainer extends StatelessWidget {
   /// if the Trailing object was a dropbox.
   final List<List<String>> items;
 
+  /// TODO: this should be a list of handlers,
+  /// where each item has its own handler
   /// this is the function that should be executed
   /// when the user presses on the listTile.
   Function handler = () {};
@@ -41,6 +43,7 @@ class ListTileContainer extends StatelessWidget {
   /// @param [index] is the index of the loop because this function should be
   /// called inside a loop.
   List<String> ourItems(index) {
+    /// TODO: this should work even if we didn't send items
     return items.isEmpty
         ? []
         : items[index].isEmpty
@@ -56,10 +59,13 @@ class ListTileContainer extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: height * 0.02),
-        Text(
-          title,
-          style: TextStyle(
-              color: ColorManager.lightGrey, fontSize: 12 * fontScale),
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Text(
+            title,
+            style: TextStyle(
+                color: ColorManager.lightGrey, fontSize: 12 * fontScale),
+          ),
         ),
         SizedBox(height: height * 0.02),
         Expanded(
