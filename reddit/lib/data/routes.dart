@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:reddit/Screens/history/history_screen.dart';
 import 'package:reddit/Screens/history/history_screen_for_web.dart';
 import 'package:reddit/screens/create_community_screen/create_community_screen.dart';
+import 'package:reddit/screens/main_screen.dart';
 import 'package:reddit/screens/moderation/content_and_regulation/post_flair.dart';
 import 'package:reddit/screens/moderation/general_screens/archive_posts.dart';
 import 'package:reddit/screens/moderation/general_screens/community_types.dart';

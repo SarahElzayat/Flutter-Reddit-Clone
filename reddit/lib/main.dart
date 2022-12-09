@@ -5,12 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/data/routes.dart';
 import 'package:reddit/screens/create_community_screen/cubit/create_community_cubit.dart';
+import 'package:reddit/screens/main_screen.dart';
 import 'package:reddit/theme/theme_data.dart';
 import 'constants/constants.dart';
 
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
-import 'screens/sign_in_and_sign_up_screen/mobile/sign_In_screen.dart';
 
 import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
