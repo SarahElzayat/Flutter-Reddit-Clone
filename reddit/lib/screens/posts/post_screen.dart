@@ -47,7 +47,7 @@ class _PostScreenState extends State<PostScreen> {
         title: Text(widget.post.title!),
         actions: [
           BlocProvider(
-            create: (context) => PostCubit(widget.post),
+            create: (context) => PostAndCommentActionsCubit(post: widget.post),
             child: BlocBuilder<PostNotifierCubit, PostNotifierState>(
               builder: (context, state) {
                 return DropDownList(

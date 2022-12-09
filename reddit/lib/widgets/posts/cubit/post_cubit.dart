@@ -9,11 +9,11 @@ import 'package:reddit/data/post_model/post_model.dart';
 import '../../../networks/constant_end_points.dart';
 import 'post_state.dart';
 
-class PostCubit extends Cubit<PostState> {
+class PostAndCommentActionsCubit extends Cubit<PostState> {
   final PostModel post;
-  PostCubit(this.post) : super(PostsInitial());
+  PostAndCommentActionsCubit({required this.post}) : super(PostsInitial());
 
-  static PostCubit get(context) => BlocProvider.of(context);
+  static PostAndCommentActionsCubit get(context) => BlocProvider.of(context);
 
   // void getPostsForHome() async {
   //   mockDio.get('$base/posts').then((value) {

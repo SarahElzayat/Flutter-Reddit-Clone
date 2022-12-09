@@ -69,7 +69,7 @@ class MenuItems {
 
   /// exexutes the onChanged of each Item
   static onChanged(BuildContext context, MenuItem item, String postId) {
-    var cubit = PostCubit.get(context);
+    var cubit = PostAndCommentActionsCubit.get(context);
     switch (item) {
       case MenuItems.save:
       case MenuItems.unsave:

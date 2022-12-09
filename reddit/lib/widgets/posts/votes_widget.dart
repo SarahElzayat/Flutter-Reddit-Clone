@@ -33,7 +33,7 @@ class VotesPart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> getchildren() {
-      var cubit = PostCubit.get(context);
+      var cubit = PostAndCommentActionsCubit.get(context);
       int dir = cubit.getVotingType();
       return [
         Material(
@@ -43,7 +43,7 @@ class VotesPart extends StatelessWidget {
           shape: const CircleBorder(),
           child: IconButton(
             onPressed: () async {
-              PostCubit.get(context)
+              PostAndCommentActionsCubit.get(context)
                   .vote(
                 direction: 1,
               )
@@ -98,7 +98,7 @@ class VotesPart extends StatelessWidget {
       ];
     }
 
-    return BlocBuilder<PostCubit, PostState>(
+    return BlocBuilder<PostAndCommentActionsCubit, PostState>(
       builder: (context, state) {
         return BlocBuilder<PostNotifierCubit, PostNotifierState>(
             builder: (context, state) {

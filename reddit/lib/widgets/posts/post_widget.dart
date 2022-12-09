@@ -59,7 +59,7 @@ class PostWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PostCubit(post),
+      create: (context) => PostAndCommentActionsCubit(post: post),
       child: ResponsiveBuilder(
         builder: (buildContext, sizingInformation) {
           bool isWeb =
@@ -175,11 +175,12 @@ class PostWidget extends StatelessWidget {
                       ],
                     ),
                     _lowerPart(isWeb),
-                    BlocBuilder<PostCubit, PostState>(
+                    BlocBuilder<PostAndCommentActionsCubit, PostState>(
                       builder: (context, state) {
                         return AnimatedSwitcher(
                             duration: const Duration(milliseconds: 300),
-                            child: (PostCubit.get(context).showModTools)
+                            child: (PostAndCommentActionsCubit.get(context)
+                                    .showModTools)
                                 ? _modRow(context)
                                 : Container(
                                     key: const Key('mod-row-empty'),
@@ -295,7 +296,7 @@ class PostWidget extends StatelessWidget {
   Widget _commentsRow(BuildContext context) {
 // a row with a button to choose the sorting type and an icon button for MOD
 // operations
-    return BlocBuilder<PostCubit, PostState>(
+    return BlocBuilder<PostAndCommentActionsCubit, PostState>(
       builder: (context, state) {
         return Row(
           children: [
@@ -303,13 +304,14 @@ class PostWidget extends StatelessWidget {
               onPressed: () async {
                 await modalBottomSheet(
                   context: context,
-                  selectedItem: PostCubit.get(context).selectedItem,
-                  text: PostCubit.labels,
+                  selectedItem:
+                      PostAndCommentActionsCubit.get(context).selectedItem,
+                  text: PostAndCommentActionsCubit.labels,
                   title: 'SORT COMMENTS BY',
-                  selectedIcons: PostCubit.icons,
-                  unselectedIcons: PostCubit.icons,
+                  selectedIcons: PostAndCommentActionsCubit.icons,
+                  unselectedIcons: PostAndCommentActionsCubit.icons,
                 ).then((value) {
-                  PostCubit.get(context).changeSortType(value);
+                  PostAndCommentActionsCubit.get(context).changeSortType(value);
                 });
               },
               style: ElevatedButton.styleFrom(
@@ -318,7 +320,7 @@ class PostWidget extends StatelessWidget {
                 backgroundColor: Colors.transparent,
               ),
               icon: Icon(
-                PostCubit.get(context).getSelectedIcon(),
+                PostAndCommentActionsCubit.get(context).getSelectedIcon(),
                 color: ColorManager.greyColor,
               ),
               label: Row(
@@ -326,7 +328,7 @@ class PostWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    PostCubit.get(context).selectedItem,
+                    PostAndCommentActionsCubit.get(context).selectedItem,
                     style: const TextStyle(
                       color: ColorManager.greyColor,
                     ),
@@ -339,14 +341,15 @@ class PostWidget extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            if (PostCubit.get(context).post.inYourSubreddit ?? false)
+            if (PostAndCommentActionsCubit.get(context).post.inYourSubreddit ??
+                false)
               Material(
                 color: Colors.transparent,
                 clipBehavior: Clip.antiAlias,
                 shape: const CircleBorder(),
-                child: BlocBuilder<PostCubit, PostState>(
+                child: BlocBuilder<PostAndCommentActionsCubit, PostState>(
                   builder: (context, state) {
-                    var cubit = PostCubit.get(context);
+                    var cubit = PostAndCommentActionsCubit.get(context);
                     return IconButton(
                       onPressed: () {
                         cubit.toggleModTools();

@@ -1,13 +1,17 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
-import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/functions/post_functions.dart';
+import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
+import 'package:reddit/widgets/posts/votes_widget.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../data/post_model/post_model.dart';
 import '../posts/dropdown_list.dart';
 
@@ -45,7 +49,7 @@ String content = '''[{"insert":"Heading "},
 
 class _CommentState extends State<Comment> {
   bool isCompressed = false;
-  QuillController? _controller;
+  quill.QuillController? _controller;
   final FocusNode _focusNode = FocusNode();
 
   Future<void> _loadFromAssets() async {
@@ -63,9 +67,9 @@ class _CommentState extends State<Comment> {
     //         document: doc, selection: const TextSelection.collapsed(offset: 0));
     //   });
     // }
-    final doc = Document.fromJson(jsonDecode(content));
+    final doc = quill.Document.fromJson(jsonDecode(content));
     setState(() {
-      _controller = QuillController(
+      _controller = quill.QuillController(
           document: doc, selection: const TextSelection.collapsed(offset: 0));
     });
   }
@@ -82,51 +86,56 @@ class _CommentState extends State<Comment> {
       return Container();
     }
 
-    return Container(
-      color: ColorManager.darkGrey,
-      // margin: EdgeInsets.only(left: widget.level * 10.0),
-      padding: const EdgeInsets.all(8.0),
-      child: ConditionalBuilder(
-        condition: isCompressed,
-        builder: (context) {
-          return Row(
-            children: [
-              singleRow(post: widget.post, showIcon: true),
-            ],
-          );
-        },
-        fallback: (context) {
-          return Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: singleRow(
-                      post: widget.post,
-                      showDots: false,
-                      showIcon: true,
+    return BlocProvider(
+      create: (context) => PostAndCommentActionsCubit(
+        post: widget.post,
+      ),
+      child: Container(
+        color: ColorManager.darkGrey,
+        // margin: EdgeInsets.only(left: widget.level * 10.0),
+        padding: const EdgeInsets.all(8.0),
+        child: ConditionalBuilder(
+          condition: isCompressed,
+          builder: (context) {
+            return Row(
+              children: [
+                singleRow(post: widget.post, showIcon: true),
+              ],
+            );
+          },
+          fallback: (context) {
+            return Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: singleRow(
+                        post: widget.post,
+                        showDots: false,
+                        showIcon: true,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              quill.QuillEditor(
-                controller: _controller!,
-                readOnly: true,
-                autoFocus: false,
-                expands: false,
-                scrollable: false,
-                scrollController: ScrollController(),
-                focusNode: FocusNode(),
-                padding: EdgeInsets.zero,
-                embedBuilders: [
-                  ...FlutterQuillEmbeds.builders(),
-                ],
-              ),
-              // _commentsRow(),
-              _commentsControlRow(),
-            ],
-          );
-        },
+                  ],
+                ),
+                quill.QuillEditor(
+                  controller: _controller!,
+                  readOnly: true,
+                  autoFocus: false,
+                  expands: false,
+                  scrollable: false,
+                  scrollController: ScrollController(),
+                  focusNode: FocusNode(),
+                  padding: EdgeInsets.zero,
+                  embedBuilders: [
+                    ...FlutterQuillEmbeds.builders(),
+                  ],
+                ),
+                // _commentsRow(),
+                _commentsControlRow(),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -139,6 +148,31 @@ class _CommentState extends State<Comment> {
           postId: widget.comment.commentId!,
           itemClass: ItemsClass.comment,
         ),
+        SizedBox(width: 5.w),
+        InkWell(
+          onTap: () {
+            setState(() {});
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Icon(
+                Icons.reply_rounded,
+                color: ColorManager.greyColor,
+                size: min(5.5.w, 30),
+              ),
+              const Text(
+                'Reply',
+                style: TextStyle(
+                  color: ColorManager.greyColor,
+                  fontSize: 15,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(width: 5.w),
+        VotesPart(post: widget.post),
       ],
     );
   }

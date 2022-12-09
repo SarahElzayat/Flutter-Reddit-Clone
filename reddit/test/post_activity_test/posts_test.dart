@@ -17,7 +17,7 @@ void main() {
       prepareMocks();
 
       var post = textPost;
-      var cubit = PostCubit(post);
+      var cubit = PostAndCommentActionsCubit(post: post);
       expect(post.votes, 100);
 
       await cubit.vote(direction: 1).then((value) {
@@ -46,7 +46,7 @@ void main() {
       prepareMocks();
 
       var post = oneImagePost;
-      var cubit = PostCubit(post);
+      var cubit = PostAndCommentActionsCubit(post: post);
       expect(post.votes, 100);
 
       await cubit.vote(direction: -1).then((value) {

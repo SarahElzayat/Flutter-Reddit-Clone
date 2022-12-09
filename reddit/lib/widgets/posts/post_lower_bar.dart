@@ -87,7 +87,8 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
             ),
             InkWell(
               onTap: () {
-                if (isMod && (PostCubit.get(context).showModTools)) {
+                if (isMod &&
+                    (PostAndCommentActionsCubit.get(context).showModTools)) {
                   showModOperations(
                     context: context,
                     post: widget.post,
@@ -97,11 +98,13 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
                   // sharePost(context, widget.post);
                 }
               },
-              child: BlocBuilder<PostCubit, PostState>(
+              child: BlocBuilder<PostAndCommentActionsCubit, PostState>(
                 builder: (context, state) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: (isMod && !(PostCubit.get(context).showModTools))
+                    children: (isMod &&
+                            !(PostAndCommentActionsCubit.get(context)
+                                .showModTools))
                         ? [
                             Icon(
                               key: const Key('mod-icon'),
