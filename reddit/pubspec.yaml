@@ -31,6 +31,7 @@ environment:
 dependencies:
   any_link_preview: ^2.0.9
   bloc: ^8.1.0
+  conditional_builder: ^1.0.2
   conditional_builder_null_safety: ^0.0.6
   cupertino_icons: ^1.0.2
   dio: ^4.0.6

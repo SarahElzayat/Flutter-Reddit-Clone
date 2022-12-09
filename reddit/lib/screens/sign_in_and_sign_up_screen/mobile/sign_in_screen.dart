@@ -2,7 +2,6 @@
 /// @date 3/11/2022
 /// this is the screen of creating new account for the users.
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -68,7 +67,7 @@ class _SignInScreenState extends State<SignInScreen> {
         CacheHelper.putData(key: 'username', value: value.data['username']);
 
         // navigating to the main screen
-        Navigator.of(context).pushReplacementNamed(MainScreen.routeName);
+        Navigator.of(context).pushReplacementNamed(HomeScreenForMobile.routeName);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

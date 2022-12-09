@@ -4,18 +4,22 @@
 import 'package:flutter/material.dart';
 import '../screens/search/search_screen.dart';
 
+
+///@param [image] is the user's profile picture
+/// the functions returns the user's profile picture as a circle avatara
 Widget avatar({image}) {
   return Padding(
     padding: const EdgeInsets.only(right: 8.0),
     child: CircleAvatar(
       radius: 15,
-      child: Image.asset(
+      child: image ?? Image.asset(
         'assets/images/Logo.png',
       ),
     ),
   );
 }
 
+/// the method navigates to search screen
 Future<Object?> navigateToSearch(context) {
   return Navigator.push(
       context, MaterialPageRoute(builder: (context) => const SearchScreen()));

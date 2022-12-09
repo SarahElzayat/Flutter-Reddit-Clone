@@ -1,22 +1,25 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/data/routes.dart';
-import 'package:reddit/screens/create_community_screen/create_community_screen.dart';
 import 'package:reddit/screens/create_community_screen/cubit/create_community_cubit.dart';
-import 'package:reddit/screens/moderation/content_and_regulation/post_flair.dart';
-import 'package:reddit/screens/moderation/general_screens/description.dart';
-import 'package:reddit/screens/moderation/user_management_screens/add_moderator.dart';
 import 'package:reddit/theme/theme_data.dart';
 import 'constants/constants.dart';
+
+import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
+import 'screens/sign_in_and_sign_up_screen/mobile/sign_In_screen.dart';
+
+import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'components/helpers/mocks/mock_functions.dart';
+
 import 'cubit/add_post/cubit/add_post_cubit.dart';
 import 'networks/dio_helper.dart';
 import 'components/helpers/bloc_observer.dart';
 import 'cubit/app_cubit.dart';
-import 'screens/main_screen.dart';
 import 'shared/local/shared_preferences.dart';
 // import 'package:flutter_driver/driver_extension.dart';
 
@@ -47,7 +50,6 @@ Future<void> main() async {
   /// and this is used to initialize Dio
   DioHelper.init();
   token = CacheHelper.getData(key: 'token');
-  print('current Saved TOKEN:: $token');
 
   runApp(const Main());
 }
@@ -73,17 +75,22 @@ class Main extends StatelessWidget {
           return ResponsiveSizer(
             builder: (context, orientation, screenType) {
               return MaterialApp(
-                initialRoute:
+                /// TODO: this should be changed to be checked automatically
 
-                    ///TODO: clear comments, but it is working btw :)
-                    //  CacheHelper.getData(key: 'token') != null
-                    //     ? MainScreen.routeName
-                    //     :
-                    MainScreen.routeName,
+                initialRoute: CacheHelper.getData(key: 'token') != null
+                    ? kIsWeb
+                        ? HomeScreen.routeName
+                        : HomeScreenForMobile.routeName
+                    : !kIsWeb
+                        ? SignInScreen.routeName
+                        : SignInForWebScreen.routeName,
+
                 routes: myRoutes,
                 onUnknownRoute: (settings) {
                   return MaterialPageRoute(
-                      builder: (ctx) => const MainScreen());
+                      builder: (ctx) => kIsWeb
+                          ? const HomeScreen()
+                          : const HomeScreenForMobile());
                 },
                 debugShowCheckedModeBanner: false,
                 theme: appTheme(),

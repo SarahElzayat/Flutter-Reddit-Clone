@@ -2,8 +2,9 @@
 /// @date 1/11/2022
 /// this file containes all our routes in order to avoid destraction in the main file.
 import 'package:flutter/material.dart';
+import 'package:reddit/Screens/history/history_screen.dart';
+import 'package:reddit/Screens/history/history_screen_for_web.dart';
 import 'package:reddit/screens/create_community_screen/create_community_screen.dart';
-import 'package:reddit/screens/moderation/content_and_regulation/create_flair.dart';
 import 'package:reddit/screens/moderation/content_and_regulation/post_flair.dart';
 import 'package:reddit/screens/moderation/general_screens/archive_posts.dart';
 import 'package:reddit/screens/moderation/general_screens/community_types.dart';
@@ -18,7 +19,6 @@ import 'package:reddit/screens/moderation/mod_tools.dart';
 import 'package:reddit/screens/moderation/user_management_screens/add_moderator.dart';
 import '../../screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
 import '../../screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
-import '../../screens/main_screen.dart';
 import '../../screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
 import '../../screens/to_go_screens/having_trouble_screen.dart';
 import '../../screens/to_go_screens/privacy_and_policy.dart';
@@ -33,22 +33,14 @@ import '../../screens/bottom_navigation_bar_screens/explore_screen.dart';
 import '../../screens/bottom_navigation_bar_screens/home_screen.dart';
 import '../../screens/bottom_navigation_bar_screens/inbox_screen.dart';
 import '../../screens/forget_user_name_and_password/mobile/recover_username.dart';
-import '../../screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
-import '../../screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
-import '../../screens/main_screen.dart';
 import '../../screens/search/search_results_main_screen.dart';
 import '../../screens/search/search_screen.dart';
 import '../../screens/sign_in_and_sign_up_screen/web/continue_sign_up_screen.dart';
-import '../../screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
-import '../../screens/to_go_screens/having_trouble_screen.dart';
-import '../../screens/to_go_screens/privacy_and_policy.dart';
-import '../../screens/to_go_screens/user_agreement_screen.dart';
 import '../screens/add_post/image_screen.dart';
 import '../screens/add_post/paint_screen.dart';
 import '../screens/add_post/post.dart';
 import '../screens/add_post/video_trimmer.dart';
 import '../screens/bottom_navigation_bar_screens/notifications_screen.dart';
-import '../screens/create_community_screen/create_community_screen.dart';
 import '../screens/forget_user_name_and_password/mobile/forget_password_screen.dart';
 import '../screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import '../screens/sign_in_and_sign_up_screen/mobile/sign_up_screen.dart';
@@ -57,7 +49,7 @@ import '../screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
 Map<String, Widget Function(BuildContext)> myRoutes = {
   RecoverUserName.routeName: (ctx) => const RecoverUserName(),
   // SignInForWebScreen.routeName: (ctx) => const SignInForWebScreen(),
-  SignInForWebScreen.routeName: (ctx) => SignInForWebScreen(),
+  SignInForWebScreen.routeName: (ctx) => const SignInForWebScreen(),
   SignUpForWebScreen.routeName: (ctx) => const SignUpForWebScreen(),
 
   /// TODO: here we should send the email to the continueSign up this problem will be avoided when using cubit state management
@@ -65,13 +57,12 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   SignUpScreen.routeName: (ctx) => const SignUpScreen(),
   SignInScreen.routeName: (ctx) => const SignInScreen(),
   ForgetUserNameWebScreen.routeName: (ctx) => ForgetUserNameWebScreen(),
-  ForgetPasswordWebScreen.routeName: (ctx) => ForgetPasswordWebScreen(),
+  ForgetPasswordWebScreen.routeName: (ctx) => const ForgetPasswordWebScreen(),
   TroubleScreen.routeName: (ctx) => const TroubleScreen(),
   PrivacyAndPolicy.routeName: (ctx) => const PrivacyAndPolicy(),
   UserAgreementScreen.routeName: (ctx) => const UserAgreementScreen(),
   ForgetPasswordScreen.routeName: (ctx) => const ForgetPasswordScreen(),
-
-  MainScreen.routeName: (ctx) => const MainScreen(),
+  HomeScreenForMobile.routeName: (ctx) => const HomeScreenForMobile(),
   //bottom navigation bar screens
   HomeScreen.routeName: (ctx) => const HomeScreen(),
   InboxScreen.routeName: (ctx) => const InboxScreen(),
@@ -89,10 +80,13 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   AddPost.routeName: (ctx) => const AddPost(),
   ImageScreen.routeName: (ctx) => ImageScreen(),
   PaintScreen.routeName: (ctx) => PaintScreen(),
-  // TrimmerView.routeName: (ctx) => const TrimmerView(),
+  TrimmerView.routeName: (ctx) => const TrimmerView(),
   PostSimpleScreen.routeName: (ctx) => const PostSimpleScreen(),
   CommunitySearch.routeName: (ctx) => CommunitySearch(),
   PostRules.routeName: (ctx) => const PostRules(),
+  HistoryScreen.routeName: (ctx) =>
+      const HistoryScreen(bottomNavBarScreenIndex: 0),
+  HistoryScreenForWeb.routeName: (ctx) => const HistoryScreenForWeb(),
 
   //Moderation routes
   ModTools.routeName: (ctx) => ModTools(),
@@ -106,5 +100,5 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   Discovery.routeName: (ctx) => const Discovery(),
   ChooseLanguage.routeName: (ctx) => const ChooseLanguage(),
   PostFlair.routeName: (ctx) => const PostFlair(),
-  AddModerator.routeName: (ctx) => AddModerator(),
+  AddModerator.routeName: (ctx) => const AddModerator(),
 };

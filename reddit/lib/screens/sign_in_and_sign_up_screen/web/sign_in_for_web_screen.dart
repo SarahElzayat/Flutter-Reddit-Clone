@@ -3,6 +3,7 @@
 /// this screen is built to show the UI in case that the user is using the app through the web
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/screens/main_screen.dart';
@@ -72,7 +73,8 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
         CacheHelper.putData(key: 'username', value: value.data['username']);
 
         // navigating to the main screen
-        Navigator.of(context).pushReplacementNamed(MainScreen.routeName);
+        kIsWeb?        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName):
+        Navigator.of(context).pushReplacementNamed(HomeScreenForMobile.routeName);
       }
     }).catchError((error) {
       // casting the error as a dio error to be able to use its content
