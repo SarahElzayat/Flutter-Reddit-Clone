@@ -41,12 +41,13 @@ dependencies:
   dropdown_button2: ^1.8.9
   dropdown_textfield: ^1.0.6
   file_picker: null
+  filesystem_picker: ^3.1.0
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.1
   flutter_conditional_rendering: ^2.0.0
   flutter_facebook_auth: ^5.0.1
-  flutter_html: 
+  flutter_html: null
   flutter_lorem: ^2.0.0
   flutter_markdown: ^0.6.12
   flutter_painter: ^1.0.1
