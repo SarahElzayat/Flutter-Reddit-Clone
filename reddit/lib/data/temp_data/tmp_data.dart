@@ -1,4 +1,5 @@
 import 'package:flutter_lorem/flutter_lorem.dart';
+import 'package:reddit/data/comment/comment_model.dart';
 
 import '../post_model/flair.dart';
 import '../post_model/image.dart';
@@ -216,3 +217,22 @@ var tryData = PostModel.fromJsonwithData({
     }
   }
 });
+
+CommentModel commentEx = CommentModel(
+  children: [],
+  commentBody: 'This is a comment',
+  commentId: '123',
+  commentedBy: 'username',
+  editTime: '2019-08-24T14:15:22Z',
+  followed: false,
+  level: 1,
+  numberofChildren: 2,
+  parent: '123',
+  votes: 23,
+  publishTime: '2019-08-24T14:15:22Z',
+  saved: false,
+  userImage: 'https://www.google.com',
+  vote: 1,
+);
+
+final commentExS = commentEx.toJson();

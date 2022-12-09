@@ -4,6 +4,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/data/comment/comment_model.dart';
+import 'package:reddit/data/temp_data/tmp_data.dart';
 import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
@@ -70,6 +72,7 @@ class _PostScreenState extends State<PostScreen> {
             ),
             Comment(
               post: widget.post,
+              comment: commentEx,
             ),
           ],
         ),
