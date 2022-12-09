@@ -4,16 +4,19 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/data/temp_data/tmp_data.dart';
 import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_state.dart';
 import '../../data/post_model/post_model.dart';
 import '../../widgets/comments/comment.dart';
 import '../../widgets/posts/dropdown_list.dart';
 import '../../widgets/posts/post_upper_bar.dart';
+import '../comments/add_comment_screen.dart';
 
 /// The Screen that displays the indvidual Posts
 ///
@@ -62,20 +65,52 @@ class _PostScreenState extends State<PostScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            PostWidget(
-              post: widget.post,
-              outsideScreen: false,
-              upperRowType: widget.upperRowType,
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  PostWidget(
+                    post: widget.post,
+                    outsideScreen: false,
+                    upperRowType: widget.upperRowType,
+                  ),
+                  Comment(
+                    post: widget.post,
+                    comment: commentEx,
+                  ),
+                ],
+              ),
             ),
-            Comment(
-              post: widget.post,
-              comment: commentEx,
+          ),
+          // a container that when tabbed opens the edit comment screen
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => AddCommentScreen(
+                    post: widget.post,
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              color: ColorManager.betterDarkGrey,
+              height: 5.h,
+              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: Row(
+                children: const [
+                  SizedBox(width: 10),
+                  Text(
+                    'Add a comment',
+                    style: TextStyle(color: ColorManager.lightGrey),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -18,6 +18,8 @@ import '../../components/helpers/enums.dart';
 import '../../components/helpers/posts/helper_funcs.dart';
 
 class InlineImageViewer extends StatefulWidget {
+  final bool outsideScreen;
+
   const InlineImageViewer({
     required this.post,
     super.key,
@@ -26,6 +28,7 @@ class InlineImageViewer extends StatefulWidget {
       color: ColorManager.black,
     ),
     this.postView = PostView.card,
+    this.outsideScreen = false,
   }) :
         // it asserts the passed Values and images can't be null
         assert(initialIndex >= 0); // the initial index can't be less than 0
@@ -92,7 +95,9 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
             },
             child: SizedBox(
               // expand the image to the width of the screen with max height of 60% of the screen
-              height: min(70.h, aspectRatio * constraints.maxWidth),
+              height: widget.outsideScreen
+                  ? min(70.h, aspectRatio * constraints.maxWidth)
+                  : 50.h,
               child: Stack(
                 children: [
                   PhotoViewGallery.builder(

@@ -1,6 +1,9 @@
 /// The Main Post Widget that shows in the home and other places
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
+import 'dart:convert';
+
+import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'dart:math';
 
 import 'package:any_link_preview/any_link_preview.dart';
@@ -8,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:reddit/components/helpers/enums.dart';
@@ -107,27 +111,10 @@ class PostWidget extends StatelessWidget {
 
                                 // image or video viewrs
                                 if (postView == PostView.card)
-                                  ConditionalSwitch.single(
-                                    context: context,
-                                    valueBuilder: (context) {
-                                      return post.kind;
-                                    },
-                                    caseBuilders: {
-                                      // 'text': (context) => ,
-                                      // 'link': (context) => ,
-                                      'image': (context) => InlineImageViewer(
-                                            key: const Key(
-                                                'inline-image-viewer'),
-                                            post: post,
-                                          ),
-                                      'hybrid': (context) => InlineImageViewer(
-                                            key: const Key(
-                                                'inline-image-viewer'),
-                                            post: post,
-                                          ),
-                                      'video': (context) => Container(),
-                                    },
-                                    fallbackBuilder: (context) => Container(),
+                                  InlineImageViewer(
+                                    key: const Key('inline-image-viewer'),
+                                    post: post,
+                                    outsideScreen: outsideScreen,
                                   ),
 
                                 // the body text or the link bar
@@ -374,23 +361,24 @@ class PostWidget extends StatelessWidget {
   }
 
   Widget _bodyText() {
-    return Html(
-      data: md.markdownToHtml(post.content ?? ''),
-      shrinkWrap: true,
-      style: {
-        '#': Style(
-          color: outsideScreen
-              ? ColorManager.greyColor
-              : ColorManager.eggshellWhite,
-          fontSize: FontSize(15),
-          fontWeight: FontWeight.w500,
-          margin: Margins.zero,
-          maxLines: outsideScreen ? 3 : null,
-          textOverflow: outsideScreen ? TextOverflow.ellipsis : null,
-          // margin: EdgeInsets.zero,
-          padding: EdgeInsets.zero,
+    return quill.QuillEditor(
+      controller: quill.QuillController(
+        document: quill.Document.fromJson(
+          jsonDecode(post.content!),
         ),
-      },
+        selection: const TextSelection.collapsed(offset: 0),
+      ),
+      readOnly: true,
+      autoFocus: false,
+      enableInteractiveSelection: false,
+      expands: false,
+      scrollable: false,
+      scrollController: ScrollController(),
+      focusNode: FocusNode(),
+      padding: EdgeInsets.zero,
+      embedBuilders: [
+        ...FlutterQuillEmbeds.builders(),
+      ],
     );
   }
 

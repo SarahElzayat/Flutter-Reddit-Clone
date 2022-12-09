@@ -5,15 +5,16 @@ import '../post_model/flair.dart';
 import '../post_model/image.dart';
 import '../post_model/post_model.dart';
 
+String quillContent =
+    '''[{"insert":"This is a post written with Quill\\n","attributes":{"bold":true}},
+    {"insert":"bold and italic","attributes":{"bold":true,"italic":true}},{"insert":"\\n"},
+    {"insert":"link","attributes":{"link":"pub.dev/packages/quill_markdown"}},{"insert":"\\n"}]''';
+
 var textPost = PostModel(
   id: '638a5f147341d9e893f38b72',
   kind: 'hybrid',
   title: 'this is the title',
-  content: ''' This is a content <br />
-      **This IS BOLD** <br />
-      *this is italic* <br />
-      ***THIS IS BOLD AND ITALIC***
-      ''',
+  content: quillContent,
   subreddit: 'Flutter',
   postedBy: 'username',
   postedAt: '2019-08-24T14:15:22Z',
@@ -38,8 +39,7 @@ var smalltextPost = PostModel(
   id: '638a5f147341d9e893f38b72',
   kind: 'hybrid',
   title: 'this is the title',
-  content: ''' This is a content <br />
-      ''',
+  content: quillContent,
   subreddit: 'Flutter',
   postedBy: 'username',
   postedAt: '2019-08-24T14:15:22Z',
@@ -64,7 +64,7 @@ var oneImagePost = PostModel(
   id: '638a5f147341d9e893f38b72',
   kind: 'image',
   title: 'That\'s a Post with only image inside it',
-  content: lorem(paragraphs: 1, words: 50),
+  content: '[]',
   subreddit: 'Flutter',
   postedBy: 'username',
   postedAt: '2019-08-24T14:15:22Z',
@@ -91,7 +91,7 @@ var manyImagePost = PostModel(
   id: '638a5f147341d9e893f38b72',
   title: 'That\'s a Post with Many image inside it',
   kind: 'image',
-  content: lorem(paragraphs: 1, words: 50),
+  content: quillContent,
   subreddit: 'Flutter',
   postedBy: 'username',
   postedAt: '2019-08-24T14:15:22Z',
@@ -218,8 +218,25 @@ var tryData = PostModel.fromJsonwithData({
   }
 });
 
-CommentModel commentEx = CommentModel(
+CommentModel childCommentEx = CommentModel(
   children: [],
+  commentBody: 'This is a comment',
+  commentId: '123',
+  commentedBy: 'username',
+  editTime: '2019-08-24T14:15:22Z',
+  followed: false,
+  level: 2,
+  numberofChildren: 2,
+  parent: '123',
+  votes: 23,
+  publishTime: '2019-08-24T14:15:22Z',
+  saved: false,
+  userImage: 'https://www.google.com',
+  vote: 1,
+);
+
+CommentModel commentEx = CommentModel(
+  children: [childCommentEx],
   commentBody: 'This is a comment',
   commentId: '123',
   commentedBy: 'username',
