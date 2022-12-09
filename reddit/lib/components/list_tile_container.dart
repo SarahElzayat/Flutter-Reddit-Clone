@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/screens/moderation/general_screens/description.dart';
 import 'package:reddit/components/list_tile.dart';
 
 class ListTileContainer extends StatefulWidget {

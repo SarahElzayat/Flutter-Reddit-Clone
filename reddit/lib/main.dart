@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/data/routes.dart';
+import 'package:reddit/screens/create_community_screen/create_community_screen.dart';
+import 'package:reddit/screens/create_community_screen/cubit/create_community_cubit.dart';
+import 'package:reddit/screens/moderation/content_and_regulation/post_flair.dart';
+import 'package:reddit/screens/moderation/general_screens/description.dart';
 import 'package:reddit/screens/moderation/user_management_screens/add_moderator.dart';
 import 'package:reddit/theme/theme_data.dart';
 import 'constants/constants.dart';
@@ -62,6 +66,7 @@ class Main extends StatelessWidget {
         ),
         BlocProvider(create: (context) => AppCubit()),
         BlocProvider(create: (context) => AddPostCubit()),
+        BlocProvider(create: (context) => CreateCommunityCubit())
       ],
       child: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {
@@ -74,7 +79,7 @@ class Main extends StatelessWidget {
                     //  CacheHelper.getData(key: 'token') != null
                     //     ? MainScreen.routeName
                     //     :
-                    AddModerator.routeName,
+                    MainScreen.routeName,
                 routes: myRoutes,
                 onUnknownRoute: (settings) {
                   return MaterialPageRoute(

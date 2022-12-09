@@ -50,7 +50,7 @@ class Button extends StatelessWidget {
   dynamic onPressed;
 
   /// [bool] to check if button is pressable
-  bool isPressable = true;
+  bool isPressable;
 
   bool isAndroid;
   Button({
@@ -76,7 +76,7 @@ class Button extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: buttonHeight,
-      // width: buttonWidth,
+      width: buttonWidth,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
           // for circular buttons

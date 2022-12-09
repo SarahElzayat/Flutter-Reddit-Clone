@@ -40,26 +40,23 @@ class _DescriptionState extends State<Description> {
           backgroundColor: ColorManager.darkGrey,
           title: const Text('Description'),
           actions: [
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Button(
-                  onPressed: isEmpty
-                      ? () {}
-                      : () {
-                          _enabledButton();
-                        },
-                  text: 'Save',
-                  textFontSize: 16.sp,
-                  buttonHeight: 5.h,
-                  buttonWidth: 8.w,
-                  textColor: isEmpty
-                      ? ColorManager.darkBlue
-                      : ColorManager.darkBlueColor,
-                  backgroundColor: ColorManager.darkGrey,
-                  splashColor: ColorManager.grey,
-                  disabled: isEmpty,
-                  borderRadius: 4.0),
-            )
+            Button(
+                onPressed: isEmpty
+                    ? () {}
+                    : () {
+                        _enabledButton();
+                      },
+                text: 'Save',
+                textFontSize: 16.sp,
+                buttonHeight: 5.h,
+                buttonWidth: 20.w,
+                textColor: isEmpty
+                    ? ColorManager.darkBlue
+                    : ColorManager.darkBlueColor,
+                backgroundColor: ColorManager.darkGrey,
+                splashColor: ColorManager.grey,
+                disabled: isEmpty,
+                borderRadius: 4.0)
           ]),
       body: Container(
           color: ColorManager.darkGrey,

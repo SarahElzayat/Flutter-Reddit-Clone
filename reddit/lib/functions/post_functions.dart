@@ -208,8 +208,7 @@ Future<void> showModOperations({
       // marks the post as nsfw
       () {
         final nsfw = MarkNSFWModel(id: post.id);
-        var token = CacheHelper.getData(key: 'token') ??
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzdlYTA3Mzk2NjRjMzJjYTk4ZmRlYzYiLCJ1c2VybmFtZSI6ImFobWVkYXR0YTMzIiwiaWF0IjoxNjY5MjQyOTk1fQ.DZDPE1su3Pss2izCyv8G2WAdAlBT97mhga5ku-Y2K-U';
+        var token = CacheHelper.getData(key: 'token');
         DioHelper.postData(token: '$token', path: markNSFW, data: nsfw.toJson())
             .then((value) {
           if (value.statusCode == 200) {

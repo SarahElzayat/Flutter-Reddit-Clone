@@ -80,7 +80,7 @@ class _PostFlairState extends State<PostFlair> {
                           Button(
                             onPressed: () {},
                             text: 'Create flair',
-                            buttonWidth: 10.w,
+                            buttonWidth: 150,
                             buttonHeight: 6.h,
                             splashColor: ColorManager.white.withOpacity(0.5),
                           ),

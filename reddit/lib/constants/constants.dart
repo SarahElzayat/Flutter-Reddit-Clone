@@ -18,6 +18,27 @@ const List<IconData> selectedIcons = [
 
 const List<String> postTypes = ['image', 'video', 'hybrid', 'link', 'hybrid'];
 
+//Create community constants
+/// community types when creating a community
+const List<String> communityTypes = ['Public', 'Restricted', 'Private'];
+
+/// community types description
+const List<String> communityDescription = [
+  'Anyone can view, post, and comment to this community',
+  'Anyone can view this community, but only approved users can post',
+  'Only approved users can view and submit to this community'
+];
+
+///icons for the bottom sheet for each community type
+const List<IconData> communityTypesIcon = [
+  Icons.person_off_outlined,
+  Icons.check_circle,
+  Icons.lock
+];
+
+///regecp used for community name validation
+final regexp = RegExp(r'^[A-Za-z0-9_]*$');
+
 //Moderation constants
 const List<String> topicsTitles = [
   'Activism',
