@@ -47,7 +47,8 @@ class PostLowerBarWithoutVotes extends StatefulWidget {
 class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
   @override
   Widget build(BuildContext context) {
-    var isMod = widget.post.inYourSubreddit ?? false;
+    // var isMod = widget.post.inYourSubreddit ?? false;
+    var isMod = true;
     return Container(
       color: widget.backgroundColor,
       child: Padding(
@@ -87,7 +88,8 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
             ),
             InkWell(
               onTap: () {
-                if (isMod && (PostCubit.get(context).showModTools)) {
+                if (isMod) {
+                  print('mod');
                   showModOperations(
                     context: context,
                     post: widget.post,
@@ -95,6 +97,7 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
                 } else {
                   // TODO
                   // sharePost(context, widget.post);
+                  print('not mod');
                 }
               },
               child: BlocBuilder<PostCubit, PostState>(
