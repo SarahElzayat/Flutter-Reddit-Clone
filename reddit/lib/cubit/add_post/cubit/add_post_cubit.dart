@@ -499,12 +499,6 @@ class AddPostCubit extends Cubit<AddPostState> {
         'subreddit': subredditName,
         'inSubreddit': true,
         'title': title.text,
-        'texts': [
-          <String, dynamic>{
-            'text': optionalText.text,
-            'index': 0,
-          }
-        ],
         'nsfw': nsfw,
         'spoiler': spoiler,
       };
