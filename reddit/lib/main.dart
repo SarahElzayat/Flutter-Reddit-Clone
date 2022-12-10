@@ -74,13 +74,15 @@ class Main extends StatelessWidget {
               return MaterialApp(
                 /// TODO: this should be changed to be checked automatically
 
-                initialRoute: CacheHelper.getData(key: 'token') != null
-                    ? kIsWeb
-                        ? HomeScreen.routeName
-                        : HomeScreenForMobile.routeName
-                    : !kIsWeb
-                        ? HomeScreenForMobile.routeName
-                        : HomeScreenForMobile.routeName,
+                initialRoute:
+                    CacheHelper.getData(key: 'token')?.toString().isNotEmpty ??
+                            false
+                        ? kIsWeb
+                            ? HomeScreen.routeName
+                            : HomeScreenForMobile.routeName
+                        : !kIsWeb
+                            ? SignInScreen.routeName
+                            : SignInForWebScreen.routeName,
 
                 routes: myRoutes,
                 onUnknownRoute: (settings) {

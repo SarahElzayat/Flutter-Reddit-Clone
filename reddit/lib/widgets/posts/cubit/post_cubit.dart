@@ -1,17 +1,28 @@
 /// The post cubit that handles the post state independently
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/mocks/mock_functions.dart';
+import 'package:reddit/constants/constants.dart';
+import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/data/post_model/post_model.dart';
+import 'package:reddit/networks/dio_helper.dart';
 
+import '../../../data/comment/comments_listing.dart';
 import '../../../networks/constant_end_points.dart';
 import 'post_state.dart';
 
 class PostAndCommentActionsCubit extends Cubit<PostState> {
   final PostModel post;
-  PostAndCommentActionsCubit({required this.post}) : super(PostsInitial());
+  final CommentModel? currentComment;
+  final List<CommentModel> comments = [];
+
+  PostAndCommentActionsCubit({
+    required this.post,
+    this.currentComment,
+  }) : super(PostsInitial());
 
   static PostAndCommentActionsCubit get(context) => BlocProvider.of(context);
 
@@ -38,7 +49,7 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
   Future vote({
     required int direction,
   }) {
-    int postState = post.votingType ?? 0;
+    int postState = getModel.votingType ?? 0;
     if (postState == direction) {
       // clicked the same button again
       direction = -direction;
@@ -46,32 +57,27 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
       // clicked the opposite button
       direction = direction * 2;
     }
-    int newDir = postState + direction;
-
-    return mockDio.post('$baseUrl/vote', data: {
-      'id': post.id,
-      'direction': newDir,
-      'type': 'post',
-    }
-        // return DioHelper.postData(
-        //   path: '/vote',
-        //   data: {
-        //     'id': post.id,
-        //     'direction': newDir,
-        //     'type': 'post',
-        //   },
-        //   token: token,
-        ).then((value) {
+    // int newDir = postState + direction;
+    return DioHelper.postData(
+      path: '/vote',
+      data: {
+        'id': getModel.id,
+        'direction': direction,
+        'type': currentComment == null ? 'post' : 'comment',
+      },
+      token: token,
+    ).then((value) {
       if (value.statusCode == 200) {
-        post.votingType = (post.votingType ?? 0) + direction;
-        post.votes = (post.votes ?? 0) + direction;
-        emit(PostsVoted());
+        getModel.votingType = (getModel.votingType ?? 0) + direction;
+        getModel.votes = (getModel.votes ?? 0) + direction;
+        emit(VotedSuccess());
       } else {
-        emit(PostsVotedError());
+        emit(VotedError());
       }
     }).catchError((error) {
-      print(error);
-      emit(PostsVotedError(error: error));
+      error = error as DioError;
+      debugPrint('error in vote: ${error.response?.data}');
+      emit(VotedError(error: error));
     });
   }
 
@@ -87,7 +93,7 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
       post.saved = !post.saved!;
       emit(PostsSaved());
     }).catchError((error) {
-      emit(PostsVotedError(error: error));
+      emit(VotedError(error: error));
     });
   }
 
@@ -121,14 +127,16 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
     ).then((value) => print(value.data));
   }
 
+  dynamic get getModel => currentComment ?? post;
+
   /// gets the voting type of the post (up, down ,..)
   int getVotingType() {
-    return post.votingType ?? 0;
+    return getModel.votingType ?? 0;
   }
 
   /// gets the number of votes of the post
   int getVotesCount() {
-    return post.votes ?? 0;
+    return getModel.votes ?? 0;
   }
 
   static final List<String> labels = ['Best', 'Top', 'New', 'Old'];
@@ -160,5 +168,34 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
   void toggleModTools() {
     showModTools = !showModTools;
     emit(CommentsModToolsToggled());
+  }
+
+  void getCommentsOfPost({
+    String? before,
+    String? after,
+    int? limit,
+  }) async {
+    emit(CommentsLoading());
+
+    DioHelper.getData(
+      token: token,
+      path: '/comments/${post.id}',
+      query: {
+        'before': before,
+        'after': after,
+        'limit': limit,
+      },
+    ).then((value) {
+      comments.clear();
+      CommentsListingModel commentsListingModel =
+          CommentsListingModel.fromJson(value.data);
+      commentsListingModel.children?.forEach((element) {
+        comments.add(element);
+      });
+      emit(CommentsLoaded());
+    }).catchError((error) {
+      debugPrint('error in getComments: $error');
+      emit(CommentsError());
+    });
   }
 }

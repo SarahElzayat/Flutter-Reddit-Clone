@@ -120,11 +120,9 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
         parentType: _isPostParent() ? 'post' : 'comment',
         haveSubreddit: widget.post.subreddit != null,
         level: _isPostParent() ? 1 : (widget.parentComment!.level! + 1),
-        parentId:
-            _isPostParent() ? widget.post.id : widget.parentComment!.commentId,
+        parentId: _isPostParent() ? widget.post.id : widget.parentComment!.id,
         subredditName: widget.post.subreddit,
       );
-      print(c.toJson());
       DioHelper.postData(token: token, path: '/comment', data: c.toJson())
           .then((value) {
         onSuccess();
@@ -141,7 +139,7 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add comment'),
+        title: Text(_isPostParent() ? 'Add comment' : 'Reply'),
         actions: [
           TextButton(
             onPressed: () {

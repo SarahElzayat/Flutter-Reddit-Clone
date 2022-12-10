@@ -221,7 +221,7 @@ var tryData = PostModel.fromJsonwithData({
 CommentModel childCommentEx = CommentModel(
   children: [],
   commentBody: 'This is a comment',
-  commentId: '123',
+  id: '123',
   commentedBy: 'username',
   editTime: '2019-08-24T14:15:22Z',
   followed: false,
@@ -232,13 +232,13 @@ CommentModel childCommentEx = CommentModel(
   publishTime: '2019-08-24T14:15:22Z',
   saved: false,
   userImage: 'https://www.google.com',
-  vote: 1,
+  votingType: 1,
 );
 
 CommentModel commentEx = CommentModel(
   children: [childCommentEx],
   commentBody: 'This is a comment',
-  commentId: '123',
+  id: '123',
   commentedBy: 'username',
   editTime: '2019-08-24T14:15:22Z',
   followed: false,
@@ -249,7 +249,7 @@ CommentModel commentEx = CommentModel(
   publishTime: '2019-08-24T14:15:22Z',
   saved: false,
   userImage: 'https://www.google.com',
-  vote: 1,
+  votingType: 1,
 );
 
 final commentExS = commentEx.toJson();

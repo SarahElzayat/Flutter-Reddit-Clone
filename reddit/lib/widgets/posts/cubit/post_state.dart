@@ -7,11 +7,11 @@ abstract class PostState {}
 
 class PostsInitial extends PostState {}
 
-class PostsVoted extends PostState {}
+class VotedSuccess extends PostState {}
 
-class PostsVotedError extends PostState {
+class VotedError extends PostState {
   final DioError? error;
-  PostsVotedError({this.error});
+  VotedError({this.error});
 }
 
 class PostsSaved extends PostState {}
@@ -33,3 +33,9 @@ class PostsLoading extends PostState {}
 class CommentsSortTypeChanged extends PostState {}
 
 class CommentsModToolsToggled extends PostState {}
+
+class CommentsLoading extends PostState {}
+
+class CommentsError extends PostState {}
+
+class CommentsLoaded extends PostState {}

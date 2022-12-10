@@ -1,5 +1,5 @@
 class CommentModel {
-  String? commentId;
+  String? id;
   String? commentedBy;
   String? userImage;
   String? editTime;
@@ -8,14 +8,14 @@ class CommentModel {
   int? votes;
   bool? saved;
   bool? followed;
-  int? vote;
+  int? votingType;
   String? parent;
   int? level;
   int? numberofChildren;
   List<CommentModel>? children;
 
   CommentModel({
-    this.commentId,
+    this.id,
     this.commentedBy,
     this.userImage,
     this.editTime,
@@ -24,7 +24,7 @@ class CommentModel {
     this.votes,
     this.saved,
     this.followed,
-    this.vote,
+    this.votingType,
     this.parent,
     this.level,
     this.numberofChildren,
@@ -32,7 +32,7 @@ class CommentModel {
   });
 
   factory CommentModel.fromJson(Map<String, dynamic> json) => CommentModel(
-        commentId: json['commentId'] as String?,
+        id: json['commentId'] as String?,
         commentedBy: json['commentedBy'] as String?,
         userImage: json['userImage'] as String?,
         editTime: json['editTime'] as String?,
@@ -41,7 +41,7 @@ class CommentModel {
         votes: json['votes'] as int?,
         saved: json['saved'] as bool?,
         followed: json['followed'] as bool?,
-        vote: json['vote'] as int?,
+        votingType: json['vote'] as int?,
         parent: json['parent'] as String?,
         level: json['level'] as int?,
         numberofChildren: json['numberofChildren'] as int?,
@@ -51,7 +51,7 @@ class CommentModel {
       );
 
   Map<String, dynamic> toJson() => {
-        'commentId': commentId,
+        'commentId': id,
         'commentedBy': commentedBy,
         'userImage': userImage,
         'editTime': editTime,
@@ -60,7 +60,7 @@ class CommentModel {
         'votes': votes,
         'saved': saved,
         'followed': followed,
-        'vote': vote,
+        'vote': votingType,
         'parent': parent,
         'level': level,
         'numberofChildren': numberofChildren,

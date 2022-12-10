@@ -7,8 +7,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
+import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/functions/post_functions.dart';
+import 'package:reddit/screens/comments/add_comment_screen.dart';
 import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
 import 'package:reddit/widgets/posts/votes_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -43,9 +46,9 @@ class Comment extends StatefulWidget {
 //     {"insert":"ordered list"},{"insert":"\\n","attributes":{"list":"ordered"}},
 //     {"insert":"unordered list"},{"insert":"\\n","attributes":{"list":"bullet"}},
 //     {"insert":"link","attributes":{"link":"pub.dev/packages/quill_markdown"}},{"insert":"\\n"}]''';
-String content = '''[{"insert":"Heading "},
-    {"insert":"bold and italic","attributes":{"bold":true,"italic":true}},{"insert":"\\n"},
-    {"insert":"link","attributes":{"link":"pub.dev/packages/quill_markdown"}},{"insert":"\\n"}]''';
+// String content = '''[{"insert":"Heading "},
+//     {"insert":"bold and italic","attributes":{"bold":true,"italic":true}},{"insert":"\\n"},
+//     {"insert":"link","attributes":{"link":"pub.dev/packages/quill_markdown"}},{"insert":"\\n"}]''';
 
 class _CommentState extends State<Comment> {
   bool isCompressed = false;
@@ -67,7 +70,14 @@ class _CommentState extends State<Comment> {
     //         document: doc, selection: const TextSelection.collapsed(offset: 0));
     //   });
     // }
-    final doc = quill.Document.fromJson(jsonDecode(content));
+    quill.Document doc;
+    try {
+      doc = quill.Document.fromJson(
+          jsonDecode(widget.comment.commentBody ?? '[]'));
+    } catch (e) {
+      doc = quill.Document();
+    }
+
     setState(() {
       _controller = quill.QuillController(
           document: doc, selection: const TextSelection.collapsed(offset: 0));
@@ -89,6 +99,7 @@ class _CommentState extends State<Comment> {
     return BlocProvider(
       create: (context) => PostAndCommentActionsCubit(
         post: widget.post,
+        currentComment: widget.comment,
       ),
       child: Container(
         color: ColorManager.darkGrey,
@@ -145,13 +156,21 @@ class _CommentState extends State<Comment> {
       children: [
         const Spacer(),
         DropDownList(
-          postId: widget.comment.commentId!,
+          postId: widget.comment.id!,
           itemClass: ItemsClass.comment,
         ),
         SizedBox(width: 5.w),
         InkWell(
           onTap: () {
-            setState(() {});
+            setState(() {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddCommentScreen(
+                            post: widget.post,
+                            parentComment: widget.comment,
+                          )));
+            });
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -172,7 +191,11 @@ class _CommentState extends State<Comment> {
           ),
         ),
         SizedBox(width: 5.w),
-        VotesPart(post: widget.post),
+        BlocBuilder<PostNotifierCubit, PostNotifierState>(
+          builder: (context, state) {
+            return VotesPart(post: widget.post);
+          },
+        ),
       ],
     );
   }
