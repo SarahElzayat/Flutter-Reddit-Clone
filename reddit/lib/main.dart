@@ -79,8 +79,8 @@ class Main extends StatelessWidget {
                         ? HomeScreen.routeName
                         : HomeScreenForMobile.routeName
                     : !kIsWeb
-                        ? SignInScreen.routeName
-                        : SignInForWebScreen.routeName,
+                        ? HomeScreenForMobile.routeName
+                        : HomeScreenForMobile.routeName,
 
                 routes: myRoutes,
                 onUnknownRoute: (settings) {

@@ -175,7 +175,7 @@ class AppCubit extends Cubit<AppState> {
   String profilePicture = 'assets/images/Logo.png';
 
   ///@param [username] is the username of the user
-  String username = 'Anonymous';
+  String? username = 'Anonymous';
 
   /// the function get the user's username from the backend
   void getUsername() {

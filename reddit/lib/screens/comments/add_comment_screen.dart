@@ -6,14 +6,21 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
+import 'package:giphy_get/giphy_get.dart';
+import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:path/path.dart';
+import 'package:reddit/constants/constants.dart';
+import 'package:reddit/data/comment/sended_comment_model.dart';
+import 'package:reddit/networks/dio_helper.dart';
 
 import '../../data/comment/comment_model.dart';
 import '../../data/post_model/post_model.dart';
 
 import 'dart:async';
+
+var logger = Logger();
 
 class AddCommentScreen extends StatefulWidget {
   static const routeName = 'add-comment';
@@ -39,6 +46,8 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
     super.initState();
   }
 
+  bool _isPostParent() => widget.parentComment == null;
+
   @override
   Widget build(BuildContext context) {
     var toolbar = QuillToolbar.basic(
@@ -57,8 +66,24 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
       showCodeBlock: false,
       showStrikeThrough: false,
       showFontSize: false,
+      multiRowsDisplay: false,
+      showClearFormat: false,
+      showIndent: false,
+      showQuote: false,
+      showColorButton: false,
+      showSearchButton: false,
+      showDirection: false,
+      showDividers: false,
+      showFontFamily: false,
+      showInlineCode: false,
+      showListCheck: false,
+      showUnderLineButton: false,
+      // showSmallButton: false,
       controller: _controller!,
       embedButtons: FlutterQuillEmbeds.buttons(
+        showVideoButton: false,
+        showCameraButton: false,
+
         // provide a callback to enable picking images from device.
         // if omit, "image" button only allows adding images from url.
         // same goes for videos.
@@ -83,12 +108,70 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
         afterButtonPressed: _focusNode.requestFocus,
       );
     }
+    void postComment({
+      required VoidCallback onSuccess,
+      required VoidCallback onError,
+    }) {
+      final content = jsonEncode(_controller!.document.toDelta().toJson());
+      SendedCommentModel c = SendedCommentModel(
+        content: content,
+        postId: widget.post.id,
+        haveSubreddit: widget.post.subreddit != null,
+        level: _isPostParent() ? 1 : (widget.parentComment!.level! + 1),
+        parentId:
+            _isPostParent() ? widget.post.id : widget.parentComment!.commentId,
+        subredditName: widget.post.subreddit,
+      );
+
+      DioHelper.postData(token: token, path: '/comment', data: c.toJson())
+          .then((value) {
+        onSuccess();
+
+
+
+
+        //TODO HANDLE THIS IN THE CUBIT
+        return null;
+      }).catchError((e) {
+        // TODO HANDLE THIS IN THE CUBIT
+        onError();
+        print(e);
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add comment'),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              // check if the comment is empty
+              logger.i(_controller!.document.length);
+              if (_controller!.document.length == 1) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    backgroundColor: ColorManager.yellow,
+                    content: Text('Comment cannot be empty'),
+                  ),
+                );
+              }
+
+              postComment(
+                onSuccess: () {
+                  Navigator.of(context).pop();
+                },
+                onError: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      backgroundColor: ColorManager.yellow,
+                      content: Text('Error while posting comment'),
+                    ),
+                  );
+                },
+              );
+
+              
+            },
             child: const Text(
               'Post',
               style: TextStyle(color: ColorManager.blue),
@@ -135,10 +218,65 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
               ],
             ),
           ),
-          toolbar
+          const Divider(
+            height: 10,
+            thickness: 2,
+          ),
+          Row(
+            children: [
+              LinkStyleButton(
+                controller: _controller!,
+                dialogTheme: QuillDialogTheme(
+                  dialogBackgroundColor: ColorManager.darkBlack,
+                  labelTextStyle: const TextStyle(color: ColorManager.blue),
+                ),
+                iconTheme: const QuillIconTheme(
+                    iconUnselectedFillColor: Colors.transparent,
+                    iconUnselectedColor: ColorManager.greyColor),
+              ),
+              Spacer(),
+              ImageButton(
+                icon: Icons.image,
+                controller: _controller!,
+                onImagePickCallback: _onImagePickCallback,
+
+                // change it for web
+                webImagePickImpl: _webImagePickImpl,
+                fillColor: Colors.transparent,
+                iconTheme: const QuillIconTheme(
+                    iconUnselectedColor: ColorManager.blue),
+              ),
+              IconButton(
+                  onPressed: () async {
+                    GiphyGif? gif = await GiphyGet.getGif(
+                      context: context, //Required
+                      apiKey: 'Cy67mi7cCOLy9reX6CtubyaAxFbNCflL', //Required.
+                      lang: GiphyLanguage
+                          .english, //Optional - Language for query.
+                      tabColor: Colors.teal, // Optional- default accent color.
+                    );
+                    if (gif != null) {
+                      _linkSubmitted(gif.images?.original?.url);
+                    }
+                  },
+                  icon: Icon(
+                    Icons.gif_box_outlined,
+                    color: ColorManager.blue,
+                  )),
+            ],
+          ),
         ],
       ),
     );
+  }
+
+  void _linkSubmitted(String? value) {
+    if (value != null && value.isNotEmpty && _controller != null) {
+      final index = _controller!.selection.baseOffset;
+      final length = _controller!.selection.extentOffset - index;
+
+      _controller!.replaceText(index, length, BlockEmbed.image(value), null);
+    }
   }
 
   // Renders the image picked by imagePicker from local file storage
