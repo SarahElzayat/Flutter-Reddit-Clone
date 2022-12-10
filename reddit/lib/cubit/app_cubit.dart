@@ -184,25 +184,69 @@ class AppCubit extends Cubit<AppState> {
 
   ///@param [history] the list of the user's history, changes according to its category
   List<PostModel> history = [];
+  String currentHistoryCategory = recentHistory;
+  String beforeId = '';
+  String afterId = '';
 
   ///@param [path] is the path of the desired history category
   /// the function gets the history of the specified path (recent, upvoted, downvoted, hidden) history
   /// emits some corresponding states and fills [history] list
-  void getHistory(path) {
-    emit(LoadingHistoryState());
-    history.clear();
+  void getHistory(
+      {path,
+      bool loadMore = false,
+      bool before = false,
+      bool after = false,
+      int limit = 3}) {
+    if (kDebugMode) {
+    print('after$afterId');
+      print('before$beforeId');
+    }
+    if (kDebugMode) {
+      print('CATEGOOORYYYY $currentHistoryCategory');
+    }
+    loadMore ? emit(LoadingMoreHistoryState()) : emit(LoadingHistoryState());
+    if (!loadMore) {
+      history.clear();
+      beforeId = '';
+      afterId = '';
+    } else {
+      if (kDebugMode) {
+        print('AFFFTEEEEERRRRRR ');
+      }
+      if (kDebugMode) {
+        print(history[history.length - 1].id);
+      }
+    }
     DioHelper.getData(
-      path: '$user/$username$path',
+      path: path != null
+          ? '$user/$username$path'
+          : '$user/$username$currentHistoryCategory',
       token: CacheHelper.getData(key: 'token'),
-      query: {},
+      query: {
+        'limit': limit,
+        'after': after ? afterId : null,
+        'before': before ? beforeId : null,
+      },
     ).then((value) {
-      // print('KOSSOM EL VALUE' + value.data.toString());
       if (value.data['children'].length == 0) {
-        emit(HistoryEmptyState());
+        if (kDebugMode) {
+          print('EMPPPTTYYYYY');
+        }
+
+        if (loadMore) {
+          emit(NoMoreHistoryToLoadState());
+        } else {
+          emit(HistoryEmptyState());
+        }
       } else {
+        afterId = value.data['after'];
+        beforeId = value.data['before'];
+
         for (int i = 0; i < value.data['children'].length; i++) {
           history.add(PostModel.fromJsonwithData(value.data['children'][i]));
-          emit(LoadedHistoryState());
+          loadMore
+              ? emit(LoadedMoreHistoryState())
+              : emit(LoadedHistoryState());
         }
       }
     }).onError((error, stackTrace) {
@@ -235,18 +279,23 @@ class AppCubit extends Cubit<AppState> {
   /// the function clears the [history] list and fills it with the designated category and emits a state after doing so
   void changeHistoryCategory(HistoyCategory category) {
     historyCategoryIndex = category.index;
+    // currentHistoryCategory = category;
     switch (historyCategoryIndex) {
       case 0:
-        getHistory(recentHistory);
+        currentHistoryCategory = recentHistory;
+        getHistory(path: recentHistory);
         break;
       case 1:
-        getHistory(upvotedHistory);
+        currentHistoryCategory = upvotedHistory;
+        getHistory(path: upvotedHistory);
         break;
       case 2:
-        getHistory(downvotedHistory);
+        currentHistoryCategory = downvotedHistory;
+        getHistory(path: downvotedHistory);
         break;
       case 3:
-        getHistory(hiddenHistory);
+        currentHistoryCategory = hiddenHistory;
+        getHistory(path: hiddenHistory);
         break;
     }
 
@@ -263,7 +312,7 @@ class AppCubit extends Cubit<AppState> {
   void changeHistoryPostView(HistoyPostsView view) {
     historyPostViewIconIndex = view.index;
     histoyPostsView = view;
-    print(histoyPostsView.toString());
+    // print(histoyPostsView.toString());
     emit(ChangeHistoryPostViewState());
   }
 
@@ -306,6 +355,18 @@ class AppCubit extends Cubit<AppState> {
       if (kDebugMode) {
         print(error.toString());
       }
+    });
+  }
+
+  void clearHistoy() {
+    DioHelper.postData(
+            path: clearHistory,
+            data: {'username': username},
+            token: CacheHelper.getData(key: 'token'))
+        .then((value) {
+      if (value.statusCode == 200) history.clear();
+      emit(ClearHistoryState());
+      emit(HistoryEmptyState());
     });
   }
 }

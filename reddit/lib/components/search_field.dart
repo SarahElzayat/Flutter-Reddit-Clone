@@ -2,11 +2,12 @@
 /// @date 25/10/2022
 /// general search field to be included in home, subreddits, profiles... etc
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/search/search_screen.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 
 import 'helpers/color_manager.dart';
 
-class SearchFiled extends StatefulWidget {
+class SearchField extends StatefulWidget {
   final String? labelText;
   final bool isSubreddit;
   final bool isProfile;
@@ -14,8 +15,9 @@ class SearchFiled extends StatefulWidget {
   final void Function()? onPressed;
   final void Function(String)? onSubmitted;
   final TextEditingController textEditingController;
+  final bool isResult;
 
-  const SearchFiled(
+  const SearchField(
       {super.key,
       this.labelText,
       this.isSubreddit = false,
@@ -23,13 +25,14 @@ class SearchFiled extends StatefulWidget {
       this.onChanged,
       this.onPressed,
       required this.textEditingController,
-      this.onSubmitted});
+      this.onSubmitted,
+      this.isResult = false});
 
   @override
-  State<SearchFiled> createState() => _SearchFiledState();
+  State<SearchField> createState() => _SearchFieldState();
 }
 
-class _SearchFiledState extends State<SearchFiled> {
+class _SearchFieldState extends State<SearchField> {
   bool isPrefix = true;
 
   bool isOpne = false;
@@ -61,14 +64,6 @@ class _SearchFiledState extends State<SearchFiled> {
     debugPrint('Focus: ${_focus.hasFocus.toString()}');
   }
 
-  // Widget _showTrending(List<String> items) {
-  //   return ListView.builder(
-  //     itemBuilder: (context, index) => Text(items[index]),
-  //     itemCount: items.length,
-  //     itemExtent: 30,
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -82,18 +77,27 @@ class _SearchFiledState extends State<SearchFiled> {
         color: ColorManager.darkGrey,
       ),
       child: TextField(
+        onTap: () => widget.isResult
+            ? Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchScreen(query: widget.textEditingController.text,),
+                ))
+            : null,
         focusNode: _focus,
         onSubmitted: widget.onSubmitted,
-        cursorColor: ColorManager.grey,
+        cursorColor: ColorManager.eggshellWhite,
+        // style: TextStyle(color: ColorManager.eggshellWhite, fontSize: 18),
         onChanged: (value) => setState(() {
           (widget.textEditingController.text);
         }),
 
         controller: widget.textEditingController,
-        style: Theme.of(context)
-            .textTheme
-            .titleLarge!
-            .copyWith(color: ColorManager.lightGrey),
+        style: TextStyle(color: ColorManager.eggshellWhite, fontSize: 18),
+        // Theme.of(context)
+        //     .textTheme
+        //     .titleLarge!
+        //     .copyWith(color: ColorManager.eggshellWhite),
         // textAlignVertical: TextAlignVertical.,
         decoration: InputDecoration(
           hintText: 'Search Reddit',

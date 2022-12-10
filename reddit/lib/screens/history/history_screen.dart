@@ -24,11 +24,33 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
+  final _scrollController = ScrollController();
+
+  void _scrollListener() {
+    if (_scrollController.offset ==
+        _scrollController.position.maxScrollExtent) {
+      AppCubit.get(context).getHistory(after: true, loadMore: true);
+    }
+  }
+
+  @override
+  void initState() {
+    AppCubit.get(context).changeHistoryCategory(HistoyCategory.recent);
+
+    _scrollController.addListener(_scrollListener);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     ///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
-    final AppCubit cubit = AppCubit.get(context)
-      ..changeHistoryCategory(HistoyCategory.recent);
+    final AppCubit cubit = AppCubit.get(context);
 
     ///@param [historyCategories] a list of history categories names and icons for the bottom modal sheet
     List<ListTile> historyCategories = [
@@ -99,7 +121,28 @@ class _HistoryScreenState extends State<HistoryScreen> {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: const Center(child: Text('History')),
+            centerTitle: true,
+            title: const Text('History'),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: PopupMenuButton(
+                  itemBuilder: (context) {
+                    return [
+                      PopupMenuItem<int>(
+                        value: 0,
+                        child: Text(
+                          'Clear history',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ),
+                    ];
+                  },
+                  child: const Icon(Icons.menu),
+                  onSelected: (value) => cubit.clearHistoy(),
+                ),
+              )
+            ],
           ),
 
           //TODO make it a fucking reusable zeft
@@ -121,6 +164,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           ),
 
           body: SingleChildScrollView(
+            controller: _scrollController,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Column(
@@ -197,7 +241,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       /// a conditional builder on showing the history list
                       /// it shows a circular progress indicator while loading
                       ConditionalBuilder(
-                          condition: state is! LoadingHistoryState,
+                          condition: state is! LoadingHistoryState ||
+                              state is! LoadedMoreHistoryState,
                           fallback: (context) => const Center(
                               child: CircularProgressIndicator(
                             color: ColorManager.blue,
@@ -205,12 +250,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           builder: (context) {
                             return BlocConsumer<PostNotifierCubit,
                                 PostNotifierState>(
-                              listener: (context, state) {
-                                // TODO: implement listener
-                              },
+                              listener: (context, state) {},
                               builder: (context, state) {
                                 return ListView.builder(
-                                  itemBuilder: (context, index) => PostWidget(
+                                  // controller: _scrollController,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context, index) =>
+                                      // index < cubit.history.length ?
+                                      PostWidget(
                                     postView: cubit.histoyPostsView ==
                                             HistoyPostsView.card
                                         ? PostView.card
@@ -221,6 +268,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                             ? ShowingOtions.both
                                             : ShowingOtions.onlyUser,
                                   ),
+
                                   itemCount: cubit.history.length,
                                   shrinkWrap: true,
                                 );

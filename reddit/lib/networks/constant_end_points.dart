@@ -35,4 +35,6 @@ const recentHistory = '/history';
 const upvotedHistory = '/upvoted';
 const downvotedHistory = '/downvoted';
 const hiddenHistory = '/hidden';
+const clearHistory = '/clear-history';
+const search = '/search';
 // const savedPosts = ''

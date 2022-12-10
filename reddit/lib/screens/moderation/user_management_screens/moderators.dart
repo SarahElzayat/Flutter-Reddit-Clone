@@ -56,7 +56,7 @@ class _ModeratorsWidgetState extends State<ModeratorsWidget> {
             height: 8.h,
             child: Padding(
               padding: const EdgeInsets.all(13),
-              child: SearchFiled(
+              child: SearchField(
                 textEditingController: _controller,
               ),
             ),

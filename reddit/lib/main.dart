@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
+import 'package:reddit/screens/search/cubit/search_cubit.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
 import 'constants/constants.dart';
 import 'cubit/post_notifier/post_notifier_cubit.dart';
@@ -57,8 +58,12 @@ class Main extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+
         BlocProvider(
           create: (context) => AppCubit(),
+        ),
+        BlocProvider(
+          create: (context) => SearchCubit(),
         ),
         BlocProvider(
           create: (context) => PostNotifierCubit(),

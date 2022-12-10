@@ -21,7 +21,14 @@ class ChangeYourCommunitiesState extends AppState {}
 class ChangeHistoryCategoryState extends AppState{}
 class ChangeHistoryPostViewState extends AppState{}
 class LoadingHistoryState extends AppState{}
+class LoadingMoreHistoryState extends AppState{}
 class HistoryEmptyState extends AppState{}
 class LoadedHistoryState extends AppState{}
+class LoadedMoreHistoryState extends AppState{}
+class NoMoreHistoryToLoadState extends AppState{}
+class ClearHistoryState extends AppState{}
 // class AppInitial extends AppState {}
 // class AppInitial extends AppState {}
+
+
+class ErrorState extends AppState{}
