@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -110,19 +111,20 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
     }
     void postComment({
       required VoidCallback onSuccess,
-      required VoidCallback onError,
+      required void Function(DioError) onError,
     }) {
       final content = jsonEncode(_controller!.document.toDelta().toJson());
       SendedCommentModel c = SendedCommentModel(
         content: content,
-        postId: widget.post.id,
+        postId: widget.post.id!,
+        parentType: _isPostParent() ? 'post' : 'comment',
         haveSubreddit: widget.post.subreddit != null,
         level: _isPostParent() ? 1 : (widget.parentComment!.level! + 1),
         parentId:
             _isPostParent() ? widget.post.id : widget.parentComment!.commentId,
         subredditName: widget.post.subreddit,
       );
-
+      print(c.toJson());
       DioHelper.postData(token: token, path: '/comment', data: c.toJson())
           .then((value) {
         onSuccess();
@@ -131,8 +133,9 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
         return null;
       }).catchError((e) {
         // TODO HANDLE THIS IN THE CUBIT
-        onError();
-        print(e);
+        onError(e as DioError);
+        Map<String, dynamic> error = e.response!.data;
+        logger.w(error['error']);
       });
     }
 
@@ -157,11 +160,12 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
                 onSuccess: () {
                   Navigator.of(context).pop();
                 },
-                onError: () {
+                onError: (DioError error) {
+                  Map<String, dynamic> errorData = error.response!.data;
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      backgroundColor: ColorManager.yellow,
-                      content: Text('Error while posting comment'),
+                    SnackBar(
+                      backgroundColor: ColorManager.hoverOrange,
+                      content: Text(errorData['error'] ?? 'Error'),
                     ),
                   );
                 },

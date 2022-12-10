@@ -11,11 +11,11 @@ String quillContent =
     {"insert":"link","attributes":{"link":"pub.dev/packages/quill_markdown"}},{"insert":"\\n"}]''';
 
 var textPost = PostModel(
-  id: '638a5f147341d9e893f38b72',
+  id: '639224b6178b024418b3aaf3',
   kind: 'hybrid',
   title: 'this is the title',
   content: quillContent,
-  subreddit: 'Flutter',
+  subreddit: 'news',
   postedBy: 'username',
   postedAt: '2019-08-24T14:15:22Z',
   editedAt: '2019-08-24T14:15:22Z',
@@ -36,11 +36,11 @@ var textPost = PostModel(
 final textPostS = textPost.toJson();
 
 var smalltextPost = PostModel(
-  id: '638a5f147341d9e893f38b72',
+  id: '639224b6178b024418b3aaf3',
   kind: 'hybrid',
   title: 'this is the title',
   content: quillContent,
-  subreddit: 'Flutter',
+  subreddit: 'news',
   postedBy: 'username',
   postedAt: '2019-08-24T14:15:22Z',
   editedAt: '2019-08-24T14:15:22Z',
@@ -61,11 +61,11 @@ var smalltextPost = PostModel(
 final smalltextPostS = smalltextPost.toJson();
 
 var oneImagePost = PostModel(
-  id: '638a5f147341d9e893f38b72',
+  id: '639224b6178b024418b3aaf3',
   kind: 'image',
   title: 'That\'s a Post with only image inside it',
   content: '[]',
-  subreddit: 'Flutter',
+  subreddit: 'news',
   postedBy: 'username',
   postedAt: '2019-08-24T14:15:22Z',
   editedAt: '2019-08-24T14:15:22Z',
@@ -88,7 +88,7 @@ var oneImagePost = PostModel(
 final oneImagePostS = oneImagePost.toJson();
 
 var manyImagePost = PostModel(
-  id: '638a5f147341d9e893f38b72',
+  id: '639224b6178b024418b3aaf3',
   title: 'That\'s a Post with Many image inside it',
   kind: 'image',
   content: quillContent,
@@ -144,7 +144,7 @@ var manyImagePost = PostModel(
 final manyImagePostS = manyImagePost.toJson();
 
 var linkPost = PostModel(
-  id: '638a5f147341d9e893f38b72',
+  id: '639224b6178b024418b3aaf3',
   kind: 'link',
   title: lorem(paragraphs: 1, words: 24),
   content: 'https://github.com/',
