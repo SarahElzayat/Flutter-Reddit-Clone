@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -8,17 +9,16 @@ import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:giphy_get/giphy_get.dart';
 import 'package:logger/logger.dart';
+import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:path/path.dart';
-import 'package:reddit/constants/constants.dart';
-import 'package:reddit/data/comment/sended_comment_model.dart';
-import 'package:reddit/networks/dio_helper.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../components/helpers/color_manager.dart';
+import '../../constants/constants.dart';
 import '../../data/comment/comment_model.dart';
+import '../../data/comment/sended_comment_model.dart';
 import '../../data/post_model/post_model.dart';
-
-import 'dart:async';
+import '../../networks/dio_helper.dart';
 
 var logger = Logger();
 
@@ -127,9 +127,6 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
           .then((value) {
         onSuccess();
 
-
-
-
         //TODO HANDLE THIS IN THE CUBIT
         return null;
       }).catchError((e) {
@@ -169,8 +166,6 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
                   );
                 },
               );
-
-              
             },
             child: const Text(
               'Post',
@@ -234,12 +229,11 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
                     iconUnselectedFillColor: Colors.transparent,
                     iconUnselectedColor: ColorManager.greyColor),
               ),
-              Spacer(),
+              const Spacer(),
               ImageButton(
                 icon: Icons.image,
                 controller: _controller!,
                 onImagePickCallback: _onImagePickCallback,
-
                 // change it for web
                 webImagePickImpl: _webImagePickImpl,
                 fillColor: Colors.transparent,
@@ -274,8 +268,18 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
     if (value != null && value.isNotEmpty && _controller != null) {
       final index = _controller!.selection.baseOffset;
       final length = _controller!.selection.extentOffset - index;
-
       _controller!.replaceText(index, length, BlockEmbed.image(value), null);
+
+      // _controller!.document
+      //     .insert(_controller!.selection.start, BlockEmbed.image(value));
+      _controller!.document.format(
+          _controller!.selection.start,
+          1,
+          StyleAttribute(
+              'mobileWidth: ${30.w}; mobileHeight: ${30.h}; mobileMargin: 10; mobileAlignment: topLeft'));
+      _controller!.document.insert(_controller!.selection.start, '\n');
+      // insert new line
+
     }
   }
 
@@ -284,9 +288,16 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
   // or Firebase) and then return the uploaded image URL.
   Future<String> _onImagePickCallback(File file) async {
     // Copies the picked file from temporary cache to applications directory
+    // insert new line
+    _controller!.document.format(
+        _controller!.selection.start,
+        1,
+        StyleAttribute(
+            'mobileWidth: ${30.w}; mobileHeight: ${30.h}; mobileMargin: 10; mobileAlignment: topLeft'));
+    _controller!.document.insert(_controller!.selection.start, '\n');
     final appDocDir = await getApplicationDocumentsDirectory();
     final copiedFile =
-        await file.copy('${appDocDir.path}/${basename(file.path)}');
+        await file.copy('${appDocDir.path}/${p.basename(file.path)}');
     return copiedFile.path.toString();
   }
 
@@ -304,14 +315,14 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
     return onImagePickCallback(file);
   }
 
-  // Renders the video picked by imagePicker from local file storage
-  // You can also upload the picked video to any server (eg : AWS s3
-  // or Firebase) and then return the uploaded video URL.
+  /// Renders the video picked by imagePicker from local file storage
+  /// You can also upload the picked video to any server (eg : AWS s3
+  /// or Firebase) and then return the uploaded video URL.
   Future<String> _onVideoPickCallback(File file) async {
     // Copies the picked file from temporary cache to applications directory
     final appDocDir = await getApplicationDocumentsDirectory();
     final copiedFile =
-        await file.copy('${appDocDir.path}/${basename(file.path)}');
+        await file.copy('${appDocDir.path}/${p.basename(file.path)}');
     return copiedFile.path.toString();
   }
 }
