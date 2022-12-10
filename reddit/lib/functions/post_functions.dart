@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/data/post_model/approve.dart';
+import 'package:reddit/data/post_model/remove.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../components/helpers/color_manager.dart';
@@ -109,7 +111,8 @@ bool _isApproved(post) {
   return true;
 }
 
-void handleSpoiler(context, post) {
+void handleSpoiler(
+    {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   final spoilerObj = MarkSpoilerModel(id: post.id);
   String? token = CacheHelper.getData(key: 'token');
 
@@ -118,21 +121,16 @@ void handleSpoiler(context, post) {
   DioHelper.patchData(token: token, path: finalPath, data: spoilerObj.toJson())
       .then((value) {
     if (value.statusCode == 200) {
-      // togle the spoiler in the post
-      post.spoiler = !post.spoiler!;
-      //NOTE -  You have to update the POSTS after any change in the post that modifies the UI
-      PostNotifierCubit.get(context).NotifyPosts();
+      onSuccess();
     }
   }).catchError((err) {
-    err = err as DioError;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: ColorManager.red,
-        content:
-            Text('Sorry, please try again later\nError: ${err.response}')));
+    err as DioError;
+    onError();
   });
 }
 
-void handleNSFW(context, post) {
+void handleNSFW(
+    {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   // marks the post as nsfw
   final nsfwObj = MarkNSFWModel(id: post.id);
   String? token = CacheHelper.getData(key: 'token');
@@ -143,20 +141,15 @@ void handleNSFW(context, post) {
   DioHelper.patchData(token: token, path: finalPath, data: nsfwObj.toJson())
       .then((value) {
     if (value.statusCode == 200) {
-      // togle the spoiler in the post
-      post.nsfw = !post.nsfw!;
-      //notify the post after any change in the post that modifies the UI
-      PostNotifierCubit.get(context).NotifyPosts();
+      onSuccess();
     }
   }).catchError((err) {
-    err = err as DioError;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content:
-            Text('Sorry, please try again later\nError: ${err.response}')));
+    onError();
   });
 }
 
-void handleLock(context, post) {
+void handleLock(
+    {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   final lockComments = LockModel(id: post.id, type: 'comment');
 
   String? token = CacheHelper.getData(key: 'token');
@@ -168,17 +161,15 @@ void handleLock(context, post) {
       .then((value) {
     if (value.statusCode == 200) {
       post.moderation.lock = !post.moderation.lock;
-      PostNotifierCubit.get(context).NotifyPosts();
+      onSuccess();
     }
   }).catchError((err) {
-    err = err as DioError;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content:
-            Text('Sorry, please try again later\nError: ${err.response}')));
+    onError();
   });
 }
 
-void handleSticky(context, post) {
+void handleSticky(
+    {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   //bool pin = !post.sticky
   final stickUnstickPost = PinPostModel(id: post.id, pin: false);
 
@@ -188,50 +179,38 @@ void handleSticky(context, post) {
           token: token, path: pinPost, data: stickUnstickPost.toJson())
       .then((value) {
     if (value.statusCode == 200) {
-      //post.sticky = !post.sticky
-      PostNotifierCubit.get(context).NotifyPosts();
+      onSuccess();
     }
   }).catchError((err) {
-    err = err as DioError;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content:
-            Text('Sorry, please try again later\nError: ${err.response}')));
+    onError();
   });
 }
 
-void handleRemove(context, post) {
+void handleRemove(
+    {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   final removePost = RemoveModel(id: post.id, type: 'post');
   String? token = CacheHelper.getData(key: 'token');
   DioHelper.postData(token: token, path: remove, data: removePost.toJson())
       .then((value) {
     if (value.statusCode == 200) {
-      PostNotifierCubit.get(context).NotifyPosts();
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Post is removed')));
+      onSuccess();
     }
   }).catchError((err) {
-    err = err as DioError;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content:
-            Text('Sorry, please try again later\nError: ${err.response}')));
+    onError();
   });
 }
 
-void handleApprove(context, post) {
+void handleApprove(
+    {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   final approvePost = ApproveModel(id: post.id, type: 'post');
   var token = CacheHelper.getData(key: 'token');
   DioHelper.postData(token: token, path: approve, data: approvePost.toJson())
       .then((value) {
-    if (value.statusCode == 200) {
-      PostNotifierCubit.get(context).NotifyPosts();
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Post approved')));
-    }
+    // if (value.statusCode == 200) {
+    onSuccess();
+    // }
   }).catchError((err) {
-    err = err as DioError;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content:
-            Text('Sorry, please try again later\nError: ${err.response}')));
+    onError();
   });
 }
 
@@ -306,39 +285,121 @@ Future<void> showModOperations({
   debugPrint(returnedOption.toString());
   switch (returnedOption) {
     case ModOPtions.spoiler:
-      handleSpoiler(context, post);
+      //marks or unmarks post as spoiler
+      handleSpoiler(
+          post: post,
+          onSuccess: () {
+            // toggle the spoiler in the post
+            post.spoiler = !post.spoiler!;
+            // update the post after any change in the post that modifies the UI
+            PostNotifierCubit.get(context).NotifyPosts();
+          },
+          onError: () {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                backgroundColor: ColorManager.red,
+                content: Text(
+                    'Sorry, please try again later\nError  ${post.spoiler ?? false ? 'marking' : 'unmarking'} as spoiler')));
+          });
       break;
     // sends request to mark a post as nsfw
     case ModOPtions.nsfw:
-      handleNSFW(context, post);
+      handleNSFW(
+          post: post,
+          onSuccess: () {
+            // togle the spoiler in the post
+            post.nsfw = !post.nsfw!;
+            //NOTE -  You have to update the POSTS after any change in the post that modifies the UI
+            PostNotifierCubit.get(context).NotifyPosts();
+          },
+          onError: () {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                backgroundColor: ColorManager.red,
+                content: Text(
+                    'Sorry, please try again later\nError ${post.nsfw ?? false ? 'marking' : 'unmarking'} as NSFW')));
+          });
       break;
     case ModOPtions.lock:
       // locks comments on a post so no one can comment
-      handleLock(context, post);
+      handleLock(
+          post: post,
+          onSuccess: () {
+            //update the posts after any change in the post that modifies the UI
+            PostNotifierCubit.get(context).NotifyPosts();
+          },
+          onError: () {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(
+                    'Sorry, please try again later\nError ${post.moderation?.lock ?? false ? 'locking' : 'unlocking'} comments')));
+          });
       break;
 
     case ModOPtions.unsticky:
       // pins or unpins a post to or from a subreddit
-      handleSticky(context, post);
+      handleSticky(
+          post: post,
+          onSuccess: () {
+            // post.pin = !post.pin
+            // update the POSTS after any change in the post that modifies the U
+            PostNotifierCubit.get(context).NotifyPosts();
+          },
+          onError: () {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text('Sorry, please try again later\nError')));
+          });
       break;
     case ModOPtions.remove:
       // removes a post from subreddit
-      handleRemove(context, post);
+      handleRemove(
+          post: post,
+          onSuccess: () {
+            //mark post moderation as removed
+            post.moderation!.remove = true as Remove?;
+            //update post after any change in the post that modifies the UI
+            PostNotifierCubit.get(context).NotifyPosts();
+          },
+          onError: () {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text(
+                    'Sorry, please try again later\nError removing post')));
+          });
       break;
     case ModOPtions.spam:
       // removes post or comment as spam
-      //TODO: why 2 and should it be removed?
-      post.markedSpam = true;
-      post.spammed = true;
-      handleRemove(context, post);
+      handleRemove(
+          post: post,
+          onSuccess: () {
+            //TODO: why 2 and should it be removed?
+            //update post to be marked as spam
+            //remove post
+            post.markedSpam = true;
+            post.spammed = true;
+            post.moderation!.remove = true as Remove?;
+            // update the POSTS after any change in the post that modifies the UI
+            PostNotifierCubit.get(context).NotifyPosts();
+          },
+          onError: () {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text(
+                    'Sorry, please try again later\nError removing as spam')));
+          });
       break;
     case ModOPtions.approve:
       // approves a post to be posted in a subreddit
-      handleApprove(context, post);
+      handleApprove(
+          post: post,
+          onSuccess: () {
+            //mark post moderation as approved
+            post.moderation!.approve = true as Approve?;
+            //update post after any change in the post that modifies the UI
+            PostNotifierCubit.get(context).NotifyPosts();
+          },
+          onError: () {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text(
+                    'Sorry, please try again later\nError approving post')));
+          });
       break;
     case null:
-
-      // dialog dismissed
       break;
   }
 }
