@@ -91,8 +91,8 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
     return Scaffold(
       // appBar: appBar(context),
       body: BlocProvider(
-        create: (context) => PostCubit(widget.post),
-        child: BlocBuilder<PostCubit, PostState>(
+        create: (context) => PostAndCommentActionsCubit(post: widget.post),
+        child: BlocBuilder<PostAndCommentActionsCubit, PostState>(
           builder: (context, state) {
             return GestureDetector(
               onTap: () {

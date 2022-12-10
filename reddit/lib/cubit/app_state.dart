@@ -12,10 +12,12 @@ class ChangeHomeMenuIndex extends AppState {}
 class ChangeHomeMenuDropdownState extends AppState {}
 
 class ChangeRightDrawerState extends AppState {}
+
 class ChangeLeftDrawerState extends AppState {}
 // class ChangeEndDrawerState extends AppState {}
 
 class ChangeModeratingListState extends AppState {}
+
 class ChangeYourCommunitiesState extends AppState {}
 
 class ChangeHistoryCategoryState extends AppState{}

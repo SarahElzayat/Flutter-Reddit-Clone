@@ -26,9 +26,21 @@ class MenuItems {
   static const List<MenuItem> publicItems = [save, hide, report, block];
   static const List<MenuItem> publicItemsSaved = [unsave, hide, report, block];
   static const List<MenuItem> myPostsItems = [save, share, delete];
-
+  static const List<MenuItem> commentItems = [
+    share,
+    save,
+    follow,
+    copy,
+    collapse,
+    block,
+    report,
+    markNSFW
+  ];
   // all the menu items that we choose from
   static const save = MenuItem(text: 'Save', icon: Icons.bookmark_border);
+  static const follow = MenuItem(text: 'Follow', icon: Icons.notification_add);
+  static const collapse =
+      MenuItem(text: 'Collapse Thread', icon: Icons.compare_arrows);
   static const unsave = MenuItem(text: 'UnSave', icon: Icons.bookmark);
   static const hide = MenuItem(text: 'Hide post', icon: Icons.visibility_off);
   static const report = MenuItem(text: 'Report', icon: Icons.flag_outlined);
@@ -57,7 +69,7 @@ class MenuItems {
 
   /// exexutes the onChanged of each Item
   static onChanged(BuildContext context, MenuItem item, String postId) {
-    var cubit = PostCubit.get(context);
+    var cubit = PostAndCommentActionsCubit.get(context);
     switch (item) {
       case MenuItems.save:
       case MenuItems.unsave:
@@ -90,6 +102,9 @@ class MenuItems {
         cubit.delete();
         PostNotifierCubit.get(context).NotifyPosts();
 
+        break;
+
+      default:
         break;
     }
   }

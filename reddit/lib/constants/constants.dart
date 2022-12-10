@@ -16,6 +16,13 @@ const List<IconData> selectedIcons = [
   Icons.add_link_outlined,
 ];
 
-const List<String> postTypes = ['image', 'video', 'hybrid', 'link', 'hybrid'];
+const List<String> postTypes = [
+  'image',
+  'video',
+  'hybrid',
+  'link',
+  '',
+  'hybrid'
+];
 
 String? token;

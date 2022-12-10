@@ -1,6 +1,9 @@
 /// The Main Post Widget that shows in the home and other places
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
+import 'dart:convert';
+
+import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'dart:math';
 
 import 'package:any_link_preview/any_link_preview.dart';
@@ -8,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:reddit/components/helpers/enums.dart';
@@ -30,9 +34,8 @@ import 'post_upper_bar.dart';
 /// The widget that displays the post
 ///
 /// it's inteded to be used in the HOME PAGE
-//TODO - Refactor the code
 class PostWidget extends StatelessWidget {
-  PostWidget({
+  const PostWidget({
     super.key,
     required this.post,
     this.outsideScreen = true,
@@ -60,7 +63,7 @@ class PostWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PostCubit(post),
+      create: (context) => PostAndCommentActionsCubit(post: post),
       child: ResponsiveBuilder(
         builder: (buildContext, sizingInformation) {
           bool isWeb =
@@ -108,28 +111,12 @@ class PostWidget extends StatelessWidget {
 
                                 // image or video viewrs
                                 if (postView == PostView.card)
-                                  ConditionalSwitch.single(
-                                    context: context,
-                                    valueBuilder: (context) {
-                                      return post.kind;
-                                    },
-                                    caseBuilders: {
-                                      // 'text': (context) => ,
-                                      // 'link': (context) => ,
-                                      'image': (context) => InlineImageViewer(
-                                            key: const Key(
-                                                'inline-image-viewer'),
-                                            post: post,
-                                          ),
-                                      'hybrid': (context) => InlineImageViewer(
-                                            key: const Key(
-                                                'inline-image-viewer'),
-                                            post: post,
-                                          ),
-                                      'video': (context) => Container(),
-                                    },
-                                    fallbackBuilder: (context) => Container(),
+                                  InlineImageViewer(
+                                    key: const Key('inline-image-viewer'),
+                                    post: post,
+                                    outsideScreen: outsideScreen,
                                   ),
+
                                 // the body text or the link bar
                                 ConditionalSwitch.single(
                                   context: context,
@@ -137,7 +124,7 @@ class PostWidget extends StatelessWidget {
                                     if ((!outsideScreen &&
                                             post.kind != 'link') ||
                                         (outsideScreen &&
-                                            post.kind == 'text' &&
+                                            post.kind == 'hybrid' &&
                                             ((post.content ?? '').length >
                                                 90))) {
                                       return 'bodytext';
@@ -157,7 +144,7 @@ class PostWidget extends StatelessWidget {
                             ),
                           ),
                         ),
-                        if (post.kind == 'image' &&
+                        if ((post.kind != 'link') &&
                             postView == PostView.classic)
                           Container(
                             clipBehavior: Clip.antiAlias,
@@ -175,8 +162,19 @@ class PostWidget extends StatelessWidget {
                       ],
                     ),
                     _lowerPart(isWeb),
-                    _modRow(context),
-                    _commentsRow(context),
+                    BlocBuilder<PostAndCommentActionsCubit, PostState>(
+                      builder: (context, state) {
+                        return AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            child: (PostAndCommentActionsCubit.get(context)
+                                    .showModTools)
+                                ? _modRow(context)
+                                : Container(
+                                    key: const Key('mod-row-empty'),
+                                  ));
+                      },
+                    ),
+                    if (!outsideScreen) _commentsRow(context),
                   ],
                 ),
               );
@@ -205,6 +203,7 @@ class PostWidget extends StatelessWidget {
 
   Widget _modRow(context) {
     return Row(
+      key: const Key('mod-row'),
       children: [
         // a row of approve and delete icons
         // that are only visible to mods
@@ -284,7 +283,7 @@ class PostWidget extends StatelessWidget {
   Widget _commentsRow(BuildContext context) {
 // a row with a button to choose the sorting type and an icon button for MOD
 // operations
-    return BlocBuilder<PostCubit, PostState>(
+    return BlocBuilder<PostAndCommentActionsCubit, PostState>(
       builder: (context, state) {
         return Row(
           children: [
@@ -292,13 +291,14 @@ class PostWidget extends StatelessWidget {
               onPressed: () async {
                 await modalBottomSheet(
                   context: context,
-                  selectedItem: PostCubit.get(context).selectedItem,
-                  text: PostCubit.labels,
+                  selectedItem:
+                      PostAndCommentActionsCubit.get(context).selectedItem,
+                  text: PostAndCommentActionsCubit.labels,
                   title: 'SORT COMMENTS BY',
-                  selectedIcons: PostCubit.icons,
-                  unselectedIcons: PostCubit.icons,
+                  selectedIcons: PostAndCommentActionsCubit.icons,
+                  unselectedIcons: PostAndCommentActionsCubit.icons,
                 ).then((value) {
-                  PostCubit.get(context).changeSortType(value);
+                  PostAndCommentActionsCubit.get(context).changeSortType(value);
                 });
               },
               style: ElevatedButton.styleFrom(
@@ -307,7 +307,7 @@ class PostWidget extends StatelessWidget {
                 backgroundColor: Colors.transparent,
               ),
               icon: Icon(
-                PostCubit.get(context).getSelectedIcon(),
+                PostAndCommentActionsCubit.get(context).getSelectedIcon(),
                 color: ColorManager.greyColor,
               ),
               label: Row(
@@ -315,7 +315,7 @@ class PostWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    PostCubit.get(context).selectedItem,
+                    PostAndCommentActionsCubit.get(context).selectedItem,
                     style: const TextStyle(
                       color: ColorManager.greyColor,
                     ),
@@ -328,21 +328,32 @@ class PostWidget extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            Material(
-              color: Colors.transparent,
-              clipBehavior: Clip.antiAlias,
-              shape: const CircleBorder(),
-              child: IconButton(
-                onPressed: () {},
-                constraints: const BoxConstraints(),
-                padding: const EdgeInsets.all(0),
-                icon: const Icon(
-                  Icons.shield_outlined,
-                  color: ColorManager.greyColor,
+            if (PostAndCommentActionsCubit.get(context).post.inYourSubreddit ??
+                false)
+              Material(
+                color: Colors.transparent,
+                clipBehavior: Clip.antiAlias,
+                shape: const CircleBorder(),
+                child: BlocBuilder<PostAndCommentActionsCubit, PostState>(
+                  builder: (context, state) {
+                    var cubit = PostAndCommentActionsCubit.get(context);
+                    return IconButton(
+                      onPressed: () {
+                        cubit.toggleModTools();
+                      },
+                      constraints: const BoxConstraints(),
+                      padding: const EdgeInsets.all(0),
+                      icon: Icon(
+                        cubit.showModTools
+                            ? Icons.shield
+                            : Icons.shield_outlined,
+                        color: ColorManager.greyColor,
+                      ),
+                      iconSize: min(6.w, 30),
+                    );
+                  },
                 ),
-                iconSize: min(6.w, 30),
               ),
-            ),
           ],
         );
       },
@@ -350,23 +361,24 @@ class PostWidget extends StatelessWidget {
   }
 
   Widget _bodyText() {
-    return Html(
-      data: md.markdownToHtml(post.content ?? ''),
-      shrinkWrap: true,
-      style: {
-        '#': Style(
-          color: outsideScreen
-              ? ColorManager.greyColor
-              : ColorManager.eggshellWhite,
-          fontSize: const FontSize(15),
-          fontWeight: FontWeight.w500,
-          margin: const EdgeInsets.all(0),
-          maxLines: outsideScreen ? 3 : null,
-          textOverflow: outsideScreen ? TextOverflow.ellipsis : null,
-          // margin: EdgeInsets.zero,
-          padding: EdgeInsets.zero,
+    return quill.QuillEditor(
+      controller: quill.QuillController(
+        document: quill.Document.fromJson(
+          jsonDecode(post.content!),
         ),
-      },
+        selection: const TextSelection.collapsed(offset: 0),
+      ),
+      readOnly: true,
+      autoFocus: false,
+      enableInteractiveSelection: false,
+      expands: false,
+      scrollable: false,
+      scrollController: ScrollController(),
+      focusNode: FocusNode(),
+      padding: EdgeInsets.zero,
+      embedBuilders: [
+        ...FlutterQuillEmbeds.builders(),
+      ],
     );
   }
 

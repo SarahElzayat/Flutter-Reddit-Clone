@@ -4,12 +4,15 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 
 import 'package:reddit/data/post_model/post_model.dart';
+import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../functions/post_functions.dart';
+import 'cubit/post_state.dart';
 
 class PostLowerBarWithoutVotes extends StatefulWidget {
   const PostLowerBarWithoutVotes({
@@ -84,7 +87,8 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
             ),
             InkWell(
               onTap: () {
-                if (isMod) {
+                if (isMod &&
+                    (PostAndCommentActionsCubit.get(context).showModTools)) {
                   showModOperations(
                     context: context,
                     post: widget.post,
@@ -94,38 +98,44 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
                   // sharePost(context, widget.post);
                 }
               },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: isMod
-                    ? [
-                        Icon(
-                          key: const Key('mod-icon'),
-                          Icons.shield_outlined,
-                          color: widget.iconColor,
-                        ),
-                        Text(
-                          'Mod',
-                          style: TextStyle(
-                            color: widget.iconColor,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ]
-                    : [
-                        Icon(
-                          key: const Key('share-icon'),
-                          Icons.share,
-                          color: widget.iconColor,
-                          size: min(5.5.w, 30),
-                        ),
-                        Text(
-                          'Share',
-                          style: TextStyle(
-                            color: widget.iconColor,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ],
+              child: BlocBuilder<PostAndCommentActionsCubit, PostState>(
+                builder: (context, state) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: (isMod &&
+                            !(PostAndCommentActionsCubit.get(context)
+                                .showModTools))
+                        ? [
+                            Icon(
+                              key: const Key('mod-icon'),
+                              Icons.shield_outlined,
+                              color: widget.iconColor,
+                            ),
+                            Text(
+                              'Mod',
+                              style: TextStyle(
+                                color: widget.iconColor,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ]
+                        : [
+                            Icon(
+                              key: const Key('share-icon'),
+                              Icons.share,
+                              color: widget.iconColor,
+                              size: min(5.5.w, 30),
+                            ),
+                            Text(
+                              'Share',
+                              style: TextStyle(
+                                color: widget.iconColor,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
+                  );
+                },
               ),
             )
           ],

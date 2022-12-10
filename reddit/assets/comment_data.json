@@ -1,0 +1,73 @@
+[
+    {
+      "insert": "Flutter Quill"
+    },
+    {
+      "attributes": {
+        "header": 1
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "\nRich text editor for Flutter"
+    },
+    {
+      "attributes": {
+        "header": 2
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "Quill component for Flutter"
+    },
+    {
+      "attributes": {
+        "header": 3
+      },
+      "insert": "\n"
+    },
+    {
+      "insert": "This "
+    },
+    {
+      "attributes": {
+        "italic": true,
+        "background": "transparent"
+      },
+      "insert": "library"
+    },
+    {
+      "insert": " supports "
+    },
+    {
+      "attributes": {
+        "bold": true,
+        "background": "#ebd6ff"
+      },
+      "insert": "mobile"
+    },
+    {
+      "insert": " platform "
+    },
+    {
+      "attributes": {
+        "underline": true,
+        "bold": true,
+        "color": "#e60000"
+      },
+      "insert": "only"
+    },
+    {
+      "attributes": {
+        "color": "rgba(0, 0, 0, 0.847)"
+      },
+      "insert": " and "
+    },
+    {
+      "attributes": {
+        "strike": true,
+        "color": "black"
+      },
+      "insert": "web"
+    }
+  ]
