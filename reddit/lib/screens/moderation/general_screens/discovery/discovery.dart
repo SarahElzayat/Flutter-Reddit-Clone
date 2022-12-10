@@ -50,13 +50,13 @@ class _DiscoveryState extends State<Discovery> {
             color: ColorManager.darkGrey,
             child: Column(
               children: [
-                RowSwitch('Show up in high-traffic feeds', trafficSwitch,
+                rowSwitch('Show up in high-traffic feeds', trafficSwitch,
                     toggleTraffic),
                 const Text(
                     'Allow your community to be in r/all, e/popular, and trending lists where it can be seen by the general Reddit population',
                     style: TextStyle(color: ColorManager.lightGrey)),
                 SizedBox(height: 4.h),
-                RowSwitch('Get recommended to individual redditors',
+                rowSwitch('Get recommended to individual redditors',
                     recommendSwitch, toggleRecommend),
                 const Text(
                     'Let Reddit recommend your community to people who have similar interests',

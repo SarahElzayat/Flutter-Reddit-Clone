@@ -95,4 +95,12 @@ const List<String> topicsTitles = [
   'World News',
   'None of these topics'
 ];
+
+const List<String> banReasons = [
+  'This is spam',
+  'This is misinformation',
+  'This is abusive or harrasing',
+  'Other issues'
+];
+
 String? token;

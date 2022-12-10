@@ -6,6 +6,7 @@ import 'package:reddit/data/create_community_model/create_community_model.dart';
 import 'package:reddit/data/create_community_model/saved_categories_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
+import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 
 part 'create_community_state.dart';
@@ -32,16 +33,16 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
   void creatCommunity(name, type, nsfw, category) {
     final CreateCommunityModel community = CreateCommunityModel(
         subredditName: name, type: type, nsfw: nsfw, category: category);
-    var token = CacheHelper.getData(key: 'token') ??
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzdlYTA3Mzk2NjRjMzJjYTk4ZmRlYzYiLCJ1c2VybmFtZSI6ImFobWVkYXR0YTMzIiwiaWF0IjoxNjY5MjQyOTk1fQ.DZDPE1su3Pss2izCyv8G2WAdAlBT97mhga5ku-Y2K-U';
+    String? token = CacheHelper.getData(key: 'token');
 
     DioHelper.postData(
-            token: '$token', path: createCommunity, data: community.toJson())
+            token: token, path: createCommunity, data: community.toJson())
         .then((value) {
       if (value.statusCode == 201) {
         print('community created successfully');
 
         ///TODO: Nagiate to AddPost with community name to add post to community
+
       }
     }).catchError((err) {
       err = err as DioError;

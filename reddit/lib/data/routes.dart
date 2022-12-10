@@ -17,7 +17,9 @@ import 'package:reddit/screens/moderation/general_screens/topics.dart';
 import 'package:reddit/screens/moderation/general_screens/welcome_message/add_edit_message.dart';
 import 'package:reddit/screens/moderation/general_screens/welcome_message/welcome_message.dart';
 import 'package:reddit/screens/moderation/mod_tools.dart';
+import 'package:reddit/screens/moderation/user_management_screens/add_banned_user.dart';
 import 'package:reddit/screens/moderation/user_management_screens/add_moderator.dart';
+import 'package:reddit/screens/moderation/user_management_screens/banned_users.dart';
 import '../../screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
 import '../../screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
 import '../../screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
@@ -102,4 +104,6 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   ChooseLanguage.routeName: (ctx) => const ChooseLanguage(),
   PostFlair.routeName: (ctx) => const PostFlair(),
   AddModerator.routeName: (ctx) => const AddModerator(),
+  BannedUsers.routeName: (ctx) => const BannedUsers(),
+  AddBannedUser.routeName: (ctx) => AddBannedUser()
 };

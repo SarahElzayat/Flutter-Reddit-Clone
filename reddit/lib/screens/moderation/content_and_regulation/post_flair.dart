@@ -51,7 +51,7 @@ class _PostFlairState extends State<PostFlair> {
           Container(
             padding: const EdgeInsets.all(10),
             color: ColorManager.darkGrey,
-            child: RowSwitch('Enable post flair', isSwitched, toggle),
+            child: rowSwitch('Enable post flair', isSwitched, toggle),
           ),
           Padding(
             padding: const EdgeInsets.all(15),

@@ -64,6 +64,24 @@ class DioHelper {
     );
   }
 
+  static Future<Response> putData({
+    required String path,
+    required dynamic data,
+    String? token,
+
+    /// which is the content of the JSON
+    Map<String, dynamic>? query,
+  }) async {
+    var options = Options(
+      headers: {
+        'Authorization': 'Bearer ${token ?? ''}',
+        'Content-Type': 'application/json; charset=utf-8'
+      },
+    );
+    return await dio.put(path,
+        data: data, options: options, queryParameters: query);
+  }
+
   static Future<Response> patchData({
     required String path,
     required Map<String, dynamic> data,
@@ -117,6 +135,10 @@ class DioHelper {
         },
       );
     }
-    return await dio.get(path, queryParameters: query, options: options,);
+    return await dio.get(
+      path,
+      queryParameters: query,
+      options: options,
+    );
   }
 }

@@ -193,9 +193,7 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
                               value: items.name, child: Text(items.name!));
                         }).toList(),
                         onChanged: (chosenCategory) {
-                          // setState(() {
                           category = chosenCategory.toString();
-                          // });
                         }),
                     SizedBox(height: 3.h),
                     Row(
@@ -237,8 +235,10 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
                       textFontWeight: FontWeight.w600,
                       onPressed: (isEmpty || !isValidated)
                           ? () {}
-                          : () => cubit.creatCommunity(communityName,
-                              communityType, isSwitched, category),
+                          : () {
+                              cubit.creatCommunity(communityName, communityType,
+                                  isSwitched, category);
+                            },
                     ))
                   ],
                 ),

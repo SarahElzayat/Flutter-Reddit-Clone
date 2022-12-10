@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/data/post_model/approve.dart';
 import 'package:reddit/data/post_model/remove.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -218,6 +219,8 @@ Future<void> showModOperations({
   required BuildContext context,
   required PostModel post,
 }) async {
+  bool isError;
+  String message;
   var returnedOption = await showDialog<ModOPtions>(
       context: context,
       builder: (BuildContext context) {
@@ -291,14 +294,18 @@ Future<void> showModOperations({
           onSuccess: () {
             // toggle the spoiler in the post
             post.spoiler = !post.spoiler!;
+            // snack bar message
+            message =
+                '${post.spoiler ?? false ? 'post ' 'marked' : 'unmarked'} as spoiler';
             // update the post after any change in the post that modifies the UI
             PostNotifierCubit.get(context).NotifyPosts();
           },
           onError: () {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                backgroundColor: ColorManager.red,
-                content: Text(
-                    'Sorry, please try again later\nError  ${post.spoiler ?? false ? 'marking' : 'unmarking'} as spoiler')));
+            isError = true;
+            message =
+                'Sorry, please try again later\nError  ${post.spoiler ?? false ? 'marking' : 'unmarking'} as spoiler';
+            ScaffoldMessenger.of(context)
+                .showSnackBar(responseSnackBar(message, isError));
           });
       break;
     // sends request to mark a post as nsfw

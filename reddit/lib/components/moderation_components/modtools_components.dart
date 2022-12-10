@@ -101,7 +101,7 @@ moderationDialog(context) => showDialog(
 ///@param [text]
 ///@param [isSwitched]
 ///@param [toggle]
-RowSwitch(text, isSwitched, toggle) => Row(
+Widget rowSwitch(text, isSwitched, toggle) => Row(
       children: [
         Text(text),
         const Spacer(),
@@ -115,5 +115,29 @@ RowSwitch(text, isSwitched, toggle) => Row(
           inactiveColor: ColorManager.darkGrey,
           activeColor: ColorManager.darkBlueColor,
         ),
+      ],
+    );
+
+AppBar userManagementAppBar(context, function, enable) => AppBar(
+      backgroundColor: ColorManager.darkGrey,
+      title: const Text('Add a banned user'),
+      leading: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () => Navigator.pop(context)),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Button(
+              onPressed: enable ? function : () {},
+              text: 'ADD',
+              textFontSize: 16.sp,
+              buttonHeight: 20,
+              buttonWidth: 80,
+              textColor: enable ? ColorManager.blue : ColorManager.darkBlue,
+              backgroundColor: ColorManager.darkGrey,
+              splashColor: ColorManager.grey,
+              disabled: enable,
+              borderRadius: 4.0),
+        )
       ],
     );

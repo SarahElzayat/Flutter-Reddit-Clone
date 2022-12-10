@@ -19,7 +19,7 @@ class UserManagementWidget extends StatefulWidget {
 }
 
 class _UserManagementWidgetState extends State<UserManagementWidget> {
-  TextEditingController _controller = TextEditingController();
+  TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,18 +39,18 @@ class _UserManagementWidgetState extends State<UserManagementWidget> {
       body: Column(children: [
         Center(
           child: SizedBox(
-            height: 8.h,
+            height: 10.h,
             child: Padding(
               padding: const EdgeInsets.all(13),
               child: SearchFiled(
-                textEditingController: _controller,
+                textEditingController: controller,
               ),
             ),
           ),
         ),
         Container(
           width: 100.w,
-          height: 7.5.h,
+          height: 10.h,
           decoration: BoxDecoration(
               border: Border(
             top: BorderSide(width: 0.08.h, color: ColorManager.grey),
@@ -71,7 +71,7 @@ class _UserManagementWidgetState extends State<UserManagementWidget> {
         ),
         Container(
           width: 100.w,
-          height: 7.5.h,
+          height: 10.h,
           decoration: BoxDecoration(
               border: Border(
             top: BorderSide(width: 0.08.h, color: ColorManager.grey),
@@ -92,7 +92,7 @@ class _UserManagementWidgetState extends State<UserManagementWidget> {
         ),
         Container(
           width: 100.w,
-          height: 7.h,
+          height: 10.h,
           decoration: BoxDecoration(
               border: Border(
             top: BorderSide(width: 0.08.h, color: ColorManager.grey),
