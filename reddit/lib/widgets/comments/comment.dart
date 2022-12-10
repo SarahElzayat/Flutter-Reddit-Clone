@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
+import 'package:logger/logger.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
@@ -24,7 +25,7 @@ class Comment extends StatefulWidget {
     required this.post,
     required this.comment,
     this.stop = false,
-    this.level = 0,
+    this.level = 1,
   });
   final PostModel post;
 
@@ -102,9 +103,25 @@ class _CommentState extends State<Comment> {
         currentComment: widget.comment,
       ),
       child: Container(
-        color: ColorManager.darkGrey,
+        decoration: BoxDecoration(
+          border: Border(
+            left: widget.level > 1
+                ? BorderSide(
+                    color: ColorManager.grey,
+                    width: 0.5.w,
+                  )
+                : BorderSide.none,
+          ),
+          color: ColorManager.darkGrey,
+        ),
+        padding: EdgeInsets.only(
+          left: 10,
+          right: widget.level == 1 ? 10 : 0,
+          top: 5,
+          bottom: 5,
+        ),
+
         // margin: EdgeInsets.only(left: widget.level * 10.0),
-        padding: const EdgeInsets.all(8.0),
         child: ConditionalBuilder(
           condition: isCompressed,
           builder: (context) {
@@ -142,7 +159,19 @@ class _CommentState extends State<Comment> {
                   ],
                 ),
                 // _commentsRow(),
+
                 _commentsControlRow(),
+                widget.comment.children != null
+                    ? Column(
+                        children: widget.comment.children!
+                            .map((e) => Comment(
+                                  post: widget.post,
+                                  comment: e,
+                                  level: widget.level + 1,
+                                ))
+                            .toList(),
+                      )
+                    : Container(),
               ],
             );
           },
@@ -169,7 +198,9 @@ class _CommentState extends State<Comment> {
                       builder: (context) => AddCommentScreen(
                             post: widget.post,
                             parentComment: widget.comment,
-                          )));
+                          ))).then((value) {
+                PostAndCommentActionsCubit.get(context).getCommentsOfPost();
+              });
             });
           },
           child: Row(

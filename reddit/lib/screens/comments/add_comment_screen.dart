@@ -144,7 +144,6 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
           TextButton(
             onPressed: () {
               // check if the comment is empty
-              logger.i(_controller!.document.length);
               if (_controller!.document.length == 1) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
@@ -156,7 +155,7 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
 
               postComment(
                 onSuccess: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(true);
                 },
                 onError: (DioError error) {
                   Map<String, dynamic> errorData = error.response!.data;

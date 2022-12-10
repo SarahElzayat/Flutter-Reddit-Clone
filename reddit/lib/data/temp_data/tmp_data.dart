@@ -11,7 +11,7 @@ String quillContent =
     {"insert":"link","attributes":{"link":"pub.dev/packages/quill_markdown"}},{"insert":"\\n"}]''';
 
 var textPost = PostModel(
-  id: '639224b6178b024418b3aaf3',
+  id: '639508b2b02950743a541875',
   kind: 'hybrid',
   title: 'this is the title',
   content: quillContent,
@@ -36,7 +36,7 @@ var textPost = PostModel(
 final textPostS = textPost.toJson();
 
 var smalltextPost = PostModel(
-  id: '639224b6178b024418b3aaf3',
+  id: '639508b2b02950743a541875',
   kind: 'hybrid',
   title: 'this is the title',
   content: quillContent,
@@ -61,7 +61,7 @@ var smalltextPost = PostModel(
 final smalltextPostS = smalltextPost.toJson();
 
 var oneImagePost = PostModel(
-  id: '639224b6178b024418b3aaf3',
+  id: '639508b2b02950743a541875',
   kind: 'image',
   title: 'That\'s a Post with only image inside it',
   content: '[]',
@@ -88,7 +88,7 @@ var oneImagePost = PostModel(
 final oneImagePostS = oneImagePost.toJson();
 
 var manyImagePost = PostModel(
-  id: '639224b6178b024418b3aaf3',
+  id: '639508b2b02950743a541875',
   title: 'That\'s a Post with Many image inside it',
   kind: 'image',
   content: quillContent,
@@ -144,7 +144,7 @@ var manyImagePost = PostModel(
 final manyImagePostS = manyImagePost.toJson();
 
 var linkPost = PostModel(
-  id: '639224b6178b024418b3aaf3',
+  id: '639508b2b02950743a541875',
   kind: 'link',
   title: lorem(paragraphs: 1, words: 24),
   content: 'https://github.com/',

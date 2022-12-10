@@ -161,6 +161,9 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
 
   void changeSortType(String item) {
     selectedItem = item;
+    getCommentsOfPost(
+      sort: item.toLowerCase(),
+    );
     emit(CommentsSortTypeChanged());
   }
 
@@ -173,6 +176,7 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
   void getCommentsOfPost({
     String? before,
     String? after,
+    String sort = 'best',
     int? limit,
   }) async {
     emit(CommentsLoading());

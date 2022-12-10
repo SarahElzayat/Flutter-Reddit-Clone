@@ -70,28 +70,37 @@ class PostScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        PostWidget(
-                          post: post,
-                          outsideScreen: false,
-                          upperRowType: upperRowType,
-                        ),
-                        ..._getCommentsList(cubit.comments),
-                      ],
+                    child: BlocBuilder<PostNotifierCubit, PostNotifierState>(
+                      builder: (context, state) {
+                        return Column(
+                          children: [
+                            PostWidget(
+                              post: post,
+                              outsideScreen: false,
+                              upperRowType: upperRowType,
+                            ),
+                            const SizedBox(height: 2),
+                            ..._getCommentsList(cubit.comments),
+                          ],
+                        );
+                      },
                     ),
                   ),
                 ),
                 // a container that when tabbed opens the edit comment screen
                 InkWell(
                   onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => AddCommentScreen(
-                          post: post,
-                        ),
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(
+                      builder: (context) => AddCommentScreen(
+                        post: post,
                       ),
-                    );
+                    ))
+                        .then((value) {
+                      if (value != null && value) {
+                        cubit.getCommentsOfPost();
+                      }
+                    });
                   },
                   child: Container(
                     color: ColorManager.betterDarkGrey,
@@ -119,9 +128,12 @@ class PostScreen extends StatelessWidget {
 
   _getCommentsList(List<CommentModel> l) {
     return l
-        .map((e) => Comment(
-              post: post,
-              comment: e,
+        .map((e) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 0),
+              child: Comment(
+                post: post,
+                comment: e,
+              ),
             ))
         .toList();
   }
