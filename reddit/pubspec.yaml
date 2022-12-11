@@ -31,7 +31,6 @@ environment:
 dependencies:
   any_link_preview: ^2.0.9
   bloc: ^8.1.0
-  conditional_builder: ^1.0.2
   conditional_builder_null_safety: ^0.0.6
   cupertino_icons: ^1.0.2
   dio: ^4.0.6
@@ -51,8 +50,8 @@ dependencies:
   flutter_lorem: ^2.0.0
   flutter_markdown: ^0.6.12
   flutter_painter: ^1.0.1
-  flutter_quill: ^6.1.6
-  flutter_quill_extensions: ^0.1.0
+  flutter_quill: #^6.1.6
+  flutter_quill_extensions: #^0.1.0
   flutter_slider_drawer: ^2.1.1
   flutter_svg: null
   flutter_switch: ^0.3.2
@@ -66,7 +65,7 @@ dependencies:
   infinite_scroll_pagination: ^3.2.0
   intl: ^0.17.0
   kumi_popup_window: ^2.0.0-nullsafety
-  lint: ^1.10.0
+  lint: ^2.0.1
   logger: ^1.1.0
   markdown: ^6.0.1
   path_provider: ^2.0.11
@@ -87,7 +86,7 @@ dev_dependencies:
 
   flutter_driver:
     sdk: flutter
-  flutter_launcher_icons: ^0.10.0
+  flutter_launcher_icons: ^0.11.0
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
