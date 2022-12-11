@@ -7,7 +7,8 @@ import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/components/home_app_bar.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
 
-import '../../Components/Helpers/color_manager.dart';
+// import '../../Components/Helpers/color_manager.dart';
+import '../../components/helpers/color_manager.dart';
 import '../../cubit/app_cubit.dart';
 import '../../widgets/posts/post_upper_bar.dart';
 
