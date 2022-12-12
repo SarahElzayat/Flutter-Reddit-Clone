@@ -59,3 +59,5 @@ const unknownAvatar =
 const ban = '/ban';
 const unban = '/unban';
 const inviteMod = '/moderator-invite';
+// Note : after last / add the subreddit name
+const subredditInfo = '/r';

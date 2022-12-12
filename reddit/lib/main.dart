@@ -7,6 +7,7 @@ import 'package:reddit/cubit/settings_cubit/settings_cubit.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
 import 'package:reddit/theme/theme_data.dart';
+import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import 'constants/constants.dart';
 import 'cubit/post_notifier/post_notifier_cubit.dart';
 import 'screens/main_screen.dart';
@@ -75,7 +76,8 @@ class Main extends StatelessWidget {
         BlocProvider(create: (context) => AddPostCubit()),
         BlocProvider(create: (context) => SettingsCubit()),
         BlocProvider(create: (context) => CreateCommunityCubit()),
-        BlocProvider(create: (context) => ModerationCubit())
+        BlocProvider(create: (context) => ModerationCubit()),
+        BlocProvider(create: (context) => SubredditCubit()),
       ],
       child: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {

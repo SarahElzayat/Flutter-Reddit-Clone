@@ -125,26 +125,17 @@ class DioHelper {
   /// @param [path] string defining the end point
   static Future<Response> getData({
     Map<String, dynamic>? query,
-    String? token,
-    // String?
     required String path,
   }) async {
     Options options;
-    if (token != null) {
-      options = Options(
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json; charset=utf-8'
-        },
-      );
-    } else {
-      options = Options(
-        headers: {
-          'Authorization': 'Bearer ${token ?? ''}',
-          'Content-Type': 'application/json; charset=utf-8'
-        },
-      );
-    }
+
+    options = Options(
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json; charset=utf-8'
+      },
+    );
+
     return await dio.get(
       path,
       queryParameters: query,
