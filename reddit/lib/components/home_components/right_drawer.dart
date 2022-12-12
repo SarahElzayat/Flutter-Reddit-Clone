@@ -6,6 +6,7 @@ import 'package:reddit/screens/history/history_screen_for_web.dart';
 import 'package:reddit/screens/create_community_screen/create_community_screen.dart';
 import 'package:reddit/screens/saved/saved_screen.dart';
 
+
 import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 
@@ -15,6 +16,7 @@ import '../../screens/history/history_screen.dart';
 import '../../screens/to_be_done_screen.dart';
 import '../helpers/color_manager.dart';
 import 'components.dart';
+
 
 class RightDrawer extends StatelessWidget {
   const RightDrawer({super.key});
