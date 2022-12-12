@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import 'constants/constants.dart';
 import 'cubit/post_notifier/post_notifier_cubit.dart';
 import 'screens/main_screen.dart';
@@ -62,6 +63,7 @@ class Main extends StatelessWidget {
         ),
         BlocProvider(create: (context) => AppCubit()),
         BlocProvider(create: (context) => AddPostCubit()),
+        BlocProvider(create: (context) => SubredditCubit()),
       ],
       child: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {

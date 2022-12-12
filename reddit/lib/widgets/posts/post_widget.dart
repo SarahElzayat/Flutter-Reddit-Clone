@@ -163,7 +163,7 @@ class PostWidget extends StatelessWidget {
             color: outsideScreen
                 ? ColorManager.greyColor
                 : ColorManager.eggshellWhite,
-            fontSize: const FontSize(15),
+            fontSize: FontSize(15),
             fontWeight: FontWeight.w500,
             maxLines: outsideScreen ? 3 : null,
             textOverflow: outsideScreen ? TextOverflow.ellipsis : null,

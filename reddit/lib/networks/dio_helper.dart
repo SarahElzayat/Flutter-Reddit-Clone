@@ -98,7 +98,14 @@ class DioHelper {
   static Future<Response> getData({
     Map<String, dynamic>? query,
     required String path,
+    String? token,
   }) async {
-    return await dio.get(path, queryParameters: query);
+    var options = Options(
+      headers: {
+        'Authorization': 'Bearer ${token ?? ''}',
+        'Content-Type': 'application/json; charset=utf-8'
+      },
+    );
+    return await dio.get(path, queryParameters: query, options: options);
   }
 }

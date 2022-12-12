@@ -30,3 +30,5 @@ const pinPost = '/pin-post';
 const remove = '/remove';
 const approve = '/approve';
 const submitPost = '/submit';
+// Note : after last / add the subreddit name
+const subredditInfo = '/r';
