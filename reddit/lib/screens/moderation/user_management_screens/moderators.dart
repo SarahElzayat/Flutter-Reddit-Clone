@@ -1,8 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
+///@author: Yasmine Ghanem
+///@date: 12/12/2020
+///this screen displays the moderators for a certain subreddit
 
+import 'package:flutter/material.dart';
+import 'package:reddit/components/helpers/enums.dart';
+import 'package:reddit/router.dart';
+import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../components/helpers/color_manager.dart';
-import '../../../components/list_tile.dart';
 import '../../../components/search_field.dart';
 
 class Moderators extends StatelessWidget {
@@ -15,7 +20,7 @@ class Moderators extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-              onPressed: () {},
+              onPressed: () => Navigator.pop(context),
               icon: Icon(
                 Icons.arrow_back,
                 size: 24.sp,
@@ -23,109 +28,76 @@ class Moderators extends StatelessWidget {
           backgroundColor: ColorManager.darkGrey,
           title: const Text('Moderators'),
           actions: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.add, size: 24.sp))
+            IconButton(
+                onPressed: () => Navigator.of(context).push(
+                    AppRouter.onGenerateRoute(
+                        const RouteSettings(name: '/invite_moderator_screen'))),
+                icon: Icon(Icons.add, size: 24.sp))
           ],
           bottom: const TabBar(
               indicatorColor: ColorManager.blue,
               tabs: [Tab(text: 'All'), Tab(text: 'Editable')]),
         ),
-        body: const TabBarView(
-            children: [ModeratorsWidget(), ModeratorsWidget()]),
+        body: TabBarView(children: [ModeratorsWidget(), ModeratorsWidget()]),
       ),
     );
   }
 }
 
-class ModeratorsWidget extends StatefulWidget {
-  final List<ListTileWidget>? moderators;
-  const ModeratorsWidget({super.key, this.moderators});
+class ModeratorsWidget extends StatelessWidget {
+  ModeratorsWidget({super.key});
 
-  @override
-  State<ModeratorsWidget> createState() => _ModeratorsWidgetState();
-}
+  List<dynamic> moderators = [];
 
-class _ModeratorsWidgetState extends State<ModeratorsWidget> {
-  TextEditingController _controller = TextEditingController();
+  TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(children: [
-        Center(
-          child: SizedBox(
-            height: 8.h,
-            child: Padding(
-              padding: const EdgeInsets.all(13),
-              child: SearchFiled(
-                textEditingController: _controller,
-              ),
+    final ModerationCubit cubit = ModerationCubit.get(context);
+    moderators = cubit.getUsers(context, UserManagement.moderator);
+    return Column(children: [
+      Center(
+        child: SizedBox(
+          height: 10.h,
+          child: Padding(
+            padding: const EdgeInsets.all(13),
+            child: SearchField(
+              textEditingController: controller,
             ),
           ),
         ),
-        Container(
-          width: 100.w,
-          height: 7.5.h,
-          decoration: BoxDecoration(
-              border: Border(
-            top: BorderSide(width: 0.08.h, color: ColorManager.grey),
-          )),
-          child: ListTile(
-            onTap: () {}, // goes to user profile
-            leading: const Icon(Icons.person),
-            tileColor: ColorManager.darkGrey,
-            dense: true,
-            title: Text(
-              'u/username',
-              style: TextStyle(fontSize: 16.sp),
-            ),
-            subtitle: const Text('time'),
-            trailing:
-                IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
-          ),
-        ),
-        Container(
-          width: 100.w,
-          height: 7.5.h,
-          decoration: BoxDecoration(
-              border: Border(
-            top: BorderSide(width: 0.08.h, color: ColorManager.grey),
-          )),
-          child: ListTile(
-            onTap: () {}, // goes to user profile
-            leading: const Icon(Icons.person),
-            tileColor: ColorManager.darkGrey,
-            dense: true,
-            title: Text(
-              'u/username',
-              style: TextStyle(fontSize: 16.sp),
-            ),
-            subtitle: const Text('time'),
-            trailing:
-                IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
-          ),
-        ),
-        Container(
-          width: 100.w,
-          height: 7.h,
-          decoration: BoxDecoration(
-              border: Border(
-            top: BorderSide(width: 0.08.h, color: ColorManager.grey),
-          )),
-          child: ListTile(
-            onTap: () {}, // goes to user profile
-            leading: const Icon(Icons.person),
-            tileColor: ColorManager.darkGrey,
-            dense: true,
-            title: Text(
-              'u/username',
-              style: TextStyle(fontSize: 16.sp),
-            ),
-            subtitle: const Text('time'),
-            trailing:
-                IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
-          ),
-        )
-      ]),
-    );
+      ),
+      Expanded(
+          child: ListView.builder(
+              itemCount: moderators.length,
+              itemBuilder: (BuildContext context, int index) {
+                return (moderators.isEmpty)
+                    ? const Center(
+                        child: Text(
+                        'No users',
+                        style: TextStyle(color: ColorManager.white),
+                      ))
+                    : Container(
+                        width: 100.w,
+                        height: 10.h,
+                        decoration: BoxDecoration(
+                            color: ColorManager.darkGrey,
+                            border: Border(
+                              top: BorderSide(
+                                  width: 0.08.h, color: ColorManager.grey),
+                            )),
+                        child: ListTile(
+                            leading: const Icon(Icons.person),
+                            title: moderators[index].username,
+                            onTap: () {
+                              //go to user profile
+                            },
+                            trailing: IconButton(
+                              icon: const Icon(Icons.more_vert),
+                              onPressed: () {},
+                            )),
+                      );
+              }))
+    ]);
   }
 }

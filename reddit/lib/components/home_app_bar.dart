@@ -3,10 +3,16 @@
 /// App bar of the application
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/create_community_screen/create_community_screen.dart';
+import 'package:reddit/components/app_bar_components.dart';
+import 'package:reddit/components/home_dropdown_menu.dart';
+import 'package:reddit/components/search_field.dart';
+
 import '../screens/create_community_screen/create_community_screen.dart';
 import '../components/app_bar_components.dart';
 import '../components/home_dropdown_menu.dart';
 import '../components/search_field.dart';
+
 
 import '../cubit/app_cubit.dart';
 
@@ -25,7 +31,7 @@ AppBar homeAppBar(context, index) {
       title: cubit.screensNames[index] == 'Home'
           ? const HomeDropdownMenu()
           : cubit.screensNames[index] == 'Discover'
-              ? SearchFiled(textEditingController: TextEditingController())
+              ? SearchField(textEditingController: TextEditingController())
               : cubit.screensNames[index] == 'Inbox'
                   ? const Text('Inbox')
                   : null,
@@ -66,7 +72,7 @@ AppBar homeAppBar(context, index) {
             const HomeDropdownMenu(),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.5,
-              child: SearchFiled(
+              child: SearchField(
                 textEditingController: TextEditingController(),
               ),
             ),

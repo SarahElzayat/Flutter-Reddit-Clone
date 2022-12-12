@@ -5,10 +5,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/enums.dart';
+import 'package:reddit/data/comment/comment_model.dart';
+import 'package:reddit/data/saved/saved_comments_model.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/inbox_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/notifications_screen.dart';
+import 'package:reddit/screens/comments/add_comment_screen.dart';
+import 'package:reddit/screens/saved/saved_comments.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 import 'package:reddit/widgets/posts/post_upper_bar.dart';
 import '../components/helpers/color_manager.dart';
@@ -17,6 +21,7 @@ import '../data/temp_data/tmp_data.dart';
 import '../networks/constant_end_points.dart';
 import '../networks/dio_helper.dart';
 import '../screens/bottom_navigation_bar_screens/add_post_screen.dart';
+import '../screens/saved/saved_posts.dart';
 import '../widgets/posts/post_widget.dart';
 
 part 'app_state.dart';
@@ -173,7 +178,7 @@ class AppCubit extends Cubit<AppState> {
   String profilePicture = 'assets/images/Logo.png';
 
   ///@param [username] is the username of the user
-  String username = 'Anonymous';
+  String? username = 'Anonymous';
 
   /// the function get the user's username from the backend
   void getUsername() {
@@ -182,26 +187,72 @@ class AppCubit extends Cubit<AppState> {
 
   ///@param [history] the list of the user's history, changes according to its category
   List<PostModel> history = [];
+  String currentHistoryCategory = recentHistory;
+  String beforeId = '';
+  String afterId = '';
 
   ///@param [path] is the path of the desired history category
   /// the function gets the history of the specified path (recent, upvoted, downvoted, hidden) history
   /// emits some corresponding states and fills [history] list
-  void getHistory(path) {
-    emit(LoadingHistoryState());
-    history.clear();
+  void getHistory(
+      {path,
+      bool loadMore = false,
+      bool before = false,
+      bool after = false,
+      int limit = 10}) {
+    if (kDebugMode) {
+      print('after$afterId');
+      print('before$beforeId');
+    }
+    if (kDebugMode) {
+      print('CATEGOOORYYYY $currentHistoryCategory');
+    }
+    loadMore ? emit(LoadingMoreHistoryState()) : emit(LoadingHistoryState());
+    if (!loadMore) {
+      history.clear();
+      beforeId = '';
+      afterId = '';
+    } else {
+      if (kDebugMode) {
+        print('AFFFTEEEEERRRRRR ');
+      }
+      if (kDebugMode) {
+        print(history[history.length - 1].id);
+      }
+    }
     DioHelper.getData(
-      path: '$user/$username$path',
-      token: CacheHelper.getData(key: 'token'),
-      query: {},
+      path: path != null
+          ? '$user/$username$path'
+          : '$user/$username$currentHistoryCategory',
+      query: {
+        'limit': limit,
+        'after': after ? afterId : null,
+        'before': before ? beforeId : null,
+      },
     ).then((value) {
-      // print('KOSSOM EL VALUE' + value.data.toString());
       if (value.data['children'].length == 0) {
-        emit(HistoryEmptyState());
-      } else {
-        for (int i = 0; i < value.data['children'].length; i++) {
-          history.add(PostModel.fromJsonwithData(value.data['children'][i]));
-          emit(LoadedHistoryState());
+        if (kDebugMode) {
+          print('EMPPPTTYYYYY');
         }
+
+        if (loadMore) {
+          emit(NoMoreHistoryToLoadState());
+        } else {
+          emit(HistoryEmptyState());
+        }
+      } else {
+        afterId = value.data['after'];
+        beforeId = value.data['before'];
+        print(value.data.toString());
+        for (int i = 0; i < value.data['children'].length; i++) {
+          // logger.wtf(i);
+          history.add(PostModel.fromJsonwithData(value.data['children'][i]));
+          loadMore
+              ? emit(LoadedMoreHistoryState())
+              : emit(LoadedHistoryState());
+        }
+        print('55665445456654654465');
+        print(history.length);
       }
     }).onError((error, stackTrace) {
       if (kDebugMode) {
@@ -227,27 +278,166 @@ class AppCubit extends Cubit<AppState> {
   ];
 
   ///@param [historyCategoryIndex] is the index of the chosen history category
-  int historyCategoryIndex = 0 ;
+  int historyCategoryIndex = 0;
 
   ///@param [category] is an enum that corresponds to the history category item
   /// the function clears the [history] list and fills it with the designated category and emits a state after doing so
   void changeHistoryCategory(HistoyCategory category) {
     historyCategoryIndex = category.index;
+    // currentHistoryCategory = category;
     switch (historyCategoryIndex) {
       case 0:
-        getHistory(recentHistory);
+        currentHistoryCategory = recentHistory;
+        getHistory(path: recentHistory);
         break;
       case 1:
-        getHistory(upvotedHistory);
+        currentHistoryCategory = upvotedHistory;
+        getHistory(path: upvotedHistory);
         break;
       case 2:
-        getHistory(downvotedHistory);
+        currentHistoryCategory = downvotedHistory;
+        getHistory(path: downvotedHistory);
         break;
       case 3:
-        getHistory(hiddenHistory);
+        currentHistoryCategory = hiddenHistory;
+        getHistory(path: hiddenHistory);
         break;
     }
 
     emit(ChangeHistoryCategoryState());
+  }
+
+  List<Icon> historyPostViewsIcons = [
+    const Icon(Icons.crop_square_outlined),
+    const Icon(Icons.view_list),
+  ];
+
+  int historyPostViewIconIndex = 0;
+  PostView histoyPostsView = PostView.card;
+  void changeHistoryPostView(PostView view) {
+    historyPostViewIconIndex = view.index;
+    histoyPostsView = view;
+    // print(histoyPostsView.toString());
+    emit(ChangeHistoryPostViewState());
+  }
+
+  List<Tab> savedTabBarTabs = [
+    const Tab(
+      text: 'Posts',
+    ),
+    const Tab(
+      text: 'Comments',
+    ),
+  ];
+
+  List<Widget> savedTabBarScreens = const [
+    SavedPostsScreen(),
+    SavedCommentsScreen()
+  ];
+
+  List<PostModel> savedPostsList = [];
+  String savedPostsBeforeId = '';
+  String savedPostsAfterId = '';
+
+  List<SavedCommentModel> savedCommentsList = [];
+  String savedCommentsBeforeId = '';
+  String savedCommentsAfterId = '';
+
+  /// the function gets the history of the specified path (recent, upvoted, downvoted, hidden) history
+  /// emits some corresponding states and fills [savedPostsList] list
+  void getSaved(
+      {bool isPosts = false,
+      bool isComments = false,
+      bool loadMore = false,
+      bool before = false,
+      bool after = false,
+      int limit = 5}) {
+    if (loadMore && isPosts) emit(LoadingMoreSavedPostsState());
+    if (loadMore && isComments) emit(LoadingMoreSavedCommentsState());
+    if (!loadMore) {
+      savedPostsList.clear();
+      savedCommentsList.clear();
+      savedPostsBeforeId = '';
+      savedPostsAfterId = '';
+      savedCommentsBeforeId = '';
+      savedCommentsAfterId = '';
+    }
+
+    DioHelper.getData(
+      path: '$user/$username/saved',
+      query: {
+        'limit': limit,
+        'after': after
+            ? isPosts
+                ? savedPostsAfterId
+                : isComments
+                    ? savedCommentsAfterId
+                    : null
+            : null,
+        'before': before
+            ? isPosts
+                ? savedCommentsBeforeId
+                : isComments
+                    ? savedCommentsBeforeId
+                    : null
+            : null,
+      },
+    ).then((value) {
+      if (value.data['children'].length == 0) {
+        if (kDebugMode) {
+          print('EMPPPTTYYYYY');
+        }
+
+        if (loadMore) {
+          emit(NoMoreSavedToLoadState());
+        } else {
+          emit(SavedEmptyState());
+        }
+      } else {
+        if (isPosts) {
+          savedPostsAfterId = value.data['after'];
+          savedPostsBeforeId = value.data['before'];
+        } else if (isComments) {
+          savedCommentsAfterId = value.data['after'];
+          savedCommentsBeforeId = value.data['before'];
+        }
+
+        // print(value.data.toString());
+        for (int i = 0; i < value.data['children'].length; i++) {
+          if (value.data['children']['type'] == 'fullPost' && isPosts) {
+            // print('POOOOSTTTTSSS');
+            print(value.data['children'][i]['data'].toString());
+            savedPostsList
+                .add(PostModel.fromJson(value.data['children'][i]['data']));
+          } else {
+            // print('COOOMMMMEEENNNTSSSS');
+            // print(value.data['children'][i]['data'].toString());
+            savedCommentsList.add(
+                SavedCommentModel.fromJson(value.data['children'][i]['data']));
+          }
+        }
+        print('aaaaaaaaaaaaa');
+
+        print(savedPostsList[0].id.toString());
+
+        loadMore ? emit(LoadedMoreHistoryState()) : emit(LoadedHistoryState());
+      }
+    }).onError((error, stackTrace) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+    });
+  }
+
+  void clearHistoy() {
+    DioHelper.postData(
+            path: clearHistory,
+            data: {'username': username},
+            token: CacheHelper.getData(key: 'token'))
+        .then((value) {
+      if (value.statusCode == 200) history.clear();
+      emit(ClearHistoryState());
+      emit(HistoryEmptyState());
+    });
   }
 }

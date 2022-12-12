@@ -1,38 +1,40 @@
 /// The Main Post Widget that shows in the home and other places
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
+import 'dart:convert';
+
+import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'dart:math';
 
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:markdown/markdown.dart' as md;
 import 'package:reddit/components/helpers/enums.dart';
+import 'package:reddit/components/helpers/widgets/responsive_widget.dart';
 import 'package:reddit/functions/post_functions.dart';
-import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
+import 'package:reddit/screens/posts/post_screen_cubit/post_screen_cubit.dart';
+import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:reddit/widgets/posts/post_lower_bar.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../components/bottom_sheet.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../components/helpers/posts/helper_funcs.dart';
 import '../../data/post_model/post_model.dart';
 import '../../widgets/posts/inline_image_viewer.dart';
 import '../../widgets/posts/votes_widget.dart';
-import 'cubit/post_state.dart';
+import 'actions_cubit/post_comment_actions_state.dart';
 import 'post_upper_bar.dart';
 
 /// The widget that displays the post
 ///
 /// it's inteded to be used in the HOME PAGE
-//TODO - Refactor the code
 class PostWidget extends StatelessWidget {
-  PostWidget({
+  const PostWidget({
     super.key,
     required this.post,
     this.outsideScreen = true,
@@ -60,11 +62,10 @@ class PostWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PostCubit(post),
+      create: (context) => PostAndCommentActionsCubit(post: post),
       child: ResponsiveBuilder(
         builder: (buildContext, sizingInformation) {
-          bool isWeb =
-              sizingInformation.deviceScreenType != DeviceScreenType.mobile;
+          bool isWeb = !ResponsiveWidget.isSmallScreen(context);
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return Container(
@@ -108,28 +109,13 @@ class PostWidget extends StatelessWidget {
 
                                 // image or video viewrs
                                 if (postView == PostView.card)
-                                  ConditionalSwitch.single(
-                                    context: context,
-                                    valueBuilder: (context) {
-                                      return post.kind;
-                                    },
-                                    caseBuilders: {
-                                      // 'text': (context) => ,
-                                      // 'link': (context) => ,
-                                      'image': (context) => InlineImageViewer(
-                                            key: const Key(
-                                                'inline-image-viewer'),
-                                            post: post,
-                                          ),
-                                      'hybrid': (context) => InlineImageViewer(
-                                            key: const Key(
-                                                'inline-image-viewer'),
-                                            post: post,
-                                          ),
-                                      'video': (context) => Container(),
-                                    },
-                                    fallbackBuilder: (context) => Container(),
+                                  InlineImageViewer(
+                                    key: const Key('inline-image-viewer'),
+                                    post: post,
+                                    isWeb: isWeb,
+                                    outsideScreen: outsideScreen,
                                   ),
+
                                 // the body text or the link bar
                                 ConditionalSwitch.single(
                                   context: context,
@@ -137,7 +123,7 @@ class PostWidget extends StatelessWidget {
                                     if ((!outsideScreen &&
                                             post.kind != 'link') ||
                                         (outsideScreen &&
-                                            post.kind == 'text' &&
+                                            post.kind == 'hybrid' &&
                                             ((post.content ?? '').length >
                                                 90))) {
                                       return 'bodytext';
@@ -153,11 +139,29 @@ class PostWidget extends StatelessWidget {
                                   },
                                   fallbackBuilder: (context) => Container(),
                                 ),
+                                SizedBox(height: 1.h),
+                                _lowerPart(isWeb),
+                                BlocBuilder<PostAndCommentActionsCubit,
+                                    PostState>(
+                                  builder: (context, state) {
+                                    return AnimatedSwitcher(
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        child: (PostAndCommentActionsCubit.get(
+                                                    context)
+                                                .showModTools)
+                                            ? _modRow(context)
+                                            : Container(
+                                                key: const Key('mod-row-empty'),
+                                              ));
+                                  },
+                                ),
+                                if (!outsideScreen) _commentSortRow(context),
                               ],
                             ),
                           ),
                         ),
-                        if (post.kind == 'image' &&
+                        if ((post.kind != 'link') &&
                             postView == PostView.classic)
                           Container(
                             clipBehavior: Clip.antiAlias,
@@ -169,14 +173,12 @@ class PostWidget extends StatelessWidget {
                             child: InlineImageViewer(
                               key: const Key('inline-image-viewer'),
                               post: post,
+                              isWeb: isWeb,
                               postView: postView,
                             ),
                           ),
                       ],
                     ),
-                    _lowerPart(isWeb),
-                    _modRow(context),
-                    _commentsRow(context),
                   ],
                 ),
               );
@@ -205,6 +207,7 @@ class PostWidget extends StatelessWidget {
 
   Widget _modRow(context) {
     return Row(
+      key: const Key('mod-row'),
       children: [
         // a row of approve and delete icons
         // that are only visible to mods
@@ -281,10 +284,10 @@ class PostWidget extends StatelessWidget {
     );
   }
 
-  Widget _commentsRow(BuildContext context) {
+  Widget _commentSortRow(BuildContext context) {
 // a row with a button to choose the sorting type and an icon button for MOD
 // operations
-    return BlocBuilder<PostCubit, PostState>(
+    return BlocBuilder<PostAndCommentActionsCubit, PostState>(
       builder: (context, state) {
         return Row(
           children: [
@@ -292,13 +295,13 @@ class PostWidget extends StatelessWidget {
               onPressed: () async {
                 await modalBottomSheet(
                   context: context,
-                  selectedItem: PostCubit.get(context).selectedItem,
-                  text: PostCubit.labels,
+                  selectedItem: PostScreenCubit.get(context).selectedItem,
+                  text: PostScreenCubit.labels,
                   title: 'SORT COMMENTS BY',
-                  selectedIcons: PostCubit.icons,
-                  unselectedIcons: PostCubit.icons,
+                  selectedIcons: PostScreenCubit.icons,
+                  unselectedIcons: PostScreenCubit.icons,
                 ).then((value) {
-                  PostCubit.get(context).changeSortType(value);
+                  PostScreenCubit.get(context).changeSortType(value);
                 });
               },
               style: ElevatedButton.styleFrom(
@@ -307,7 +310,7 @@ class PostWidget extends StatelessWidget {
                 backgroundColor: Colors.transparent,
               ),
               icon: Icon(
-                PostCubit.get(context).getSelectedIcon(),
+                PostScreenCubit.get(context).getSelectedIcon(),
                 color: ColorManager.greyColor,
               ),
               label: Row(
@@ -315,7 +318,7 @@ class PostWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    PostCubit.get(context).selectedItem,
+                    PostScreenCubit.get(context).selectedItem,
                     style: const TextStyle(
                       color: ColorManager.greyColor,
                     ),
@@ -328,21 +331,31 @@ class PostWidget extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            Material(
-              color: Colors.transparent,
-              clipBehavior: Clip.antiAlias,
-              shape: const CircleBorder(),
-              child: IconButton(
-                onPressed: () {},
-                constraints: const BoxConstraints(),
-                padding: const EdgeInsets.all(0),
-                icon: const Icon(
-                  Icons.shield_outlined,
-                  color: ColorManager.greyColor,
+            if (PostScreenCubit.get(context).post.inYourSubreddit ?? false)
+              Material(
+                color: Colors.transparent,
+                clipBehavior: Clip.antiAlias,
+                shape: const CircleBorder(),
+                child: BlocBuilder<PostAndCommentActionsCubit, PostState>(
+                  builder: (context, state) {
+                    var cubit = PostAndCommentActionsCubit.get(context);
+                    return IconButton(
+                      onPressed: () {
+                        cubit.toggleModTools();
+                      },
+                      constraints: const BoxConstraints(),
+                      padding: const EdgeInsets.all(0),
+                      icon: Icon(
+                        cubit.showModTools
+                            ? Icons.shield
+                            : Icons.shield_outlined,
+                        color: ColorManager.greyColor,
+                      ),
+                      iconSize: min(6.w, 30),
+                    );
+                  },
                 ),
-                iconSize: min(6.w, 30),
               ),
-            ),
           ],
         );
       },
@@ -350,23 +363,24 @@ class PostWidget extends StatelessWidget {
   }
 
   Widget _bodyText() {
-    return Html(
-      data: md.markdownToHtml(post.content ?? ''),
-      shrinkWrap: true,
-      style: {
-        '#': Style(
-          color: outsideScreen
-              ? ColorManager.greyColor
-              : ColorManager.eggshellWhite,
-          fontSize: const FontSize(15),
-          fontWeight: FontWeight.w500,
-          margin: const EdgeInsets.all(0),
-          maxLines: outsideScreen ? 3 : null,
-          textOverflow: outsideScreen ? TextOverflow.ellipsis : null,
-          // margin: EdgeInsets.zero,
-          padding: EdgeInsets.zero,
+    return quill.QuillEditor(
+      controller: quill.QuillController(
+        document: quill.Document.fromJson(
+          jsonDecode(post.content!),
         ),
-      },
+        selection: const TextSelection.collapsed(offset: 0),
+      ),
+      readOnly: true,
+      autoFocus: false,
+      enableInteractiveSelection: false,
+      expands: false,
+      scrollable: false,
+      scrollController: ScrollController(),
+      focusNode: FocusNode(),
+      padding: EdgeInsets.zero,
+      embedBuilders: [
+        ...FlutterQuillEmbeds.builders(),
+      ],
     );
   }
 
@@ -374,7 +388,7 @@ class PostWidget extends StatelessWidget {
     return InkWell(
       key: const Key('link-content'),
       onTap: () async {
-        await launchUrl(Uri.parse(post.content!));
+        await launchUrl(Uri.parse(post.link!));
       },
       child: Container(
           constraints: const BoxConstraints(
@@ -387,7 +401,7 @@ class PostWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                post.content ?? '',
+                post.link ?? '',
                 style: const TextStyle(
                   color: ColorManager.eggshellWhite,
                   fontSize: 15,
@@ -427,7 +441,7 @@ class PostWidget extends StatelessWidget {
             if (post.kind == 'link' && outsideScreen)
               InkWell(
                 onTap: () async {
-                  await launchUrl(Uri.parse(post.content!));
+                  await launchUrl(Uri.parse(post.link!));
                 },
                 child: SizedBox(
                   width: min(30.w, 120),
@@ -435,7 +449,7 @@ class PostWidget extends StatelessWidget {
                   child: AnyLinkPreview.builder(
                     errorWidget: imageWithUrl(
                         'https://cdn-icons-png.flaticon.com/512/3388/3388466.png'),
-                    link: post.content ?? '',
+                    link: post.link ?? '',
                     cache: const Duration(hours: 1),
                     itemBuilder: (BuildContext ctx, Metadata md,
                         ImageProvider<Object>? ip) {
@@ -462,7 +476,7 @@ class PostWidget extends StatelessWidget {
             width: min(30.w, 50.dp),
             color: Colors.black.withOpacity(0.5),
             child: Text(
-              (post.content ?? '')
+              (post.link ?? '')
                   .replaceAll('https://', '')
                   .replaceAll('www.', ''),
               style: const TextStyle(
@@ -487,7 +501,7 @@ class PostWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
-          post.flair!.flairText ?? '',
+          post.flair!.flairName ?? '',
           style: TextStyle(color: HexColor(post.flair!.textColor ?? '#FFFFFF')),
         ),
       ),

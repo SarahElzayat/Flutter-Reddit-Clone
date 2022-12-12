@@ -2,12 +2,10 @@
 /// @date 9/11/2022
 /// The screen that shows the main search results with the tab bar
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/search_field.dart';
-import 'package:reddit/screens/search/results_comments.dart';
-import 'package:reddit/screens/search/results_communities.dart';
-import 'package:reddit/screens/search/results_media.dart';
-import 'package:reddit/screens/search/results_people.dart';
-import 'package:reddit/screens/search/results_posts.dart';
+import 'package:reddit/screens/search/cubit/search_cubit.dart';
 
 class SearchResults extends StatefulWidget {
   final String searchWord;
@@ -21,56 +19,47 @@ class SearchResults extends StatefulWidget {
 class _SearchResultsState extends State<SearchResults>
     with TickerProviderStateMixin {
   late TabController _tabController;
+  final TextEditingController _textEditingController = TextEditingController();
 
   /// initial state of the stateful widget
   @override
   void initState() {
+    // SearchCubit.get(context).setSearchQuery(widget.searchWord);
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
-    //TODO add it to cubit
+    _textEditingController.text = widget.searchWord;
+    _tabController = TabController(length: 4, vsync: this);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: SearchFiled(textEditingController: TextEditingController()),
-          bottom: TabBar(
-            controller: _tabController,
-            labelStyle: const TextStyle(fontSize: 14),
-            indicatorWeight: 1,
-            indicatorSize: TabBarIndicatorSize.label,
-            isScrollable: true,
-            tabs: const [
-              Tab(
-                text: 'Posts',
+    // final SearchCubit cubit = SearchCubit.get(context);
+    return BlocProvider(
+      create: (ctx) => SearchCubit()..setSearchQuery(widget.searchWord),
+      child: BlocConsumer<SearchCubit, SearchState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              title: SearchField(
+                textEditingController: _textEditingController,
+                isResult: true,
               ),
-              Tab(
-                text: 'Comments',
+              bottom: TabBar(
+                controller: _tabController,
+                labelStyle: const TextStyle(fontSize: 14),
+                indicatorWeight: 1,
+                indicatorSize: TabBarIndicatorSize.label,
+                isScrollable: true,
+                tabs: SearchCubit.get(context).searchResultTabs,
+                indicatorColor: ColorManager.blue,
               ),
-              Tab(
-                text: 'Communities',
-              ),
-              Tab(
-                text: 'People',
-              ),
-              Tab(
-                text: 'Media',
-              ),
-            ],
-          ),
-        ),
-        body: TabBarView(
-          controller: _tabController,
-          children: const [
-            //TODO Add screens depeneding on category
-            //TODO Add models to each screen
-            ResultsPosts(),
-            ResultsComments(),
-            ResultsCommunities(),
-            ResultsPeople(),
-            ResultsMedia(),
-          ],
-        ));
+            ),
+            body: TabBarView(
+                controller: _tabController,
+                children: SearchCubit.get(context).searchResultScreens),
+          );
+        },
+      ),
+    );
   }
 }

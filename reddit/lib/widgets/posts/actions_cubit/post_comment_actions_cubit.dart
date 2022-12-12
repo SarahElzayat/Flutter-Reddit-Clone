@@ -1,19 +1,32 @@
 /// The post cubit that handles the post state independently
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:reddit/components/helpers/mocks/mock_functions.dart';
+import 'package:reddit/constants/constants.dart';
+import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/data/post_model/post_model.dart';
+import 'package:reddit/networks/dio_helper.dart';
 
 import '../../../networks/constant_end_points.dart';
-import 'post_state.dart';
+import 'post_comment_actions_state.dart';
 
-class PostCubit extends Cubit<PostState> {
+Logger logger = Logger();
+
+class PostAndCommentActionsCubit extends Cubit<PostState> {
   final PostModel post;
-  PostCubit(this.post) : super(PostsInitial());
+  final CommentModel? currentComment;
+  final List<CommentModel> comments = [];
 
-  static PostCubit get(context) => BlocProvider.of(context);
+  PostAndCommentActionsCubit({
+    required this.post,
+    this.currentComment,
+  }) : super(PostsInitial());
+
+  static PostAndCommentActionsCubit get(context) => BlocProvider.of(context);
 
   // void getPostsForHome() async {
   //   mockDio.get('$base/posts').then((value) {
@@ -34,44 +47,43 @@ class PostCubit extends Cubit<PostState> {
   // }
 
   /// this function is used to vote on a post
-  /// @param [direction] the direction of the wanted vote
+  /// @param [oldDir] the direction of the wanted vote
   Future vote({
-    required int direction,
+    required int oldDir,
   }) {
-    int postState = post.votingType ?? 0;
-    if (postState == direction) {
+    int postState = getModel.votingType ?? 0;
+    int direction = oldDir;
+    if (postState == oldDir) {
       // clicked the same button again
-      direction = -direction;
-    } else if (postState == -direction) {
+      direction = -oldDir;
+    } else if (postState == -oldDir) {
       // clicked the opposite button
-      direction = direction * 2;
+      direction = oldDir * 2;
     }
-    int newDir = postState + direction;
 
-    return mockDio.post('$baseUrl/vote', data: {
-      'id': post.id,
-      'direction': newDir,
-      'type': 'post',
-    }
-        // return DioHelper.postData(
-        //   path: '/vote',
-        //   data: {
-        //     'id': post.id,
-        //     'direction': newDir,
-        //     'type': 'post',
-        //   },
-        //   token: token,
-        ).then((value) {
+    // int newDir = postState + direction;
+    Logger().d(token);
+    return DioHelper.postData(
+      path: '/vote',
+      data: {
+        'id': getModel.id,
+        'direction': oldDir,
+        'type': currentComment == null ? 'post' : 'comment',
+      },
+      token: token,
+    ).then((value) {
       if (value.statusCode == 200) {
-        post.votingType = (post.votingType ?? 0) + direction;
-        post.votes = (post.votes ?? 0) + direction;
-        emit(PostsVoted());
+        Logger().wtf(value.data);
+        getModel.votingType = (getModel.votingType ?? 0) + direction;
+        getModel.votes = (getModel.votes ?? 0) + direction;
+        emit(VotedSuccess());
       } else {
-        emit(PostsVotedError());
+        emit(VotedError());
       }
     }).catchError((error) {
-      print(error);
-      emit(PostsVotedError(error: error));
+      error = error as DioError;
+      debugPrint('error in vote: ${error.response?.data}');
+      emit(VotedError(error: error));
     });
   }
 
@@ -87,7 +99,7 @@ class PostCubit extends Cubit<PostState> {
       post.saved = !post.saved!;
       emit(PostsSaved());
     }).catchError((error) {
-      emit(PostsVotedError(error: error));
+      emit(VotedError(error: error));
     });
   }
 
@@ -121,38 +133,21 @@ class PostCubit extends Cubit<PostState> {
     ).then((value) => print(value.data));
   }
 
+  dynamic get getModel => currentComment ?? post;
+
   /// gets the voting type of the post (up, down ,..)
   int getVotingType() {
-    return post.votingType ?? 0;
+    return getModel.votingType ?? 0;
   }
 
   /// gets the number of votes of the post
   int getVotesCount() {
-    return post.votes ?? 0;
+    return getModel.votes ?? 0;
   }
 
-  static final List<String> labels = ['Best', 'Top', 'New', 'Old'];
-  static final List<IconData> icons = [
-    Icons.rocket_outlined,
-    Icons.star_border_outlined,
-    Icons.new_releases_outlined,
-    Icons.access_time_outlined,
-  ];
-
-  static final Map<String, IconData> sortIcons = {
-    labels[0]: icons[0],
-    labels[1]: icons[1],
-    labels[2]: icons[2],
-    labels[3]: icons[3],
-  };
-
-  String selectedItem = 'Best';
-  IconData getSelectedIcon() {
-    return sortIcons[selectedItem]!;
-  }
-
-  void changeSortType(String item) {
-    selectedItem = item;
-    emit(CommentsSortTypeChanged());
+  bool showModTools = false;
+  void toggleModTools() {
+    showModTools = !showModTools;
+    emit(CommentsModToolsToggled());
   }
 }

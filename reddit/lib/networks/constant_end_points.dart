@@ -14,10 +14,20 @@ const baseUrl = kReleaseMode
         ? 'http://localhost:3000'
         : 'http://10.0.2.2:3000';
 
+// login and signup
 const signUp = '/signup';
 const login = '/login';
 const loginForgetPassword = '/login/forget-password';
 const loginForgetUserName = '/login/forget-username';
+
+// settings endpoints
+const changeEmail = '/change-email';
+const changePassword = '/change-password';
+const blockedAccounts = '/blocked-users';
+const accountSettings =
+    '/account-settings'; // this end point is used in multi requests.
+
+// create community
 const createCommunity = '/create-subreddit';
 const savedCategories = '/saved-categories';
 const markSpoiler = '/mark-spoiler';
@@ -35,3 +45,19 @@ const recentHistory = '/history';
 const upvotedHistory = '/upvoted';
 const downvotedHistory = '/downvoted';
 const hiddenHistory = '/hidden';
+const clearHistory = '/clear-history';
+const search = '/search';
+const searchPosts = 'post';
+const searchUsers = 'user';
+const searchComments = 'comment';
+const searchCommunities = 'community';
+const postDetails = '/post-details';
+
+const unknownAvatar =
+    'https://www.investopedia.com/thmb/qDGHg2MCiUni812bkWihr-qdBbM=/1600x900/filters:no_upscale():max_bytes(150000):strip_icc()/Reddit-Logo-e9537b96b55349ac8eb77830f8470c95.jpg';
+// const savedPosts = ''
+const ban = '/ban';
+const unban = '/unban';
+const inviteMod = '/moderator-invite';
+// Note : after last / add the subreddit name
+const subredditInfo = '/r';
