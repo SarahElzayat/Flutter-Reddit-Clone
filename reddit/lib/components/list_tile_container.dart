@@ -25,7 +25,6 @@ class ListTileContainer extends StatelessWidget {
   /// if the Trailing object was a dropbox.
   final List<List<String>> items;
 
-  /// TODO: this should be a list of handlers,
   /// where each item has its own handler
   /// this is the function that should be executed
   /// when the user presses on the listTile.
@@ -42,7 +41,7 @@ class ListTileContainer extends StatelessWidget {
   /// this is a funtion used to return the strings used if there is a dropBox.
   /// @param [index] is the index of the loop because this function should be
   /// called inside a loop.
-  List<String> ourItems(index) {
+  List<String> _ourItems(index) {
     /// TODO: this should work even if we didn't send items and same for the handlers list
     return items.isEmpty
         ? []
@@ -53,8 +52,8 @@ class ListTileContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double fontScale = MediaQuery.of(context).textScaleFactor;
-    double height = MediaQuery.of(context).size.height;
+    final fontScale = MediaQuery.of(context).textScaleFactor;
+    final height = MediaQuery.of(context).size.height;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -75,7 +74,7 @@ class ListTileContainer extends StatelessWidget {
               itemCount: listTileTitles.length,
               itemBuilder: (BuildContext context, int index) {
                 return ListTileWidget(
-                    items: ourItems(index),
+                    items: _ourItems(index),
                     leadingIcon: Icon(listTileIcons[index]),
                     title: listTileTitles[index],
                     handler: handler[index],
