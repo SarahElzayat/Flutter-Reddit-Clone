@@ -15,6 +15,8 @@ class AccountSettingsScreen extends StatelessWidget {
   static const routeName = 'account_settings_screen_route';
   const AccountSettingsScreen({super.key});
 
+  void requestChangeGender() {}
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -41,7 +43,7 @@ class AccountSettingsScreen extends StatelessWidget {
                     () {
                       navigator.pushNamed(CountriesScreen.routeName);
                     },
-                    () {},
+                    requestChangeGender,
                   ],
                   listTileIcons: const [
                     Icons.settings,
@@ -77,8 +79,6 @@ class AccountSettingsScreen extends StatelessWidget {
                 () {},
                 () {},
               ],
-
-              /// TODO: these Icons should be changed to the real ones.
               listTileIcons: const [
                 CustomIcons.google,
                 CustomIcons.facebook_squared,
