@@ -57,7 +57,6 @@ class ListTileContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fontScale = MediaQuery.of(context).textScaleFactor;
-    final height = MediaQuery.of(context).size.height;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
