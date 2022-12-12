@@ -22,6 +22,7 @@ const loginForgetUserName = '/login/forget-username';
 
 // settings endpoints
 const changeEmail = '/change-email';
+const changePassword = '/change-password';
 
 // create community
 const createCommunity = '/create-subreddit';
