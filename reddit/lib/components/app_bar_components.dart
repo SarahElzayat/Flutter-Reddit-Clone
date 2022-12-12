@@ -4,7 +4,6 @@
 import 'package:flutter/material.dart';
 import '../screens/search/search_screen.dart';
 
-
 ///@param [image] is the user's profile picture
 /// the functions returns the user's profile picture as a circle avatara
 Widget avatar({image}) {
@@ -12,9 +11,10 @@ Widget avatar({image}) {
     padding: const EdgeInsets.only(right: 8.0),
     child: CircleAvatar(
       radius: 15,
-      child: image ?? Image.asset(
-        'assets/images/Logo.png',
-      ),
+      child: image ??
+          Image.asset(
+            'assets/images/Logo.png',
+          ),
     ),
   );
 }
