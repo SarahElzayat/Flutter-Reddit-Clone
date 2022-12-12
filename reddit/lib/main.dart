@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import 'package:reddit/cubit/settings_cubit/settings_cubit.dart';
-import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
-import 'package:reddit/screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
-import 'package:reddit/theme/theme_data.dart';
-import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
-import 'package:reddit/data/routes.dart';
-import 'package:reddit/screens/create_community_screen/cubit/create_community_cubit.dart';
-import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
+import '../../cubit/settings_cubit/settings_cubit.dart';
+import '../../screens/bottom_navigation_bar_screens/home_screen.dart';
+import '../../screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
+import '../../theme/theme_data.dart';
+import '../../cubit/subreddit/cubit/subreddit_cubit.dart';
+import '../../data/routes.dart';
+import '../../screens/create_community_screen/cubit/create_community_cubit.dart';
+import '../../screens/moderation/cubit/moderation_cubit.dart';
 
 import 'constants/constants.dart';
 import 'screens/main_screen.dart';
@@ -23,8 +23,6 @@ import 'networks/dio_helper.dart';
 import 'components/helpers/bloc_observer.dart';
 import 'cubit/app_cubit.dart';
 import 'shared/local/shared_preferences.dart';
-
-// import 'package:flutter_driver/driver_extension.dart';
 
 Future<void> main() async {
   /// it defines the mocks APIS endpoints
