@@ -2,7 +2,6 @@
 /// @date 12/12/2022
 /// This file contains the Update email address screen.
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/data/settings_models/update_email_model.dart';
 import 'package:reddit/data/sign_in_And_sign_up_models/validators.dart';
@@ -74,13 +73,16 @@ class _UpdateEmailAddressScreenState extends State<UpdateEmailAddressScreen> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final navigator = Navigator.of(context);
-
+    const myAppBar = SettingsAppBar(title: 'Update email address');
     return Scaffold(
-      appBar: const SettingsAppBar(title: 'Update email address'),
+      appBar: myAppBar,
       body: Form(
         key: _myKey,
         child: Container(
           padding: const EdgeInsets.all(10),
+          height: mediaQuery.size.height -
+              mediaQuery.padding.top -
+              myAppBar.preferredSize.height,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
