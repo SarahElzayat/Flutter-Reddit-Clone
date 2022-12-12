@@ -39,8 +39,7 @@ BlocBuilder<PostNotifierCubit, PostNotifierState> dropDownDots(post) {
 CircleAvatar subredditAvatar({small = false}) {
   return CircleAvatar(
       radius: small ? min(3.w, 15) : min(5.5.w, 30),
-      backgroundImage: const NetworkImage(
-          'https://64.media.tumblr.com/6365e35d5f118aac2cda58c7c2bc4ba1/tumblr_n6npphYwpH1t3jpubo1_540.jpghttps://64.media.tumblr.com/6365e35d5f118aac2cda58c7c2bc4ba1/tumblr_n6npphYwpH1t3jpubo1_540.jpg'));
+      backgroundImage: const NetworkImage(unknownAvatar));
 }
 
 Widget singleRow({

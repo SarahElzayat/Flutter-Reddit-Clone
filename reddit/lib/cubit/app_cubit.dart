@@ -11,6 +11,7 @@ import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/inbox_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/notifications_screen.dart';
+import 'package:reddit/screens/comments/add_comment_screen.dart';
 import 'package:reddit/screens/saved/saved_comments.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 import 'package:reddit/widgets/posts/post_upper_bar.dart';
@@ -198,7 +199,7 @@ class AppCubit extends Cubit<AppState> {
       bool loadMore = false,
       bool before = false,
       bool after = false,
-      int limit = 3}) {
+      int limit = 10}) {
     if (kDebugMode) {
       print('after$afterId');
       print('before$beforeId');
@@ -243,13 +244,16 @@ class AppCubit extends Cubit<AppState> {
       } else {
         afterId = value.data['after'];
         beforeId = value.data['before'];
-
+        print(value.data.toString());
         for (int i = 0; i < value.data['children'].length; i++) {
+          // logger.wtf(i);
           history.add(PostModel.fromJsonwithData(value.data['children'][i]));
           loadMore
               ? emit(LoadedMoreHistoryState())
               : emit(LoadedHistoryState());
         }
+        print('55665445456654654465');
+        print(history.length);
       }
     }).onError((error, stackTrace) {
       if (kDebugMode) {

@@ -86,43 +86,71 @@ class SearchCubit extends Cubit<SearchState> {
   List<PostModel> posts = [];
   String postsBeforeId = '';
   String postsAfterId = '';
-  void getPosts({bool loadMore = false}) {
-    loadMore ? emit(LoadingMoreResultsState()) : emit(LoadingResultsState());
+  // void getPosts({bool loadMore = false}) {
+  //   loadMore ? emit(LoadingMoreResultsState()) : emit(LoadingResultsState());
 
-    var data = getSearch(
-        type: posts,
-        beforeId: postsBeforeId,
-        afterId: postsAfterId,
-        loadMore: loadMore);
+  //   var data = getSearch(
+  //       type: posts,
+  //       beforeId: postsBeforeId,
+  //       afterId: postsAfterId,
+  //       loadMore: loadMore);
 
-    if (!loadMore) {
-      posts.clear();
-    }
-    for (int i = 0; i < data.length; i++) {
-      posts.add(PostModel.fromJson(data[i]));
-    }
-    // print(' LEEEEENNNNGGGTHHHH ${posts.length}');
-  }
+  //   if (!loadMore) {
+  //     posts.clear();
+  //   }
+  //   for (int i = 0; i < data.length; i++) {
+  //     posts.add(PostModel.fromJson(data[i]));
+  //   }
+  //   // print(' LEEEEENNNNGGGTHHHH ${posts.length}');
+  // }
 
   List<SearchResultProfileModel> users = [];
   String usersBeforeId = '';
   String usersAfterId = '';
 
-  // void getUsers({bool loadMore = false}) {
-  //   print('YA RAB');
-  //   var data = getSearch(
-  //       type: searchUsers,
-  //       beforeId: usersBeforeId,
-  //       afterId: usersAfterId,
-  //       loadMore: loadMore);
+  void getPosts(
+      {bool loadMore = false,
+      bool before = false,
+      bool after = false,
+      int limit = 10}) {
+    // loadMore ? emit(LoadingMoreResultsState()) : emit(LoadingResultsState());
+    if (!loadMore) users.clear();
 
-  //   print('hena aho');
-  //   print(data);
-  //   if (!loadMore) users.clear();
-  //   for (int i = 0; i < data.length; i++) {
-  //     users.add(SearchResultProfileModel.fromJson(data[i]));
-  //   }
-  // }
+    DioHelper.getData(path: search, query: {
+      'type': searchPosts,
+      'q': searchQuery,
+      'limit': limit,
+      'after': after ? postsAfterId : null,
+      'before': before ? postsBeforeId : null,
+    }).then((value) {
+      if (value.statusCode == 200) {
+        if (value.data['children'].length == 0) {
+          print('hena');
+          loadMore
+              ? emit(NoMoreResultsToLoadState())
+              : emit(ResultEmptyState());
+          emit(LoadedResultsState());
+        } else {
+          postsAfterId = value.data['after'];
+          postsBeforeId = value.data['before'];
+          print(value.data['children'].length);
+          for (int i = 0; i < value.data['children'].length; i++) {
+            posts.add(PostModel.fromJson(value.data['children'][i]['data']));
+          }
+        }
+        // print(value.data);
+        loadMore
+            ? emit(LoadedMoreResultsState())
+            : emit(LoadingMoreResultsState());
+      } else {
+        emit(SearchErrorState());
+      }
+    }).onError((error, stackTrace) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+    });
+  }
 
   void getUsers(
       {bool loadMore = false,
