@@ -26,7 +26,6 @@ import '../../components/helpers/universal_ui/universal_ui.dart';
 import '../../components/home_app_bar.dart';
 import '../../data/comment/comment_model.dart';
 import '../../data/post_model/post_model.dart';
-import '../../functions/post_functions.dart';
 import '../../widgets/comments/comment.dart';
 
 class PostScreenWeb extends StatefulWidget {
@@ -105,6 +104,7 @@ class _PostScreenWebState extends State<PostScreenWeb> {
       controller: _controller!,
       embedButtons: FlutterQuillEmbeds.buttons(
         showVideoButton: false,
+        showCameraButton: false,
         onImagePickCallback: _onImagePickCallback,
         webImagePickImpl: _webImagePickImpl,
       ),
@@ -306,10 +306,10 @@ class _PostScreenWebState extends State<PostScreenWeb> {
   // or Firebase) and then return the uploaded image URL.
   Future<String> _onImagePickCallback(File file) async {
     // Copies the picked file from temporary cache to applications directory
-    final appDocDir = await getApplicationDocumentsDirectory();
-    final copiedFile =
-        await file.copy('${appDocDir.path}/${p.basename(file.path)}');
-    return copiedFile.path.toString();
+    // final appDocDir = await getApplicationDocumentsDirectory();
+    // final copiedFile =
+    //     await file.copy('${appDocDir.path}/${p.basename(file.path)}');
+    return file.path.toString();
   }
 
   Future<String?> _webImagePickImpl(
@@ -321,6 +321,7 @@ class _PostScreenWebState extends State<PostScreenWeb> {
 
     // Take first, because we don't allow picking multiple files.
     final fileName = result.files.first.name;
+
     final file = File(fileName);
 
     return onImagePickCallback(file);

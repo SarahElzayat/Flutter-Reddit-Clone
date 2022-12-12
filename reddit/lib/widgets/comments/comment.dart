@@ -159,7 +159,7 @@ class _CommentState extends State<Comment> {
           decoration: BoxDecoration(
             border: Border(
               left: widget.level > 1
-                  ? BorderSide(
+                  ? const BorderSide(
                       color: ColorManager.lightGrey,
                       width: 3,
                     )
