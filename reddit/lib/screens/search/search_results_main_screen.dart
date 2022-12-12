@@ -3,7 +3,7 @@
 /// The screen that shows the main search results with the tab bar
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/Components/Helpers/color_manager.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/search_field.dart';
 import 'package:reddit/screens/search/cubit/search_cubit.dart';
 

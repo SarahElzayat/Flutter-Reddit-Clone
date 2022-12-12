@@ -3,7 +3,7 @@
 /// App bar of the application
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/Screens/create_community_screen/create_community_screen.dart';
+import 'package:reddit/screens/create_community_screen/create_community_screen.dart';
 import 'package:reddit/components/app_bar_components.dart';
 import 'package:reddit/components/home_dropdown_menu.dart';
 import 'package:reddit/components/search_field.dart';

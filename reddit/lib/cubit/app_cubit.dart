@@ -314,8 +314,8 @@ class AppCubit extends Cubit<AppState> {
   ];
 
   int historyPostViewIconIndex = 0;
-  HistoyPostsView histoyPostsView = HistoyPostsView.card;
-  void changeHistoryPostView(HistoyPostsView view) {
+  PostView histoyPostsView = PostView.card;
+  void changeHistoryPostView(PostView view) {
     historyPostViewIconIndex = view.index;
     histoyPostsView = view;
     // print(histoyPostsView.toString());

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/Screens/history/history_screen.dart';
-import 'package:reddit/Screens/history/history_screen_for_web.dart';
+import 'package:reddit/screens/history/history_screen.dart';
+import 'package:reddit/screens/history/history_screen_for_web.dart';
 import 'package:reddit/cubit/app_cubit.dart';
 import 'package:reddit/screens/moderation/content_and_regulation/create_flair.dart';
 import 'package:reddit/screens/moderation/content_and_regulation/post_flair.dart';

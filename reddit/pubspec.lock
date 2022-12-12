@@ -123,7 +123,6 @@ packages:
   charcode:
     dependency: transitive
     description:
-<<<<<<< HEAD
       name: charcode
       url: "https://pub.dartlang.org"
     source: hosted
@@ -132,29 +131,6 @@ packages:
     dependency: transitive
     description:
       name: checked_yaml
-<<<<<<< HEAD
-=======
-      name: checked_yaml
-=======
->>>>>>> feature/moderation
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.1"
-  chewie:
-    dependency: transitive
-    description:
-      name: chewie
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.3.6"
-  chewie_audio:
-    dependency: transitive
-    description:
-      name: chewie_audio
-<<<<<<< HEAD
->>>>>>> feature/settings
-=======
->>>>>>> feature/moderation
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
@@ -186,19 +162,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.16.0"
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> feature/moderation
-  conditional_builder:
-    dependency: "direct main"
-    description:
-      name: conditional_builder
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.2"
->>>>>>> feature/settings
   conditional_builder_null_safety:
     dependency: "direct main"
     description:
@@ -379,23 +342,15 @@ packages:
     description:
       name: file_picker
       url: "https://pub.dartlang.org"
-<<<<<<< HEAD
-<<<<<<< HEAD
     source: hosted
-    version: "5.2.3"
+    version: "5.2.4"
   filesystem_picker:
     dependency: "direct main"
     description:
       name: filesystem_picker
       url: "https://pub.dartlang.org"
-=======
->>>>>>> feature/settings
     source: hosted
     version: "3.1.0"
-=======
-    source: hosted
-    version: "5.2.3"
->>>>>>> feature/moderation
   fixnum:
     dependency: transitive
     description:
@@ -460,37 +415,26 @@ packages:
     description:
       name: flutter_html
       url: "https://pub.dartlang.org"
-<<<<<<< HEAD
     source: hosted
     version: "3.0.0-alpha.6"
   flutter_inappwebview_quill:
     dependency: transitive
     description:
-<<<<<<< HEAD
       name: flutter_inappwebview_quill
       url: "https://pub.dartlang.org"
-=======
->>>>>>> feature/moderation
     source: hosted
     version: "5.4.6"
   flutter_keyboard_visibility:
     dependency: transitive
     description:
       name: flutter_keyboard_visibility
-=======
-      name: flutter_launcher_icons
->>>>>>> feature/settings
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.4.0"
   flutter_keyboard_visibility_linux:
     dependency: transitive
     description:
-<<<<<<< HEAD
       name: flutter_keyboard_visibility_linux
-=======
-      name: flutter_layout_grid
->>>>>>> feature/settings
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
@@ -527,16 +471,6 @@ packages:
     description:
       name: flutter_launcher_icons
       url: "https://pub.dartlang.org"
-<<<<<<< HEAD
-=======
-    source: hosted
-    version: "0.10.0"
-  flutter_layout_grid:
-    dependency: transitive
-    description:
-      name: flutter_layout_grid
-      url: "https://pub.dartlang.org"
->>>>>>> feature/moderation
     source: hosted
     version: "0.11.0"
   flutter_lints:
@@ -991,8 +925,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.5"
-<<<<<<< HEAD
-<<<<<<< HEAD
   math_expressions:
     dependency: transitive
     description:
@@ -1007,10 +939,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.7"
-=======
->>>>>>> feature/settings
-=======
->>>>>>> feature/moderation
   meta:
     dependency: transitive
     description:
@@ -1324,7 +1252,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.9.0"
-<<<<<<< HEAD
   sprintf:
     dependency: transitive
     description:
@@ -1332,11 +1259,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "7.0.0"
-<<<<<<< HEAD
-=======
->>>>>>> feature/settings
-=======
->>>>>>> feature/moderation
   stack_trace:
     dependency: transitive
     description:
@@ -1573,55 +1495,8 @@ packages:
     description:
       name: vm_service
       url: "https://pub.dartlang.org"
-<<<<<<< HEAD
-<<<<<<< HEAD
     source: hosted
     version: "9.0.0"
-=======
-=======
->>>>>>> feature/moderation
-    source: hosted
-    version: "9.0.0"
-  wakelock:
-    dependency: transitive
-    description:
-      name: wakelock
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.2"
-  wakelock_macos:
-    dependency: transitive
-    description:
-      name: wakelock_macos
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.4.0"
-  wakelock_platform_interface:
-    dependency: transitive
-    description:
-      name: wakelock_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.0"
-  wakelock_web:
-    dependency: transitive
-    description:
-      name: wakelock_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.4.0"
-  wakelock_windows:
-    dependency: transitive
-    description:
-      name: wakelock_windows
-      url: "https://pub.dartlang.org"
-    source: hosted
-<<<<<<< HEAD
-    version: "0.2.0"
->>>>>>> feature/settings
-=======
-    version: "0.2.1"
->>>>>>> feature/moderation
   watcher:
     dependency: transitive
     description:
@@ -1641,46 +1516,8 @@ packages:
     description:
       name: webdriver
       url: "https://pub.dartlang.org"
-<<<<<<< HEAD
-<<<<<<< HEAD
     source: hosted
     version: "3.0.0"
-=======
-    source: hosted
-    version: "3.0.0"
-=======
-    source: hosted
-    version: "3.0.0"
->>>>>>> feature/moderation
-  webview_flutter:
-    dependency: transitive
-    description:
-      name: webview_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.8.0"
-  webview_flutter_android:
-    dependency: transitive
-    description:
-      name: webview_flutter_android
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.10.4"
-  webview_flutter_platform_interface:
-    dependency: transitive
-    description:
-      name: webview_flutter_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.9.5"
-  webview_flutter_wkwebview:
-    dependency: transitive
-    description:
-      name: webview_flutter_wkwebview
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.9.5"
->>>>>>> feature/settings
   win32:
     dependency: transitive
     description:

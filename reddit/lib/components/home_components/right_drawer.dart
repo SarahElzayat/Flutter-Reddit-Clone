@@ -2,7 +2,7 @@
 ///@description the right (end) drawer that's present through the whole application
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/Screens/history/history_screen_for_web.dart';
+import 'package:reddit/screens/history/history_screen_for_web.dart';
 import 'package:reddit/screens/create_community_screen/create_community_screen.dart';
 import 'package:reddit/screens/saved/saved_screen.dart';
 import 'package:reddit/screens/settings/settings_main_screen.dart';

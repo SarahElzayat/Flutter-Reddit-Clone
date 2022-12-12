@@ -114,8 +114,7 @@ class ModerationCubit extends Cubit<ModerationState> {
 
     String? token = CacheHelper.getData(key: 'token');
 
-    DioHelper.putData(
-            token: token, path: '/r/$name/about/edit', data: settings.toJson())
+    DioHelper.putData(path: '/r/$name/about/edit', data: settings.toJson())
         .then((value) {
       if (value.statusCode == 200) {}
     }).catchError((error) {
