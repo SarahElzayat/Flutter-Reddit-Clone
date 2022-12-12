@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:reddit/screens/settings/blocked_accounts.dart';
+import 'package:reddit/widgets/settings/facebook_icon.dart';
 import '../../components/helpers/enums.dart';
 import '../../components/list_tile_container.dart';
 import '../../screens/settings/change_password_screen.dart';
@@ -79,8 +80,8 @@ class AccountSettingsScreen extends StatelessWidget {
 
               /// TODO: these Icons should be changed to the real ones.
               listTileIcons: const [
-                Icons.account_box,
-                Icons.account_box,
+                CustomIcons.google,
+                CustomIcons.facebook_squared,
               ],
               listTileTitles: const [
                 'Google',

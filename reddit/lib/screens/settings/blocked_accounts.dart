@@ -7,7 +7,7 @@ import 'package:reddit/widgets/settings/settings_app_bar.dart';
 
 class BlockedAccounts extends StatefulWidget {
   static const routeName = '/blocked_accounts_screen';
-  BlockedAccounts({super.key});
+  const BlockedAccounts({super.key});
 
   @override
   State<BlockedAccounts> createState() => _BlockedAccountsState();

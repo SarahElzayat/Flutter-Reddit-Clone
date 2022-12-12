@@ -59,7 +59,7 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   SettingsMainScreen.routeName: (ctx) => const SettingsMainScreen(),
   AccountSettingsScreen.routeName: (ctx) => const AccountSettingsScreen(),
   UpdateEmailAddressScreen.routeName: (ctx) => UpdateEmailAddressScreen(),
-  BlockedAccounts.routeName: (ctx) => BlockedAccounts(),
+  BlockedAccounts.routeName: (ctx) => const BlockedAccounts(),
   ChangePassword.routeName: (ctx) => const ChangePassword(),
   CountriesScreen.routeName: (ctx) => const CountriesScreen(),
 
