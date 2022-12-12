@@ -47,7 +47,8 @@ class PostLowerBarWithoutVotes extends StatefulWidget {
 class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
   @override
   Widget build(BuildContext context) {
-    var isMod = widget.post.inYourSubreddit ?? false;
+    // var isMod = widget.post.inYourSubreddit ?? false;
+    var isMod = true;
     return Container(
       color: widget.backgroundColor,
       child: Row(

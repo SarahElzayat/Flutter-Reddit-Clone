@@ -4,10 +4,11 @@
 /// it is used alot in the mod tools
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import '../../../components/helpers/color_manager.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+
 import '../../../components/helpers/enums.dart';
-import '../../../components/list_tile.dart';
+import 'helpers/color_manager.dart';
+import 'list_tile.dart';
 
 class ListTileContainer extends StatelessWidget {
   final String title;
@@ -29,20 +30,23 @@ class ListTileContainer extends StatelessWidget {
   /// where each item has its own handler
   /// this is the function that should be executed
   /// when the user presses on the listTile.
-  List<Function> handler = [];
-  ListTileContainer(
-      {super.key,
-      required this.handler,
-      this.items = const [],
-      required this.title,
-      required this.listTileTitles,
-      required this.listTileIcons,
-      required this.trailingObject});
+  final List<Function> handler;
+  // final List<Function> listTileFunctions;
+
+  const ListTileContainer({
+    super.key,
+    this.handler = const [],
+    this.items = const [],
+    required this.title,
+    required this.listTileTitles,
+    required this.listTileIcons,
+    required this.trailingObject,
+  });
 
   /// this is a funtion used to return the strings used if there is a dropBox.
   /// @param [index] is the index of the loop because this function should be
   /// called inside a loop.
-  List<String> ourItems(index) {
+  List<String> _ourItems(index) {
     /// TODO: this should work even if we didn't send items and same for the handlers list
     return items.isEmpty
         ? []
@@ -54,11 +58,10 @@ class ListTileContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double fontScale = MediaQuery.of(context).textScaleFactor;
-    double height = MediaQuery.of(context).size.height;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: height * 0.02),
+        SizedBox(height: 2.h),
         Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: Text(
@@ -67,7 +70,7 @@ class ListTileContainer extends StatelessWidget {
                 color: ColorManager.lightGrey, fontSize: 12 * fontScale),
           ),
         ),
-        SizedBox(height: height * 0.02),
+        const SizedBox(height: 10),
         Expanded(
           child: ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
@@ -75,7 +78,7 @@ class ListTileContainer extends StatelessWidget {
               itemCount: listTileTitles.length,
               itemBuilder: (BuildContext context, int index) {
                 return ListTileWidget(
-                    items: ourItems(index),
+                    items: _ourItems(index),
                     leadingIcon: Icon(listTileIcons[index]),
                     title: listTileTitles[index],
                     handler: handler[index],

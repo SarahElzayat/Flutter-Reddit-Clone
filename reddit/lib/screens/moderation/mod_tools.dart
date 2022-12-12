@@ -1,87 +1,107 @@
+///@author: Yasmine Ghanem
+///@date: 5/12/2022
 import 'package:flutter/material.dart';
-
-import '../../components/helpers/color_manager.dart';
-import '../../components/helpers/enums.dart';
-import '../../components/list_tile_container.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/components/helpers/enums.dart';
+import 'package:reddit/components/list_tile_container.dart';
+import 'package:reddit/constants/constants.dart';
+import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
 
 class ModTools extends StatelessWidget {
-  ModTools({super.key});
-
-  final List<String> generalTitles = [
-    'Description',
-    'Welcome message',
-    'Topics',
-    'Community Type',
-    'Content tag',
-    'Post types',
-    'Discovery',
-    'Modmail',
-    'Mod notifications',
-    'Location',
-    'Archive Posts',
-    'Media in comments'
-  ];
-
-  final List<String> contentAndRegulationsTitles = [
-    'Post flair',
-    'Scheduled posts',
-  ];
-
-  final List<String> userManagementTitles = [
-    'Moderators',
-    'Approved users',
-    'Mutes users',
-    'Banned users',
-    'User flair',
-  ];
-
-  final List<String> resourceLinksTitles = [
-    'r/ModSupport',
-    'r/modhelp',
-    'Mod help center',
-    'Mod guidelines',
-    'Connect Reddit',
-  ];
-
-  final List<IconData> generalIcons = [
-    Icons.edit_outlined,
-    Icons.message_outlined,
-    Icons.label_outlined,
-    Icons.lock_outline,
-    Icons.star_border_outlined,
-    Icons.menu_book_outlined,
-    Icons.compass_calibration_outlined,
-    Icons.mail_outline,
-    Icons.notifications_none_outlined,
-    Icons.location_on_outlined,
-    Icons.archive_outlined,
-    Icons.image_outlined
-  ];
-
-  final List<IconData> contentAndRegulationsIcons = [
-    Icons.edit_outlined,
-    Icons.message_outlined,
-  ];
-
-  final List<IconData> userManagementIcons = [
-    Icons.shield_outlined,
-    Icons.person_outlined,
-    Icons.volume_mute_outlined,
-    Icons.gavel_outlined,
-    Icons.label_outlined
-  ];
-
-  final List<IconData> resourceLinksIcons = [
-    Icons.shield,
-    Icons.shield,
-    Icons.help_outline_rounded,
-    Icons.list_alt_outlined,
-    Icons.reddit_outlined
-  ];
+  static const String routeName = 'mod_tools';
+  const ModTools({super.key});
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
+    final ModerationCubit cubit = ModerationCubit.get(context);
+
+    //general mod tools screen navigation functions
+    final List<Function> generalFunctions = [
+      () {
+        cubit.navigate(context, '/description_screen');
+      },
+      () {
+        cubit.navigate(context, '/welcome_message_screen');
+      },
+      () {
+        cubit.navigate(context, '/topics_screen');
+      },
+      () {
+        cubit.navigate(context, '/community_type_screen');
+      },
+      () {
+        cubit.navigate(context, '/content_tag_screen');
+      },
+      () {
+        cubit.navigate(context, '/post_types_screen');
+      },
+      () {
+        cubit.navigate(context, '/discovery_screen');
+      },
+      () {
+        cubit.navigate(context, '/modmail_screen');
+      },
+      () {
+        cubit.navigate(context, '/mod_notifications_screen');
+      },
+      () {
+        cubit.navigate(context, '/location_screen');
+      },
+      () {
+        cubit.navigate(context, '/archive_posts_screen');
+      },
+      () {
+        cubit.navigate(context, '/media_in_comments_screen');
+      },
+    ];
+
+    //content and regulation mod tools screen navigation functions
+    final List<Function> contentAndRegulationsFunctions = [
+      () {
+        cubit.navigate(context, '/create_flair_mod_screen');
+      },
+      () {
+        cubit.navigate(context, '/post_flair_mod_screen');
+      }
+    ];
+
+    //user managment mod tools screen navigation functions
+    final List<Function> userManagementFunctions = [
+      () {
+        cubit.navigate(context, '/moderators_screen');
+      },
+      () {
+        cubit.navigate(context, '/approved_users_screen');
+      },
+      () {
+        cubit.navigate(context, '/muted_users_screen');
+      },
+      () {
+        cubit.navigate(context, '/banned_users_screen');
+      },
+      () {
+        cubit.navigate(context, '/user_flair_mod_screen');
+      }
+    ];
+
+    //resource links mod tools screen navigation functions
+    final List<Function> resourceLinksFunctions = [
+      () {
+        // cubit.navigate(context, 'route');
+      },
+      () {
+        // cubit.navigate(context, 'route');
+      },
+      () {
+        // cubit.navigate(context, 'route');
+      },
+      () {
+        // cubit.navigate(context, 'route');
+      },
+      () {
+        // cubit.navigate(context, 'route');
+      }
+    ];
     return Scaffold(
         appBar: AppBar(
           backgroundColor: ColorManager.darkGrey,
@@ -89,16 +109,16 @@ class ModTools extends StatelessWidget {
           elevation: 1,
           leading: IconButton(
               icon: const Icon(Icons.arrow_back),
-              onPressed: (() {
+              onPressed: () {
                 Navigator.pop(context);
-              })),
+              }),
           title: const Text('Moderator tools'),
         ),
         body: SingleChildScrollView(
           child: Column(
             children: [
               SizedBox(
-                height: height * 0.83,
+                height: 710,
                 child: ListTileContainer(
                     handler: [() {}],
                     title: '      GENERAL',
@@ -107,25 +127,27 @@ class ModTools extends StatelessWidget {
                     trailingObject: const [TrailingObjects.tailingIcon]),
               ),
               SizedBox(
-                height: height * 0.19,
+                height: 150,
                 child: ListTileContainer(
                     handler: [() {}],
                     title: '      CONTENT & REGULATIONS',
                     listTileTitles: contentAndRegulationsTitles,
+                    listTileFunctions: contentAndRegulationsFunctions,
                     listTileIcons: contentAndRegulationsIcons,
                     trailingObject: const [TrailingObjects.tailingIcon]),
               ),
               SizedBox(
-                height: height * 0.38,
+                height: 315,
                 child: ListTileContainer(
-                    handler: [() {}],
+                    handler: generalFunctions,
                     title: '      USER MANAGEMENT',
                     listTileTitles: userManagementTitles,
+                    
                     listTileIcons: userManagementIcons,
                     trailingObject: const [TrailingObjects.tailingIcon]),
               ),
               SizedBox(
-                height: height * 0.38,
+                height: 315,
                 child: ListTileContainer(
                     handler: [() {}],
                     title: '      RSOURCE LINKS',

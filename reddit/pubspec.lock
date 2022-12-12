@@ -132,8 +132,11 @@ packages:
     dependency: transitive
     description:
       name: checked_yaml
+<<<<<<< HEAD
 =======
       name: checked_yaml
+=======
+>>>>>>> feature/moderation
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
@@ -148,7 +151,10 @@ packages:
     dependency: transitive
     description:
       name: chewie_audio
+<<<<<<< HEAD
 >>>>>>> feature/settings
+=======
+>>>>>>> feature/moderation
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
@@ -181,7 +187,10 @@ packages:
     source: hosted
     version: "1.16.0"
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> feature/moderation
   conditional_builder:
     dependency: "direct main"
     description:
@@ -371,6 +380,7 @@ packages:
       name: file_picker
       url: "https://pub.dartlang.org"
 <<<<<<< HEAD
+<<<<<<< HEAD
     source: hosted
     version: "5.2.3"
   filesystem_picker:
@@ -382,6 +392,10 @@ packages:
 >>>>>>> feature/settings
     source: hosted
     version: "3.1.0"
+=======
+    source: hosted
+    version: "5.2.3"
+>>>>>>> feature/moderation
   fixnum:
     dependency: transitive
     description:
@@ -446,6 +460,7 @@ packages:
     description:
       name: flutter_html
       url: "https://pub.dartlang.org"
+<<<<<<< HEAD
     source: hosted
     version: "3.0.0-alpha.6"
   flutter_inappwebview_quill:
@@ -454,6 +469,8 @@ packages:
 <<<<<<< HEAD
       name: flutter_inappwebview_quill
       url: "https://pub.dartlang.org"
+=======
+>>>>>>> feature/moderation
     source: hosted
     version: "5.4.6"
   flutter_keyboard_visibility:
@@ -510,6 +527,16 @@ packages:
     description:
       name: flutter_launcher_icons
       url: "https://pub.dartlang.org"
+<<<<<<< HEAD
+=======
+    source: hosted
+    version: "0.10.0"
+  flutter_layout_grid:
+    dependency: transitive
+    description:
+      name: flutter_layout_grid
+      url: "https://pub.dartlang.org"
+>>>>>>> feature/moderation
     source: hosted
     version: "0.11.0"
   flutter_lints:
@@ -965,6 +992,7 @@ packages:
     source: hosted
     version: "0.1.5"
 <<<<<<< HEAD
+<<<<<<< HEAD
   math_expressions:
     dependency: transitive
     description:
@@ -981,6 +1009,8 @@ packages:
     version: "0.1.7"
 =======
 >>>>>>> feature/settings
+=======
+>>>>>>> feature/moderation
   meta:
     dependency: transitive
     description:
@@ -1302,8 +1332,11 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "7.0.0"
+<<<<<<< HEAD
 =======
 >>>>>>> feature/settings
+=======
+>>>>>>> feature/moderation
   stack_trace:
     dependency: transitive
     description:
@@ -1541,9 +1574,12 @@ packages:
       name: vm_service
       url: "https://pub.dartlang.org"
 <<<<<<< HEAD
+<<<<<<< HEAD
     source: hosted
     version: "9.0.0"
 =======
+=======
+>>>>>>> feature/moderation
     source: hosted
     version: "9.0.0"
   wakelock:
@@ -1580,8 +1616,12 @@ packages:
       name: wakelock_windows
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "0.2.0"
 >>>>>>> feature/settings
+=======
+    version: "0.2.1"
+>>>>>>> feature/moderation
   watcher:
     dependency: transitive
     description:
@@ -1602,11 +1642,16 @@ packages:
       name: webdriver
       url: "https://pub.dartlang.org"
 <<<<<<< HEAD
+<<<<<<< HEAD
     source: hosted
     version: "3.0.0"
 =======
     source: hosted
     version: "3.0.0"
+=======
+    source: hosted
+    version: "3.0.0"
+>>>>>>> feature/moderation
   webview_flutter:
     dependency: transitive
     description:

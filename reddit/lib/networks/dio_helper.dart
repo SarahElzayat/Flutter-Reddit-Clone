@@ -3,6 +3,7 @@
 /// this is a DioHelper which is a class used to connect us to the backend
 /// and deal with the server
 import 'package:dio/dio.dart';
+import '../constants/constants.dart';
 import 'constant_end_points.dart';
 
 class DioHelper {
@@ -72,7 +73,6 @@ class DioHelper {
 
     /// which is the content of the JSON
     Map<String, dynamic>? query,
-    String? token,
 
     /// additional query
   }) async {
