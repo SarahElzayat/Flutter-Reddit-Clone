@@ -2,7 +2,7 @@
 ///@description the right (end) drawer that's present through the whole application
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/Screens/history/history_screen_for_web.dart';
+import 'package:reddit/screens/history/history_screen_for_web.dart';
 
 import '../../cubit/app_cubit.dart';
 import '../../screens/history/history_screen.dart';
@@ -10,7 +10,7 @@ import '../../screens/to_be_done_screen.dart';
 import '../helpers/color_manager.dart';
 import 'components.dart';
 
-///TODO try changing it into a scaffold 
+///TODO try changing it into a scaffold
 class RightDrawer extends StatelessWidget {
   const RightDrawer({super.key});
 
@@ -31,11 +31,11 @@ class RightDrawer extends StatelessWidget {
           context,
           Icons.history_toggle_off_rounded,
           'History',
-          kIsWeb?
-          const HistoryScreenForWeb():
-          HistoryScreen(
-            bottomNavBarScreenIndex: cubit.currentIndex,
-          ),
+          kIsWeb
+              ? const HistoryScreenForWeb()
+              : HistoryScreen(
+                  bottomNavBarScreenIndex: cubit.currentIndex,
+                ),
           isLeftDrawer: false),
       genericTextButton(context, Icons.pending_outlined, 'Pending Posts', null,
           isLeftDrawer: false),
@@ -43,7 +43,6 @@ class RightDrawer extends StatelessWidget {
           isLeftDrawer: false),
     ];
 
-    
     return SafeArea(
         child: Drawer(
       child: SingleChildScrollView(

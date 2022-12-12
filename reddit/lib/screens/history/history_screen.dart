@@ -3,7 +3,7 @@
 ///@description: the screen that shows the history of the user for mobile
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/Components/Helpers/color_manager.dart';
+import 'package:reddit/components/Helpers/color_manager.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/screens/main_screen.dart';
@@ -24,8 +24,6 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
-    
-
     ///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
     final AppCubit cubit = AppCubit.get(context)
       ..changeHistoryCategory(HistoyCategory.recent);

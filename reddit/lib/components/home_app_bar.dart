@@ -3,19 +3,17 @@
 /// App bar of the application
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/Screens/create_community_screen/create_community_screen.dart';
-import 'package:reddit/components/app_bar_components.dart';
-import 'package:reddit/components/home_dropdown_menu.dart';
-import 'package:reddit/components/search_field.dart';
+import '../screens/create_community_screen/create_community_screen.dart';
+import '../components/app_bar_components.dart';
+import '../components/home_dropdown_menu.dart';
+import '../components/search_field.dart';
 
 import '../cubit/app_cubit.dart';
-
 
 ///@param [index] is the index of the bottom navigation bar screen
 ///@param [context] is the context of the parent widget
 /// returns the app bar of the screen
 AppBar homeAppBar(context, index) {
-
   ///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
   final AppCubit cubit = AppCubit.get(context);
 
@@ -48,12 +46,12 @@ AppBar homeAppBar(context, index) {
       ],
     );
   }
+
   ///if it's web then display the following
-   else {
+  else {
     return AppBar(
       actions: [Container()],
       automaticallyImplyLeading: false,
-
       title: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Row(
@@ -86,7 +84,11 @@ AppBar homeAppBar(context, index) {
               splashColor: Colors.transparent,
             ),
             IconButton(
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateCommunityScreen(),)),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CreateCommunityScreen(),
+                  )),
               icon: const Icon(Icons.add),
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
