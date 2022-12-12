@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:reddit/components/default_text_field.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/widgets/settings/bottom_buttons.dart';
+import 'package:reddit/widgets/settings/header_contains_avatar.dart';
 import 'package:reddit/widgets/settings/settings_app_bar.dart';
 
 class UpdateEmailAddressScreen extends StatelessWidget {
@@ -27,31 +28,11 @@ class UpdateEmailAddressScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: mediaQuery.size.width * 0.7,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const CircleAvatar(
-                          backgroundColor: ColorManager.upvoteRed,
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-
-                          /// TODO: here we will need to use cubit
-                          children: const [
-                            Text(
-                              'UserName',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text('Email of the user')
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
+                      width: mediaQuery.size.width * 0.7,
+                      child: const HeaderContainsAvatar(
+                        usrName: 'UserName',
+                        email: 'Email of the user',
+                      )),
                   const DefaultTextField(labelText: 'New email address'),
                   const DefaultTextField(
                     labelText: 'Reddit password',

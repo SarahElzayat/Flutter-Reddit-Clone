@@ -17,6 +17,7 @@ import '../screens/forget_user_name_and_password/web/forget_user_name_web_screen
 import '../screens/main_screen.dart';
 import '../screens/search/search_results_main_screen.dart';
 import '../screens/search/search_screen.dart';
+import '../screens/settings/change_password_screen.dart';
 import '../screens/settings/update_email_address_screen.dart';
 import '../screens/sign_in_and_sign_up_screen/web/continue_sign_up_screen.dart';
 import '../screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
@@ -56,6 +57,7 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   SettingsMainScreen.routeName: (ctx) => const SettingsMainScreen(),
   AccountSettingsScreen.routeName: (ctx) => const AccountSettingsScreen(),
   UpdateEmailAddressScreen.routeName: (ctx) => UpdateEmailAddressScreen(),
+  ChangePassword.routeName: (ctx) => const ChangePassword(),
 
   // home screens
   HomeScreenForMobile.routeName: (ctx) => const HomeScreenForMobile(),
