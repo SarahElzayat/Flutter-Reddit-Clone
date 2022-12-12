@@ -8,11 +8,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 
 import 'package:reddit/data/post_model/post_model.dart';
-import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
+import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../functions/post_functions.dart';
-import 'cubit/post_state.dart';
+import 'actions_cubit/post_comment_actions_state.dart';
 
 class PostLowerBarWithoutVotes extends StatefulWidget {
   const PostLowerBarWithoutVotes({

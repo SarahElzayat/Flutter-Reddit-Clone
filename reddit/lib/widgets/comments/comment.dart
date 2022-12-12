@@ -13,7 +13,8 @@ import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/functions/post_functions.dart';
 import 'package:reddit/screens/comments/add_comment_screen.dart';
-import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
+import 'package:reddit/screens/posts/post_screen_cubit/post_screen_cubit.dart';
+import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:reddit/widgets/posts/votes_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../data/post_model/post_model.dart';
@@ -97,17 +98,21 @@ class _CommentState extends State<Comment> {
       return Container();
     }
 
-    return BlocProvider(
-      create: (context) => PostAndCommentActionsCubit(
-        post: widget.post,
-        currentComment: widget.comment,
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => PostAndCommentActionsCubit(
+            post: widget.post,
+            currentComment: widget.comment,
+          ),
+        ),
+      ],
       child: Container(
         decoration: BoxDecoration(
           border: Border(
             left: widget.level > 1
                 ? BorderSide(
-                    color: ColorManager.grey,
+                    color: ColorManager.lightGrey,
                     width: 0.5.w,
                   )
                 : BorderSide.none,
@@ -172,6 +177,28 @@ class _CommentState extends State<Comment> {
                             .toList(),
                       )
                     : Container(),
+
+                // if there is more children add a button to show them
+                if (widget.comment.children != null &&
+                    widget.comment.children!.length <
+                        (widget.comment.numberofChildren!))
+                  InkWell(
+                    onTap: () {
+                      PostScreenCubit.get(context).showMoreComments(
+                        commentId: widget.comment.id!,
+                      );
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 5),
+                      child: const Text(
+                        'Show more comments',
+                        style: TextStyle(
+                          color: ColorManager.primaryColor,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             );
           },
@@ -199,7 +226,7 @@ class _CommentState extends State<Comment> {
                             post: widget.post,
                             parentComment: widget.comment,
                           ))).then((value) {
-                PostAndCommentActionsCubit.get(context).getCommentsOfPost();
+                PostScreenCubit.get(context).getCommentsOfPost();
               });
             });
           },

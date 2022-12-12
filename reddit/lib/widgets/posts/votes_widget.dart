@@ -10,8 +10,8 @@ import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../data/post_model/post_model.dart';
 import '../../components/helpers/color_manager.dart';
-import 'cubit/post_cubit.dart';
-import 'cubit/post_state.dart';
+import 'actions_cubit/post_comment_actions_cubit.dart';
+import 'actions_cubit/post_comment_actions_state.dart';
 
 class VotesPart extends StatelessWidget {
   const VotesPart({

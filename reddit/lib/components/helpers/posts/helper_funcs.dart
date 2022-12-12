@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../data/comment/comment_model.dart';
 import '../../../data/post_model/post_model.dart';
 import '../../../screens/posts/post_screen.dart';
 
@@ -39,4 +40,14 @@ TextButton linkRow(String link, Color textColor) {
       ],
     ),
   );
+}
+
+// get all children of a comment
+List<CommentModel> getChildrenOfComment(CommentModel comment) {
+  List<CommentModel> children = [];
+  comment.children?.forEach((element) {
+    children.add(element);
+    children.addAll(getChildrenOfComment(element));
+  });
+  return children;
 }

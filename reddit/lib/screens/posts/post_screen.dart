@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/data/comment/comment_model.dart';
-import 'package:reddit/data/temp_data/tmp_data.dart';
-import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
+import 'package:reddit/screens/posts/post_screen_cubit/post_screen_cubit.dart';
+import 'package:reddit/screens/posts/post_screen_cubit/post_screen_state.dart';
+import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_state.dart';
 import '../../data/post_model/post_model.dart';
 import '../../widgets/comments/comment.dart';
-import '../../widgets/posts/cubit/post_state.dart';
 import '../../widgets/posts/dropdown_list.dart';
 import '../../widgets/posts/post_upper_bar.dart';
 import '../comments/add_comment_screen.dart';
@@ -41,10 +41,19 @@ class PostScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => PostAndCommentActionsCubit(
-        post: post,
-      )..getCommentsOfPost(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => PostAndCommentActionsCubit(
+            post: post,
+          ),
+        ),
+        BlocProvider(
+          create: (context) => PostScreenCubit(
+            post: post,
+          )..getCommentsOfPost(),
+        ),
+      ],
       child: Scaffold(
         appBar: AppBar(
           title: Text(post.title!),
@@ -62,10 +71,10 @@ class PostScreen extends StatelessWidget {
             ),
           ],
         ),
-        body: BlocConsumer<PostAndCommentActionsCubit, PostState>(
+        body: BlocConsumer<PostScreenCubit, PostScreenState>(
           listener: (context, state) {},
           builder: (context, state) {
-            var cubit = PostAndCommentActionsCubit.get(context);
+            var screenCubit = PostScreenCubit.get(context);
             return Column(
               children: [
                 Expanded(
@@ -80,7 +89,7 @@ class PostScreen extends StatelessWidget {
                               upperRowType: upperRowType,
                             ),
                             const SizedBox(height: 2),
-                            ..._getCommentsList(cubit.comments),
+                            ..._getCommentsList(screenCubit.comments),
                           ],
                         );
                       },
@@ -98,7 +107,7 @@ class PostScreen extends StatelessWidget {
                     ))
                         .then((value) {
                       if (value != null && value) {
-                        cubit.getCommentsOfPost();
+                        screenCubit.getCommentsOfPost();
                       }
                     });
                   },
