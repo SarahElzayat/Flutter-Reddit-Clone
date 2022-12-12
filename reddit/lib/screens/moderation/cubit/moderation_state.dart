@@ -15,8 +15,15 @@ class DescriptionChanged extends ModerationState {}
 
 class BanReasonChosen extends ModerationState {}
 
-class TogglePermenant extends ModerationState {}
+class Toggle extends ModerationState {}
 
-class EnableBanButton extends ModerationState {}
+class EnableButton extends ModerationState {}
 
 class BanUser extends ModerationState {}
+
+class InviteMod extends ModerationState {}
+
+class UsersLoaded extends ModerationState {
+  List<dynamic>? users;
+  UsersLoaded(this.users);
+}

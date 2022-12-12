@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/components/list_tile.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ListTileContainer extends StatefulWidget {
   final String title;
@@ -17,7 +18,7 @@ class ListTileContainer extends StatefulWidget {
 
   final List<IconData> listTileIcons;
 
-  final List<Function>? listTileFunctions;
+  final List<Function> listTileFunctions;
 
   const ListTileContainer(
       {super.key,
@@ -25,7 +26,7 @@ class ListTileContainer extends StatefulWidget {
       required this.listTileTitles,
       required this.listTileIcons,
       required this.trailingObject,
-      this.listTileFunctions});
+      required this.listTileFunctions});
 
   @override
   State<ListTileContainer> createState() => _ListTileContainerState();
@@ -34,18 +35,15 @@ class ListTileContainer extends StatefulWidget {
 class _ListTileContainerState extends State<ListTileContainer> {
   @override
   Widget build(BuildContext context) {
-    double fontScale = MediaQuery.of(context).textScaleFactor;
-    double height = MediaQuery.of(context).size.height;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: height * 0.02),
+        const SizedBox(height: 10),
         Text(
           widget.title,
-          style: TextStyle(
-              color: ColorManager.lightGrey, fontSize: 12 * fontScale),
+          style: TextStyle(color: ColorManager.lightGrey, fontSize: 16.sp),
         ),
-        SizedBox(height: height * 0.02),
+        const SizedBox(height: 10),
         Expanded(
           child: ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
@@ -55,7 +53,7 @@ class _ListTileContainerState extends State<ListTileContainer> {
                 return ListTileWidget(
                   leadingIcon: Icon(widget.listTileIcons[index]),
                   title: widget.listTileTitles[index],
-                  handler: null,
+                  handler: widget.listTileFunctions[index],
                   tailingObj: widget.trailingObject,
                 );
               }),

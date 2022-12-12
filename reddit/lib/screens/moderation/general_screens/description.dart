@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/components/moderation_components/modtools_components.dart';
+import 'package:reddit/router.dart';
 import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -31,7 +33,65 @@ class _DescriptionState extends State<Description> {
             appBar: AppBar(
                 elevation: 0,
                 leading: IconButton(
-                    onPressed: () {},
+                    onPressed: () => showDialog(
+                        context: context,
+                        builder: (context) => StatefulBuilder(
+                            builder: (context, setState) => AlertDialog(
+                                  backgroundColor: ColorManager.darkGrey,
+                                  content: SizedBox(
+                                    height: 10.h,
+                                    width: 90.w,
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text('Leave without saving',
+                                              style: TextStyle(
+                                                  fontSize: 18.sp,
+                                                  color: ColorManager
+                                                      .eggshellWhite)),
+                                          const Spacer(),
+                                          const Text(
+                                              'you cannot undo this action')
+                                        ]),
+                                  ),
+                                  actions: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Button(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          buttonHeight: 5.h,
+                                          buttonWidth: 35.w,
+                                          text: 'CANCEL',
+                                          textFontSize: 16.sp,
+                                          textColor: ColorManager.lightGrey,
+                                          backgroundColor: ColorManager.grey,
+                                          splashColor: ColorManager.lightGrey,
+                                        ),
+                                        SizedBox(
+                                          width: 2.w,
+                                        ),
+                                        Button(
+                                          onPressed: () {
+                                            Navigator.push(
+                                                context,
+                                                AppRouter.onGenerateRoute(
+                                                    const RouteSettings(
+                                                        name:
+                                                            '/mod_tools_screen')));
+                                          },
+                                          buttonHeight: 5.h,
+                                          buttonWidth: 35.w,
+                                          text: 'LEAVE',
+                                          textFontSize: 16.sp,
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ))),
                     icon: Icon(
                       Icons.arrow_back,
                       size: 24.sp,

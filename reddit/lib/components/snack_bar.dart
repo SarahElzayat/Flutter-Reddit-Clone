@@ -5,7 +5,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 ///@author: Yasmine Ghanem
 ///@date: 10/12/2022
 ///functions that return error and success snack bar
-SnackBar responseSnackBar(message, isError) => SnackBar(
+SnackBar responseSnackBar({message, error = true}) => SnackBar(
     behavior: SnackBarBehavior.floating,
     width: 90.w,
     padding: EdgeInsets.zero,
@@ -16,7 +16,7 @@ SnackBar responseSnackBar(message, isError) => SnackBar(
       children: [
         Container(
           decoration: BoxDecoration(
-              color: (isError) ? ColorManager.red : ColorManager.green,
+              color: (error) ? ColorManager.red : ColorManager.green,
               borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(10),
                   bottomLeft: Radius.circular(10))),

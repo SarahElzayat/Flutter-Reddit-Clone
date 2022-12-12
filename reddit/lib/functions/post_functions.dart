@@ -301,11 +301,10 @@ Future<void> showModOperations({
             PostNotifierCubit.get(context).NotifyPosts();
           },
           onError: () {
-            isError = true;
             message =
                 'Sorry, please try again later\nError  ${post.spoiler ?? false ? 'marking' : 'unmarking'} as spoiler';
             ScaffoldMessenger.of(context)
-                .showSnackBar(responseSnackBar(message, isError));
+                .showSnackBar(responseSnackBar(message: message, error: true));
           });
       break;
     // sends request to mark a post as nsfw

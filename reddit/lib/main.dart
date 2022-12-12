@@ -7,9 +7,7 @@ import 'package:reddit/data/routes.dart';
 import 'package:reddit/screens/create_community_screen/cubit/create_community_cubit.dart';
 import 'package:reddit/screens/main_screen.dart';
 import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
-import 'package:reddit/screens/moderation/general_screens/description.dart';
-import 'package:reddit/screens/moderation/user_management_screens/add_banned_user.dart';
-import 'package:reddit/screens/moderation/user_management_screens/banned_users.dart';
+import 'package:reddit/screens/moderation/mod_tools.dart';
 import 'package:reddit/theme/theme_data.dart';
 import 'constants/constants.dart';
 
@@ -85,7 +83,7 @@ class Main extends StatelessWidget {
                 initialRoute: CacheHelper.getData(key: 'token') != null
                     ? kIsWeb
                         ? HomeScreen.routeName
-                        : AddBannedUser.routeName
+                        : ModTools.routeName
                     : !kIsWeb
                         ? SignInScreen.routeName
                         : SignInForWebScreen.routeName,

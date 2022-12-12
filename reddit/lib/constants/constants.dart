@@ -40,6 +40,79 @@ const List<IconData> communityTypesIcon = [
 final regexp = RegExp(r'^[A-Za-z0-9_]*$');
 
 //Moderation constants
+const List<String> generalTitles = [
+  'Description',
+  'Welcome message',
+  'Topics',
+  'Community Type',
+  'Content tag',
+  'Post types',
+  'Discovery',
+  'Modmail',
+  'Mod notifications',
+  'Location',
+  'Archive Posts',
+  'Media in comments'
+];
+
+const List<String> contentAndRegulationsTitles = [
+  'Post flair',
+  'Scheduled posts',
+];
+
+const List<String> userManagementTitles = [
+  'Moderators',
+  'Approved users',
+  'Mutes users',
+  'Banned users',
+  'User flair',
+];
+
+final List<String> resourceLinksTitles = [
+  'r/ModSupport',
+  'r/modhelp',
+  'Mod help center',
+  'Mod guidelines',
+  'Connect Reddit',
+];
+
+const List<IconData> generalIcons = [
+  Icons.edit_outlined,
+  Icons.message_outlined,
+  Icons.label_outlined,
+  Icons.lock_outline,
+  Icons.star_border_outlined,
+  Icons.menu_book_outlined,
+  Icons.compass_calibration_outlined,
+  Icons.mail_outline,
+  Icons.notifications_none_outlined,
+  Icons.location_on_outlined,
+  Icons.archive_outlined,
+  Icons.image_outlined
+];
+
+const List<IconData> contentAndRegulationsIcons = [
+  Icons.edit_outlined,
+  Icons.message_outlined,
+];
+
+const List<IconData> userManagementIcons = [
+  Icons.shield_outlined,
+  Icons.person_outlined,
+  Icons.volume_mute_outlined,
+  Icons.gavel_outlined,
+  Icons.label_outlined
+];
+
+const List<IconData> resourceLinksIcons = [
+  Icons.shield,
+  Icons.shield,
+  Icons.help_outline_rounded,
+  Icons.list_alt_outlined,
+  Icons.reddit_outlined
+];
+
+/// available topics for a subreddit
 const List<String> topicsTitles = [
   'Activism',
   'Addiction Support',

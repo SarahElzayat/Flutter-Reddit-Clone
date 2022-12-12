@@ -140,7 +140,7 @@ class _ListTileWidgetState extends State<ListTileWidget> {
       child: Material(
         color: ColorManager.darkGrey,
         child: InkWell(
-          onTap: (() => {widget.handler}),
+          onTap: widget.handler,
           child: ListTile(
               //background color of list tile
               tileColor: ColorManager.darkGrey,

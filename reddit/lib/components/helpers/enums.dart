@@ -30,9 +30,12 @@ enum PostView {
   card,
 }
 
-enum HistoyCategory {
-  recent,
-  upvoted,
-  downvoted,
-  hidden
+enum HistoyCategory { recent, upvoted, downvoted, hidden }
+
+/// used to indicate which users to get
+enum UserManagement {
+  banned,
+  approved,
+  muted,
+  moderator,
 }

@@ -1,3 +1,7 @@
+///@author: Yasmine Ghanem
+///@date: 10/12/2022
+///this screens bans a user from a subreddit
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/bottom_sheet.dart';
@@ -25,7 +29,7 @@ class AddBannedUser extends StatelessWidget {
     return BlocConsumer<ModerationCubit, ModerationState>(
       listener: ((context, state) {}),
       builder: (context, state) => Scaffold(
-        appBar: userManagementAppBar(context, () {
+        appBar: userManagementAppBar(context, 'Add a banned user', () {
           cubit.banUser(context, daysController.text, modNote, userNote);
         }, (!cubit.emptyReason && !cubit.emptyUsername)),
         body: Padding(

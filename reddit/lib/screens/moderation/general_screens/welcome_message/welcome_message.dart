@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/components/button.dart';
-import 'package:reddit/data/routes.dart';
 import 'package:reddit/screens/moderation/general_screens/welcome_message/add_edit_message.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:flutter_switch/flutter_switch.dart';
@@ -78,7 +77,7 @@ class _WelcomeMessageState extends State<WelcomeMessage> {
                   text: 'PREVIEW MESSAGE',
                   splashColor: ColorManager.white.withOpacity(0.5),
                   buttonHeight: 5.h,
-                  buttonWidth: 30.w)
+                  buttonWidth: 60.w)
             ],
           )),
     );

@@ -36,3 +36,5 @@ const upvotedHistory = '/upvoted';
 const downvotedHistory = '/downvoted';
 const hiddenHistory = '/hidden';
 const ban = '/ban';
+const unban = '/unban';
+const inviteMod = '/moderator-invite';
