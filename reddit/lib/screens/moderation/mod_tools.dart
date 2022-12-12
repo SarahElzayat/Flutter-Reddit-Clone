@@ -100,7 +100,7 @@ class ModTools extends StatelessWidget {
               SizedBox(
                 height: height * 0.83,
                 child: ListTileContainer(
-                    handler: () {},
+                    handler: [() {}],
                     title: '      GENERAL',
                     listTileTitles: generalTitles,
                     listTileIcons: generalIcons,
@@ -109,7 +109,7 @@ class ModTools extends StatelessWidget {
               SizedBox(
                 height: height * 0.19,
                 child: ListTileContainer(
-                    handler: () {},
+                    handler: [() {}],
                     title: '      CONTENT & REGULATIONS',
                     listTileTitles: contentAndRegulationsTitles,
                     listTileIcons: contentAndRegulationsIcons,
@@ -118,7 +118,7 @@ class ModTools extends StatelessWidget {
               SizedBox(
                 height: height * 0.38,
                 child: ListTileContainer(
-                    handler: () {},
+                    handler: [() {}],
                     title: '      USER MANAGEMENT',
                     listTileTitles: userManagementTitles,
                     listTileIcons: userManagementIcons,
@@ -127,7 +127,7 @@ class ModTools extends StatelessWidget {
               SizedBox(
                 height: height * 0.38,
                 child: ListTileContainer(
-                    handler: () {},
+                    handler: [() {}],
                     title: '      RSOURCE LINKS',
                     listTileTitles: resourceLinksTitles,
                     listTileIcons: resourceLinksIcons,

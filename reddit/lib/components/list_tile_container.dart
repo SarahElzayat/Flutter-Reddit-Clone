@@ -29,7 +29,7 @@ class ListTileContainer extends StatelessWidget {
   /// where each item has its own handler
   /// this is the function that should be executed
   /// when the user presses on the listTile.
-  Function handler = () {};
+  List<Function> handler = [];
   ListTileContainer(
       {super.key,
       required this.handler,
@@ -43,7 +43,7 @@ class ListTileContainer extends StatelessWidget {
   /// @param [index] is the index of the loop because this function should be
   /// called inside a loop.
   List<String> ourItems(index) {
-    /// TODO: this should work even if we didn't send items
+    /// TODO: this should work even if we didn't send items and same for the handlers list
     return items.isEmpty
         ? []
         : items[index].isEmpty
@@ -78,7 +78,7 @@ class ListTileContainer extends StatelessWidget {
                     items: ourItems(index),
                     leadingIcon: Icon(listTileIcons[index]),
                     title: listTileTitles[index],
-                    handler: handler,
+                    handler: handler[index],
                     tailingObj: trailingObject[index]);
               }),
         ),

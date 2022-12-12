@@ -23,9 +23,14 @@ class AccountSettingsScreen extends StatelessWidget {
                 flex: 2,
                 child: ListTileContainer(
                   title: 'BASIC SETTINGS',
-                  handler: () {
-                    navigator.pushNamed(UpdateEmailAddressScreen.routeName);
-                  },
+                  handler: [
+                    () {
+                      navigator.pushNamed(UpdateEmailAddressScreen.routeName);
+                    },
+                    () {},
+                    () {},
+                    () {},
+                  ],
                   listTileIcons: const [
                     Icons.settings,
                     Icons.settings,
@@ -56,7 +61,10 @@ class AccountSettingsScreen extends StatelessWidget {
                 )),
             Expanded(
                 child: ListTileContainer(
-              handler: () {},
+              handler: [
+                () {},
+                () {},
+              ],
 
               /// TODO: these Icons should be changed to the real ones.
               listTileIcons: const [
@@ -79,7 +87,10 @@ class AccountSettingsScreen extends StatelessWidget {
             )),
             Expanded(
               child: ListTileContainer(
-                handler: () {},
+                handler: [
+                  () {},
+                  () {},
+                ],
                 listTileIcons: const [
                   Icons.not_interested_sharp,
                   Icons.supervised_user_circle
