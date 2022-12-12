@@ -26,7 +26,6 @@ class ListTileContainer extends StatelessWidget {
   /// if the Trailing object was a dropbox.
   final List<List<String>> items;
 
-  /// TODO: this should be a list of handlers,
   /// where each item has its own handler
   /// this is the function that should be executed
   /// when the user presses on the listTile.
@@ -57,7 +56,8 @@ class ListTileContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double fontScale = MediaQuery.of(context).textScaleFactor;
+    final fontScale = MediaQuery.of(context).textScaleFactor;
+    final height = MediaQuery.of(context).size.height;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

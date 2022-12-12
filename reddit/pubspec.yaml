@@ -115,6 +115,7 @@ flutter:
   assets:
     - .env
     - assets/
+    - assets/fonts/
     - assets/images/
     - assets/icons/
   #   - images/a_dot_ham.jpeg

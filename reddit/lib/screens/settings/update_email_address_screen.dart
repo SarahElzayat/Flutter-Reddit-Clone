@@ -78,66 +78,69 @@ class _UpdateEmailAddressScreenState extends State<UpdateEmailAddressScreen> {
       appBar: myAppBar,
       body: Form(
         key: _myKey,
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          height: mediaQuery.size.height -
-              mediaQuery.padding.top -
-              myAppBar.preferredSize.height,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                height: mediaQuery.size.height * 0.4,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const HeaderContainsAvatar(
-                      usrName: 'UserName',
-                      email: 'Email of the user',
-                    ),
-                    DefaultTextField(
-                      labelText: 'New email address',
-                      validator: (email) {
-                        if (!Validator.validEmailValidator(email!)) {
-                          return 'opps, you have inserted wrong email formate';
-                        }
-                        return null;
-                      },
-                    ),
-                    DefaultTextField(
-                      labelText: 'Reddit password',
-                      isPassword: true,
-                      validator: (password) {
-                        if (!Validator.validPasswordValidation(password!)) {
-                          return 'opps, you have inserted wrong password formate';
-                        }
-                        return null;
-                      },
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                          onPressed: () {
-                            navigator.pushNamed(ForgetPasswordScreen.routeName);
-                          },
-                          child: const Text(
-                            'Forgot password?',
-                            style: TextStyle(color: ColorManager.upvoteRed),
-                          )),
-                    )
-                  ],
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            height: mediaQuery.size.height -
+                mediaQuery.padding.top -
+                myAppBar.preferredSize.height,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  height: mediaQuery.size.height * 0.4,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      const HeaderContainsAvatar(
+                        usrName: 'UserName',
+                        email: 'Email of the user',
+                      ),
+                      DefaultTextField(
+                        labelText: 'New email address',
+                        validator: (email) {
+                          if (!Validator.validEmailValidator(email!)) {
+                            return 'opps, you have inserted wrong email formate';
+                          }
+                          return null;
+                        },
+                      ),
+                      DefaultTextField(
+                        labelText: 'Reddit password',
+                        isPassword: true,
+                        validator: (password) {
+                          if (!Validator.validPasswordValidation(password!)) {
+                            return 'opps, you have inserted wrong password formate';
+                          }
+                          return null;
+                        },
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                            onPressed: () {
+                              navigator
+                                  .pushNamed(ForgetPasswordScreen.routeName);
+                            },
+                            child: const Text(
+                              'Forgot password?',
+                              style: TextStyle(color: ColorManager.upvoteRed),
+                            )),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              BottomButtons(
-                string1: 'Cancel',
-                string2: 'Save',
-                handler1: () {
-                  navigator.pop();
-                },
-                handler2: updateMyMail,
-              )
-            ],
+                BottomButtons(
+                  string1: 'Cancel',
+                  string2: 'Save',
+                  handler1: () {
+                    navigator.pop();
+                  },
+                  handler2: updateMyMail,
+                )
+              ],
+            ),
           ),
         ),
       ),
