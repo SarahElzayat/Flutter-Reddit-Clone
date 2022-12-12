@@ -3,6 +3,7 @@
 /// This file contains the Screen of the account settings.
 
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/settings/blocked_accounts.dart';
 import '../../components/helpers/enums.dart';
 import '../../components/list_tile_container.dart';
 import '../../screens/settings/change_password_screen.dart';
@@ -98,7 +99,9 @@ class AccountSettingsScreen extends StatelessWidget {
             Expanded(
               child: ListTileContainer(
                 handler: [
-                  () {},
+                  () {
+                    navigator.pushNamed(BlockedAccounts.routeName);
+                  },
                   () {},
                 ],
                 listTileIcons: const [
