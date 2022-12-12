@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../components/bottom_sheet.dart';
 import '../components/helpers/color_manager.dart';
 import '../cubit/post_notifier/post_notifier_state.dart';
 import '../data/post_model/post_model.dart';
@@ -20,6 +21,9 @@ import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import '../screens/posts/post_screen_cubit/post_screen_cubit.dart';
+import '../widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
+import '../widgets/posts/actions_cubit/post_comment_actions_state.dart';
 import '../widgets/posts/dropdown_list.dart';
 
 enum ModOPtions { spoiler, nsfw, lock, unsticky, remove, spam, approve }
@@ -40,7 +44,84 @@ CircleAvatar subredditAvatar({small = false}) {
   return CircleAvatar(
       radius: small ? min(3.w, 15) : min(5.5.w, 30),
       backgroundImage: const NetworkImage(
-          'https://64.media.tumblr.com/6365e35d5f118aac2cda58c7c2bc4ba1/tumblr_n6npphYwpH1t3jpubo1_540.jpghttps://64.media.tumblr.com/6365e35d5f118aac2cda58c7c2bc4ba1/tumblr_n6npphYwpH1t3jpubo1_540.jpg'));
+          'https://us05st2.zoom.us/static/6.3.10245/image/Zoom_Blue_Logo.png'));
+}
+
+Widget commentSortRow(BuildContext context) {
+// a row with a button to choose the sorting type and an icon button for MOD
+// operations
+  return BlocBuilder<PostAndCommentActionsCubit, PostState>(
+    builder: (context, state) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ElevatedButton.icon(
+            onPressed: () async {
+              await modalBottomSheet(
+                context: context,
+                selectedItem: PostScreenCubit.get(context).selectedItem,
+                text: PostScreenCubit.labels,
+                title: 'SORT COMMENTS BY',
+                selectedIcons: PostScreenCubit.icons,
+                unselectedIcons: PostScreenCubit.icons,
+              ).then((value) {
+                PostScreenCubit.get(context).changeSortType(value);
+              });
+            },
+            style: ElevatedButton.styleFrom(
+              shape: const CircleBorder(),
+              padding: const EdgeInsets.all(0),
+              backgroundColor: Colors.transparent,
+            ),
+            icon: Icon(
+              PostScreenCubit.get(context).getSelectedIcon(),
+              color: ColorManager.greyColor,
+            ),
+            label: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  PostScreenCubit.get(context).selectedItem,
+                  style: const TextStyle(
+                    color: ColorManager.greyColor,
+                  ),
+                ),
+                const Icon(
+                  Icons.arrow_drop_down,
+                  color: ColorManager.greyColor,
+                ),
+              ],
+            ),
+          ),
+          const Spacer(),
+          if (PostScreenCubit.get(context).post.inYourSubreddit ?? false)
+            Material(
+              color: Colors.transparent,
+              clipBehavior: Clip.antiAlias,
+              shape: const CircleBorder(),
+              child: BlocBuilder<PostAndCommentActionsCubit, PostState>(
+                builder: (context, state) {
+                  var cubit = PostAndCommentActionsCubit.get(context);
+                  return IconButton(
+                    onPressed: () {
+                      cubit.toggleModTools();
+                    },
+                    constraints: const BoxConstraints(),
+                    padding: const EdgeInsets.all(0),
+                    icon: Icon(
+                      cubit.showModTools ? Icons.shield : Icons.shield_outlined,
+                      color: ColorManager.greyColor,
+                    ),
+                    iconSize: min(6.w, 30),
+                  );
+                },
+              ),
+            ),
+        ],
+      );
+    },
+  );
 }
 
 Widget singleRow({

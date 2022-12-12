@@ -161,7 +161,7 @@ class _CommentState extends State<Comment> {
               left: widget.level > 1
                   ? BorderSide(
                       color: ColorManager.lightGrey,
-                      width: 0.5.w,
+                      width: 3,
                     )
                   : BorderSide.none,
             ),

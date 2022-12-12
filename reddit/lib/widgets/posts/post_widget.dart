@@ -156,7 +156,8 @@ class PostWidget extends StatelessWidget {
                                               ));
                                   },
                                 ),
-                                if (!outsideScreen) _commentSortRow(context),
+                                if (!outsideScreen && !isWeb)
+                                  commentSortRow(context),
                               ],
                             ),
                           ),
@@ -281,84 +282,6 @@ class PostWidget extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _commentSortRow(BuildContext context) {
-// a row with a button to choose the sorting type and an icon button for MOD
-// operations
-    return BlocBuilder<PostAndCommentActionsCubit, PostState>(
-      builder: (context, state) {
-        return Row(
-          children: [
-            ElevatedButton.icon(
-              onPressed: () async {
-                await modalBottomSheet(
-                  context: context,
-                  selectedItem: PostScreenCubit.get(context).selectedItem,
-                  text: PostScreenCubit.labels,
-                  title: 'SORT COMMENTS BY',
-                  selectedIcons: PostScreenCubit.icons,
-                  unselectedIcons: PostScreenCubit.icons,
-                ).then((value) {
-                  PostScreenCubit.get(context).changeSortType(value);
-                });
-              },
-              style: ElevatedButton.styleFrom(
-                shape: const CircleBorder(),
-                padding: const EdgeInsets.all(0),
-                backgroundColor: Colors.transparent,
-              ),
-              icon: Icon(
-                PostScreenCubit.get(context).getSelectedIcon(),
-                color: ColorManager.greyColor,
-              ),
-              label: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    PostScreenCubit.get(context).selectedItem,
-                    style: const TextStyle(
-                      color: ColorManager.greyColor,
-                    ),
-                  ),
-                  const Icon(
-                    Icons.arrow_drop_down,
-                    color: ColorManager.greyColor,
-                  ),
-                ],
-              ),
-            ),
-            const Spacer(),
-            if (PostScreenCubit.get(context).post.inYourSubreddit ?? false)
-              Material(
-                color: Colors.transparent,
-                clipBehavior: Clip.antiAlias,
-                shape: const CircleBorder(),
-                child: BlocBuilder<PostAndCommentActionsCubit, PostState>(
-                  builder: (context, state) {
-                    var cubit = PostAndCommentActionsCubit.get(context);
-                    return IconButton(
-                      onPressed: () {
-                        cubit.toggleModTools();
-                      },
-                      constraints: const BoxConstraints(),
-                      padding: const EdgeInsets.all(0),
-                      icon: Icon(
-                        cubit.showModTools
-                            ? Icons.shield
-                            : Icons.shield_outlined,
-                        color: ColorManager.greyColor,
-                      ),
-                      iconSize: min(6.w, 30),
-                    );
-                  },
-                ),
-              ),
-          ],
-        );
-      },
     );
   }
 
