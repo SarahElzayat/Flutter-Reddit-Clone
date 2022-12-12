@@ -1,23 +1,26 @@
 import 'flair.dart';
-import 'hybrid_content.dart';
 import 'image.dart';
 import 'moderation.dart';
 
 class PostModel {
   String? id;
   String? kind;
+  String? title;
   String? subreddit;
-  String? content;
+  String? link;
   List<Image>? images;
+  String? video;
+  String? content;
   bool? nsfw;
   bool? spoiler;
-  String? title;
   String? sharePostId;
   Flair? flair;
   int? comments;
   int? votes;
   String? postedAt;
-  String? deletedAt;
+  bool? sendReplies;
+  bool? markedSpam;
+  String? suggestedSort;
   String? editedAt;
   String? postedBy;
   int? votingType;
@@ -27,28 +30,26 @@ class PostModel {
   bool? spammed;
   bool? inYourSubreddit;
   Moderation? moderation;
-  String? link;
-  String? video;
-  List<HybridContent>? hybridContent;
-  bool? sendReplies;
-  bool? markedSpam;
-  String? suggestedSort;
 
   PostModel({
     this.id,
     this.kind,
+    this.title,
     this.subreddit,
-    this.content,
+    this.link,
     this.images,
+    this.video,
+    this.content,
     this.nsfw,
     this.spoiler,
-    this.title,
     this.sharePostId,
     this.flair,
     this.comments,
     this.votes,
     this.postedAt,
-    this.deletedAt,
+    this.sendReplies,
+    this.markedSpam,
+    this.suggestedSort,
     this.editedAt,
     this.postedBy,
     this.votingType,
@@ -58,12 +59,6 @@ class PostModel {
     this.spammed,
     this.inYourSubreddit,
     this.moderation,
-    this.link,
-    this.video,
-    this.hybridContent,
-    this.sendReplies,
-    this.markedSpam,
-    this.suggestedSort,
   });
 
   factory PostModel.fromJsonwithData(Map<String, dynamic> json) {
@@ -74,18 +69,16 @@ class PostModel {
       subreddit: json['data']['subreddit'] as String?,
       link: json['data']['link'] as String?,
       images: (json['data']['images'] as List<dynamic>?)
-          ?.map((e) => Image.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => Image.fromJson(e as Map<String, dynamic>?))
           .toList(),
       video: json['data']['video'] as String?,
-      hybridContent: (json['data']['hybridContent'] as List<dynamic>?)
-          ?.map((e) => HybridContent.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      content: json['data']['content'] as String?,
       nsfw: json['data']['nsfw'] as bool?,
       spoiler: json['data']['spoiler'] as bool?,
       sharePostId: json['data']['sharePostId'] as String?,
       flair: json['data']['flair'] == null
           ? null
-          : Flair.fromJson(json['data']['flair'] as Map<String, dynamic>),
+          : Flair.fromJson(json['flair'] as Map<String, dynamic>?),
       comments: json['data']['comments'] as int?,
       votes: json['data']['votes'] as int?,
       postedAt: json['data']['postedAt'] as String?,
@@ -102,22 +95,23 @@ class PostModel {
       inYourSubreddit: json['data']['inYourSubreddit'] as bool?,
       moderation: json['data']['moderation'] == null
           ? null
-          : Moderation.fromJson(
-              json['data']['moderation'] as Map<String, dynamic>),
+          : Moderation.fromJson(json['moderation'] as Map<String, dynamic>?),
     );
   }
 
   factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
-        id: json['id'],
+        id: json['id'] as String?,
         kind: json['kind'] as String?,
+        title: json['title'] as String?,
         subreddit: json['subreddit'] as String?,
-        content: json['content'] as String?,
+        link: json['link'] as String?,
         images: (json['images'] as List<dynamic>?)
             ?.map((e) => Image.fromJson(e as Map<String, dynamic>))
             .toList(),
+        video: json['video'] as String?,
+        content: json['content'] as String?,
         nsfw: json['nsfw'] as bool?,
         spoiler: json['spoiler'] as bool?,
-        title: json['title'] as String?,
         sharePostId: json['sharePostId'] as String?,
         flair: json['flair'] == null
             ? null
@@ -125,7 +119,9 @@ class PostModel {
         comments: json['comments'] as int?,
         votes: json['votes'] as int?,
         postedAt: json['postedAt'] as String?,
-        deletedAt: json['deletedAt'] as String?,
+        sendReplies: json['sendReplies'] as bool?,
+        markedSpam: json['markedSpam'] as bool?,
+        suggestedSort: json['suggestedSort'] as String?,
         editedAt: json['editedAt'] as String?,
         postedBy: json['postedBy'] as String?,
         votingType: json['votingType'] as int?,
@@ -142,18 +138,22 @@ class PostModel {
   Map<String, dynamic> toJson() => {
         'id': id,
         'kind': kind,
+        'title': title,
         'subreddit': subreddit,
-        'content': content,
+        'link': link,
         'images': images?.map((e) => e.toJson()).toList(),
+        'video': video,
+        'content': content,
         'nsfw': nsfw,
         'spoiler': spoiler,
-        'title': title,
         'sharePostId': sharePostId,
         'flair': flair?.toJson(),
         'comments': comments,
         'votes': votes,
         'postedAt': postedAt,
-        'deletedAt': deletedAt,
+        'sendReplies': sendReplies,
+        'markedSpam': markedSpam,
+        'suggestedSort': suggestedSort,
         'editedAt': editedAt,
         'postedBy': postedBy,
         'votingType': votingType,
@@ -164,59 +164,4 @@ class PostModel {
         'inYourSubreddit': inYourSubreddit,
         'moderation': moderation?.toJson(),
       };
-  //TODO - add more fields
-  PostModel copyWith({
-    String? id,
-    String? kind,
-    String? subreddit,
-    String? content,
-    List<Image>? images,
-    bool? nsfw,
-    bool? spoiler,
-    String? title,
-    String? sharePostId,
-    Flair? flair,
-    int? comments,
-    int? votes,
-    String? postedAt,
-    String? deletedAt,
-    String? editedAt,
-    String? postedBy,
-    int? votingType,
-    bool? saved,
-    bool? followed,
-    bool? hidden,
-    bool? spammed,
-    bool? inYourSubreddit,
-    Moderation? moderation,
-  }) {
-    return PostModel(
-      id: id ?? this.id,
-      kind: kind ?? this.kind,
-      subreddit: subreddit ?? this.subreddit,
-      content: content ?? this.content,
-      images: images ?? this.images,
-      nsfw: nsfw ?? this.nsfw,
-      spoiler: spoiler ?? this.spoiler,
-      title: title ?? this.title,
-      sharePostId: sharePostId ?? this.sharePostId,
-      flair: flair ?? this.flair,
-      comments: comments ?? this.comments,
-      votes: votes ?? this.votes,
-      postedAt: postedAt ?? this.postedAt,
-      deletedAt: deletedAt ?? this.deletedAt,
-      editedAt: editedAt ?? this.editedAt,
-      postedBy: postedBy ?? this.postedBy,
-      votingType: votingType ?? this.votingType,
-      saved: saved ?? this.saved,
-      followed: followed ?? this.followed,
-      hidden: hidden ?? this.hidden,
-      spammed: spammed ?? this.spammed,
-      inYourSubreddit: inYourSubreddit ?? this.inYourSubreddit,
-      moderation: moderation ?? this.moderation,
-      suggestedSort: suggestedSort,
-      video: video,
-      hybridContent: hybridContent,
-    );
-  }
 }

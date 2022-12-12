@@ -3,10 +3,10 @@
 ///@description this file has some reusable components to use in the home screen
 import 'package:flutter/material.dart';
 import 'package:reddit/cubit/app_cubit.dart';
-import 'package:reddit/screens/to_be_done_screen.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 
 import '../../screens/create_community_screen/create_community_screen.dart';
+import '../../screens/to_be_done_screen.dart';
 
 /// a reusable button with a dropdown list to use in drawer
 /// @param [text] is the name of the list
@@ -52,7 +52,6 @@ Widget listButton(context, text, list, onPressed, isOpen,
               genericTextButton(context, Icons.add, 'Create a community',
                   const CreateCommunityScreen(),
                   isLeftDrawer: true),
-
             if (isModerating)
               genericTextButton(
                   context,
@@ -62,7 +61,6 @@ Widget listButton(context, text, list, onPressed, isOpen,
                     text: 'Mod Feed',
                   ),
                   isLeftDrawer: true),
-
             if (isModerating)
               genericTextButton(
                   context,
@@ -72,14 +70,6 @@ Widget listButton(context, text, list, onPressed, isOpen,
                     text: 'Mod Queue',
                   ),
                   isLeftDrawer: true),
-            // if (isModerating)
-            //   genericTextButton(
-            //       context,
-            //       Icons.mail_outline_rounded,
-            //       'Modmail',
-            //       const ToBeDoneScreen(
-            //         text: 'Modmail',
-            //       )),
             if (isCommunity)
               genericTextButton(
                   context,
@@ -89,7 +79,6 @@ Widget listButton(context, text, list, onPressed, isOpen,
                     text: 'Custom Feeds',
                   ),
                   isLeftDrawer: true),
-
             ListView(
               padding: const EdgeInsets.only(left: 10),
               children: list,

@@ -10,17 +10,17 @@ class Moderation {
 
   Moderation({this.approve, this.remove, this.spam, this.lock});
 
-  factory Moderation.fromJson(Map<String, dynamic> json) => Moderation(
-        approve: json['approve'] == null
+  factory Moderation.fromJson(Map<String, dynamic>? json) => Moderation(
+        approve: json?['approve'] == null
             ? null
-            : Approve.fromJson(json['approve'] as Map<String, dynamic>),
-        remove: json['remove'] == null
+            : Approve.fromJson(json?['approve'] as Map<String, dynamic>),
+        remove: json?['remove'] == null
             ? null
-            : Remove.fromJson(json['remove'] as Map<String, dynamic>),
-        spam: json['spam'] == null
+            : Remove.fromJson(json?['remove'] as Map<String, dynamic>),
+        spam: json?['spam'] == null
             ? null
-            : Spam.fromJson(json['spam'] as Map<String, dynamic>),
-        lock: json['lock'] as bool?,
+            : Spam.fromJson(json?['spam'] as Map<String, dynamic>),
+        lock: json?['lock'] as bool?,
       );
 
   Map<String, dynamic> toJson() => {

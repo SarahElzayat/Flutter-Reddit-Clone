@@ -1,25 +1,27 @@
 import 'package:flutter_lorem/flutter_lorem.dart';
+import 'package:reddit/data/comment/comment_model.dart';
 
 import '../post_model/flair.dart';
 import '../post_model/image.dart';
 import '../post_model/post_model.dart';
 
+String quillContent =
+    '''[{"insert":"This is a post written with Quill\\n","attributes":{"bold":true}},
+    {"insert":"bold and italic","attributes":{"bold":true,"italic":true}},{"insert":"\\n"},
+    {"insert":"link","attributes":{"link":"pub.dev/packages/quill_markdown"}},{"insert":"\\n"}]''';
+
 var textPost = PostModel(
-  id: '638a5f147341d9e893f38b72',
-  kind: 'text',
+  id: '639508b2b02950743a541875',
+  kind: 'hybrid',
   title: 'this is the title',
-  content: ''' This is a content <br />
-      **This IS BOLD** <br />
-      *this is italic* <br />
-      ***THIS IS BOLD AND ITALIC***
-      ''',
-  subreddit: 'Flutter',
-  postedBy: 'username',
+  content: quillContent,
+  subreddit: 'news',
+  postedBy: 'Atta',
   postedAt: '2019-08-24T14:15:22Z',
   editedAt: '2019-08-24T14:15:22Z',
   flair: Flair(
-    flairId: '123',
-    flairText: 'flair',
+    id: '123',
+    flairName: 'flair',
     backgroundColor: '#FFAA00',
     textColor: '#0E0EEE',
   ),
@@ -34,18 +36,17 @@ var textPost = PostModel(
 final textPostS = textPost.toJson();
 
 var smalltextPost = PostModel(
-  id: '638a5f147341d9e893f38b72',
-  kind: 'text',
+  id: '639508b2b02950743a541875',
+  kind: 'hybrid',
   title: 'this is the title',
-  content: ''' This is a content <br />
-      ''',
-  subreddit: 'Flutter',
-  postedBy: 'username',
+  content: quillContent,
+  subreddit: 'news',
+  postedBy: 'Atta',
   postedAt: '2019-08-24T14:15:22Z',
   editedAt: '2019-08-24T14:15:22Z',
   flair: Flair(
-    flairId: '123',
-    flairText: 'flair',
+    id: '123',
+    flairName: 'flair',
     backgroundColor: '#FFAA00',
     textColor: '#0E0EEE',
   ),
@@ -60,12 +61,12 @@ var smalltextPost = PostModel(
 final smalltextPostS = smalltextPost.toJson();
 
 var oneImagePost = PostModel(
-  id: '638a5f147341d9e893f38b72',
+  id: '639508b2b02950743a541875',
   kind: 'image',
   title: 'That\'s a Post with only image inside it',
-  content: lorem(paragraphs: 1, words: 50),
-  subreddit: 'Flutter',
-  postedBy: 'username',
+  content: '[]',
+  subreddit: 'news',
+  postedBy: 'Atta',
   postedAt: '2019-08-24T14:15:22Z',
   editedAt: '2019-08-24T14:15:22Z',
   nsfw: true,
@@ -87,17 +88,17 @@ var oneImagePost = PostModel(
 final oneImagePostS = oneImagePost.toJson();
 
 var manyImagePost = PostModel(
-  id: '638a5f147341d9e893f38b72',
+  id: '639508b2b02950743a541875',
   title: 'That\'s a Post with Many image inside it',
   kind: 'image',
-  content: lorem(paragraphs: 1, words: 50),
+  content: quillContent,
   subreddit: 'Flutter',
-  postedBy: 'username',
+  postedBy: 'Atta',
   postedAt: '2019-08-24T14:15:22Z',
   editedAt: '2019-08-24T14:15:22Z',
   flair: Flair(
-    flairId: '123',
-    flairText: 'many cats',
+    id: '123',
+    flairName: 'many cats',
     backgroundColor: '#AA00A0',
     textColor: '#FFBBAA',
   ),
@@ -143,17 +144,18 @@ var manyImagePost = PostModel(
 final manyImagePostS = manyImagePost.toJson();
 
 var linkPost = PostModel(
-  id: '638a5f147341d9e893f38b72',
+  id: '639508b2b02950743a541875',
   kind: 'link',
   title: lorem(paragraphs: 1, words: 24),
-  content: 'https://github.com/',
+  content: '',
+  link: 'https://github.com/',
   subreddit: 'Flutter',
-  postedBy: 'username',
+  postedBy: 'Atta',
   postedAt: '2019-08-24T14:15:22Z',
   editedAt: '2019-08-24T14:15:22Z',
   flair: Flair(
-    flairId: '123',
-    flairText: 'flair',
+    id: '123',
+    flairName: 'flair',
     backgroundColor: '#FFAA00',
     textColor: '#0E0EEE',
   ),
@@ -198,7 +200,7 @@ var tryData = PostModel.fromJsonwithData({
     'markedSpam': true,
     'suggestedSort': 'string',
     'editedAt': 'string',
-    'postedBy': 'string',
+    'postedBy': 'Atta',
     'votingType': 1,
     'saved': false,
     'followed': false,
@@ -216,3 +218,39 @@ var tryData = PostModel.fromJsonwithData({
     }
   }
 });
+
+CommentModel childCommentEx = CommentModel(
+  children: [],
+  commentBody: 'This is a comment',
+  id: '123',
+  commentedBy: 'username',
+  editTime: '2019-08-24T14:15:22Z',
+  followed: false,
+  level: 2,
+  numberofChildren: 2,
+  parent: '123',
+  votes: 23,
+  publishTime: '2019-08-24T14:15:22Z',
+  saved: false,
+  userImage: 'https://www.google.com',
+  votingType: 1,
+);
+
+CommentModel commentEx = CommentModel(
+  children: [childCommentEx],
+  commentBody: 'This is a comment',
+  id: '123',
+  commentedBy: 'username',
+  editTime: '2019-08-24T14:15:22Z',
+  followed: false,
+  level: 1,
+  numberofChildren: 2,
+  parent: '123',
+  votes: 23,
+  publishTime: '2019-08-24T14:15:22Z',
+  saved: false,
+  userImage: 'https://www.google.com',
+  votingType: 1,
+);
+
+final commentExS = commentEx.toJson();
