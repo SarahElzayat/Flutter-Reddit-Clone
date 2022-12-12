@@ -1,6 +1,10 @@
+/// @author Abdelaziz Salah
+/// @date 12/12/2022
+/// This is a common app bar for all setting screens.
 import 'package:flutter/material.dart';
 
 class SettingsAppBar extends StatelessWidget implements PreferredSizeWidget {
+  /// this is the title to be shown in each screen.
   final title;
   const SettingsAppBar({super.key, required this.title});
 

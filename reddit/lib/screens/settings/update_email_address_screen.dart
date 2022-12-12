@@ -1,9 +1,13 @@
+/// @author Abdelaziz Salah
+/// @date 12/12/2022
+/// This file contains the Update email address screen.
+
 import 'package:flutter/material.dart';
-import 'package:reddit/components/default_text_field.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/widgets/settings/bottom_buttons.dart';
-import 'package:reddit/widgets/settings/header_contains_avatar.dart';
-import 'package:reddit/widgets/settings/settings_app_bar.dart';
+import '../../components/default_text_field.dart';
+import '../../components/helpers/color_manager.dart';
+import '../../widgets/settings/bottom_buttons.dart';
+import '../../widgets/settings/header_contains_avatar.dart';
+import '../../widgets/settings/settings_app_bar.dart';
 
 class UpdateEmailAddressScreen extends StatelessWidget {
   static const routeName = 'update_email_address_screen_route';

@@ -1,10 +1,22 @@
+/// @author Abdelaziz Salah
+/// @date 12/12/2022
+/// This is a utility widget contains two buttons in one row,
+/// because same structure exists many times in the settings.
+
 import 'package:flutter/material.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
+import '../../components/helpers/color_manager.dart';
 
 class BottomButtons extends StatelessWidget {
+  /// this is the first string to be shown on the first button
   final string1;
+
+  /// this is the second string to be shown on the second button
   final string2;
+
+  /// this is the first function to be shown on the first button
   final handler1;
+
+  /// this is the second function to be shown on the second button
   final handler2;
   const BottomButtons(
       {super.key,

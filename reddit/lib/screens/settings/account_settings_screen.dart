@@ -1,9 +1,13 @@
+/// @author Abdelaziz Salah
+/// @date 12/12/2022
+/// This file contains the Screen of the account settings.
+
 import 'package:flutter/material.dart';
-import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/components/list_tile_container.dart';
-import 'package:reddit/screens/settings/change_password_screen.dart';
-import 'package:reddit/screens/settings/countries_screen.dart';
-import 'package:reddit/screens/settings/update_email_address_screen.dart';
+import '../../components/helpers/enums.dart';
+import '../../components/list_tile_container.dart';
+import '../../screens/settings/change_password_screen.dart';
+import '../../screens/settings/countries_screen.dart';
+import '../../screens/settings/update_email_address_screen.dart';
 
 class AccountSettingsScreen extends StatelessWidget {
   static const routeName = 'account_settings_screen_route';

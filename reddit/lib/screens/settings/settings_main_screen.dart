@@ -1,3 +1,8 @@
+/// @author Abdelaziz Salah
+/// @date 12/12/2022
+/// This file contains the Settings main screen which is the first screen opens
+/// when the user presses on the settings in the UI.
+
 import 'package:flutter/material.dart';
 import '../../components/list_tile_container.dart';
 import '../../screens/settings/account_settings_screen.dart';
