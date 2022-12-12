@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:reddit/Screens/history/history_screen_for_web.dart';
 import 'package:reddit/screens/create_community_screen/create_community_screen.dart';
 import 'package:reddit/screens/saved/saved_screen.dart';
-
+import 'package:reddit/screens/settings/settings_main_screen.dart';
 import '../../cubit/app_cubit.dart';
 import '../../screens/history/history_screen.dart';
 import '../../screens/to_be_done_screen.dart';
@@ -110,7 +110,7 @@ class RightDrawer extends StatelessWidget {
               children: rightDrawerItems,
             ),
             genericTextButton(context, Icons.settings_outlined, 'Settings',
-                const ToBeDoneScreen(text: 'Settings'),
+                const SettingsMainScreen(),
                 isLeftDrawer: false),
           ],
         ),

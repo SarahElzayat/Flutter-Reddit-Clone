@@ -14,10 +14,20 @@ const baseUrl = kReleaseMode
         ? 'http://localhost:3000'
         : 'http://10.0.2.2:3000';
 
+// login and signup
 const signUp = '/signup';
 const login = '/login';
 const loginForgetPassword = '/login/forget-password';
 const loginForgetUserName = '/login/forget-username';
+
+// settings endpoints
+const changeEmail = '/change-email';
+const changePassword = '/change-password';
+const blockedAccounts = '/blocked-users';
+const accountSettings =
+    '/account-settings'; // this end point is used in multi requests.
+
+// create community
 const createCommunity = '/create-subreddit';
 const savedCategories = '/saved-categories';
 const markSpoiler = '/mark-spoiler';
