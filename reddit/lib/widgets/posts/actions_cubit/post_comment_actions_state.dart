@@ -14,6 +14,8 @@ class VotedError extends PostState {
   VotedError({this.error});
 }
 
+class CommentsModToolsToggled extends PostState {}
+
 class PostsSaved extends PostState {}
 
 class PostsSavedError extends PostState {}
@@ -29,13 +31,3 @@ class PostsError extends PostState {}
 class PostsLoaded extends PostState {}
 
 class PostsLoading extends PostState {}
-
-class CommentsSortTypeChanged extends PostState {}
-
-class CommentsModToolsToggled extends PostState {}
-
-class CommentsLoading extends PostState {}
-
-class CommentsError extends PostState {}
-
-class CommentsLoaded extends PostState {}

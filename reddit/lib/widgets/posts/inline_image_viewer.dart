@@ -5,7 +5,7 @@ import 'dart:math';
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
+import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -24,6 +24,7 @@ class InlineImageViewer extends StatefulWidget {
     required this.post,
     super.key,
     this.initialIndex = 0,
+    required this.isWeb,
     this.backgroundDecoration = const BoxDecoration(
       color: ColorManager.black,
     ),
@@ -43,6 +44,8 @@ class InlineImageViewer extends StatefulWidget {
 
   /// The post to show
   final PostModel post;
+
+  final bool isWeb;
 
   /// it's either a card or a classic view
   /// defaults to [PostView.card]
@@ -90,14 +93,18 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
       builder: (context) => LayoutBuilder(
         builder: (context, constraints) {
           return GestureDetector(
-            onTap: () {
-              openImage(context, currentIndex);
-            },
+            onTap: widget.isWeb
+                ? null
+                : () {
+                    openImage(context, currentIndex);
+                  },
             child: SizedBox(
               // expand the image to the width of the screen with max height of 60% of the screen
-              height: widget.outsideScreen
-                  ? min(70.h, aspectRatio * constraints.maxWidth)
-                  : 50.h,
+              height: widget.postView == PostView.classic
+                  ? constraints.maxHeight * 0.7
+                  : widget.outsideScreen
+                      ? min(70.h, aspectRatio * constraints.maxWidth)
+                      : 50.h,
               child: Stack(
                 children: [
                   PhotoViewGallery.builder(
@@ -134,7 +141,9 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                         ),
                       ),
                     ),
-                  if (kIsWeb && currentIndex != widget.post.images!.length - 1)
+                  if (widget.isWeb &&
+                      currentIndex != widget.post.images!.length - 1 &&
+                      widget.postView == PostView.card)
                     Align(
                       alignment: Alignment.centerRight,
                       child: Container(
@@ -158,7 +167,9 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                         ),
                       ),
                     ),
-                  if (kIsWeb && currentIndex != 0)
+                  if (widget.isWeb &&
+                      currentIndex != 0 &&
+                      widget.postView == PostView.card)
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Container(
@@ -272,7 +283,9 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
     return PhotoViewGalleryPageOptions(
       imageProvider: NetworkImage(item),
       //NOTE - i changed this to covered so that the image fits small containers
-      initialScale: PhotoViewComputedScale.covered,
+      initialScale: widget.isWeb
+          ? PhotoViewComputedScale.contained
+          : PhotoViewComputedScale.covered,
       minScale: PhotoViewComputedScale.contained * (0.5),
       maxScale: PhotoViewComputedScale.covered * 4.1,
       // heroAttributes: PhotoViewHeroAttributes(tag: item),

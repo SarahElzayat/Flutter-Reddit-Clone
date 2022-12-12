@@ -8,11 +8,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 
 import 'package:reddit/data/post_model/post_model.dart';
-import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
+import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../functions/post_functions.dart';
-import 'cubit/post_state.dart';
+import 'actions_cubit/post_comment_actions_state.dart';
 
 class PostLowerBarWithoutVotes extends StatefulWidget {
   const PostLowerBarWithoutVotes({
@@ -50,96 +50,93 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
     var isMod = widget.post.inYourSubreddit ?? false;
     return Container(
       color: widget.backgroundColor,
-      child: Padding(
-        padding: widget.pad,
-        child: Row(
-          mainAxisAlignment: widget.isWeb
-              ? MainAxisAlignment.start
-              : MainAxisAlignment.spaceEvenly,
-          children: [
-            InkWell(
-              key: const Key('comment-button'),
-              onTap: () {
-                //
-                // goToPost(context, widget.post);
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Icon(
-                    Icons.comment_outlined,
+      child: Row(
+        mainAxisAlignment: widget.isWeb
+            ? MainAxisAlignment.start
+            : MainAxisAlignment.spaceEvenly,
+        children: [
+          InkWell(
+            key: const Key('comment-button'),
+            onTap: () {
+              //
+              // goToPost(context, widget.post);
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Icon(
+                  Icons.comment_outlined,
+                  color: widget.iconColor,
+                  size: min(5.5.w, 30),
+                ),
+                Text(
+                  ' ${widget.post.comments ?? 0}'
+                  '${widget.isWeb ? ' Comments' : ''}',
+                  style: TextStyle(
                     color: widget.iconColor,
-                    size: min(5.5.w, 30),
+                    fontSize: 15,
                   ),
-                  Text(
-                    ' ${widget.post.comments ?? 0}'
-                    '${widget.isWeb ? ' Comments' : ''}',
-                    style: TextStyle(
-                      color: widget.iconColor,
-                      fontSize: 15,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-            SizedBox(
-              width: 5.w,
-            ),
-            InkWell(
-              onTap: () {
-                if (isMod &&
-                    (PostAndCommentActionsCubit.get(context).showModTools)) {
-                  showModOperations(
-                    context: context,
-                    post: widget.post,
-                  );
-                } else {
-                  // TODO
-                  // sharePost(context, widget.post);
-                }
+          ),
+          SizedBox(
+            width: 5.w,
+          ),
+          InkWell(
+            onTap: () {
+              if (isMod &&
+                  (PostAndCommentActionsCubit.get(context).showModTools)) {
+                showModOperations(
+                  context: context,
+                  post: widget.post,
+                );
+              } else {
+                // TODO
+                // sharePost(context, widget.post);
+              }
+            },
+            child: BlocBuilder<PostAndCommentActionsCubit, PostState>(
+              builder: (context, state) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: (isMod &&
+                          !(PostAndCommentActionsCubit.get(context)
+                              .showModTools))
+                      ? [
+                          Icon(
+                            key: const Key('mod-icon'),
+                            Icons.shield_outlined,
+                            color: widget.iconColor,
+                          ),
+                          Text(
+                            'Mod',
+                            style: TextStyle(
+                              color: widget.iconColor,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ]
+                      : [
+                          Icon(
+                            key: const Key('share-icon'),
+                            Icons.share,
+                            color: widget.iconColor,
+                            size: min(5.5.w, 30),
+                          ),
+                          Text(
+                            'Share',
+                            style: TextStyle(
+                              color: widget.iconColor,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
+                );
               },
-              child: BlocBuilder<PostAndCommentActionsCubit, PostState>(
-                builder: (context, state) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: (isMod &&
-                            !(PostAndCommentActionsCubit.get(context)
-                                .showModTools))
-                        ? [
-                            Icon(
-                              key: const Key('mod-icon'),
-                              Icons.shield_outlined,
-                              color: widget.iconColor,
-                            ),
-                            Text(
-                              'Mod',
-                              style: TextStyle(
-                                color: widget.iconColor,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ]
-                        : [
-                            Icon(
-                              key: const Key('share-icon'),
-                              Icons.share,
-                              color: widget.iconColor,
-                              size: min(5.5.w, 30),
-                            ),
-                            Text(
-                              'Share',
-                              style: TextStyle(
-                                color: widget.iconColor,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ],
-                  );
-                },
-              ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }

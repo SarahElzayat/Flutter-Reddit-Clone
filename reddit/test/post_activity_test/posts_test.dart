@@ -6,7 +6,7 @@ import 'package:reddit/data/temp_data/tmp_data.dart';
 import 'package:reddit/components/helpers/mocks/mock_functions.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
-import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
+import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 
 @GenerateMocks([DioHelper])
 void main() {

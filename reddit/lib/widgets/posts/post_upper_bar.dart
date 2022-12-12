@@ -145,14 +145,6 @@ class _PostUpperBarState extends State<PostUpperBar> {
     );
   }
 
-  CircleAvatar subredditAvatar({small = false}) {
-    return CircleAvatar(
-      radius: small ? min(4.w, 15) : min(5.5.w, 30),
-      child: Image.network(
-          'https://styles.redditmedia.com/t5_2qh87/styles/communityIcon_ub69d1lpjlf51.png?width=256&s=920c352b6d0c69518b6978ba8b456176a8d63c25'),
-    );
-  }
-
   Row _tagsRow() {
     return Row(
       children: [

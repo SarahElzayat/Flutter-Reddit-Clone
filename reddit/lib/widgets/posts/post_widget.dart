@@ -10,25 +10,24 @@ import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:markdown/markdown.dart' as md;
 import 'package:reddit/components/helpers/enums.dart';
+import 'package:reddit/components/helpers/widgets/responsive_widget.dart';
 import 'package:reddit/functions/post_functions.dart';
-import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
+import 'package:reddit/screens/posts/post_screen_cubit/post_screen_cubit.dart';
+import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:reddit/widgets/posts/post_lower_bar.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../components/bottom_sheet.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../components/helpers/posts/helper_funcs.dart';
 import '../../data/post_model/post_model.dart';
 import '../../widgets/posts/inline_image_viewer.dart';
 import '../../widgets/posts/votes_widget.dart';
-import 'cubit/post_state.dart';
+import 'actions_cubit/post_comment_actions_state.dart';
 import 'post_upper_bar.dart';
 
 /// The widget that displays the post
@@ -66,8 +65,7 @@ class PostWidget extends StatelessWidget {
       create: (context) => PostAndCommentActionsCubit(post: post),
       child: ResponsiveBuilder(
         builder: (buildContext, sizingInformation) {
-          bool isWeb =
-              sizingInformation.deviceScreenType != DeviceScreenType.mobile;
+          bool isWeb = !ResponsiveWidget.isSmallScreen(context);
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return Container(
@@ -114,6 +112,7 @@ class PostWidget extends StatelessWidget {
                                   InlineImageViewer(
                                     key: const Key('inline-image-viewer'),
                                     post: post,
+                                    isWeb: isWeb,
                                     outsideScreen: outsideScreen,
                                   ),
 
@@ -140,6 +139,24 @@ class PostWidget extends StatelessWidget {
                                   },
                                   fallbackBuilder: (context) => Container(),
                                 ),
+                                SizedBox(height: 1.h),
+                                _lowerPart(isWeb),
+                                BlocBuilder<PostAndCommentActionsCubit,
+                                    PostState>(
+                                  builder: (context, state) {
+                                    return AnimatedSwitcher(
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        child: (PostAndCommentActionsCubit.get(
+                                                    context)
+                                                .showModTools)
+                                            ? _modRow(context)
+                                            : Container(
+                                                key: const Key('mod-row-empty'),
+                                              ));
+                                  },
+                                ),
+                                if (!outsideScreen) _commentSortRow(context),
                               ],
                             ),
                           ),
@@ -156,25 +173,12 @@ class PostWidget extends StatelessWidget {
                             child: InlineImageViewer(
                               key: const Key('inline-image-viewer'),
                               post: post,
+                              isWeb: isWeb,
                               postView: postView,
                             ),
                           ),
                       ],
                     ),
-                    _lowerPart(isWeb),
-                    BlocBuilder<PostAndCommentActionsCubit, PostState>(
-                      builder: (context, state) {
-                        return AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 300),
-                            child: (PostAndCommentActionsCubit.get(context)
-                                    .showModTools)
-                                ? _modRow(context)
-                                : Container(
-                                    key: const Key('mod-row-empty'),
-                                  ));
-                      },
-                    ),
-                    if (!outsideScreen) _commentsRow(context),
                   ],
                 ),
               );
@@ -280,7 +284,7 @@ class PostWidget extends StatelessWidget {
     );
   }
 
-  Widget _commentsRow(BuildContext context) {
+  Widget _commentSortRow(BuildContext context) {
 // a row with a button to choose the sorting type and an icon button for MOD
 // operations
     return BlocBuilder<PostAndCommentActionsCubit, PostState>(
@@ -291,14 +295,13 @@ class PostWidget extends StatelessWidget {
               onPressed: () async {
                 await modalBottomSheet(
                   context: context,
-                  selectedItem:
-                      PostAndCommentActionsCubit.get(context).selectedItem,
-                  text: PostAndCommentActionsCubit.labels,
+                  selectedItem: PostScreenCubit.get(context).selectedItem,
+                  text: PostScreenCubit.labels,
                   title: 'SORT COMMENTS BY',
-                  selectedIcons: PostAndCommentActionsCubit.icons,
-                  unselectedIcons: PostAndCommentActionsCubit.icons,
+                  selectedIcons: PostScreenCubit.icons,
+                  unselectedIcons: PostScreenCubit.icons,
                 ).then((value) {
-                  PostAndCommentActionsCubit.get(context).changeSortType(value);
+                  PostScreenCubit.get(context).changeSortType(value);
                 });
               },
               style: ElevatedButton.styleFrom(
@@ -307,7 +310,7 @@ class PostWidget extends StatelessWidget {
                 backgroundColor: Colors.transparent,
               ),
               icon: Icon(
-                PostAndCommentActionsCubit.get(context).getSelectedIcon(),
+                PostScreenCubit.get(context).getSelectedIcon(),
                 color: ColorManager.greyColor,
               ),
               label: Row(
@@ -315,7 +318,7 @@ class PostWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    PostAndCommentActionsCubit.get(context).selectedItem,
+                    PostScreenCubit.get(context).selectedItem,
                     style: const TextStyle(
                       color: ColorManager.greyColor,
                     ),
@@ -328,8 +331,7 @@ class PostWidget extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            if (PostAndCommentActionsCubit.get(context).post.inYourSubreddit ??
-                false)
+            if (PostScreenCubit.get(context).post.inYourSubreddit ?? false)
               Material(
                 color: Colors.transparent,
                 clipBehavior: Clip.antiAlias,
@@ -386,7 +388,7 @@ class PostWidget extends StatelessWidget {
     return InkWell(
       key: const Key('link-content'),
       onTap: () async {
-        await launchUrl(Uri.parse(post.content!));
+        await launchUrl(Uri.parse(post.link!));
       },
       child: Container(
           constraints: const BoxConstraints(
@@ -399,7 +401,7 @@ class PostWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                post.content ?? '',
+                post.link ?? '',
                 style: const TextStyle(
                   color: ColorManager.eggshellWhite,
                   fontSize: 15,
@@ -439,7 +441,7 @@ class PostWidget extends StatelessWidget {
             if (post.kind == 'link' && outsideScreen)
               InkWell(
                 onTap: () async {
-                  await launchUrl(Uri.parse(post.content!));
+                  await launchUrl(Uri.parse(post.link!));
                 },
                 child: SizedBox(
                   width: min(30.w, 120),
@@ -447,7 +449,7 @@ class PostWidget extends StatelessWidget {
                   child: AnyLinkPreview.builder(
                     errorWidget: imageWithUrl(
                         'https://cdn-icons-png.flaticon.com/512/3388/3388466.png'),
-                    link: post.content ?? '',
+                    link: post.link ?? '',
                     cache: const Duration(hours: 1),
                     itemBuilder: (BuildContext ctx, Metadata md,
                         ImageProvider<Object>? ip) {
@@ -474,7 +476,7 @@ class PostWidget extends StatelessWidget {
             width: min(30.w, 50.dp),
             color: Colors.black.withOpacity(0.5),
             child: Text(
-              (post.content ?? '')
+              (post.link ?? '')
                   .replaceAll('https://', '')
                   .replaceAll('www.', ''),
               style: const TextStyle(
@@ -499,7 +501,7 @@ class PostWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
-          post.flair!.flairText ?? '',
+          post.flair!.flairName ?? '',
           style: TextStyle(color: HexColor(post.flair!.textColor ?? '#FFFFFF')),
         ),
       ),

@@ -66,4 +66,22 @@ class CommentModel {
         'numberofChildren': numberofChildren,
         'children': children?.map((e) => e.toJson()).toList(),
       };
+
+  /// equal operator to load the data from the another object
+  void overrideWithOther(CommentModel other) {
+    id = other.id;
+    commentedBy = other.commentedBy;
+    userImage = other.userImage;
+    editTime = other.editTime;
+    publishTime = other.publishTime;
+    commentBody = other.commentBody;
+    votes = other.votes;
+    saved = other.saved;
+    followed = other.followed;
+    votingType = other.votingType;
+    parent = other.parent;
+    level = other.level;
+    numberofChildren = other.numberofChildren;
+    children = other.children;
+  }
 }
