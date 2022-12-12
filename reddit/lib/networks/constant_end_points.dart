@@ -37,4 +37,12 @@ const downvotedHistory = '/downvoted';
 const hiddenHistory = '/hidden';
 const clearHistory = '/clear-history';
 const search = '/search';
+const searchPosts = 'post';
+const searchUsers = 'user';
+const searchComments = 'comment';
+const searchCommunities = 'community';
+const postDetails = '/post-details';
+
+const unknownAvatar =
+    'https://www.investopedia.com/thmb/qDGHg2MCiUni812bkWihr-qdBbM=/1600x900/filters:no_upscale():max_bytes(150000):strip_icc()/Reddit-Logo-e9537b96b55349ac8eb77830f8470c95.jpg';
 // const savedPosts = ''

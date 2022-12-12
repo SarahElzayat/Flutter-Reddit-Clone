@@ -24,8 +24,8 @@ class _ResultsPostsState extends State<ResultsPosts> {
       },
       builder: (context, state) {
         return ListView.builder(
-          itemBuilder: (context, index) =>
-              PostWidget(post: cubit.posts[index], postView: PostView.classic),
+          itemBuilder: (context, index) => PostWidget(
+              post: cubit.posts[index], postView: PostView.classic),
         );
       },
     );

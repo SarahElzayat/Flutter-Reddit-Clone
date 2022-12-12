@@ -87,18 +87,13 @@ class _SearchFieldState extends State<SearchField> {
         focusNode: _focus,
         onSubmitted: widget.onSubmitted,
         cursorColor: ColorManager.eggshellWhite,
-        // style: TextStyle(color: ColorManager.eggshellWhite, fontSize: 18),
         onChanged: (value) => setState(() {
           (widget.textEditingController.text);
         }),
 
         controller: widget.textEditingController,
-        style: TextStyle(color: ColorManager.eggshellWhite, fontSize: 18),
-        // Theme.of(context)
-        //     .textTheme
-        //     .titleLarge!
-        //     .copyWith(color: ColorManager.eggshellWhite),
-        // textAlignVertical: TextAlignVertical.,
+        style: const TextStyle(color: ColorManager.eggshellWhite, fontSize: 18),
+
         decoration: InputDecoration(
           hintText: 'Search Reddit',
           border: InputBorder.none,

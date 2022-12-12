@@ -63,9 +63,9 @@ class Main extends StatelessWidget {
         BlocProvider(
           create: (context) => AppCubit(),
         ),
-        BlocProvider(
-          create: (context) => SearchCubit(),
-        ),
+        // BlocProvider(
+        //   create: (context) => SearchCubit(),
+        // ),
         BlocProvider(
           create: (context) => PostNotifierCubit(),
         ),

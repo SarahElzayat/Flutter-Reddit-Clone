@@ -8,8 +8,18 @@ class SearchInitial extends SearchState {}
 class ResultEmptyState extends SearchState {}
 class NoMoreResultsToLoadState extends SearchState {}
 
-class LoadingPostsState extends SearchState{}
-class LoadingMorePostsState extends SearchState{}
 
-class LoadedPostsState extends SearchState{}
-class LoadedMorePostsState extends SearchState{}
+
+class LoadingResultsState extends SearchState{}
+class LoadingMoreResultsState extends SearchState{}
+
+
+// class LoadedPostsState extends SearchState{}
+// class LoadedMorePostsState extends SearchState{}
+
+class LoadedResultsState extends SearchState{}
+class LoadedMoreResultsState extends SearchState{}
+
+
+
+class SearchErrorState extends SearchState{}
