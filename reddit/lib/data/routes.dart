@@ -3,6 +3,7 @@
 /// this file containes all our routes in order to avoid destraction in the main file.
 import 'package:flutter/material.dart';
 
+import '../screens/settings/countries_screen.dart';
 import '../screens/add_post/add_post.dart';
 import '../screens/add_post/community_search.dart';
 import '../screens/add_post/post_rules.dart';
@@ -58,6 +59,7 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   AccountSettingsScreen.routeName: (ctx) => const AccountSettingsScreen(),
   UpdateEmailAddressScreen.routeName: (ctx) => UpdateEmailAddressScreen(),
   ChangePassword.routeName: (ctx) => const ChangePassword(),
+  CountriesScreen.routeName: (ctx) => const CountriesScreen(),
 
   // home screens
   HomeScreenForMobile.routeName: (ctx) => const HomeScreenForMobile(),

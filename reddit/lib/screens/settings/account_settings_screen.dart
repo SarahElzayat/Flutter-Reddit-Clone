@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/components/list_tile_container.dart';
 import 'package:reddit/screens/settings/change_password_screen.dart';
+import 'package:reddit/screens/settings/countries_screen.dart';
 import 'package:reddit/screens/settings/update_email_address_screen.dart';
 
 class AccountSettingsScreen extends StatelessWidget {
@@ -31,7 +32,9 @@ class AccountSettingsScreen extends StatelessWidget {
                     () {
                       navigator.pushNamed(ChangePassword.routeName);
                     },
-                    () {},
+                    () {
+                      navigator.pushNamed(CountriesScreen.routeName);
+                    },
                     () {},
                   ],
                   listTileIcons: const [
