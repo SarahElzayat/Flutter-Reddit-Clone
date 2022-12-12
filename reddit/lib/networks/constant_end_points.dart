@@ -23,6 +23,9 @@ const loginForgetUserName = '/login/forget-username';
 // settings endpoints
 const changeEmail = '/change-email';
 const changePassword = '/change-password';
+const blockedAccounts = '/blocked-users';
+const accountSettings =
+    '/account-settings'; // this end point is used in multi requests.
 
 // create community
 const createCommunity = '/create-subreddit';
