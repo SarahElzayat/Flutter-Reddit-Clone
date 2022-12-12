@@ -10,11 +10,10 @@ import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:markdown/markdown.dart' as md;
 import 'package:reddit/components/helpers/enums.dart';
+import 'package:reddit/components/helpers/widgets/responsive_widget.dart';
 import 'package:reddit/functions/post_functions.dart';
 import 'package:reddit/screens/posts/post_screen_cubit/post_screen_cubit.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
@@ -22,7 +21,6 @@ import 'package:reddit/widgets/posts/post_lower_bar.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../components/bottom_sheet.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../components/helpers/posts/helper_funcs.dart';
@@ -67,8 +65,7 @@ class PostWidget extends StatelessWidget {
       create: (context) => PostAndCommentActionsCubit(post: post),
       child: ResponsiveBuilder(
         builder: (buildContext, sizingInformation) {
-          bool isWeb =
-              sizingInformation.deviceScreenType != DeviceScreenType.mobile;
+          bool isWeb = !ResponsiveWidget.isSmallScreen(context);
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return Container(
@@ -115,6 +112,7 @@ class PostWidget extends StatelessWidget {
                                   InlineImageViewer(
                                     key: const Key('inline-image-viewer'),
                                     post: post,
+                                    isWeb: isWeb,
                                     outsideScreen: outsideScreen,
                                   ),
 
@@ -141,6 +139,24 @@ class PostWidget extends StatelessWidget {
                                   },
                                   fallbackBuilder: (context) => Container(),
                                 ),
+                                SizedBox(height: 1.h),
+                                _lowerPart(isWeb),
+                                BlocBuilder<PostAndCommentActionsCubit,
+                                    PostState>(
+                                  builder: (context, state) {
+                                    return AnimatedSwitcher(
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        child: (PostAndCommentActionsCubit.get(
+                                                    context)
+                                                .showModTools)
+                                            ? _modRow(context)
+                                            : Container(
+                                                key: const Key('mod-row-empty'),
+                                              ));
+                                  },
+                                ),
+                                if (!outsideScreen) _commentSortRow(context),
                               ],
                             ),
                           ),
@@ -157,25 +173,12 @@ class PostWidget extends StatelessWidget {
                             child: InlineImageViewer(
                               key: const Key('inline-image-viewer'),
                               post: post,
+                              isWeb: isWeb,
                               postView: postView,
                             ),
                           ),
                       ],
                     ),
-                    _lowerPart(isWeb),
-                    BlocBuilder<PostAndCommentActionsCubit, PostState>(
-                      builder: (context, state) {
-                        return AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 300),
-                            child: (PostAndCommentActionsCubit.get(context)
-                                    .showModTools)
-                                ? _modRow(context)
-                                : Container(
-                                    key: const Key('mod-row-empty'),
-                                  ));
-                      },
-                    ),
-                    if (!outsideScreen) _commentsRow(context),
                   ],
                 ),
               );
@@ -281,7 +284,7 @@ class PostWidget extends StatelessWidget {
     );
   }
 
-  Widget _commentsRow(BuildContext context) {
+  Widget _commentSortRow(BuildContext context) {
 // a row with a button to choose the sorting type and an icon button for MOD
 // operations
     return BlocBuilder<PostAndCommentActionsCubit, PostState>(

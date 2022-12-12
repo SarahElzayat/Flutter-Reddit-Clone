@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:math';
-
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_quill/flutter_quill.dart' as quill;
+import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
@@ -12,12 +12,12 @@ import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/functions/post_functions.dart';
 import 'package:timeago/timeago.dart' as timeago;
-
 import 'package:reddit/screens/comments/add_comment_screen.dart';
 import 'package:reddit/screens/posts/post_screen_cubit/post_screen_cubit.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:reddit/widgets/posts/votes_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../components/helpers/universal_ui/universal_ui.dart';
 import '../../data/post_model/post_model.dart';
 import '../posts/dropdown_list.dart';
 
@@ -55,7 +55,7 @@ class Comment extends StatefulWidget {
 
 class _CommentState extends State<Comment> {
   bool isCompressed = false;
-  quill.QuillController? _controller;
+  QuillController? _controller;
   final FocusNode _focusNode = FocusNode();
 
   Future<void> _loadFromAssets() async {
@@ -73,16 +73,15 @@ class _CommentState extends State<Comment> {
     //         document: doc, selection: const TextSelection.collapsed(offset: 0));
     //   });
     // }
-    quill.Document doc;
+    Document doc;
     try {
-      doc = quill.Document.fromJson(
-          jsonDecode(widget.comment.commentBody ?? '[]'));
+      doc = Document.fromJson(jsonDecode(widget.comment.commentBody ?? '[]'));
     } catch (e) {
-      doc = quill.Document();
+      doc = Document();
     }
 
     setState(() {
-      _controller = quill.QuillController(
+      _controller = QuillController(
           document: doc, selection: const TextSelection.collapsed(offset: 0));
     });
   }
@@ -98,7 +97,40 @@ class _CommentState extends State<Comment> {
     if (_controller == null) {
       return Container();
     }
-
+    Widget quillEditor = MouseRegion(
+      cursor: SystemMouseCursors.text,
+      child: QuillEditor(
+        controller: _controller!,
+        scrollController: ScrollController(),
+        scrollable: true,
+        focusNode: _focusNode,
+        autoFocus: false,
+        readOnly: false,
+        placeholder: 'Add content',
+        expands: false,
+        padding: EdgeInsets.zero,
+        embedBuilders: [
+          ...FlutterQuillEmbeds.builders(),
+        ],
+      ),
+    );
+    if (kIsWeb) {
+      quillEditor = MouseRegion(
+        cursor: SystemMouseCursors.text,
+        child: QuillEditor(
+          controller: _controller!,
+          scrollController: ScrollController(),
+          scrollable: true,
+          focusNode: _focusNode,
+          autoFocus: false,
+          readOnly: false,
+          placeholder: 'Add content',
+          expands: false,
+          padding: EdgeInsets.zero,
+          embedBuilders: defaultEmbedBuildersWeb,
+        ),
+      );
+    }
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -166,19 +198,7 @@ class _CommentState extends State<Comment> {
                       ),
                     ],
                   ),
-                  quill.QuillEditor(
-                    controller: _controller!,
-                    readOnly: true,
-                    autoFocus: false,
-                    expands: false,
-                    scrollable: false,
-                    scrollController: ScrollController(),
-                    focusNode: FocusNode(),
-                    padding: EdgeInsets.zero,
-                    embedBuilders: [
-                      ...FlutterQuillEmbeds.builders(),
-                    ],
-                  ),
+                  quillEditor,
                   // _commentsRow(),
 
                   _commentsControlRow(),
@@ -315,7 +335,7 @@ class _CommentState extends State<Comment> {
       children: [
         subredditAvatar(small: true),
         SizedBox(
-          width: min(5.w, 0.2.dp),
+          width: min(5.w, 10),
         ),
         Text(
           '${'u'}/${post.commentedBy} ',

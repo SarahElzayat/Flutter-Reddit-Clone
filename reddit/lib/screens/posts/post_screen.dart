@@ -61,7 +61,7 @@ class PostScreen extends StatelessWidget {
             BlocBuilder<PostNotifierCubit, PostNotifierState>(
               builder: (context, state) {
                 return DropDownList(
-                  key: const Key('dropDownList-button'),
+                  // key: const Key('dropDownList-button'),
                   postId: post.id!,
                   itemClass: (post.saved ?? true)
                       ? ItemsClass.publicSaved
