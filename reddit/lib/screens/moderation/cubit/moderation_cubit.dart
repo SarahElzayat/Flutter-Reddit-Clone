@@ -1,6 +1,7 @@
 ///@author: Yasmine Ghanem
 ///@date: 10/12/2022
 ///moderation cubit that handles all moduration functions
+import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:bloc/bloc.dart';
@@ -26,6 +27,9 @@ class ModerationCubit extends Cubit<ModerationState> {
   ///settings of the community
   CommunitySettingsModel settings = CommunitySettingsModel();
 
+  ///suggested topics for a subreddit list
+  List<dynamic> topics = [];
+
   ///text editing controller for [something] textfield
   late TextEditingController controller;
   ModerationCubit() : super(ModerationInitial());
@@ -46,6 +50,24 @@ class ModerationCubit extends Cubit<ModerationState> {
           message: 'Failed to ban user\n${error.response}', error: true));
     });
     emit(LoadSettings());
+  }
+
+  List<dynamic> getSuggestedTopics(context) {
+    String? token = CacheHelper.getData(key: 'token');
+    DioHelper.getData(token: token, path: '/r/com1/suggested-topics')
+        .then((value) {
+      if (value.statusCode == 200) {
+        topics =
+            value.data.map((topic) => CommunityTopics.fromJson(topic)).toList();
+        print(topics);
+        emit(TopicsLoaded(topics));
+      }
+    }).catchError((error) {
+      error = error as DioError;
+      ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+          message: 'Failed to load topics\n${error.response}', error: true));
+    });
+    return topics;
   }
 
   ///@param[description] new description of the community

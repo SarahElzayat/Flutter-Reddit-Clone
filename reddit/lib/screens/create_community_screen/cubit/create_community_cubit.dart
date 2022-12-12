@@ -6,7 +6,6 @@ import 'package:reddit/data/create_community_model/create_community_model.dart';
 import 'package:reddit/data/create_community_model/saved_categories_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
-import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 
 part 'create_community_state.dart';
@@ -20,7 +19,6 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
   List<dynamic> getSavedCategories() {
     DioHelper.getData(path: savedCategories).then((value) {
       if (value.statusCode == 200) {
-        // categories = value.data;
         categories = value.data
             .map((category) => Categories.fromJson(category))
             .toList();

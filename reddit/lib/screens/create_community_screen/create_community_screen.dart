@@ -78,7 +78,6 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
   Widget build(BuildContext context) {
     //create community screen
     final CreateCommunityCubit cubit = CreateCommunityCubit.get(context);
-    // ..getSavedCategories();
     return BlocConsumer<CreateCommunityCubit, CreateCommunityState>(
       listener: (context, state) {
         // TODO: implement listener

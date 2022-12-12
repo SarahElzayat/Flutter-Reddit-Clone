@@ -27,3 +27,8 @@ class UsersLoaded extends ModerationState {
   List<dynamic>? users;
   UsersLoaded(this.users);
 }
+
+class TopicsLoaded extends ModerationState {
+  final List<dynamic> topics;
+  TopicsLoaded(this.topics);
+}
