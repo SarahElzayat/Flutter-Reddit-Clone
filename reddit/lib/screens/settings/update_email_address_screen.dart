@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/components/default_text_field.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/widgets/settings/bottom_buttons.dart';
+import 'package:reddit/widgets/settings/settings_app_bar.dart';
 
 class UpdateEmailAddressScreen extends StatelessWidget {
   static const routeName = 'update_email_address_screen_route';
@@ -10,13 +12,10 @@ class UpdateEmailAddressScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+    final navigator = Navigator.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        elevation: 5,
-        shadowColor: const Color.fromARGB(255, 187, 184, 184),
-        title: const Text('Update email address'),
-      ),
+      appBar: const SettingsAppBar(title: 'Update email address'),
       body: Form(
         key: _myKey,
         child: Container(
@@ -66,15 +65,13 @@ class UpdateEmailAddressScreen extends StatelessWidget {
                       ))
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton(onPressed: () {}, child: const Text('Cancel')),
-                  const SizedBox(
-                    width: 50,
-                  ),
-                  ElevatedButton(onPressed: () {}, child: const Text('Save'))
-                ],
+              BottomButtons(
+                string1: 'Cancel',
+                string2: 'Save',
+                handler1: () {
+                  navigator.pop();
+                },
+                handler2: () {},
               )
             ],
           ),
