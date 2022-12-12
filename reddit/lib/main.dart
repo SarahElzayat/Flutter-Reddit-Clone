@@ -13,20 +13,14 @@ import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'constants/constants.dart';
-import '/screens/bottom_navigation_bar_screens/home_screen.dart';
-import '/screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
 import 'screens/main_screen.dart';
 
 import 'package:reddit/data/routes.dart';
 import 'package:reddit/screens/create_community_screen/cubit/create_community_cubit.dart';
 import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
 
-import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
-
 import 'screens/sign_in_and_sign_up_screen/mobile/sign_In_screen.dart';
 import 'cubit/post_notifier/post_notifier_cubit.dart';
-
 import 'components/helpers/mocks/mock_functions.dart';
 import 'cubit/add_post/cubit/add_post_cubit.dart';
 import 'networks/dio_helper.dart';
@@ -104,7 +98,6 @@ class Main extends StatelessWidget {
                         : !kIsWeb
                             ? SignInScreen.routeName
                             : SignInForWebScreen.routeName,
-
 
                 routes: myRoutes,
                 onUnknownRoute: (settings) {
