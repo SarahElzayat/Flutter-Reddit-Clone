@@ -87,7 +87,7 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
           InkWell(
             onTap: () {
               if (isMod &&
-                  (PostAndCommentActionsCubit.get(context).showModTools)) {
+                  !(PostAndCommentActionsCubit.get(context).showModTools)) {
                 showModOperations(
                   context: context,
                   post: widget.post,

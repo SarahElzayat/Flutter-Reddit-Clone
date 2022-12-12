@@ -20,11 +20,11 @@ void main() {
       var cubit = PostAndCommentActionsCubit(post: post);
       expect(post.votes, 100);
 
-      await cubit.vote(direction: 1).then((value) {
+      await cubit.vote(oldDir: 1).then((value) {
         expect(post.votes, 101);
       });
 
-      await cubit.vote(direction: 1).then((value) {
+      await cubit.vote(oldDir: 1).then((value) {
         expect(post.votes, 100);
       });
 
@@ -38,7 +38,7 @@ void main() {
               },
               statusCode: 400)));
 
-      await cubit.vote(direction: 1).then((value) {
+      await cubit.vote(oldDir: 1).then((value) {
         expect(post.votes, 100);
       });
     });
@@ -49,11 +49,11 @@ void main() {
       var cubit = PostAndCommentActionsCubit(post: post);
       expect(post.votes, 100);
 
-      await cubit.vote(direction: -1).then((value) {
+      await cubit.vote(oldDir: -1).then((value) {
         expect(post.votes, 99);
       });
 
-      await cubit.vote(direction: -1).then((value) {
+      await cubit.vote(oldDir: -1).then((value) {
         expect(post.votes, 100);
       });
 
@@ -67,7 +67,7 @@ void main() {
               },
               statusCode: 400)));
 
-      await cubit.vote(direction: -1).then((value) {
+      await cubit.vote(oldDir: -1).then((value) {
         expect(post.votes, 100);
       });
     });

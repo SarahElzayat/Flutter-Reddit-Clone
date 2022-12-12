@@ -6,6 +6,7 @@ import 'package:reddit/screens/add_post/add_post.dart';
 import 'package:reddit/screens/add_post/community_search.dart';
 import 'package:reddit/screens/add_post/post_rules.dart';
 import 'package:reddit/screens/saved/saved_screen.dart';
+import 'package:reddit/screens/subreddit/subreddit_screen.dart';
 
 import '../../screens/bottom_navigation_bar_screens/add_post_screen.dart';
 import '../../screens/bottom_navigation_bar_screens/explore_screen.dart';
@@ -78,7 +79,7 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
         searchWord: '',
       ),
   CreateCommunityScreen.routeName: (ctx) => const CreateCommunityScreen(),
-
+  Subreddit.routeName: (ctx) => const Subreddit(),
   AddPost.routeName: (ctx) => const AddPost(),
   ImageScreen.routeName: (ctx) => ImageScreen(),
   PaintScreen.routeName: (ctx) => PaintScreen(),

@@ -224,7 +224,6 @@ class AppCubit extends Cubit<AppState> {
       path: path != null
           ? '$user/$username$path'
           : '$user/$username$currentHistoryCategory',
-      token: CacheHelper.getData(key: 'token'),
       query: {
         'limit': limit,
         'after': after ? afterId : null,
@@ -366,7 +365,6 @@ class AppCubit extends Cubit<AppState> {
 
     DioHelper.getData(
       path: '$user/$username/saved',
-      token: CacheHelper.getData(key: 'token'),
       query: {
         'limit': limit,
         'after': after

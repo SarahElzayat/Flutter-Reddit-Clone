@@ -45,7 +45,7 @@ class VotesPart extends StatelessWidget {
             onPressed: () async {
               PostAndCommentActionsCubit.get(context)
                   .vote(
-                direction: 1,
+                oldDir: 1,
               )
                   .then((value) {
                 PostNotifierCubit.get(context).NotifyPosts();
@@ -81,7 +81,7 @@ class VotesPart extends StatelessWidget {
           shape: const CircleBorder(),
           child: IconButton(
             onPressed: () {
-              cubit.vote(direction: -1).then((value) {
+              cubit.vote(oldDir: -1).then((value) {
                 PostNotifierCubit.get(context).NotifyPosts();
               });
             },

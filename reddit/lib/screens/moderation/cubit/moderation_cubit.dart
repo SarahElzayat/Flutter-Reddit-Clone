@@ -1,11 +1,6 @@
 ///@author: Yasmine Ghanem
 ///@date: 10/12/2022
 ///moderation cubit that handles all moduration functions
-import 'dart:convert';
-import 'dart:ffi';
-
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,7 +34,7 @@ class ModerationCubit extends Cubit<ModerationState> {
   ///returns the current community settings
   void getCommunitySettings(name, context) {
     String? token = CacheHelper.getData(key: 'token');
-    DioHelper.getData(token: token, path: '/r/$name/about/edit').then((value) {
+    DioHelper.getData(path: '/r/$name/about/edit').then((value) {
       if (value.statusCode == 200) {
         settings = CommunitySettingsModel.fromJson(value.data);
         emit(LoadSettings());
@@ -54,8 +49,7 @@ class ModerationCubit extends Cubit<ModerationState> {
 
   List<dynamic> getSuggestedTopics(context) {
     String? token = CacheHelper.getData(key: 'token');
-    DioHelper.getData(token: token, path: '/r/com1/suggested-topics')
-        .then((value) {
+    DioHelper.getData(path: '/r/com1/suggested-topics').then((value) {
       if (value.statusCode == 200) {
         topics =
             value.data.map((topic) => CommunityTopics.fromJson(topic)).toList();
@@ -232,8 +226,7 @@ class ModerationCubit extends Cubit<ModerationState> {
             : (type == UserManagement.muted)
                 ? 'muted'
                 : 'moderator';
-    DioHelper.getData(
-            token: token, path: '/r/${settings.communityName}/about/$finalPath')
+    DioHelper.getData(path: '/r/${settings.communityName}/about/$finalPath')
         .then((value) {
       if (value.statusCode == 200) {
         users = value.data.map((user) => BannedUser.fromJson(user));
