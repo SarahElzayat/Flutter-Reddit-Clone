@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/enums.dart';
+import 'package:reddit/data/comment/comment_model.dart';
+import 'package:reddit/data/saved/saved_comments_model.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/inbox_screen.dart';
@@ -198,7 +200,7 @@ class AppCubit extends Cubit<AppState> {
       bool after = false,
       int limit = 3}) {
     if (kDebugMode) {
-    print('after$afterId');
+      print('after$afterId');
       print('before$beforeId');
     }
     if (kDebugMode) {
@@ -331,25 +333,92 @@ class AppCubit extends Cubit<AppState> {
   ];
 
   List<PostModel> savedPostsList = [];
+  String savedPostsBeforeId = '';
+  String savedPostsAfterId = '';
+
+  List<SavedCommentModel> savedCommentsList = [];
+  String savedCommentsBeforeId = '';
+  String savedCommentsAfterId = '';
 
   /// the function gets the history of the specified path (recent, upvoted, downvoted, hidden) history
   /// emits some corresponding states and fills [savedPostsList] list
-  void getSavedPosts(path) {
-    emit(LoadingHistoryState());
-    history.clear();
+  void getSaved(
+      {bool isPosts = false,
+      bool isComments = false,
+      bool loadMore = false,
+      bool before = false,
+      bool after = false,
+      int limit = 5}) {
+    if (loadMore && isPosts) emit(LoadingMoreSavedPostsState());
+    if (loadMore && isComments) emit(LoadingMoreSavedCommentsState());
+    if (!loadMore) {
+      savedPostsList.clear();
+      savedCommentsList.clear();
+      savedPostsBeforeId = '';
+      savedPostsAfterId = '';
+      savedCommentsBeforeId = '';
+      savedCommentsAfterId = '';
+    }
+
     DioHelper.getData(
-      path: '$user/$username$path',
+      path: '$user/$username/saved',
       token: CacheHelper.getData(key: 'token'),
-      query: {},
+      query: {
+        'limit': limit,
+        'after': after
+            ? isPosts
+                ? savedPostsAfterId
+                : isComments
+                    ? savedCommentsAfterId
+                    : null
+            : null,
+        'before': before
+            ? isPosts
+                ? savedCommentsBeforeId
+                : isComments
+                    ? savedCommentsBeforeId
+                    : null
+            : null,
+      },
     ).then((value) {
-      // print('KOSSOM EL VALUE' + value.data.toString());
       if (value.data['children'].length == 0) {
-        emit(HistoryEmptyState());
-      } else {
-        for (int i = 0; i < value.data['children'].length; i++) {
-          history.add(PostModel.fromJsonwithData(value.data['children'][i]));
-          emit(LoadedHistoryState());
+        if (kDebugMode) {
+          print('EMPPPTTYYYYY');
         }
+
+        if (loadMore) {
+          emit(NoMoreSavedToLoadState());
+        } else {
+          emit(SavedEmptyState());
+        }
+      } else {
+        if (isPosts) {
+          savedPostsAfterId = value.data['after'];
+          savedPostsBeforeId = value.data['before'];
+        } else if (isComments) {
+          savedCommentsAfterId = value.data['after'];
+          savedCommentsBeforeId = value.data['before'];
+        }
+
+        // print(value.data.toString());
+        for (int i = 0; i < value.data['children'].length; i++) {
+          if (value.data['children']['type'] == 'fullPost' && isPosts) {
+            // print('POOOOSTTTTSSS');
+            print(value.data['children'][i]['data'].toString());
+            savedPostsList
+                .add(PostModel.fromJson(value.data['children'][i]['data']));
+          } else {
+            // print('COOOMMMMEEENNNTSSSS');
+            // print(value.data['children'][i]['data'].toString());
+            savedCommentsList.add(
+                SavedCommentModel.fromJson(value.data['children'][i]['data']));
+          }
+        }
+        print('aaaaaaaaaaaaa');
+
+        print(savedPostsList[0].id.toString());
+
+        loadMore ? emit(LoadedMoreHistoryState()) : emit(LoadedHistoryState());
       }
     }).onError((error, stackTrace) {
       if (kDebugMode) {
