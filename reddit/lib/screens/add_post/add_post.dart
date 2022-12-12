@@ -69,7 +69,6 @@ class AddPost extends StatelessWidget {
   }
 }
 
-
 // class AddPost extends StatefulWidget {
 //   const AddPost({Key? key}) : super(key: key);
 
@@ -78,12 +77,10 @@ class AddPost extends StatelessWidget {
 // }
 
 // class _AddPostState extends State<AddPost> {
-  
 
 //   @override
 //   Widget build(BuildContext context) {
-    
 
-//     return 
+//     return
 //   }
 // }
