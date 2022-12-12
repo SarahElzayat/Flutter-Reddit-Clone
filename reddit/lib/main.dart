@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/cubit/settings_cubit/settings_cubit.dart';
 
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
@@ -66,6 +67,7 @@ class Main extends StatelessWidget {
         ),
         BlocProvider(create: (context) => AppCubit()),
         BlocProvider(create: (context) => AddPostCubit()),
+        BlocProvider(create: (context) => SettingsCubit()),
       ],
       child: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {
