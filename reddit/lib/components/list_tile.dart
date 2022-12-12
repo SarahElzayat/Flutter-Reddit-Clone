@@ -3,7 +3,10 @@
 /// This is a listTile bluePrint which is
 /// built to be a reuseable widget for further uses
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/cubit/settings_cubit/settings_cubit.dart';
 
+import '../cubit/settings_cubit/settings_cubit_state.dart';
 import 'helpers/color_manager.dart';
 import 'helpers/enums.dart';
 
@@ -21,7 +24,7 @@ class ListTileWidget extends StatefulWidget {
   ///   3.3- IconButton
   final TrailingObjects tailingObj;
 
-  /// The items that we are gonna show.
+  /// The items that we are gonna show if we have a dropBox.
   List<String>? items;
 
   /// function handler which should be executed whenever something is changed
@@ -61,6 +64,7 @@ class _ListTileWidgetState extends State<ListTileWidget> {
           /// when we are doing the settings
           onChanged: (value) {
             setState(() {
+              SettingsCubit.get(ctx).changeSwitch(value);
               setBool = value;
             });
           },
@@ -136,36 +140,43 @@ class _ListTileWidgetState extends State<ListTileWidget> {
   /// the build main handlertion
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: Material(
-        color: ColorManager.darkGrey,
-        child: InkWell(
-          onTap: (() => {widget.handler}),
-          child: ListTile(
-              //background color of list tile
-              tileColor: ColorManager.darkGrey,
+    return BlocConsumer<SettingsCubit, SettingsCubitState>(
+      listener: (context, state) {
+        // TODO: implement listener
+      },
+      builder: (context, state) {
+        return SizedBox(
+          child: Material(
+            color: ColorManager.darkGrey,
+            child: InkWell(
+              onTap: widget.handler,
+              child: ListTile(
+                  //background color of list tile
+                  tileColor: ColorManager.darkGrey,
 
-              /// This is the first el
-              leading: widget.leadingIcon,
-              title: Text(
-                widget.title,
-                style: TextStyle(
-                    color: ColorManager.eggshellWhite,
-                    fontSize: 15 * MediaQuery.of(context).textScaleFactor),
-              ),
+                  /// This is the first el
+                  leading: widget.leadingIcon,
+                  title: Text(
+                    widget.title,
+                    style: TextStyle(
+                        color: ColorManager.eggshellWhite,
+                        fontSize: 15 * MediaQuery.of(context).textScaleFactor),
+                  ),
 
-              /// to set some space between items
-              contentPadding: const EdgeInsets.only(left: 10),
+                  /// to set some space between items
+                  contentPadding: const EdgeInsets.only(left: 10),
 
-              /// min width for the fitst item
-              minLeadingWidth: 10,
-              trailing: (widget.tailingObj == TrailingObjects.switchButton)
-                  ? buildSwitch(context)
-                  : (widget.tailingObj == TrailingObjects.tailingIcon)
-                      ? buildIconButton(context)
-                      : buildDropDown(context)),
-        ),
-      ),
+                  /// min width for the fitst item
+                  minLeadingWidth: 10,
+                  trailing: (widget.tailingObj == TrailingObjects.switchButton)
+                      ? buildSwitch(context)
+                      : (widget.tailingObj == TrailingObjects.tailingIcon)
+                          ? buildIconButton(context)
+                          : buildDropDown(context)),
+            ),
+          ),
+        );
+      },
     );
   }
 }
