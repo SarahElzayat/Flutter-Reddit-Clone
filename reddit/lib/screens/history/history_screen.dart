@@ -3,7 +3,7 @@
 ///@description: the screen that shows the history of the user for mobile
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/components/Helpers/color_manager.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/screens/main_screen.dart';
