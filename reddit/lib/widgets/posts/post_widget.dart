@@ -2,6 +2,7 @@
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
 import 'dart:convert';
+import 'package:reddit/widgets/comments/comment.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:flutter_quill/flutter_quill.dart' as quill;
@@ -24,6 +25,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../components/helpers/posts/helper_funcs.dart';
+import '../../data/comment/comment_model.dart';
 import '../../data/post_model/post_model.dart';
 import '../../widgets/posts/inline_image_viewer.dart';
 import '../../widgets/posts/votes_widget.dart';
@@ -41,6 +43,7 @@ class PostWidget extends StatefulWidget {
     this.isNested = false,
     this.upperRowType = ShowingOtions.both,
     this.postView = PostView.card,
+    this.comment,
   });
 
   /// determines if the post is in the home page or in the post screen
@@ -63,6 +66,9 @@ class PostWidget extends StatefulWidget {
   /// determines if the post is a nested post or not
   /// if yes then the post will be shown in a compact way
   final bool isNested;
+
+  final CommentModel? comment;
+
   @override
   State<PostWidget> createState() => _PostWidgetState();
 }
@@ -147,6 +153,10 @@ class _PostWidgetState extends State<PostWidget> {
                                 ConditionalSwitch.single(
                                   context: context,
                                   valueBuilder: (context) {
+                                    if (widget.postView ==
+                                        PostView.withCommentsInSearch) {
+                                      return 'commentBody';
+                                    }
                                     if (widget.post.kind == 'post') {
                                       return 'postBody';
                                     }
@@ -161,6 +171,7 @@ class _PostWidgetState extends State<PostWidget> {
                                     return 'notAny';
                                   },
                                   caseBuilders: {
+                                    'commentBody': (context) => _commentBody(),
                                     'bodytext': (context) => _bodyText(),
                                     'link': (context) => _linkBar(),
                                     'postBody': (context) => _postBody(),
@@ -186,6 +197,28 @@ class _PostWidgetState extends State<PostWidget> {
                                 ),
                                 if (!widget.outsideScreen && !isWeb)
                                   commentSortRow(context),
+
+                                if (widget.postView ==
+                                    PostView.withCommentsInSearch)
+                                  Row(
+                                    children: [
+                                      TextButton(
+                                        onPressed: () {
+                                          goToPost(
+                                            context,
+                                            widget.post,
+                                            widget.upperRowType,
+                                          );
+                                        },
+                                        child: const Text(
+                                          'View comments',
+                                          style: TextStyle(
+                                            color: ColorManager.hoverOrange,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                               ],
                             ),
                           ),
@@ -263,7 +296,7 @@ class _PostWidgetState extends State<PostWidget> {
   }
 
   Row _lowerPart(bool isWeb) {
-    if (widget.isNested) {
+    if (widget.isNested || widget.postView == PostView.withCommentsInSearch) {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -547,5 +580,13 @@ class _PostWidgetState extends State<PostWidget> {
       );
     }
     return Container();
+  }
+
+  Widget _commentBody() {
+    return Comment(
+      post: widget.post,
+      comment: widget.comment!,
+      viewType: CommentView.inSearch,
+    );
   }
 }
