@@ -265,9 +265,9 @@ class _PostWidgetState extends State<PostWidget> {
           ),
           Text(
             '• ${timeago.format(DateTime.tryParse(widget.post.postedAt ?? '') ?? DateTime.now(), locale: 'en_short')}',
-            style: const TextStyle(
+            style: TextStyle(
               color: ColorManager.greyColor,
-              fontSize: 15,
+              fontSize: 15.sp,
             ),
           ),
           Text(
