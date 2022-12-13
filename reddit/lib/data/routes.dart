@@ -2,6 +2,8 @@
 /// @date 1/11/2022
 /// this file containes all our routes in order to avoid destraction in the main file.
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/inbox/single_message_screen.dart';
+import 'package:reddit/screens/inbox/single_notification_screen.dart';
 
 import '../screens/inbox/Inbox_screen.dart';
 import '../screens/inbox/notifications_screen.dart';
@@ -64,14 +66,17 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   CountriesScreen.routeName: (ctx) => const CountriesScreen(),
 
   // inbox screens
+  InboxScreen.routeName: (ctx) => const InboxScreen(),
+  NotificationScreen.routeName: (ctx) => const NotificationScreen(),
+  SignleNotificationScreen.routeName: (ctx) => const SignleNotificationScreen(),
+  SingleMessageScreen.routeName: (ctx) => const SingleMessageScreen(),
+
   // home screens
   HomeScreenForMobile.routeName: (ctx) => const HomeScreenForMobile(),
   //bottom navigation bar screens
   HomeScreen.routeName: (ctx) => const HomeScreen(),
-  InboxScreen.routeName: (ctx) => const InboxScreen(),
   AddPostScreen.routeName: (ctx) => const AddPostScreen(),
   ExploreScreen.routeName: (ctx) => const ExploreScreen(),
-  NotificationScreen.routeName: (ctx) => const NotificationScreen(),
 
   SearchScreen.routeName: (ctx) => const SearchScreen(),
   SavedScreen.routeName: (ctx) => const SavedScreen(),

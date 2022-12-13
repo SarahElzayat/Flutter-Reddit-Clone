@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/components/bottom_sheet.dart';
+import 'package:reddit/screens/inbox/single_notification_screen.dart';
 import '../../components/helpers/color_manager.dart';
 
 class NotificationWidget extends StatelessWidget {
@@ -23,7 +24,9 @@ class NotificationWidget extends StatelessWidget {
     final mediaQuery = MediaQuery.of(context);
     final fontScale = mediaQuery.textScaleFactor;
     return ListTile(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).pushNamed(SignleNotificationScreen.routeName);
+      },
       contentPadding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
       horizontalTitleGap: 10,
       leading: const CircleAvatar(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/inbox/single_message_screen.dart';
 import '../../components/bottom_sheet.dart';
 import '../../components/helpers/color_manager.dart';
 
@@ -30,6 +31,7 @@ class _MessageWidgetState extends State<MessageWidget> {
           setState(() {
             isOpened = true;
           });
+          Navigator.of(context).pushNamed(SingleMessageScreen.routeName);
         },
         isThreeLine: true,
         minLeadingWidth: 20,
