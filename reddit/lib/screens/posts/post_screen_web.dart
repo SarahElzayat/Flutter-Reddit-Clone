@@ -24,6 +24,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../components/helpers/universal_ui/universal_ui.dart';
 import '../../components/home_app_bar.dart';
+import '../../components/snack_bar.dart';
 import '../../data/comment/comment_model.dart';
 import '../../data/post_model/post_model.dart';
 import '../../widgets/comments/comment.dart';
@@ -116,7 +117,14 @@ class _PostScreenWebState extends State<PostScreenWeb> {
         post: widget.post,
       )..getCommentsOfPost(),
       child: BlocConsumer<PostScreenCubit, PostScreenState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is CommentsError) {
+            ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+              message: state.error.toString(),
+              error: true,
+            ));
+          }
+        },
         builder: (context, state) {
           final screenCubit = PostScreenCubit.get(context);
           return Scaffold(
@@ -190,7 +198,7 @@ class _PostScreenWebState extends State<PostScreenWeb> {
                                         SizedBox(
                                             width: 50.w - 120, child: toolbar),
                                         // button to submit comment
-                                        Container(
+                                        SizedBox(
                                           width: 100,
                                           child: TextButton(
                                             style: TextButton.styleFrom(

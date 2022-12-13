@@ -77,7 +77,6 @@ class _PostWidgetState extends State<PostWidget> {
         'id': widget.post.sharePostId,
       }).then((value) {
         if (value.statusCode == 200) {
-          logger.wtf(value);
           setState(() {
             childPost = PostModel.fromJson(value.data);
             logger.d(childPost!.title);

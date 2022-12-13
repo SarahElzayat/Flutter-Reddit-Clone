@@ -48,7 +48,7 @@ class VotesPart extends StatelessWidget {
                 oldDir: 1,
               )
                   .then((value) {
-                PostNotifierCubit.get(context).NotifyPosts();
+                PostNotifierCubit.get(context).notifyPosts();
               });
             },
             constraints: const BoxConstraints(),
@@ -82,7 +82,7 @@ class VotesPart extends StatelessWidget {
           child: IconButton(
             onPressed: () {
               cubit.vote(oldDir: -1).then((value) {
-                PostNotifierCubit.get(context).NotifyPosts();
+                PostNotifierCubit.get(context).notifyPosts();
               });
             },
             constraints: const BoxConstraints(),

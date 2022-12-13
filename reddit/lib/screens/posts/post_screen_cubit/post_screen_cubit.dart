@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
@@ -79,11 +80,11 @@ class PostScreenCubit extends Cubit<PostScreenState> {
           allCommentsMap[element.id!] = element;
         });
       });
-      logger.d(allCommentsMap);
+      logger.d(comments[0].commentBody);
       emit(CommentsLoaded());
     }).catchError((error) {
       logger.e('error in coments $error');
-      emit(CommentsError());
+      emit(CommentsError((error as DioError).response!.data['error']));
     });
   }
 
@@ -137,7 +138,7 @@ class PostScreenCubit extends Cubit<PostScreenState> {
     }).catchError((error) {
       logger.e('error in show More $error');
 
-      emit(CommentsError());
+      emit(CommentsError('error in show more'));
     });
   }
 }

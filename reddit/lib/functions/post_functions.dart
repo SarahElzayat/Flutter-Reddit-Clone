@@ -376,7 +376,7 @@ Future<void> showModOperations({
             message =
                 '${post.spoiler ?? false ? 'post ' 'marked' : 'unmarked'} as spoiler';
             // update the post after any change in the post that modifies the UI
-            PostNotifierCubit.get(context).NotifyPosts();
+            PostNotifierCubit.get(context).notifyPosts();
           },
           onError: () {
             message =
@@ -393,7 +393,7 @@ Future<void> showModOperations({
             // togle the spoiler in the post
             post.nsfw = !post.nsfw!;
             //NOTE -  You have to update the POSTS after any change in the post that modifies the UI
-            PostNotifierCubit.get(context).NotifyPosts();
+            PostNotifierCubit.get(context).notifyPosts();
           },
           onError: () {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -408,7 +408,7 @@ Future<void> showModOperations({
           post: post,
           onSuccess: () {
             //update the posts after any change in the post that modifies the UI
-            PostNotifierCubit.get(context).NotifyPosts();
+            PostNotifierCubit.get(context).notifyPosts();
           },
           onError: () {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -424,7 +424,7 @@ Future<void> showModOperations({
           onSuccess: () {
             // post.pin = !post.pin
             // update the POSTS after any change in the post that modifies the U
-            PostNotifierCubit.get(context).NotifyPosts();
+            PostNotifierCubit.get(context).notifyPosts();
           },
           onError: () {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -439,7 +439,7 @@ Future<void> showModOperations({
             //mark post moderation as removed
             post.moderation!.remove = true as Remove?;
             //update post after any change in the post that modifies the UI
-            PostNotifierCubit.get(context).NotifyPosts();
+            PostNotifierCubit.get(context).notifyPosts();
           },
           onError: () {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -459,7 +459,7 @@ Future<void> showModOperations({
             post.spammed = true;
             post.moderation!.remove = true as Remove?;
             // update the POSTS after any change in the post that modifies the UI
-            PostNotifierCubit.get(context).NotifyPosts();
+            PostNotifierCubit.get(context).notifyPosts();
           },
           onError: () {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -475,7 +475,7 @@ Future<void> showModOperations({
             //mark post moderation as approved
             post.moderation!.approve = true as Approve?;
             //update post after any change in the post that modifies the UI
-            PostNotifierCubit.get(context).NotifyPosts();
+            PostNotifierCubit.get(context).notifyPosts();
           },
           onError: () {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
