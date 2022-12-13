@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/data/saved/saved_comments_model.dart';
+import 'package:reddit/screens/bottom_navigation_bar_screens/chat_screen.dart';
 import 'package:reddit/screens/inbox/Inbox_screen.dart';
 import 'package:reddit/screens/inbox/notifications_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart';
@@ -42,7 +43,7 @@ class AppCubit extends Cubit<AppState> {
     const ExploreScreen(),
     const AddPostScreen(),
     // const AddPost(),
-    const NotificationScreen(),
+    const ChatScreen(),
     const InboxScreen(),
   ];
 

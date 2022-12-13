@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/main.dart';
+import '../../components/bottom_sheet.dart';
 import '../../components/helpers/color_manager.dart';
 
 class MessageWidget extends StatefulWidget {
@@ -25,15 +25,12 @@ class _MessageWidgetState extends State<MessageWidget> {
   @override
   Widget build(BuildContext context) {
     final textFactor = MediaQuery.of(context).textScaleFactor;
-    return InkWell(
-      onTap: () {
-        setState(() {
-          isOpened = true;
-
-          // here we should navigate to the message.
-        });
-      },
-      child: ListTile(
+    return ListTile(
+        onTap: () {
+          setState(() {
+            isOpened = true;
+          });
+        },
         isThreeLine: true,
         minLeadingWidth: 20,
         leading: Icon(
@@ -44,7 +41,7 @@ class _MessageWidgetState extends State<MessageWidget> {
         title: Text(
           widget.messageTitle,
           style: TextStyle(
-              fontSize: 14 * textFactor,
+              fontSize: 16 * textFactor,
               color: ColorManager.white,
               fontWeight: FontWeight.bold),
         ),
@@ -58,7 +55,7 @@ class _MessageWidgetState extends State<MessageWidget> {
                   widget.messageBody,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 12 * textFactor,
+                    fontSize: 14 * textFactor,
                     color: ColorManager.eggshellWhite,
                   ),
                 ),
@@ -83,22 +80,16 @@ class _MessageWidgetState extends State<MessageWidget> {
                 )
               ]),
         ),
-        trailing: PopupMenuButton(
-          onSelected: (option) {},
-          itemBuilder: (context) {
-            return [
-              // const PopupMenuItem(
-              //   value: FilterOptions.all,
-              //   child: Text('All'),
-              // ),
-              // const PopupMenuItem(
-              //   value: FilterOptions.isFavorites,
-              //   child: Text('Only Favorite'),
-              // ),
-            ];
+        trailing: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () {
+            modalBottomSheet(
+                context: context,
+                title: 'Manage Notification',
+                text: ['Don\'t get updates on this.'],
+                selectedItem: 1,
+                selectedIcons: [Icons.do_disturb_off]);
           },
-        ),
-      ),
-    );
+        ));
   }
 }
