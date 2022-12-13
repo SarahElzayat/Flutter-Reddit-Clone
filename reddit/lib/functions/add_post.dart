@@ -10,8 +10,8 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reddit/screens/add_post/image_screen.dart';
 import 'package:reddit/screens/add_post/video_trimmer.dart';
-import '../Components/Button.dart';
-import '../Components/Helpers/color_manager.dart';
+import '../components/Button.dart';
+import '../components/helpers/color_manager.dart';
 import '../cubit/add_post/cubit/add_post_cubit.dart';
 
 /// This function allow you to choose images

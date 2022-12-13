@@ -1,9 +1,8 @@
+///@author 
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/cubit/app_cubit.dart';
-import 'package:reddit/screens/saved/saved_comments.dart';
-import 'package:reddit/screens/saved/saved_posts.dart';
-
 import '../../components/helpers/color_manager.dart';
 
 class SavedScreen extends StatefulWidget {

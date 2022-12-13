@@ -69,7 +69,7 @@ class PostModel {
       subreddit: json['data']['subreddit'] as String?,
       link: json['data']['link'] as String?,
       images: (json['data']['images'] as List<dynamic>?)
-          ?.map((e) => Image.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => Image.fromJson(e as Map<String, dynamic>?))
           .toList(),
       video: json['data']['video'] as String?,
       content: json['data']['content'] as String?,
@@ -78,7 +78,7 @@ class PostModel {
       sharePostId: json['data']['sharePostId'] as String?,
       flair: json['data']['flair'] == null
           ? null
-          : Flair.fromJson(json['flair'] as Map<String, dynamic>),
+          : Flair.fromJson(json['flair'] as Map<String, dynamic>?),
       comments: json['data']['comments'] as int?,
       votes: json['data']['votes'] as int?,
       postedAt: json['data']['postedAt'] as String?,
@@ -95,7 +95,7 @@ class PostModel {
       inYourSubreddit: json['data']['inYourSubreddit'] as bool?,
       moderation: json['data']['moderation'] == null
           ? null
-          : Moderation.fromJson(json['moderation'] as Map<String, dynamic>),
+          : Moderation.fromJson(json['moderation'] as Map<String, dynamic>?),
     );
   }
 

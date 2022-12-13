@@ -13,12 +13,12 @@ class Flair {
     this.textColor,
   });
 
-  factory Flair.fromJson(Map<String, dynamic> json) => Flair(
-        id: json['id'] as String?,
-        flairName: json['flairName'] as String?,
-        order: json['order'] as int?,
-        backgroundColor: json['backgroundColor'] as String?,
-        textColor: json['textColor'] as String?,
+  factory Flair.fromJson(Map<String, dynamic>? json) => Flair(
+        id: json?['id'] as String?,
+        flairName: json?['flairName'] as String?,
+        order: json?['order'] as int?,
+        backgroundColor: json?['backgroundColor'] as String?,
+        textColor: json?['textColor'] as String?,
       );
 
   Map<String, dynamic> toJson() => {

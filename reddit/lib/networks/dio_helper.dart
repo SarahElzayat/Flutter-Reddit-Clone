@@ -3,6 +3,7 @@
 /// this is a DioHelper which is a class used to connect us to the backend
 /// and deal with the server
 import 'package:dio/dio.dart';
+import '../constants/constants.dart';
 import 'constant_end_points.dart';
 
 class DioHelper {
@@ -64,6 +65,33 @@ class DioHelper {
     );
   }
 
+  /// this is a function used to send put request with certain body to replace
+  /// certain object in the date base.
+  static Future<Response> putData({
+    required String path, // the added path to the baseURL
+    required dynamic data,
+
+    /// which is the content of the JSON
+    Map<String, dynamic>? query,
+
+    /// additional query
+  }) async {
+    var options = Options(
+      headers: {
+        'Authorization': 'Bearer ${token ?? ''}',
+        'Content-Type': 'application/json; charset=utf-8'
+      },
+    );
+
+    return await dio.put(
+      path,
+      data: data,
+      options: options,
+      queryParameters: query,
+    );
+  }
+
+  /// this function is used to send patch request to the backend.
   static Future<Response> patchData({
     required String path,
     required Map<String, dynamic> data,
@@ -97,26 +125,17 @@ class DioHelper {
   /// @param [path] string defining the end point
   static Future<Response> getData({
     Map<String, dynamic>? query,
-    String? token,
-    // String?
     required String path,
   }) async {
     Options options;
-    if (token != null) {
-      options = Options(
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json; charset=utf-8'
-        },
-      );
-    } else {
-      options = Options(
-        headers: {
-          'Authorization': 'Bearer ${token ?? ''}',
-          'Content-Type': 'application/json; charset=utf-8'
-        },
-      );
-    }
+
+    options = Options(
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json; charset=utf-8'
+      },
+    );
+
     return await dio.get(
       path,
       queryParameters: query,

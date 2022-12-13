@@ -47,29 +47,33 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
   // }
 
   /// this function is used to vote on a post
-  /// @param [direction] the direction of the wanted vote
+  /// @param [oldDir] the direction of the wanted vote
   Future vote({
-    required int direction,
+    required int oldDir,
   }) {
     int postState = getModel.votingType ?? 0;
-    if (postState == direction) {
+    int direction = oldDir;
+    if (postState == oldDir) {
       // clicked the same button again
-      direction = -direction;
-    } else if (postState == -direction) {
+      direction = -oldDir;
+    } else if (postState == -oldDir) {
       // clicked the opposite button
-      direction = direction * 2;
+      direction = oldDir * 2;
     }
+
     // int newDir = postState + direction;
+    Logger().d(token);
     return DioHelper.postData(
       path: '/vote',
       data: {
         'id': getModel.id,
-        'direction': direction,
+        'direction': oldDir,
         'type': currentComment == null ? 'post' : 'comment',
       },
       token: token,
     ).then((value) {
       if (value.statusCode == 200) {
+        Logger().wtf(value.data);
         getModel.votingType = (getModel.votingType ?? 0) + direction;
         getModel.votes = (getModel.votes ?? 0) + direction;
         emit(VotedSuccess());

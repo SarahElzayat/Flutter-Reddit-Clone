@@ -61,7 +61,6 @@ class PostScreenCubit extends Cubit<PostScreenState> {
     emit(CommentsLoading());
 
     DioHelper.getData(
-      token: token,
       path: '/comments/${post.id}',
       query: {
         'before': before,
@@ -105,7 +104,6 @@ class PostScreenCubit extends Cubit<PostScreenState> {
     emit(CommentsLoading());
 
     DioHelper.getData(
-      token: token,
       path: '/comments/${post.id}/$commentId',
       query: {
         'before': before,
@@ -115,7 +113,7 @@ class PostScreenCubit extends Cubit<PostScreenState> {
       },
     ).then((value) {
       var currentComment = allCommentsMap[commentId];
-      
+
       CommentsListingModel commentsListingModel =
           CommentsListingModel.fromJson(value.data);
       // there is only one comment as the parent
