@@ -9,7 +9,8 @@ const portNumber = String.fromEnvironment('FLUTTER_PORT', defaultValue: '5000');
 // String.fromEnvironment('BASE_URL', defaultValue: 'http://10.0.2.2:3000'); // for mobile
 // const portNumber = 5000;
 const baseUrl = kReleaseMode
-    ? 'http://www.read-it.live/api'
+    ? 'https://web.read-it.live/api'
+    // ? 'http://www.read-it.live/api' TODO: wa3er aly ast5dm el fo2 34an samaa.
     : kIsWeb
         ? 'http://localhost:3000'
         : 'http://10.0.2.2:3000';
