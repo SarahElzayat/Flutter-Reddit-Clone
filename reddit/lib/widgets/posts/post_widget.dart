@@ -2,6 +2,7 @@
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
 import 'dart:convert';
+import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'dart:math';
@@ -15,6 +16,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/components/helpers/widgets/responsive_widget.dart';
 import 'package:reddit/functions/post_functions.dart';
+import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:reddit/widgets/posts/post_lower_bar.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -31,11 +33,12 @@ import 'post_upper_bar.dart';
 /// The widget that displays the post
 ///
 /// it's inteded to be used in the HOME PAGE
-class PostWidget extends StatelessWidget {
+class PostWidget extends StatefulWidget {
   const PostWidget({
     super.key,
     required this.post,
     this.outsideScreen = true,
+    this.isNested = false,
     this.upperRowType = ShowingOtions.both,
     this.postView = PostView.card,
   });
@@ -57,10 +60,41 @@ class PostWidget extends StatelessWidget {
   /// defaults to [PostView.card]
   final PostView postView;
 
+  /// determines if the post is a nested post or not
+  /// if yes then the post will be shown in a compact way
+  final bool isNested;
+  @override
+  State<PostWidget> createState() => _PostWidgetState();
+}
+
+class _PostWidgetState extends State<PostWidget> {
+  PostModel? childPost;
+  @override
+  void initState() {
+    if (widget.post.kind == 'post') {
+      // get child post if it's a hybrid post
+      DioHelper.getData(path: '/post-details', query: {
+        'id': widget.post.sharePostId,
+      }).then((value) {
+        if (value.statusCode == 200) {
+          logger.wtf(value);
+          setState(() {
+            childPost = PostModel.fromJson(value.data);
+            logger.d(childPost!.title);
+          });
+        }
+      }).catchError((e) {
+        logger.e(e);
+      });
+    }
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PostAndCommentActionsCubit(post: post),
+      create: (context) => PostAndCommentActionsCubit(post: widget.post),
       child: ResponsiveBuilder(
         builder: (buildContext, sizingInformation) {
           bool isWeb = !ResponsiveWidget.isSmallScreen(context);
@@ -78,17 +112,17 @@ class PostWidget extends StatelessWidget {
                       children: [
                         if (isWeb)
                           VotesPart(
-                            post: post,
+                            post: widget.post,
                             isWeb: isWeb,
                           ),
                         Expanded(
                           child: InkWell(
-                            onTap: outsideScreen
+                            onTap: widget.outsideScreen
                                 ? () {
                                     goToPost(
                                       context,
-                                      post,
-                                      upperRowType,
+                                      widget.post,
+                                      widget.upperRowType,
                                     );
                                   }
                                 : null,
@@ -97,43 +131,40 @@ class PostWidget extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 // A row with the Avatar, title and the subreddit
-                                PostUpperBar(
-                                  post: post,
-                                  outSide: outsideScreen,
-                                  showRowsSelect: upperRowType,
-                                ),
+                                _upperPart(),
                                 // title and flairs
                                 _titleWithFlairs(),
 
                                 // image or video viewrs
-                                if (postView == PostView.card)
+                                if (widget.postView == PostView.card)
                                   InlineImageViewer(
                                     key: const Key('inline-image-viewer'),
-                                    post: post,
+                                    post: widget.post,
                                     isWeb: isWeb,
-                                    outsideScreen: outsideScreen,
+                                    outsideScreen: widget.outsideScreen,
                                   ),
 
                                 // the body text or the link bar
                                 ConditionalSwitch.single(
                                   context: context,
                                   valueBuilder: (context) {
-                                    if ((!outsideScreen &&
-                                            post.kind != 'link') ||
-                                        (outsideScreen &&
-                                            post.kind == 'hybrid' &&
-                                            ((post.content ?? '').length >
-                                                90))) {
+                                    if (widget.post.kind == 'post') {
+                                      return 'postBody';
+                                    }
+                                    if (_showTextBody()) {
                                       return 'bodytext';
-                                    } else if (post.kind == 'link' &&
-                                        !outsideScreen) {
+                                    }
+                                    if (widget.post.kind == 'link' &&
+                                        !widget.outsideScreen) {
                                       return 'link';
                                     }
+
                                     return 'notAny';
                                   },
                                   caseBuilders: {
                                     'bodytext': (context) => _bodyText(),
                                     'link': (context) => _linkBar(),
+                                    'postBody': (context) => _postBody(),
                                   },
                                   fallbackBuilder: (context) => Container(),
                                 ),
@@ -154,14 +185,14 @@ class PostWidget extends StatelessWidget {
                                               ));
                                   },
                                 ),
-                                if (!outsideScreen && !isWeb)
+                                if (!widget.outsideScreen && !isWeb)
                                   commentSortRow(context),
                               ],
                             ),
                           ),
                         ),
-                        if ((post.kind != 'link') &&
-                            postView == PostView.classic)
+                        if ((widget.post.kind != 'link') &&
+                            widget.postView == PostView.classic)
                           Container(
                             clipBehavior: Clip.antiAlias,
                             decoration: BoxDecoration(
@@ -171,9 +202,9 @@ class PostWidget extends StatelessWidget {
                             height: constraints.maxWidth * 0.2,
                             child: InlineImageViewer(
                               key: const Key('inline-image-viewer'),
-                              post: post,
+                              post: widget.post,
                               isWeb: isWeb,
-                              postView: postView,
+                              postView: widget.postView,
                             ),
                           ),
                       ],
@@ -188,15 +219,80 @@ class PostWidget extends StatelessWidget {
     );
   }
 
+  Widget _upperPart() {
+    if (widget.isNested) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'r/${widget.post.subreddit}',
+            style: TextStyle(
+              color: ColorManager.lightGrey,
+              fontSize: 15.sp,
+            ),
+          ),
+          Text(
+            '• ${timeago.format(DateTime.tryParse(widget.post.postedAt ?? '') ?? DateTime.now(), locale: 'en_short')}',
+            style: const TextStyle(
+              color: ColorManager.greyColor,
+              fontSize: 15,
+            ),
+          ),
+          Text(
+            ' u/${widget.post.postedBy ?? ''}',
+            style: TextStyle(
+              color: ColorManager.lightGrey,
+              fontSize: 15.sp,
+            ),
+          ),
+        ],
+      );
+    }
+
+    return PostUpperBar(
+      post: widget.post,
+      outSide: widget.outsideScreen,
+      showRowsSelect: widget.upperRowType,
+    );
+  }
+
+  bool _showTextBody() {
+    return (!widget.outsideScreen && widget.post.kind != 'link') ||
+        (widget.outsideScreen &&
+            widget.post.kind == 'hybrid' &&
+            ((widget.post.content ?? '').length > 90));
+  }
+
   Row _lowerPart(bool isWeb) {
+    if (widget.isNested) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            '${widget.post.votes ?? 0} points',
+            style: TextStyle(
+              color: ColorManager.lightGrey,
+              fontSize: 15.sp,
+            ),
+          ),
+          Text(
+            ' • ${widget.post.comments ?? 0} comments',
+            style: TextStyle(
+              color: ColorManager.lightGrey,
+              fontSize: 15.sp,
+            ),
+          ),
+        ],
+      );
+    }
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (!isWeb) Expanded(flex: 1, child: VotesPart(post: post)),
+        if (!isWeb) Expanded(flex: 1, child: VotesPart(post: widget.post)),
         Expanded(
           flex: 2,
           child: PostLowerBarWithoutVotes(
-              post: post,
+              post: widget.post,
               isWeb: isWeb,
               pad: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10)),
         ),
@@ -268,7 +364,7 @@ class PostWidget extends StatelessWidget {
           shape: const CircleBorder(),
           child: IconButton(
             onPressed: () {
-              showModOperations(context: context, post: post);
+              showModOperations(context: context, post: widget.post);
             },
             constraints: const BoxConstraints(),
             padding: const EdgeInsets.all(0),
@@ -287,7 +383,7 @@ class PostWidget extends StatelessWidget {
     return quill.QuillEditor(
       controller: quill.QuillController(
         document: quill.Document.fromJson(
-          jsonDecode(post.content!),
+          jsonDecode(widget.post.content ?? '[{"insert": "\\n"}]'),
         ),
         selection: const TextSelection.collapsed(offset: 0),
       ),
@@ -309,7 +405,7 @@ class PostWidget extends StatelessWidget {
     return InkWell(
       key: const Key('link-content'),
       onTap: () async {
-        await launchUrl(Uri.parse(post.link!));
+        await launchUrl(Uri.parse(widget.post.link!));
       },
       child: Container(
           constraints: const BoxConstraints(
@@ -322,7 +418,7 @@ class PostWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                post.link ?? '',
+                widget.post.link ?? '',
                 style: const TextStyle(
                   color: ColorManager.eggshellWhite,
                   fontSize: 15,
@@ -350,7 +446,7 @@ class PostWidget extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5.0),
                 child: Text(
-                  post.title ?? '',
+                  widget.post.title ?? '',
                   style: const TextStyle(
                     color: ColorManager.eggshellWhite,
                     fontSize: 20,
@@ -359,10 +455,10 @@ class PostWidget extends StatelessWidget {
                 ),
               ),
             ),
-            if (post.kind == 'link' && outsideScreen)
+            if (widget.post.kind == 'link' && widget.outsideScreen)
               InkWell(
                 onTap: () async {
-                  await launchUrl(Uri.parse(post.link!));
+                  await launchUrl(Uri.parse(widget.post.link!));
                 },
                 child: SizedBox(
                   width: min(30.w, 120),
@@ -370,7 +466,7 @@ class PostWidget extends StatelessWidget {
                   child: AnyLinkPreview.builder(
                     errorWidget: imageWithUrl(
                         'https://cdn-icons-png.flaticon.com/512/3388/3388466.png'),
-                    link: post.link ?? '',
+                    link: widget.post.link ?? '',
                     cache: const Duration(hours: 1),
                     itemBuilder: (BuildContext ctx, Metadata md,
                         ImageProvider<Object>? ip) {
@@ -381,7 +477,8 @@ class PostWidget extends StatelessWidget {
               ),
           ],
         ),
-        if (post.flair != null && !(post.kind == 'link' && outsideScreen))
+        if (widget.post.flair != null &&
+            !(widget.post.kind == 'link' && widget.outsideScreen))
           _flairWidget()
       ],
     );
@@ -397,7 +494,7 @@ class PostWidget extends StatelessWidget {
             width: min(30.w, 50.dp),
             color: Colors.black.withOpacity(0.5),
             child: Text(
-              (post.link ?? '')
+              (widget.post.link ?? '')
                   .replaceAll('https://', '')
                   .replaceAll('www.', ''),
               style: const TextStyle(
@@ -418,14 +515,38 @@ class PostWidget extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
-          color: HexColor(post.flair!.backgroundColor ?? '#FF00000'),
+          color: HexColor(widget.post.flair!.backgroundColor ?? '#FF00000'),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
-          post.flair!.flairName ?? '',
-          style: TextStyle(color: HexColor(post.flair!.textColor ?? '#FFFFFF')),
+          widget.post.flair!.flairName ?? '',
+          style: TextStyle(
+              color: HexColor(widget.post.flair!.textColor ?? '#FFFFFF')),
         ),
       ),
     );
+  }
+
+  Widget _postBody() {
+    if (childPost != null) {
+      return Container(
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: ColorManager.grey,
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: PostWidget(
+            post: childPost!,
+            isNested: true,
+          ),
+        ),
+      );
+    }
+    return Container();
   }
 }

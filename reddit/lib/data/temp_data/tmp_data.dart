@@ -12,7 +12,7 @@ String quillContent =
 
 var textPost = PostModel(
   id: '639508b2b02950743a541875',
-  kind: 'hybrid',
+  kind: 'post',
   title: 'this is the title',
   content: quillContent,
   subreddit: 'news',
@@ -26,6 +26,7 @@ var textPost = PostModel(
     textColor: '#0E0EEE',
   ),
   saved: false,
+  sharePostId: '6398e2665abbd729a1cf875e',
   spoiler: true,
   inYourSubreddit: false,
   nsfw: false,
