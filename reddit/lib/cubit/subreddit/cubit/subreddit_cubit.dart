@@ -23,11 +23,15 @@ class SubredditCubit extends Cubit<SubredditState> {
         print('Subreddit Info ====>');
         print(value.data);
         subreddit = SubredditModel.fromJson(value.data);
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const Subreddit(),
-          ),
-        );
+        if (subreddit!.isMember == null) {
+          return;
+        } else {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const Subreddit(),
+            ),
+          );
+        }
         // emit(subredditChange());
       }
     }).catchError((error) {

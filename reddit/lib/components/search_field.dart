@@ -74,26 +74,29 @@ class _SearchFieldState extends State<SearchField> {
                 borderRadius: BorderRadius.circular(10),
               )
             : const StadiumBorder(),
-        color: ColorManager.darkGrey,
+        color: (widget.isSubreddit)
+            ? Color.fromARGB(120, 0, 0, 0)
+            : ColorManager.darkGrey,
       ),
       child: TextField(
         onTap: () => widget.isResult
             ? Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SearchScreen(query: widget.textEditingController.text,),
+                  builder: (context) => SearchScreen(
+                    query: widget.textEditingController.text,
+                  ),
                 ))
             : null,
+        readOnly: widget.isResult,
         focusNode: _focus,
         onSubmitted: widget.onSubmitted,
         cursorColor: ColorManager.eggshellWhite,
         onChanged: (value) => setState(() {
           (widget.textEditingController.text);
         }),
-
         controller: widget.textEditingController,
         style: const TextStyle(color: ColorManager.eggshellWhite, fontSize: 18),
-
         decoration: InputDecoration(
           hintText: 'Search Reddit',
           border: InputBorder.none,
