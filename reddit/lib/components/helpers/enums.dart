@@ -29,6 +29,13 @@ enum SortType {
 enum PostView {
   classic,
   card,
+  withCommentsInSearch,
+}
+
+enum CommentView {
+  normal,
+  inSearch,
+  inSubreddits,
 }
 
 enum HistoyCategory { recent, upvoted, downvoted, hidden }

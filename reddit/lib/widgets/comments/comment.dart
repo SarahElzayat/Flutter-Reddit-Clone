@@ -4,9 +4,11 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_conditional_rendering/conditional_switch.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 import 'package:reddit/data/comment/comment_model.dart';
@@ -27,6 +29,7 @@ class Comment extends StatefulWidget {
     required this.post,
     required this.comment,
     this.stop = false,
+    this.viewType = CommentView.normal,
     this.level = 1,
   });
   final PostModel post;
@@ -37,21 +40,11 @@ class Comment extends StatefulWidget {
 
   final int level;
 
+  final CommentView viewType;
+
   @override
   State<Comment> createState() => _CommentState();
 }
-
-// String content = '''[{"insert":"Heading "},
-//     {"insert":"bold","attributes":{"bold":true}},{"insert":"\\n"},
-//     {"insert":"bold and italic","attributes":{"bold":true,"italic":true}},
-//     {"insert":"\\nsome code"},{"insert":"\\n","attributes":{"code-block":true}},
-//     {"insert":"A quote"},{"insert":"\\n","attributes":{"blockquote":true}},
-//     {"insert":"ordered list"},{"insert":"\\n","attributes":{"list":"ordered"}},
-//     {"insert":"unordered list"},{"insert":"\\n","attributes":{"list":"bullet"}},
-//     {"insert":"link","attributes":{"link":"pub.dev/packages/quill_markdown"}},{"insert":"\\n"}]''';
-// String content = '''[{"insert":"Heading "},
-//     {"insert":"bold and italic","attributes":{"bold":true,"italic":true}},{"insert":"\\n"},
-//     {"insert":"link","attributes":{"link":"pub.dev/packages/quill_markdown"}},{"insert":"\\n"}]''';
 
 class _CommentState extends State<Comment> {
   bool isCompressed = false;
@@ -140,105 +133,113 @@ class _CommentState extends State<Comment> {
           ),
         ),
       ],
-      child: InkWell(
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        onLongPress: () {
+      child: ConditionalSwitch.single(
+        context: context,
+        valueBuilder: (BuildContext context) => widget.viewType,
+        caseBuilders: {
+          CommentView.normal: (BuildContext context) =>
+              _normalComment(quillEditor),
+          CommentView.inSearch: (BuildContext context) =>
+              _searchComment(quillEditor),
+          CommentView.inSubreddits: (BuildContext context) => _subComments(),
+        },
+        fallbackBuilder: (BuildContext context) => _normalComment(quillEditor),
+      ),
+    );
+  }
+
+  Widget _normalComment(quillEditor) {
+    return InkWell(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      onLongPress: () {
+        setState(() {
+          isCompressed = !isCompressed;
+        });
+      },
+      onTap: () {
+        if (isCompressed) {
           setState(() {
             isCompressed = !isCompressed;
           });
-        },
-        onTap: () {
-          if (isCompressed) {
-            setState(() {
-              isCompressed = !isCompressed;
-            });
-          }
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border(
-              left: widget.level > 1
-                  ? BorderSide(
-                      color: ColorManager.lightGrey,
-                      width: 0.5.w,
-                    )
-                  : BorderSide.none,
-            ),
-            color: ColorManager.darkGrey,
+        }
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            left: widget.level > 1
+                ? const BorderSide(
+                    color: ColorManager.lightGrey,
+                    width: 3,
+                  )
+                : BorderSide.none,
           ),
-          padding: EdgeInsets.only(
-            left: 10,
-            right: widget.level == 1 ? 10 : 0,
-            top: 5,
-            bottom: 5,
-          ),
+          color: ColorManager.darkGrey,
+        ),
+        padding: EdgeInsets.only(
+          left: 10,
+          right: widget.level == 1 ? 10 : 0,
+          top: 5,
+          bottom: 5,
+        ),
 
-          // margin: EdgeInsets.only(left: widget.level * 10.0),
-          child: ConditionalBuilder(
-            condition: isCompressed,
-            builder: (context) {
-              return commentAsRow(
+        // margin: EdgeInsets.only(left: widget.level * 10.0),
+        child: ConditionalBuilder(
+          condition: isCompressed,
+          builder: (context) {
+            return commentAsRow(
+                post: widget.comment,
+                showContent: true,
+                content:
+                    _controller!.document.toPlainText().replaceAll('\\n', ''));
+          },
+          fallback: (context) {
+            return Column(
+              children: [
+                commentAsRow(
                   post: widget.comment,
-                  showContent: true,
-                  content: _controller!.document
-                      .toPlainText()
-                      .replaceAll('\\n', ''));
-            },
-            fallback: (context) {
-              return Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: commentAsRow(
-                          post: widget.comment,
-                          showDots: false,
-                        ),
-                      ),
-                    ],
-                  ),
-                  quillEditor,
-                  // _commentsRow(),
+                  showDots: false,
+                ),
+                quillEditor,
+                // _commentsRow(),
 
-                  _commentsControlRow(),
-                  widget.comment.children != null
-                      ? Column(
-                          children: widget.comment.children!
-                              .map((e) => Comment(
-                                    post: widget.post,
-                                    comment: e,
-                                    level: widget.level + 1,
-                                  ))
-                              .toList(),
-                        )
-                      : Container(),
+                _commentsControlRow(),
+                widget.comment.children != null
+                    ? Column(
+                        children: widget.comment.children!
+                            .map((e) => Comment(
+                                  post: widget.post,
+                                  comment: e,
+                                  level: widget.level + 1,
+                                ))
+                            .toList(),
+                      )
+                    : Container(),
 
-                  // if there is more children add a button to show them
-                  if (widget.comment.children != null &&
-                      widget.comment.children!.length <
-                          (widget.comment.numberofChildren!))
-                    InkWell(
-                      onTap: () {
-                        PostScreenCubit.get(context).showMoreComments(
-                          commentId: widget.comment.id!,
-                        );
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.only(top: 5),
-                        child: const Text(
-                          'Show more comments',
-                          style: TextStyle(
-                            color: ColorManager.primaryColor,
-                            fontSize: 12,
-                          ),
+                // if there is more children add a button to show them
+                if (widget.comment.children != null &&
+                    widget.comment.children!.length <
+                        (widget.comment.numberofChildren!))
+                  InkWell(
+                    onTap: () {
+                      PostScreenCubit.get(context).showMoreComments(
+                        commentId: widget.comment.id!,
+                      );
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 5),
+                      child: const Text(
+                        'Show more comments',
+                        style: TextStyle(
+                          color: ColorManager.primaryColor,
+                          fontSize: 12,
                         ),
                       ),
                     ),
-                ],
-              );
-            },
-          ),
+                  ),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -366,5 +367,42 @@ class _CommentState extends State<Comment> {
         if (showDots) dropDownDots(post)
       ],
     );
+  }
+
+  Widget _searchComment(quillEditor) {
+    return Container(
+      color: ColorManager.darkGrey,
+      margin: const EdgeInsets.only(top: 5, bottom: 5),
+      padding: const EdgeInsets.all(8),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Column(
+          children: [
+            commentAsRow(
+              post: widget.comment,
+              showDots: false,
+            ),
+            quillEditor,
+            SizedBox(height: 2.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  '${widget.comment.votes ?? 0} points',
+                  style: TextStyle(
+                    color: ColorManager.lightGrey,
+                    fontSize: 15.sp,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _subComments() {
+    return Container();
   }
 }
