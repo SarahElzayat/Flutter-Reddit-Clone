@@ -8,6 +8,7 @@ import 'package:reddit/screens/search/cubit/search_cubit.dart';
 class ProfileResult extends StatelessWidget {
   const ProfileResult({super.key, required this.model});
   final SearchResultProfileModel model;
+
   @override
   Widget build(BuildContext context) {
     // SearchCubit cubit = SearchCubit.get(context);
@@ -59,10 +60,18 @@ class ProfileResult extends StatelessWidget {
                   MaterialButton(
                     shape: const StadiumBorder(),
                     color: ColorManager.darkGrey,
-                    onPressed: () {}, //=> cubit.folowUser(model.id),
-                    child: const Text(
-                      'Follow',
-                      style: TextStyle(color: ColorManager.blue, fontSize: 16),
+                    onPressed: () {
+                      SearchCubit.get(context).folowUser(
+                          username: model.data!.username,
+                          follow: !model.data!.following!);
+                      model.data!.following = !model.data!.following!;
+                      // setState(() {});
+                      // setSta
+                    }, //=> cubit.folowUser(model.id),
+                    child: Text(
+                      model.data!.following! ? 'Following' : 'Follow',
+                      style: const TextStyle(
+                          color: ColorManager.blue, fontSize: 16),
                     ),
                   )
                 ],

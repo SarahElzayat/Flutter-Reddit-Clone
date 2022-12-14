@@ -12,7 +12,7 @@ class UserManagementWidget extends StatefulWidget {
   final String screenTitle;
   final List<ListTileWidget>? users;
 
-  UserManagementWidget({super.key, required this.screenTitle, this.users});
+  const UserManagementWidget({super.key, required this.screenTitle, this.users});
 
   @override
   State<UserManagementWidget> createState() => _UserManagementWidgetState();
