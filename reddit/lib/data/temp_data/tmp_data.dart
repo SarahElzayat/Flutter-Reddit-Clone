@@ -36,6 +36,32 @@ var textPost = PostModel(
 
 final textPostS = textPost.toJson();
 
+var videoPost = PostModel(
+  id: '6398e2665abbd729a1cf875e',
+  kind: 'video',
+  title: 'this is the title',
+  content: quillContent,
+  subreddit: 'news',
+  video:
+      'https://github.com/GeekyAnts/flick-video-player-demo-videos/blob/master/example/rio_from_above_compressed.mp4?raw=true',
+  postedBy: 'Atta',
+  postedAt: '2019-08-24T14:15:22Z',
+  editedAt: '2019-08-24T14:15:22Z',
+  flair: Flair(
+    id: '123',
+    flairName: 'flair',
+    backgroundColor: '#FFAA00',
+    textColor: '#0E0EEE',
+  ),
+  saved: false,
+  sharePostId: '6398e2665abbd729a1cf875e',
+  spoiler: true,
+  inYourSubreddit: false,
+  nsfw: false,
+  votes: 100,
+  comments: 10,
+);
+
 var smalltextPost = PostModel(
   id: '639508b2b02950743a541875',
   kind: 'hybrid',

@@ -64,6 +64,7 @@ class AppCubit extends Cubit<AppState> {
   ///@param [homePosts] dummy data for home screen
   List<Widget> homePosts = [
     PostWidget(post: textPost),
+    PostWidget(post: videoPost),
     PostWidget(post: smalltextPost),
     PostWidget(post: linkPost, upperRowType: ShowingOtions.onlyUser),
     PostWidget(post: oneImagePost, postView: PostView.classic),

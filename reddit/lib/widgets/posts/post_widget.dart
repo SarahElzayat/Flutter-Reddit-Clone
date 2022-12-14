@@ -2,6 +2,8 @@
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
 import 'dart:convert';
+import 'package:reddit/cubit/videos_cubit/videos_cubit.dart';
+import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/widgets/comments/comment.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -25,6 +27,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../components/helpers/posts/helper_funcs.dart';
+import '../../components/multi_manager/flick_multi_player.dart';
 import '../../data/comment/comment_model.dart';
 import '../../data/post_model/post_model.dart';
 import '../../widgets/posts/inline_image_viewer.dart';
@@ -160,6 +163,9 @@ class _PostWidgetState extends State<PostWidget> {
                                     if (widget.post.kind == 'post') {
                                       return 'postBody';
                                     }
+                                    if (widget.post.kind == 'video') {
+                                      return 'videoBody';
+                                    }
                                     if (_showTextBody()) {
                                       return 'bodytext';
                                     }
@@ -174,6 +180,8 @@ class _PostWidgetState extends State<PostWidget> {
                                     'commentBody': (context) => _commentBody(),
                                     'bodytext': (context) => _bodyText(),
                                     'link': (context) => _linkBar(),
+                                    'videoBody': (context) =>
+                                        _videoBody(context),
                                     'postBody': (context) => _postBody(),
                                   },
                                   fallbackBuilder: (context) => Container(),
@@ -587,6 +595,15 @@ class _PostWidgetState extends State<PostWidget> {
       post: widget.post,
       comment: widget.comment!,
       viewType: CommentView.inSearch,
+    );
+  }
+
+  Widget _videoBody(context) {
+    // return Container();
+    return FlickMultiPlayer(
+      url: widget.post.video!,
+      flickMultiManager: VideosCubit.get(context).flickMultiManager,
+      image: unknownAvatar,
     );
   }
 }
