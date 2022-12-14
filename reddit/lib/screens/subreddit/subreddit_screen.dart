@@ -3,11 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/components/button.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/constants/constants.dart';
 import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
-import 'package:reddit/screens/main_screen.dart';
+import 'package:reddit/screens/moderation/mod_tools.dart';
 
 import '../../components/home_components/right_drawer.dart';
 import '../../cubit/app_cubit.dart';
@@ -66,6 +64,7 @@ class _SubredditState extends State<Subreddit>
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+    final navigator = Navigator.of(context);
     final subredditCubit = BlocProvider.of<SubredditCubit>(context);
     final AppCubit cubit = AppCubit.get(context);
     return Scaffold(
@@ -90,7 +89,7 @@ class _SubredditState extends State<Subreddit>
         },
       ),
       body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
+        headerSliverBuilder: (context2, innerBoxIsScrolled) {
           return [
             SliverPersistentHeader(
                 pinned: true,
@@ -168,18 +167,18 @@ class _SubredditState extends State<Subreddit>
                   children: [
                     CircleAvatar(
                       backgroundColor:
-                          (subredditCubit.subreddit!.picture == null ||
-                                  subredditCubit.subreddit!.picture == '')
+                          (subredditCubit.subreddit.picture == null ||
+                                  subredditCubit.subreddit.picture == '')
                               ? ColorManager.blue
                               : null,
                       radius: 25,
-                      backgroundImage: (subredditCubit.subreddit!.picture ==
-                                  null ||
-                              subredditCubit.subreddit!.picture == '')
-                          ? null
-                          : NetworkImage(subredditCubit.subreddit!.picture!),
-                      child: (subredditCubit.subreddit!.picture == null ||
-                              subredditCubit.subreddit!.picture == '')
+                      backgroundImage:
+                          (subredditCubit.subreddit.picture == null ||
+                                  subredditCubit.subreddit.picture == '')
+                              ? null
+                              : NetworkImage(subredditCubit.subreddit.picture!),
+                      child: (subredditCubit.subreddit.picture == null ||
+                              subredditCubit.subreddit.picture == '')
                           ? const Text(
                               'r/',
                               style: TextStyle(
@@ -188,7 +187,7 @@ class _SubredditState extends State<Subreddit>
                             )
                           : null,
                     ),
-                    if (subredditCubit.subreddit!.isModerator!)
+                    if (subredditCubit.subreddit.isModerator!)
                       const CircleAvatar(
                         backgroundColor: Colors.transparent,
                         radius: 25,
@@ -223,9 +222,9 @@ class _SubredditState extends State<Subreddit>
                             });
                           }),
                           child: Text(
-                            (subredditCubit.subreddit!.title == null)
+                            (subredditCubit.subreddit.title == null)
                                 ? ''
-                                : 'r/${subredditCubit.subreddit!.title}',
+                                : 'r/${subredditCubit.subreddit.title}',
                             // key: _con3,
                             maxLines: titleFlag ? 1 : 2,
                             overflow: titleFlag ? TextOverflow.ellipsis : null,
@@ -233,52 +232,66 @@ class _SubredditState extends State<Subreddit>
                                 fontSize: 22 * mediaQuery.textScaleFactor),
                           ),
                         ),
-                        (subredditCubit.subreddit!.isModerator!)
-                            ? MaterialButton(
-                                onPressed: () {},
-                                child: Row(
-                                  children: const [
-                                    Icon(Icons.build),
-                                    Text('Mod Tool')
-                                  ],
-                                ),
-                              )
-                            : MaterialButton(
-                                onPressed: () {},
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 5, horizontal: 12),
-                                  decoration: BoxDecoration(
-                                      border:
-                                          (subredditCubit.subreddit!.isMember!)
+                        BlocBuilder<SubredditCubit, SubredditState>(
+                            buildWhen: (previous, current) =>
+                                (current is leaveSubredditState ||
+                                    current is joinSubredditState),
+                            builder: (context, state) => (subredditCubit
+                                    .subreddit.isModerator!)
+                                ? MaterialButton(
+                                    onPressed: () {
+                                      // Navigator.of(context).push(MaterialPageRoute(
+                                      //     builder: ((context) =>
+                                      //         const ModTools())));
+                                    },
+                                    child: Row(
+                                      children: const [
+                                        Icon(Icons.build),
+                                        Text('Mod Tool')
+                                      ],
+                                    ),
+                                  )
+                                : MaterialButton(
+                                    onPressed: () {
+                                      if (!subredditCubit.subreddit.isMember!) {
+                                        subredditCubit.joinCommunity();
+                                      }
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 5, horizontal: 12),
+                                      decoration: BoxDecoration(
+                                          border: (!subredditCubit
+                                                  .subreddit.isMember!)
                                               ? null
                                               : Border.all(
                                                   color: ColorManager.blue),
-                                      color:
-                                          (subredditCubit.subreddit!.isMember!)
+                                          color: (!subredditCubit
+                                                  .subreddit.isMember!)
                                               ? ColorManager.blue
                                               : ColorManager.black,
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: Text(
-                                    (subredditCubit.subreddit!.isMember!)
-                                        ? 'Join'
-                                        : 'Joined',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color: (subredditCubit
-                                                .subreddit!.isMember!)
-                                            ? ColorManager.eggshellWhite
-                                            : ColorManager.blue),
-                                  ),
-                                ),
-                              ),
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: Text(
+                                        (!subredditCubit.subreddit.isMember!)
+                                            ? 'Join'
+                                            : 'Joined',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: (!subredditCubit
+                                                    .subreddit.isMember!)
+                                                ? ColorManager.eggshellWhite
+                                                : ColorManager.blue),
+                                      ),
+                                    ),
+                                  )),
                       ],
                     ),
                     GestureDetector(
                       child: Align(
                           alignment: Alignment.bottomLeft,
                           child: Text(
-                            'r/${subredditCubit.subreddit!.nickname}',
+                            'r/${subredditCubit.subreddit.nickname}',
                             style: TextStyle(
                                 fontSize: 17 * mediaQuery.textScaleFactor),
                           )),
@@ -307,7 +320,7 @@ class _SubredditState extends State<Subreddit>
                     });
                   }),
                   child: Text(
-                    subredditCubit.subreddit!.description ?? '',
+                    subredditCubit.subreddit.description ?? '',
                     key: _con3,
                     maxLines: descriptionFlag ? 2 : null,
                     overflow: descriptionFlag ? TextOverflow.ellipsis : null,

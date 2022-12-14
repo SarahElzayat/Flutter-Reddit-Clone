@@ -7,6 +7,7 @@ import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import '../../components/app_bar_components.dart';
 import '../../components/search_field.dart';
 import '../../cubit/app_cubit.dart';
+import '../../widgets/subreddit/subreddit_options.dart';
 
 class SubredditAppBar extends SliverPersistentHeaderDelegate {
   @override
@@ -39,13 +40,13 @@ class SubredditAppBar extends SliverPersistentHeaderDelegate {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            (subredditCubit.subreddit!.banner == null ||
-                    subredditCubit.subreddit!.banner == '')
+            (subredditCubit.subreddit.banner == null ||
+                    subredditCubit.subreddit.banner == '')
                 ? Container(
                     color: ColorManager.blue,
                   )
                 : Image.network(
-                    subredditCubit.subreddit!.banner!,
+                    subredditCubit.subreddit.banner!,
                     width: double.maxFinite,
                     fit: BoxFit.cover,
                   ),
@@ -95,7 +96,7 @@ class SubredditAppBar extends SliverPersistentHeaderDelegate {
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Text(
-                                        subredditCubit.subreddit!.title!,
+                                        subredditCubit.subreddit.title!,
                                         style: TextStyle(
                                             fontSize: 20 *
                                                 mediaQuery.textScaleFactor),
@@ -115,43 +116,13 @@ class SubredditAppBar extends SliverPersistentHeaderDelegate {
                                       isSubreddit: true,
                                       isResult: true,
                                       labelText:
-                                          'r/${subredditCubit.subreddit!.nickname!}',
+                                          'r/${subredditCubit.subreddit.nickname!}',
                                       textEditingController:
                                           TextEditingController(),
                                     ),
                                   ),
                                 ),
-                          PopupMenuButton(
-                              itemBuilder: (context) => [
-                                    PopupMenuItem(
-                                        child: Row(
-                                      children: const [
-                                        Icon(Icons.volume_mute),
-                                        Text('Mute subreddit')
-                                      ],
-                                    )),
-                                    PopupMenuItem(
-                                        child: Row(
-                                      children: const [
-                                        Icon(Icons.dynamic_feed_rounded),
-                                        Text('Add to Custom Feed')
-                                      ],
-                                    )),
-                                    PopupMenuItem(
-                                        child: Row(
-                                      children: const [
-                                        Icon(Icons.sell_outlined),
-                                        Text('Change user flair')
-                                      ],
-                                    )),
-                                    PopupMenuItem(
-                                        child: Row(
-                                      children: const [
-                                        Icon(Icons.mail_outline),
-                                        Text('Contact mods')
-                                      ],
-                                    ))
-                                  ]),
+                          SubredditOpion(),
                           InkWell(
                               onTap: () {
                                 scaffoldKey.currentState!.isEndDrawerOpen
