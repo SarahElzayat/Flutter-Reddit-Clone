@@ -50,11 +50,13 @@ const search = '/search';
 const searchPosts = 'post';
 const searchUsers = 'user';
 const searchComments = 'comment';
-const searchCommunities = 'community';
+const searchSubreddits = 'subreddit';
 const postDetails = '/post-details';
-
+const followUser = '/follow-user';
+const joinCommunity = '/join-subreddit';
+const leaveCommunity = '/leave-subreddit';
 const unknownAvatar =
-    'https://www.investopedia.com/thmb/qDGHg2MCiUni812bkWihr-qdBbM=/1600x900/filters:no_upscale():max_bytes(150000):strip_icc()/Reddit-Logo-e9537b96b55349ac8eb77830f8470c95.jpg';
+    'https://pbs.twimg.com/profile_images/1155645244563742721/tuCu6BT-_400x400.jpg';
 // const savedPosts = ''
 const ban = '/ban';
 const unban = '/unban';

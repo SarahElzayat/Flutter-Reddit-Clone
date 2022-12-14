@@ -46,7 +46,8 @@ BlocBuilder<PostNotifierCubit, PostNotifierState> dropDownDots(post) {
 CircleAvatar subredditAvatar({small = false}) {
   return CircleAvatar(
       radius: small ? min(2.w, 15) : min(5.5.w, 30),
-      backgroundImage: const NetworkImage(unknownAvatar));
+      backgroundImage: null // const NetworkImage(unknownAvatar),
+      );
 }
 
 Widget commentSortRow(BuildContext context) {

@@ -4,7 +4,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/components/search_components/profile_result.dart';
+import 'package:reddit/components/search_components/profile_result_container.dart';
 import 'package:reddit/data/search/search_result_profile_model.dart';
 import 'package:reddit/screens/search/cubit/search_cubit.dart';
 
@@ -30,7 +30,7 @@ class _ResultsUsersState extends State<ResultsUsers> {
   @override
   void initState() {
     SearchCubit.get(context).getUsers();
-    // users =
+    // cubit.users =
     _scrollController.addListener(_scrollListener);
 
     super.initState();
@@ -45,7 +45,7 @@ class _ResultsUsersState extends State<ResultsUsers> {
   @override
   Widget build(BuildContext context) {
     SearchCubit cubit = SearchCubit.get(context);
-    users = cubit.users;
+    // cubit.users = cubit.cubit.users;
 
     return BlocConsumer<SearchCubit, SearchState>(
       listener: (context, state) {},
@@ -58,7 +58,7 @@ class _ResultsUsersState extends State<ResultsUsers> {
             color: ColorManager.blue,
           )),
           builder: (context) {
-            return users.isEmpty
+            return cubit.users.isEmpty
                 ? Center(
                     child: Text(
                       'Wow, such empty',
@@ -66,12 +66,13 @@ class _ResultsUsersState extends State<ResultsUsers> {
                     ),
                   )
                 : ListView.builder(
+                    // itemExtent: 400,
                     controller: _scrollController,
-                    itemCount: users.length, //cubit.users.length,
+                    itemCount: cubit.users.length, //cubit.cubit.users.length,
                     shrinkWrap: true,
                     itemBuilder: (context, index) => IntrinsicHeight(
-                          child: ProfileResult(
-                            model: users[index],
+                          child: ProfileResultContainer(
+                            model: cubit.users[index],
                           ),
                         ));
           },

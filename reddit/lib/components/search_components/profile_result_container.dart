@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/data/search/search_result_profile_model.dart';
-import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/screens/search/cubit/search_cubit.dart';
 
-class ProfileResult extends StatelessWidget {
-  const ProfileResult({super.key, required this.model});
+class ProfileResultContainer extends StatelessWidget {
+  const ProfileResultContainer({super.key, required this.model});
   final SearchResultProfileModel model;
+
   @override
   Widget build(BuildContext context) {
     // SearchCubit cubit = SearchCubit.get(context);
@@ -31,7 +31,7 @@ class ProfileResult extends StatelessWidget {
                     child: CircleAvatar(
                       backgroundImage: model.data!.avatar != null
                           ? NetworkImage(model.data!.avatar.toString())
-                          : const NetworkImage(unknownAvatar),
+                          : null,
                       radius: 20,
                     ),
                   ),
@@ -59,10 +59,18 @@ class ProfileResult extends StatelessWidget {
                   MaterialButton(
                     shape: const StadiumBorder(),
                     color: ColorManager.darkGrey,
-                    onPressed: () {}, //=> cubit.folowUser(model.id),
-                    child: const Text(
-                      'Follow',
-                      style: TextStyle(color: ColorManager.blue, fontSize: 16),
+                    onPressed: () {
+                      SearchCubit.get(context).folowUser(
+                          username: model.data!.username,
+                          follow: !model.data!.following!);
+                      model.data!.following = !model.data!.following!;
+                      // setState(() {});
+                      // setSta
+                    }, //=> cubit.folowUser(model.id),
+                    child: Text(
+                      model.data!.following! ? 'Following' : 'Follow',
+                      style: const TextStyle(
+                          color: ColorManager.blue, fontSize: 16),
                     ),
                   )
                 ],
