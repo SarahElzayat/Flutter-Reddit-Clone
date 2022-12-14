@@ -53,7 +53,8 @@ dependencies:
   flutter_quill: #^6.1.6
   flutter_quill_extensions: #^0.1.0
   flutter_slider_drawer: ^2.1.1
-  flutter_svg: null
+  flutter_sticky_header: ^0.6.4
+  flutter_svg: ^1.1.6
   flutter_switch: ^0.3.2
   giphy_get: ^3.1.1
   giphy_picker: ^2.0.0
@@ -68,7 +69,7 @@ dependencies:
   lint: ^2.0.1
   logger: ^1.1.0
   markdown: ^6.0.1
-  path_provider: ^2.0.11
+  path_provider:
   photo_view: ^0.14.0
   responsive_builder: ^0.4.3
   responsive_sizer: ^3.1.1
@@ -83,7 +84,7 @@ dependencies:
   video_player: ^2.4.7
   video_thumbnail: ^0.5.3
   video_trimmer: ^2.0.1
-  youtube_player_flutter_quill: ^8.2.2
+
 dev_dependencies:
   build_runner: null
 
@@ -115,6 +116,7 @@ flutter:
   assets:
     - .env
     - assets/
+    - assets/fonts/
     - assets/images/
     - assets/icons/
   #   - images/a_dot_ham.jpeg
@@ -142,12 +144,17 @@ flutter:
           weight: 700
 
         - asset: assets/fonts/Roboto-BoldItalic.ttf
+        - asset: assets/Fonts/Roboto-Bold.ttf
+          weight: 700
+
+        - asset: assets/Fonts/Roboto-BoldItalic.ttf
           weight: 700
 
         - asset: assets/fonts/Roboto-Medium.ttf
           weight: 500
 
         - asset: assets/fonts/Roboto-Light.ttf
+        - asset: assets/Fonts/Roboto-Light.ttf
           weight: 300
         # - asset: fonts/Roboto-Italic.ttf
         #   style: italic

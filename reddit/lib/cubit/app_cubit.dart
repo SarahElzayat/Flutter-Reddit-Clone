@@ -224,7 +224,6 @@ class AppCubit extends Cubit<AppState> {
       path: path != null
           ? '$user/$username$path'
           : '$user/$username$currentHistoryCategory',
-      token: CacheHelper.getData(key: 'token'),
       query: {
         'limit': limit,
         'after': after ? afterId : null,
@@ -314,8 +313,8 @@ class AppCubit extends Cubit<AppState> {
   ];
 
   int historyPostViewIconIndex = 0;
-  HistoyPostsView histoyPostsView = HistoyPostsView.card;
-  void changeHistoryPostView(HistoyPostsView view) {
+  PostView histoyPostsView = PostView.card;
+  void changeHistoryPostView(PostView view) {
     historyPostViewIconIndex = view.index;
     histoyPostsView = view;
     // print(histoyPostsView.toString());
@@ -366,7 +365,6 @@ class AppCubit extends Cubit<AppState> {
 
     DioHelper.getData(
       path: '$user/$username/saved',
-      token: CacheHelper.getData(key: 'token'),
       query: {
         'limit': limit,
         'after': after

@@ -29,8 +29,21 @@ enum SortType {
 enum PostView {
   classic,
   card,
+  withCommentsInSearch,
+}
+
+enum CommentView {
+  normal,
+  inSearch,
+  inSubreddits,
 }
 
 enum HistoyCategory { recent, upvoted, downvoted, hidden }
 
-enum HistoyPostsView { card, classic }
+/// used to indicate which users to get
+enum UserManagement {
+  banned,
+  approved,
+  muted,
+  moderator,
+}

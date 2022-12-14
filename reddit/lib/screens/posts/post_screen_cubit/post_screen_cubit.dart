@@ -1,8 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import '../../../components/helpers/posts/helper_funcs.dart';
-import '../../../constants/constants.dart';
 import '../../../data/comment/comments_listing.dart';
 
 import '../../../data/comment/comment_model.dart';
@@ -61,7 +61,6 @@ class PostScreenCubit extends Cubit<PostScreenState> {
     emit(CommentsLoading());
 
     DioHelper.getData(
-      token: token,
       path: '/comments/${post.id}',
       query: {
         'before': before,
@@ -81,11 +80,11 @@ class PostScreenCubit extends Cubit<PostScreenState> {
           allCommentsMap[element.id!] = element;
         });
       });
-      logger.d(allCommentsMap);
+      logger.d(comments[0].commentBody);
       emit(CommentsLoaded());
     }).catchError((error) {
       logger.e('error in coments $error');
-      emit(CommentsError());
+      emit(CommentsError((error as DioError).response!.data['error']));
     });
   }
 
@@ -105,7 +104,6 @@ class PostScreenCubit extends Cubit<PostScreenState> {
     emit(CommentsLoading());
 
     DioHelper.getData(
-      token: token,
       path: '/comments/${post.id}/$commentId',
       query: {
         'before': before,
@@ -115,7 +113,7 @@ class PostScreenCubit extends Cubit<PostScreenState> {
       },
     ).then((value) {
       var currentComment = allCommentsMap[commentId];
-      
+
       CommentsListingModel commentsListingModel =
           CommentsListingModel.fromJson(value.data);
       // there is only one comment as the parent
@@ -140,7 +138,7 @@ class PostScreenCubit extends Cubit<PostScreenState> {
     }).catchError((error) {
       logger.e('error in show More $error');
 
-      emit(CommentsError());
+      emit(CommentsError('error in show more'));
     });
   }
 }

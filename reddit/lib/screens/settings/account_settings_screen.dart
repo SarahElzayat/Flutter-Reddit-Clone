@@ -81,7 +81,7 @@ class AccountSettingsScreen extends StatelessWidget {
               ],
               listTileIcons: const [
                 CustomIcons.google,
-                CustomIcons.facebook_squared,
+                CustomIcons.facebookSquared,
               ],
               listTileTitles: const [
                 'Google',

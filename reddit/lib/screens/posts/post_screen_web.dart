@@ -4,6 +4,7 @@
 ///
 import 'dart:io';
 
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:path/path.dart' as p;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -23,6 +24,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../components/helpers/universal_ui/universal_ui.dart';
 import '../../components/home_app_bar.dart';
+import '../../components/snack_bar.dart';
 import '../../data/comment/comment_model.dart';
 import '../../data/post_model/post_model.dart';
 import '../../widgets/comments/comment.dart';
@@ -103,6 +105,7 @@ class _PostScreenWebState extends State<PostScreenWeb> {
       controller: _controller!,
       embedButtons: FlutterQuillEmbeds.buttons(
         showVideoButton: false,
+        showCameraButton: false,
         onImagePickCallback: _onImagePickCallback,
         webImagePickImpl: _webImagePickImpl,
       ),
@@ -114,7 +117,14 @@ class _PostScreenWebState extends State<PostScreenWeb> {
         post: widget.post,
       )..getCommentsOfPost(),
       child: BlocConsumer<PostScreenCubit, PostScreenState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is CommentsError) {
+            ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+              message: state.error.toString(),
+              error: true,
+            ));
+          }
+        },
         builder: (context, state) {
           final screenCubit = PostScreenCubit.get(context);
           return Scaffold(
@@ -136,15 +146,16 @@ class _PostScreenWebState extends State<PostScreenWeb> {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
                         width: 50.w,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             PostWidget(
                               post: widget.post,
+                              outsideScreen: false,
                             ),
                             const SizedBox(
                               height: 20,
@@ -187,7 +198,7 @@ class _PostScreenWebState extends State<PostScreenWeb> {
                                         SizedBox(
                                             width: 50.w - 120, child: toolbar),
                                         // button to submit comment
-                                        Container(
+                                        SizedBox(
                                           width: 100,
                                           child: TextButton(
                                             style: TextButton.styleFrom(
@@ -206,6 +217,34 @@ class _PostScreenWebState extends State<PostScreenWeb> {
                                     ),
                                   ),
                                 ],
+                              ),
+                            ),
+                            DropdownButtonHideUnderline(
+                              child: DropdownButton2(
+                                hint: Text(
+                                  'Select Item',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Theme.of(context).hintColor,
+                                  ),
+                                ),
+                                items: PostScreenCubit.labels
+                                    .map((item) => DropdownMenuItem<String>(
+                                          value: item,
+                                          child: Text(
+                                            item,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ))
+                                    .toList(),
+                                value: screenCubit.selectedItem,
+                                onChanged: (value) {
+                                  setState(() {
+                                    screenCubit.changeSortType(value!);
+                                  });
+                                },
                               ),
                             ),
                             ..._getCommentsList(screenCubit.comments),
@@ -275,10 +314,10 @@ class _PostScreenWebState extends State<PostScreenWeb> {
   // or Firebase) and then return the uploaded image URL.
   Future<String> _onImagePickCallback(File file) async {
     // Copies the picked file from temporary cache to applications directory
-    final appDocDir = await getApplicationDocumentsDirectory();
-    final copiedFile =
-        await file.copy('${appDocDir.path}/${p.basename(file.path)}');
-    return copiedFile.path.toString();
+    // final appDocDir = await getApplicationDocumentsDirectory();
+    // final copiedFile =
+    //     await file.copy('${appDocDir.path}/${p.basename(file.path)}');
+    return file.path.toString();
   }
 
   Future<String?> _webImagePickImpl(
@@ -290,6 +329,7 @@ class _PostScreenWebState extends State<PostScreenWeb> {
 
     // Take first, because we don't allow picking multiple files.
     final fileName = result.files.first.name;
+
     final file = File(fileName);
 
     return onImagePickCallback(file);

@@ -45,10 +45,10 @@ class VotesPart extends StatelessWidget {
             onPressed: () async {
               PostAndCommentActionsCubit.get(context)
                   .vote(
-                direction: 1,
+                oldDir: 1,
               )
                   .then((value) {
-                PostNotifierCubit.get(context).NotifyPosts();
+                PostNotifierCubit.get(context).notifyPosts();
               });
             },
             constraints: const BoxConstraints(),
@@ -81,8 +81,8 @@ class VotesPart extends StatelessWidget {
           shape: const CircleBorder(),
           child: IconButton(
             onPressed: () {
-              cubit.vote(direction: -1).then((value) {
-                PostNotifierCubit.get(context).NotifyPosts();
+              cubit.vote(oldDir: -1).then((value) {
+                PostNotifierCubit.get(context).notifyPosts();
               });
             },
             constraints: const BoxConstraints(),
@@ -102,13 +102,16 @@ class VotesPart extends StatelessWidget {
       builder: (context, state) {
         return BlocBuilder<PostNotifierCubit, PostNotifierState>(
             builder: (context, state) {
-          return !isWeb
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: getchildren(),
+          return isWeb
+              ? Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: getchildren(),
+                  ),
                 )
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: getchildren(),
                 );
         });

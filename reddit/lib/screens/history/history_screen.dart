@@ -3,7 +3,7 @@
 ///@description: the screen that shows the history of the user for mobile
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/Components/Helpers/color_manager.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
@@ -90,18 +90,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
     List<ListTile> historyView = [
       ListTile(
-        leading: const Icon(Icons.crop_square_outlined),
-        title: const Text('Card'),
-        onTap: () {
-          cubit.changeHistoryPostView(HistoyPostsView.card);
-          Navigator.pop(context);
-        },
-      ),
+          leading: const Icon(Icons.crop_square_outlined),
+          title: const Text('Card'),
+          onTap: () {
+            cubit.changeHistoryPostView(PostView.card);
+            Navigator.pop(context);
+          }),
       ListTile(
         leading: const Icon(Icons.view_list_outlined),
         title: const Text('Classic'),
         onTap: () {
-          cubit.changeHistoryPostView(HistoyPostsView.classic);
+          cubit.changeHistoryPostView(PostView.classic);
           Navigator.pop(context);
         },
       ),
@@ -258,10 +257,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                   itemBuilder: (context, index) =>
                                       // index < cubit.history.length ?
                                       PostWidget(
-                                    postView: cubit.histoyPostsView ==
-                                            HistoyPostsView.card
-                                        ? PostView.card
-                                        : PostView.classic,
+                                    postView:
+                                        cubit.histoyPostsView == PostView.card
+                                            ? PostView.card
+                                            : PostView.classic,
                                     post: cubit.history[index],
                                     upperRowType:
                                         cubit.history[index].subreddit != null

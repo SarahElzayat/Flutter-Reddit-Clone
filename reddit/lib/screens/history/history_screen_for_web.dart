@@ -7,14 +7,15 @@ import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/components/home_app_bar.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
 
-// import '../../Components/Helpers/color_manager.dart';
+// import '../../components/helpers/color_manager.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../cubit/app_cubit.dart';
 import '../../widgets/posts/post_upper_bar.dart';
 
 class HistoryScreenForWeb extends StatefulWidget {
-  const HistoryScreenForWeb({super.key, this.histoyCategory = HistoyCategory.recent});
-  
+  const HistoryScreenForWeb(
+      {super.key, this.histoyCategory = HistoyCategory.recent});
+
   static const routeName = '/history_screen_web';
   final HistoyCategory histoyCategory;
 
@@ -23,24 +24,22 @@ class HistoryScreenForWeb extends StatefulWidget {
 }
 
 class _HistoryScreenForWebState extends State<HistoryScreenForWeb> {
-  final ScrollController _scrollController =  ScrollController();
-void _scrollListener() {
+  final ScrollController _scrollController = ScrollController();
+  void _scrollListener() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
       AppCubit.get(context).getHistory(after: true, loadMore: true);
-      
     }
   }
 
-@override
-void initState() {
-
-      AppCubit.get(context).changeHistoryCategory(widget.histoyCategory);
+  @override
+  void initState() {
+    AppCubit.get(context).changeHistoryCategory(widget.histoyCategory);
 
     _scrollController.addListener(_scrollListener);
-  super.initState();
-  
-}
+    super.initState();
+  }
+
   @override
   void dispose() {
     _scrollController.dispose();
@@ -56,7 +55,6 @@ void initState() {
       builder: (context, state) {
         return Scaffold(
           appBar: homeAppBar(context, 0),
-          
           body: SingleChildScrollView(
             controller: _scrollController,
             child: Column(children: [
