@@ -1,7 +1,14 @@
 /// @author Sarah El-Zayat
 /// @date 9/11/2022
 /// this is the screen for the comments results of the main search
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/data/comment/comment_model.dart';
+import 'package:reddit/widgets/comments/comment.dart';
+
+import '../../components/helpers/color_manager.dart';
+import 'cubit/search_cubit.dart';
 
 class ResultsComments extends StatefulWidget {
   const ResultsComments({super.key});
@@ -11,13 +18,60 @@ class ResultsComments extends StatefulWidget {
 }
 
 class _ResultsCommentsState extends State<ResultsComments> {
+  final _scrollController = ScrollController();
+  List<CommentModel> comments = [];
+  void _scrollListener() {
+    if (_scrollController.offset ==
+        _scrollController.position.maxScrollExtent) {
+      SearchCubit.get(context).getUsers(loadMore: true, after: true);
+    }
+  }
+
+  @override
+  void initState() {
+    SearchCubit.get(context).getUsers();
+    _scrollController.addListener(_scrollListener);
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Comments',
-        style: TextStyle(color: Colors.white, fontSize: 50),
-      ),
+    final SearchCubit cubit = SearchCubit.get(context)..getComments();
+    return BlocConsumer<SearchCubit, SearchState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        return ConditionalBuilder(
+          condition:
+              state is! LoadedResultsState || state is! LoadedMoreResultsState,
+          fallback: (context) => const Center(
+              child: CircularProgressIndicator(
+            color: ColorManager.blue,
+          )),
+          builder: (context) => cubit.comments.isEmpty
+              ? Center(
+                  child: Text(
+                    'Wow, such empty',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                )
+              // :Placeholder()
+              : ListView.builder(
+                  controller: _scrollController,
+                  itemCount: cubit.comments.length,
+                  itemBuilder: (context, index) => Comment(
+                    comment: cubit.comments[index],
+                    post: cubit.commentsPosts[index],
+                  ),
+                ),
+        );
+      },
     );
   }
 }
