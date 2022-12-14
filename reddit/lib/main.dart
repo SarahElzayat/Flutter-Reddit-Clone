@@ -13,6 +13,7 @@ import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'constants/constants.dart';
+import 'cubit/videos_cubit/videos_cubit.dart';
 import 'screens/main_screen.dart';
 
 import 'package:reddit/data/routes.dart';
@@ -83,6 +84,7 @@ class Main extends StatelessWidget {
         BlocProvider(create: (context) => CreateCommunityCubit()),
         BlocProvider(create: (context) => ModerationCubit()),
         BlocProvider(create: (context) => SubredditCubit()),
+        BlocProvider(create: (context) => VideosCubit()),
       ],
       child: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {

@@ -403,6 +403,49 @@ class _CommentState extends State<Comment> {
   }
 
   Widget _subComments() {
-    return Container();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          widget.post.title ?? '',
+          style: TextStyle(
+            color: ColorManager.lightGrey,
+            fontSize: 15.sp,
+          ),
+        ),
+        Row(
+          children: [
+            Text(
+              'r/${widget.post.subreddit}',
+              style: TextStyle(
+                color: ColorManager.lightGrey,
+                fontSize: 15.sp,
+              ),
+            ),
+            Text(
+              ' • ${timeago.format(DateTime.tryParse(widget.post.postedAt ?? '') ?? DateTime.now(), locale: 'en_short')}',
+              style: TextStyle(
+                color: ColorManager.greyColor,
+                fontSize: 15.sp,
+              ),
+            ),
+            Text(
+              ' • ${widget.post.votes ?? ''} upvotes',
+              style: TextStyle(
+                color: ColorManager.lightGrey,
+                fontSize: 15.sp,
+              ),
+            ),
+          ],
+        ),
+        Text(
+          _controller!.document.toPlainText(),
+          style: TextStyle(
+            color: ColorManager.lightGrey,
+            fontSize: 15.sp,
+          ),
+        )
+      ],
+    );
   }
 }

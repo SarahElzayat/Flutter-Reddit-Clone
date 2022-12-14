@@ -114,6 +114,7 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
       required void Function(DioError) onError,
     }) {
       final content = jsonEncode(_controller!.document.toDelta().toJson());
+      logger.i(content);
       SendedCommentModel c = SendedCommentModel(
         content: content,
         postId: widget.post.id!,
