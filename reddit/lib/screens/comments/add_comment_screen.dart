@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
@@ -127,13 +126,13 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
       DioHelper.postData(token: token, path: '/comment', data: {c.toJson()})
           .then((value) {
         onSuccess();
-
         //TODO HANDLE THIS IN THE CUBIT
         return null;
       }).catchError((e) {
         // TODO HANDLE THIS IN THE CUBIT
         onError(e as DioError);
         Map<String, dynamic> error = e.response!.data;
+        
         logger.w(error['error']);
       });
     }
