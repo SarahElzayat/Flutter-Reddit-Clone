@@ -6,12 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
-import 'package:reddit/widgets/posts/dropdown_list.dart';
 import 'package:reddit/widgets/posts/votes_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../data/post_model/post_model.dart';
-import '../../functions/post_functions.dart';
 import 'flick_multi_manager.dart';
 
 class FullScreenPortraitControls extends StatelessWidget {
@@ -41,7 +39,7 @@ class FullScreenPortraitControls extends StatelessWidget {
                     onPressed: () {
                       flickManager?.flickControlManager?.toggleFullscreen();
                     },
-                    icon: Icon(Icons.arrow_back_rounded)),
+                    icon: const Icon(Icons.arrow_back_rounded)),
                 Expanded(child: Center(child: Text('r/${post.subreddit!}'))),
                 // dropDownDots(post)
               ],

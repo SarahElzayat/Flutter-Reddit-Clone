@@ -6,9 +6,9 @@ import '../post_model/image.dart';
 import '../post_model/post_model.dart';
 
 String quillContent =
-    '''[{"insert":"This is a post written with Quill\\n","attributes":{"bold":true}},
+    '''{"ops": [{"insert":"This is a post written with Quill\\n","attributes":{"bold":true}},
     {"insert":"bold and italic","attributes":{"bold":true,"italic":true}},{"insert":"\\n"},
-    {"insert":"link","attributes":{"link":"pub.dev/packages/quill_markdown"}},{"insert":"\\n"}]''';
+    {"insert":"link","attributes":{"link":"pub.dev/packages/quill_markdown"}},{"insert":"\\n"}]}''';
 
 var textPost = PostModel(
   id: '6398e2665abbd729a1cf875e',
