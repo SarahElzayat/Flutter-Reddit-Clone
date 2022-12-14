@@ -23,13 +23,13 @@ class _ResultsCommentsState extends State<ResultsComments> {
   void _scrollListener() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      SearchCubit.get(context).getUsers(loadMore: true, after: true);
+      SearchCubit.get(context).getComments(loadMore: true, after: true);
     }
   }
 
   @override
   void initState() {
-    SearchCubit.get(context).getUsers();
+    SearchCubit.get(context).getComments();
     _scrollController.addListener(_scrollListener);
 
     super.initState();
