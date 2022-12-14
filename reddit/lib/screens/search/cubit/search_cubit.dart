@@ -7,6 +7,7 @@ import 'package:reddit/data/search/search_result_profile_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/widgets/comments/comment.dart';
+import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 
 import '../../../data/post_model/post_model.dart';
 import '../results_comments.dart';
@@ -134,6 +135,7 @@ class SearchCubit extends Cubit<SearchState> {
           postsAfterId = value.data['after'];
           postsBeforeId = value.data['before'];
           print(value.data['children'].length);
+          logger.e(value.data['children']);
           for (int i = 0; i < value.data['children'].length; i++) {
             posts.add(PostModel.fromJson(value.data['children'][i]['data']));
           }
