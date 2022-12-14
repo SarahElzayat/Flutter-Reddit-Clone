@@ -2,12 +2,13 @@
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
 import 'dart:convert';
+import 'package:logger/logger.dart';
 import 'package:reddit/cubit/videos_cubit/videos_cubit.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/widgets/comments/comment.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import 'package:flutter_quill/flutter_quill.dart' as quill;
+import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'dart:math';
 
 import 'package:any_link_preview/any_link_preview.dart';
@@ -420,24 +421,37 @@ class _PostWidgetState extends State<PostWidget> {
   }
 
   Widget _bodyText() {
-    return quill.QuillEditor(
-      controller: quill.QuillController(
-        document: quill.Document.fromJson(
-          jsonDecode(widget.post.content ?? '[{"insert": "\\n"}]'),
-        ),
-        selection: const TextSelection.collapsed(offset: 0),
-      ),
+    return QuillEditor(
+      controller: getController(),
       readOnly: true,
       autoFocus: false,
       enableInteractiveSelection: false,
       expands: false,
       scrollable: false,
+      placeholder: 'such empty...',
       scrollController: ScrollController(),
       focusNode: FocusNode(),
       padding: EdgeInsets.zero,
       embedBuilders: [
         ...FlutterQuillEmbeds.builders(),
       ],
+    );
+  }
+
+  QuillController getController() {
+    Document doc;
+
+    try {
+      doc = Document.fromJson(jsonDecode(widget.post.content ?? '[]')['ops']);
+      Logger().wtf(doc.toPlainText());
+    } catch (e) {
+      logger.wtf(e);
+      doc = Document();
+    }
+
+    return QuillController(
+      document: doc,
+      selection: const TextSelection.collapsed(offset: 0),
     );
   }
 

@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional_switch.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
+import 'package:logger/logger.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
@@ -68,7 +69,8 @@ class _CommentState extends State<Comment> {
     // }
     Document doc;
     try {
-      doc = Document.fromJson(jsonDecode(widget.comment.commentBody ?? '[]'));
+      doc = Document.fromJson(
+          jsonDecode(widget.comment.commentBody ?? '[]')['ops']);
     } catch (e) {
       doc = Document();
     }
@@ -95,12 +97,13 @@ class _CommentState extends State<Comment> {
       child: QuillEditor(
         controller: _controller!,
         scrollController: ScrollController(),
-        scrollable: true,
+        scrollable: false,
         focusNode: _focusNode,
         autoFocus: false,
-        readOnly: false,
-        placeholder: 'Add content',
+        readOnly: true,
+        placeholder: 'Such empty',
         expands: false,
+        showCursor: false,
         padding: EdgeInsets.zero,
         embedBuilders: [
           ...FlutterQuillEmbeds.builders(),

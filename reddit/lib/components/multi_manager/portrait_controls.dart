@@ -18,8 +18,8 @@ class FeedPlayerPortraitControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FlickDisplayManager displayManager =
-        Provider.of<FlickDisplayManager>(context);
+    // FlickDisplayManager displayManager =
+    // Provider.of<FlickDisplayManager>(context);
 
     FlickControlManager controlManager =
         Provider.of<FlickControlManager>(context);
