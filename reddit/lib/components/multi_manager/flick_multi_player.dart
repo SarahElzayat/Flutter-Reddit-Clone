@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reddit/components/multi_manager/portrait_controls.dart';
+import 'package:reddit/data/post_model/post_model.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -13,11 +14,13 @@ class FlickMultiPlayer extends StatefulWidget {
       {Key? key,
       required this.url,
       this.image,
+      required this.post,
       required this.flickMultiManager})
       : super(key: key);
 
   final String url;
   final String? image;
+  final PostModel post;
   final FlickMultiManager flickMultiManager;
 
   @override
@@ -87,6 +90,7 @@ class _FlickMultiPlayerState extends State<FlickMultiPlayer> {
           controls: FeedPlayerPortraitControls(
             flickMultiManager: widget.flickMultiManager,
             flickManager: flickManager,
+            post: widget.post
           ),
         ),
         preferredDeviceOrientationFullscreen: const [
@@ -101,6 +105,7 @@ class _FlickMultiPlayerState extends State<FlickMultiPlayer> {
           controls: FullScreenPortraitControls(
             flickMultiManager: widget.flickMultiManager,
             flickManager: flickManager,
+            post: widget.post,
           ),
           videoFit: BoxFit.contain,
           iconThemeData: const IconThemeData(

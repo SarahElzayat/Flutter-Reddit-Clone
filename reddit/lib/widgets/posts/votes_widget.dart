@@ -103,12 +103,10 @@ class VotesPart extends StatelessWidget {
         return BlocBuilder<PostNotifierCubit, PostNotifierState>(
             builder: (context, state) {
           return isWeb
-              ? Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: getchildren(),
-                  ),
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  children: getchildren(),
                 )
               : Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
