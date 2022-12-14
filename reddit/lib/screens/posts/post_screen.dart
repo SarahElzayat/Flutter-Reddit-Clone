@@ -143,7 +143,6 @@ class PostScreen extends StatelessWidget {
               child: Comment(
                 post: post,
                 comment: e,
-                viewType: CommentView.inSubreddits,
               ),
             ))
         .toList();
