@@ -1,13 +1,13 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/data/search/search_result_profile_model.dart';
+import 'package:reddit/data/search/search_result_subbredit_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
+import 'package:reddit/screens/comments/add_comment_screen.dart';
 
 import '../../../data/post_model/post_model.dart';
 import '../results_comments.dart';
@@ -55,10 +55,10 @@ class SearchCubit extends Cubit<SearchState> {
       {bool loadMore = false,
       bool before = false,
       bool after = false,
-      int limit = 10}) {
+      int limit = 25}) {
     if (!loadMore) posts.clear();
 
-    DioHelper.getData(path: search, token: token, query: {
+    DioHelper.getData(path: search, query: {
       'type': searchPosts,
       'q': searchQuery,
       'limit': limit,
@@ -102,20 +102,17 @@ class SearchCubit extends Cubit<SearchState> {
       {bool loadMore = false,
       bool before = false,
       bool after = false,
-      int limit = 10}) {
+      int limit = 25}) {
     loadMore ? emit(LoadingMoreResultsState()) : emit(LoadingResultsState());
     if (!loadMore) users.clear();
 
-    DioHelper.getData(
-        path: search,
-        token: '${CacheHelper.getData(key: 'token')}',
-        query: {
-          'type': searchUsers,
-          'q': searchQuery,
-          'limit': limit,
-          'after': after ? usersAfterId : null,
-          'before': before ? usersBeforeId : null,
-        }).then((value) {
+    DioHelper.getData(path: search, query: {
+      'type': searchUsers,
+      'q': searchQuery,
+      'limit': limit,
+      'after': after ? usersAfterId : null,
+      'before': before ? usersBeforeId : null,
+    }).then((value) {
       if (value.statusCode == 200) {
         if (value.data['children'].length == 0) {
           loadMore
@@ -155,7 +152,7 @@ class SearchCubit extends Cubit<SearchState> {
       {bool loadMore = false,
       bool before = false,
       bool after = false,
-      int limit = 10}) {
+      int limit = 25}) {
     loadMore ? emit(LoadingMoreResultsState()) : emit(LoadingResultsState());
 
     if (!loadMore) {
@@ -167,7 +164,7 @@ class SearchCubit extends Cubit<SearchState> {
       'type': searchComments,
       'q': searchQuery,
       'limit': limit,
-      'after': after ? commentsBeforeId : null,
+      'after': after ? commentsAfterId : null,
       'before': before ? commentsBeforeId : null,
     }).then((value) {
       if (value.statusCode == 200) {
@@ -176,7 +173,7 @@ class SearchCubit extends Cubit<SearchState> {
               ? emit(NoMoreResultsToLoadState())
               : emit(ResultEmptyState());
         } else {
-          commentsBeforeId = value.data['after'];
+          commentsAfterId = value.data['after'];
           commentsBeforeId = value.data['before'];
 
           for (int i = 0; i < value.data['children'].length; i++) {
@@ -184,6 +181,55 @@ class SearchCubit extends Cubit<SearchState> {
                 value.data['children'][i]['data']['comment']));
             commentsPosts.add(
                 PostModel.fromJson(value.data['children'][i]['data']['post']));
+          }
+          loadMore
+              ? emit(LoadedMoreResultsState())
+              : emit(LoadedResultsState());
+        }
+      } else {
+        emit(SearchErrorState());
+      }
+    }).onError((error, stackTrace) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+    });
+  }
+
+  List<SearchResultSubredditModel> subbreddits = [];
+  String subbredditsBeforeId = '';
+  String subbredditsAfterId = '';
+
+  void getSubbreddits(
+      {bool loadMore = false,
+      bool before = false,
+      bool after = false,
+      int limit = 25}) {
+    loadMore ? emit(LoadingMoreResultsState()) : emit(LoadingResultsState());
+
+    if (!loadMore) {
+      subbreddits.clear();
+    }
+
+    DioHelper.getData(path: search, query: {
+      'type': searchSubreddits,
+      'q': searchQuery,
+      'limit': limit,
+      'after': after ? subbredditsAfterId : null,
+      'before': before ? subbredditsBeforeId : null,
+    }).then((value) {
+      if (value.statusCode == 200) {
+        logger.wtf(value.data);
+        if (value.data.length == 0) {
+          loadMore
+              ? emit(NoMoreResultsToLoadState())
+              : emit(ResultEmptyState());
+        } else {
+          subbredditsAfterId = value.data['after'];
+          subbredditsBeforeId = value.data['before'];
+          for (int i = 0; i < value.data['children'].length; i++) {
+            subbreddits.add(
+                SearchResultSubredditModel.fromJson(value.data['children'][i]));
           }
           loadMore
               ? emit(LoadedMoreResultsState())
@@ -207,6 +253,32 @@ class SearchCubit extends Cubit<SearchState> {
         data: {'username': username, 'follow': follow}).then((value) {
       if (value.statusCode == 200) {
         emit(FollowStateChanged());
+      } else {
+        emit(SearchErrorState());
+      }
+    });
+  }
+
+  void joinSubreddit({required id}) {
+    DioHelper.postData(token: token, path: joinCommunity, data: {
+      'subredditId': id,
+    }).then((value) {
+      if (value.statusCode == 200) {
+        logger.wtf(value.data);
+        emit(JoinStateChanged());
+      } else {
+        emit(SearchErrorState());
+      }
+    });
+  }
+
+  void leaveSubreddit({required name}) {
+    DioHelper.postData(token: token, path: leaveCommunity, data: {
+      'subredditName': name,
+    }).then((value) {
+      if (value.statusCode == 200) {
+        logger.wtf(value.data);
+        emit(JoinStateChanged());
       } else {
         emit(SearchErrorState());
       }

@@ -4,7 +4,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/components/search_components/profile_result.dart';
+import 'package:reddit/components/search_components/profile_result_container.dart';
 import 'package:reddit/data/search/search_result_profile_model.dart';
 import 'package:reddit/screens/search/cubit/search_cubit.dart';
 
@@ -66,11 +66,12 @@ class _ResultsUsersState extends State<ResultsUsers> {
                     ),
                   )
                 : ListView.builder(
+                    // itemExtent: 400,
                     controller: _scrollController,
                     itemCount: cubit.users.length, //cubit.cubit.users.length,
                     shrinkWrap: true,
                     itemBuilder: (context, index) => IntrinsicHeight(
-                          child: ProfileResult(
+                          child: ProfileResultContainer(
                             model: cubit.users[index],
                           ),
                         ));

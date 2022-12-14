@@ -9,6 +9,7 @@ import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/screens/search/cubit/search_cubit.dart';
+import 'package:reddit/widgets/posts/post_upper_bar.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
 
 import '../../Components/Helpers/color_manager.dart';
@@ -79,7 +80,13 @@ class _ResultsPostsState extends State<ResultsPosts> {
                               ),
                             ))),
                     child: PostWidget(
-                        post: cubit.posts[index], postView: PostView.classic),
+                        upperRowType: cubit.posts[index].inYourSubreddit == null
+                            ? ShowingOtions.onlyUser
+                            : ShowingOtions.both,
+                        // TODO check this
+                        // upperRowType: ShowingOtions.onlyUser,
+                        post: cubit.posts[index],
+                        postView: PostView.classic),
                   ),
                 ),
         );

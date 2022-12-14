@@ -21,6 +21,7 @@ class LoadedResultsState extends SearchState{}
 class LoadedMoreResultsState extends SearchState{}
 
 class FollowStateChanged extends SearchState{}
+class JoinStateChanged extends SearchState{}
 
 
 
