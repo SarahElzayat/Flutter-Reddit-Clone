@@ -604,6 +604,7 @@ class _PostWidgetState extends State<PostWidget> {
       url: widget.post.video!,
       flickMultiManager: VideosCubit.get(context).flickMultiManager,
       image: unknownAvatar,
+      
     );
   }
 }

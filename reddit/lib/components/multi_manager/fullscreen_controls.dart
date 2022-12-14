@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 
 import 'flick_multi_manager.dart';
 
-class FeedPlayerPortraitControls extends StatelessWidget {
-  const FeedPlayerPortraitControls(
+class FullScreenPortraitControls extends StatelessWidget {
+  const FullScreenPortraitControls(
       {Key? key, this.flickMultiManager, this.flickManager})
       : super(key: key);
 

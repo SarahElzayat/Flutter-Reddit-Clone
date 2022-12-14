@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:reddit/components/multi_manager/portrait_controls.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import './flick_multi_manager.dart';
-import 'portrait_controls.dart';
+import 'fullscreen_controls.dart';
 
 class FlickMultiPlayer extends StatefulWidget {
   const FlickMultiPlayer(
@@ -82,24 +84,30 @@ class _FlickMultiPlayerState extends State<FlickMultiPlayer> {
               ],
             ),
           ),
-          
           controls: FeedPlayerPortraitControls(
             flickMultiManager: widget.flickMultiManager,
             flickManager: flickManager,
           ),
         ),
+        preferredDeviceOrientationFullscreen: const [
+          DeviceOrientation.portraitUp,
+        ],
         flickVideoWithControlsFullscreen: FlickVideoWithControls(
           playerLoadingFallback: Center(
               child: Image.network(
             widget.image!,
             fit: BoxFit.fitWidth,
           )),
-          controls: FlickLandscapeControls(),
-          iconThemeData: IconThemeData(
+          controls: FullScreenPortraitControls(
+            flickMultiManager: widget.flickMultiManager,
+            flickManager: flickManager,
+          ),
+          videoFit: BoxFit.contain,
+          iconThemeData: const IconThemeData(
             size: 40,
             color: Colors.white,
           ),
-          textStyle: TextStyle(fontSize: 16, color: Colors.white),
+          textStyle: const TextStyle(fontSize: 16, color: Colors.white),
         ),
       ),
     );
