@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
-import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/data/search/search_result_profile_model.dart';
 import 'package:reddit/data/search/search_result_subbredit_model.dart';
@@ -58,7 +57,9 @@ class SearchCubit extends Cubit<SearchState> {
       bool before = false,
       bool after = false,
       int limit = 25}) {
-    if (!loadMore) posts.clear();
+    if (!loadMore) {
+      posts.clear();
+    }
 
     DioHelper.getData(path: search, query: {
       'type': searchPosts,
@@ -69,23 +70,22 @@ class SearchCubit extends Cubit<SearchState> {
     }).then((value) {
       if (value.statusCode == 200) {
         if (value.data['children'].length == 0) {
-          print('hena');
           loadMore
               ? emit(NoMoreResultsToLoadState())
               : emit(ResultEmptyState());
           emit(LoadedResultsState());
         } else {
+          logger.wtf(value.data);
           postsAfterId = value.data['after'];
           postsBeforeId = value.data['before'];
           print(value.data['children'].length);
           for (int i = 0; i < value.data['children'].length; i++) {
             posts.add(PostModel.fromJson(value.data['children'][i]['data']));
+            print('tmam');
           }
         }
         // print(value.data);
-        loadMore
-            ? emit(LoadedMoreResultsState())
-            : emit(LoadingMoreResultsState());
+        loadMore ? emit(LoadedMoreResultsState()) : emit(LoadedResultsState());
       } else {
         emit(SearchErrorState());
       }
@@ -116,6 +116,7 @@ class SearchCubit extends Cubit<SearchState> {
       'before': before ? usersBeforeId : null,
     }).then((value) {
       if (value.statusCode == 200) {
+        logger.wtf(value.data);
         if (value.data['children'].length == 0) {
           loadMore
               ? emit(NoMoreResultsToLoadState())

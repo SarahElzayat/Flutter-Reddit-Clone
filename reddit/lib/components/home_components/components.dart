@@ -4,6 +4,9 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/cubit/app_cubit.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
+import 'package:reddit/data/home/drawer_communities_model.dart';
+import 'package:reddit/screens/subreddit/subreddit_screen.dart';
 
 import '../../screens/create_community_screen/create_community_screen.dart';
 import '../../screens/to_be_done_screen.dart';
@@ -14,7 +17,7 @@ import '../../screens/to_be_done_screen.dart';
 /// @param [onPressed] is the function that controls the list
 /// @param [isOpen] is the state of the list
 Widget listButton(context, text, list, onPressed, isOpen,
-    {isCommunity = false, isModerating = false}) {
+    {isCommunity = false, isModerating = false, required navigateToSubreddit}) {
   return Container(
     decoration: const BoxDecoration(
         border: BorderDirectional(
@@ -70,18 +73,14 @@ Widget listButton(context, text, list, onPressed, isOpen,
                     text: 'Mod Queue',
                   ),
                   isLeftDrawer: true),
-            if (isCommunity)
-              genericTextButton(
-                  context,
-                  Icons.dynamic_feed_outlined,
-                  'Custom Feeds',
-                  const ToBeDoneScreen(
-                    text: 'Custom Feeds',
-                  ),
-                  isLeftDrawer: true),
-            ListView(
-              padding: const EdgeInsets.only(left: 10),
-              children: list,
+            ListView.builder(
+              padding: const EdgeInsets.only(
+                left: 10,
+              ),
+              itemCount: list.length,
+              itemBuilder: (context, index) {
+                return InkWell(onTap: navigateToSubreddit, child: list[index]);
+              },
               shrinkWrap: true,
             ),
           ]),
@@ -120,3 +119,25 @@ Widget genericTextButton(context, icon, text, route, {required isLeftDrawer}) =>
             )
           ],
         ));
+
+Widget yourCommunitiesCard(DrawerCommunitiesModel model) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 5.0),
+    child: Row(
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(right: 8.0),
+          child: CircleAvatar(
+            backgroundImage: AssetImage('./assets/images/uranus.png'),
+            radius: 10,
+          ),
+        ),
+        Text(
+          'r/${model.title.toString()}',
+          style:
+              const TextStyle(color: ColorManager.eggshellWhite, fontSize: 16),
+        )
+      ],
+    ),
+  );
+}

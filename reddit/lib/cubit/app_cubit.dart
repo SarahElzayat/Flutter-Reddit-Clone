@@ -5,7 +5,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/enums.dart';
+import 'package:reddit/components/home_components/components.dart';
 import 'package:reddit/data/comment/comment_model.dart';
+import 'package:reddit/data/home/drawer_communities_model.dart';
 import 'package:reddit/data/saved/saved_comments_model.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
@@ -62,15 +64,79 @@ class AppCubit extends Cubit<AppState> {
   ];
 
   ///@param [homePosts] dummy data for home screen
-  List<Widget> homePosts = [
-    PostWidget(post: textPost),
-    PostWidget(post: videoPost),
-    PostWidget(post: smalltextPost),
-    PostWidget(post: linkPost, upperRowType: ShowingOtions.onlyUser),
-    PostWidget(post: oneImagePost, postView: PostView.classic),
-    PostWidget(post: manyImagePost, postView: PostView.classic),
-    PostWidget(post: manyImagePost, postView: PostView.card),
+  List<PostModel> homePosts = [
+    // PostWidget(post: textPost),
+    // PostWidget(post: videoPost),
+    // PostWidget(post: smalltextPost),
+    // PostWidget(post: linkPost, upperRowType: ShowingOtions.onlyUser),
+    // PostWidget(post: oneImagePost, postView: PostView.classic),
+    // PostWidget(post: manyImagePost, postView: PostView.classic),
+    // PostWidget(post: manyImagePost, postView: PostView.card),
   ];
+
+  String homePostsAfterId = '';
+  String homePostsBeforeId = '';
+
+  // void getHomePosts(){
+  //   home
+
+  // }
+
+  void getHomePosts(
+      {bool loadMore = false,
+      bool before = false,
+      bool after = false,
+      int limit = 25}) {
+    if (!loadMore) {
+      homePosts.clear();
+    }
+    int sort = CacheHelper.getData(key: 'sort');
+    String path = '';
+    if (HomeSort.best.index == sort) {
+      path = homeBest;
+    } else if (HomeSort.hot.index == sort) {
+      path = homeHot;
+    } else if (HomeSort.top.index == sort) {
+      path = homeTop;
+    } else if (HomeSort.newPosts.index == sort) {
+      path = homeNew;
+    } else if (HomeSort.trending.index == sort) {
+      path = homeTrending;
+    }
+
+    DioHelper.getData(path: path, query: {
+      'limit': limit,
+      'after': after ? homePostsAfterId : null,
+      'before': before ? homePostsBeforeId : null,
+    }).then((value) {
+      if (value.statusCode == 200) {
+        if (value.data['children'].length == 0) {
+          loadMore
+              ? emit(NoMoreResultsToLoadState())
+              : emit(ResultEmptyState());
+          emit(LoadedResultsState());
+        } else {
+          logger.wtf(value.data);
+          homePostsAfterId = value.data['after'];
+          homePostsBeforeId = value.data['before'];
+          logger.wtf(value.data['children'].length);
+          for (int i = 0; i < value.data['children'].length; i++) {
+            homePosts
+                .add(PostModel.fromJson(value.data['children'][i]['data']));
+            logger.e(i);
+          }
+        }
+        // print(value.data);
+        emit(LoadedResultsState());
+      } else {
+        emit(ErrorState());
+      }
+    }).onError((error, stackTrace) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+    });
+  }
 
   ///@param [popularPosts] dummy data for home screen
   List<Widget> popularPosts = [
@@ -154,25 +220,23 @@ class AppCubit extends Cubit<AppState> {
     emit(ChangeYourCommunitiesState());
   }
 
-  ///@param [yourCommunitiesList] dummy data
-  List<Widget> yourCommunitiesList = [
-    //
-    const Text(
-      'community 1 ',
-      style: TextStyle(
-          color: ColorManager.eggshellWhite, fontWeight: FontWeight.w400),
-    ),
-    const Text(
-      'community 2 ',
-      style: TextStyle(
-          color: ColorManager.eggshellWhite, fontWeight: FontWeight.w400),
-    ),
-    const Text(
-      'community 3 ',
-      style: TextStyle(
-          color: ColorManager.eggshellWhite, fontWeight: FontWeight.w400),
-    ),
-  ];
+  ///@param [yourCommunitiesList] user's joined communities
+  List<Widget> yourCommunitiesList = [];
+
+  void getYourCommunities() {
+    yourCommunitiesList.clear();
+    DioHelper.getData(path: joinedSubreddits).then((value) {
+      if (value.statusCode == 200) {
+        for (int i = 0; i < value.data['children'].length; i++) {
+          yourCommunitiesList.add(yourCommunitiesCard(
+              DrawerCommunitiesModel.fromJson(value.data['children'][i])));
+        }
+        emit(LoadedCommunitiesState());
+      } else {
+        emit(ErrorState());
+      }
+    });
+  }
 
   ///@param [profilePicture] the profile picture of the user
   //TODO get it from the fucking backend

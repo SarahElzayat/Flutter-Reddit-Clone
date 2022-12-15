@@ -27,7 +27,7 @@ class LeftDrawer extends StatelessWidget {
               if (cubit.moderatingListItems.isNotEmpty)
                 listButton(context, 'Moderating', cubit.moderatingListItems,
                     cubit.changeModeratingListState, cubit.moderatingListOpen,
-                    isModerating: true),
+                    isModerating: true, navigateToSubreddit: () {}),
               if (cubit.yourCommunitiesList.isNotEmpty)
                 listButton(
                     context,
@@ -35,10 +35,11 @@ class LeftDrawer extends StatelessWidget {
                     cubit.yourCommunitiesList,
                     cubit.changeYourCommunitiesState,
                     cubit.yourCommunitiesistOpen,
-                    isCommunity: true),
-              genericTextButton(context, Icons.bar_chart_rounded, 'All',
-                  const ToBeDoneScreen(text: 'All'),
-                  isLeftDrawer: true)
+                    isCommunity: true,
+                    navigateToSubreddit: () {}),
+              // genericTextButton(context, Icons.bar_chart_rounded, 'All',
+              //     const ToBeDoneScreen(text: 'All'),
+              //     isLeftDrawer: true)
             ],
           ),
         ));

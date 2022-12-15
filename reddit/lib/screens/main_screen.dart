@@ -61,6 +61,8 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
   @override
   void initState() {
     super.initState();
+    AppCubit.get(context).getYourCommunities();
+    AppCubit.get(context).getHomePosts();
     // DioHelper.getData(
     //     path: '/post-details',
     //     query: {'id': '639769c11cb171d29e9ade6b'}).then((value) {
