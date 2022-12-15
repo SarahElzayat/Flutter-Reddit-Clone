@@ -58,6 +58,7 @@ class _CommunitySearchState extends State<CommunitySearch> {
                     fontSize: 20,
                     hintText: 'Search',
                     onChanged: (val) {
+                      addPostCubit.subredditSearch(val);
                       setState(() {});
                     },
                     controller: controller),
@@ -67,29 +68,54 @@ class _CommunitySearchState extends State<CommunitySearch> {
                     onPressed: () {
                       setState(() {
                         controller.clear();
+
+                        addPostCubit.subredditSearch('');
                       });
                     },
                     icon: const Icon(Icons.close)),
             ],
           ),
         ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: subreddits.length,
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                onTap: () {
-                  addPostCubit.addSubredditName(subreddits[index]);
-                  navigator.pushNamed(PostRules.routeName);
-                },
-                title: Text(
-                  subreddits[index],
-                  style: TextStyle(fontSize: 18 * mediaQuery.textScaleFactor),
-                ),
-                subtitle: Text(memberNumber(widget.memberNumbers[index])),
+        BlocBuilder<AddPostCubit, AddPostState>(
+          buildWhen: (previous, current) => current is SubredditSearch,
+          builder: (context, state) {
+            if (state is SubredditSearch && state.isLoaded == false) {
+              return const CircularProgressIndicator(
+                color: ColorManager.blue,
               );
-            },
-          ),
+            } else if (state is SubredditSearch &&
+                state.isLoaded == true &&
+                addPostCubit.subredditsList != null) {
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: addPostCubit.subredditsList!.children!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ListTile(
+                      onTap: () {
+                        addPostCubit.addSubredditName(addPostCubit
+                            .subredditsList!
+                            .children![index]
+                            .data!
+                            .subredditName!);
+                        navigator.pushNamed(PostRules.routeName);
+                      },
+                      title: Text(
+                        addPostCubit.subredditsList!.children![index].data!
+                            .subredditName!,
+                        style: TextStyle(
+                            fontSize: 18 * mediaQuery.textScaleFactor),
+                      ),
+                      subtitle: Text(memberNumber(addPostCubit.subredditsList!
+                          .children![index].data!.numberOfMembers!
+                          .toDouble())),
+                    );
+                  },
+                ),
+              );
+            } else {
+              return SizedBox();
+            }
+          },
         ),
       ]),
     );

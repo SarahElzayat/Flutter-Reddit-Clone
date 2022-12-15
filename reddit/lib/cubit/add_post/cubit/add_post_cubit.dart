@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
+import 'package:reddit/data/add_post/subredditsSearchListModel.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
@@ -74,6 +75,8 @@ class AddPostCubit extends Cubit<AddPostState> {
 
   bool nsfw = false;
   bool spoiler = false;
+
+  SubredditsSearchListModel? subredditsList;
 
   void changePostType({required int postTypeIndex}) {
     postType = postTypeIndex;
@@ -543,8 +546,30 @@ class AddPostCubit extends Cubit<AddPostState> {
         print('Server Error');
       }
     }).catchError((error) {
-      print("The errorrr isss :::::: ${error.toString()}");
+      print('The errorrr isss :::::: ${error.toString()}');
     });
     emit(PostCreated());
+  }
+
+  void subredditSearch(String subredditName) {
+    if (subredditName == null || subredditName == '') {
+      subredditsList = null;
+      emit(SubredditSearch(isLoaded: true));
+    } else {
+      emit(SubredditSearch(isLoaded: false));
+      DioHelper.getData(path: searchForSubreddit, query: {
+        'type': 'subreddit',
+        'q': subredditName,
+      }).then((value) {
+        if (value.statusCode == 200) {
+          subredditsList = SubredditsSearchListModel.fromJson(value.data);
+          print('List');
+          print(subredditsList!.children);
+          emit(SubredditSearch(isLoaded: true));
+        }
+      }).catchError((error) {
+        print('Error in Search ==> $error');
+      });
+    }
   }
 }
