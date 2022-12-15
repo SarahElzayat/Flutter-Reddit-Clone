@@ -79,7 +79,7 @@ class ListTileContainer extends StatelessWidget {
               itemCount: listTileTitles.length,
               itemBuilder: (BuildContext context, int index) {
                 return ListTileWidget(
-                    type: types![index],
+                    type: types[index],
                     items: _ourItems(index),
                     leadingIcon: Icon(listTileIcons[index]),
                     title: listTileTitles[index],

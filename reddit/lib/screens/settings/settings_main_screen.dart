@@ -82,7 +82,7 @@ class SettingsMainScreen extends StatelessWidget {
                   ],
                   title: 'View Options',
                   trailingObject: const [
-                    TrailingObjects.dropBox,
+                    TrailingObjects.switchButton,
                     TrailingObjects.switchButton
                   ],
                   items: const [

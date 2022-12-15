@@ -32,3 +32,5 @@ enum PostView {
 }
 
 enum HistoyCategory { recent, upvoted, downvoted, hidden }
+
+enum HomeSort { best, hot, newPosts, top, raising, controversial }

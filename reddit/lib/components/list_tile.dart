@@ -71,7 +71,6 @@ class _ListTileWidgetState extends State<ListTileWidget> {
               if (widget.type != null) {
                 SettingsCubit.get(ctx).changeSwitch(value, widget.type!);
               }
-
               setBool = value;
             });
           },
@@ -137,7 +136,8 @@ class _ListTileWidgetState extends State<ListTileWidget> {
         // change button value to selected value
         onChanged: (String? newValue) {
           setState(() {
-            dropDownValue = newValue!;
+            SettingsCubit.get(context).changeDropValue(newValue, newValue!);
+            dropDownValue = newValue;
           });
         },
       ),
