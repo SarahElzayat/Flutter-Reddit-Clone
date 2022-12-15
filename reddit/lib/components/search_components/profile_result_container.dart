@@ -54,7 +54,6 @@ class ProfileResultContainer extends StatelessWidget {
                     ],
                   ),
                   const Spacer(),
-                  //TODO
                   MaterialButton(
                     shape: const StadiumBorder(),
                     color: ColorManager.darkGrey,

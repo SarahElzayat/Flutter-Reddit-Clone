@@ -5,14 +5,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/cubit/add_post/cubit/add_post_cubit.dart';
-import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import 'package:reddit/widgets/add_post/post_type_widget.dart';
 import '../../../widgets/add_post/add_post_textfield.dart';
 
 import '../../widgets/add_post/create_post_button.dart';
 import '../../widgets/add_post/post_type_buttons.dart';
 import 'community_search.dart';
-import 'post_rules.dart';
 
 /// This is the main screen in Add Post
 

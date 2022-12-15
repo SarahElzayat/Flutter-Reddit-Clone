@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import 'package:reddit/data/search/search_result_subbredit_model.dart';
-import 'package:reddit/screens/subreddit/subreddit_screen.dart';
 
 import '../../screens/search/cubit/search_cubit.dart';
 import '../helpers/color_manager.dart';
@@ -73,7 +72,6 @@ class SubredditResultsContainer extends StatelessWidget {
                   ],
                 ),
                 const Spacer(),
-                //TODO navigate to subreddit
                 MaterialButton(
                   shape: const StadiumBorder(),
                   color: ColorManager.darkGrey,

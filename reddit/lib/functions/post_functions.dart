@@ -289,7 +289,6 @@ void handleRemove(
 void handleApprove(
     {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   final approvePost = ApproveModel(id: post.id, type: 'post');
-  var token = CacheHelper.getData(key: 'token');
   DioHelper.postData(path: approve, data: approvePost.toJson()).then((value) {
     // if (value.statusCode == 200) {
     onSuccess();
@@ -303,7 +302,6 @@ Future<void> showModOperations({
   required BuildContext context,
   required PostModel post,
 }) async {
-  bool isError;
   String message;
   var returnedOption = await showDialog<ModOPtions>(
       context: context,

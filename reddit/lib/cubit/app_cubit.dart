@@ -5,8 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/components/home_components/components.dart';
-import 'package:reddit/data/comment/comment_model.dart';
+
 import 'package:reddit/data/home/drawer_communities_model.dart';
 import 'package:reddit/data/saved/saved_comments_model.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart';
@@ -16,7 +15,6 @@ import 'package:reddit/screens/bottom_navigation_bar_screens/notifications_scree
 import 'package:reddit/screens/comments/add_comment_screen.dart';
 import 'package:reddit/screens/saved/saved_comments.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
-import 'package:reddit/widgets/posts/post_upper_bar.dart';
 import '../components/helpers/color_manager.dart';
 import '../data/post_model/post_model.dart';
 import '../data/temp_data/tmp_data.dart';
@@ -126,14 +124,14 @@ class AppCubit extends Cubit<AppState> {
             logger.e(i);
           }
         }
-        // print(value.data);
+        // logger.wtf(value.data);
         emit(LoadedResultsState());
       } else {
         emit(ErrorState());
       }
     }).onError((error, stackTrace) {
       if (kDebugMode) {
-        print(error.toString());
+        logger.wtf(error.toString());
       }
     });
   }
@@ -266,11 +264,11 @@ class AppCubit extends Cubit<AppState> {
       bool after = false,
       int limit = 10}) {
     if (kDebugMode) {
-      print('after$afterId');
-      print('before$beforeId');
+      logger.wtf('after$afterId');
+      logger.wtf('before$beforeId');
     }
     if (kDebugMode) {
-      print('CATEGOOORYYYY $currentHistoryCategory');
+      logger.wtf('CATEGOOORYYYY $currentHistoryCategory');
     }
     loadMore ? emit(LoadingMoreHistoryState()) : emit(LoadingHistoryState());
     if (!loadMore) {
@@ -279,10 +277,10 @@ class AppCubit extends Cubit<AppState> {
       afterId = '';
     } else {
       if (kDebugMode) {
-        print('AFFFTEEEEERRRRRR ');
+        logger.wtf('AFFFTEEEEERRRRRR ');
       }
       if (kDebugMode) {
-        print(history[history.length - 1].id);
+        logger.wtf(history[history.length - 1].id);
       }
     }
     DioHelper.getData(
@@ -297,7 +295,7 @@ class AppCubit extends Cubit<AppState> {
     ).then((value) {
       if (value.data['children'].length == 0) {
         if (kDebugMode) {
-          print('EMPPPTTYYYYY');
+          logger.wtf('EMPPPTTYYYYY');
         }
 
         if (loadMore) {
@@ -319,7 +317,7 @@ class AppCubit extends Cubit<AppState> {
       }
     }).onError((error, stackTrace) {
       if (kDebugMode) {
-        print(error.toString());
+        logger.wtf(error.toString());
       }
     });
   }
@@ -380,7 +378,7 @@ class AppCubit extends Cubit<AppState> {
   void changeHistoryPostView(PostView view) {
     historyPostViewIconIndex = view.index;
     histoyPostsView = view;
-    // print(histoyPostsView.toString());
+    // logger.wtf(histoyPostsView.toString());
     emit(ChangeHistoryPostViewState());
   }
 
@@ -448,7 +446,7 @@ class AppCubit extends Cubit<AppState> {
     ).then((value) {
       if (value.data['children'].length == 0) {
         if (kDebugMode) {
-          print('EMPPPTTYYYYY');
+          logger.wtf('EMPPPTTYYYYY');
         }
 
         if (loadMore) {
@@ -465,29 +463,29 @@ class AppCubit extends Cubit<AppState> {
           savedCommentsBeforeId = value.data['before'];
         }
 
-        // print(value.data.toString());
+        // logger.wtf(value.data.toString());
         for (int i = 0; i < value.data['children'].length; i++) {
           if (value.data['children']['type'] == 'fullPost' && isPosts) {
-            // print('POOOOSTTTTSSS');
-            print(value.data['children'][i]['data'].toString());
+            // logger.wtf('POOOOSTTTTSSS');
+            logger.wtf(value.data['children'][i]['data'].toString());
             savedPostsList
                 .add(PostModel.fromJson(value.data['children'][i]['data']));
           } else {
-            // print('COOOMMMMEEENNNTSSSS');
-            // print(value.data['children'][i]['data'].toString());
+            // logger.wtf('COOOMMMMEEENNNTSSSS');
+            // logger.wtf(value.data['children'][i]['data'].toString());
             savedCommentsList.add(
                 SavedCommentModel.fromJson(value.data['children'][i]['data']));
           }
         }
-        print('aaaaaaaaaaaaa');
+        logger.wtf('aaaaaaaaaaaaa');
 
-        print(savedPostsList[0].id.toString());
+        logger.wtf(savedPostsList[0].id.toString());
 
         loadMore ? emit(LoadedMoreHistoryState()) : emit(LoadedHistoryState());
       }
     }).onError((error, stackTrace) {
       if (kDebugMode) {
-        print(error.toString());
+        logger.wtf(error.toString());
       }
     });
   }

@@ -30,29 +30,29 @@ class SavedCommentModel {
     publishTime = json['publishTime'];
     editTime = json['editTime'];
     parent =
-        json['parent'] != null ? new Parent.fromJson(json['parent']) : null;
+        json['parent'] != null ? Parent.fromJson(json['parent']) : null;
     level = json['level'];
     inYourSubreddit = json['inYourSubreddit'];
     moderation = json['moderation'] != null
-        ? new Moderation.fromJson(json['moderation'])
+        ? Moderation.fromJson(json['moderation'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['commentId'] = this.commentId;
-    data['commentedBy'] = this.commentedBy;
-    data['commentBody'] = this.commentBody;
-    data['points'] = this.points;
-    data['publishTime'] = this.publishTime;
-    data['editTime'] = this.editTime;
-    if (this.parent != null) {
-      data['parent'] = this.parent!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['commentId'] = commentId;
+    data['commentedBy'] = commentedBy;
+    data['commentBody'] = commentBody;
+    data['points'] = points;
+    data['publishTime'] = publishTime;
+    data['editTime'] = editTime;
+    if (parent != null) {
+      data['parent'] = parent!.toJson();
     }
-    data['level'] = this.level;
-    data['inYourSubreddit'] = this.inYourSubreddit;
-    if (this.moderation != null) {
-      data['moderation'] = this.moderation!.toJson();
+    data['level'] = level;
+    data['inYourSubreddit'] = inYourSubreddit;
+    if (moderation != null) {
+      data['moderation'] = moderation!.toJson();
     }
     return data;
   }
@@ -84,13 +84,13 @@ class Parent {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['commentId'] = this.commentId;
-    data['commentedBy'] = this.commentedBy;
-    data['commentBody'] = this.commentBody;
-    data['points'] = this.points;
-    data['publishTime'] = this.publishTime;
-    data['editTime'] = this.editTime;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['commentId'] = commentId;
+    data['commentedBy'] = commentedBy;
+    data['commentBody'] = commentBody;
+    data['points'] = points;
+    data['publishTime'] = publishTime;
+    data['editTime'] = editTime;
     return data;
   }
 }
@@ -105,25 +105,25 @@ class Moderation {
 
   Moderation.fromJson(Map<String, dynamic> json) {
     approve =
-        json['approve'] != null ? new Approve.fromJson(json['approve']) : null;
+        json['approve'] != null ? Approve.fromJson(json['approve']) : null;
     remove =
-        json['remove'] != null ? new Remove.fromJson(json['remove']) : null;
-    spam = json['spam'] != null ? new Spam.fromJson(json['spam']) : null;
+        json['remove'] != null ? Remove.fromJson(json['remove']) : null;
+    spam = json['spam'] != null ? Spam.fromJson(json['spam']) : null;
     lock = json['lock'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.approve != null) {
-      data['approve'] = this.approve!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (approve != null) {
+      data['approve'] = approve!.toJson();
     }
-    if (this.remove != null) {
-      data['remove'] = this.remove!.toJson();
+    if (remove != null) {
+      data['remove'] = remove!.toJson();
     }
-    if (this.spam != null) {
-      data['spam'] = this.spam!.toJson();
+    if (spam != null) {
+      data['spam'] = spam!.toJson();
     }
-    data['lock'] = this.lock;
+    data['lock'] = lock;
     return data;
   }
 }
@@ -140,9 +140,9 @@ class Approve {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['approvedBy'] = this.approvedBy;
-    data['approvedDate'] = this.approvedDate;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['approvedBy'] = approvedBy;
+    data['approvedDate'] = approvedDate;
     return data;
   }
 }
@@ -159,9 +159,9 @@ class Remove {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['removedBy'] = this.removedBy;
-    data['removedDate'] = this.removedDate;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['removedBy'] = removedBy;
+    data['removedDate'] = removedDate;
     return data;
   }
 }
@@ -178,9 +178,9 @@ class Spam {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['spammedBy'] = this.spammedBy;
-    data['spammedDate'] = this.spammedDate;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['spammedBy'] = spammedBy;
+    data['spammedDate'] = spammedDate;
     return data;
   }
 }
