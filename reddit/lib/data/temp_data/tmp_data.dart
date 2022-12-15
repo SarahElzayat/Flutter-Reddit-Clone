@@ -6,13 +6,13 @@ import '../post_model/image.dart';
 import '../post_model/post_model.dart';
 
 String quillContent =
-    '''[{"insert":"This is a post written with Quill\\n","attributes":{"bold":true}},
+    '''{"ops": [{"insert":"This is a post written with Quill\\n","attributes":{"bold":true}},
     {"insert":"bold and italic","attributes":{"bold":true,"italic":true}},{"insert":"\\n"},
-    {"insert":"link","attributes":{"link":"pub.dev/packages/quill_markdown"}},{"insert":"\\n"}]''';
+    {"insert":"link","attributes":{"link":"pub.dev/packages/quill_markdown"}},{"insert":"\\n"}]}''';
 
 var textPost = PostModel(
-  id: '639508b2b02950743a541875',
-  kind: 'hybrid',
+  id: '639a42443a8a2b305120762f',
+  kind: 'post',
   title: 'this is the title',
   content: quillContent,
   subreddit: 'news',
@@ -26,6 +26,7 @@ var textPost = PostModel(
     textColor: '#0E0EEE',
   ),
   saved: false,
+  sharePostId: '639a42443a8a2b305120762f',
   spoiler: true,
   inYourSubreddit: false,
   nsfw: false,
@@ -34,6 +35,32 @@ var textPost = PostModel(
 );
 
 final textPostS = textPost.toJson();
+
+var videoPost = PostModel(
+  id: '639a42443a8a2b305120762f',
+  kind: 'video',
+  title: 'this is the VIDEO',
+  content: quillContent,
+  subreddit: 'news',
+  video:
+      'https://github.com/GeekyAnts/flick-video-player-demo-videos/blob/master/example/rio_from_above_compressed.mp4?raw=true',
+  postedBy: 'Atta',
+  postedAt: '2019-08-24T14:15:22Z',
+  editedAt: '2019-08-24T14:15:22Z',
+  flair: Flair(
+    id: '123',
+    flairName: 'flair',
+    backgroundColor: '#FFAA00',
+    textColor: '#0E0EEE',
+  ),
+  saved: false,
+  sharePostId: '639a42443a8a2b305120762f',
+  spoiler: true,
+  inYourSubreddit: false,
+  nsfw: false,
+  votes: 100,
+  comments: 10,
+);
 
 var smalltextPost = PostModel(
   id: '639508b2b02950743a541875',

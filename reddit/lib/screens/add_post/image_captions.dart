@@ -78,7 +78,7 @@ class _AddImageCaptionState extends State<AddImageCaption> {
                     text: 'Save',
                     textColor: isEdited ? ColorManager.blue : ColorManager.grey,
                     backgroundColor: Colors.black,
-                    buttonWidth: 70,
+                    buttonWidth: 80,
                     buttonHeight: 20,
                     textFontSize: 20,
                     onPressed: isEdited

@@ -9,14 +9,25 @@ class PostsInitial extends PostState {}
 
 class VotedSuccess extends PostState {}
 
+class BlockedChangedState extends PostState {}
+
+class FollowedChangedState extends PostState {}
+
+class EditedState extends PostState {}
+
 class VotedError extends PostState {
   final DioError? error;
   VotedError({this.error});
 }
 
+class OpError extends PostState {
+  final String? error;
+  OpError({this.error});
+}
+
 class CommentsModToolsToggled extends PostState {}
 
-class PostsSaved extends PostState {}
+class SavedChangedState extends PostState {}
 
 class PostsSavedError extends PostState {}
 

@@ -14,14 +14,17 @@ import '../../screens/create_community_screen/cubit/create_community_cubit.dart'
 import '../../screens/moderation/cubit/moderation_cubit.dart';
 
 import 'constants/constants.dart';
+import 'cubit/comment_notifier/comment_notifier_cubit.dart';
 import 'screens/main_screen.dart';
-import 'screens/sign_in_and_sign_up_screen/mobile/sign_In_screen.dart';
+import 'cubit/videos_cubit/videos_cubit.dart';
+
 import 'cubit/post_notifier/post_notifier_cubit.dart';
 import 'components/helpers/mocks/mock_functions.dart';
 import 'cubit/add_post/cubit/add_post_cubit.dart';
 import 'networks/dio_helper.dart';
 import 'components/helpers/bloc_observer.dart';
 import 'cubit/app_cubit.dart';
+import 'screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import 'shared/local/shared_preferences.dart';
 
 Future<void> main() async {
@@ -61,21 +64,16 @@ class Main extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => AppCubit(),
-        ),
-        // BlocProvider(
-        //   create: (context) => SearchCubit(),
-        // ),
-        BlocProvider(
-          create: (context) => PostNotifierCubit(),
-        ),
+        BlocProvider(create: (context) => AppCubit()),
+        BlocProvider(create: (context) => PostNotifierCubit()),
+        BlocProvider(create: (context) => CommentNotifierCubit()),
         BlocProvider(create: (context) => AppCubit()),
         BlocProvider(create: (context) => AddPostCubit()),
         BlocProvider(create: (context) => SettingsCubit()),
         BlocProvider(create: (context) => CreateCommunityCubit()),
         BlocProvider(create: (context) => ModerationCubit()),
         BlocProvider(create: (context) => SubredditCubit()),
+        BlocProvider(create: (context) => VideosCubit()),
       ],
       child: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {

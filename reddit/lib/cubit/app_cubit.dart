@@ -64,6 +64,7 @@ class AppCubit extends Cubit<AppState> {
   ///@param [homePosts] dummy data for home screen
   List<Widget> homePosts = [
     PostWidget(post: textPost),
+    PostWidget(post: videoPost),
     PostWidget(post: smalltextPost),
     PostWidget(post: linkPost, upperRowType: ShowingOtions.onlyUser),
     PostWidget(post: oneImagePost, postView: PostView.classic),
@@ -431,10 +432,9 @@ class AppCubit extends Cubit<AppState> {
 
   void clearHistoy() {
     DioHelper.postData(
-            path: clearHistory,
-            data: {'username': username},
-            token: CacheHelper.getData(key: 'token'))
-        .then((value) {
+      path: clearHistory,
+      data: {'username': username},
+    ).then((value) {
       if (value.statusCode == 200) history.clear();
       emit(ClearHistoryState());
       emit(HistoryEmptyState());

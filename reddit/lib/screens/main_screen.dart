@@ -5,6 +5,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/data/post_model/post_model.dart';
+import 'package:reddit/networks/dio_helper.dart';
+import 'package:reddit/widgets/posts/post_widget.dart';
 
 import '../components/home_app_bar.dart';
 import '../cubit/app_cubit.dart';
@@ -39,7 +42,7 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
   }
 
   bool isAndroid = !kIsWeb;
-
+  PostModel testPost = PostModel();
   List<Widget> items = [
     const Text(
       'Test ',
@@ -54,6 +57,18 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
       style: TextStyle(color: ColorManager.eggshellWhite),
     ),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    // DioHelper.getData(
+    //     path: '/post-details',
+    //     query: {'id': '639769c11cb171d29e9ade6b'}).then((value) {
+    //   print(value.data);
+    //   testPost = PostModel.fromJson(value.data);
+    // });
+  }
+
   @override
   Widget build(BuildContext context) {
     final AppCubit cubit = AppCubit.get(context)..getUsername();

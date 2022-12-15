@@ -1,14 +1,19 @@
 /// The post cubit that handles the post state independently
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:logger/logger.dart';
 import 'package:reddit/components/helpers/mocks/mock_functions.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/data/post_model/post_model.dart';
+import 'package:reddit/functions/post_functions.dart';
 import 'package:reddit/networks/dio_helper.dart';
 
 import '../../../networks/constant_end_points.dart';
@@ -27,24 +32,6 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
   }) : super(PostsInitial());
 
   static PostAndCommentActionsCubit get(context) => BlocProvider.of(context);
-
-  // void getPostsForHome() async {
-  //   mockDio.get('$base/posts').then((value) {
-  //     posts = [];
-  //     postsMap = {};
-  //     value.data.forEach((element) {
-  //       PostModel post = PostModel.fromJson(element);
-  //       posts.add(post);
-  //       postsMap[post.id!] = post;
-  //     });
-  //     emit(PostsLoaded());
-  //   }).catchError((error) {
-  //     debugPrint('error in getPosts: $error');
-  //     emit(PostsError());
-  //   });
-
-  //   emit(PostsLoading());
-  // }
 
   /// this function is used to vote on a post
   /// @param [oldDir] the direction of the wanted vote
@@ -70,10 +57,8 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
         'direction': oldDir,
         'type': currentComment == null ? 'post' : 'comment',
       },
-      token: token,
     ).then((value) {
       if (value.statusCode == 200) {
-        Logger().wtf(value.data);
         getModel.votingType = (getModel.votingType ?? 0) + direction;
         getModel.votes = (getModel.votes ?? 0) + direction;
         emit(VotedSuccess());
@@ -89,17 +74,21 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
 
   /// this function is used to vote on a post
   Future save() {
-    return mockDio.post(
-      '$baseUrl/save',
+    bool isSaved = getModel.saved ?? false;
+    String path = isSaved ? '/unsave' : '/save';
+    return DioHelper.postData(
+      path: path,
       data: {
-        'id': post.id,
+        'id': isPost ? post.id : currentComment!.id,
+        'type': isPost ? 'post' : 'comment',
       },
     ).then((value) {
-      print(post.saved);
-      post.saved = !post.saved!;
-      emit(PostsSaved());
+      getModel.saved = !getModel.saved!;
+      emit(SavedChangedState());
     }).catchError((error) {
-      emit(VotedError(error: error));
+      error = error as DioError;
+      logger.e(error.response?.data);
+      emit(OpError(error: error.response?.data['error'] ?? ''));
     });
   }
 
@@ -115,12 +104,20 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
 
   /// this function is used to block the author of a post
   Future blockUser() {
-    return mockDio.post(
-      '$baseUrl/block-user',
+    String? username = isPost ? post.postedBy : currentComment!.commentedBy;
+    return DioHelper.postData(
+      path: '/block-user',
       data: {
-        'id': post.id,
+        'block': true,
+        'username': username,
       },
-    ).then((value) => print(value.data));
+    ).then((value) {
+      emit(BlockedChangedState());
+    }).catchError((error) {
+      error = error as DioError;
+      logger.e(error.response?.data);
+      emit(OpError(error: error.response?.data['error'] ?? ''));
+    });
   }
 
   /// this function is used to delete a post
@@ -133,7 +130,36 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
     ).then((value) => print(value.data));
   }
 
+  Future follow() {
+    String path = isPost
+        ? '/follow-post'
+        : (currentComment!.followed ?? false)
+            ? '/unfollow-comment'
+            : '/follow-comment';
+
+    return DioHelper.postData(
+      path: path,
+      data: {
+        'id': post.id,
+        'follow': !(post.followed ?? false),
+        'commentId': currentComment?.id,
+      },
+    ).then((value) {
+      if (isPost) {
+        post.followed = !post.followed!;
+      } else {
+        currentComment!.followed = !currentComment!.followed!;
+      }
+      emit(FollowedChangedState());
+    }).catchError((error) {
+      error = error as DioError;
+      logger.e(error.response?.data);
+      emit(OpError(error: error.response?.data['error'] ?? ''));
+    });
+  }
+
   dynamic get getModel => currentComment ?? post;
+  bool get isPost => currentComment == null;
 
   /// gets the voting type of the post (up, down ,..)
   int getVotingType() {
@@ -149,5 +175,61 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
   void toggleModTools() {
     showModTools = !showModTools;
     emit(CommentsModToolsToggled());
+  }
+
+  Future<void> copyText() {
+    String text = post.title ?? '';
+
+    if (currentComment != null) {
+      text = getPlainText(currentComment!.commentBody);
+    }
+
+    return Clipboard.setData(ClipboardData(text: text));
+  }
+
+  Future<void> editIt(String newContent) {
+    String path = isPost ? '/edit-post' : '/edit-user-text';
+
+    if (isPost) {
+      return DioHelper.postData(
+        path: path,
+        data: {
+          'postId': post.id,
+          'id': currentComment?.id,
+          'content': newContent,
+        },
+      ).then((value) {
+        if (isPost) {
+          post.content = newContent;
+        } else {
+          currentComment!.commentBody = newContent;
+        }
+        emit(EditedState());
+      }).catchError((error) {
+        error = error as DioError;
+        logger.e(error.response?.data);
+        emit(OpError(error: error.response?.data['error'] ?? ''));
+      });
+    }
+
+    return DioHelper.putData(
+      path: path,
+      data: {
+        'postId': post.id,
+        'id': currentComment?.id,
+        'content': newContent,
+      },
+    ).then((value) {
+      if (isPost) {
+        post.title = newContent;
+      } else {
+        currentComment!.commentBody = newContent;
+      }
+      emit(EditedState());
+    }).catchError((error) {
+      error = error as DioError;
+      logger.e(error.response?.data);
+      emit(OpError(error: error.response?.data['error'] ?? ''));
+    });
   }
 }
