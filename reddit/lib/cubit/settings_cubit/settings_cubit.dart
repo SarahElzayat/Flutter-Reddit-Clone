@@ -21,7 +21,10 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
         currentPassword: currentPassText,
         newPassword: newPassText);
 
-    DioHelper.putData(path: changePassword, data: changeRequest.toJson())
+    DioHelper.putData(
+            path: changePassword,
+            data: changeRequest.toJson(),
+            token: CacheHelper.getData(key: 'token'))
         .then((response) {
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -36,9 +39,15 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
   }
 
   void changeEmailAddress(passText, mailText, context) {
-    final update = UpdateEmail(currentPassword: passText, newEmail: mailText);
+    final update = UpdateEmail(
+      currentPassword: passText,
+      newEmail: mailText,
+    );
 
-    DioHelper.putData(path: changeEmail, data: update.toJson())
+    DioHelper.putData(
+            path: changeEmail,
+            data: update.toJson(),
+            token: CacheHelper.getData(key: 'token'))
         .then((response) {
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -85,9 +94,10 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
     final request = {'autoplayMedia': newValue};
     print(request);
     DioHelper.patchData(
-            path: accountSettings,
-            data: request,
-            token: CacheHelper.getData(key: 'token'))
+      token: CacheHelper.getData(key: 'token'),
+      path: accountSettings,
+      data: request,
+    )
         .then((response) => {
               // if changed correctly then emit to all listeners that the
               // settings has been changed, else leave every thing as is.
@@ -101,7 +111,10 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
 
   void changeCountry(newCountry) {
     final request = {'country': newCountry};
-    DioHelper.patchData(path: accountSettings, data: request)
+    DioHelper.patchData(
+            token: CacheHelper.getData(key: 'token'),
+            path: accountSettings,
+            data: request)
         .then((response) => {
               // if changed correctly then emit to all listeners that the
               // settings has been changed, else leave every thing as is.
@@ -115,7 +128,10 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
 
   void _changeGender(newGender) {
     final request = {'gender': newGender};
-    DioHelper.patchData(path: accountSettings, data: request)
+    DioHelper.patchData(
+            token: CacheHelper.getData(key: 'token'),
+            path: accountSettings,
+            data: request)
         .then((response) => {
               // if changed correctly then emit to all listeners that the
               // settings has been changed, else leave every thing as is.
@@ -157,7 +173,10 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
   /// @param [newValue] which is a boolean either true or false.
   void _allowPeopleToFollowYou(newValue) {
     final request = {'allowToFollowYou': newValue};
-    DioHelper.patchData(path: accountSettings, data: request)
+    DioHelper.patchData(
+            token: CacheHelper.getData(key: 'token'),
+            path: accountSettings,
+            data: request)
         .then((response) => {
               // if changed correctly then emit to all listeners that the
               // settings has been changed, else leave every thing as is.
@@ -174,7 +193,10 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
   /// or false to hide.
   void _showNFSW(newValue) {
     final request = {'nsfw': newValue};
-    DioHelper.patchData(path: accountSettings, data: request)
+    DioHelper.patchData(
+            token: CacheHelper.getData(key: 'token'),
+            path: accountSettings,
+            data: request)
         .then((response) => {
               // if changed correctly then emit to all listeners that the
               // settings has been changed, else leave every thing as is.
