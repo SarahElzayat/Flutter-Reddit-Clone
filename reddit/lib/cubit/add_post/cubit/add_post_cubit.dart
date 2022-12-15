@@ -442,7 +442,8 @@ class AddPostCubit extends Cubit<AddPostState> {
         print(mimeType!.split('/').first);
         print(mimeType.split('/').last);
         MultipartFile file = await MultipartFile.fromFile(item.path,
-            filename: 'image.png', contentType: MediaType('image', 'png'));
+            filename: item.path.split('/').last,
+            contentType: MediaType('image', 'png'));
         imagesData.add(file);
       }
       imagesData.forEach((element) {
@@ -453,7 +454,7 @@ class AddPostCubit extends Cubit<AddPostState> {
         imageCaptions.add(captionController[index].text);
       }
       List<String> imageLinks = [];
-      for (int index = 0; index < captionController.length; index++) {
+      for (int index = 0; index < imagesLinkController.length; index++) {
         imageLinks.add(imagesLinkController[index].text);
       }
       body = {
