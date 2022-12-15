@@ -308,7 +308,6 @@ class AppCubit extends Cubit<AppState> {
       } else {
         afterId = value.data['after'];
         beforeId = value.data['before'];
-        print(value.data.toString());
         for (int i = 0; i < value.data['children'].length; i++) {
           // logger.wtf(i);
           history.add(PostModel.fromJsonwithData(value.data['children'][i]));
@@ -316,8 +315,7 @@ class AppCubit extends Cubit<AppState> {
               ? emit(LoadedMoreHistoryState())
               : emit(LoadedHistoryState());
         }
-        print('55665445456654654465');
-        print(history.length);
+     
       }
     }).onError((error, stackTrace) {
       if (kDebugMode) {

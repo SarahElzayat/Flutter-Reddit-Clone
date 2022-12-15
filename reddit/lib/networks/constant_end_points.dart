@@ -72,3 +72,4 @@ const homeTop = '/top';
 const homeHot = '/hot';
 const homeTrending = '/trending';
 const homeNew = '/new';
+const subreddit = '/r';

@@ -102,13 +102,13 @@ class AddPostCubit extends Cubit<AddPostState> {
 
   /// Add List of Images To The List And Rebuild The widget
   void addImages({required List<XFile> images}) {
-    images.forEach((element) {
+    for (var element in images) {
       this.images.add(element);
       captionController.add(TextEditingController());
       imagesLinkController.add(TextEditingController());
       captionControllerTemp.add(TextEditingController());
       imagesLinkControllerTemp.add(TextEditingController());
-    });
+    }
     checkPostValidation();
     emit(ImageAddedOrRemoved());
   }

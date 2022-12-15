@@ -2,11 +2,11 @@
 ///@date 16/11/2022
 ///@description this file has some reusable components to use in the home screen
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/cubit/app_cubit.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import 'package:reddit/data/home/drawer_communities_model.dart';
-import 'package:reddit/screens/subreddit/subreddit_screen.dart';
 
 import '../../screens/create_community_screen/create_community_screen.dart';
 import '../../screens/to_be_done_screen.dart';
@@ -39,7 +39,7 @@ Widget listButton(
               Text(text,
                   style: Theme.of(context)
                       .textTheme
-                      .displaySmall!
+                      .displayMedium!
                       .copyWith(fontWeight: FontWeight.bold)),
               Icon(
                 isOpen
@@ -83,7 +83,10 @@ Widget listButton(
                 return InkWell(
                     onTap: () => SubredditCubit.get(context).setSubredditName(
                         context, list[index].title.toString()),
-                    child: yourCommunitiesCard(list[index]));
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: yourCommunitiesCard(list[index]),
+                    ));
               },
               shrinkWrap: true,
             ),
@@ -125,23 +128,32 @@ Widget genericTextButton(context, icon, text, route, {required isLeftDrawer}) =>
         ));
 
 Widget yourCommunitiesCard(DrawerCommunitiesModel model) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 5.0),
-    child: Row(
-      children: [
-        const Padding(
-          padding: EdgeInsets.only(right: 8.0),
-          child: CircleAvatar(
-            backgroundImage: AssetImage('./assets/images/uranus.png'),
-            radius: 10,
-          ),
+  return BlocConsumer<AppCubit, AppState>(
+    listener: (context, state) {},
+    builder: (context, state) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5.0),
+        child: Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(right: 8.0),
+              child: CircleAvatar(
+                backgroundImage: AssetImage('./assets/images/uranus.png'),
+                radius: 10,
+              ),
+            ),
+            Text(
+              'r/${model.title.toString()}',
+              style: Theme.of(context).textTheme.displayMedium,
+              // style:  TextStyle(
+              //     The
+              //     color: ColorManager.eggshellWhite, fontSize: 16),
+            ),
+            const Spacer(),
+            // IconButton(onPressed: (){}, icon: model.)
+          ],
         ),
-        Text(
-          'r/${model.title.toString()}',
-          style:
-              const TextStyle(color: ColorManager.eggshellWhite, fontSize: 16),
-        )
-      ],
-    ),
+      );
+    },
   );
 }

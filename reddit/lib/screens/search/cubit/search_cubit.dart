@@ -27,11 +27,22 @@ class SearchCubit extends Cubit<SearchState> {
     searchQuery = s;
   }
 
+  String subredditName = '';
+
+  void setSearchSubreddit(s) {
+    subredditName = s;
+    logger.wtf(s);
+  }
+
   List<Widget> searchResultScreens = [
     const ResultsPosts(),
     const ResultsComments(),
     const ResultsCommunities(),
     const ResultsUsers(),
+  ];
+  List<Widget> searchInSubredditResultScreens = [
+    const ResultsPosts(),
+    const ResultsComments(),
   ];
   List<Tab> searchResultTabs = [
     const Tab(
@@ -48,6 +59,15 @@ class SearchCubit extends Cubit<SearchState> {
     ),
   ];
 
+  List<Tab> searchInSubredditResultTabs = [
+    const Tab(
+      text: 'Posts',
+    ),
+    const Tab(
+      text: 'Comments',
+    ),
+  ];
+
   List<PostModel> posts = [];
   String postsBeforeId = '';
   String postsAfterId = '';
@@ -61,13 +81,17 @@ class SearchCubit extends Cubit<SearchState> {
       posts.clear();
     }
 
-    DioHelper.getData(path: search, query: {
-      'type': searchPosts,
-      'q': searchQuery,
-      'limit': limit,
-      'after': after ? postsAfterId : null,
-      'before': before ? postsBeforeId : null,
-    }).then((value) {
+    DioHelper.getData(
+        path: subredditName.isNotEmpty
+            ? '$subreddit/$subredditName$search'
+            : search,
+        query: {
+          'type': searchPosts,
+          'q': searchQuery,
+          'limit': limit,
+          'after': after ? postsAfterId : null,
+          'before': before ? postsBeforeId : null,
+        }).then((value) {
       if (value.statusCode == 200) {
         if (value.data['children'].length == 0) {
           loadMore
@@ -78,15 +102,14 @@ class SearchCubit extends Cubit<SearchState> {
           logger.wtf(value.data);
           postsAfterId = value.data['after'];
           postsBeforeId = value.data['before'];
-          print(value.data['children'].length);
           for (int i = 0; i < value.data['children'].length; i++) {
             posts.add(PostModel.fromJson(value.data['children'][i]['data']));
-            print('tmam');
           }
         }
         // print(value.data);
         loadMore ? emit(LoadedMoreResultsState()) : emit(LoadedResultsState());
       } else {
+        
         emit(SearchErrorState());
       }
     }).onError((error, stackTrace) {
@@ -127,7 +150,7 @@ class SearchCubit extends Cubit<SearchState> {
           usersBeforeId = value.data['before'];
 
           for (int i = 0; i < value.data['children'].length; i++) {
-            print(value.data['children'][i].toString());
+            // print(value.data['children'][i].toString());
             users.add(
                 SearchResultProfileModel.fromJson(value.data['children'][i]));
           }
@@ -163,7 +186,10 @@ class SearchCubit extends Cubit<SearchState> {
       commentsPosts.clear();
     }
 
-    DioHelper.getData(path: search, query: {
+    DioHelper.getData(
+      path: subredditName.isNotEmpty
+            ? '$subreddit/$subredditName$search'
+            : search, query: {
       'type': searchComments,
       'q': searchQuery,
       'limit': limit,

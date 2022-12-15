@@ -32,7 +32,7 @@ class _ResultsCommunitiesState extends State<ResultsCommunities> {
   @override
   void initState() {
     _scrollController.addListener(_scrollListener);
-
+    SearchCubit.get(context).getSubbreddits();
     super.initState();
   }
 
