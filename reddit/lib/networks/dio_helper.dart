@@ -51,11 +51,8 @@ class DioHelper {
 
     /// which is the content of the JSON
     Map<String, dynamic>? query,
-<<<<<<< HEAD
     String? token,
     bool isFormdata = false,
-=======
->>>>>>> origin/development
 
     /// additional query
   }) async {
