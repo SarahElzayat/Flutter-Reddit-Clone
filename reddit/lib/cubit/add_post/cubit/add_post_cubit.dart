@@ -490,7 +490,7 @@ class AddPostCubit extends Cubit<AddPostState> {
         'title': title.text,
         'content': {
           'ops': jsonEncode(optionalText.document.toDelta().toJson()),
-        },
+        }.toString(),
         'nsfw': nsfw,
         'spoiler': spoiler,
       };
