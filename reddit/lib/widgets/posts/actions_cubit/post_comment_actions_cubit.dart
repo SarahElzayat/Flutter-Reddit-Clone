@@ -186,4 +186,50 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
 
     return Clipboard.setData(ClipboardData(text: text));
   }
+
+  Future<void> editIt(String newContent) {
+    String path = isPost ? '/edit-post' : '/edit-user-text';
+
+    if (isPost) {
+      return DioHelper.postData(
+        path: path,
+        data: {
+          'postId': post.id,
+          'id': currentComment?.id,
+          'content': newContent,
+        },
+      ).then((value) {
+        if (isPost) {
+          post.title = newContent;
+        } else {
+          currentComment!.commentBody = newContent;
+        }
+        emit(EditedState());
+      }).catchError((error) {
+        error = error as DioError;
+        logger.e(error.response?.data);
+        emit(OpError(error: error.response?.data['error'] ?? ''));
+      });
+    }
+
+    return DioHelper.putData(
+      path: path,
+      data: {
+        'postId': post.id,
+        'id': currentComment?.id,
+        'content': newContent,
+      },
+    ).then((value) {
+      if (isPost) {
+        post.title = newContent;
+      } else {
+        currentComment!.commentBody = newContent;
+      }
+      emit(EditedState());
+    }).catchError((error) {
+      error = error as DioError;
+      logger.e(error.response?.data);
+      emit(OpError(error: error.response?.data['error'] ?? ''));
+    });
+  }
 }

@@ -80,7 +80,9 @@ class DropDownList extends StatelessWidget {
 
     l.add((comment?.followed ?? false) ? MenuItems.unfollow : MenuItems.follow);
     l.insert(0, (comment?.saved ?? false) ? MenuItems.unsave : MenuItems.save);
-
+    if (!outsideScreen) {
+      l.add(MenuItems.edit);
+    }
     return l;
   }
 
@@ -99,6 +101,9 @@ class DropDownList extends StatelessWidget {
       l.add(MenuItems.block);
     } else {
       l.add(MenuItems.delete);
+      if (!outsideScreen && post.kind == 'hybrid') {
+        l.add(MenuItems.edit);
+      }
     }
 
     if (!outsideScreen) {

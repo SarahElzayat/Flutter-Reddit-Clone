@@ -13,6 +13,7 @@ import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'constants/constants.dart';
+import 'cubit/comment_notifier/comment_notifier_cubit.dart';
 import 'cubit/videos_cubit/videos_cubit.dart';
 import 'screens/main_screen.dart';
 
@@ -69,15 +70,9 @@ class Main extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => AppCubit(),
-        ),
-        // BlocProvider(
-        //   create: (context) => SearchCubit(),
-        // ),
-        BlocProvider(
-          create: (context) => PostNotifierCubit(),
-        ),
+        BlocProvider(create: (context) => AppCubit()),
+        BlocProvider(create: (context) => PostNotifierCubit()),
+        BlocProvider(create: (context) => CommentNotifierCubit()),
         BlocProvider(create: (context) => AppCubit()),
         BlocProvider(create: (context) => AddPostCubit()),
         BlocProvider(create: (context) => SettingsCubit()),
