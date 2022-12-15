@@ -68,6 +68,7 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
   }
 
   void changeSwitch(bool newValue, String type) {
+    print(type);
     if (type == 'allowPeopleToFollowYou') {
       _allowPeopleToFollowYou(newValue);
     } else if (type == 'showNSFW') {
@@ -82,7 +83,11 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
   /// false for disallow.
   void _autoPlay(newValue) {
     final request = {'autoplayMedia': newValue};
-    DioHelper.patchData(path: accountSettings, data: request)
+    print(request);
+    DioHelper.patchData(
+            path: accountSettings,
+            data: request,
+            token: CacheHelper.getData(key: 'token'))
         .then((response) => {
               // if changed correctly then emit to all listeners that the
               // settings has been changed, else leave every thing as is.

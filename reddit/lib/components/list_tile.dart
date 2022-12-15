@@ -64,11 +64,11 @@ class _ListTileWidgetState extends State<ListTileWidget> {
           activeColor: ColorManager.blue,
           value: setBool,
 
-          /// TODO: all these onChanged should be changed
-          /// when we are doing the settings
+          // when we are doing the settings
           onChanged: (value) {
             setState(() {
               if (widget.type != null) {
+                print(value);
                 SettingsCubit.get(ctx).changeSwitch(value, widget.type!);
               }
               setBool = value;

@@ -74,7 +74,7 @@ class SettingsMainScreen extends StatelessWidget {
             Expanded(
                 flex: 2,
                 child: ListTileContainer(
-                  types: const ['autPlay', 'showNSFW'],
+                  types: const ['autoPlay', 'showNSFW'],
                   handler: [
                     () {},
                     () {},
