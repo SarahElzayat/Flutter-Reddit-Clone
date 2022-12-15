@@ -77,7 +77,7 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
     return DioHelper.postData(
       path: path,
       data: {
-        'id': post.id,
+        'id': isPost ? post.id : currentComment!.id,
         'type': isPost ? 'post' : 'comment',
       },
     ).then((value) {
@@ -102,12 +102,20 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
 
   /// this function is used to block the author of a post
   Future blockUser() {
-    return mockDio.post(
-      '$baseUrl/block-user',
+    String? username = isPost ? post.postedBy : currentComment!.commentedBy;
+    return DioHelper.postData(
+      path: '/block-user',
       data: {
-        'id': post.id,
+        'block': true,
+        'username': username,
       },
-    ).then((value) => print(value.data));
+    ).then((value) {
+      emit(BlockedChangedState());
+    }).catchError((error) {
+      error = error as DioError;
+      logger.e(error.response?.data);
+      emit(OpError(error: error.response?.data['error'] ?? ''));
+    });
   }
 
   /// this function is used to delete a post
@@ -118,6 +126,34 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
         'id': post.id,
       },
     ).then((value) => print(value.data));
+  }
+
+  Future follow() {
+    String path = isPost
+        ? '/follow-post'
+        : (currentComment!.followed ?? false)
+            ? '/unfollow-comment'
+            : '/follow-comment';
+
+    return DioHelper.postData(
+      path: path,
+      data: {
+        'id': post.id,
+        'follow': !(post.followed ?? false),
+        'commentId': currentComment?.id,
+      },
+    ).then((value) {
+      if (isPost) {
+        post.followed = !post.followed!;
+      } else {
+        currentComment!.followed = !currentComment!.followed!;
+      }
+      emit(FollowedChangedState());
+    }).catchError((error) {
+      error = error as DioError;
+      logger.e(error.response?.data);
+      emit(OpError(error: error.response?.data['error'] ?? ''));
+    });
   }
 
   dynamic get getModel => currentComment ?? post;
@@ -147,5 +183,51 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
     }
 
     return Clipboard.setData(ClipboardData(text: text));
+  }
+
+  Future<void> editIt(String newContent) {
+    String path = isPost ? '/edit-post' : '/edit-user-text';
+
+    if (isPost) {
+      return DioHelper.postData(
+        path: path,
+        data: {
+          'postId': post.id,
+          'id': currentComment?.id,
+          'content': newContent,
+        },
+      ).then((value) {
+        if (isPost) {
+          post.content = newContent;
+        } else {
+          currentComment!.commentBody = newContent;
+        }
+        emit(EditedState());
+      }).catchError((error) {
+        error = error as DioError;
+        logger.e(error.response?.data);
+        emit(OpError(error: error.response?.data['error'] ?? ''));
+      });
+    }
+
+    return DioHelper.putData(
+      path: path,
+      data: {
+        'postId': post.id,
+        'id': currentComment?.id,
+        'content': newContent,
+      },
+    ).then((value) {
+      if (isPost) {
+        post.title = newContent;
+      } else {
+        currentComment!.commentBody = newContent;
+      }
+      emit(EditedState());
+    }).catchError((error) {
+      error = error as DioError;
+      logger.e(error.response?.data);
+      emit(OpError(error: error.response?.data['error'] ?? ''));
+    });
   }
 }

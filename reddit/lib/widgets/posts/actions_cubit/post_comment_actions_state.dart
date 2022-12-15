@@ -9,6 +9,12 @@ class PostsInitial extends PostState {}
 
 class VotedSuccess extends PostState {}
 
+class BlockedChangedState extends PostState {}
+
+class FollowedChangedState extends PostState {}
+
+class EditedState extends PostState {}
+
 class VotedError extends PostState {
   final DioError? error;
   VotedError({this.error});
