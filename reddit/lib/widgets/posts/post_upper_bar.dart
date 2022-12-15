@@ -21,12 +21,15 @@ bool isjoined = true;
 enum ShowingOtions { onlyUser, onlySubreddit, both }
 
 class PostUpperBar extends StatefulWidget {
-  const PostUpperBar({
-    Key? key,
-    required this.post,
-    this.showRowsSelect = ShowingOtions.both,
-    this.outSide = true,
-  }) : super(key: key);
+  final bool isWeb;
+
+  const PostUpperBar(
+      {Key? key,
+      required this.post,
+      this.showRowsSelect = ShowingOtions.both,
+      this.outSide = true,
+      required this.isWeb})
+      : super(key: key);
 
   /// The post to be displayed
   final PostModel post;
@@ -131,7 +134,7 @@ class _PostUpperBarState extends State<PostUpperBar> {
                 backgroundColor: ColorManager.blue,
               ),
             )
-          else if (widget.outSide)
+          else if (!widget.outSide)
             dropDownDots(widget.post),
         ],
       ),

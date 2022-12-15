@@ -2,6 +2,7 @@
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 import 'package:reddit/widgets/comments/comment.dart';
@@ -108,7 +109,8 @@ class _PostWidgetState extends State<PostWidget> {
       create: (context) => PostAndCommentActionsCubit(post: widget.post),
       child: ResponsiveBuilder(
         builder: (buildContext, sizingInformation) {
-          bool isWeb = !ResponsiveWidget.isSmallScreen(context);
+          bool isWeb = kIsWeb; //!ResponsiveWidget.isSmallScreen(context);
+
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return Container(
@@ -142,7 +144,7 @@ class _PostWidgetState extends State<PostWidget> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 // A row with the Avatar, title and the subreddit
-                                _upperPart(),
+                                _upperPart(isWeb),
                                 // title and flairs
                                 _titleWithFlairs(),
 
@@ -272,7 +274,7 @@ class _PostWidgetState extends State<PostWidget> {
     );
   }
 
-  Widget _upperPart() {
+  Widget _upperPart(isWeb) {
     if (widget.isNested) {
       return Row(
         mainAxisSize: MainAxisSize.min,
@@ -306,6 +308,7 @@ class _PostWidgetState extends State<PostWidget> {
       post: widget.post,
       outSide: widget.outsideScreen,
       showRowsSelect: widget.upperRowType,
+      isWeb: isWeb,
     );
   }
 

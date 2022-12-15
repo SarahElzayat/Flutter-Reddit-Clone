@@ -77,6 +77,7 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
     String path = isSaved ? '/unsave' : '/save';
     return DioHelper.postData(
       path: path,
+      token: token,
       data: {
         'id': isPost ? post.id : currentComment!.id,
         'type': isPost ? 'post' : 'comment',

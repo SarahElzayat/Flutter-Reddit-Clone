@@ -98,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Center(
                     child: SizedBox(
-                      width: kIsWeb ? width * 0.5 : width,
+                      width: kIsWeb ? width * 0.8 : width,
                       child: ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,

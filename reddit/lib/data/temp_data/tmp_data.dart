@@ -25,7 +25,7 @@ var textPost = PostModel(
     backgroundColor: '#FFAA00',
     textColor: '#0E0EEE',
   ),
-  saved: false,
+  saved: true,
   sharePostId: '639b314a80870274d733687c',
   spoiler: true,
   inYourSubreddit: false,
