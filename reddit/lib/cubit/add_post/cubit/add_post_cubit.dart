@@ -489,14 +489,15 @@ class AddPostCubit extends Cubit<AddPostState> {
         'spoiler': spoiler,
       };
     } else if (postType == 2) {
+      final content = jsonEncode(optionalText.document.toDelta().toJson());
+      var sent = '{"ops":$content}';
+
       body = {
         'kind': postTypes[postType],
         'subreddit': subredditName,
         'inSubreddit': true,
         'title': title.text,
-        'content': {
-          'ops': jsonEncode(optionalText.document.toDelta().toJson()),
-        }.toString(),
+        'content': sent,
         'nsfw': nsfw,
         'spoiler': spoiler,
       };
