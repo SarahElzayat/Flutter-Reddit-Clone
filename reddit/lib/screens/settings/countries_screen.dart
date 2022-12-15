@@ -3,7 +3,8 @@
 /// This screen contains the regions from which the user should come from.
 
 import 'package:flutter/material.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
+import '../../components/helpers/color_manager.dart';
+import '../../cubit/settings_cubit/settings_cubit.dart';
 import '../../widgets/settings/settings_app_bar.dart';
 import '../../data/settings/countries.dart';
 
@@ -18,8 +19,10 @@ class CountriesScreen extends StatelessWidget {
       body: ListView(
         children: myList.map((country) {
           return InkWell(
-            /// TODO: this function should be implemented
-            onTap: () {},
+            onTap: () {
+              SettingsCubit.get(context).changeCountry(country);
+              Navigator.of(context).pop();
+            },
             child: SizedBox(
               height: 40,
               child: Column(

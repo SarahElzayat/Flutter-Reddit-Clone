@@ -18,6 +18,7 @@ class BlockedAccounts extends StatefulWidget {
 }
 
 class _BlockedAccountsState extends State<BlockedAccounts> {
+  /// TODO: this should be replaced with backend get request.
   List<Children> blockedUsers = [
     Children(
         id: 'x1',

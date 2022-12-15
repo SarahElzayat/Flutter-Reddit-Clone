@@ -2,9 +2,7 @@
 /// @date 12/12/2022
 /// this file contains the screen of the change password
 import 'package:flutter/material.dart';
-import '../../data/settings_models/change_password_model.dart';
-import '../../networks/constant_end_points.dart';
-import '../../networks/dio_helper.dart';
+import '../../cubit/settings_cubit/settings_cubit.dart';
 import '../../components/default_text_field.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../data/sign_in_And_sign_up_models/validators.dart';
@@ -50,23 +48,8 @@ class _ChangePasswordState extends State<ChangePassword> {
   /// to be able to change the password of the user into new user
   void requestChangePassword() {
     if (_validateTextFields()) {
-      final changeRequest = ChangePasswordModel(
-          confirmNewPassword: confirmPasswordtroller.text,
-          currentPassword: passwordController.text,
-          newPassword: newPasswordController.text);
-
-      DioHelper.putData(path: changePassword, data: changeRequest.toJson())
-          .then((response) {
-        if (response.statusCode == 200) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text('Email has been sent!'),
-              backgroundColor: ColorManager.green));
-        }
-      }).catchError((error) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('The password is not correct!'),
-            backgroundColor: ColorManager.red));
-      });
+      SettingsCubit.get(context).changePasswordReq(passwordController.text,
+          confirmPasswordtroller.text, newPasswordController.text, context);
     }
   }
 

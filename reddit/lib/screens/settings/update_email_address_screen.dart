@@ -3,6 +3,7 @@
 /// This file contains the Update email address screen.
 
 import 'package:flutter/material.dart';
+import 'package:reddit/cubit/settings_cubit/settings_cubit.dart';
 import 'package:reddit/data/settings_models/update_email_model.dart';
 import 'package:reddit/data/sign_in_And_sign_up_models/validators.dart';
 import 'package:reddit/networks/constant_end_points.dart';
@@ -32,23 +33,8 @@ class _UpdateEmailAddressScreenState extends State<UpdateEmailAddressScreen> {
   /// to update the email of the user.
   void updateMyMail() {
     if (_validateTextFields()) {
-      final update = UpdateEmail(
-          currentPassword: passwordController.text,
-          newEmail: mailController.text);
-
-      DioHelper.putData(path: changeEmail, data: update.toJson())
-          .then((response) {
-        if (response.statusCode == 200) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text('Email has been sent!'),
-              backgroundColor: ColorManager.green));
-        }
-      }).catchError((error) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('The inserted password is incorrect'),
-          backgroundColor: ColorManager.red,
-        ));
-      });
+      SettingsCubit.get(context).changeEmailAddress(
+          passwordController.text, mailController.text, context);
     }
   }
 

@@ -32,7 +32,6 @@ class AccountSettingsScreen extends StatelessWidget {
             Expanded(
                 flex: 2,
                 child: ListTileContainer(
-                  types: ['', '', '', ''],
                   title: 'BASIC SETTINGS',
                   handler: [
                     () {
@@ -44,7 +43,7 @@ class AccountSettingsScreen extends StatelessWidget {
                     () {
                       navigator.pushNamed(CountriesScreen.routeName);
                     },
-                    requestChangeGender,
+                    () {},
                   ],
                   listTileIcons: const [
                     Icons.settings,
@@ -73,10 +72,16 @@ class AccountSettingsScreen extends StatelessWidget {
                       'Female',
                     ],
                   ],
+                  types: const [
+                    'changeEmail',
+                    'changePassword',
+                    'changeCountry',
+                    'changeGender'
+                  ],
                 )),
             Expanded(
                 child: ListTileContainer(
-              types: ['', ''],
+              types: const ['', ''],
               handler: [
                 () {},
                 () {},
@@ -101,7 +106,7 @@ class AccountSettingsScreen extends StatelessWidget {
             )),
             Expanded(
               child: ListTileContainer(
-                types: ['', 'fsafsa'],
+                types: const ['', 'allowPeopleToFollowYou'],
                 handler: [
                   () {
                     navigator.pushNamed(BlockedAccounts.routeName);

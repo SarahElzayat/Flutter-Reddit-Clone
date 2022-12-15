@@ -26,7 +26,7 @@ class SettingsMainScreen extends StatelessWidget {
             Expanded(
               flex: 1,
               child: ListTileContainer(
-                  types: [''],
+                  types: const [''],
                   handler: [
                     () {
                       navigator.pushNamed(AccountSettingsScreen.routeName);
@@ -47,7 +47,14 @@ class SettingsMainScreen extends StatelessWidget {
             Expanded(
                 flex: 1,
                 child: ListTileContainer(
-                  types: [''],
+                  types: const [
+                    'Best',
+                    'Hot',
+                    'New',
+                    'Top',
+                    'Raising',
+                    'Controversial',
+                  ],
                   handler: [() {}],
                   listTileIcons: const [Icons.home_outlined],
                   listTileTitles: const ['Sort home posts by'],
@@ -67,7 +74,7 @@ class SettingsMainScreen extends StatelessWidget {
             Expanded(
                 flex: 2,
                 child: ListTileContainer(
-                  types: ['', ''],
+                  types: const ['autPlay', 'showNSFW'],
                   handler: [
                     () {},
                     () {},
@@ -85,10 +92,7 @@ class SettingsMainScreen extends StatelessWidget {
                     TrailingObjects.switchButton,
                     TrailingObjects.switchButton
                   ],
-                  items: const [
-                    ['Always', 'When on Wi-Fi', 'Never'],
-                    []
-                  ],
+                  items: const [[], []],
                 ))
           ],
         ),
