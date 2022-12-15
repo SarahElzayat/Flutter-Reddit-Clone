@@ -2,7 +2,6 @@
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
 import 'dart:convert';
-import 'package:logger/logger.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 import 'package:reddit/widgets/comments/comment.dart';
@@ -29,7 +28,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../components/helpers/posts/helper_funcs.dart';
-import '../../cubit/videos_cubit/videos_cubit.dart';
+// import '../../cubit/videos_cubit/videos_cubit.dart';
 import '../../data/comment/comment_model.dart';
 import '../../data/post_model/post_model.dart';
 import '../../widgets/posts/inline_image_viewer.dart';
@@ -50,6 +49,7 @@ class PostWidget extends StatefulWidget {
     this.upperRowType = ShowingOtions.both,
     this.postView = PostView.card,
     this.comment,
+    this.insideProfiles = false,
   });
 
   /// determines if the post is in the home page or in the post screen
@@ -75,6 +75,7 @@ class PostWidget extends StatefulWidget {
 
   final CommentModel? comment;
 
+  final bool insideProfiles;
   @override
   State<PostWidget> createState() => _PostWidgetState();
 }
@@ -347,6 +348,7 @@ class _PostWidgetState extends State<PostWidget> {
           child: PostLowerBarWithoutVotes(
               post: widget.post,
               isWeb: isWeb,
+              showIsights: widget.insideProfiles,
               pad: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10)),
         ),
       ],

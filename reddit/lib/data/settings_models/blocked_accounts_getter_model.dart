@@ -17,7 +17,7 @@ class BlockedAccountsGetterModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['before'] = before;
     data['after'] = after;
     if (children != null) {
@@ -35,12 +35,12 @@ class Children {
 
   Children.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -62,10 +62,10 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['username'] = this.username;
-    data['userImage'] = this.userImage;
-    data['blockDate'] = this.blockDate;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['username'] = username;
+    data['userImage'] = userImage;
+    data['blockDate'] = blockDate;
     return data;
   }
 }

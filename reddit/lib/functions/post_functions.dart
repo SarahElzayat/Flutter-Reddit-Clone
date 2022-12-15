@@ -243,7 +243,6 @@ void handleLock(
     {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   final lockComments = LockModel(id: post.id, type: 'comment');
 
-
   //check whether post is marked or unmarked as nsfw
   String finalPath = post.moderation.lock ?? false ? unlock : lock;
 
@@ -262,7 +261,6 @@ void handleSticky(
     {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   //bool pin = !post.sticky
   final stickUnstickPost = PinPostModel(id: post.id, pin: false);
-
 
   DioHelper.postData(path: pinPost, data: stickUnstickPost.toJson())
       .then((value) {
@@ -289,7 +287,6 @@ void handleRemove(
 void handleApprove(
     {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   final approvePost = ApproveModel(id: post.id, type: 'post');
-  var token = CacheHelper.getData(key: 'token');
   DioHelper.postData(path: approve, data: approvePost.toJson()).then((value) {
     // if (value.statusCode == 200) {
     onSuccess();
@@ -303,7 +300,6 @@ Future<void> showModOperations({
   required BuildContext context,
   required PostModel post,
 }) async {
-  bool isError;
   String message;
   var returnedOption = await showDialog<ModOPtions>(
       context: context,

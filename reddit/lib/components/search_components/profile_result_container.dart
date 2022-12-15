@@ -44,8 +44,7 @@ class ProfileResultContainer extends StatelessWidget {
                         'u/${model.data!.username.toString()}',
                         style: const TextStyle(
                             fontSize: 16, color: ColorManager.eggshellWhite),
-                      ),
-                      // const Spacer(),
+                      ),// const Spacer(),
                       Text(
                         '${model.data!.karma} karma',
                         style: const TextStyle(
@@ -55,7 +54,6 @@ class ProfileResultContainer extends StatelessWidget {
                     ],
                   ),
                   const Spacer(),
-                  //TODO
                   MaterialButton(
                     shape: const StadiumBorder(),
                     color: ColorManager.darkGrey,
@@ -64,9 +62,8 @@ class ProfileResultContainer extends StatelessWidget {
                           username: model.data!.username,
                           follow: !model.data!.following!);
                       model.data!.following = !model.data!.following!;
-                      // setState(() {});
-                      // setSta
-                    }, //=> cubit.folowUser(model.id),
+                      
+                    },
                     child: Text(
                       model.data!.following! ? 'Following' : 'Follow',
                       style: const TextStyle(

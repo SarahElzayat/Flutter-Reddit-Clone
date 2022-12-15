@@ -9,10 +9,14 @@ import 'package:reddit/screens/search/search_results_main_screen.dart';
 import 'package:reddit/components/search_field.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key, this.query});
+  const SearchScreen(
+      {super.key, this.query, this.subredditName, this.isSubreddit = false});
   static const routeName = '/search_screen_route';
 
   final String? query;
+  final String? subredditName;
+  final bool isSubreddit;
+
   @override
   State<SearchScreen> createState() => _SearchScreenState();
 }
@@ -22,30 +26,11 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   void initState() {
+    // widget.subredditName = hebab;
     if (widget.query != null) {
       _textEditingController.text = widget.query!;
     }
     super.initState();
-  }
-
-  List<String> items = [
-    'Post 1',
-    'Post 2',
-    'Post 3',
-    'Post 4',
-    'Post 5',
-    'Post 6'
-  ];
-  dynamic _onSubmitted(String value) {
-    // SearchCubit.get(context).setSearchQuery(value);
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SearchResults(
-          searchWord: value,
-        ),
-      ),
-    );
   }
 
   @override
@@ -68,11 +53,20 @@ class _SearchScreenState extends State<SearchScreen> {
                     children: [
                       Expanded(
                         child: SearchField(
+                            // isSubreddit: true,sbab',
                             onSubmitted: (value) {
+                              // SearchCubit.get(context).setSearchQuery(value);
+                              // // if (widget.isSubreddit) {
+                              // SearchCubit.get(context)
+                              //     .setSearchSubreddit('hebab');
+                              // }
+                              // }
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => SearchResults(
+                                    // isSubreddit: true,
+                                    // subredditName: 'hebab',
                                     searchWord: value,
                                   ),
                                 ),

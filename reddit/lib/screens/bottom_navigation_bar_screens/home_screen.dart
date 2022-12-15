@@ -9,6 +9,7 @@ import 'package:reddit/components/back_to_top_button.dart';
 import 'package:reddit/components/home_components/left_drawer.dart';
 import 'package:reddit/components/home_components/right_drawer.dart';
 import 'package:reddit/cubit/app_cubit.dart';
+import 'package:reddit/widgets/posts/post_widget.dart';
 
 import '../../components/home_app_bar.dart';
 
@@ -42,6 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     scrollController.addListener(() {
+      AppCubit.get(context).getHomePosts();
+
       //scroll listener
       double showoffset = MediaQuery.of(context).size.height /
           2; //Back to top botton will show on scroll offset 10.0
@@ -103,16 +106,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
-                        itemCount: cubit.homeMenuIndex == 0
-                            ? cubit.homePosts.length
-                            : cubit.popularPosts.length,
+                        itemCount: cubit.homePosts.length,
+                        // : cubit.popularPosts.length,
                         itemBuilder: (context, index) => Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 0, vertical: 5),
-                          child: cubit.homeMenuIndex == 0
-                              ? cubit.homePosts[index]
-                              : cubit.popularPosts[index],
-                        ),
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 5),
+                            child: PostWidget(
+                              post: cubit.homePosts[index],
+                            )
+                            // cubit.homeMenuIndex == 0
+                            //     ? cubit.homePosts[index]
+                            //     : cubit.popularPosts[index],
+                            ),
                       ),
                     ),
                   ),

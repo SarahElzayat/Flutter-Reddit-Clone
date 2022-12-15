@@ -36,12 +36,6 @@ class _ResultsCommentsState extends State<ResultsComments> {
   }
 
   @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final SearchCubit cubit = SearchCubit.get(context)..getComments();
     return BlocConsumer<SearchCubit, SearchState>(
@@ -66,6 +60,7 @@ class _ResultsCommentsState extends State<ResultsComments> {
                   controller: _scrollController,
                   itemCount: cubit.comments.length,
                   itemBuilder: (context, index) => Comment(
+                    key: Key(cubit.comments[index].id.toString()),
                     comment: cubit.comments[index],
                     post: cubit.commentsPosts[index],
                   ),

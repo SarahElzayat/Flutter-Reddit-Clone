@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
-import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/data/search/search_result_profile_model.dart';
 import 'package:reddit/data/search/search_result_subbredit_model.dart';
@@ -28,11 +27,22 @@ class SearchCubit extends Cubit<SearchState> {
     searchQuery = s;
   }
 
+  String subredditName = '';
+
+  void setSearchSubreddit(s) {
+    subredditName = s;
+    logger.wtf(s);
+  }
+
   List<Widget> searchResultScreens = [
     const ResultsPosts(),
     const ResultsComments(),
     const ResultsCommunities(),
     const ResultsUsers(),
+  ];
+  List<Widget> searchInSubredditResultScreens = [
+    const ResultsPosts(),
+    const ResultsComments(),
   ];
   List<Tab> searchResultTabs = [
     const Tab(
@@ -49,6 +59,15 @@ class SearchCubit extends Cubit<SearchState> {
     ),
   ];
 
+  List<Tab> searchInSubredditResultTabs = [
+    const Tab(
+      text: 'Posts',
+    ),
+    const Tab(
+      text: 'Comments',
+    ),
+  ];
+
   List<PostModel> posts = [];
   String postsBeforeId = '';
   String postsAfterId = '';
@@ -58,35 +77,39 @@ class SearchCubit extends Cubit<SearchState> {
       bool before = false,
       bool after = false,
       int limit = 25}) {
-    if (!loadMore) posts.clear();
+    if (!loadMore) {
+      posts.clear();
+    }
 
-    DioHelper.getData(path: search, query: {
-      'type': searchPosts,
-      'q': searchQuery,
-      'limit': limit,
-      'after': after ? postsAfterId : null,
-      'before': before ? postsBeforeId : null,
-    }).then((value) {
+    DioHelper.getData(
+        path: subredditName.isNotEmpty
+            ? '$subreddit/$subredditName$search'
+            : search,
+        query: {
+          'type': searchPosts,
+          'q': searchQuery,
+          'limit': limit,
+          'after': after ? postsAfterId : null,
+          'before': before ? postsBeforeId : null,
+        }).then((value) {
       if (value.statusCode == 200) {
         if (value.data['children'].length == 0) {
-          print('hena');
           loadMore
               ? emit(NoMoreResultsToLoadState())
               : emit(ResultEmptyState());
           emit(LoadedResultsState());
         } else {
+          logger.wtf(value.data);
           postsAfterId = value.data['after'];
           postsBeforeId = value.data['before'];
-          print(value.data['children'].length);
           for (int i = 0; i < value.data['children'].length; i++) {
             posts.add(PostModel.fromJson(value.data['children'][i]['data']));
           }
         }
         // print(value.data);
-        loadMore
-            ? emit(LoadedMoreResultsState())
-            : emit(LoadingMoreResultsState());
+        loadMore ? emit(LoadedMoreResultsState()) : emit(LoadedResultsState());
       } else {
+        
         emit(SearchErrorState());
       }
     }).onError((error, stackTrace) {
@@ -116,6 +139,7 @@ class SearchCubit extends Cubit<SearchState> {
       'before': before ? usersBeforeId : null,
     }).then((value) {
       if (value.statusCode == 200) {
+        logger.wtf(value.data);
         if (value.data['children'].length == 0) {
           loadMore
               ? emit(NoMoreResultsToLoadState())
@@ -126,7 +150,7 @@ class SearchCubit extends Cubit<SearchState> {
           usersBeforeId = value.data['before'];
 
           for (int i = 0; i < value.data['children'].length; i++) {
-            print(value.data['children'][i].toString());
+            // print(value.data['children'][i].toString());
             users.add(
                 SearchResultProfileModel.fromJson(value.data['children'][i]));
           }
@@ -162,7 +186,10 @@ class SearchCubit extends Cubit<SearchState> {
       commentsPosts.clear();
     }
 
-    DioHelper.getData(path: search, query: {
+    DioHelper.getData(
+      path: subredditName.isNotEmpty
+            ? '$subreddit/$subredditName$search'
+            : search, query: {
       'type': searchComments,
       'q': searchQuery,
       'limit': limit,

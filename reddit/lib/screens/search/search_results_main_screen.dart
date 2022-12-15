@@ -9,9 +9,14 @@ import 'package:reddit/screens/search/cubit/search_cubit.dart';
 
 class SearchResults extends StatefulWidget {
   final String searchWord;
-  const SearchResults({super.key, required this.searchWord});
+  const SearchResults(
+      {super.key,
+      required this.searchWord,
+      this.subredditName,
+      this.isSubreddit = false});
   static const routeName = '/search_results_route';
-
+  final String? subredditName;
+  final bool isSubreddit;
   @override
   State<SearchResults> createState() => _SearchResultsState();
 }
@@ -24,10 +29,14 @@ class _SearchResultsState extends State<SearchResults>
   /// initial state of the stateful widget
   @override
   void initState() {
+    // if (widget.isSubreddit) {
+    //   SearchCubit.get(context).setSearchSubreddit(widget.subredditName);
+    // }
     // SearchCubit.get(context).setSearchQuery(widget.searchWord);
-    super.initState();
     _textEditingController.text = widget.searchWord;
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController =
+        TabController(length: widget.isSubreddit ? 2 : 4, vsync: this);
+    super.initState();
   }
 
   @override
@@ -35,12 +44,17 @@ class _SearchResultsState extends State<SearchResults>
     // final SearchCubit cubit = SearchCubit.get(context);
     return BlocProvider(
       create: (ctx) => SearchCubit()..setSearchQuery(widget.searchWord),
+      // ..setSearchSubreddit(widget.subredditName),
       child: BlocConsumer<SearchCubit, SearchState>(
         listener: (context, state) {},
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
               title: SearchField(
+                // subredditName: widget.subredditName,
+                // isSubreddit: widget.isSubreddit,
+                // isSubreddit: true,
+                // subredditName: 'hebab',
                 textEditingController: _textEditingController,
                 isResult: true,
               ),
@@ -50,13 +64,17 @@ class _SearchResultsState extends State<SearchResults>
                 indicatorWeight: 1,
                 indicatorSize: TabBarIndicatorSize.label,
                 isScrollable: true,
-                tabs: SearchCubit.get(context).searchResultTabs,
+                tabs: widget.isSubreddit
+                    ? SearchCubit.get(context).searchInSubredditResultTabs
+                    : SearchCubit.get(context).searchResultTabs,
                 indicatorColor: ColorManager.blue,
               ),
             ),
             body: TabBarView(
                 controller: _tabController,
-                children: SearchCubit.get(context).searchResultScreens),
+                children: widget.isSubreddit
+                    ? SearchCubit.get(context).searchInSubredditResultScreens
+                    : SearchCubit.get(context).searchResultScreens),
           );
         },
       ),
