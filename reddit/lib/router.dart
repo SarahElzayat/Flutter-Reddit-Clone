@@ -66,7 +66,6 @@ class AppRouter {
 
       case '/trimmerView_screen_route':
         return MaterialPageRoute(builder: (_) {
-          print('Go to Video Trimeer');
           return BlocProvider.value(
             value: _addPostCubit,
             child: const TrimmerView(),

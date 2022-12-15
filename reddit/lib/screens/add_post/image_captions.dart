@@ -192,7 +192,6 @@ class _AddImageCaptionState extends State<AddImageCaption> {
       initialScale: PhotoViewComputedScale.contained,
       minScale: PhotoViewComputedScale.contained * (0.5),
       maxScale: PhotoViewComputedScale.covered * 4.1,
-      // TODO: Add hero tag to the image
       heroAttributes: PhotoViewHeroAttributes(tag: item),
     );
   }

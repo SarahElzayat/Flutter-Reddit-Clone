@@ -1,13 +1,11 @@
 /// The post cubit that handles the post state independently
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_quill/flutter_quill.dart';
 import 'package:logger/logger.dart';
 import 'package:reddit/components/helpers/mocks/mock_functions.dart';
 import 'package:reddit/constants/constants.dart';
