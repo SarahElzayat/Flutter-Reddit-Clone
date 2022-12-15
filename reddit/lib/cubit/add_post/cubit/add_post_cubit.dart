@@ -1,10 +1,14 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
@@ -15,6 +19,7 @@ import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
 import '../../../screens/main_screen.dart';
 import '../../../shared/local/shared_preferences.dart';
+import 'package:http_parser/http_parser.dart';
 
 part 'add_post_state.dart';
 
@@ -26,7 +31,7 @@ class AddPostCubit extends Cubit<AddPostState> {
 
   /// [postType] Number indicate The post Type
   /// This number is the index of post Type in add post screen
-  int postType = 5;
+  int postType = 2;
 
   /// [images] Images that User Added
   List<XFile> images = <XFile>[];
@@ -54,7 +59,7 @@ class AddPostCubit extends Cubit<AddPostState> {
   Uint8List? videoThumbnail;
 
   /// [optionalText] Optional Text controller
-  TextEditingController optionalText = TextEditingController();
+  quill.QuillController optionalText = quill.QuillController.basic();
 
   /// [link] URL textField controller
   TextEditingController link = TextEditingController();
@@ -227,7 +232,7 @@ class AddPostCubit extends Cubit<AddPostState> {
       case 1:
         return (video != null && videoThumbnail != null);
       case 2:
-        return (optionalText.text.isNotEmpty);
+        return (!optionalText.document.isEmpty());
       case 3:
         return (link.text.isNotEmpty);
       case 4:
@@ -235,7 +240,7 @@ class AddPostCubit extends Cubit<AddPostState> {
           return true;
         } else {
           poll = [TextEditingController(), TextEditingController()];
-          optionalText = TextEditingController();
+          optionalText = quill.QuillController.basic();
           return false;
         }
       default:
@@ -254,7 +259,7 @@ class AddPostCubit extends Cubit<AddPostState> {
         videoThumbnail = null;
         break;
       case 2:
-        optionalText = TextEditingController();
+        optionalText = quill.QuillController.basic();
         break;
       case 3:
         link = TextEditingController();
@@ -288,11 +293,12 @@ class AddPostCubit extends Cubit<AddPostState> {
         }
         break;
       case 2:
-        if (optionalText.text.isNotEmpty) {
-          emit(CanCreatePost(canPost: true));
-        } else {
-          emit(CanCreatePost(canPost: false));
-        }
+        // if (optionalText.text.isNotEmpty) {
+        //   emit(CanCreatePost(canPost: true));
+        // } else {
+        //   emit(CanCreatePost(canPost: false));
+        // }
+        emit(CanCreatePost(canPost: true));
         break;
       case 3:
         if (Uri.parse(link.text).isAbsolute) {
@@ -424,62 +430,67 @@ class AddPostCubit extends Cubit<AddPostState> {
     Map<String, dynamic> body = {};
     List<MultipartFile> imagesData = [];
 
-    // if (postType == 0) {
-    //   for (var item in images) {
-    //     print(item.path);
-    //     MultipartFile file = await MultipartFile.fromFile(
-    //       item.path,
-    //       filename: item.path.split('/').last,
-    //     );
-    //     imagesData.add(file);
-    //   }
-    //   imagesData.forEach((element) {
-    //     print(element.filename);
-    //   });
-    //   List<String> imageCaptions = [];
-    //   for (int index = 0; index < captionController.length; index++) {
-    //     imageCaptions.add(captionController[index].text);
-    //   }
-    //   List<String> imageLinks = [];
-    //   for (int index = 0; index < captionController.length; index++) {
-    //     imageLinks.add(imagesLinkController[index].text);
-    //   }
-    //   body = {
-    //     'kind': postTypes[postType],
-    //     'subreddit': subredditName,
-    //     'inSubreddit': true,
-    //     'title': title.text,
-    //     'images': imagesData,
-    //     'imageCaptions': imageCaptions,
-    //     'imageLinks': imageLinks,
-    //     'nsfw': nsfw,
-    //     'spoiler': spoiler,
-    //   };
-    // } else if (postType == 1) {
-    //   body = {
-    //     'kind': postTypes[postType],
-    //     'subreddit': subredditName,
-    //     'inSubreddit': true,
-    //     'title': title.text,
-    //     'videos': await MultipartFile.fromFile(
-    //       video!.path,
-    //       filename: video!.path.split('/').last,
-    //     ),
-    //     'nsfw': nsfw,
-    //     'spoiler': spoiler,
-    //   };} else
-    if (postType == 2) {
+    if (postType == 0) {
+      for (var item in images) {
+        print(item.path);
+        final mimeType = lookupMimeType(item.path);
+        print(mimeType!.split('/').first);
+        print(mimeType.split('/').last);
+        MultipartFile file = await MultipartFile.fromFile(item.path,
+            filename: 'image.png', contentType: MediaType('image', 'png'));
+        imagesData.add(file);
+      }
+      imagesData.forEach((element) {
+        print(element.filename);
+      });
+      List<String> imageCaptions = [];
+      for (int index = 0; index < captionController.length; index++) {
+        imageCaptions.add(captionController[index].text);
+      }
+      List<String> imageLinks = [];
+      for (int index = 0; index < captionController.length; index++) {
+        imageLinks.add(imagesLinkController[index].text);
+      }
       body = {
         'kind': postTypes[postType],
         'subreddit': subredditName,
         'inSubreddit': true,
         'title': title.text,
-        'texts': [
-          <String, dynamic>{
-            'text': optionalText.text,
-            'index': 0,
-          }
-        ],
+        'images': imagesData,
+        'imageCaptions': imageCaptions,
+        'imageLinks': imageLinks,
+        'nsfw': nsfw,
+        'spoiler': spoiler,
+      };
+    }
+    if (postType == 1) {
+      print(video!.path);
+      print(lookupMimeType(video!.path));
+
+      final mimeType = lookupMimeType(video!.path);
+
+      print(video!.path.split('/').last);
+      body = {
+        'video': await MultipartFile.fromBytes(
+            File(video!.path).readAsBytesSync(),
+            filename: 'video.mp4',
+            contentType: MediaType('video', 'mp4')),
+        'title': title.text,
+        'kind': 'video',
+        'subreddit': subredditName,
+        'inSubreddit': true,
+        'nsfw': nsfw,
+        'spoiler': spoiler,
+      };
+    } else if (postType == 2) {
+      body = {
+        'kind': postTypes[postType],
+        'subreddit': subredditName,
+        'inSubreddit': true,
+        'title': title.text,
+        'content': {
+          'ops': jsonEncode(optionalText.document.toDelta().toJson()),
+        },
         'nsfw': nsfw,
         'spoiler': spoiler,
       };
@@ -503,12 +514,13 @@ class AddPostCubit extends Cubit<AddPostState> {
         'spoiler': spoiler,
       };
     }
-    print(body);
-    var formData = FormData.fromMap(body);
+    FormData formData = FormData.fromMap(body);
     print('Toke : ${CacheHelper.getData(key: 'token')}');
+
     await DioHelper.postData(
             path: submitPost,
-            data: (postType == 0 || postType == 1) ? formData : body,
+            isFormdata: (postType == 0 || postType == 1),
+            data: formData,
             token: CacheHelper.getData(key: 'token'))
         .then((value) {
       print(value);

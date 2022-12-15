@@ -49,9 +49,9 @@ class _PostRulesState extends State<PostRules> {
                   splashColor: Colors.transparent,
                   textColor: ColorManager.white,
                   backgroundColor: ColorManager.blue,
-                  buttonWidth: mediaQuery.size.width * 0.15,
+                  buttonWidth: 80,
                   buttonHeight: 80,
-                  textFontSize: 18 * mediaQuery.textScaleFactor,
+                  textFontSize: 20,
                   onPressed: () async {
                     await addPostCubit.createPost(context);
                     addPostCubit.removeExistData();
