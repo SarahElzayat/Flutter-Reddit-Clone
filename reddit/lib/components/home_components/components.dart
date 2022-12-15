@@ -16,7 +16,8 @@ import '../../screens/to_be_done_screen.dart';
 /// @param [list] is the items to be displayed
 /// @param [onPressed] is the function that controls the list
 /// @param [isOpen] is the state of the list
-Widget listButton(context, text, list, onPressed, isOpen,
+Widget listButton(
+    context, text, List<DrawerCommunitiesModel> list, onPressed, isOpen,
     {isCommunity = false, isModerating = false, required navigateToSubreddit}) {
   return Container(
     decoration: const BoxDecoration(
@@ -79,7 +80,10 @@ Widget listButton(context, text, list, onPressed, isOpen,
               ),
               itemCount: list.length,
               itemBuilder: (context, index) {
-                return InkWell(onTap: navigateToSubreddit, child: list[index]);
+                return InkWell(
+                    onTap: () => SubredditCubit.get(context).setSubredditName(
+                        context, list[index].title.toString()),
+                    child: yourCommunitiesCard(list[index]));
               },
               shrinkWrap: true,
             ),

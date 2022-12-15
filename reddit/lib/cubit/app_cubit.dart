@@ -221,15 +221,15 @@ class AppCubit extends Cubit<AppState> {
   }
 
   ///@param [yourCommunitiesList] user's joined communities
-  List<Widget> yourCommunitiesList = [];
+  List<DrawerCommunitiesModel> yourCommunitiesList = [];
 
   void getYourCommunities() {
     yourCommunitiesList.clear();
     DioHelper.getData(path: joinedSubreddits).then((value) {
       if (value.statusCode == 200) {
         for (int i = 0; i < value.data['children'].length; i++) {
-          yourCommunitiesList.add(yourCommunitiesCard(
-              DrawerCommunitiesModel.fromJson(value.data['children'][i])));
+          yourCommunitiesList
+              .add(DrawerCommunitiesModel.fromJson(value.data['children'][i]));
         }
         emit(LoadedCommunitiesState());
       } else {
