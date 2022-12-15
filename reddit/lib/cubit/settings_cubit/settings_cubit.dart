@@ -22,10 +22,9 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
         newPassword: newPassText);
 
     DioHelper.putData(
-            path: changePassword,
-            data: changeRequest.toJson(),
-            token: CacheHelper.getData(key: 'token'))
-        .then((response) {
+      path: changePassword,
+      data: changeRequest.toJson(),
+    ).then((response) {
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('Email has been sent!'),
@@ -45,10 +44,9 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
     );
 
     DioHelper.putData(
-            path: changeEmail,
-            data: update.toJson(),
-            token: CacheHelper.getData(key: 'token'))
-        .then((response) {
+      path: changeEmail,
+      data: update.toJson(),
+    ).then((response) {
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('Email has been sent!'),
