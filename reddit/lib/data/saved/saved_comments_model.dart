@@ -61,7 +61,7 @@ class SavedCommentModel {
 class Parent {
   String? commentId;
   String? commentedBy;
-  Null? commentBody;
+  String? commentBody;
   int? points;
   String? publishTime;
   String? editTime;
