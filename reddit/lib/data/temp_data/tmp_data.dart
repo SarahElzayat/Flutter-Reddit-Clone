@@ -11,7 +11,7 @@ String quillContent =
     {"insert":"link","attributes":{"link":"pub.dev/packages/quill_markdown"}},{"insert":"\\n"}]}''';
 
 var textPost = PostModel(
-  id: '6398e2665abbd729a1cf875e',
+  id: '639a42443a8a2b305120762f',
   kind: 'post',
   title: 'this is the title',
   content: quillContent,
@@ -26,7 +26,7 @@ var textPost = PostModel(
     textColor: '#0E0EEE',
   ),
   saved: false,
-  sharePostId: '6398e2665abbd729a1cf875e',
+  sharePostId: '639a42443a8a2b305120762f',
   spoiler: true,
   inYourSubreddit: false,
   nsfw: false,
@@ -37,9 +37,9 @@ var textPost = PostModel(
 final textPostS = textPost.toJson();
 
 var videoPost = PostModel(
-  id: '6398e2665abbd729a1cf875e',
+  id: '639a42443a8a2b305120762f',
   kind: 'video',
-  title: 'this is the title',
+  title: 'this is the VIDEO',
   content: quillContent,
   subreddit: 'news',
   video:
@@ -54,7 +54,7 @@ var videoPost = PostModel(
     textColor: '#0E0EEE',
   ),
   saved: false,
-  sharePostId: '6398e2665abbd729a1cf875e',
+  sharePostId: '639a42443a8a2b305120762f',
   spoiler: true,
   inYourSubreddit: false,
   nsfw: false,

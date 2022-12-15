@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/data/search/search_result_profile_model.dart';
 import 'package:reddit/data/search/search_result_subbredit_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
-import 'package:reddit/screens/comments/add_comment_screen.dart';
 
 import '../../../data/post_model/post_model.dart';
 import '../results_comments.dart';
@@ -16,6 +16,8 @@ import '../results_users.dart';
 import '../results_posts.dart';
 
 part 'search_state.dart';
+
+var logger = Logger();
 
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit() : super(SearchInitial());
@@ -210,7 +212,6 @@ class SearchCubit extends Cubit<SearchState> {
     if (!loadMore) {
       subbreddits.clear();
     }
-
     DioHelper.getData(path: search, query: {
       'type': searchSubreddits,
       'q': searchQuery,
@@ -248,7 +249,6 @@ class SearchCubit extends Cubit<SearchState> {
   void folowUser({required username, required follow}) {
     // print('$token token');
     DioHelper.postData(
-        token: token,
         path: followUser,
         data: {'username': username, 'follow': follow}).then((value) {
       if (value.statusCode == 200) {
@@ -260,7 +260,7 @@ class SearchCubit extends Cubit<SearchState> {
   }
 
   void joinSubreddit({required id}) {
-    DioHelper.postData(token: token, path: joinCommunity, data: {
+    DioHelper.postData(path: joinCommunity, data: {
       'subredditId': id,
     }).then((value) {
       if (value.statusCode == 200) {
@@ -273,7 +273,7 @@ class SearchCubit extends Cubit<SearchState> {
   }
 
   void leaveSubreddit({required name}) {
-    DioHelper.postData(token: token, path: leaveCommunity, data: {
+    DioHelper.postData(path: leaveCommunity, data: {
       'subredditName': name,
     }).then((value) {
       if (value.statusCode == 200) {

@@ -33,17 +33,17 @@ class FullScreenPortraitControls extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Row(
-              children: [
-                IconButton(
-                    onPressed: () {
-                      flickManager?.flickControlManager?.toggleFullscreen();
-                    },
-                    icon: const Icon(Icons.arrow_back_rounded)),
-                Expanded(child: Center(child: Text('r/${post.subreddit!}'))),
-                // dropDownDots(post)
-              ],
-            ),
+            // Row(
+            //   children: [
+            //     IconButton(
+            //         onPressed: () {
+            //           // flickManager?.flickControlManager?.toggleFullscreen();
+            //         },
+            //         icon: const Icon(Icons.arrow_back_rounded)),
+            //     Expanded(child: Center(child: Text('r/${post.subreddit!}'))),
+            //     // dropDownDots(post)
+            //   ],
+            // ),
             Expanded(
               child: FlickToggleSoundAction(
                 toggleMute: () {

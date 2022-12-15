@@ -15,12 +15,16 @@ class FlickMultiPlayer extends StatefulWidget {
       required this.url,
       this.image,
       required this.post,
+      this.isFull = false,
+      this.alreadyflickManager,
       required this.flickMultiManager})
       : super(key: key);
 
   final String url;
   final String? image;
   final PostModel post;
+  final bool isFull;
+  final FlickManager? alreadyflickManager;
   final FlickMultiManager flickMultiManager;
 
   @override
@@ -32,19 +36,26 @@ class _FlickMultiPlayerState extends State<FlickMultiPlayer> {
 
   @override
   void initState() {
-    flickManager = FlickManager(
-      videoPlayerController: VideoPlayerController.network(widget.url)
-        ..setLooping(true),
-      autoPlay: false,
-    );
-    widget.flickMultiManager.init(flickManager);
+    flickManager = widget.alreadyflickManager ??
+        FlickManager(
+          videoPlayerController: VideoPlayerController.network(widget.url)
+            ..setLooping(true),
+          autoPlay: false,
+        );
+
+    if (widget.alreadyflickManager == null) {
+      widget.flickMultiManager.init(flickManager);
+    }
 
     super.initState();
   }
 
   @override
   void dispose() {
-    widget.flickMultiManager.remove(flickManager);
+    // only if this is not a manager from the prev page
+    if (widget.alreadyflickManager == null) {
+      widget.flickMultiManager.remove(flickManager);
+    }
     super.dispose();
   }
 
@@ -64,13 +75,14 @@ class _FlickMultiPlayerState extends State<FlickMultiPlayer> {
       child: FlickVideoPlayer(
         flickManager: flickManager,
         flickVideoWithControls: FlickVideoWithControls(
+          videoFit: widget.isFull ? BoxFit.contain : BoxFit.cover,
           playerLoadingFallback: Positioned.fill(
             child: Stack(
               children: [
                 Positioned.fill(
                   child: Image.network(
                     widget.image!,
-                    fit: BoxFit.cover,
+                    fit: widget.isFull ? BoxFit.fitWidth : BoxFit.cover,
                   ),
                 ),
                 const Align(
@@ -87,33 +99,53 @@ class _FlickMultiPlayerState extends State<FlickMultiPlayer> {
               ],
             ),
           ),
-          controls: FeedPlayerPortraitControls(
-            flickMultiManager: widget.flickMultiManager,
-            flickManager: flickManager,
-            post: widget.post
-          ),
+          iconThemeData: widget.isFull
+              ? const IconThemeData(
+                  size: 40,
+                  color: Colors.white,
+                )
+              : const IconThemeData(
+                  color: Colors.white,
+                  size: 20,
+                ),
+          textStyle: widget.isFull
+              ? const TextStyle(fontSize: 16, color: Colors.white)
+              : const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                ),
+          controls: widget.isFull
+              ? FullScreenPortraitControls(
+                  flickMultiManager: widget.flickMultiManager,
+                  flickManager: flickManager,
+                  post: widget.post,
+                )
+              : FeedPlayerPortraitControls(
+                  flickMultiManager: widget.flickMultiManager,
+                  flickManager: flickManager,
+                  post: widget.post),
         ),
         preferredDeviceOrientationFullscreen: const [
           DeviceOrientation.portraitUp,
         ],
-        flickVideoWithControlsFullscreen: FlickVideoWithControls(
-          playerLoadingFallback: Center(
-              child: Image.network(
-            widget.image!,
-            fit: BoxFit.fitWidth,
-          )),
-          controls: FullScreenPortraitControls(
-            flickMultiManager: widget.flickMultiManager,
-            flickManager: flickManager,
-            post: widget.post,
-          ),
-          videoFit: BoxFit.contain,
-          iconThemeData: const IconThemeData(
-            size: 40,
-            color: Colors.white,
-          ),
-          textStyle: const TextStyle(fontSize: 16, color: Colors.white),
-        ),
+        // flickVideoWithControlsFullscreen: FlickVideoWithControls(
+        //   playerLoadingFallback: Center(
+        //       child: Image.network(
+        //     widget.image!,
+        //     fit: BoxFit.fitWidth,
+        //   )),
+        //   controls: FullScreenPortraitControls(
+        //     flickMultiManager: widget.flickMultiManager,
+        //     flickManager: flickManager,
+        //     post: widget.post,
+        //   ),
+        //   videoFit: BoxFit.contain,
+        //   iconThemeData: const IconThemeData(
+        //     size: 40,
+        //     color: Colors.white,
+        //   ),
+        //   textStyle: const TextStyle(fontSize: 16, color: Colors.white),
+        // ),
       ),
     );
   }

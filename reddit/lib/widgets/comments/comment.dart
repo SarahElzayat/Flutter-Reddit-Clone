@@ -253,8 +253,9 @@ class _CommentState extends State<Comment> {
       children: [
         const Spacer(),
         DropDownList(
-          postId: widget.comment.id!,
-          itemClass: ItemsClass.comment,
+          post: widget.post,
+          comment: widget.comment,
+          itemClass: ItemsClass.comments,
         ),
         SizedBox(width: 5.w),
         InkWell(
@@ -367,7 +368,16 @@ class _CommentState extends State<Comment> {
               ),
             ),
           ),
-        if (showDots) dropDownDots(post)
+        if (showDots)
+          BlocBuilder<PostNotifierCubit, PostNotifierState>(
+            builder: (context, state) {
+              return DropDownList(
+                post: widget.post,
+                comment: widget.comment,
+                itemClass: ItemsClass.comments,
+              );
+            },
+          )
       ],
     );
   }

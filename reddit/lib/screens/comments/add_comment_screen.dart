@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
@@ -116,7 +115,7 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
       final content = jsonEncode(_controller!.document.toDelta().toJson());
       logger.i(content);
       SendedCommentModel c = SendedCommentModel(
-        content: content,
+        content: '{"ops":$content}',
         postId: widget.post.id!,
         parentType: _isPostParent() ? 'post' : 'comment',
         haveSubreddit: widget.post.subreddit != null,
@@ -124,16 +123,16 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
         parentId: _isPostParent() ? widget.post.id : widget.parentComment!.id,
         subredditName: widget.post.subreddit,
       );
-      DioHelper.postData(token: token, path: '/comment', data: c.toJson())
-          .then((value) {
+      logger.e(c.toJson());
+      DioHelper.postData(path: '/comment', data: c.toJson()).then((value) {
         onSuccess();
-
         //TODO HANDLE THIS IN THE CUBIT
         return null;
       }).catchError((e) {
         // TODO HANDLE THIS IN THE CUBIT
         onError(e as DioError);
         Map<String, dynamic> error = e.response!.data;
+
         logger.w(error['error']);
       });
     }
@@ -152,6 +151,7 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
                     content: Text('Comment cannot be empty'),
                   ),
                 );
+                return;
               }
 
               postComment(
@@ -159,6 +159,7 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
                   Navigator.of(context).pop(true);
                 },
                 onError: (DioError error) {
+                  logger.wtf(error);
                   Map<String, dynamic> errorData = error.response!.data;
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -179,11 +180,7 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
       body: Column(
         children: [
           QuillEditor(
-            controller: QuillController(
-              document:
-                  Document.fromJson(jsonDecode(widget.post.content ?? '[]')),
-              selection: const TextSelection(baseOffset: 0, extentOffset: 0),
-            ),
+            controller: getController(),
             readOnly: true,
             enableInteractiveSelection: false,
             autoFocus: false,
@@ -263,6 +260,23 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  QuillController getController() {
+    Document doc;
+
+    try {
+      doc = Document.fromJson(jsonDecode(widget.post.content ?? '[]')['ops']);
+      Logger().wtf(doc.toPlainText());
+    } catch (e) {
+      logger.wtf(e);
+      doc = Document();
+    }
+
+    return QuillController(
+      document: doc,
+      selection: const TextSelection.collapsed(offset: 0),
     );
   }
 

@@ -143,10 +143,9 @@ class _PostUpperBarState extends State<PostUpperBar> {
     return BlocBuilder<PostNotifierCubit, PostNotifierState>(
       builder: (context, state) {
         return DropDownList(
-          postId: widget.post.id!,
-          itemClass: (widget.post.saved ?? true)
-              ? ItemsClass.publicSaved
-              : ItemsClass.public,
+          post: widget.post,
+          itemClass: ItemsClass.posts,
+          outsideScreen: widget.outSide,
         );
       },
     );

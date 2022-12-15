@@ -3,9 +3,8 @@
 /// @Author: Ahmed Atta
 import 'dart:convert';
 import 'package:logger/logger.dart';
-import 'package:reddit/cubit/videos_cubit/videos_cubit.dart';
-import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/widgets/comments/comment.dart';
+import 'package:reddit/widgets/posts/video_page_view.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
@@ -28,12 +27,13 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../components/helpers/posts/helper_funcs.dart';
-import '../../components/multi_manager/flick_multi_player.dart';
+import '../../cubit/videos_cubit/videos_cubit.dart';
 import '../../data/comment/comment_model.dart';
 import '../../data/post_model/post_model.dart';
 import '../../widgets/posts/inline_image_viewer.dart';
 import '../../widgets/posts/votes_widget.dart';
 import 'actions_cubit/post_comment_actions_state.dart';
+import 'inline_video_viewer.dart';
 import 'post_upper_bar.dart';
 
 /// The widget that displays the post
@@ -181,8 +181,18 @@ class _PostWidgetState extends State<PostWidget> {
                                     'commentBody': (context) => _commentBody(),
                                     'bodytext': (context) => _bodyText(),
                                     'link': (context) => _linkBar(),
-                                    'videoBody': (context) =>
-                                        _videoBody(context),
+                                    'videoBody': (context) => InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  WholeScreenVideoViewer(
+                                                post: widget.post,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: videoBody(context, widget.post)),
                                     'postBody': (context) => _postBody(),
                                   },
                                   fallbackBuilder: (context) => Container(),
@@ -443,9 +453,7 @@ class _PostWidgetState extends State<PostWidget> {
 
     try {
       doc = Document.fromJson(jsonDecode(widget.post.content ?? '[]')['ops']);
-      Logger().wtf(doc.toPlainText());
     } catch (e) {
-      logger.wtf(e);
       doc = Document();
     }
 
@@ -609,16 +617,6 @@ class _PostWidgetState extends State<PostWidget> {
       post: widget.post,
       comment: widget.comment!,
       viewType: CommentView.inSearch,
-    );
-  }
-
-  Widget _videoBody(context) {
-    // return Container();
-    return FlickMultiPlayer(
-      url: widget.post.video!,
-      flickMultiManager: VideosCubit.get(context).flickMultiManager,
-      image: unknownAvatar,
-      post: widget.post,
     );
   }
 }

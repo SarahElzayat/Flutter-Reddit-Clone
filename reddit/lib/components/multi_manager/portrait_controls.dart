@@ -3,14 +3,15 @@ import 'package:flick_video_player/flick_video_player.dart';
 import 'package:provider/provider.dart';
 import 'package:reddit/data/post_model/post_model.dart';
 
+import '../../cubit/videos_cubit/videos_cubit.dart';
+import '../../widgets/posts/video_page_view.dart';
 import 'flick_multi_manager.dart';
 
 class FeedPlayerPortraitControls extends StatelessWidget {
+  final PostModel post;
+
   const FeedPlayerPortraitControls(
-      {Key? key,
-      this.flickMultiManager,
-      this.flickManager,
-      required PostModel post})
+      {Key? key, this.flickMultiManager, this.flickManager, required this.post})
       : super(key: key);
 
   final FlickMultiManager? flickMultiManager;
@@ -29,25 +30,19 @@ class FeedPlayerPortraitControls extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          // FlickAutoHideChild(
-          //   showIfVideoNotInitialized: false,
-          //   child: Align(
-          //     alignment: Alignment.topRight,
-          //     child: Container(
-          //       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-          //       decoration: BoxDecoration(
-          //         color: Colors.black38,
-          //         borderRadius: BorderRadius.circular(20),
-          //       ),
-          //       child: const FlickLeftDuration(),
-          //     ),
-          //   ),
-          // ),
           Expanded(
             child: FlickToggleSoundAction(
               toggleMute: () {
                 // flickMultiManager?.toggleMute();
-                controlManager.toggleFullscreen();
+                // controlManager.toggleFullscreen();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => WholeScreenVideoViewer(
+                      post: post,
+                      flickManager: flickManager,
+                    ),
+                  ),
+                );
               },
               child: const FlickSeekVideoAction(
                 child: Center(child: FlickVideoBuffer()),

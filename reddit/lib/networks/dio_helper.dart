@@ -46,7 +46,6 @@ class DioHelper {
 
     /// which is the content of the JSON
     Map<String, dynamic>? query,
-    String? token,
 
     /// additional query
   }) async {

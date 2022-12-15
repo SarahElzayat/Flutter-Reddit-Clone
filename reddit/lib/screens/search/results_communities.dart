@@ -45,7 +45,7 @@ class _ResultsCommunitiesState extends State<ResultsCommunities> {
 
   @override
   Widget build(BuildContext context) {
-    SearchCubit cubit = SearchCubit.get(context)..getSubbreddits();
+    SearchCubit cubit = SearchCubit.get(context); //..getSubbreddits();
 
     return BlocConsumer<SearchCubit, SearchState>(
       listener: (context, state) {},

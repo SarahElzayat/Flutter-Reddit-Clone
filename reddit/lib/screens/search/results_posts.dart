@@ -27,13 +27,13 @@ class _ResultsPostsState extends State<ResultsPosts> {
   void _scrollListener() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      SearchCubit.get(context).getUsers(loadMore: true, after: true);
+      SearchCubit.get(context).getPosts(loadMore: true, after: true);
     }
   }
 
   @override
   void initState() {
-    SearchCubit.get(context).getUsers();
+    SearchCubit.get(context).getPosts();
     _scrollController.addListener(_scrollListener);
 
     super.initState();
@@ -47,7 +47,7 @@ class _ResultsPostsState extends State<ResultsPosts> {
 
   @override
   Widget build(BuildContext context) {
-    final SearchCubit cubit = SearchCubit.get(context)..getPosts();
+    final SearchCubit cubit = SearchCubit.get(context);//..getPosts();
     return BlocConsumer<SearchCubit, SearchState>(
       listener: (context, state) {},
       builder: (context, state) {
