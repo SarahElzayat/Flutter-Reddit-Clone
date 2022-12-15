@@ -243,7 +243,6 @@ void handleLock(
     {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   final lockComments = LockModel(id: post.id, type: 'comment');
 
-
   //check whether post is marked or unmarked as nsfw
   String finalPath = post.moderation.lock ?? false ? unlock : lock;
 
@@ -262,7 +261,6 @@ void handleSticky(
     {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   //bool pin = !post.sticky
   final stickUnstickPost = PinPostModel(id: post.id, pin: false);
-
 
   DioHelper.postData(path: pinPost, data: stickUnstickPost.toJson())
       .then((value) {

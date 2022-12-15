@@ -12,7 +12,6 @@ import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/inbox_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/notifications_screen.dart';
-import 'package:reddit/screens/comments/add_comment_screen.dart';
 import 'package:reddit/screens/saved/saved_comments.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 import '../components/helpers/color_manager.dart';
@@ -21,6 +20,7 @@ import '../data/temp_data/tmp_data.dart';
 import '../networks/constant_end_points.dart';
 import '../networks/dio_helper.dart';
 import '../screens/bottom_navigation_bar_screens/add_post_screen.dart';
+import '../screens/comments/add_comment_screen.dart';
 import '../screens/saved/saved_posts.dart';
 import '../widgets/posts/post_widget.dart';
 
@@ -138,7 +138,7 @@ class AppCubit extends Cubit<AppState> {
 
   ///@param [popularPosts] dummy data for home screen
   List<Widget> popularPosts = [
-    PostWidget(post: textPost),
+    PostWidget(post: textPost, insideProfiles: true),
     PostWidget(post: oneImagePost),
     PostWidget(post: oneImagePost),
     PostWidget(post: oneImagePost),
