@@ -77,6 +77,10 @@ class DropDownList extends StatelessWidget {
 
   List<MenuItem> _chooseForComments() {
     List<MenuItem> l = MenuItems.commentItems.toList();
+
+    l.add((comment?.followed ?? false) ? MenuItems.unfollow : MenuItems.follow);
+    l.insert(0, (comment?.saved ?? false) ? MenuItems.unsave : MenuItems.save);
+
     return l;
   }
 
@@ -100,7 +104,7 @@ class DropDownList extends StatelessWidget {
     if (!outsideScreen) {
       l.add(MenuItems.share);
       l.add(MenuItems.copy);
-      l.add(MenuItems.follow);
+      l.add((post.followed ?? false) ? MenuItems.unfollow : MenuItems.follow);
     }
     return l;
   }

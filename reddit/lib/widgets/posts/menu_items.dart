@@ -47,8 +47,6 @@ class MenuItems {
 
   static const List<MenuItem> commentItems = [
     share,
-    save,
-    follow,
     copy,
     collapse,
     block,
@@ -68,6 +66,8 @@ class MenuItems {
   // all the menu items that we choose from
   static const save = MenuItem(text: 'Save', icon: Icons.bookmark_border);
   static const follow = MenuItem(text: 'Follow', icon: Icons.notification_add);
+  static const unfollow =
+      MenuItem(text: 'Unfollow', icon: Icons.notifications_active);
   static const collapse =
       MenuItem(text: 'Collapse Thread', icon: Icons.compare_arrows);
   static const unsave = MenuItem(text: 'UnSave', icon: Icons.bookmark);
@@ -139,7 +139,12 @@ class MenuItems {
       case MenuItems.edit:
         //Do something
         break;
-
+      case MenuItems.follow:
+      case MenuItems.unfollow:
+        cubit.follow().then((value) {
+          PostNotifierCubit.get(context).notifyPosts();
+        });
+        break;
       case MenuItems.copy:
         cubit.copyText().then((value) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -158,8 +163,6 @@ class MenuItems {
         });
         break;
 
-
-        
       default:
         break;
     }
