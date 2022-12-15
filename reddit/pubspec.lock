@@ -281,6 +281,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.5"
+  expressions:
+    dependency: transitive
+    description:
+      name: expressions
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.4"
   extended_image:
     dependency: transitive
     description:
@@ -738,6 +745,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.15.1"
+  html_parser_plus:
+    dependency: "direct main"
+    description:
+      name: html_parser_plus
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1"
   http:
     dependency: transitive
     description:
@@ -961,7 +975,7 @@ packages:
     source: hosted
     version: "1.8.0"
   mime:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: mime
       url: "https://pub.dartlang.org"
@@ -1163,6 +1177,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.1"
+  rxdart:
+    dependency: transitive
+    description:
+      name: rxdart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.27.7"
   share:
     dependency: "direct main"
     description:
@@ -1602,6 +1623,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.1.0"
+  xpath_selector:
+    dependency: transitive
+    description:
+      name: xpath_selector
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.1"
+  xpath_selector_html_parser:
+    dependency: transitive
+    description:
+      name: xpath_selector_html_parser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0"
   yaml:
     dependency: transitive
     description:

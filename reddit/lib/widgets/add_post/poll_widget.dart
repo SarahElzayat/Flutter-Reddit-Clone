@@ -41,7 +41,7 @@ class _PollState extends State<Poll> {
                   onChanged: ((string) {
                     addPostCubit.checkPostValidation();
                   }),
-                  controller: addPostCubit.optionalText,
+                  controller: TextEditingController(),
                   mltiline: true,
                   isBold: false,
                   fontSize: (18 * mediaQuery.textScaleFactor).toInt(),
