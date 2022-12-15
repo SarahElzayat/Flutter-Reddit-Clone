@@ -86,6 +86,7 @@ class AddPostCubit extends Cubit<AddPostState> {
 
   void addSubredditName(String subredditName) {
     this.subredditName = subredditName;
+    emit(ChangeSubredditName());
   }
 
   /// Add Image To The List And Rebuild The widget
@@ -272,6 +273,7 @@ class AddPostCubit extends Cubit<AddPostState> {
         break;
       default:
     }
+    emit(CanCreatePost(canPost: false));
   }
 
   /// Check Validation if the Post Content NOT Complete
@@ -552,7 +554,7 @@ class AddPostCubit extends Cubit<AddPostState> {
   }
 
   void subredditSearch(String subredditName) {
-    if (subredditName == null || subredditName == '') {
+    if (subredditName == '') {
       subredditsList = null;
       emit(SubredditSearch(isLoaded: true));
     } else {
@@ -570,6 +572,95 @@ class AddPostCubit extends Cubit<AddPostState> {
       }).catchError((error) {
         print('Error in Search ==> $error');
       });
+    }
+  }
+
+  /// Show TO User If Change The Post Type And the Exist Data in the current
+  /// Post type it Show Pop-up to Choose if continue and remove the data or Not
+  onTapFunc(int index, BuildContext context, NavigatorState navigator,
+      MediaQueryData mediaQuery,
+      {bool isPop = false}) {
+    if (postType != index && discardCheck()) {
+      showDialog(
+          context: context,
+          builder: ((context) => AlertDialog(
+                backgroundColor: ColorManager.grey,
+                insetPadding: EdgeInsets.zero,
+                title: const Text('Change Post Type'),
+                content: Text(
+                  'Some of your post will be deleted if you continue',
+                  style: TextStyle(fontSize: 15 * mediaQuery.textScaleFactor),
+                ),
+                actions: [
+                  SizedBox(
+                    width: mediaQuery.size.width * 0.42,
+                    child: Button(
+                      textFontWeight: FontWeight.normal,
+                      onPressed: () {
+                        navigator.pop();
+                        return;
+                      },
+                      text: ('Cancel'),
+                      textColor: ColorManager.lightGrey,
+                      backgroundColor: Colors.transparent,
+                      buttonWidth: mediaQuery.size.width * 0.42,
+                      buttonHeight: 40,
+                      textFontSize: 15,
+                      borderRadius: 20,
+                    ),
+                  ),
+                  SizedBox(
+                    width: mediaQuery.size.width * 0.42,
+                    child: Button(
+                      textFontWeight: FontWeight.normal,
+                      onPressed: () {
+                        removeExistData();
+
+                        navigator.pop();
+                        if (isPop) {
+                          title.text = '';
+                          subredditName = null;
+                          changePostType(postTypeIndex: 2);
+
+                          navigator.pop();
+                        } else {
+                          if (index == 0 && postType != index) {
+                            chooseSourceWidget(context, mediaQuery, navigator);
+                          } else if (index == 1 && postType != index) {
+                            pickVideo(true);
+                          }
+                          changePostType(postTypeIndex: index);
+                        }
+                      },
+                      text: ('Containue'),
+                      textColor: ColorManager.white,
+                      backgroundColor: ColorManager.red,
+                      buttonWidth: mediaQuery.size.width * 0.42,
+                      buttonHeight: 40,
+                      textFontSize: 15,
+                      borderRadius: 20,
+                    ),
+                  ),
+                ],
+              )));
+    } else if (isPop) {
+      title.text = '';
+      subredditName = null;
+      changePostType(postTypeIndex: 2);
+
+      navigator.pop();
+    } else {
+      if (index == 0 && postType != index) {
+        chooseSourceWidget(
+          context,
+          mediaQuery,
+          navigator,
+        );
+      } else if (index == 1 && postType != index) {
+        pickVideo(true);
+        // videoFunc(context);
+      }
+      changePostType(postTypeIndex: index);
     }
   }
 }

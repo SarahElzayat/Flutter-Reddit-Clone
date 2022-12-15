@@ -9,6 +9,7 @@ import 'package:reddit/screens/main_screen.dart';
 import '../../components/button.dart';
 import '../../constants/constants.dart';
 import '../../cubit/add_post/cubit/add_post_cubit.dart';
+import 'community_search.dart';
 
 class PostRules extends StatefulWidget {
   const PostRules({Key? key}) : super(key: key);
@@ -68,7 +69,7 @@ class _PostRulesState extends State<PostRules> {
               Expanded(
                   child: MaterialButton(
                 onPressed: () {
-                  navigator.pop();
+                  navigator.pushNamed(CommunitySearch.routeName);
                 },
                 child: Row(
                   children: [

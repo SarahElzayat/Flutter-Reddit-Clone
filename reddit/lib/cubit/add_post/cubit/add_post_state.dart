@@ -52,3 +52,5 @@ class SubredditSearch extends AddPostState {
     required this.isLoaded,
   });
 }
+
+class ChangeSubredditName extends AddPostState {}
