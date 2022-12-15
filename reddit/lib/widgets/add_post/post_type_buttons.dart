@@ -74,13 +74,11 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 15),
                                 child: Icon(
-                                  (state is PostTypeChanged &&
-                                          index == state.getPostType)
+                                  (index == addPostCubit.postType)
                                       ? selectedIcons[index]
                                       : icons[index],
                                   size: 32 * mediaQuery.textScaleFactor,
-                                  color: (state is PostTypeChanged &&
-                                          index == state.getPostType)
+                                  color: (index == addPostCubit.postType)
                                       ? Colors.blue
                                       : Colors.white,
                                 ),
@@ -105,8 +103,7 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10),
                                     child: Icon(
-                                      (state is PostTypeChanged &&
-                                              index == state.getPostType)
+                                      (index == addPostCubit.postType)
                                           ? selectedIcons[index]
                                           : icons[index],
                                       size: 25 * mediaQuery.textScaleFactor,
@@ -115,16 +112,15 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
                                   Text(
                                     labels[index],
                                     style: TextStyle(
-                                        fontWeight: (state is PostTypeChanged &&
-                                                index == state.getPostType)
-                                            ? FontWeight.w700
-                                            : FontWeight.w200,
+                                        fontWeight:
+                                            (index == addPostCubit.postType)
+                                                ? FontWeight.w700
+                                                : FontWeight.w200,
                                         fontSize:
                                             20 * mediaQuery.textScaleFactor),
                                   ),
                                   const Spacer(),
-                                  if (state is PostTypeChanged &&
-                                      index == state.getPostType)
+                                  if (index == addPostCubit.postType)
                                     const Icon(
                                       Icons.done,
                                       color: Colors.blue,
