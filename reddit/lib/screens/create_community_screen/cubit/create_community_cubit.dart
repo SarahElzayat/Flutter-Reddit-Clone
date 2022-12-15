@@ -33,8 +33,7 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
         subredditName: name, type: type, nsfw: nsfw, category: category);
     String? token = CacheHelper.getData(key: 'token');
 
-    DioHelper.postData(
-            token: token, path: createCommunity, data: community.toJson())
+    DioHelper.postData(path: createCommunity, data: community.toJson())
         .then((value) {
       if (value.statusCode == 201) {
         print('community created successfully');

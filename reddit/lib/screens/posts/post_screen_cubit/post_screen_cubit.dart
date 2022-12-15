@@ -80,7 +80,6 @@ class PostScreenCubit extends Cubit<PostScreenState> {
           allCommentsMap[element.id!] = element;
         });
       });
-      logger.d(comments[0].commentBody);
       emit(CommentsLoaded());
     }).catchError((error) {
       logger.e('error in coments $error');

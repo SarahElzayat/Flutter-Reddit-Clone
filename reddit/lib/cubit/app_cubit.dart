@@ -432,10 +432,9 @@ class AppCubit extends Cubit<AppState> {
 
   void clearHistoy() {
     DioHelper.postData(
-            path: clearHistory,
-            data: {'username': username},
-            token: CacheHelper.getData(key: 'token'))
-        .then((value) {
+      path: clearHistory,
+      data: {'username': username},
+    ).then((value) {
       if (value.statusCode == 200) history.clear();
       emit(ClearHistoryState());
       emit(HistoryEmptyState());

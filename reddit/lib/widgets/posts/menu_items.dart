@@ -3,6 +3,8 @@
 /// @Author: Ahmed Atta
 
 import 'package:flutter/material.dart';
+import 'package:reddit/components/snack_bar.dart';
+import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 import '../../functions/post_functions.dart';
@@ -23,9 +25,26 @@ class MenuItem {
 
 /// container class of all the menu items that are shown iin the dropDownList
 class MenuItems {
-  static const List<MenuItem> publicItems = [save, hide, report, block];
+  static const List<MenuItem> publicOutItems = [hide, report, block];
+  static const List<MenuItem> publicInItems = [
+    share,
+    follow,
+    copy,
+    save,
+    hide,
+    report,
+    block
+  ];
   static const List<MenuItem> publicItemsSaved = [unsave, hide, report, block];
-  static const List<MenuItem> myPostsItems = [save, share, delete];
+  static const List<MenuItem> myPostsOutItems = [save, share, delete];
+  static const List<MenuItem> myPostsInItems = [
+    share,
+    follow,
+    save,
+    copy,
+    delete
+  ];
+
   static const List<MenuItem> commentItems = [
     share,
     save,
@@ -36,6 +55,16 @@ class MenuItems {
     report,
     markNSFW
   ];
+
+  static const List<MenuItem> myCommentItems = [
+    share,
+    save,
+    follow,
+    copy,
+    collapse,
+    delete
+  ];
+
   // all the menu items that we choose from
   static const save = MenuItem(text: 'Save', icon: Icons.bookmark_border);
   static const follow = MenuItem(text: 'Follow', icon: Icons.notification_add);
@@ -50,6 +79,10 @@ class MenuItems {
   static const edit = MenuItem(text: 'Edit', icon: Icons.edit);
   static const copy = MenuItem(text: 'Copy text', icon: Icons.copy);
   static const markNSFW = MenuItem(text: 'Mark NSFW', icon: Icons.flag);
+  static const markSpoiler =
+      MenuItem(text: 'Mark Spoiler', icon: Icons.privacy_tip_outlined);
+  static const download = MenuItem(text: 'Download', icon: Icons.download);
+  static const mute = MenuItem(text: 'Mute', icon: Icons.volume_off_sharp);
 
   /// builds the row of the menu Item
   static Widget buildDropMenuItem(MenuItem item) {
@@ -68,7 +101,7 @@ class MenuItems {
   }
 
   /// exexutes the onChanged of each Item
-  static onChanged(BuildContext context, MenuItem item, String postId) {
+  static onChanged(BuildContext context, MenuItem item, PostModel post) {
     var cubit = PostAndCommentActionsCubit.get(context);
     switch (item) {
       case MenuItems.save:
@@ -103,7 +136,30 @@ class MenuItems {
         PostNotifierCubit.get(context).notifyPosts();
 
         break;
+      case MenuItems.edit:
+        //Do something
+        break;
 
+      case MenuItems.copy:
+        cubit.copyText().then((value) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            responseSnackBar(
+              message: 'Your copy is ready for pasta!',
+              error: false,
+            ),
+          );
+        }).catchError((err) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            responseSnackBar(
+              message: 'Error while copying',
+              error: true,
+            ),
+          );
+        });
+        break;
+
+
+        
       default:
         break;
     }

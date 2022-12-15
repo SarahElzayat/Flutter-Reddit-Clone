@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/data/post_model/approve.dart';
 import 'package:reddit/data/post_model/remove.dart';
@@ -31,16 +33,25 @@ import '../widgets/posts/dropdown_list.dart';
 
 enum ModOPtions { spoiler, nsfw, lock, unsticky, remove, spam, approve }
 
-BlocBuilder<PostNotifierCubit, PostNotifierState> dropDownDots(post) {
+BlocBuilder<PostNotifierCubit, PostNotifierState> dropDownDots(PostModel post) {
   return BlocBuilder<PostNotifierCubit, PostNotifierState>(
     builder: (context, state) {
       return DropDownList(
-        postId: post.id!,
-        itemClass:
-            (post.saved ?? true) ? ItemsClass.publicSaved : ItemsClass.public,
+        post: post,
+        itemClass: ItemsClass.posts,
       );
     },
   );
+}
+
+String getPlainText(String? body) {
+  Document doc;
+  try {
+    doc = Document.fromJson(jsonDecode(body ?? '[]')['ops']);
+  } catch (e) {
+    doc = Document();
+  }
+  return doc.toPlainText();
 }
 
 CircleAvatar subredditAvatar({small = false}) {
@@ -232,12 +243,11 @@ void handleLock(
     {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   final lockComments = LockModel(id: post.id, type: 'comment');
 
-  String? token = CacheHelper.getData(key: 'token');
 
   //check whether post is marked or unmarked as nsfw
   String finalPath = post.moderation.lock ?? false ? unlock : lock;
 
-  DioHelper.postData(token: token, path: finalPath, data: lockComments.toJson())
+  DioHelper.postData(path: finalPath, data: lockComments.toJson())
       .then((value) {
     if (value.statusCode == 200) {
       post.moderation.lock = !post.moderation.lock;
@@ -253,10 +263,8 @@ void handleSticky(
   //bool pin = !post.sticky
   final stickUnstickPost = PinPostModel(id: post.id, pin: false);
 
-  String? token = CacheHelper.getData(key: 'token');
 
-  DioHelper.postData(
-          token: token, path: pinPost, data: stickUnstickPost.toJson())
+  DioHelper.postData(path: pinPost, data: stickUnstickPost.toJson())
       .then((value) {
     if (value.statusCode == 200) {
       onSuccess();
@@ -269,9 +277,7 @@ void handleSticky(
 void handleRemove(
     {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   final removePost = RemoveModel(id: post.id, type: 'post');
-  String? token = CacheHelper.getData(key: 'token');
-  DioHelper.postData(token: token, path: remove, data: removePost.toJson())
-      .then((value) {
+  DioHelper.postData(path: remove, data: removePost.toJson()).then((value) {
     if (value.statusCode == 200) {
       onSuccess();
     }
@@ -284,8 +290,7 @@ void handleApprove(
     {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   final approvePost = ApproveModel(id: post.id, type: 'post');
   var token = CacheHelper.getData(key: 'token');
-  DioHelper.postData(token: token, path: approve, data: approvePost.toJson())
-      .then((value) {
+  DioHelper.postData(path: approve, data: approvePost.toJson()).then((value) {
     // if (value.statusCode == 200) {
     onSuccess();
     // }

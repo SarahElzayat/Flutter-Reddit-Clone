@@ -453,9 +453,7 @@ class _PostWidgetState extends State<PostWidget> {
 
     try {
       doc = Document.fromJson(jsonDecode(widget.post.content ?? '[]')['ops']);
-      Logger().wtf(doc.toPlainText());
     } catch (e) {
-      logger.wtf(e);
       doc = Document();
     }
 

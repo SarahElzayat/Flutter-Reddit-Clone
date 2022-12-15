@@ -507,10 +507,9 @@ class AddPostCubit extends Cubit<AddPostState> {
     var formData = FormData.fromMap(body);
     print('Toke : ${CacheHelper.getData(key: 'token')}');
     await DioHelper.postData(
-            path: submitPost,
-            data: (postType == 0 || postType == 1) ? formData : body,
-            token: CacheHelper.getData(key: 'token'))
-        .then((value) {
+      path: submitPost,
+      data: (postType == 0 || postType == 1) ? formData : body,
+    ).then((value) {
       print(value);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

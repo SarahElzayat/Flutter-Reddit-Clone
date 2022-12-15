@@ -68,7 +68,7 @@ class _WholeScreenVideoViewerState extends State<WholeScreenVideoViewer> {
                             false
                         ? 1
                         : 0,
-                    child: appBar(context)),
+                    child: _appBar(context)),
                 Expanded(
                   child: Stack(
                     children: [
@@ -85,7 +85,7 @@ class _WholeScreenVideoViewerState extends State<WholeScreenVideoViewer> {
     );
   }
 
-  AppBar appBar(BuildContext context) {
+  AppBar _appBar(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.black.withOpacity(0.5),
       title: Column(

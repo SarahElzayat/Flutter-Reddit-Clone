@@ -249,7 +249,6 @@ class SearchCubit extends Cubit<SearchState> {
   void folowUser({required username, required follow}) {
     // print('$token token');
     DioHelper.postData(
-        token: token,
         path: followUser,
         data: {'username': username, 'follow': follow}).then((value) {
       if (value.statusCode == 200) {
@@ -261,7 +260,7 @@ class SearchCubit extends Cubit<SearchState> {
   }
 
   void joinSubreddit({required id}) {
-    DioHelper.postData(token: token, path: joinCommunity, data: {
+    DioHelper.postData(path: joinCommunity, data: {
       'subredditId': id,
     }).then((value) {
       if (value.statusCode == 200) {
@@ -274,7 +273,7 @@ class SearchCubit extends Cubit<SearchState> {
   }
 
   void leaveSubreddit({required name}) {
-    DioHelper.postData(token: token, path: leaveCommunity, data: {
+    DioHelper.postData(path: leaveCommunity, data: {
       'subredditName': name,
     }).then((value) {
       if (value.statusCode == 200) {

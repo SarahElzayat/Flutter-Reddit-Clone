@@ -14,9 +14,14 @@ class VotedError extends PostState {
   VotedError({this.error});
 }
 
+class OpError extends PostState {
+  final String? error;
+  OpError({this.error});
+}
+
 class CommentsModToolsToggled extends PostState {}
 
-class PostsSaved extends PostState {}
+class SavedChangedState extends PostState {}
 
 class PostsSavedError extends PostState {}
 

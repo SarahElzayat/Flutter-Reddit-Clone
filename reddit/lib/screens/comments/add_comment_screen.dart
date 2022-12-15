@@ -123,8 +123,8 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
         parentId: _isPostParent() ? widget.post.id : widget.parentComment!.id,
         subredditName: widget.post.subreddit,
       );
-      DioHelper.postData(token: token, path: '/comment', data: {c.toJson()})
-          .then((value) {
+      logger.e(c.toJson());
+      DioHelper.postData(path: '/comment', data: c.toJson()).then((value) {
         onSuccess();
         //TODO HANDLE THIS IN THE CUBIT
         return null;
@@ -132,7 +132,7 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
         // TODO HANDLE THIS IN THE CUBIT
         onError(e as DioError);
         Map<String, dynamic> error = e.response!.data;
-        
+
         logger.w(error['error']);
       });
     }
@@ -151,6 +151,7 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
                     content: Text('Comment cannot be empty'),
                   ),
                 );
+                return;
               }
 
               postComment(
