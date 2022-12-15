@@ -4,8 +4,8 @@
 /// built to be a reuseable widget for further uses
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/cubit/settings_cubit/settings_cubit.dart';
 
+import '../cubit/settings_cubit/settings_cubit.dart';
 import '../cubit/settings_cubit/settings_cubit_state.dart';
 import 'helpers/color_manager.dart';
 import 'helpers/enums.dart';
@@ -30,12 +30,16 @@ class ListTileWidget extends StatefulWidget {
   /// function handler which should be executed whenever something is changed
   final handler;
 
+  /// type of the function that should be executed
+  final String? type;
+
   ListTileWidget(
       {super.key,
       required this.leadingIcon,
       required this.title,
       required this.handler,
       required this.tailingObj,
+      this.type,
       this.items});
 
   @override
@@ -64,7 +68,10 @@ class _ListTileWidgetState extends State<ListTileWidget> {
           /// when we are doing the settings
           onChanged: (value) {
             setState(() {
-              SettingsCubit.get(ctx).changeSwitch(value);
+              if (widget.type != null) {
+                SettingsCubit.get(ctx).changeSwitch(value, widget.type!);
+              }
+
               setBool = value;
             });
           },

@@ -25,6 +25,10 @@ class ListTileContainer extends StatelessWidget {
   /// if the Trailing object was a dropbox.
   final List<List<String>> items;
 
+  /// the type of the function that should be
+  /// executed when pressing on any trailing obeject
+  final List<String> types;
+
   /// where each item has its own handler
   /// this is the function that should be executed
   /// when the user presses on the listTile.
@@ -33,6 +37,7 @@ class ListTileContainer extends StatelessWidget {
       {super.key,
       required this.handler,
       this.items = const [],
+      required this.types,
       required this.title,
       required this.listTileTitles,
       required this.listTileIcons,
@@ -74,6 +79,7 @@ class ListTileContainer extends StatelessWidget {
               itemCount: listTileTitles.length,
               itemBuilder: (BuildContext context, int index) {
                 return ListTileWidget(
+                    type: types![index],
                     items: _ourItems(index),
                     leadingIcon: Icon(listTileIcons[index]),
                     title: listTileTitles[index],

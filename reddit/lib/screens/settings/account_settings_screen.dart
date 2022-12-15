@@ -32,6 +32,7 @@ class AccountSettingsScreen extends StatelessWidget {
             Expanded(
                 flex: 2,
                 child: ListTileContainer(
+                  types: ['', '', '', ''],
                   title: 'BASIC SETTINGS',
                   handler: [
                     () {
@@ -75,6 +76,7 @@ class AccountSettingsScreen extends StatelessWidget {
                 )),
             Expanded(
                 child: ListTileContainer(
+              types: ['', ''],
               handler: [
                 () {},
                 () {},
@@ -99,6 +101,7 @@ class AccountSettingsScreen extends StatelessWidget {
             )),
             Expanded(
               child: ListTileContainer(
+                types: ['', 'fsafsa'],
                 handler: [
                   () {
                     navigator.pushNamed(BlockedAccounts.routeName);
