@@ -5,13 +5,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/data/saved/saved_comments_model.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/inbox_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/notifications_screen.dart';
-import 'package:reddit/screens/comments/add_comment_screen.dart';
 import 'package:reddit/screens/saved/saved_comments.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 import 'package:reddit/widgets/posts/post_upper_bar.dart';
@@ -63,7 +61,9 @@ class AppCubit extends Cubit<AppState> {
 
   ///@param [homePosts] dummy data for home screen
   List<Widget> homePosts = [
-    PostWidget(post: textPost),
+    PostWidget(
+      post: textPost,
+    ),
     PostWidget(post: videoPost),
     PostWidget(post: smalltextPost),
     PostWidget(post: linkPost, upperRowType: ShowingOtions.onlyUser),
@@ -74,7 +74,7 @@ class AppCubit extends Cubit<AppState> {
 
   ///@param [popularPosts] dummy data for home screen
   List<Widget> popularPosts = [
-    PostWidget(post: textPost),
+    PostWidget(post: textPost, insideProfiles: true),
     PostWidget(post: oneImagePost),
     PostWidget(post: oneImagePost),
     PostWidget(post: oneImagePost),

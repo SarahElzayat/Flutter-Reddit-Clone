@@ -48,6 +48,7 @@ class PostWidget extends StatefulWidget {
     this.upperRowType = ShowingOtions.both,
     this.postView = PostView.card,
     this.comment,
+    this.insideProfiles = false,
   });
 
   /// determines if the post is in the home page or in the post screen
@@ -73,6 +74,7 @@ class PostWidget extends StatefulWidget {
 
   final CommentModel? comment;
 
+  final bool insideProfiles;
   @override
   State<PostWidget> createState() => _PostWidgetState();
 }
@@ -345,6 +347,7 @@ class _PostWidgetState extends State<PostWidget> {
           child: PostLowerBarWithoutVotes(
               post: widget.post,
               isWeb: isWeb,
+              showIsights: widget.insideProfiles,
               pad: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10)),
         ),
       ],
