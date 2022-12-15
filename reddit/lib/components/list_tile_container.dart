@@ -4,10 +4,11 @@
 /// it is used alot in the mod tools
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import '../../../components/helpers/color_manager.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+
 import '../../../components/helpers/enums.dart';
-import '../../../components/list_tile.dart';
+import 'helpers/color_manager.dart';
+import 'list_tile.dart';
 
 class ListTileContainer extends StatelessWidget {
   final String title;
@@ -58,11 +59,10 @@ class ListTileContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fontScale = MediaQuery.of(context).textScaleFactor;
-    final height = MediaQuery.of(context).size.height;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: height * 0.02),
+        SizedBox(height: 2.h),
         Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: Text(
@@ -71,7 +71,7 @@ class ListTileContainer extends StatelessWidget {
                 color: ColorManager.lightGrey, fontSize: 12 * fontScale),
           ),
         ),
-        SizedBox(height: height * 0.02),
+        const SizedBox(height: 10),
         Expanded(
           child: ListView.builder(
               physics: const NeverScrollableScrollPhysics(),

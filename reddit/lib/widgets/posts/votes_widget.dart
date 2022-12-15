@@ -10,8 +10,8 @@ import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../data/post_model/post_model.dart';
 import '../../components/helpers/color_manager.dart';
-import 'cubit/post_cubit.dart';
-import 'cubit/post_state.dart';
+import 'actions_cubit/post_comment_actions_cubit.dart';
+import 'actions_cubit/post_comment_actions_state.dart';
 
 class VotesPart extends StatelessWidget {
   const VotesPart({
@@ -33,7 +33,7 @@ class VotesPart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> getchildren() {
-      var cubit = PostCubit.get(context);
+      var cubit = PostAndCommentActionsCubit.get(context);
       int dir = cubit.getVotingType();
       return [
         Material(
@@ -43,12 +43,12 @@ class VotesPart extends StatelessWidget {
           shape: const CircleBorder(),
           child: IconButton(
             onPressed: () async {
-              PostCubit.get(context)
+              PostAndCommentActionsCubit.get(context)
                   .vote(
-                direction: 1,
+                oldDir: 1,
               )
                   .then((value) {
-                PostNotifierCubit.get(context).NotifyPosts();
+                PostNotifierCubit.get(context).notifyPosts();
               });
             },
             constraints: const BoxConstraints(),
@@ -81,8 +81,8 @@ class VotesPart extends StatelessWidget {
           shape: const CircleBorder(),
           child: IconButton(
             onPressed: () {
-              cubit.vote(direction: -1).then((value) {
-                PostNotifierCubit.get(context).NotifyPosts();
+              cubit.vote(oldDir: -1).then((value) {
+                PostNotifierCubit.get(context).notifyPosts();
               });
             },
             constraints: const BoxConstraints(),
@@ -98,17 +98,18 @@ class VotesPart extends StatelessWidget {
       ];
     }
 
-    return BlocBuilder<PostCubit, PostState>(
+    return BlocBuilder<PostAndCommentActionsCubit, PostState>(
       builder: (context, state) {
         return BlocBuilder<PostNotifierCubit, PostNotifierState>(
             builder: (context, state) {
-          return !isWeb
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          return isWeb
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
                   children: getchildren(),
                 )
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: getchildren(),
                 );
         });

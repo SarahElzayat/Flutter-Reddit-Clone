@@ -1,10 +1,15 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
+import 'package:reddit/data/add_post/subredditsSearchListModel.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
@@ -15,6 +20,7 @@ import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
 import '../../../screens/main_screen.dart';
 import '../../../shared/local/shared_preferences.dart';
+import 'package:http_parser/http_parser.dart';
 
 part 'add_post_state.dart';
 
@@ -26,7 +32,7 @@ class AddPostCubit extends Cubit<AddPostState> {
 
   /// [postType] Number indicate The post Type
   /// This number is the index of post Type in add post screen
-  int postType = 5;
+  int postType = 2;
 
   /// [images] Images that User Added
   List<XFile> images = <XFile>[];
@@ -54,7 +60,7 @@ class AddPostCubit extends Cubit<AddPostState> {
   Uint8List? videoThumbnail;
 
   /// [optionalText] Optional Text controller
-  TextEditingController optionalText = TextEditingController();
+  quill.QuillController optionalText = quill.QuillController.basic();
 
   /// [link] URL textField controller
   TextEditingController link = TextEditingController();
@@ -70,14 +76,17 @@ class AddPostCubit extends Cubit<AddPostState> {
   bool nsfw = false;
   bool spoiler = false;
 
+  SubredditsSearchListModel? subredditsList;
+
   void changePostType({required int postTypeIndex}) {
     postType = postTypeIndex;
     checkPostValidation();
     emit(PostTypeChanged(postType: postTypeIndex));
   }
 
-  void addSubredditName(String subredditName) {
+  void addSubredditName(String? subredditName) {
     this.subredditName = subredditName;
+    emit(ChangeSubredditName());
   }
 
   /// Add Image To The List And Rebuild The widget
@@ -227,7 +236,7 @@ class AddPostCubit extends Cubit<AddPostState> {
       case 1:
         return (video != null && videoThumbnail != null);
       case 2:
-        return (optionalText.text.isNotEmpty);
+        return (!optionalText.document.isEmpty());
       case 3:
         return (link.text.isNotEmpty);
       case 4:
@@ -235,7 +244,7 @@ class AddPostCubit extends Cubit<AddPostState> {
           return true;
         } else {
           poll = [TextEditingController(), TextEditingController()];
-          optionalText = TextEditingController();
+          optionalText = quill.QuillController.basic();
           return false;
         }
       default:
@@ -254,7 +263,7 @@ class AddPostCubit extends Cubit<AddPostState> {
         videoThumbnail = null;
         break;
       case 2:
-        optionalText = TextEditingController();
+        optionalText = quill.QuillController.basic();
         break;
       case 3:
         link = TextEditingController();
@@ -264,6 +273,7 @@ class AddPostCubit extends Cubit<AddPostState> {
         break;
       default:
     }
+    emit(CanCreatePost(canPost: false));
   }
 
   /// Check Validation if the Post Content NOT Complete
@@ -288,11 +298,12 @@ class AddPostCubit extends Cubit<AddPostState> {
         }
         break;
       case 2:
-        if (optionalText.text.isNotEmpty) {
-          emit(CanCreatePost(canPost: true));
-        } else {
-          emit(CanCreatePost(canPost: false));
-        }
+        // if (optionalText.text.isNotEmpty) {
+        //   emit(CanCreatePost(canPost: true));
+        // } else {
+        //   emit(CanCreatePost(canPost: false));
+        // }
+        emit(CanCreatePost(canPost: true));
         break;
       case 3:
         if (Uri.parse(link.text).isAbsolute) {
@@ -424,62 +435,68 @@ class AddPostCubit extends Cubit<AddPostState> {
     Map<String, dynamic> body = {};
     List<MultipartFile> imagesData = [];
 
-    // if (postType == 0) {
-    //   for (var item in images) {
-    //     print(item.path);
-    //     MultipartFile file = await MultipartFile.fromFile(
-    //       item.path,
-    //       filename: item.path.split('/').last,
-    //     );
-    //     imagesData.add(file);
-    //   }
-    //   imagesData.forEach((element) {
-    //     print(element.filename);
-    //   });
-    //   List<String> imageCaptions = [];
-    //   for (int index = 0; index < captionController.length; index++) {
-    //     imageCaptions.add(captionController[index].text);
-    //   }
-    //   List<String> imageLinks = [];
-    //   for (int index = 0; index < captionController.length; index++) {
-    //     imageLinks.add(imagesLinkController[index].text);
-    //   }
-    //   body = {
-    //     'kind': postTypes[postType],
-    //     'subreddit': subredditName,
-    //     'inSubreddit': true,
-    //     'title': title.text,
-    //     'images': imagesData,
-    //     'imageCaptions': imageCaptions,
-    //     'imageLinks': imageLinks,
-    //     'nsfw': nsfw,
-    //     'spoiler': spoiler,
-    //   };
-    // } else if (postType == 1) {
-    //   body = {
-    //     'kind': postTypes[postType],
-    //     'subreddit': subredditName,
-    //     'inSubreddit': true,
-    //     'title': title.text,
-    //     'videos': await MultipartFile.fromFile(
-    //       video!.path,
-    //       filename: video!.path.split('/').last,
-    //     ),
-    //     'nsfw': nsfw,
-    //     'spoiler': spoiler,
-    //   };} else
-    if (postType == 2) {
+    if (postType == 0) {
+      for (var item in images) {
+        print(item.path);
+        final mimeType = lookupMimeType(item.path);
+        print(mimeType!.split('/').first);
+        print(mimeType.split('/').last);
+        MultipartFile file = await MultipartFile.fromFile(item.path,
+            filename: item.path.split('/').last,
+            contentType: MediaType('image', 'png'));
+        imagesData.add(file);
+      }
+      imagesData.forEach((element) {
+        print(element.filename);
+      });
+      List<String> imageCaptions = [];
+      for (int index = 0; index < captionController.length; index++) {
+        imageCaptions.add(captionController[index].text);
+      }
+      List<String> imageLinks = [];
+      for (int index = 0; index < imagesLinkController.length; index++) {
+        imageLinks.add(imagesLinkController[index].text);
+      }
       body = {
         'kind': postTypes[postType],
         'subreddit': subredditName,
         'inSubreddit': true,
         'title': title.text,
-        'texts': [
-          <String, dynamic>{
-            'text': optionalText.text,
-            'index': 0,
-          }
-        ],
+        'images': imagesData,
+        'imageCaptions': imageCaptions,
+        'imageLinks': imageLinks,
+        'nsfw': nsfw,
+        'spoiler': spoiler,
+      };
+    }
+    if (postType == 1) {
+      print(video!.path);
+      print(lookupMimeType(video!.path));
+
+      final mimeType = lookupMimeType(video!.path);
+
+      print(video!.path.split('/').last);
+      body = {
+        'video': await MultipartFile.fromBytes(
+            File(video!.path).readAsBytesSync(),
+            filename: 'video.mp4',
+            contentType: MediaType('video', 'mp4')),
+        'title': title.text,
+        'kind': 'video',
+        'subreddit': subredditName,
+        'inSubreddit': true,
+        'nsfw': nsfw,
+        'spoiler': spoiler,
+      };
+    } else if (postType == 2) {
+      body = {
+        'kind': postTypes[postType],
+        'subreddit': subredditName,
+        'inSubreddit': true,
+        'title': title.text,
+        'content': {
+          'ops': jsonEncode(optionalText.document.toDelta().toJson()),
+        },
         'nsfw': nsfw,
         'spoiler': spoiler,
       };
@@ -499,22 +516,17 @@ class AddPostCubit extends Cubit<AddPostState> {
         'subreddit': subredditName,
         'inSubreddit': true,
         'title': title.text,
-        'texts': [
-          <String, dynamic>{
-            'text': optionalText.text,
-            'index': 0,
-          }
-        ],
         'nsfw': nsfw,
         'spoiler': spoiler,
       };
     }
-    print(body);
-    var formData = FormData.fromMap(body);
+    FormData formData = FormData.fromMap(body);
     print('Toke : ${CacheHelper.getData(key: 'token')}');
+
     await DioHelper.postData(
             path: submitPost,
-            data: (postType == 0 || postType == 1) ? formData : body,
+            isFormdata: (postType == 0 || postType == 1),
+            data: formData,
             token: CacheHelper.getData(key: 'token'))
         .then((value) {
       print(value);
@@ -525,7 +537,8 @@ class AddPostCubit extends Cubit<AddPostState> {
       );
       if (value.statusCode == 200) {
         print('Post success');
-        Navigator.of(context).pushReplacementNamed(HomeScreenForMobile.routeName);
+        Navigator.of(context)
+            .pushReplacementNamed(HomeScreenForMobile.routeName);
       } else if (value.statusCode == 400) {
         print(value);
       } else if (value.statusCode == 401) {
@@ -536,8 +549,119 @@ class AddPostCubit extends Cubit<AddPostState> {
         print('Server Error');
       }
     }).catchError((error) {
-      print("The errorrr isss :::::: ${error.toString()}");
+      print('The errorrr isss :::::: ${error.toString()}');
     });
     emit(PostCreated());
+  }
+
+  void subredditSearch(String subredditName) {
+    if (subredditName == '') {
+      subredditsList = null;
+      emit(SubredditSearch(isLoaded: true));
+    } else {
+      emit(SubredditSearch(isLoaded: false));
+      DioHelper.getData(path: searchForSubreddit, query: {
+        'type': 'subreddit',
+        'q': subredditName,
+      }).then((value) {
+        if (value.statusCode == 200) {
+          subredditsList = SubredditsSearchListModel.fromJson(value.data);
+          print('List');
+          print(subredditsList!.children);
+          emit(SubredditSearch(isLoaded: true));
+        }
+      }).catchError((error) {
+        print('Error in Search ==> $error');
+      });
+    }
+  }
+
+  /// Show TO User If Change The Post Type And the Exist Data in the current
+  /// Post type it Show Pop-up to Choose if continue and remove the data or Not
+  onTapFunc(int index, BuildContext context, NavigatorState navigator,
+      MediaQueryData mediaQuery,
+      {bool isPop = false}) {
+    if (postType != index && discardCheck()) {
+      showDialog(
+          context: context,
+          builder: ((context) => AlertDialog(
+                backgroundColor: ColorManager.grey,
+                insetPadding: EdgeInsets.zero,
+                title: const Text('Change Post Type'),
+                content: Text(
+                  'Some of your post will be deleted if you continue',
+                  style: TextStyle(fontSize: 15 * mediaQuery.textScaleFactor),
+                ),
+                actions: [
+                  SizedBox(
+                    width: mediaQuery.size.width * 0.42,
+                    child: Button(
+                      textFontWeight: FontWeight.normal,
+                      onPressed: () {
+                        navigator.pop();
+                        return;
+                      },
+                      text: ('Cancel'),
+                      textColor: ColorManager.lightGrey,
+                      backgroundColor: Colors.transparent,
+                      buttonWidth: mediaQuery.size.width * 0.42,
+                      buttonHeight: 40,
+                      textFontSize: 15,
+                      borderRadius: 20,
+                    ),
+                  ),
+                  SizedBox(
+                    width: mediaQuery.size.width * 0.42,
+                    child: Button(
+                      textFontWeight: FontWeight.normal,
+                      onPressed: () {
+                        removeExistData();
+
+                        navigator.pop();
+                        if (isPop) {
+                          title.text = '';
+                          subredditName = null;
+                          changePostType(postTypeIndex: 2);
+
+                          navigator.pop();
+                        } else {
+                          if (index == 0 && postType != index) {
+                            chooseSourceWidget(context, mediaQuery, navigator);
+                          } else if (index == 1 && postType != index) {
+                            pickVideo(true);
+                          }
+                          changePostType(postTypeIndex: index);
+                        }
+                      },
+                      text: ('Containue'),
+                      textColor: ColorManager.white,
+                      backgroundColor: ColorManager.red,
+                      buttonWidth: mediaQuery.size.width * 0.42,
+                      buttonHeight: 40,
+                      textFontSize: 15,
+                      borderRadius: 20,
+                    ),
+                  ),
+                ],
+              )));
+    } else if (isPop) {
+      title.text = '';
+      subredditName = null;
+      changePostType(postTypeIndex: 2);
+
+      navigator.pop();
+    } else {
+      if (index == 0 && postType != index) {
+        chooseSourceWidget(
+          context,
+          mediaQuery,
+          navigator,
+        );
+      } else if (index == 1 && postType != index) {
+        pickVideo(true);
+        // videoFunc(context);
+      }
+      changePostType(postTypeIndex: index);
+    }
   }
 }

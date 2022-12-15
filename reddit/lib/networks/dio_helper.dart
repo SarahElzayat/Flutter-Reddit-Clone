@@ -3,6 +3,7 @@
 /// this is a DioHelper which is a class used to connect us to the backend
 /// and deal with the server
 import 'package:dio/dio.dart';
+import '../constants/constants.dart';
 import 'constant_end_points.dart';
 
 class DioHelper {
@@ -32,7 +33,12 @@ class DioHelper {
         // receiveTimeout: 20 * 1000,
 
         /// this is a map of headers
-        headers: {'Content-Type': 'application/json; charset=utf-8'},
+        // headers: {
+        //   'Content-Type':
+        //       'multipart/form-data; boundary=<calculated when request is sent>'
+        // },
+        // contentType:
+        //     'multipart/form-data; boundary=<calculated when request is sent>',
       ),
     );
   }
@@ -46,13 +52,16 @@ class DioHelper {
     /// which is the content of the JSON
     Map<String, dynamic>? query,
     String? token,
+    bool isFormdata = false,
 
     /// additional query
   }) async {
     var options = Options(
       headers: {
         'Authorization': 'Bearer ${token ?? ''}',
-        'Content-Type': 'application/json; charset=utf-8'
+        'Content-Type': (isFormdata)
+            ? 'multipart/form-data; boundary=<calculated when request is sent>'
+            : 'application/json'
       },
     );
 
@@ -72,7 +81,6 @@ class DioHelper {
 
     /// which is the content of the JSON
     Map<String, dynamic>? query,
-    String? token,
 
     /// additional query
   }) async {
@@ -125,26 +133,17 @@ class DioHelper {
   /// @param [path] string defining the end point
   static Future<Response> getData({
     Map<String, dynamic>? query,
-    String? token,
-    // String?
     required String path,
   }) async {
     Options options;
-    if (token != null) {
-      options = Options(
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json; charset=utf-8'
-        },
-      );
-    } else {
-      options = Options(
-        headers: {
-          'Authorization': 'Bearer ${token ?? ''}',
-          'Content-Type': 'application/json; charset=utf-8'
-        },
-      );
-    }
+
+    options = Options(
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json; charset=utf-8'
+      },
+    );
+
     return await dio.get(
       path,
       queryParameters: query,

@@ -7,6 +7,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional_switch.dart';
+import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import 'package:reddit/widgets/posts/dropdown_list.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
@@ -90,17 +91,23 @@ class _PostUpperBarState extends State<PostUpperBar> {
         children: [
           subredditAvatar(),
           SizedBox(
-            width: min(3.w, 0.1.dp),
+            width: min(2.w, 10),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'r/${widget.post.subreddit ?? ''}',
-                style: const TextStyle(
-                  color: ColorManager.eggshellWhite,
-                  fontSize: 15,
+              InkWell(
+                onTap: () {
+                  SubredditCubit.get(context)
+                      .setSubredditName(context, widget.post.subreddit ?? '');
+                },
+                child: Text(
+                  'r/${widget.post.subreddit ?? ''}',
+                  style: const TextStyle(
+                    color: ColorManager.eggshellWhite,
+                    fontSize: 15,
+                  ),
                 ),
               ),
               singleRow(sub: false, showDots: false, post: widget.post),
@@ -136,20 +143,11 @@ class _PostUpperBarState extends State<PostUpperBar> {
     return BlocBuilder<PostNotifierCubit, PostNotifierState>(
       builder: (context, state) {
         return DropDownList(
-          postId: widget.post.id!,
-          itemClass: (widget.post.saved ?? true)
-              ? ItemsClass.publicSaved
-              : ItemsClass.public,
+          post: widget.post,
+          itemClass: ItemsClass.posts,
+          outsideScreen: widget.outSide,
         );
       },
-    );
-  }
-
-  CircleAvatar subredditAvatar({small = false}) {
-    return CircleAvatar(
-      radius: small ? min(4.w, 15) : min(5.5.w, 30),
-      child: Image.network(
-          'https://styles.redditmedia.com/t5_2qh87/styles/communityIcon_ub69d1lpjlf51.png?width=256&s=920c352b6d0c69518b6978ba8b456176a8d63c25'),
     );
   }
 

@@ -52,7 +52,6 @@ Widget listButton(context, text, list, onPressed, isOpen,
               genericTextButton(context, Icons.add, 'Create a community',
                   const CreateCommunityScreen(),
                   isLeftDrawer: true),
-
             if (isModerating)
               genericTextButton(
                   context,
@@ -62,7 +61,6 @@ Widget listButton(context, text, list, onPressed, isOpen,
                     text: 'Mod Feed',
                   ),
                   isLeftDrawer: true),
-
             if (isModerating)
               genericTextButton(
                   context,
@@ -72,14 +70,6 @@ Widget listButton(context, text, list, onPressed, isOpen,
                     text: 'Mod Queue',
                   ),
                   isLeftDrawer: true),
-            // if (isModerating)
-            //   genericTextButton(
-            //       context,
-            //       Icons.mail_outline_rounded,
-            //       'Modmail',
-            //       const ToBeDoneScreen(
-            //         text: 'Modmail',
-            //       )),
             if (isCommunity)
               genericTextButton(
                   context,
@@ -89,7 +79,6 @@ Widget listButton(context, text, list, onPressed, isOpen,
                     text: 'Custom Feeds',
                   ),
                   isLeftDrawer: true),
-
             ListView(
               padding: const EdgeInsets.only(left: 10),
               children: list,

@@ -6,6 +6,7 @@ import 'package:reddit/components/button.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/components/square_text_field.dart';
+import 'package:reddit/screens/create_community_screen/cubit/create_community_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class CreateCommunityWeb extends StatefulWidget {
@@ -312,7 +313,12 @@ class _CreateCommunityWindow extends State<CreateCommunityWeb> {
                               buttonHeight: 5.h,
                               textFontSize: 13.sp,
                               textFontWeight: FontWeight.bold,
-                              onPressed: () {}),
+                              onPressed: () => CreateCommunityCubit.get(context)
+                                  .creatCommunity(
+                                      communityName,
+                                      _chosenCommunityType,
+                                      isAdultContent,
+                                      'Sports')),
                           SizedBox(width: 1.w)
                         ],
                       ),
