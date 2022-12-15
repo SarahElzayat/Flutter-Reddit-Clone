@@ -77,6 +77,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     const HeaderContainsAvatar(
                         email: 'Email of the user', usrName: 'UserName'),
                     DefaultTextField(
+                      formController: passwordController,
                       labelText: 'Current password',
                       isPassword: true,
                       validator: (password) {
@@ -98,6 +99,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                           )),
                     ),
                     DefaultTextField(
+                      formController: newPasswordController,
                       labelText: 'New Password',
                       isPassword: true,
                       validator: (password) {
@@ -108,6 +110,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       },
                     ),
                     DefaultTextField(
+                      formController: confirmPasswordtroller,
                       labelText: 'Confirm New Password',
                       isPassword: true,
                       validator: (password) {

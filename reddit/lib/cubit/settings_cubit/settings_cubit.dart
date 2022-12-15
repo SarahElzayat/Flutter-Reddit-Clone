@@ -43,6 +43,7 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
       newEmail: mailText,
     );
 
+    print(update.toJson());
     DioHelper.putData(
       path: changeEmail,
       data: update.toJson(),
@@ -53,8 +54,16 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
             backgroundColor: ColorManager.green));
       }
     }).catchError((error) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('The inserted password is incorrect'),
+      error = error as DioError;
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          '${error.response?.data} :(',
+          style: const TextStyle(
+              color: ColorManager.eggshellWhite,
+              fontWeight: FontWeight.bold,
+              fontSize: 14),
+        ),
         backgroundColor: ColorManager.red,
       ));
     });

@@ -4,10 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:reddit/cubit/settings_cubit/settings_cubit.dart';
-import 'package:reddit/data/settings_models/update_email_model.dart';
 import 'package:reddit/data/sign_in_And_sign_up_models/validators.dart';
-import 'package:reddit/networks/constant_end_points.dart';
-import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/screens/forget_user_name_and_password/mobile/forget_password_screen.dart';
 import '../../components/default_text_field.dart';
 import '../../components/helpers/color_manager.dart';
@@ -84,6 +81,7 @@ class _UpdateEmailAddressScreenState extends State<UpdateEmailAddressScreen> {
                         email: 'Email of the user',
                       ),
                       DefaultTextField(
+                        formController: mailController,
                         labelText: 'New email address',
                         validator: (email) {
                           if (!Validator.validEmailValidator(email!)) {
@@ -93,6 +91,7 @@ class _UpdateEmailAddressScreenState extends State<UpdateEmailAddressScreen> {
                         },
                       ),
                       DefaultTextField(
+                        formController: passwordController,
                         labelText: 'Reddit password',
                         isPassword: true,
                         validator: (password) {
