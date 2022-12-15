@@ -65,7 +65,7 @@ class AddPost extends StatelessWidget {
                       },
                       child: Row(
                         children: [
-                          Text(addPostCubit.subredditName!,
+                          Text(addPostCubit.subredditName ?? '',
                               style: Theme.of(context).textTheme.titleSmall),
                           const Icon(Icons.keyboard_arrow_down)
                         ],

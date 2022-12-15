@@ -56,6 +56,7 @@ class _PostRulesState extends State<PostRules> {
                   onPressed: () async {
                     await addPostCubit.createPost(context);
                     addPostCubit.removeExistData();
+                    addPostCubit.addSubredditName(null);
                     addPostCubit.title.text = '';
                     addPostCubit.nsfw = false;
                     addPostCubit.spoiler = false;

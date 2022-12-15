@@ -84,7 +84,7 @@ class AddPostCubit extends Cubit<AddPostState> {
     emit(PostTypeChanged(postType: postTypeIndex));
   }
 
-  void addSubredditName(String subredditName) {
+  void addSubredditName(String? subredditName) {
     this.subredditName = subredditName;
     emit(ChangeSubredditName());
   }
