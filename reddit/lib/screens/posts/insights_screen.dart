@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/data/post_model/insights_model.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class InsightsScreen extends StatelessWidget {
   const InsightsScreen({super.key, required this.iM});
@@ -14,15 +16,41 @@ class InsightsScreen extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: Column(
-        children: [
-          Row(
-            children: [
-              const Text('Total Views: '),
-            ],
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _singlevRow('Total Views', 'Views', iM.totalViews!),
+            _singlevRow('Total Shares', 'Shares', iM.totalShares!),
+            _singlevRow('Upvote Rate', 'Upvotes', iM.upvoteRate!),
+            _singlevRow('Community Karma', 'Karma', iM.communityKarma!),
+          ],
+        ),
       ),
     );
+  }
+
+  _singlevRow(String label, String text, int count) {
+    return Card(
+        color: ColorManager.darkGrey,
+        child: InputDecorator(
+            decoration: InputDecoration(
+              labelText: label,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
+            child: Row(
+              children: [
+                Text(text),
+                SizedBox(
+                  width: 10.w,
+                ),
+                Text(count.toString(),
+                    style: const TextStyle(
+                        fontSize: 20, color: ColorManager.eggshellWhite)),
+              ],
+            )));
   }
 }
