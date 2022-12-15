@@ -200,7 +200,7 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
         },
       ).then((value) {
         if (isPost) {
-          post.title = newContent;
+          post.content = newContent;
         } else {
           currentComment!.commentBody = newContent;
         }

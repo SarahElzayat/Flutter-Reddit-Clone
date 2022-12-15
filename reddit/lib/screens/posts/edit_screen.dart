@@ -70,13 +70,11 @@ class _EditScreenState extends State<EditScreen> {
                       final content =
                           jsonEncode(_controller!.document.toDelta().toJson());
                       logger.i(content);
-                      String newContent = '{"ops":$content}';
+                      String newContent = '{"ops": $content}';
                       cubit.editIt(newContent).then((value) {
                         if (_isPost) {
-                          widget.post.content = newContent;
                           PostNotifierCubit.get(context).notifyPosts();
                         } else {
-                          widget.currentComment!.commentBody = newContent;
                           CommentNotifierCubit.get(context).notifyComments();
                         }
                         Navigator.of(context).pop();

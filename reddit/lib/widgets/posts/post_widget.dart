@@ -3,6 +3,8 @@
 /// @Author: Ahmed Atta
 import 'dart:convert';
 import 'package:logger/logger.dart';
+import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
+import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 import 'package:reddit/widgets/comments/comment.dart';
 import 'package:reddit/widgets/posts/video_page_view.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -431,20 +433,24 @@ class _PostWidgetState extends State<PostWidget> {
   }
 
   Widget _bodyText() {
-    return QuillEditor(
-      controller: getController(),
-      readOnly: true,
-      autoFocus: false,
-      enableInteractiveSelection: false,
-      expands: false,
-      scrollable: false,
-      placeholder: 'such empty...',
-      scrollController: ScrollController(),
-      focusNode: FocusNode(),
-      padding: EdgeInsets.zero,
-      embedBuilders: [
-        ...FlutterQuillEmbeds.builders(),
-      ],
+    return BlocBuilder<PostNotifierCubit, PostNotifierState>(
+      builder: (context, state) {
+        return QuillEditor(
+          controller: getController(),
+          readOnly: true,
+          autoFocus: false,
+          enableInteractiveSelection: false,
+          expands: false,
+          scrollable: false,
+          placeholder: 'such empty...',
+          scrollController: ScrollController(),
+          focusNode: FocusNode(),
+          padding: EdgeInsets.zero,
+          embedBuilders: [
+            ...FlutterQuillEmbeds.builders(),
+          ],
+        );
+      },
     );
   }
 
