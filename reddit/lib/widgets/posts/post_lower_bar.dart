@@ -12,6 +12,7 @@ import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.da
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../functions/post_functions.dart';
+import '../../screens/posts/insights_screen.dart';
 import 'actions_cubit/post_comment_actions_state.dart';
 
 class PostLowerBarWithoutVotes extends StatefulWidget {
@@ -136,7 +137,36 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
                 );
               },
             ),
-          )
+          ),
+          Material(
+            key: const Key('insights-button'),
+            color: Colors.transparent,
+            clipBehavior: Clip.antiAlias,
+            shape: const CircleBorder(),
+            child: IconButton(
+              onPressed: () {
+                PostAndCommentActionsCubit.get(context)
+                    .getInsights()
+                    .then((value) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return InsightsScreen(
+                      iM: value,
+                    );
+                  }));
+                }).catchError((e) {
+                  return null;
+                });
+              },
+              constraints: const BoxConstraints(),
+              padding: const EdgeInsets.all(0),
+              splashColor: ColorManager.downvoteBlue,
+              icon: const Icon(
+                Icons.insights,
+                color: ColorManager.blue,
+              ),
+              iconSize: min(5.5.w, 30),
+            ),
+          ),
         ],
       ),
     );

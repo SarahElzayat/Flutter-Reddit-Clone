@@ -47,7 +47,7 @@ class _ResultsPostsState extends State<ResultsPosts> {
 
   @override
   Widget build(BuildContext context) {
-    final SearchCubit cubit = SearchCubit.get(context);//..getPosts();
+    final SearchCubit cubit = SearchCubit.get(context); //..getPosts();
     return BlocConsumer<SearchCubit, SearchState>(
       listener: (context, state) {},
       builder: (context, state) {

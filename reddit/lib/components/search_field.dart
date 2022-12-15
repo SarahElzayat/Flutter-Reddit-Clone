@@ -81,7 +81,9 @@ class _SearchFieldState extends State<SearchField> {
             ? Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SearchScreen(query: widget.textEditingController.text,),
+                  builder: (context) => SearchScreen(
+                    query: widget.textEditingController.text,
+                  ),
                 ))
             : null,
         focusNode: _focus,
@@ -90,10 +92,8 @@ class _SearchFieldState extends State<SearchField> {
         onChanged: (value) => setState(() {
           (widget.textEditingController.text);
         }),
-
         controller: widget.textEditingController,
         style: const TextStyle(color: ColorManager.eggshellWhite, fontSize: 18),
-
         decoration: InputDecoration(
           hintText: 'Search Reddit',
           border: InputBorder.none,

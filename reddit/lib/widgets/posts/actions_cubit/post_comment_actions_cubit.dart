@@ -10,6 +10,7 @@ import 'package:logger/logger.dart';
 import 'package:reddit/components/helpers/mocks/mock_functions.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/comment/comment_model.dart';
+import 'package:reddit/data/post_model/insights_model.dart';
 import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/functions/post_functions.dart';
 import 'package:reddit/networks/dio_helper.dart';
@@ -228,6 +229,22 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
       error = error as DioError;
       logger.e(error.response?.data);
       emit(OpError(error: error.response?.data['error'] ?? ''));
+    });
+  }
+
+  Future<InsightsModel> getInsights() {
+    return DioHelper.getData(
+      path: '/post-insights',
+      query: {
+        'id': post.id,
+      },
+    ).then((value) {
+      return InsightsModel.fromJson(value.data);
+    }).catchError((error) {
+      error = error as DioError;
+      logger.e(error.response?.data);
+      emit(OpError(error: error.response?.data['error'] ?? ''));
+      throw error;
     });
   }
 }
