@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/data/settings_models/block_user_model.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../data/settings_models/change_password_model.dart';
 import '../../data/settings_models/update_email_model.dart';
@@ -14,6 +15,26 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
   SettingsCubit() : super(SettingsCubitInitial());
 
   static SettingsCubit get(context) => BlocProvider.of(context);
+
+  void unBlock(userName, context) {
+    final blockUser = BlockModel(block: false, username: userName);
+
+    DioHelper.postData(
+            path: block,
+            data: blockUser.toJson(),
+            token: CacheHelper.getData(key: 'token'))
+        .then((response) {
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('You have unblocked $userName')));
+      }
+    }).catchError((err) {
+      err = err as DioError;
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(err.response!.data)));
+    });
+  }
 
   /// This function is responsible for sending the request for the backend to
   /// change the password of the user.
@@ -34,8 +55,9 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
     ).then((response) {
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Email has been sent!'),
+            content: Text('Password has been changed!'),
             backgroundColor: ColorManager.green));
+        Navigator.of(context).pop();
       }
     }).catchError((error) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -138,27 +160,27 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
               if (response.statusCode == 200)
                 {
                   emit(ChangeSwitchState()),
-                  print(response.statusCode),
-                  ScaffoldMessenger.of(ctx).showSnackBar(const SnackBar(
-                      content: Center(
-                    child: Text('Hello'),
-                  ))),
-                  // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  //     content: Text(
-                  //       'now you come from $newCountry',
-                  //       style: const TextStyle(
-                  //           fontSize: 14,
-                  //           fontWeight: FontWeight.bold,
-                  //           color: ColorManager.black),
-                  //     ),
-                  //     backgroundColor: ColorManager.green)),
+                  // ScaffoldMessenger.of(ctx).showSnackBar(const SnackBar(
+                  //     content: Center(
+                  //   child: Text('Hello'),
+                  // ))),
+                  ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
+                      content: Text(
+                        'now you come from $newCountry',
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: ColorManager.black),
+                      ),
+                      backgroundColor: ColorManager.green)),
                 }
             })
         .catchError((error) {
       error = error as DioError;
       debugPrint(error.message);
       ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-          content: Text('${error.response?.data}'),
+          // content: Text('${error.response?.data}'),
+          content: Text('${error.response!.data}'),
           backgroundColor: ColorManager.red));
     });
   }

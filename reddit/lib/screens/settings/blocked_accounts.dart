@@ -3,9 +3,12 @@
 /// This is the Screen which manages the blocked accounts in the settings.
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/cubit/settings_cubit/settings_cubit.dart';
+import 'package:reddit/data/settings_models/block_user_model.dart';
 import 'package:reddit/data/settings_models/blocked_accounts_getter_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
+import 'package:reddit/shared/local/shared_preferences.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../widgets/settings/settings_app_bar.dart';
 
@@ -19,84 +22,15 @@ class BlockedAccounts extends StatefulWidget {
 
 class _BlockedAccountsState extends State<BlockedAccounts> {
   /// TODO: this should be replaced with backend get request.
-  List<Children> blockedUsers = [
-    Children(
-        id: 'x1',
-        data: Data.fromJson({
-          'username': 'Abdelaziz',
-          'userImage':
-              'https://www.google.com/search?client=firefox-b-d&q=image#imgrc=JoR7JNzGko0S6M',
-          'blockDate': '12/12/2022'
-        })),
-    Children(
-        id: 'x1',
-        data: Data.fromJson({
-          'username': 'Abdelaziz',
-          'userImage':
-              'https://www.google.com/search?client=firefox-b-d&q=image#imgrc=JoR7JNzGko0S6M',
-          'blockDate': '12/12/2022'
-        })),
-    Children(
-        id: 'x1',
-        data: Data.fromJson({
-          'username': 'Abdelaziz',
-          'userImage':
-              'https://www.google.com/search?client=firefox-b-d&q=image#imgrc=JoR7JNzGko0S6M',
-          'blockDate': '12/12/2022'
-        })),
-    Children(
-        id: 'x1',
-        data: Data.fromJson({
-          'username': 'Abdelaziz',
-          'userImage':
-              'https://www.google.com/search?client=firefox-b-d&q=image#imgrc=JoR7JNzGko0S6M',
-          'blockDate': '12/12/2022'
-        })),
-    Children(
-        id: 'x1',
-        data: Data.fromJson({
-          'username': 'Abdelaziz',
-          'userImage':
-              'https://www.google.com/search?client=firefox-b-d&q=image#imgrc=JoR7JNzGko0S6M',
-          'blockDate': '12/12/2022'
-        })),
-    Children(
-        id: 'x1',
-        data: Data.fromJson({
-          'username': 'Abdelaziz',
-          'userImage':
-              'https://www.google.com/search?client=firefox-b-d&q=image#imgrc=JoR7JNzGko0S6M',
-          'blockDate': '12/12/2022'
-        })),
-    Children(
-        id: 'x1',
-        data: Data.fromJson({
-          'username': 'Abdelaziz',
-          'userImage':
-              'https://www.google.com/search?client=firefox-b-d&q=image#imgrc=JoR7JNzGko0S6M',
-          'blockDate': '12/12/2022'
-        })),
-    Children(
-        id: 'x1',
-        data: Data.fromJson({
-          'username': 'Abdelaziz',
-          'userImage':
-              'https://www.google.com/search?client=firefox-b-d&q=image#imgrc=JoR7JNzGko0S6M',
-          'blockDate': '12/12/2022'
-        })),
-    Children(
-        id: 'x1',
-        data: Data.fromJson({
-          'username': 'Abdelaziz',
-          'userImage':
-              'https://www.google.com/search?client=firefox-b-d&q=image#imgrc=JoR7JNzGko0S6M',
-          'blockDate': '12/12/2022'
-        })),
-  ];
+  List<BlockedAccountsGetterModel> blockedUsers = [];
 
   @override
   void initState() {
-    _getBlockedUsers();
+    _blockUser();
+
+    setState(() {
+      _getBlockedUsers();
+    });
     super.initState();
   }
 
@@ -105,13 +39,32 @@ class _BlockedAccountsState extends State<BlockedAccounts> {
   void _getBlockedUsers() {
     DioHelper.getData(path: blockedAccounts).then((response) {
       if (response.statusCode == 200) {
-        final myList = BlockedAccountsGetterModel.fromJson(response.data);
-        blockedUsers = myList.children!;
+        for (var elem in response.data['children']) {
+          blockedUsers.add(BlockedAccountsGetterModel.fromJson(elem));
+        }
       }
     }).catchError((error) {
       error = error as DioError;
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(error.message.toString())));
+    });
+  }
+
+  void _blockUser() {
+    final userToBeBlocked = BlockModel(username: 'abdelazizSalah', block: true);
+    DioHelper.postData(
+            path: block,
+            data: userToBeBlocked.toJson(),
+            token: CacheHelper.getData(key: 'token'))
+        .then((response) {
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('abdelazizHasBeenBlocked')));
+      }
+    }).catchError((err) {
+      err = err as DioError;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(err.response?.data)));
     });
   }
 
@@ -150,16 +103,20 @@ class _BlockedAccountsState extends State<BlockedAccounts> {
                           leading: CircleAvatar(
                             backgroundColor: ColorManager.upvoteRed,
                             child: Image.network(
-                              blockedUsers[index].data!.userImage!,
+                              '',
+                              // blockedUsers[index].avatar!,
+                              // blockedUsers[index].data!.userImage!,
                               fit: BoxFit.contain,
                             ),
                           ),
                           subtitle: Text(
-                            blockedUsers[index].data!.blockDate!,
+                            blockedUsers[index].blockDate!,
+                            // blockedUsers[index].data!.blockDate!,
                             style: const TextStyle(color: Colors.white),
                           ),
                           title: Text(
-                            blockedUsers[index].data!.username!,
+                            blockedUsers[index].username!,
+                            // blockedUsers[index].data!.username!,
                             style: const TextStyle(
                                 color: ColorManager.white,
                                 fontSize: 18,
@@ -168,6 +125,8 @@ class _BlockedAccountsState extends State<BlockedAccounts> {
                           trailing: OutlinedButton(
                             onPressed: () {
                               setState(() {
+                                SettingsCubit.get(context).unBlock(
+                                    blockedUsers[index].username, context);
                                 blockedUsers.remove(blockedUsers[index]);
                               });
                             },
