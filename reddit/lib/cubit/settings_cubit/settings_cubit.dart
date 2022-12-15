@@ -15,6 +15,13 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
 
   static SettingsCubit get(context) => BlocProvider.of(context);
 
+  /// This function is responsible for sending the request for the backend to
+  /// change the password of the user.
+  /// @param [currentPassText] is the user current password
+  /// @param [newPassText] is the new password
+  /// @param [confirmText] is the confirmation of the same new password
+  /// @param [context] the context of the screen to show
+  /// the message on success or fail
   void changePasswordReq(currentPassText, confirmText, newPassText, context) {
     final changeRequest = ChangePasswordModel(
         confirmNewPassword: confirmText,
@@ -37,20 +44,25 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
     });
   }
 
+  /// This function is responsible for sending the request for the backend to
+  /// change the email of the user.
+  /// @param [passText] is the user current password
+  /// @param [mailText] is the new email
+  /// @param [context] the context of the screen to show
+  /// the message on success or fail
   void changeEmailAddress(passText, mailText, context) {
     final update = UpdateEmail(
       currentPassword: passText,
       newEmail: mailText,
     );
 
-    print(update.toJson());
     DioHelper.putData(
       path: changeEmail,
       data: update.toJson(),
     ).then((response) {
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Email has been sent!'),
+            content: Text('Email has been changed!'),
             backgroundColor: ColorManager.green));
       }
     }).catchError((error) {
@@ -74,17 +86,16 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
   /// @param [newValue] which is the newValue to be set.
   /// @param [type] which decide which function to be executed
   /// and which endpoint you want to communicate on.
-  void changeDropValue(newValue, String type) {
+  void changeDropValue(newValue, String type, context) {
     if (type == 'sortHome') {
       _sortHome(newValue);
     } else if (type == 'changeGender') {
-      _changeGender(newValue);
+      _changeGender(newValue, context);
     } else if (type == 'connectGoogle') {
     } else if (type == 'connectFaceBook') {}
   }
 
   void changeSwitch(bool newValue, String type) {
-    print(type);
     if (type == 'allowPeopleToFollowYou') {
       _allowPeopleToFollowYou(newValue);
     } else if (type == 'showNSFW') {
@@ -99,7 +110,6 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
   /// false for disallow.
   void _autoPlay(newValue) {
     final request = {'autoplayMedia': newValue};
-    print(request);
     DioHelper.patchData(
       token: CacheHelper.getData(key: 'token'),
       path: accountSettings,
@@ -116,7 +126,7 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
     });
   }
 
-  void changeCountry(newCountry) {
+  void changeCountry(newCountry, ctx) {
     final request = {'country': newCountry};
     DioHelper.patchData(
             token: CacheHelper.getData(key: 'token'),
@@ -125,15 +135,35 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
         .then((response) => {
               // if changed correctly then emit to all listeners that the
               // settings has been changed, else leave every thing as is.
-              if (response.statusCode == 200) {emit(ChangeSwitchState())}
+              if (response.statusCode == 200)
+                {
+                  emit(ChangeSwitchState()),
+                  print(response.statusCode),
+                  ScaffoldMessenger.of(ctx).showSnackBar(const SnackBar(
+                      content: Center(
+                    child: Text('Hello'),
+                  ))),
+                  // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  //     content: Text(
+                  //       'now you come from $newCountry',
+                  //       style: const TextStyle(
+                  //           fontSize: 14,
+                  //           fontWeight: FontWeight.bold,
+                  //           color: ColorManager.black),
+                  //     ),
+                  //     backgroundColor: ColorManager.green)),
+                }
             })
         .catchError((error) {
       error = error as DioError;
       debugPrint(error.message);
+      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
+          content: Text('${error.response?.data}'),
+          backgroundColor: ColorManager.red));
     });
   }
 
-  void _changeGender(newGender) {
+  void _changeGender(newGender, context) {
     final request = {'gender': newGender};
     DioHelper.patchData(
             token: CacheHelper.getData(key: 'token'),
@@ -142,11 +172,26 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
         .then((response) => {
               // if changed correctly then emit to all listeners that the
               // settings has been changed, else leave every thing as is.
-              if (response.statusCode == 200) {emit(ChangeSwitchState())}
+              if (response.statusCode == 200)
+                {
+                  emit(ChangeSwitchState()),
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(
+                        'Your Gender is now $newGender',
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: ColorManager.black),
+                      ),
+                      backgroundColor: ColorManager.green))
+                }
             })
         .catchError((error) {
       error = error as DioError;
       debugPrint(error.message);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('${error.response?.data}'),
+          backgroundColor: ColorManager.red));
     });
   }
 
@@ -159,17 +204,17 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
 
   void _sortHome(newValue) {
     if (newValue == 'Best') {
-      CacheHelper.putData(key: 'Sort', value: HomeSort.best);
+      CacheHelper.putData(key: 'SortHome', value: HomeSort.best.index);
     } else if (newValue == 'Hot') {
-      CacheHelper.putData(key: 'Sort', value: HomeSort.hot);
+      CacheHelper.putData(key: 'SortHome', value: HomeSort.hot.index);
     } else if (newValue == 'New') {
-      CacheHelper.putData(key: 'Sort', value: HomeSort.newPosts);
+      CacheHelper.putData(key: 'SortHome', value: HomeSort.newPosts.index);
     } else if (newValue == 'Top') {
-      CacheHelper.putData(key: 'Sort', value: HomeSort.top);
+      CacheHelper.putData(key: 'SortHome', value: HomeSort.top.index);
     } else if (newValue == 'Raising') {
-      CacheHelper.putData(key: 'Sort', value: HomeSort.raising);
+      CacheHelper.putData(key: 'SortHome', value: HomeSort.raising.index);
     } else if (newValue == 'Controversial') {
-      CacheHelper.putData(key: 'Sort', value: HomeSort.controversial);
+      CacheHelper.putData(key: 'SortHome', value: HomeSort.controversial.index);
     }
     emit(ChangeSwitchState());
   }

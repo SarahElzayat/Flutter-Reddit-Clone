@@ -20,7 +20,7 @@ class CountriesScreen extends StatelessWidget {
         children: myList.map((country) {
           return InkWell(
             onTap: () {
-              SettingsCubit.get(context).changeCountry(country);
+              SettingsCubit.get(context).changeCountry(country, context);
               Navigator.of(context).pop();
             },
             child: SizedBox(

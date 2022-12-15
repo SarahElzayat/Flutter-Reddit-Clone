@@ -48,12 +48,12 @@ class SettingsMainScreen extends StatelessWidget {
                 flex: 1,
                 child: ListTileContainer(
                   types: const [
-                    'Best',
-                    'Hot',
-                    'New',
-                    'Top',
-                    'Raising',
-                    'Controversial',
+                    'sortHome',
+                    'sortHome',
+                    'sortHome',
+                    'sortHome',
+                    'sortHome',
+                    'sortHome',
                   ],
                   handler: [() {}],
                   listTileIcons: const [Icons.home_outlined],

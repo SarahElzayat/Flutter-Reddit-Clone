@@ -49,6 +49,7 @@ class ListTileWidget extends StatefulWidget {
 class _ListTileWidgetState extends State<ListTileWidget> {
   /// this can be either Switch, DropBox or Icon
   String? dropDownValue = 'Empty';
+
   bool setBool = false;
 
   /// utility handlertion to build if the tailing object was switch
@@ -136,7 +137,8 @@ class _ListTileWidgetState extends State<ListTileWidget> {
         // change button value to selected value
         onChanged: (String? newValue) {
           setState(() {
-            SettingsCubit.get(context).changeDropValue(newValue, newValue!);
+            SettingsCubit.get(context)
+                .changeDropValue(newValue, widget.type!, context);
             dropDownValue = newValue;
           });
         },

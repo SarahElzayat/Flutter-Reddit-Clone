@@ -3,9 +3,9 @@
 /// This file contains the Update email address screen.
 
 import 'package:flutter/material.dart';
-import 'package:reddit/cubit/settings_cubit/settings_cubit.dart';
-import 'package:reddit/data/sign_in_And_sign_up_models/validators.dart';
-import 'package:reddit/screens/forget_user_name_and_password/mobile/forget_password_screen.dart';
+import '../../cubit/settings_cubit/settings_cubit.dart';
+import '../../data/sign_in_And_sign_up_models/validators.dart';
+import '../../screens/forget_user_name_and_password/mobile/forget_password_screen.dart';
 import '../../components/default_text_field.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../widgets/settings/bottom_buttons.dart';
