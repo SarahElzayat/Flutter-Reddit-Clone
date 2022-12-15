@@ -115,6 +115,7 @@ class AccountSettingsScreen extends StatelessWidget {
                 types: const ['', 'allowPeopleToFollowYou'],
                 handler: [
                   () {
+                    SettingsCubit.get(context).getBlockedUsers(context);
                     navigator.pushNamed(BlockedAccounts.routeName);
                   },
                   () {},

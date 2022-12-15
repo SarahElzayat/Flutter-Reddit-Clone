@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/data/settings_models/block_user_model.dart';
+import 'package:reddit/data/settings_models/blocked_accounts_getter_model.dart';
+import 'package:reddit/screens/settings/blocked_accounts.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../data/settings_models/change_password_model.dart';
 import '../../data/settings_models/update_email_model.dart';
@@ -13,8 +15,46 @@ import '../../cubit/settings_cubit/settings_cubit_state.dart';
 
 class SettingsCubit extends Cubit<SettingsCubitState> {
   SettingsCubit() : super(SettingsCubitInitial());
+  List<BlockedAccountsGetterModel> blockedUsers = [];
 
   static SettingsCubit get(context) => BlocProvider.of(context);
+
+  void blockUser(context) {
+    final userToBeBlocked = BlockModel(username: 'abdelazizSalah', block: true);
+    DioHelper.postData(
+            path: block,
+            data: userToBeBlocked.toJson(),
+            token: CacheHelper.getData(key: 'token'))
+        .then((response) {
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('abdelazizHasBeenBlocked')));
+      }
+    }).catchError((err) {
+      err = err as DioError;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(err.response?.data)));
+    });
+  }
+
+  /// the blocked accounts from the user.
+  void getBlockedUsers(context) async {
+    blockUser(context);
+    emit(UnBlockState(false));
+    await DioHelper.getData(path: blockedAccounts).then((response) {
+      if (response.statusCode == 200) {
+        for (var elem in response.data['children']) {
+          blockedUsers.add(BlockedAccountsGetterModel.fromJson(elem));
+        }
+      }
+    }).catchError((error) {
+      error = error as DioError;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(error.message.toString())));
+    });
+
+    emit(UnBlockState(true));
+  }
 
   void unBlock(userName, context) {
     final blockUser = BlockModel(block: false, username: userName);
@@ -34,6 +74,8 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(err.response!.data)));
     });
+
+    emit(UnBlockState(true));
   }
 
   /// This function is responsible for sending the request for the backend to
@@ -64,6 +106,8 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
           content: Text('The password is not correct!'),
           backgroundColor: ColorManager.red));
     });
+
+    emit(ChangePassword());
   }
 
   /// This function is responsible for sending the request for the backend to
@@ -101,6 +145,8 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
         backgroundColor: ColorManager.red,
       ));
     });
+
+    emit(ChangeEmail());
   }
 
   /// this is a function responsible for applying the function of any
