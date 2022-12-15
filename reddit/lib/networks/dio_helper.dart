@@ -4,6 +4,7 @@
 /// and deal with the server
 import 'package:dio/dio.dart';
 import '../constants/constants.dart';
+import '../shared/local/shared_preferences.dart';
 import 'constant_end_points.dart';
 
 class DioHelper {
@@ -58,7 +59,7 @@ class DioHelper {
   }) async {
     var options = Options(
       headers: {
-        'Authorization': 'Bearer ${token ?? ''}',
+        'Authorization': 'Bearer ${token ?? CacheHelper.getData(key: 'token')}',
         'Content-Type': (isFormdata)
             ? 'multipart/form-data; boundary=<calculated when request is sent>'
             : 'application/json'
