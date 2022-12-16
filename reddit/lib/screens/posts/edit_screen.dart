@@ -61,7 +61,7 @@ class _EditScreenState extends State<EditScreen> {
         appBar: AppBar(
           title: Text(_isPost ? 'Edit Post' : 'Edit Comment'),
           actions: [
-            BlocBuilder<PostAndCommentActionsCubit, PostState>(
+            BlocBuilder<PostAndCommentActionsCubit, PostActionsState>(
               builder: (context, state) {
                 var cubit = PostAndCommentActionsCubit.get(context);
                 return TextButton(

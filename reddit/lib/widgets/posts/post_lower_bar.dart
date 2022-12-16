@@ -56,7 +56,7 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
   Widget build(BuildContext context) {
     // var isMod = widget.post.inYourSubreddit ?? false;
     var isMod = true;
-    return BlocBuilder<PostAndCommentActionsCubit, PostState>(
+    return BlocBuilder<PostAndCommentActionsCubit, PostActionsState>(
       builder: (context, state) {
         var cubit = PostAndCommentActionsCubit.get(context);
         return Container(
@@ -108,7 +108,8 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
                     // sharePost(context, widget.post);
                   }
                 },
-                child: BlocBuilder<PostAndCommentActionsCubit, PostState>(
+                child:
+                    BlocBuilder<PostAndCommentActionsCubit, PostActionsState>(
                   builder: (context, state) {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,

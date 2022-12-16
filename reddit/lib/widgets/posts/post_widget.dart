@@ -203,7 +203,7 @@ class _PostWidgetState extends State<PostWidget> {
                                 SizedBox(height: 1.h),
                                 _lowerPart(isWeb),
                                 BlocBuilder<PostAndCommentActionsCubit,
-                                    PostState>(
+                                    PostActionsState>(
                                   builder: (context, state) {
                                     return AnimatedSwitcher(
                                         duration:

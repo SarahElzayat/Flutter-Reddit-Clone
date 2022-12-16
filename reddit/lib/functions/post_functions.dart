@@ -64,7 +64,7 @@ CircleAvatar subredditAvatar({small = false}) {
 Widget commentSortRow(BuildContext context) {
 // a row with a button to choose the sorting type and an icon button for MOD
 // operations
-  return BlocBuilder<PostAndCommentActionsCubit, PostState>(
+  return BlocBuilder<PostAndCommentActionsCubit, PostActionsState>(
     builder: (context, state) {
       return Row(
         mainAxisSize: MainAxisSize.min,
@@ -114,7 +114,7 @@ Widget commentSortRow(BuildContext context) {
               color: Colors.transparent,
               clipBehavior: Clip.antiAlias,
               shape: const CircleBorder(),
-              child: BlocBuilder<PostAndCommentActionsCubit, PostState>(
+              child: BlocBuilder<PostAndCommentActionsCubit, PostActionsState>(
                 builder: (context, state) {
                   var cubit = PostAndCommentActionsCubit.get(context);
                   return IconButton(

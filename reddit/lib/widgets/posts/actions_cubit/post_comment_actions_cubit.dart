@@ -21,7 +21,7 @@ import 'post_comment_actions_state.dart';
 
 Logger logger = Logger();
 
-class PostAndCommentActionsCubit extends Cubit<PostState> {
+class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
   final PostModel post;
   final CommentModel? currentComment;
   final List<CommentModel> comments = [];
@@ -95,12 +95,21 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
 
   /// this function is used to hide a post
   Future hide() {
-    return mockDio.post(
-      '$baseUrl/hide',
+    String path = post.hidden ?? false ? '/unhide' : '/hide';
+
+    return DioHelper.postData(
+      path: path,
       data: {
         'id': post.id,
       },
-    ).then((value) => print(value.data));
+    ).then((value) {
+      post.hidden = !post.hidden!;
+      emit(HiddenChangedState());
+    }).catchError((error) {
+      error = error as DioError;
+      logger.e(error.response?.data);
+      emit(OpError(error: error.response?.data['error'] ?? ''));
+    });
   }
 
   /// this function is used to block the author of a post
