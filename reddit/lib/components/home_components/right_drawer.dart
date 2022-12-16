@@ -2,6 +2,7 @@
 ///@description the right (end) drawer that's present through the whole application
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/screens/history/history_screen_for_web.dart';
 import 'package:reddit/screens/create_community_screen/create_community_screen.dart';
 import 'package:reddit/screens/saved/saved_screen.dart';
@@ -65,13 +66,15 @@ class RightDrawer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                CircleAvatar(
+                const CircleAvatar(
                     radius: 80,
-                    backgroundImage: cubit.profilePicture.contains('images\\')
-                        ? const AssetImage(
-                            './assets/images/Logo.png',
-                          )
-                        : NetworkImage(cubit.profilePicture) as ImageProvider),
+                    backgroundImage: 
+                    AssetImage('./assets/images/Logo.png')),
+                    // NetworkImage(kReleaseMode
+                    //     ? 'https://web.read-it.live/${cubit.profilePicture}'
+                    //     : Uri.parse(
+                    //             'https://localhost:3000/${cubit.profilePicture}')
+                    //         .toString())),
 
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20.0),

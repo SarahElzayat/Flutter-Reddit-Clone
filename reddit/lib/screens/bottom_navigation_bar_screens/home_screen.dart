@@ -84,7 +84,12 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     AppCubit.get(context).getHomePosts(limit: 10);
     _scrollController.addListener(_scrollListener);
-
+    if (kIsWeb) {
+      AppCubit.get(context).getUsername();
+      AppCubit.get(context).getYourCommunities();
+      AppCubit.get(context).getYourModerating();
+      // AppCubit.get(context).getUserProfilePicture();
+    }
     super.initState();
   }
 
@@ -113,12 +118,12 @@ class _HomeScreenState extends State<HomeScreen> {
           drawer: kIsWeb ? const LeftDrawer() : null,
           endDrawer: kIsWeb ? const RightDrawer() : null,
           body: SmartRefresher(
-                          enablePullDown: true,
-              // enablePullUp: true,
-              header: const WaterDropHeader(),
-              controller: _refreshController,
-              onRefresh: _onRefresh,
-              onLoading: _onLoading,
+            enablePullDown: true,
+            // enablePullUp: true,
+            header: const WaterDropHeader(),
+            controller: _refreshController,
+            onRefresh: _onRefresh,
+            onLoading: _onLoading,
             child: SingleChildScrollView(
               physics: NeverScrollableScrollPhysics(),
               controller: _scrollController,
