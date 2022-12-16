@@ -1,3 +1,6 @@
+/// @author Sarah Elzayat
+/// states of the app cubit
+
 part of 'app_cubit.dart';
 
 @immutable

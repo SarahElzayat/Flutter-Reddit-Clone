@@ -1,3 +1,5 @@
+///@author Sarah Elzayat
+///@description left drawer's community model
 class DrawerCommunitiesModel {
   String? title;
   String? picture;

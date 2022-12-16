@@ -1,3 +1,6 @@
+///@author Sarah Elzayat
+///@description model of comments in saved screen
+
 class SavedCommentModel {
   String? commentId;
   String? commentedBy;

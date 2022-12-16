@@ -25,7 +25,7 @@ import 'components/helpers/mocks/mock_functions.dart';
 import 'cubit/add_post/cubit/add_post_cubit.dart';
 import 'networks/dio_helper.dart';
 import 'components/helpers/bloc_observer.dart';
-import 'cubit/app_cubit.dart';
+import 'cubit/app_cubit/app_cubit.dart';
 import 'screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import 'shared/local/shared_preferences.dart';
 
