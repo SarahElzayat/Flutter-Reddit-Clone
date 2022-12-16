@@ -19,6 +19,7 @@ class ResultsUsers extends StatefulWidget {
 
 class _ResultsUsersState extends State<ResultsUsers> {
   final _scrollController = ScrollController();
+  final GlobalKey _globalKey = GlobalKey();
   List<SearchResultProfileModel> users = [];
   void _scrollListener() {
     if (_scrollController.offset ==
@@ -36,16 +37,15 @@ class _ResultsUsersState extends State<ResultsUsers> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _scrollController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
     SearchCubit cubit = SearchCubit.get(context);
-    // cubit.users = cubit.cubit.users;
 
     return BlocConsumer<SearchCubit, SearchState>(
       listener: (context, state) {},
@@ -67,6 +67,7 @@ class _ResultsUsersState extends State<ResultsUsers> {
                   )
                 : ListView.builder(
                     // itemExtent: 400,
+                    key: _globalKey,
                     controller: _scrollController,
                     itemCount: cubit.users.length, //cubit.cubit.users.length,
                     shrinkWrap: true,

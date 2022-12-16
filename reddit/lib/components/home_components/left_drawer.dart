@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/home_components/components.dart';
 import 'package:reddit/cubit/app_cubit.dart';
-
-import '../../screens/to_be_done_screen.dart';
+import 'package:reddit/screens/home/all_screen.dart';
+import 'package:reddit/screens/to_be_done_screen.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -21,25 +21,28 @@ class LeftDrawer extends StatelessWidget {
       builder: (context, state) {
         return SafeArea(
             child: Drawer(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (cubit.moderatingListItems.isNotEmpty)
-                listButton(context, 'Moderating', cubit.moderatingListItems,
-                    cubit.changeModeratingListState, cubit.moderatingListOpen,
-                    isModerating: true),
-              if (cubit.yourCommunitiesList.isNotEmpty)
-                listButton(
-                    context,
-                    'Your Communities',
-                    cubit.yourCommunitiesList,
-                    cubit.changeYourCommunitiesState,
-                    cubit.yourCommunitiesistOpen,
-                    isCommunity: true),
-              genericTextButton(context, Icons.bar_chart_rounded, 'All',
-                  const ToBeDoneScreen(text: 'All'),
-                  isLeftDrawer: true)
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (cubit.moderatingListItems.isNotEmpty)
+                  listButton(context, 'Moderating', cubit.yourCommunitiesList,
+                      cubit.changeModeratingListState, cubit.moderatingListOpen,
+                      isModerating: true, navigateToSubreddit: () {}),
+                if (cubit.yourCommunitiesList.isNotEmpty)
+                  listButton(
+                      context,
+                      'Your Communities',
+                      cubit.yourCommunitiesList,
+                      cubit.changeYourCommunitiesState,
+                      cubit.yourCommunitiesistOpen,
+                      isCommunity: true,
+                      navigateToSubreddit: () {}),
+                genericTextButton(context, Icons.bar_chart_rounded, 'All',
+                    const ToBeDoneScreen(text: 'All'),
+                    isLeftDrawer: true)
+              ],
+            ),
           ),
         ));
       },

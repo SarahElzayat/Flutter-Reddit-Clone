@@ -40,14 +40,8 @@ class _ResultsPostsState extends State<ResultsPosts> {
   }
 
   @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final SearchCubit cubit = SearchCubit.get(context); //..getPosts();
+    final SearchCubit cubit = SearchCubit.get(context);
     return BlocConsumer<SearchCubit, SearchState>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -55,9 +49,10 @@ class _ResultsPostsState extends State<ResultsPosts> {
           condition:
               state is! LoadedResultsState || state is! LoadedMoreResultsState,
           fallback: (context) => const Center(
-              child: CircularProgressIndicator(
-            color: ColorManager.blue,
-          )),
+            child: CircularProgressIndicator(
+              color: ColorManager.blue,
+            ),
+          ),
           builder: (context) => cubit.posts.isEmpty
               ? Center(
                   child: Text(
@@ -68,26 +63,15 @@ class _ResultsPostsState extends State<ResultsPosts> {
               : ListView.builder(
                   controller: _scrollController,
                   itemCount: cubit.posts.length,
-                  itemBuilder: (context, index) => InkWell(
-                    onTap: () => DioHelper.getData(
-                            path: '/post-details?id=${cubit.posts[index].id}')
-                        .then((value) => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PostWidget(
-                                post: PostModel.fromJson(value.data),
-                                outsideScreen: false,
-                              ),
-                            ))),
-                    child: PostWidget(
-                        upperRowType: cubit.posts[index].inYourSubreddit == null
-                            ? ShowingOtions.onlyUser
-                            : ShowingOtions.both,
-                        // TODO check this
-                        // upperRowType: ShowingOtions.onlyUser,
-                        post: cubit.posts[index],
-                        postView: PostView.classic),
-                  ),
+                  itemBuilder: (context, index) => PostWidget(
+                      key: Key(cubit.posts[index].id.toString()),
+                      upperRowType: cubit.posts[index].inYourSubreddit == null
+                          ? ShowingOtions.onlyUser
+                          : ShowingOtions.both,
+                      // TODO check this
+                      // upperRowType: ShowingOtions.onlyUser,
+                      post: cubit.posts[index],
+                      postView: PostView.classic),
                 ),
         );
       },

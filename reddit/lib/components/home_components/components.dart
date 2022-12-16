@@ -2,8 +2,11 @@
 ///@date 16/11/2022
 ///@description this file has some reusable components to use in the home screen
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/cubit/app_cubit.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
+import 'package:reddit/data/home/drawer_communities_model.dart';
 
 import '../../screens/create_community_screen/create_community_screen.dart';
 import '../../screens/to_be_done_screen.dart';
@@ -13,8 +16,9 @@ import '../../screens/to_be_done_screen.dart';
 /// @param [list] is the items to be displayed
 /// @param [onPressed] is the function that controls the list
 /// @param [isOpen] is the state of the list
-Widget listButton(context, text, list, onPressed, isOpen,
-    {isCommunity = false, isModerating = false}) {
+Widget listButton(
+    context, text, List<DrawerCommunitiesModel> list, onPressed, isOpen,
+    {isCommunity = false, isModerating = false, required navigateToSubreddit}) {
   return Container(
     decoration: const BoxDecoration(
         border: BorderDirectional(
@@ -35,7 +39,7 @@ Widget listButton(context, text, list, onPressed, isOpen,
               Text(text,
                   style: Theme.of(context)
                       .textTheme
-                      .displaySmall!
+                      .displayMedium!
                       .copyWith(fontWeight: FontWeight.bold)),
               Icon(
                 isOpen
@@ -70,18 +74,20 @@ Widget listButton(context, text, list, onPressed, isOpen,
                     text: 'Mod Queue',
                   ),
                   isLeftDrawer: true),
-            if (isCommunity)
-              genericTextButton(
-                  context,
-                  Icons.dynamic_feed_outlined,
-                  'Custom Feeds',
-                  const ToBeDoneScreen(
-                    text: 'Custom Feeds',
-                  ),
-                  isLeftDrawer: true),
-            ListView(
-              padding: const EdgeInsets.only(left: 10),
-              children: list,
+            ListView.builder(
+              padding: const EdgeInsets.only(
+                left: 10,
+              ),
+              itemCount: list.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                    onTap: () => SubredditCubit.get(context).setSubredditName(
+                        context, list[index].title.toString()),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: yourCommunitiesCard(list[index]),
+                    ));
+              },
               shrinkWrap: true,
             ),
           ]),
@@ -120,3 +126,34 @@ Widget genericTextButton(context, icon, text, route, {required isLeftDrawer}) =>
             )
           ],
         ));
+
+Widget yourCommunitiesCard(DrawerCommunitiesModel model) {
+  return BlocConsumer<AppCubit, AppState>(
+    listener: (context, state) {},
+    builder: (context, state) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5.0),
+        child: Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(right: 8.0),
+              child: CircleAvatar(
+                backgroundImage: AssetImage('./assets/images/uranus.png'),
+                radius: 10,
+              ),
+            ),
+            Text(
+              'r/${model.title.toString()}',
+              style: Theme.of(context).textTheme.displayMedium,
+              // style:  TextStyle(
+              //     The
+              //     color: ColorManager.eggshellWhite, fontSize: 16),
+            ),
+            const Spacer(),
+            // IconButton(onPressed: (){}, icon: model.)
+          ],
+        ),
+      );
+    },
+  );
+}

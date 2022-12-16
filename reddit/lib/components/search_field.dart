@@ -1,6 +1,7 @@
 /// @author SarahElzayat
 /// @date 25/10/2022
 /// general search field to be included in home, subreddits, profiles... etc
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/screens/search/search_screen.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
@@ -8,25 +9,25 @@ import 'package:reddit/shared/local/shared_preferences.dart';
 import 'helpers/color_manager.dart';
 
 class SearchField extends StatefulWidget {
-  final String? labelText;
+  final String? subredditName;
   final bool isSubreddit;
-  final bool isProfile;
+  // final String subredditName;
   final void Function()? onChanged;
   final void Function()? onPressed;
   final void Function(String)? onSubmitted;
   final TextEditingController textEditingController;
   final bool isResult;
 
-  const SearchField(
-      {super.key,
-      this.labelText,
-      this.isSubreddit = false,
-      this.isProfile = false,
-      this.onChanged,
-      this.onPressed,
-      required this.textEditingController,
-      this.onSubmitted,
-      this.isResult = false});
+  const SearchField({
+    super.key,
+    this.subredditName,
+    this.isSubreddit = false,
+    this.onChanged,
+    this.onPressed,
+    required this.textEditingController,
+    this.onSubmitted,
+    this.isResult = false,
+  });
 
   @override
   State<SearchField> createState() => _SearchFieldState();
@@ -38,27 +39,19 @@ class _SearchFieldState extends State<SearchField> {
   bool isOpne = false;
   final FocusNode _focus = FocusNode();
 
-  List<String> items = [
-    'Post 1',
-    'Post 2',
-    'Post 3',
-    'Post 4',
-    'Post 5',
-    'Post 6'
-  ];
-
   @override
   void initState() {
-    super.initState();
     _focus.addListener(_onFocusChange);
+    // _focus.unfocus();
+    super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _focus.removeListener(_onFocusChange);
-    _focus.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _focus.removeListener(_onFocusChange);
+  //   _focus.dispose();
+  //   super.dispose();
+  // }
 
   void _onFocusChange() {
     debugPrint('Focus: ${_focus.hasFocus.toString()}');
@@ -77,17 +70,24 @@ class _SearchFieldState extends State<SearchField> {
         color: ColorManager.darkGrey,
       ),
       child: TextField(
-        onTap: () => widget.isResult
-            ? Navigator.push(
+        onTap: () {
+          if (widget.isResult) {
+            _focus.unfocus();
+
+            Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => SearchScreen(
+                    subredditName: widget.subredditName,
+                    isSubreddit: widget.isSubreddit,
                     query: widget.textEditingController.text,
                   ),
-                ))
-            : null,
+                ));
+          }
+        },
         focusNode: _focus,
         onSubmitted: widget.onSubmitted,
+
         cursorColor: ColorManager.eggshellWhite,
         onChanged: (value) => setState(() {
           (widget.textEditingController.text);
@@ -115,20 +115,19 @@ class _SearchFieldState extends State<SearchField> {
                   Icons.search,
                   color: ColorManager.lightGrey,
                 ),
-                if (widget.isSubreddit || widget.isProfile && isPrefix)
+                if (widget.isSubreddit && isPrefix)
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     decoration: const ShapeDecoration(
                       shape: StadiumBorder(),
                       color: ColorManager.grey,
                     ),
-                    // margin: const EdgeInsets.only(right: 15),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          '${widget.labelText!} ',
+                          '${widget.subredditName!} ',
                           style: const TextStyle(
                               color: ColorManager.eggshellWhite),
                         ),
@@ -164,7 +163,7 @@ class _SearchFieldState extends State<SearchField> {
                   ),
                 )
               : null,
-          focusedBorder: CacheHelper.getData(key: 'isWindows')!
+          focusedBorder: kIsWeb
               ? OutlineInputBorder(
                   borderRadius: BorderRadius.circular(50),
                   borderSide: const BorderSide(color: ColorManager.blue))
