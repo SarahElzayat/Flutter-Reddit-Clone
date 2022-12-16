@@ -203,6 +203,7 @@ class AppCubit extends Cubit<AppState> {
       }
     });
   }
+
   void getYourModerating() {
     moderatingListItems.clear();
     DioHelper.getData(path: moderatedSubreddits).then((value) {
@@ -219,15 +220,45 @@ class AppCubit extends Cubit<AppState> {
   }
 
   ///@param [profilePicture] the profile picture of the user
-  //TODO get it from the fucking backend
-  String profilePicture = 'assets/images/Logo.png';
+  String profilePicture = '';
+
+  void getUserProfilePicture() {
+    DioHelper.getData(path: '$user/$username/$about').then((value) {
+      logger.wtf(value.data);
+      if (value.statusCode == 200) {
+        if (value.data['picture'] != null) {
+          profilePicture = value.data['picture'];
+          logger.w('message $profilePicture');
+        }
+      } else {
+        emit(ErrorState());
+      }
+    });
+  }
 
   ///@param [username] is the username of the user
   String? username = 'Anonymous';
+  String? age = '';
+  int? karma = 1;
 
   /// the function get the user's username from the backend
   void getUsername() {
     username = CacheHelper.getData(key: 'username');
+    DioHelper.getData(path: '$userDetails/$username').then((value) {
+      if (value.statusCode == 200) {
+        karma = value.data['karma'];
+        DateTime joinDate = DateTime.parse(value.data['joinDate']);
+        if (DateTime.now().year - joinDate.year > 0) {
+          age = '${DateTime.now().year - joinDate.year} y';
+        } else if (DateTime.now().month - joinDate.month > 0) {
+          age = '${DateTime.now().month - joinDate.month} m';
+        } else {
+          age = '${DateTime.now().day - joinDate.day} d';
+        }
+      } else {
+        emit(ErrorState());
+      }
+    });
   }
 
   ///@param [history] the list of the user's history, changes according to its category

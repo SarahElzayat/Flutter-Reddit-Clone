@@ -59,15 +59,16 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
   @override
   void initState() {
     AppCubit.get(context).getHomePosts();
+    AppCubit.get(context).getUsername();
     AppCubit.get(context).getYourCommunities();
     AppCubit.get(context).getYourModerating();
+    AppCubit.get(context).getUserProfilePicture();
     super.initState();
-
   }
 
   @override
   Widget build(BuildContext context) {
-    final AppCubit cubit = AppCubit.get(context)..getUsername();
+    final AppCubit cubit = AppCubit.get(context);//..getUsername();
 
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {

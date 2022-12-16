@@ -26,7 +26,8 @@ class RightDrawer extends StatelessWidget {
 
     ///@param [rightDrawerItems] the list of right drawer items
     List<Widget> rightDrawerItems = [
-      genericTextButton(context, Icons.person, 'My profile', null,
+      genericTextButton(context, Icons.person, 'My profile',
+          const ToBeDoneScreen(text: 'My profile'),
           isLeftDrawer: false),
       genericTextButton(context, Icons.add, 'Create a community',
           const CreateCommunityScreen(),
@@ -44,9 +45,11 @@ class RightDrawer extends StatelessWidget {
                   bottomNavBarScreenIndex: cubit.currentIndex,
                 ),
           isLeftDrawer: false),
-      genericTextButton(context, Icons.pending_outlined, 'Pending Posts', null,
+      genericTextButton(context, Icons.pending_outlined, 'Pending Posts',
+          const ToBeDoneScreen(text: 'Pending posts'),
           isLeftDrawer: false),
-      genericTextButton(context, Icons.drafts_outlined, 'Drafts', null,
+      genericTextButton(context, Icons.drafts_outlined, 'Drafts',
+          const ToBeDoneScreen(text: 'Drafts'),
           isLeftDrawer: false),
     ];
 
@@ -63,16 +66,22 @@ class RightDrawer extends StatelessWidget {
               children: [
                 CircleAvatar(
                     radius: 80,
-                    backgroundImage: AssetImage(
-                      cubit.profilePicture,
-                    )),
-                // Text
-                genericTextButton(
-                    context,
-                    Icons.keyboard_arrow_down,
-                    cubit.username,
-                    const ToBeDoneScreen(text: 'account options'),
-                    isLeftDrawer: false),
+                    backgroundImage: cubit.profilePicture.contains('images\\')
+                        ? const AssetImage(
+                            './assets/images/Logo.png',
+                          )
+                        : NetworkImage(cubit.profilePicture) as ImageProvider),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  child: Text(
+                    'u/${cubit.username.toString()}',
+                    style: const TextStyle(
+                        color: ColorManager.eggshellWhite,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.7,
                   decoration: const ShapeDecoration(
@@ -92,11 +101,70 @@ class RightDrawer extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: const [
-                      //TODO do them properly
-                      Text('Karma'),
-                      Text('Age'),
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(right: 8.0),
+                            child: Icon(
+                              Icons.keyboard_command_key_outlined,
+                              color: ColorManager.blue,
+                              size: 30,
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                cubit.karma.toString(),
+                                style: const TextStyle(
+                                    fontSize: 18,
+                                    color: ColorManager.eggshellWhite,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              const Text(
+                                'karma',
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: ColorManager.lightGrey,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(right: 8.0),
+                            child: Icon(
+                              Icons.cake_outlined,
+                              color: ColorManager.blue,
+                              size: 30,
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                cubit.age.toString(),
+                                style: const TextStyle(
+                                    fontSize: 18,
+                                    color: ColorManager.eggshellWhite,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              const Text(
+                                'Reddit age',
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: ColorManager.lightGrey,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                     ],
                   ),
                 ),

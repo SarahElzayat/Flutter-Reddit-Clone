@@ -43,7 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     scrollController.addListener(() {
-      AppCubit.get(context).getHomePosts();
+      // AppCubit.get(context).getHomePosts();
+      // AppCubit.get(context).getUsername()
 
       //scroll listener
       double showoffset = MediaQuery.of(context).size.height /
@@ -68,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    final AppCubit cubit = AppCubit.get(context)..getUsername();
+    final AppCubit cubit = AppCubit.get(context);
 
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {
