@@ -16,6 +16,7 @@ import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/functions/post_functions.dart';
 import 'package:reddit/networks/dio_helper.dart';
 
+import '../../../data/comment/sended_comment_model.dart';
 import '../../../networks/constant_end_points.dart';
 import 'post_comment_actions_state.dart';
 
@@ -256,6 +257,23 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
       logger.e(error.response?.data);
       emit(OpError(error: error.response?.data['error'] ?? ''));
       throw error;
+    });
+  }
+
+  static postComment({
+    required VoidCallback onSuccess,
+    required void Function(DioError) onError,
+    required SendedCommentModel c,
+  }) {
+    logger.e(c.toJson());
+    DioHelper.postData(path: '/comment', data: c.toJson()).then((value) {
+      onSuccess();
+      return null;
+    }).catchError((e) {
+      onError(e as DioError);
+      Map<String, dynamic> error = e.response!.data;
+
+      logger.w(error['error']);
     });
   }
 }

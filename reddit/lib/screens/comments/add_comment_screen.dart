@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -11,13 +10,13 @@ import 'package:giphy_get/giphy_get.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../components/helpers/color_manager.dart';
 import '../../data/comment/comment_model.dart';
 import '../../data/comment/sended_comment_model.dart';
 import '../../data/post_model/post_model.dart';
-import '../../networks/dio_helper.dart';
 
 var logger = Logger();
 
@@ -107,34 +106,6 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
     //     afterButtonPressed: _focusNode.requestFocus,
     //   );
     // }
-    void postComment({
-      required VoidCallback onSuccess,
-      required void Function(DioError) onError,
-    }) {
-      final content = _controller!.document.toDelta().toJson();
-      logger.i(content);
-      SendedCommentModel c = SendedCommentModel(
-        content: {'ops': content},
-        postId: widget.post.id!,
-        parentType: _isPostParent() ? 'post' : 'comment',
-        haveSubreddit: widget.post.subreddit != null,
-        level: _isPostParent() ? 1 : (widget.parentComment!.level! + 1),
-        parentId: _isPostParent() ? widget.post.id : widget.parentComment!.id,
-        subredditName: widget.post.subreddit,
-      );
-      logger.e(c.toJson());
-      DioHelper.postData(path: '/comment', data: c.toJson()).then((value) {
-        onSuccess();
-        //TODO HANDLE THIS IN THE CUBIT
-        return null;
-      }).catchError((e) {
-        // TODO HANDLE THIS IN THE CUBIT
-        onError(e as DioError);
-        Map<String, dynamic> error = e.response!.data;
-
-        logger.w(error['error']);
-      });
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -152,8 +123,21 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
                 );
                 return;
               }
+              final content = _controller!.document.toDelta().toJson();
+              logger.i(content);
+              SendedCommentModel c = SendedCommentModel(
+                content: {'ops': content},
+                postId: widget.post.id!,
+                parentType: _isPostParent() ? 'post' : 'comment',
+                haveSubreddit: widget.post.subreddit != null,
+                level: _isPostParent() ? 1 : (widget.parentComment!.level! + 1),
+                parentId:
+                    _isPostParent() ? widget.post.id : widget.parentComment!.id,
+                subredditName: widget.post.subreddit,
+              );
 
-              postComment(
+              PostAndCommentActionsCubit.postComment(
+                c: c,
                 onSuccess: () {
                   Navigator.of(context).pop(true);
                 },
@@ -251,7 +235,7 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
                       _linkSubmitted(gif.images?.original?.url);
                     }
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.gif_box_outlined,
                     color: ColorManager.blue,
                   )),

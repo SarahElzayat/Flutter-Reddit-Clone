@@ -4,6 +4,7 @@
 ///
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:path/path.dart' as p;
 import 'package:file_picker/file_picker.dart';
@@ -25,8 +26,11 @@ import '../../components/helpers/universal_ui/universal_ui.dart';
 import '../../components/home_app_bar.dart';
 import '../../components/snack_bar.dart';
 import '../../data/comment/comment_model.dart';
+import '../../data/comment/sended_comment_model.dart';
 import '../../data/post_model/post_model.dart';
 import '../../widgets/comments/comment.dart';
+import '../../widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
+import '../comments/add_comment_web.dart';
 
 class PostScreenWeb extends StatefulWidget {
   const PostScreenWeb({
@@ -160,63 +164,10 @@ class _PostScreenWebState extends State<PostScreenWeb> {
                               height: 20,
                             ),
                             // quil editor for web
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.grey,
-                                ),
-                                borderRadius: BorderRadius.circular(3),
-                              ),
-                              clipBehavior: Clip.antiAlias,
-                              height: 200,
-                              width: 50.w,
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                    child: MouseRegion(
-                                      cursor: SystemMouseCursors.text,
-                                      child: QuillEditor(
-                                        controller: _controller!,
-                                        readOnly: false,
-                                        autoFocus: true,
-                                        expands: false,
-                                        scrollable: true,
-                                        scrollController: ScrollController(),
-                                        focusNode: FocusNode(),
-                                        placeholder: 'what are your thoughts?',
-                                        padding: const EdgeInsets.all(8),
-                                        embedBuilders: defaultEmbedBuildersWeb,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    color:
-                                        const Color.fromARGB(255, 48, 48, 48),
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
-                                            width: 50.w - 120, child: toolbar),
-                                        // button to submit comment
-                                        SizedBox(
-                                          width: 100,
-                                          child: TextButton(
-                                            style: TextButton.styleFrom(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(100),
-                                              ),
-                                              backgroundColor:
-                                                  ColorManager.blue,
-                                            ),
-                                            onPressed: () {},
-                                            child: const Text('Comment'),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
+                            CommentWeb(
+                              controller: _controller,
+                              toolbar: toolbar,
+                              post: widget.post,
                             ),
                             DropdownButtonHideUnderline(
                               child: DropdownButton2(

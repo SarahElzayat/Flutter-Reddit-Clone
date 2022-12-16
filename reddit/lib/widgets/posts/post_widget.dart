@@ -446,7 +446,7 @@ class _PostWidgetState extends State<PostWidget> {
           enableInteractiveSelection: false,
           expands: false,
           scrollable: false,
-          placeholder: 'such empty...',
+          placeholder: '',
           scrollController: ScrollController(),
           focusNode: FocusNode(),
           padding: EdgeInsets.zero,

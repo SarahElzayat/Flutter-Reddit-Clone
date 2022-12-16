@@ -50,6 +50,7 @@ class Comment extends StatefulWidget {
 
 class _CommentState extends State<Comment> {
   bool isCompressed = false;
+  bool openReplay = false;
   QuillController? _controller;
   final FocusNode _focusNode = FocusNode();
   QuillController getController() {
@@ -87,7 +88,7 @@ class _CommentState extends State<Comment> {
         focusNode: _focusNode,
         autoFocus: false,
         readOnly: true,
-        placeholder: 'Such empty',
+        placeholder: '',
         expands: false,
         showCursor: false,
         padding: EdgeInsets.zero,
