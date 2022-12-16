@@ -102,6 +102,8 @@ class AppCubit extends Cubit<AppState> {
           homePostsAfterId = value.data['after'];
           homePostsBeforeId = value.data['before'];
           logger.wtf(value.data['children'].length);
+          logger.wtf('before $homePostsBeforeId');
+          logger.wtf('after $homePostsAfterId');
           for (int i = 0; i < value.data['children'].length; i++) {
             homePosts
                 .add(PostModel.fromJson(value.data['children'][i]['data']));
@@ -477,7 +479,7 @@ class AppCubit extends Cubit<AppState> {
 
         // logger.wtf(value.data.toString());
         for (int i = 0; i < value.data['children'].length; i++) {
-          if (value.data['children'][i]['type'] == 'fullPost' && isPosts) {
+          if (value.data['children'][i]['data']['comments'].length == 0) {
             // logger.wtf('POOOOSTTTTSSS');
             // logger.wtf(value.data['children'][i]['data'].toString());
 
@@ -490,8 +492,12 @@ class AppCubit extends Cubit<AppState> {
           } else {
             logger.wtf('COOOMMMMEEENNNTSSSS');
             logger.wtf(value.data['children'][i]['data'].toString());
-            savedCommentsList.add(
-                SavedCommentModel.fromJson(value.data['children'][i]['data']));
+            for (int j = 0;
+                j < value.data['children'][i]['data']['comments'].length;
+                j++) {
+              savedCommentsList.add(SavedCommentModel.fromJson(
+                  value.data['children'][i]['data']['comments'][j]));
+            }
           }
         }
         // logger.wtf('aaaaaaaaaaaaa');

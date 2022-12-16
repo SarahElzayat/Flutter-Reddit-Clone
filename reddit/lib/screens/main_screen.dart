@@ -2,17 +2,14 @@
 /// @date 3/11/2022
 /// @description This screen is the main one that has the bottom navigation bar, the main app bar, drawer and end drawer
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:reddit/data/post_model/post_model.dart';
 
 import '../components/home_app_bar.dart';
 import '../cubit/app_cubit.dart';
 import '../screens/add_post/add_post.dart';
-import '../components/helpers/color_manager.dart';
 import '../components/home_components/left_drawer.dart';
 import '../components/home_components/right_drawer.dart';
 
@@ -47,7 +44,7 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
   }
 
   void initialGetters() {
-    AppCubit.get(context).getHomePosts();
+    AppCubit.get(context).getHomePosts(limit: 5);
     AppCubit.get(context).getUsername();
     AppCubit.get(context).getYourCommunities();
     AppCubit.get(context).getYourModerating();
