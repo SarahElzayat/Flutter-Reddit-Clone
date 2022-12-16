@@ -49,7 +49,7 @@ class LoadingSavedCommentsState extends AppState {}
 
 class LoadingMoreSavedCommentsState extends AppState {}
 
-class LoadedSavedCommentsState extends AppState {}
+class LoadedSavedState extends AppState {}
 
 class LoadedMoreSavedState extends AppState {}
 

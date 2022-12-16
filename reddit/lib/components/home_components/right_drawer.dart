@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:reddit/screens/history/history_screen_for_web.dart';
 import 'package:reddit/screens/create_community_screen/create_community_screen.dart';
 import 'package:reddit/screens/saved/saved_screen.dart';
+import 'package:reddit/screens/settings/change_profile_picture_screen.dart';
 
 import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
@@ -91,7 +92,14 @@ class RightDrawer extends StatelessWidget {
                         ColorManager.gradientRed
                       ])),
                   child: MaterialButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const ChangeProfilePicutre(),
+                            ));
+                      },
                       padding: EdgeInsets.zero,
                       shape: const StadiumBorder(),
                       child: const Text(

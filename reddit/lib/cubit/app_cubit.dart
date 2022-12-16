@@ -445,15 +445,15 @@ class AppCubit extends Cubit<AppState> {
                 ? savedPostsAfterId
                 : isComments
                     ? savedCommentsAfterId
-                    : null
-            : null,
+                    : ''
+            : '',
         'before': before
             ? isPosts
                 ? savedCommentsBeforeId
                 : isComments
                     ? savedCommentsBeforeId
-                    : null
-            : null,
+                    : ''
+            : '',
       },
     ).then((value) {
       if (value.data['children'].length == 0) {
@@ -477,23 +477,29 @@ class AppCubit extends Cubit<AppState> {
 
         // logger.wtf(value.data.toString());
         for (int i = 0; i < value.data['children'].length; i++) {
-          if (value.data['children']['type'] == 'fullPost' && isPosts) {
+          if (value.data['children'][i]['type'] == 'fullPost' && isPosts) {
             // logger.wtf('POOOOSTTTTSSS');
-            logger.wtf(value.data['children'][i]['data'].toString());
-            savedPostsList
-                .add(PostModel.fromJson(value.data['children'][i]['data']));
-          } else {
-            // logger.wtf('COOOMMMMEEENNNTSSSS');
             // logger.wtf(value.data['children'][i]['data'].toString());
+
+            savedPostsList.add(
+                PostModel.fromJson(value.data['children'][i]['data']['post']));
+            savedPostsList[savedPostsList.length - 1].id =
+                value.data['children'][i]['id'];
+
+            // logger.e('tmmmmamaamammama');
+          } else {
+            logger.wtf('COOOMMMMEEENNNTSSSS');
+            logger.wtf(value.data['children'][i]['data'].toString());
             savedCommentsList.add(
                 SavedCommentModel.fromJson(value.data['children'][i]['data']));
           }
         }
-        logger.wtf('aaaaaaaaaaaaa');
+        // logger.wtf('aaaaaaaaaaaaa');
 
-        logger.wtf(savedPostsList[0].id.toString());
+        // logger.wtf(' om el id ${savedPostsList[0].id.toString()}');
+        logger.w('length ${savedPostsList.length}');
 
-        loadMore ? emit(LoadedMoreHistoryState()) : emit(LoadedHistoryState());
+        loadMore ? emit(LoadedMoreSavedState()) : emit(LoadedSavedState());
       }
     }).onError((error, stackTrace) {
       if (kDebugMode) {

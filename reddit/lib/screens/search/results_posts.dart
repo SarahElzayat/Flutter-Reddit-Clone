@@ -2,12 +2,10 @@
 /// @date 9/11/2022
 /// this is the screen for the posts results of the main search
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/data/post_model/post_model.dart';
-import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/screens/search/cubit/search_cubit.dart';
 import 'package:reddit/widgets/posts/post_upper_bar.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
@@ -23,7 +21,7 @@ class ResultsPosts extends StatefulWidget {
 
 class _ResultsPostsState extends State<ResultsPosts> {
   final _scrollController = ScrollController();
-  List<PostModel> posts = [];
+  // List<PostModel> posts = [];
   void _scrollListener() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {

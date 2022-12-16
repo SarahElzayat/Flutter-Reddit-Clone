@@ -2,9 +2,11 @@
 /// @date 3/11/2022
 /// @description This screen is the main one that has the bottom navigation bar, the main app bar, drawer and end drawer
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:reddit/data/post_model/post_model.dart';
 
 import '../components/home_app_bar.dart';
@@ -24,6 +26,11 @@ class HomeScreenForMobile extends StatefulWidget {
 
 class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final RefreshController _refreshController = RefreshController(
+    initialRefresh: false,
+  );
+
+  bool isAndroid = !kIsWeb;
 
   ///The method changes the end drawer state from open to closed and vice versa
   void _changeEndDrawer() {
@@ -39,36 +46,34 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
         : _scaffoldKey.currentState?.openDrawer();
   }
 
-  bool isAndroid = !kIsWeb;
-  PostModel testPost = PostModel();
-  List<Widget> items = [
-    const Text(
-      'Test ',
-      style: TextStyle(color: ColorManager.eggshellWhite),
-    ),
-    const Text(
-      'Test ',
-      style: TextStyle(color: ColorManager.eggshellWhite),
-    ),
-    const Text(
-      'Test ',
-      style: TextStyle(color: ColorManager.eggshellWhite),
-    ),
-  ];
-
-  @override
-  void initState() {
+  void initialGetters() {
     AppCubit.get(context).getHomePosts();
     AppCubit.get(context).getUsername();
     AppCubit.get(context).getYourCommunities();
     AppCubit.get(context).getYourModerating();
     AppCubit.get(context).getUserProfilePicture();
+  }
+
+  void _onRefresh() async {
+    // monitor network fetch
+    _onLoading();
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() {
+    initialGetters();
+    _refreshController.loadComplete();
+  }
+
+  @override
+  void initState() {
+    initialGetters();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final AppCubit cubit = AppCubit.get(context);//..getUsername();
+    final AppCubit cubit = AppCubit.get(context); //..getUsername();
 
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {
@@ -85,7 +90,14 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
           drawer: const LeftDrawer(),
           endDrawer: const RightDrawer(),
           appBar: homeAppBar(context, cubit.currentIndex),
-          body: cubit.bottomNavBarScreens[cubit.currentIndex],
+          body: SmartRefresher(
+              enablePullDown: true,
+              enablePullUp: true,
+              header: const WaterDropHeader(),
+              controller: _refreshController,
+              onRefresh: _onRefresh,
+              onLoading: _onLoading,
+              child: cubit.bottomNavBarScreens[cubit.currentIndex]),
           bottomNavigationBar: isAndroid
               ? BottomNavigationBar(
                   type: BottomNavigationBarType.fixed,

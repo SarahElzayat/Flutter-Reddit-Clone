@@ -40,12 +40,16 @@ class _HomeScreenState extends State<HomeScreen> {
         : _scaffoldKey.currentState?.openDrawer();
   }
 
+  // Future<void> _onRefresh() async {
+  //   AppCubit.get(context).getHomePosts();
+  //   // AppCubit.get(context).getUserProfilePicture();
+  //   // AppCubit.get(context).getUsername();
+  //   // AppCubit.get(context).getYourCommunities();
+  // }
+
   @override
   void initState() {
     scrollController.addListener(() {
-      // AppCubit.get(context).getHomePosts();
-      // AppCubit.get(context).getUsername()
-
       //scroll listener
       double showoffset = MediaQuery.of(context).size.height /
           2; //Back to top botton will show on scroll offset 10.0
