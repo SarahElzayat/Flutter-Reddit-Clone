@@ -20,3 +20,5 @@ const loginForgetPassword = '/login/forget-password';
 const loginForgetUserName = '/login/forget-username';
 const createCommunity = '/create-subreddit';
 const submitPost = '/submit';
+const signInGoogle = '/signin/google';
+const signInFacebook = '/signin/facebook';

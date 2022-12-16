@@ -148,7 +148,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   flex: 2,
                   child: SizedBox(
                       height: mediaQuery.size.height * 0.18,
-                      child: ContinueWithGoOrFB(width: mediaQuery.size.width)),
+                      child: ContinueWithGoOrFB(
+                        width: mediaQuery.size.width,
+                      )),
                 ),
                 Expanded(
                   flex: 4,
