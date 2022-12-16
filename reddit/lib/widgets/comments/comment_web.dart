@@ -25,8 +25,8 @@ import '../../components/helpers/universal_ui/universal_ui.dart';
 import '../../data/post_model/post_model.dart';
 import '../posts/dropdown_list.dart';
 
-class Comment extends StatefulWidget {
-  const Comment({
+class CommentWeb extends StatefulWidget {
+  const CommentWeb({
     super.key,
     required this.post,
     required this.comment,
@@ -45,10 +45,10 @@ class Comment extends StatefulWidget {
   final CommentView viewType;
 
   @override
-  State<Comment> createState() => _CommentState();
+  State<CommentWeb> createState() => _CommentWebState();
 }
 
-class _CommentState extends State<Comment> {
+class _CommentWebState extends State<CommentWeb> {
   bool isCompressed = false;
   bool openReplay = false;
   QuillController? _controller;
@@ -210,7 +210,7 @@ class _CommentState extends State<Comment> {
                 widget.comment.children != null
                     ? Column(
                         children: widget.comment.children!
-                            .map((e) => Comment(
+                            .map((e) => CommentWeb(
                                   post: widget.post,
                                   comment: e,
                                   level: widget.level + 1,
@@ -251,13 +251,12 @@ class _CommentState extends State<Comment> {
   Widget _commentsControlRow() {
     return Row(
       children: [
-        const Spacer(),
-        DropDownList(
-          post: widget.post,
-          comment: widget.comment,
-          itemClass: ItemsClass.comments,
+        BlocBuilder<PostNotifierCubit, PostNotifierState>(
+          builder: (context, state) {
+            return VotesPart(post: widget.post);
+          },
         ),
-        SizedBox(width: 5.w),
+        SizedBox(width: 2.w),
         InkWell(
           onTap: () {
             setState(() {
@@ -290,11 +289,11 @@ class _CommentState extends State<Comment> {
             ],
           ),
         ),
-        SizedBox(width: 5.w),
-        BlocBuilder<PostNotifierCubit, PostNotifierState>(
-          builder: (context, state) {
-            return VotesPart(post: widget.post);
-          },
+        const Spacer(),
+        DropDownList(
+          post: widget.post,
+          comment: widget.comment,
+          itemClass: ItemsClass.comments,
         ),
       ],
     );

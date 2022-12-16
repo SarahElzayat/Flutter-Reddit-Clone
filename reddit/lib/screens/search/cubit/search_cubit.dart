@@ -204,10 +204,10 @@ class SearchCubit extends Cubit<SearchState> {
         } else {
           commentsAfterId = value.data['after'];
           commentsBeforeId = value.data['before'];
-
           for (int i = 0; i < value.data['children'].length; i++) {
             comments.add(CommentModel.fromJson(
                 value.data['children'][i]['data']['comment']));
+            Logger().wtf(comments[i].toJson());
             commentsPosts.add(
                 PostModel.fromJson(value.data['children'][i]['data']['post']));
           }
@@ -219,9 +219,7 @@ class SearchCubit extends Cubit<SearchState> {
         emit(SearchErrorState());
       }
     }).onError((error, stackTrace) {
-      if (kDebugMode) {
-        print(error.toString());
-      }
+      logger.e(error.toString());
     });
   }
 

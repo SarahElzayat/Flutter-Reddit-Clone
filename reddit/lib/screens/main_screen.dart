@@ -5,12 +5,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/data/post_model/post_model.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../components/home_app_bar.dart';
 import '../cubit/app_cubit.dart';
 import '../screens/add_post/add_post.dart';
-import '../components/helpers/color_manager.dart';
 import '../components/home_components/left_drawer.dart';
 import '../components/home_components/right_drawer.dart';
 
@@ -24,6 +23,9 @@ class HomeScreenForMobile extends StatefulWidget {
 
 class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+
+  bool isAndroid = !kIsWeb;
 
   ///The method changes the end drawer state from open to closed and vice versa
   void _changeEndDrawer() {
@@ -39,34 +41,25 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
         : _scaffoldKey.currentState?.openDrawer();
   }
 
-  bool isAndroid = !kIsWeb;
-  PostModel testPost = PostModel();
-  List<Widget> items = [
-    const Text(
-      'Test ',
-      style: TextStyle(color: ColorManager.eggshellWhite),
-    ),
-    const Text(
-      'Test ',
-      style: TextStyle(color: ColorManager.eggshellWhite),
-    ),
-    const Text(
-      'Test ',
-      style: TextStyle(color: ColorManager.eggshellWhite),
-    ),
-  ];
+  void initialGetters() {
+    // AppCubit.get(context).getHomePosts(limit: 5);
+    AppCubit.get(context).getUsername();
+    AppCubit.get(context).getYourCommunities();
+    AppCubit.get(context).getYourModerating();
+    AppCubit.get(context).getUserProfilePicture();
+  }
+
+ 
 
   @override
   void initState() {
+    initialGetters();
     super.initState();
-    AppCubit.get(context).getYourCommunities();
-    AppCubit.get(context).getHomePosts();
-
   }
 
   @override
   Widget build(BuildContext context) {
-    final AppCubit cubit = AppCubit.get(context)..getUsername();
+    final AppCubit cubit = AppCubit.get(context); //..getUsername();
 
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {

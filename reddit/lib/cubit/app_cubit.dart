@@ -14,7 +14,6 @@ import 'package:reddit/screens/bottom_navigation_bar_screens/inbox_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/notifications_screen.dart';
 import 'package:reddit/screens/saved/saved_comments.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
-import '../components/helpers/color_manager.dart';
 import '../data/post_model/post_model.dart';
 import '../data/temp_data/tmp_data.dart';
 import '../networks/constant_end_points.dart';
@@ -43,7 +42,6 @@ class AppCubit extends Cubit<AppState> {
     const HomeScreen(),
     const ExploreScreen(),
     const AddPostScreen(),
-    // const AddPost(),
     const InboxScreen(),
     const NotificationsScreen()
   ];
@@ -61,24 +59,10 @@ class AppCubit extends Cubit<AppState> {
         icon: Icon(Icons.notifications_outlined), label: 'Inbox'),
   ];
 
-  ///@param [homePosts] dummy data for home screen
-  List<PostModel> homePosts = [
-    // PostWidget(post: textPost),
-    // PostWidget(post: videoPost),
-    // PostWidget(post: smalltextPost),
-    // PostWidget(post: linkPost, upperRowType: ShowingOtions.onlyUser),
-    // PostWidget(post: oneImagePost, postView: PostView.classic),
-    // PostWidget(post: manyImagePost, postView: PostView.classic),
-    // PostWidget(post: manyImagePost, postView: PostView.card),
-  ];
-
+  ///@param [homePosts] home posts
+  List<Widget> homePosts = [];
   String homePostsAfterId = '';
   String homePostsBeforeId = '';
-
-  // void getHomePosts(){
-  //   home
-
-  // }
 
   void getHomePosts(
       {bool loadMore = false,
@@ -109,6 +93,8 @@ class AppCubit extends Cubit<AppState> {
     }).then((value) {
       if (value.statusCode == 200) {
         if (value.data['children'].length == 0) {
+          logger.wtf('Mafeesh tany');
+
           loadMore
               ? emit(NoMoreResultsToLoadState())
               : emit(ResultEmptyState());
@@ -118,9 +104,12 @@ class AppCubit extends Cubit<AppState> {
           homePostsAfterId = value.data['after'];
           homePostsBeforeId = value.data['before'];
           logger.wtf(value.data['children'].length);
+          logger.wtf('before $homePostsBeforeId');
+          logger.wtf('after $homePostsAfterId');
           for (int i = 0; i < value.data['children'].length; i++) {
-            homePosts
-                .add(PostModel.fromJson(value.data['children'][i]['data']));
+            homePosts.add(PostWidget(
+                post: PostModel.fromJson(
+                    value.data['children'][i]['data'])));
             logger.e(i);
           }
         }
@@ -138,9 +127,10 @@ class AppCubit extends Cubit<AppState> {
 
   ///@param [popularPosts] dummy data for home screen
   List<Widget> popularPosts = [
-    PostWidget(post: textPost, insideProfiles: true),
-    PostWidget(post: oneImagePost),
-    PostWidget(post: oneImagePost),
+    PostWidget(
+        post: textPost, insideProfiles: true, postView: PostView.classic),
+    PostWidget(post: oneImagePost, postView: PostView.classic),
+    PostWidget(post: oneImagePost, postView: PostView.classic),
     PostWidget(post: oneImagePost),
     PostWidget(post: oneImagePost),
   ];
@@ -190,24 +180,8 @@ class AppCubit extends Cubit<AppState> {
     emit(ChangeModeratingListState());
   }
 
-  ///@param [moderatingListItems] dummy data for drawer
-  List<Widget> moderatingListItems = [
-    const Text(
-      'moderating 1 ',
-      style: TextStyle(
-          color: ColorManager.eggshellWhite, fontWeight: FontWeight.w400),
-    ),
-    const Text(
-      'moderating 2 ',
-      style: TextStyle(
-          color: ColorManager.eggshellWhite, fontWeight: FontWeight.w400),
-    ),
-    const Text(
-      'moderating 3 ',
-      style: TextStyle(
-          color: ColorManager.eggshellWhite, fontWeight: FontWeight.w400),
-    ),
-  ];
+  ///@param [moderatingListItems] the subreddits you moderate
+  List<DrawerCommunitiesModel> moderatingListItems = [];
 
   ///@param [yourCommunitiesistOpen] a boolean that indicates whether the left drawer's 'your communities' list is open or not
   bool yourCommunitiesistOpen = true;
@@ -236,16 +210,61 @@ class AppCubit extends Cubit<AppState> {
     });
   }
 
+  void getYourModerating() {
+    moderatingListItems.clear();
+    DioHelper.getData(path: moderatedSubreddits).then((value) {
+      if (value.statusCode == 200) {
+        for (int i = 0; i < value.data['children'].length; i++) {
+          moderatingListItems
+              .add(DrawerCommunitiesModel.fromJson(value.data['children'][i]));
+        }
+        emit(LoadedCommunitiesState());
+      } else {
+        emit(ErrorState());
+      }
+    });
+  }
+
   ///@param [profilePicture] the profile picture of the user
-  //TODO get it from the fucking backend
-  String profilePicture = 'assets/images/Logo.png';
+  String profilePicture = '';
+
+  void getUserProfilePicture() {
+    DioHelper.getData(path: '$user/$username/$about').then((value) {
+      logger.wtf(value.data);
+      if (value.statusCode == 200) {
+        if (value.data['picture'] != null) {
+          profilePicture = value.data['picture'];
+          logger.w('message $profilePicture');
+        }
+      } else {
+        emit(ErrorState());
+      }
+    });
+  }
 
   ///@param [username] is the username of the user
   String? username = 'Anonymous';
+  String? age = '';
+  int? karma = 1;
 
   /// the function get the user's username from the backend
   void getUsername() {
     username = CacheHelper.getData(key: 'username');
+    DioHelper.getData(path: '$userDetails/$username').then((value) {
+      if (value.statusCode == 200) {
+        karma = value.data['karma'];
+        DateTime joinDate = DateTime.parse(value.data['joinDate']);
+        if (DateTime.now().year - joinDate.year > 0) {
+          age = '${DateTime.now().year - joinDate.year} y';
+        } else if (DateTime.now().month - joinDate.month > 0) {
+          age = '${DateTime.now().month - joinDate.month} m';
+        } else {
+          age = '${DateTime.now().day - joinDate.day} d';
+        }
+      } else {
+        emit(ErrorState());
+      }
+    });
   }
 
   ///@param [history] the list of the user's history, changes according to its category
@@ -313,7 +332,6 @@ class AppCubit extends Cubit<AppState> {
               ? emit(LoadedMoreHistoryState())
               : emit(LoadedHistoryState());
         }
-     
       }
     }).onError((error, stackTrace) {
       if (kDebugMode) {
@@ -433,15 +451,15 @@ class AppCubit extends Cubit<AppState> {
                 ? savedPostsAfterId
                 : isComments
                     ? savedCommentsAfterId
-                    : null
-            : null,
+                    : ''
+            : '',
         'before': before
             ? isPosts
                 ? savedCommentsBeforeId
                 : isComments
                     ? savedCommentsBeforeId
-                    : null
-            : null,
+                    : ''
+            : '',
       },
     ).then((value) {
       if (value.data['children'].length == 0) {
@@ -465,23 +483,33 @@ class AppCubit extends Cubit<AppState> {
 
         // logger.wtf(value.data.toString());
         for (int i = 0; i < value.data['children'].length; i++) {
-          if (value.data['children']['type'] == 'fullPost' && isPosts) {
+          if (value.data['children'][i]['data']['comments'].length == 0) {
             // logger.wtf('POOOOSTTTTSSS');
-            logger.wtf(value.data['children'][i]['data'].toString());
-            savedPostsList
-                .add(PostModel.fromJson(value.data['children'][i]['data']));
-          } else {
-            // logger.wtf('COOOMMMMEEENNNTSSSS');
             // logger.wtf(value.data['children'][i]['data'].toString());
-            savedCommentsList.add(
-                SavedCommentModel.fromJson(value.data['children'][i]['data']));
+
+            savedPostsList.add(
+                PostModel.fromJson(value.data['children'][i]['data']['post']));
+            savedPostsList[savedPostsList.length - 1].id =
+                value.data['children'][i]['id'];
+
+            // logger.e('tmmmmamaamammama');
+          } else {
+            logger.wtf('COOOMMMMEEENNNTSSSS');
+            logger.wtf(value.data['children'][i]['data'].toString());
+            for (int j = 0;
+                j < value.data['children'][i]['data']['comments'].length;
+                j++) {
+              savedCommentsList.add(SavedCommentModel.fromJson(
+                  value.data['children'][i]['data']['comments'][j]));
+            }
           }
         }
-        logger.wtf('aaaaaaaaaaaaa');
+        // logger.wtf('aaaaaaaaaaaaa');
 
-        logger.wtf(savedPostsList[0].id.toString());
+        // logger.wtf(' om el id ${savedPostsList[0].id.toString()}');
+        logger.w('length ${savedPostsList.length}');
 
-        loadMore ? emit(LoadedMoreHistoryState()) : emit(LoadedHistoryState());
+        loadMore ? emit(LoadedMoreSavedState()) : emit(LoadedSavedState());
       }
     }).onError((error, stackTrace) {
       if (kDebugMode) {

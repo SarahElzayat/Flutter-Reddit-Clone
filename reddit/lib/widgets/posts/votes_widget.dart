@@ -98,7 +98,7 @@ class VotesPart extends StatelessWidget {
       ];
     }
 
-    return BlocBuilder<PostAndCommentActionsCubit, PostState>(
+    return BlocBuilder<PostAndCommentActionsCubit, PostActionsState>(
       builder: (context, state) {
         return BlocBuilder<PostNotifierCubit, PostNotifierState>(
             builder: (context, state) {

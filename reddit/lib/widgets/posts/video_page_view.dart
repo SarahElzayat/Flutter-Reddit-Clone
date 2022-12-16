@@ -49,7 +49,7 @@ class _WholeScreenVideoViewerState extends State<WholeScreenVideoViewer> {
     return Scaffold(
       body: BlocProvider(
         create: (context) => PostAndCommentActionsCubit(post: widget.post),
-        child: BlocBuilder<PostAndCommentActionsCubit, PostState>(
+        child: BlocBuilder<PostAndCommentActionsCubit, PostActionsState>(
           builder: (context, state) {
             return Column(
               children: [

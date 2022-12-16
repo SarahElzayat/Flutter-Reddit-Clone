@@ -22,6 +22,7 @@ class DropDownList extends StatelessWidget {
     this.comment,
     this.itemClass = ItemsClass.posts,
     this.outsideScreen = false,
+    this.isWeb = false,
   }) : super(key: key);
 
   /// The [PostModel] of targeted Post
@@ -35,12 +36,13 @@ class DropDownList extends StatelessWidget {
 
   final bool outsideScreen;
 
+  final bool isWeb;
   List<MenuItem> getList() {
     switch (itemClass) {
       case ItemsClass.comments:
         return _chooseForComments();
       case ItemsClass.posts:
-        return _chooseForPosts();
+        return _chooseForPosts(isWeb: isWeb);
     }
   }
 
@@ -86,7 +88,7 @@ class DropDownList extends StatelessWidget {
     return l;
   }
 
-  List<MenuItem> _chooseForPosts() {
+  List<MenuItem> _chooseForPosts({bool? isWeb}) {
     List<MenuItem> l = [];
     if (post.saved ?? false) {
       l.add(MenuItems.unsave);
@@ -110,6 +112,11 @@ class DropDownList extends StatelessWidget {
       l.add(MenuItems.share);
       l.add(MenuItems.copy);
       l.add((post.followed ?? false) ? MenuItems.unfollow : MenuItems.follow);
+    }
+
+    if (isWeb ?? false) {
+      l.removeWhere(
+          (element) => (element.text == 'Save' || element.text == 'UnSave'));
     }
     return l;
   }
