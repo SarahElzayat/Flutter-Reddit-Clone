@@ -22,14 +22,11 @@ import 'package:reddit/screens/posts/post_screen_cubit/post_screen_state.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../../components/helpers/universal_ui/universal_ui.dart';
 import '../../components/home_app_bar.dart';
 import '../../components/snack_bar.dart';
 import '../../data/comment/comment_model.dart';
-import '../../data/comment/sended_comment_model.dart';
 import '../../data/post_model/post_model.dart';
-import '../../widgets/comments/comment.dart';
-import '../../widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
+import '../../widgets/comments/comment_web.dart';
 import '../comments/add_comment_web.dart';
 
 class PostScreenWeb extends StatefulWidget {
@@ -164,7 +161,7 @@ class _PostScreenWebState extends State<PostScreenWeb> {
                               height: 20,
                             ),
                             // quil editor for web
-                            CommentWeb(
+                            AddCommentWeb(
                               controller: _controller,
                               toolbar: toolbar,
                               post: widget.post,
@@ -251,7 +248,7 @@ class _PostScreenWebState extends State<PostScreenWeb> {
     return l
         .map((e) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 0),
-              child: Comment(
+              child: CommentWeb(
                 post: widget.post,
                 comment: e,
               ),

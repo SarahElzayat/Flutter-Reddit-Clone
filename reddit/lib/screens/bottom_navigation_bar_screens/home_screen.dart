@@ -84,7 +84,12 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     AppCubit.get(context).getHomePosts(limit: 10);
     _scrollController.addListener(_scrollListener);
-
+    if (kIsWeb) {
+      AppCubit.get(context).getUsername();
+      AppCubit.get(context).getYourCommunities();
+      AppCubit.get(context).getYourModerating();
+      // AppCubit.get(context).getUserProfilePicture();
+    }
     super.initState();
   }
 
@@ -112,36 +117,42 @@ class _HomeScreenState extends State<HomeScreen> {
               : null,
           drawer: kIsWeb ? const LeftDrawer() : null,
           endDrawer: kIsWeb ? const RightDrawer() : null,
-          body: SingleChildScrollView(
-            controller: _scrollController, //set controller
-
-            physics: const BouncingScrollPhysics(),
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: SizedBox(
-                      width: kIsWeb ? width * 0.5 : width,
-                      child: ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount: cubit.homePosts.length,
-                        // : cubit.popularPosts.length,
-                        itemBuilder: (context, index) => Container(
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 0, vertical: 5),
-                            child: PostWidget(
-                              post: cubit.homePosts[index],
-                            )
-                            // cubit.homeMenuIndex == 0
-                            //     ? cubit.homePosts[index]
-                            //     : cubit.popularPosts[index],
-                            ),
+          body: SmartRefresher(
+            enablePullDown: true,
+            // enablePullUp: true,
+            header: const WaterDropHeader(),
+            controller: _refreshController,
+            onRefresh: _onRefresh,
+            onLoading: _onLoading,
+            child: SingleChildScrollView(
+              physics: NeverScrollableScrollPhysics(),
+              controller: _scrollController,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: SizedBox(
+                        width: kIsWeb ? width * 0.5 : width,
+                        // child: ListView.builder(
+                        //   // physics: const NeverScrollableScrollPhysics(),
+                        //   shrinkWrap: true,
+                        //   controller: _scrollController,
+                        //   scrollDirection: Axis.vertical,
+                        //   itemCount: cubit.homePosts.length,
+                        //   itemBuilder: (context, index) => Container(
+                        //       margin: const EdgeInsets.symmetric(
+                        //           horizontal: 0, vertical: 5),
+                        //       child: PostWidget(
+                        //         post: cubit.homePosts[index],
+                        //       )),
+                        // ),
+                        child: Column(
+                          children: cubit.homePosts,
+                        ),
                       ),
                     ),
                     if (kIsWeb)

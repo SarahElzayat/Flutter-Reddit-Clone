@@ -6,9 +6,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/cubit/comment_notifier/comment_notifier_cubit.dart';
+import 'package:reddit/cubit/comment_notifier/comment_notifier_state.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 
 import 'package:reddit/data/post_model/post_model.dart';
+import 'package:reddit/screens/posts/post_screen.dart';
+import 'package:reddit/screens/posts/post_screen_cubit/post_screen_cubit.dart';
+import 'package:reddit/screens/posts/post_screen_cubit/post_screen_state.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:reddit/widgets/posts/dropdown_list.dart';
 import 'package:reddit/widgets/posts/menu_items.dart';
@@ -80,13 +85,17 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
                       color: widget.iconColor,
                       size: min(5.w, 20),
                     ),
-                    Text(
-                      ' ${widget.post.comments ?? 0}'
-                      '${widget.isWeb ? ' Comments' : ''}',
-                      style: TextStyle(
-                        color: widget.iconColor,
-                        fontSize: 15,
-                      ),
+                    BlocBuilder<CommentNotifierCubit, CommentsNotifierState>(
+                      builder: (context, state) {
+                        return Text(
+                          ' ${widget.post.comments ?? 0}'
+                          '${widget.isWeb ? ' Comments' : ''}',
+                          style: TextStyle(
+                            color: widget.iconColor,
+                            fontSize: 15,
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),

@@ -1,7 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
+import 'package:reddit/cubit/comment_notifier/comment_notifier_cubit.dart';
+import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/data/post_model/post_model.dart';
+import 'package:reddit/screens/posts/post_screen.dart';
+import 'package:reddit/screens/posts/post_screen_cubit/post_screen_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../components/helpers/color_manager.dart';
@@ -10,8 +14,8 @@ import '../../data/comment/comment_model.dart';
 import '../../data/comment/sended_comment_model.dart';
 import '../../widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 
-class CommentWeb extends StatelessWidget {
-  const CommentWeb({
+class AddCommentWeb extends StatelessWidget {
+  const AddCommentWeb({
     Key? key,
     required QuillController? controller,
     required this.toolbar,
@@ -25,7 +29,7 @@ class CommentWeb extends StatelessWidget {
   final QuillToolbar toolbar;
 
   bool get parentPost => parentComment == null;
-  
+
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -90,7 +94,10 @@ class CommentWeb extends StatelessWidget {
                         PostAndCommentActionsCubit.postComment(
                             c: c,
                             onSuccess: () {
-                              Navigator.of(context).pop(true);
+                              CommentNotifierCubit.get(context)
+                                  .notifyComments();
+                              PostScreenCubit.get(context).getCommentsOfPost();
+                              _controller!.document = Document();
                             },
                             onError: (DioError error) {
                               Map<String, dynamic> errorData =
