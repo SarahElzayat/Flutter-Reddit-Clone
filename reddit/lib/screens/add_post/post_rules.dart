@@ -1,14 +1,15 @@
 /// Model Post Rules Screen
 /// @author Haitham Mohamed
 /// @date 2/12/2022
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/screens/main_screen.dart';
+
 import '../../components/button.dart';
 import '../../constants/constants.dart';
-import '../../cubit/add_post.dart/cubit/add_post_cubit.dart';
+import '../../cubit/add_post/cubit/add_post_cubit.dart';
+import 'community_search.dart';
 
 class PostRules extends StatefulWidget {
   const PostRules({Key? key}) : super(key: key);
@@ -29,7 +30,7 @@ class _PostRulesState extends State<PostRules> {
     return BlocListener<AddPostCubit, AddPostState>(
       listener: (context, state) {
         if (state is PostCreated) {
-          navigator.pushReplacementNamed(MainScreen.routeName);
+          navigator.pushReplacementNamed(HomeScreenForMobile.routeName);
         }
       },
       child: Scaffold(
@@ -49,12 +50,13 @@ class _PostRulesState extends State<PostRules> {
                   splashColor: Colors.transparent,
                   textColor: ColorManager.white,
                   backgroundColor: ColorManager.blue,
-                  buttonWidth: mediaQuery.size.width * 0.15,
+                  buttonWidth: 80,
                   buttonHeight: 80,
-                  textFontSize: 18 * mediaQuery.textScaleFactor,
+                  textFontSize: 20,
                   onPressed: () async {
                     await addPostCubit.createPost(context);
                     addPostCubit.removeExistData();
+                    addPostCubit.addSubredditName(null);
                     addPostCubit.title.text = '';
                     addPostCubit.nsfw = false;
                     addPostCubit.spoiler = false;
@@ -68,7 +70,7 @@ class _PostRulesState extends State<PostRules> {
               Expanded(
                   child: MaterialButton(
                 onPressed: () {
-                  navigator.pop();
+                  navigator.pushNamed(CommunitySearch.routeName);
                 },
                 child: Row(
                   children: [

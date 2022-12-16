@@ -1,5 +1,9 @@
+///@author
+
 import 'package:flutter/material.dart';
-import 'package:reddit/Components/Helpers/color_manager.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/cubit/app_cubit.dart';
+import '../../components/helpers/color_manager.dart';
 
 class SavedScreen extends StatefulWidget {
   const SavedScreen({super.key});
@@ -18,37 +22,32 @@ class _SavedScreenState extends State<SavedScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    //TODO add it to cubit
+    
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Center(child: Text('Saved')),
-          bottom: TabBar(
-            controller: _tabController,
-            labelStyle: const TextStyle(fontSize: 14),
-            indicatorWeight: 1,
-            indicatorSize: TabBarIndicatorSize.label,
-            isScrollable: true,
-            indicatorColor: ColorManager.blue,
-            tabs: const [
-              Tab(
-                text: 'Posts',
-              ),
-              Tab(
-                text: 'Comments',
-              ),
-            ],
-          ),
-        ),
-        body: TabBarView(
-          controller: _tabController,
-          children: const [
-            //TODO Add screens depeneding on category
-            //TODO Add models to each screen
-          ],
-        ));
+    final AppCubit cubit = AppCubit.get(context);
+    return BlocConsumer<AppCubit, AppState>(
+      listener: (context, state) {
+      },
+      builder: (context, state) {
+        return Scaffold(
+            appBar: AppBar(
+              centerTitle: true,
+              title: const Text('Saved'),
+              bottom: TabBar(
+                  controller: _tabController,
+                  labelStyle: const TextStyle(fontSize: 14),
+                  indicatorWeight: 1,
+                  indicatorSize: TabBarIndicatorSize.label,
+                  indicatorColor: ColorManager.blue,
+                  tabs: cubit.savedTabBarTabs),
+            ),
+            body: TabBarView(
+                controller: _tabController,
+                children: cubit.savedTabBarScreens));
+      },
+    );
   }
 }

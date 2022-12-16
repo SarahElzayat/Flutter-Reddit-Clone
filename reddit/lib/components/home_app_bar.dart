@@ -1,25 +1,32 @@
 /// @author Sarah El-Zayat
 /// @date 9/11/2022
 /// App bar of the application
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/create_community_screen/create_community_screen.dart';
 import 'package:reddit/components/app_bar_components.dart';
-import 'package:reddit/components/home_dropdown_menu.dart';
+// import 'package:reddit/components/home_dropdown_menu.dart';
 import 'package:reddit/components/search_field.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
 
 import '../cubit/app_cubit.dart';
 
+///@param [index] is the index of the bottom navigation bar screen
+///@param [context] is the context of the parent widget
+/// returns the app bar of the screen
 AppBar homeAppBar(context, index) {
+  ///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
   final AppCubit cubit = AppCubit.get(context);
-  bool isAndroid = CacheHelper.getData(key: 'isAndroid')!;
 
-  if (isAndroid) {
+  ///checks if the it's mobile
+  ///depending on the given index the title and actions are changed
+  if (!kIsWeb) {
     return AppBar(
       titleSpacing: 0,
       title: cubit.screensNames[index] == 'Home'
-          ? const HomeDropdownMenu()
+          // ? const HomeDropdownMenu()
+          ? null
           : cubit.screensNames[index] == 'Discover'
-              ? SearchFiled(textEditingController: TextEditingController())
+              ? SearchField(textEditingController: TextEditingController())
               : cubit.screensNames[index] == 'Inbox'
                   ? const Text('Inbox')
                   : null,
@@ -36,28 +43,34 @@ AppBar homeAppBar(context, index) {
                         onPressed: () {},
                         icon: const Icon(Icons.add_comment_outlined))
                     : const Text(''),
-        InkWell(
-            // padding: EdgeInsets.zero,
-            onTap: () => cubit.changeEndDrawer(),
-            //Scaffold.of(context).isEndDrawerOpen? Scaffold.of(context).closeEndDrawer():Scaffold.of(context).openDrawer(),
-            child: avatar())
+        InkWell(onTap: () => cubit.changeRightDrawer(), child: avatar())
       ],
     );
-  } else {
+  }
+
+  ///if it's web then display the following
+  else {
     return AppBar(
+      actions: [Container()],
+      automaticallyImplyLeading: false,
       title: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Row(
           children: [
-            Image.asset(
-              'assets/images/Reddit_Lockup_OnDark.png',
-              scale: 6,
+            InkWell(
+              onTap: () => cubit.changeLeftDrawer(),
+              child: Image.asset(
+                'assets/images/Reddit_Lockup_OnDark.png',
+                scale: 6,
+              ),
             ),
-            const HomeDropdownMenu(),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.5,
-              child: SearchFiled(
-                textEditingController: TextEditingController(),
+            // const HomeDropdownMenu(),
+            Center(
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.5,
+                child: SearchField(
+                  textEditingController: TextEditingController(),
+                ),
               ),
             ),
             const Spacer(),
@@ -74,12 +87,16 @@ AppBar homeAppBar(context, index) {
               splashColor: Colors.transparent,
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CreateCommunityScreen(),
+                  )),
               icon: const Icon(Icons.add),
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
             ),
-            avatar(),
+            InkWell(onTap: () => cubit.changeRightDrawer(), child: avatar())
           ],
         ),
       ),

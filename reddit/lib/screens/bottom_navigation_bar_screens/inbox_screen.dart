@@ -1,7 +1,6 @@
 /// @author Sarah El-Zayat
 /// @date 9/11/2022
 /// this is the screen of the inbox.
-
 import 'package:flutter/material.dart';
 
 class InboxScreen extends StatelessWidget {

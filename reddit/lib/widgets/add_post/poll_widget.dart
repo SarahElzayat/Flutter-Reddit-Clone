@@ -1,13 +1,11 @@
 /// Model Poll Widget
 /// @author Haitham Mohamed
 /// @date 4/11/2022
-
-import '../../components/helpers/color_manager.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:flutter/material.dart';
-
-import '../../cubit/add_post.dart/cubit/add_post_cubit.dart';
+import '../../components/helpers/color_manager.dart';
+import '../../cubit/add_post/cubit/add_post_cubit.dart';
 import 'add_post_textfield.dart';
 
 /// Poll widget that show the options and can add or delete
@@ -43,7 +41,7 @@ class _PollState extends State<Poll> {
                   onChanged: ((string) {
                     addPostCubit.checkPostValidation();
                   }),
-                  controller: addPostCubit.optionalText,
+                  controller: TextEditingController(),
                   mltiline: true,
                   isBold: false,
                   fontSize: (18 * mediaQuery.textScaleFactor).toInt(),

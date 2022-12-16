@@ -1,55 +1,52 @@
 /// @author Sarah El-Zayat
 /// @date 9/11/2022
-/// App cubit for handling application's state management
-
+/// App cubit for handling application's state management for home, history, drawers...
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/components/helpers/enums.dart';
 
+import 'package:reddit/data/home/drawer_communities_model.dart';
+import 'package:reddit/data/saved/saved_comments_model.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/inbox_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/notifications_screen.dart';
-import 'package:reddit/widgets/posts/post_upper_bar.dart';
-import '../components/helpers/color_manager.dart';
-
+import 'package:reddit/screens/saved/saved_comments.dart';
+import 'package:reddit/shared/local/shared_preferences.dart';
+import '../data/post_model/post_model.dart';
 import '../data/temp_data/tmp_data.dart';
+import '../networks/constant_end_points.dart';
+import '../networks/dio_helper.dart';
 import '../screens/bottom_navigation_bar_screens/add_post_screen.dart';
+import '../screens/comments/add_comment_screen.dart';
+import '../screens/saved/saved_posts.dart';
 import '../widgets/posts/post_widget.dart';
 
 part 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
   AppCubit() : super(AppInitial());
+
   static AppCubit get(context) => BlocProvider.of(context);
 
-  List screensNames = ['Home', 'Discover', 'Create', 'Chat', 'Inbox'];
-  late BuildContext mainScreenContext;
+  ///@param[currentIndex] indicates the index of the current bottom navigation bar screen
   int currentIndex = 0;
+
+  ///@param[screensNames] a list of the names of the bottom navigation bar screens
+  List screensNames = ['Home', 'Discover', 'Create', 'Chat', 'Inbox'];
+  // late BuildContext mainScreenContext;
+
+  ///@param[bottomNavBarScreens] a list of the bottom navigation bar widgets
   List<Widget> bottomNavBarScreens = [
     const HomeScreen(),
     const ExploreScreen(),
     const AddPostScreen(),
-    // const AddPost(),
     const InboxScreen(),
     const NotificationsScreen()
   ];
 
-  List<Widget> homwPosts = [
-    PostWidget(post: textPost),
-    PostWidget(post: linkPost, upperRowType: ShowingOtions.onlyUser),
-    PostWidget(post: oneImagePost),
-    PostWidget(post: manyImagePost),
-    // PostWidget(post: oneImagePost),
-    // PostWidget(post: manyImagePost),
-  ];
-  List<Widget> popularPosts = [
-    PostWidget(post: textPost),
-    PostWidget(post: oneImagePost),
-    PostWidget(post: oneImagePost),
-    PostWidget(post: oneImagePost),
-    PostWidget(post: oneImagePost),
-  ];
-
+  ///@param[screensNames] a list of the icons of the bottom navigation bar screens
   List<BottomNavigationBarItem> bottomNavBarIcons = [
     const BottomNavigationBarItem(
         icon: Icon(Icons.home_outlined), label: 'Home'),
@@ -62,6 +59,82 @@ class AppCubit extends Cubit<AppState> {
         icon: Icon(Icons.notifications_outlined), label: 'Inbox'),
   ];
 
+  ///@param [homePosts] home posts
+  List<Widget> homePosts = [];
+  String homePostsAfterId = '';
+  String homePostsBeforeId = '';
+
+  void getHomePosts(
+      {bool loadMore = false,
+      bool before = false,
+      bool after = false,
+      int limit = 25}) {
+    if (!loadMore) {
+      homePosts.clear();
+    }
+    int sort = CacheHelper.getData(key: 'sort');
+    String path = '';
+    if (HomeSort.best.index == sort) {
+      path = homeBest;
+    } else if (HomeSort.hot.index == sort) {
+      path = homeHot;
+    } else if (HomeSort.top.index == sort) {
+      path = homeTop;
+    } else if (HomeSort.newPosts.index == sort) {
+      path = homeNew;
+    } else if (HomeSort.trending.index == sort) {
+      path = homeTrending;
+    }
+
+    DioHelper.getData(path: path, query: {
+      'limit': limit,
+      'after': after ? homePostsAfterId : null,
+      'before': before ? homePostsBeforeId : null,
+    }).then((value) {
+      if (value.statusCode == 200) {
+        if (value.data['children'].length == 0) {
+          logger.wtf('Mafeesh tany');
+
+          loadMore
+              ? emit(NoMoreResultsToLoadState())
+              : emit(ResultEmptyState());
+          emit(LoadedResultsState());
+        } else {
+          logger.wtf(value.data);
+          homePostsAfterId = value.data['after'];
+          homePostsBeforeId = value.data['before'];
+          logger.wtf(value.data['children'].length);
+          logger.wtf('before $homePostsBeforeId');
+          logger.wtf('after $homePostsAfterId');
+          for (int i = 0; i < value.data['children'].length; i++) {
+            homePosts.add(PostWidget(
+                post: PostModel.fromJson(
+                    value.data['children'][i]['data'])));
+            logger.e(i);
+          }
+        }
+        // logger.wtf(value.data);
+        emit(LoadedResultsState());
+      } else {
+        emit(ErrorState());
+      }
+    }).onError((error, stackTrace) {
+      if (kDebugMode) {
+        logger.wtf(error.toString());
+      }
+    });
+  }
+
+  ///@param [popularPosts] dummy data for home screen
+  List<Widget> popularPosts = [
+    PostWidget(
+        post: textPost, insideProfiles: true, postView: PostView.classic),
+    PostWidget(post: oneImagePost, postView: PostView.classic),
+    PostWidget(post: oneImagePost, postView: PostView.classic),
+    PostWidget(post: oneImagePost),
+    PostWidget(post: oneImagePost),
+  ];
+
   ///@param [index] is the index of the bottom navigation bar screen
   ///the function changes the displayed screen accordingly
   void changeIndex(int index) {
@@ -69,6 +142,7 @@ class AppCubit extends Cubit<AppState> {
     emit(ChangeBottomNavBarState());
   }
 
+  ///@param [homeMenuDropdown] a boolean that indicates whether the home dropdown button is open or not
   bool homeMenuDropdown = false;
   List homeMenuItems = ['Home', 'Popular'];
   int homeMenuIndex = 0;
@@ -87,67 +161,371 @@ class AppCubit extends Cubit<AppState> {
     emit(ChangeHomeMenuIndex());
   }
 
-  void changeEndDrawer() {
-    emit(ChangeEndDrawerState());
+  /// the function changes the state of the right (end) drawer from open to close and vice versa
+  void changeRightDrawer() {
+    emit(ChangeRightDrawerState());
   }
 
-  ///@param [context] is the context of the desired screen
-  void getMainScreenContext(context) {
-    mainScreenContext = context;
+  /// the function changes the state of the left drawer from open to close and vice versa
+  void changeLeftDrawer() {
+    emit(ChangeLeftDrawerState());
   }
 
-  ///Left drawer 'moderating' list state management
+  ///@param [moderatingListOpen] a boolean that indicates whether the left drawer's 'moderating' list is open or not
   bool moderatingListOpen = true;
 
-  List<Widget> moderatingListItems = [
-    const Text(
-      'moderating 1 ',
-      style: TextStyle(
-          color: ColorManager.eggshellWhite, fontWeight: FontWeight.w400),
-    ),
-    const Text(
-      'moderating 2 ',
-      style: TextStyle(
-          color: ColorManager.eggshellWhite, fontWeight: FontWeight.w400),
-    ),
-    const Text(
-      'moderating 3 ',
-      style: TextStyle(
-          color: ColorManager.eggshellWhite, fontWeight: FontWeight.w400),
-    ),
-  ];
-
+  /// The function changes the moderating list state from open to closed and the opposite to keep its state in different contexts
   void changeModeratingListState() {
     moderatingListOpen = !moderatingListOpen;
     emit(ChangeModeratingListState());
   }
 
-  ///Left drawer 'your communitites' list state management
+  ///@param [moderatingListItems] the subreddits you moderate
+  List<DrawerCommunitiesModel> moderatingListItems = [];
+
+  ///@param [yourCommunitiesistOpen] a boolean that indicates whether the left drawer's 'your communities' list is open or not
   bool yourCommunitiesistOpen = true;
 
+  /// The function changes the communitites list state from openn to closed and the opposite to keep its state in different contexts
   void changeYourCommunitiesState() {
     yourCommunitiesistOpen = !yourCommunitiesistOpen;
     emit(ChangeYourCommunitiesState());
   }
 
-  List<Widget> yourCommunitiesList = [
-    //
-    const Text(
-      'community 1 ',
-      style: TextStyle(
-          color: ColorManager.eggshellWhite, fontWeight: FontWeight.w400),
+  ///@param [yourCommunitiesList] user's joined communities
+  List<DrawerCommunitiesModel> yourCommunitiesList = [];
+
+  void getYourCommunities() {
+    yourCommunitiesList.clear();
+    DioHelper.getData(path: joinedSubreddits).then((value) {
+      if (value.statusCode == 200) {
+        for (int i = 0; i < value.data['children'].length; i++) {
+          yourCommunitiesList
+              .add(DrawerCommunitiesModel.fromJson(value.data['children'][i]));
+        }
+        emit(LoadedCommunitiesState());
+      } else {
+        emit(ErrorState());
+      }
+    });
+  }
+
+  void getYourModerating() {
+    moderatingListItems.clear();
+    DioHelper.getData(path: moderatedSubreddits).then((value) {
+      if (value.statusCode == 200) {
+        for (int i = 0; i < value.data['children'].length; i++) {
+          moderatingListItems
+              .add(DrawerCommunitiesModel.fromJson(value.data['children'][i]));
+        }
+        emit(LoadedCommunitiesState());
+      } else {
+        emit(ErrorState());
+      }
+    });
+  }
+
+  ///@param [profilePicture] the profile picture of the user
+  String profilePicture = '';
+
+  void getUserProfilePicture() {
+    DioHelper.getData(path: '$user/$username/$about').then((value) {
+      logger.wtf(value.data);
+      if (value.statusCode == 200) {
+        if (value.data['picture'] != null) {
+          profilePicture = value.data['picture'];
+          logger.w('message $profilePicture');
+        }
+      } else {
+        emit(ErrorState());
+      }
+    });
+  }
+
+  ///@param [username] is the username of the user
+  String? username = 'Anonymous';
+  String? age = '';
+  int? karma = 1;
+
+  /// the function get the user's username from the backend
+  void getUsername() {
+    username = CacheHelper.getData(key: 'username');
+    DioHelper.getData(path: '$userDetails/$username').then((value) {
+      if (value.statusCode == 200) {
+        karma = value.data['karma'];
+        DateTime joinDate = DateTime.parse(value.data['joinDate']);
+        if (DateTime.now().year - joinDate.year > 0) {
+          age = '${DateTime.now().year - joinDate.year} y';
+        } else if (DateTime.now().month - joinDate.month > 0) {
+          age = '${DateTime.now().month - joinDate.month} m';
+        } else {
+          age = '${DateTime.now().day - joinDate.day} d';
+        }
+      } else {
+        emit(ErrorState());
+      }
+    });
+  }
+
+  ///@param [history] the list of the user's history, changes according to its category
+  List<PostModel> history = [];
+  String currentHistoryCategory = recentHistory;
+  String beforeId = '';
+  String afterId = '';
+
+  ///@param [path] is the path of the desired history category
+  /// the function gets the history of the specified path (recent, upvoted, downvoted, hidden) history
+  /// emits some corresponding states and fills [history] list
+  void getHistory(
+      {path,
+      bool loadMore = false,
+      bool before = false,
+      bool after = false,
+      int limit = 10}) {
+    if (kDebugMode) {
+      logger.wtf('after$afterId');
+      logger.wtf('before$beforeId');
+    }
+    if (kDebugMode) {
+      logger.wtf('CATEGOOORYYYY $currentHistoryCategory');
+    }
+    loadMore ? emit(LoadingMoreHistoryState()) : emit(LoadingHistoryState());
+    if (!loadMore) {
+      history.clear();
+      beforeId = '';
+      afterId = '';
+    } else {
+      if (kDebugMode) {
+        logger.wtf('AFFFTEEEEERRRRRR ');
+      }
+      if (kDebugMode) {
+        logger.wtf(history[history.length - 1].id);
+      }
+    }
+    DioHelper.getData(
+      path: path != null
+          ? '$user/$username$path'
+          : '$user/$username$currentHistoryCategory',
+      query: {
+        'limit': limit,
+        'after': after ? afterId : null,
+        'before': before ? beforeId : null,
+      },
+    ).then((value) {
+      if (value.data['children'].length == 0) {
+        if (kDebugMode) {
+          logger.wtf('EMPPPTTYYYYY');
+        }
+
+        if (loadMore) {
+          emit(NoMoreHistoryToLoadState());
+        } else {
+          emit(HistoryEmptyState());
+        }
+      } else {
+        afterId = value.data['after'];
+        beforeId = value.data['before'];
+        for (int i = 0; i < value.data['children'].length; i++) {
+          // logger.wtf(i);
+          history.add(PostModel.fromJsonwithData(value.data['children'][i]));
+          loadMore
+              ? emit(LoadedMoreHistoryState())
+              : emit(LoadedHistoryState());
+        }
+      }
+    }).onError((error, stackTrace) {
+      if (kDebugMode) {
+        logger.wtf(error.toString());
+      }
+    });
+  }
+
+  ///@param [historyCategoriesNames] a list the string names of the history categories to be used in different buttons, lists...etc
+  List<String> historyCategoriesNames = [
+    'Recent',
+    'Upvoted',
+    'Downvoted',
+    'Hidden'
+  ];
+
+  ///@param [historyCategoriesIcons] a list of icons corresponding to [historyCategoriesNames]
+  List<Icon> historyCategoriesIcons = [
+    const Icon(Icons.timelapse),
+    const Icon(Icons.arrow_circle_up_rounded),
+    const Icon(Icons.arrow_circle_down_rounded),
+    const Icon(Icons.hide_image_outlined),
+  ];
+
+  ///@param [historyCategoryIndex] is the index of the chosen history category
+  int historyCategoryIndex = 0;
+
+  ///@param [category] is an enum that corresponds to the history category item
+  /// the function clears the [history] list and fills it with the designated category and emits a state after doing so
+  void changeHistoryCategory(HistoyCategory category) {
+    historyCategoryIndex = category.index;
+    // currentHistoryCategory = category;
+    switch (historyCategoryIndex) {
+      case 0:
+        currentHistoryCategory = recentHistory;
+        getHistory(path: recentHistory);
+        break;
+      case 1:
+        currentHistoryCategory = upvotedHistory;
+        getHistory(path: upvotedHistory);
+        break;
+      case 2:
+        currentHistoryCategory = downvotedHistory;
+        getHistory(path: downvotedHistory);
+        break;
+      case 3:
+        currentHistoryCategory = hiddenHistory;
+        getHistory(path: hiddenHistory);
+        break;
+    }
+
+    emit(ChangeHistoryCategoryState());
+  }
+
+  List<Icon> historyPostViewsIcons = [
+    const Icon(Icons.crop_square_outlined),
+    const Icon(Icons.view_list),
+  ];
+
+  int historyPostViewIconIndex = 0;
+  PostView histoyPostsView = PostView.card;
+  void changeHistoryPostView(PostView view) {
+    historyPostViewIconIndex = view.index;
+    histoyPostsView = view;
+    // logger.wtf(histoyPostsView.toString());
+    emit(ChangeHistoryPostViewState());
+  }
+
+  List<Tab> savedTabBarTabs = [
+    const Tab(
+      text: 'Posts',
     ),
-    const Text(
-      'community 2 ',
-      style: TextStyle(
-          color: ColorManager.eggshellWhite, fontWeight: FontWeight.w400),
-    ),
-    const Text(
-      'community 3 ',
-      style: TextStyle(
-          color: ColorManager.eggshellWhite, fontWeight: FontWeight.w400),
+    const Tab(
+      text: 'Comments',
     ),
   ];
-  String profilePicture = 'assets/images/Logo.png';
-  String username = 'r/sarsora';
+
+  List<Widget> savedTabBarScreens = const [
+    SavedPostsScreen(),
+    SavedCommentsScreen()
+  ];
+
+  List<PostModel> savedPostsList = [];
+  String savedPostsBeforeId = '';
+  String savedPostsAfterId = '';
+
+  List<SavedCommentModel> savedCommentsList = [];
+  String savedCommentsBeforeId = '';
+  String savedCommentsAfterId = '';
+
+  /// the function gets the history of the specified path (recent, upvoted, downvoted, hidden) history
+  /// emits some corresponding states and fills [savedPostsList] list
+  void getSaved(
+      {bool isPosts = false,
+      bool isComments = false,
+      bool loadMore = false,
+      bool before = false,
+      bool after = false,
+      int limit = 5}) {
+    if (loadMore && isPosts) emit(LoadingMoreSavedPostsState());
+    if (loadMore && isComments) emit(LoadingMoreSavedCommentsState());
+    if (!loadMore) {
+      savedPostsList.clear();
+      savedCommentsList.clear();
+      savedPostsBeforeId = '';
+      savedPostsAfterId = '';
+      savedCommentsBeforeId = '';
+      savedCommentsAfterId = '';
+    }
+
+    DioHelper.getData(
+      path: '$user/$username/saved',
+      query: {
+        'limit': limit,
+        'after': after
+            ? isPosts
+                ? savedPostsAfterId
+                : isComments
+                    ? savedCommentsAfterId
+                    : ''
+            : '',
+        'before': before
+            ? isPosts
+                ? savedCommentsBeforeId
+                : isComments
+                    ? savedCommentsBeforeId
+                    : ''
+            : '',
+      },
+    ).then((value) {
+      if (value.data['children'].length == 0) {
+        if (kDebugMode) {
+          logger.wtf('EMPPPTTYYYYY');
+        }
+
+        if (loadMore) {
+          emit(NoMoreSavedToLoadState());
+        } else {
+          emit(SavedEmptyState());
+        }
+      } else {
+        if (isPosts) {
+          savedPostsAfterId = value.data['after'];
+          savedPostsBeforeId = value.data['before'];
+        } else if (isComments) {
+          savedCommentsAfterId = value.data['after'];
+          savedCommentsBeforeId = value.data['before'];
+        }
+
+        // logger.wtf(value.data.toString());
+        for (int i = 0; i < value.data['children'].length; i++) {
+          if (value.data['children'][i]['data']['comments'].length == 0) {
+            // logger.wtf('POOOOSTTTTSSS');
+            // logger.wtf(value.data['children'][i]['data'].toString());
+
+            savedPostsList.add(
+                PostModel.fromJson(value.data['children'][i]['data']['post']));
+            savedPostsList[savedPostsList.length - 1].id =
+                value.data['children'][i]['id'];
+
+            // logger.e('tmmmmamaamammama');
+          } else {
+            logger.wtf('COOOMMMMEEENNNTSSSS');
+            logger.wtf(value.data['children'][i]['data'].toString());
+            for (int j = 0;
+                j < value.data['children'][i]['data']['comments'].length;
+                j++) {
+              savedCommentsList.add(SavedCommentModel.fromJson(
+                  value.data['children'][i]['data']['comments'][j]));
+            }
+          }
+        }
+        // logger.wtf('aaaaaaaaaaaaa');
+
+        // logger.wtf(' om el id ${savedPostsList[0].id.toString()}');
+        logger.w('length ${savedPostsList.length}');
+
+        loadMore ? emit(LoadedMoreSavedState()) : emit(LoadedSavedState());
+      }
+    }).onError((error, stackTrace) {
+      if (kDebugMode) {
+        logger.wtf(error.toString());
+      }
+    });
+  }
+
+  void clearHistoy() {
+    DioHelper.postData(
+      path: clearHistory,
+      data: {'username': username},
+    ).then((value) {
+      if (value.statusCode == 200) history.clear();
+      emit(ClearHistoryState());
+      emit(HistoryEmptyState());
+    });
+  }
 }

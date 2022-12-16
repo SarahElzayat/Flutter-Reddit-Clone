@@ -1,15 +1,14 @@
 /// Model Button
 /// @author Haitham Mohamed
 /// @date 4/11/2022
-
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/Screens/add_post/community_search.dart';
-import 'package:reddit/Screens/add_post/post.dart';
-import 'package:reddit/cubit/add_post.dart/cubit/add_post_cubit.dart';
-
-import '../../Components/button.dart';
-import '../../Components/Helpers/color_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/cubit/add_post/cubit/add_post_cubit.dart';
+import 'package:reddit/screens/add_post/community_search.dart';
+
+import '../../components/button.dart';
+import '../../components/helpers/color_manager.dart';
+import '../../screens/add_post/post_rules.dart';
 
 /// Button that navigate to the post screen after check the validation
 class CreatePostButton extends StatelessWidget {
@@ -21,6 +20,8 @@ class CreatePostButton extends StatelessWidget {
     bool isDisabled = true;
     final navigator = Navigator.of(context);
     final mediaQuery = MediaQuery.of(context);
+    final addPostCubit = BlocProvider.of<AddPostCubit>(context);
+
     return BlocBuilder<AddPostCubit, AddPostState>(
       buildWhen: (previous, current) {
         if (current is CanCreatePost) {
@@ -45,7 +46,15 @@ class CreatePostButton extends StatelessWidget {
             onPressed: isDisabled
                 ? () {}
                 : (() {
-                    navigator.pushNamed(CommunitySearch.routeName);
+                    if (addPostCubit.subredditName != null &&
+                        addPostCubit.subredditName != '') {
+                      navigator.pushNamed(PostRules.routeName);
+                    } else {
+                      navigator.push(MaterialPageRoute(
+                          builder: ((context) => const CommunitySearch(
+                                goToRules: true,
+                              ))));
+                    }
                   }));
       },
     );

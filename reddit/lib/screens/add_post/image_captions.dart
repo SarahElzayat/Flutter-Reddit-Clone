@@ -7,11 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-import 'package:reddit/Components/Button.dart';
-import 'package:reddit/Components/Helpers/color_manager.dart';
+import 'package:reddit/components/button.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/widgets/add_post/add_post_textfield.dart';
 
-import '../../cubit/add_post.dart/cubit/add_post_cubit.dart';
+import '../../cubit/add_post/cubit/add_post_cubit.dart';
 
 class AddImageCaption extends StatefulWidget {
   AddImageCaption({
@@ -78,7 +78,7 @@ class _AddImageCaptionState extends State<AddImageCaption> {
                     text: 'Save',
                     textColor: isEdited ? ColorManager.blue : ColorManager.grey,
                     backgroundColor: Colors.black,
-                    buttonWidth: 70,
+                    buttonWidth: 80,
                     buttonHeight: 20,
                     textFontSize: 20,
                     onPressed: isEdited
@@ -192,7 +192,6 @@ class _AddImageCaptionState extends State<AddImageCaption> {
       initialScale: PhotoViewComputedScale.contained,
       minScale: PhotoViewComputedScale.contained * (0.5),
       maxScale: PhotoViewComputedScale.covered * 4.1,
-      // TODO: Add hero tag to the image
       heroAttributes: PhotoViewHeroAttributes(tag: item),
     );
   }

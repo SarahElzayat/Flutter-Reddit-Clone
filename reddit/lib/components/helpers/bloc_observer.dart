@@ -1,4 +1,5 @@
 ///@author Sarah Elzayat
+///@description the bloc observer is used for debugging purposes, it shows the the app states in the debug console
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 

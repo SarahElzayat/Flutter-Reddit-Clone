@@ -5,7 +5,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import '../../components/helpers/color_manager.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../cubit/add_post.dart/cubit/add_post_cubit.dart';
+import '../../cubit/add_post/cubit/add_post_cubit.dart';
 
 /// This widget Show video (video Thumbnail) in Add post Screen
 /// You allow to add one video only
@@ -47,10 +47,12 @@ class VideoPost extends StatelessWidget {
         SizedBox(
           width: width * 0.4,
           height: height * 0.23,
-          child: Image.memory(
-            addPostCubit.videoThumbnail!,
-            fit: BoxFit.fill,
-          ),
+          child: (addPostCubit.videoThumbnail == null)
+              ? null
+              : Image.memory(
+                  addPostCubit.videoThumbnail!,
+                  fit: BoxFit.fill,
+                ),
         ),
         Container(
           margin: const EdgeInsets.only(

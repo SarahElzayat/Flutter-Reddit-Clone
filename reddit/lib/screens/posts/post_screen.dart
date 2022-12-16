@@ -4,60 +4,145 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/widgets/posts/cubit/post_cubit.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/data/comment/comment_model.dart';
+import 'package:reddit/screens/posts/post_screen_cubit/post_screen_cubit.dart';
+import 'package:reddit/screens/posts/post_screen_cubit/post_screen_state.dart';
+import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_state.dart';
 import '../../data/post_model/post_model.dart';
+import '../../widgets/comments/comment.dart';
 import '../../widgets/posts/dropdown_list.dart';
+import '../../widgets/posts/post_upper_bar.dart';
+import '../comments/add_comment_screen.dart';
 
 /// The Screen that displays the indvidual Posts
 ///
 /// it will contain the [PostWidget] and the Comments
-class PostScreen extends StatefulWidget {
+class PostScreen extends StatelessWidget {
   static const String routeName = 'post_screen';
-  const PostScreen({super.key, required this.post});
+  const PostScreen({
+    super.key,
+    required this.post,
+    this.upperRowType = ShowingOtions.both,
+  });
 
   /// The post to be displayed
   final PostModel post;
 
-  @override
-  State<PostScreen> createState() => _PostScreenState();
-}
+  /// if the single or a detailed row should be shown in the upper part of the post
+  ///
+  /// it's passed because the post don't require the subreddit to be shown in
+  /// the sunreddit screen for example
+  final ShowingOtions upperRowType;
 
-class _PostScreenState extends State<PostScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.post.title!),
-        actions: [
-          BlocProvider(
-            create: (context) => PostCubit(widget.post),
-            child: BlocBuilder<PostNotifierCubit, PostNotifierState>(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => PostAndCommentActionsCubit(
+            post: post,
+          ),
+        ),
+        BlocProvider(
+          create: (context) => PostScreenCubit(
+            post: post,
+          )..getCommentsOfPost(),
+        ),
+      ],
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(post.title!),
+          actions: [
+            BlocBuilder<PostNotifierCubit, PostNotifierState>(
               builder: (context, state) {
                 return DropDownList(
-                  key: const Key('dropDownList-button'),
-                  postId: widget.post.id!,
-                  itemClass: (widget.post.saved ?? true)
-                      ? ItemsClass.publicSaved
-                      : ItemsClass.public,
+                  // key: const Key('dropDownList-button'),
+                  post: post,
+                  itemClass: ItemsClass.posts,
+                  outsideScreen: false,
                 );
               },
             ),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            PostWidget(
-              post: widget.post,
-              outsideScreen: false,
-            ),
           ],
+        ),
+        body: BlocConsumer<PostScreenCubit, PostScreenState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            var screenCubit = PostScreenCubit.get(context);
+            return Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: BlocBuilder<PostNotifierCubit, PostNotifierState>(
+                      builder: (context, state) {
+                        return Column(
+                          children: [
+                            PostWidget(
+                              post: post,
+                              outsideScreen: false,
+                              upperRowType: upperRowType,
+                            ),
+                            const SizedBox(height: 2),
+                            ..._getCommentsList(screenCubit.comments),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                // a container that when tabbed opens the edit comment screen
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(
+                      builder: (context) => AddCommentScreen(
+                        post: post,
+                      ),
+                    ))
+                        .then((value) {
+                      if (value != null && value) {
+                        screenCubit.getCommentsOfPost();
+                      }
+                    });
+                  },
+                  child: Container(
+                    color: ColorManager.betterDarkGrey,
+                    height: 5.h,
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Row(
+                      children: const [
+                        SizedBox(width: 10),
+                        Text(
+                          'Add a comment',
+                          style: TextStyle(color: ColorManager.lightGrey),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
+  }
+
+  _getCommentsList(List<CommentModel> l) {
+    return l
+        .map((e) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 0),
+              child: Comment(
+                post: post,
+                comment: e,
+              ),
+            ))
+        .toList();
   }
 }
