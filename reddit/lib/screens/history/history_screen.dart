@@ -223,7 +223,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
                   /// checking the [histoty] list state, if empty then show the corresponding message
                   /// else show the history
-                  //TODO do the before/after thing
                   state is HistoryEmptyState
                       ? Padding(
                           padding: EdgeInsets.only(
@@ -252,7 +251,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               listener: (context, state) {},
                               builder: (context, state) {
                                 return ListView.builder(
-                                  // controller: _scrollController,
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemBuilder: (context, index) =>
                                       // index < cubit.history.length ?

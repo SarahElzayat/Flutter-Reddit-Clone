@@ -23,9 +23,7 @@ class HomeScreenForMobile extends StatefulWidget {
 
 class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final RefreshController _refreshController = RefreshController(
-    initialRefresh: false,
-  );
+
 
   bool isAndroid = !kIsWeb;
 
@@ -44,23 +42,14 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
   }
 
   void initialGetters() {
-    AppCubit.get(context).getHomePosts(limit: 5);
+    // AppCubit.get(context).getHomePosts(limit: 5);
     AppCubit.get(context).getUsername();
     AppCubit.get(context).getYourCommunities();
     AppCubit.get(context).getYourModerating();
     AppCubit.get(context).getUserProfilePicture();
   }
 
-  void _onRefresh() async {
-    // monitor network fetch
-    _onLoading();
-    _refreshController.refreshCompleted();
-  }
-
-  void _onLoading() {
-    initialGetters();
-    _refreshController.loadComplete();
-  }
+ 
 
   @override
   void initState() {
@@ -87,14 +76,7 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
           drawer: const LeftDrawer(),
           endDrawer: const RightDrawer(),
           appBar: homeAppBar(context, cubit.currentIndex),
-          body: SmartRefresher(
-              enablePullDown: true,
-              enablePullUp: true,
-              header: const WaterDropHeader(),
-              controller: _refreshController,
-              onRefresh: _onRefresh,
-              onLoading: _onLoading,
-              child: cubit.bottomNavBarScreens[cubit.currentIndex]),
+          body: cubit.bottomNavBarScreens[cubit.currentIndex],
           bottomNavigationBar: isAndroid
               ? BottomNavigationBar(
                   type: BottomNavigationBarType.fixed,

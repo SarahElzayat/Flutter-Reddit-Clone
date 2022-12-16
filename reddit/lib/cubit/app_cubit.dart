@@ -60,7 +60,7 @@ class AppCubit extends Cubit<AppState> {
   ];
 
   ///@param [homePosts] home posts
-  List<PostModel> homePosts = [];
+  List<Widget> homePosts = [];
   String homePostsAfterId = '';
   String homePostsBeforeId = '';
 
@@ -93,6 +93,8 @@ class AppCubit extends Cubit<AppState> {
     }).then((value) {
       if (value.statusCode == 200) {
         if (value.data['children'].length == 0) {
+          logger.wtf('Mafeesh tany');
+
           loadMore
               ? emit(NoMoreResultsToLoadState())
               : emit(ResultEmptyState());
@@ -105,8 +107,9 @@ class AppCubit extends Cubit<AppState> {
           logger.wtf('before $homePostsBeforeId');
           logger.wtf('after $homePostsAfterId');
           for (int i = 0; i < value.data['children'].length; i++) {
-            homePosts
-                .add(PostModel.fromJson(value.data['children'][i]['data']));
+            homePosts.add(PostWidget(
+                post: PostModel.fromJson(
+                    value.data['children'][i]['data'])));
             logger.e(i);
           }
         }

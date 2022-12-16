@@ -5,10 +5,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:reddit/components/back_to_top_button.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/home_components/left_drawer.dart';
 import 'package:reddit/components/home_components/right_drawer.dart';
 import 'package:reddit/cubit/app_cubit.dart';
+import 'package:reddit/screens/comments/add_comment_screen.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
 
 import '../../components/home_app_bar.dart';
@@ -22,9 +25,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  ScrollController _scrollController = ScrollController();
-  bool showbtn = false;
+  final ScrollController _scrollController = ScrollController();
+  final RefreshController _refreshController = RefreshController(
+    initialRefresh: false,
+  );
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  bool showbtn = false;
 
   ///The method changes the end drawer state from open to closed and vice versa
   void _changeEndDrawer() {
@@ -43,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _scrollListener() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      AppCubit.get(context).getHomePosts(after: true, loadMore: true,limit: 5);
+      AppCubit.get(context).getHomePosts(after: true, loadMore: true, limit: 5);
     }
 
     double showoffset = MediaQuery.of(context).size.height /
@@ -62,9 +69,22 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  void _onRefresh() async {
+    // monitor network fetch
+    _onLoading();
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() {
+    AppCubit.get(context).getHomePosts(limit: 10);
+    _refreshController.loadComplete();
+  }
+
   @override
   void initState() {
+    AppCubit.get(context).getHomePosts(limit: 10);
     _scrollController.addListener(_scrollListener);
+
     super.initState();
   }
 
@@ -92,76 +112,82 @@ class _HomeScreenState extends State<HomeScreen> {
               : null,
           drawer: kIsWeb ? const LeftDrawer() : null,
           endDrawer: kIsWeb ? const RightDrawer() : null,
-          body: SingleChildScrollView(
-            controller: _scrollController, //set controller
-
-            physics: const BouncingScrollPhysics(),
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: SizedBox(
-                      width: kIsWeb ? width * 0.5 : width,
-                      child: ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount: cubit.homePosts.length,
-                        // : cubit.popularPosts.length,
-                        itemBuilder: (context, index) => Container(
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 0, vertical: 5),
-                            child: PostWidget(
-                              post: cubit.homePosts[index],
-                            )
-                            // cubit.homeMenuIndex == 0
-                            //     ? cubit.homePosts[index]
-                            //     : cubit.popularPosts[index],
-                            ),
+          body: SmartRefresher(
+                          enablePullDown: true,
+              // enablePullUp: true,
+              header: const WaterDropHeader(),
+              controller: _refreshController,
+              onRefresh: _onRefresh,
+              onLoading: _onLoading,
+            child: SingleChildScrollView(
+              physics: NeverScrollableScrollPhysics(),
+              controller: _scrollController,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: SizedBox(
+                        width: kIsWeb ? width * 0.5 : width,
+                        // child: ListView.builder(
+                        //   // physics: const NeverScrollableScrollPhysics(),
+                        //   shrinkWrap: true,
+                        //   controller: _scrollController,
+                        //   scrollDirection: Axis.vertical,
+                        //   itemCount: cubit.homePosts.length,
+                        //   itemBuilder: (context, index) => Container(
+                        //       margin: const EdgeInsets.symmetric(
+                        //           horizontal: 0, vertical: 5),
+                        //       child: PostWidget(
+                        //         post: cubit.homePosts[index],
+                        //       )),
+                        // ),
+                        child: Column(
+                          children: cubit.homePosts,
+                        ),
                       ),
                     ),
-                  ),
-                  if (kIsWeb)
-                    SizedBox(
-                      height: 500,
-                      width: 300,
-                      child: Column(
-                        children: [
-                          Container(
-                            color: Colors.red,
-                            height: 200,
-                            width: 200,
-                            child: Text(
-                              'Communities near you',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge!
-                                  .copyWith(color: Colors.white),
+                    if (kIsWeb)
+                      SizedBox(
+                        height: 500,
+                        width: 300,
+                        child: Column(
+                          children: [
+                            Container(
+                              color: Colors.red,
+                              height: 200,
+                              width: 200,
+                              child: Text(
+                                'Communities near you',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge!
+                                    .copyWith(color: Colors.white),
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            color: Colors.blue,
-                            height: 200,
-                            width: 200,
-                            child: Text(
-                              'Create post',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge!
-                                  .copyWith(color: Colors.white),
+                            const SizedBox(
+                              height: 20,
                             ),
-                          ),
-                        ],
+                            Container(
+                              color: Colors.blue,
+                              height: 200,
+                              width: 200,
+                              child: Text(
+                                'Create post',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge!
+                                    .copyWith(color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
