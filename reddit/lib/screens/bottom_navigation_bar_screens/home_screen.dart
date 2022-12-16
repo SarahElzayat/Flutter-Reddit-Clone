@@ -22,7 +22,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  ScrollController scrollController = ScrollController();
+  ScrollController _scrollController = ScrollController();
   bool showbtn = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -40,27 +40,31 @@ class _HomeScreenState extends State<HomeScreen> {
         : _scaffoldKey.currentState?.openDrawer();
   }
 
+  void _scrollListener() {
+    if (_scrollController.offset ==
+        _scrollController.position.maxScrollExtent) {
+      AppCubit.get(context).getHomePosts(after: true, loadMore: true,limit: 5);
+    }
+
+    double showoffset = MediaQuery.of(context).size.height /
+        2; //Back to top botton will show on scroll offset 10.0
+
+    if (_scrollController.offset > showoffset) {
+      showbtn = true;
+      setState(() {
+        //update state
+      });
+    } else {
+      showbtn = false;
+      setState(() {
+        //update state
+      });
+    }
+  }
+
   @override
   void initState() {
-    scrollController.addListener(() {
-      AppCubit.get(context).getHomePosts();
-
-      //scroll listener
-      double showoffset = MediaQuery.of(context).size.height /
-          2; //Back to top botton will show on scroll offset 10.0
-
-      if (scrollController.offset > showoffset) {
-        showbtn = true;
-        setState(() {
-          //update state
-        });
-      } else {
-        showbtn = false;
-        setState(() {
-          //update state
-        });
-      }
-    });
+    _scrollController.addListener(_scrollListener);
     super.initState();
   }
 
@@ -68,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    final AppCubit cubit = AppCubit.get(context)..getUsername();
+    final AppCubit cubit = AppCubit.get(context);
 
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {
@@ -84,12 +88,12 @@ class _HomeScreenState extends State<HomeScreen> {
           key: _scaffoldKey,
           appBar: kIsWeb ? homeAppBar(context, 0) : null,
           floatingActionButton: kIsWeb
-              ? BackToTopButton(scrollController: scrollController)
+              ? BackToTopButton(scrollController: _scrollController)
               : null,
           drawer: kIsWeb ? const LeftDrawer() : null,
           endDrawer: kIsWeb ? const RightDrawer() : null,
           body: SingleChildScrollView(
-            controller: scrollController, //set controller
+            controller: _scrollController, //set controller
 
             physics: const BouncingScrollPhysics(),
             child: SizedBox(

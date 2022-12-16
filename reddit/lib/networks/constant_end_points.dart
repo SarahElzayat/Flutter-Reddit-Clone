@@ -42,6 +42,7 @@ const remove = '/remove';
 const approve = '/approve';
 const submitPost = '/submit';
 const user = '/user';
+const about = '/about';
 const recentHistory = '/history';
 const upvotedHistory = '/upvoted';
 const downvotedHistory = '/downvoted';
@@ -63,10 +64,11 @@ const ban = '/ban';
 const unban = '/unban';
 const inviteMod = '/moderator-invite';
 const joinedSubreddits = '/joined-subreddits';
+const moderatedSubreddits = '/moderated-subreddits';
 // Note : after last / add the subreddit name
 const subredditInfo = '/r';
 const searchForSubreddit = '/search?type=subreddit';
-
+const userDetails = '/user-details';
 const homeBest = '/best';
 const homeTop = '/top';
 const homeHot = '/hot';
