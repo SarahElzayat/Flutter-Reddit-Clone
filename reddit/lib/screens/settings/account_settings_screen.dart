@@ -94,7 +94,7 @@ class AccountSettingsScreen extends StatelessWidget {
               ],
               listTileIcons: const [
                 CustomIcons.google,
-                CustomIcons.facebookSquared,
+                CustomIcons.facebook,
               ],
               listTileTitles: const [
                 'Google',
@@ -115,7 +115,7 @@ class AccountSettingsScreen extends StatelessWidget {
                 types: const ['', 'allowPeopleToFollowYou'],
                 handler: [
                   () {
-                    SettingsCubit.get(context).getBlockedUsers(context);
+                    // SettingsCubit.get(context).getBlockedUsers(context, '');
                     navigator.pushNamed(BlockedAccounts.routeName);
                   },
                   () {},

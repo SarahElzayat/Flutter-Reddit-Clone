@@ -8,6 +8,6 @@ class CustomIcons {
 
   static const IconData google =
       IconData(0xf1a0, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData facebookSquared =
+  static const IconData facebook =
       IconData(0xf30e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

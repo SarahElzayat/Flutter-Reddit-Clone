@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/settings_models/block_user_model.dart';
 import 'package:reddit/data/settings_models/blocked_accounts_getter_model.dart';
 import 'package:reddit/screens/settings/blocked_accounts.dart';
@@ -19,9 +21,9 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
 
   static SettingsCubit get(context) => BlocProvider.of(context);
 
-  void blockUser(context) {
+  Future<void> blockUser(context, PagingController pagingController) async {
     final userToBeBlocked = BlockModel(username: 'abdelazizSalah', block: true);
-    DioHelper.postData(
+    await DioHelper.postData(
             path: block,
             data: userToBeBlocked.toJson(),
             token: CacheHelper.getData(key: 'token'))
@@ -35,17 +37,29 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(err.response?.data)));
     });
+
+    pagingController.refresh();
   }
 
   /// the blocked accounts from the user.
-  void getBlockedUsers(context) async {
-    blockUser(context);
+  void getBlockedUsers(
+      context, String? after, PagingController pagingController) async {
     emit(UnBlockState(false));
-    await DioHelper.getData(path: blockedAccounts).then((response) {
+    await DioHelper.getData(path: blockedAccounts, query: {'after': after})
+        .then((response) {
       if (response.statusCode == 200) {
+        blockedUsers.clear();
         for (var elem in response.data['children']) {
           blockedUsers.add(BlockedAccountsGetterModel.fromJson(elem));
         }
+        pagingController.appendLastPage(blockedUsers);
+
+        // if (response.data['after'] as String == '') {
+        //   pagingController.appendLastPage(blockedUsers);
+        // } else {
+        //   pagingController.appendPage(
+        //       blockedUsers, response.data['after'] as String);
+        // }
       }
     }).catchError((error) {
       error = error as DioError;
@@ -56,10 +70,15 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
     emit(UnBlockState(true));
   }
 
-  void unBlock(userName, context) {
+  void removeItem(item) {
+    blockedUsers.remove(item);
+    emit(UnBlockState(true));
+  }
+
+  Future<void> unBlock(userName, context, PagingController screenContr) async {
     final blockUser = BlockModel(block: false, username: userName);
 
-    DioHelper.postData(
+    await DioHelper.postData(
             path: block,
             data: blockUser.toJson(),
             token: CacheHelper.getData(key: 'token'))
@@ -75,6 +94,7 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
           .showSnackBar(SnackBar(content: Text(err.response!.data)));
     });
 
+    screenContr.refresh();
     emit(UnBlockState(true));
   }
 
