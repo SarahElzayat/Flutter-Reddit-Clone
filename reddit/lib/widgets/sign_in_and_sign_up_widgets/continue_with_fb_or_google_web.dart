@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:reddit/data/facebook_api/facebook_api.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
@@ -12,28 +13,31 @@ class ContinueWithGoogleOrFbWeb extends StatelessWidget {
   const ContinueWithGoogleOrFbWeb({super.key});
 
   Future signInWithFacebook() async {
-    // await FacebookLoginAPI.login();
-    await GoogleSignInApi.logOut();
-    print('Signed out');
+    print('trying to log in to facebook');
+    await FacebookLoginAPI.login();
+    print('logged in to facebook successfully');
   }
 
   Future signInWithGoogle(context) async {
-    final user = await GoogleSignInApi.login();
-    GoogleSignInAuthentication googleToken = await user!.authentication;
+    FacebookLoginAPI.logOut();
+    print('Sign out');
 
-    await DioHelper.postData(
-        path: signInGoogle,
-        data: {'accessToken': googleToken.idToken}).then((response) async {
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        Navigator.of(context).pushNamed(HomeScreen.routeName);
-      }
-    }).catchError((err) {
-      err = err as DioError;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(err.response!.data['message']),
-        backgroundColor: ColorManager.red,
-      ));
-    });
+    // final user = await GoogleSignInApi.login();
+    // GoogleSignInAuthentication googleToken = await user!.authentication;
+
+    // await DioHelper.postData(
+    //     path: signInGoogle,
+    //     data: {'accessToken': googleToken.idToken}).then((response) async {
+    //   if (response.statusCode == 200 || response.statusCode == 201) {
+    //     Navigator.of(context).pushNamed(HomeScreen.routeName);
+    //   }
+    // }).catchError((err) {
+    //   err = err as DioError;
+    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //     content: Text(err.response!.data['message']),
+    //     backgroundColor: ColorManager.red,
+    //   ));
+    // });
   }
 
   @override
