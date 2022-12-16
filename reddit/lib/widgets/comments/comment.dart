@@ -56,7 +56,7 @@ class _CommentState extends State<Comment> {
     Document doc;
     var content = widget.comment.commentBody;
     try {
-      doc = Document.fromJson(jsonDecode(content ?? '[]')['ops']);
+      doc = Document.fromJson((content ?? {'ops': []})['ops']);
     } catch (e) {
       doc = Document();
     }

@@ -60,10 +60,18 @@ class _PostUpperBarState extends State<PostUpperBar> {
           },
           caseBuilders: {
             ShowingOtions.onlyUser: (ctx) {
-              return singleRow(sub: false, showIcon: true, post: widget.post);
+              return singleRow(
+                  sub: false,
+                  showIcon: true,
+                  post: widget.post,
+                  isWeb: widget.isWeb);
             },
             ShowingOtions.onlySubreddit: (_) {
-              return singleRow(sub: true, showIcon: true, post: widget.post);
+              return singleRow(
+                  sub: true,
+                  showIcon: true,
+                  post: widget.post,
+                  isWeb: widget.isWeb);
             },
             ShowingOtions.both: (_) {
               return _bothRows();
@@ -113,7 +121,11 @@ class _PostUpperBarState extends State<PostUpperBar> {
                   ),
                 ),
               ),
-              singleRow(sub: false, showDots: false, post: widget.post),
+              singleRow(
+                  sub: false,
+                  showDots: false,
+                  post: widget.post,
+                  isWeb: widget.isWeb),
             ],
           ),
           const Spacer(),
@@ -134,7 +146,7 @@ class _PostUpperBarState extends State<PostUpperBar> {
                 backgroundColor: ColorManager.blue,
               ),
             )
-          else if (!widget.outSide)
+          else if (widget.outSide && !widget.isWeb)
             dropDownDots(widget.post),
         ],
       ),

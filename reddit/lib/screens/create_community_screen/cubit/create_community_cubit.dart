@@ -44,7 +44,7 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
     }).catchError((err) {
       err = err as DioError;
       print(err.message);
-      print(err.response!.data['error']);
+      print(err.response?.data['error']);
     });
     emit(CreateCommunity());
   }

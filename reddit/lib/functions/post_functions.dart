@@ -44,10 +44,10 @@ BlocBuilder<PostNotifierCubit, PostNotifierState> dropDownDots(PostModel post) {
   );
 }
 
-String getPlainText(String? body) {
+String getPlainText(Map<String, dynamic>? body) {
   Document doc;
   try {
-    doc = Document.fromJson(jsonDecode(body ?? '[]')['ops']);
+    doc = Document.fromJson((body ?? {'ops': []})['ops']);
   } catch (e) {
     doc = Document();
   }
@@ -142,6 +142,7 @@ Widget singleRow({
   bool sub = false,
   bool showIcon = false,
   bool showDots = true,
+  required bool isWeb,
   required PostModel post,
 }) {
   return Row(
@@ -167,7 +168,7 @@ Widget singleRow({
         ),
       ),
       if (showIcon) const Spacer(),
-      if (showDots) dropDownDots(post)
+      if (showDots && !isWeb) dropDownDots(post)
     ],
   );
 }

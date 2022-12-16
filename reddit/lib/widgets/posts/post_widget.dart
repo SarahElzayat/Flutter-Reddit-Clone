@@ -1,7 +1,6 @@
 /// The Main Post Widget that shows in the home and other places
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
-import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
@@ -19,7 +18,6 @@ import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/components/helpers/widgets/responsive_widget.dart';
 import 'package:reddit/functions/post_functions.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
@@ -316,7 +314,8 @@ class _PostWidgetState extends State<PostWidget> {
     return (!widget.outsideScreen && widget.post.kind != 'link') ||
         (widget.outsideScreen &&
             widget.post.kind == 'hybrid' &&
-            ((widget.post.content ?? '').length > 90));
+            (((widget.post.content ?? {'ops': []})['ops'] ?? false).length >
+                90));
   }
 
   Row _lowerPart(bool isWeb) {
@@ -462,7 +461,7 @@ class _PostWidgetState extends State<PostWidget> {
     Document doc;
 
     try {
-      doc = Document.fromJson(jsonDecode(widget.post.content ?? '[]')['ops']);
+      doc = Document.fromJson((widget.post.content ?? {'ops': []})['ops']);
     } catch (e) {
       doc = Document();
     }

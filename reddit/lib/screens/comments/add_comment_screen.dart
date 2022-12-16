@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -113,10 +112,10 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
       required VoidCallback onSuccess,
       required void Function(DioError) onError,
     }) {
-      final content = jsonEncode(_controller!.document.toDelta().toJson());
+      final content = _controller!.document.toDelta().toJson();
       logger.i(content);
       SendedCommentModel c = SendedCommentModel(
-        content: '{"ops":$content}',
+        content: {'ops': content},
         postId: widget.post.id!,
         parentType: _isPostParent() ? 'post' : 'comment',
         haveSubreddit: widget.post.subreddit != null,
@@ -268,8 +267,7 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
     Document doc;
 
     try {
-      doc = Document.fromJson(jsonDecode(widget.post.content ?? '[]')['ops']);
-      Logger().wtf(doc.toPlainText());
+      doc = Document.fromJson((widget.post.content ?? {'ops': []})['ops']);
     } catch (e) {
       logger.wtf(e);
       doc = Document();

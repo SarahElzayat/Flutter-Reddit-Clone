@@ -140,9 +140,10 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
                   },
                 ),
               ),
-              SizedBox(
-                width: 2.w,
-              ),
+              if (widget.isWeb)
+                SizedBox(
+                  width: 2.w,
+                ),
               if (_showInsights && !widget.isWeb)
                 Material(
                   key: const Key('insights-button'),
@@ -174,30 +175,33 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
                     iconSize: min(5.5.w, 30),
                   ),
                 ),
-              InkWell(
-                onTap: () {
-                  cubit.save().then((value) {
-                    PostNotifierCubit.get(context).notifyPosts();
-                  });
-                },
-                child: MenuItems.buildDropMenuItem(
-                    (widget.post.saved ?? false)
-                        ? MenuItems.unsave
-                        : MenuItems.save,
-                    iconColor: widget.iconColor),
-              ),
-              SizedBox(
-                width: 2.w,
-              ),
-              BlocBuilder<PostNotifierCubit, PostNotifierState>(
-                builder: (context, state) {
-                  return DropDownList(
-                    post: widget.post,
-                    itemClass: ItemsClass.posts,
-                    isWeb: widget.isWeb,
-                  );
-                },
-              )
+              if (widget.isWeb)
+                InkWell(
+                  onTap: () {
+                    cubit.save().then((value) {
+                      PostNotifierCubit.get(context).notifyPosts();
+                    });
+                  },
+                  child: MenuItems.buildDropMenuItem(
+                      (widget.post.saved ?? false)
+                          ? MenuItems.unsave
+                          : MenuItems.save,
+                      iconColor: widget.iconColor),
+                ),
+              if (widget.isWeb)
+                SizedBox(
+                  width: 2.w,
+                ),
+              if (widget.isWeb)
+                BlocBuilder<PostNotifierCubit, PostNotifierState>(
+                  builder: (context, state) {
+                    return DropDownList(
+                      post: widget.post,
+                      itemClass: ItemsClass.posts,
+                      isWeb: widget.isWeb,
+                    );
+                  },
+                )
             ],
           ),
         );

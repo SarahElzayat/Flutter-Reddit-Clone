@@ -74,9 +74,10 @@ class AppCubit extends Cubit<AppState> {
 
   ///@param [popularPosts] dummy data for home screen
   List<Widget> popularPosts = [
-    PostWidget(post: textPost, insideProfiles: true),
-    PostWidget(post: oneImagePost),
-    PostWidget(post: oneImagePost),
+    PostWidget(
+        post: textPost, insideProfiles: true, postView: PostView.classic),
+    PostWidget(post: oneImagePost, postView: PostView.classic),
+    PostWidget(post: oneImagePost, postView: PostView.classic),
     PostWidget(post: oneImagePost),
     PostWidget(post: oneImagePost),
   ];

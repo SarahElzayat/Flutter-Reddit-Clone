@@ -67,10 +67,9 @@ class _EditScreenState extends State<EditScreen> {
                 return TextButton(
                   onPressed: () {
                     try {
-                      final content =
-                          jsonEncode(_controller!.document.toDelta().toJson());
+                      final content = _controller!.document.toDelta().toJson();
                       logger.i(content);
-                      String newContent = '{"ops": $content}';
+                      var newContent = {"ops": content};
                       cubit.editIt(newContent).then((value) {
                         if (_isPost) {
                           PostNotifierCubit.get(context).notifyPosts();
@@ -159,7 +158,7 @@ class _EditScreenState extends State<EditScreen> {
     var content =
         _isPost ? widget.post.content : widget.currentComment!.commentBody;
     try {
-      doc = Document.fromJson(jsonDecode(content ?? '[]')['ops']);
+      doc = Document.fromJson((content ?? {'ops': []})['ops']);
       Logger().wtf(doc.toPlainText());
     } catch (e) {
       logger.wtf(e);

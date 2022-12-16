@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:logger/logger.dart';
 import 'package:reddit/components/helpers/mocks/mock_functions.dart';
 import 'package:reddit/constants/constants.dart';
@@ -77,7 +78,7 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
     String path = isSaved ? '/unsave' : '/save';
     return DioHelper.postData(
       path: path,
-      token: token,
+      sentToken: token,
       data: {
         'id': isPost ? post.id : currentComment!.id,
         'type': isPost ? 'post' : 'comment',
@@ -187,7 +188,7 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
     return Clipboard.setData(ClipboardData(text: text));
   }
 
-  Future<void> editIt(String newContent) {
+  Future<void> editIt(Map<String, dynamic> newContent) {
     String path = isPost ? '/edit-post' : '/edit-user-text';
 
     if (isPost) {
@@ -221,7 +222,7 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
       },
     ).then((value) {
       if (isPost) {
-        post.title = newContent;
+        post.title = Document.fromJson(newContent['ops']).toPlainText();
       } else {
         currentComment!.commentBody = newContent;
       }
