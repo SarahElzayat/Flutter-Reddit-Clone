@@ -108,8 +108,7 @@ class AppCubit extends Cubit<AppState> {
           logger.wtf('after $homePostsAfterId');
           for (int i = 0; i < value.data['children'].length; i++) {
             homePosts.add(PostWidget(
-                post: PostModel.fromJson(
-                    value.data['children'][i]['data'])));
+                post: PostModel.fromJson(value.data['children'][i]['data'])));
             logger.e(i);
           }
         }
@@ -258,7 +257,7 @@ class AppCubit extends Cubit<AppState> {
         } else if (DateTime.now().month - joinDate.month > 0) {
           age = '${DateTime.now().month - joinDate.month} m';
         } else {
-          age = '${DateTime.now().day - joinDate.day} d';
+          age = '${DateTime.now().day - joinDate.day + 1} d';
         }
       } else {
         emit(ErrorState());

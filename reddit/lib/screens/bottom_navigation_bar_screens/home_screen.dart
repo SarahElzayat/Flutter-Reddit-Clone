@@ -5,7 +5,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:reddit/components/back_to_top_button.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/home_components/left_drawer.dart';
@@ -26,9 +25,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
-  final RefreshController _refreshController = RefreshController(
-    initialRefresh: false,
-  );
+  // final RefreshController _refreshController = RefreshController(
+  //   initialRefresh: false,
+  // );
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool showbtn = false;
@@ -69,15 +68,10 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void _onRefresh() async {
-    // monitor network fetch
-    _onLoading();
-    _refreshController.refreshCompleted();
-  }
-
-  void _onLoading() {
-    AppCubit.get(context).getHomePosts(limit: 10);
-    _refreshController.loadComplete();
+  Future<void> _onRefresh() async {
+    setState(() {
+      AppCubit.get(context).getHomePosts();
+    });
   }
 
   @override
@@ -117,83 +111,77 @@ class _HomeScreenState extends State<HomeScreen> {
               : null,
           drawer: kIsWeb ? const LeftDrawer() : null,
           endDrawer: kIsWeb ? const RightDrawer() : null,
-          body: SmartRefresher(
-            enablePullDown: true,
-            // enablePullUp: true,
-            header: const WaterDropHeader(),
-            controller: _refreshController,
-            onRefresh: _onRefresh,
-            onLoading: _onLoading,
-            child: SingleChildScrollView(
-              physics: NeverScrollableScrollPhysics(),
-              controller: _scrollController,
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: SizedBox(
-                        width: kIsWeb ? width * 0.5 : width,
-                        // child: ListView.builder(
-                        //   // physics: const NeverScrollableScrollPhysics(),
-                        //   shrinkWrap: true,
-                        //   controller: _scrollController,
-                        //   scrollDirection: Axis.vertical,
-                        //   itemCount: cubit.homePosts.length,
-                        //   itemBuilder: (context, index) => Container(
-                        //       margin: const EdgeInsets.symmetric(
-                        //           horizontal: 0, vertical: 5),
-                        //       child: PostWidget(
-                        //         post: cubit.homePosts[index],
-                        //       )),
-                        // ),
-                        child: Column(
-                          children: cubit.homePosts,
+          body: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: SizedBox(
+                    width: kIsWeb ? width * 0.5 : width,
+                    child: RefreshIndicator(
+                      onRefresh: _onRefresh,
+                      child: ListView.builder(
+                        // physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        controller: _scrollController,
+                        scrollDirection: Axis.vertical,
+                        itemCount: cubit.homePosts.length,
+                        itemBuilder: (context, index) => Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 0, vertical: 5),
+                          // child: PostWidget(
+                          //   post: cubit.homePosts[index],
+                          // ),
+
+                          child: cubit.homePosts[index],
                         ),
                       ),
                     ),
-                    if (kIsWeb)
-                      SizedBox(
-                        height: 500,
-                        width: 300,
-                        child: Column(
-                          children: [
-                            Container(
-                              color: Colors.red,
-                              height: 200,
-                              width: 200,
-                              child: Text(
-                                'Communities near you',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge!
-                                    .copyWith(color: Colors.white),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Container(
-                              color: Colors.blue,
-                              height: 200,
-                              width: 200,
-                              child: Text(
-                                'Create post',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge!
-                                    .copyWith(color: Colors.white),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                  ],
+                    // child: Column(
+                    //   children: cubit.homePosts,
+                    // ),
+                  ),
                 ),
-              ),
+                if (kIsWeb)
+                  SizedBox(
+                    height: 500,
+                    width: 300,
+                    child: Column(
+                      children: [
+                        Container(
+                          color: Colors.red,
+                          height: 200,
+                          width: 200,
+                          child: Text(
+                            'Communities near you',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .copyWith(color: Colors.white),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          color: Colors.blue,
+                          height: 200,
+                          width: 200,
+                          child: Text(
+                            'Create post',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .copyWith(color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
             ),
           ),
         );
