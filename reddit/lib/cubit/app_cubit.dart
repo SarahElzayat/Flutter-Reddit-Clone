@@ -14,7 +14,6 @@ import 'package:reddit/screens/bottom_navigation_bar_screens/inbox_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/notifications_screen.dart';
 import 'package:reddit/screens/saved/saved_comments.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
-import '../components/helpers/color_manager.dart';
 import '../data/post_model/post_model.dart';
 import '../data/temp_data/tmp_data.dart';
 import '../networks/constant_end_points.dart';
@@ -43,7 +42,6 @@ class AppCubit extends Cubit<AppState> {
     const HomeScreen(),
     const ExploreScreen(),
     const AddPostScreen(),
-    // const AddPost(),
     const InboxScreen(),
     const NotificationsScreen()
   ];
@@ -61,24 +59,10 @@ class AppCubit extends Cubit<AppState> {
         icon: Icon(Icons.notifications_outlined), label: 'Inbox'),
   ];
 
-  ///@param [homePosts] dummy data for home screen
-  List<PostModel> homePosts = [
-    // PostWidget(post: textPost),
-    // PostWidget(post: videoPost),
-    // PostWidget(post: smalltextPost),
-    // PostWidget(post: linkPost, upperRowType: ShowingOtions.onlyUser),
-    // PostWidget(post: oneImagePost, postView: PostView.classic),
-    // PostWidget(post: manyImagePost, postView: PostView.classic),
-    // PostWidget(post: manyImagePost, postView: PostView.card),
-  ];
-
+  ///@param [homePosts] home posts
+  List<PostModel> homePosts = [];
   String homePostsAfterId = '';
   String homePostsBeforeId = '';
-
-  // void getHomePosts(){
-  //   home
-
-  // }
 
   void getHomePosts(
       {bool loadMore = false,
@@ -190,24 +174,8 @@ class AppCubit extends Cubit<AppState> {
     emit(ChangeModeratingListState());
   }
 
-  ///@param [moderatingListItems] dummy data for drawer
-  List<Widget> moderatingListItems = [
-    const Text(
-      'moderating 1 ',
-      style: TextStyle(
-          color: ColorManager.eggshellWhite, fontWeight: FontWeight.w400),
-    ),
-    const Text(
-      'moderating 2 ',
-      style: TextStyle(
-          color: ColorManager.eggshellWhite, fontWeight: FontWeight.w400),
-    ),
-    const Text(
-      'moderating 3 ',
-      style: TextStyle(
-          color: ColorManager.eggshellWhite, fontWeight: FontWeight.w400),
-    ),
-  ];
+  ///@param [moderatingListItems] the subreddits you moderate
+  List<DrawerCommunitiesModel> moderatingListItems = [];
 
   ///@param [yourCommunitiesistOpen] a boolean that indicates whether the left drawer's 'your communities' list is open or not
   bool yourCommunitiesistOpen = true;
@@ -227,6 +195,20 @@ class AppCubit extends Cubit<AppState> {
       if (value.statusCode == 200) {
         for (int i = 0; i < value.data['children'].length; i++) {
           yourCommunitiesList
+              .add(DrawerCommunitiesModel.fromJson(value.data['children'][i]));
+        }
+        emit(LoadedCommunitiesState());
+      } else {
+        emit(ErrorState());
+      }
+    });
+  }
+  void getYourModerating() {
+    moderatingListItems.clear();
+    DioHelper.getData(path: moderatedSubreddits).then((value) {
+      if (value.statusCode == 200) {
+        for (int i = 0; i < value.data['children'].length; i++) {
+          moderatingListItems
               .add(DrawerCommunitiesModel.fromJson(value.data['children'][i]));
         }
         emit(LoadedCommunitiesState());
@@ -313,7 +295,6 @@ class AppCubit extends Cubit<AppState> {
               ? emit(LoadedMoreHistoryState())
               : emit(LoadedHistoryState());
         }
-     
       }
     }).onError((error, stackTrace) {
       if (kDebugMode) {

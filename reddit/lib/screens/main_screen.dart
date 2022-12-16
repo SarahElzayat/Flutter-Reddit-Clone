@@ -58,9 +58,10 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
 
   @override
   void initState() {
-    super.initState();
-    AppCubit.get(context).getYourCommunities();
     AppCubit.get(context).getHomePosts();
+    AppCubit.get(context).getYourCommunities();
+    AppCubit.get(context).getYourModerating();
+    super.initState();
 
   }
 

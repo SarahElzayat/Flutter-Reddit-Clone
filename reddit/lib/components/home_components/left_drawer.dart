@@ -26,7 +26,7 @@ class LeftDrawer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (cubit.moderatingListItems.isNotEmpty)
-                  listButton(context, 'Moderating', cubit.yourCommunitiesList,
+                  listButton(context, 'Moderating', cubit.moderatingListItems,
                       cubit.changeModeratingListState, cubit.moderatingListOpen,
                       isModerating: true, navigateToSubreddit: () {}),
                 if (cubit.yourCommunitiesList.isNotEmpty)

@@ -63,6 +63,7 @@ const ban = '/ban';
 const unban = '/unban';
 const inviteMod = '/moderator-invite';
 const joinedSubreddits = '/joined-subreddits';
+const moderatedSubreddits = '/moderated-subreddits';
 // Note : after last / add the subreddit name
 const subredditInfo = '/r';
 const searchForSubreddit = '/search?type=subreddit';
