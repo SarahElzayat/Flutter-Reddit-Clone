@@ -20,6 +20,8 @@ const signUp = '/signup';
 const login = '/login';
 const loginForgetPassword = '/login/forget-password';
 const loginForgetUserName = '/login/forget-username';
+const signInGoogle = '/signin/google';
+const signInFacebook = '/signin/facebook';
 
 // settings endpoints
 const changeEmail = '/change-email';
