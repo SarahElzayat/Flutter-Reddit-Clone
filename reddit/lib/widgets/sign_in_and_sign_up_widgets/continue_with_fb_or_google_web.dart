@@ -19,25 +19,25 @@ class ContinueWithGoogleOrFbWeb extends StatelessWidget {
   }
 
   Future signInWithGoogle(context) async {
-    FacebookLoginAPI.logOut();
-    print('Sign out');
+    // FacebookLoginAPI.logOut();
+    // print('Sign out');
 
-    // final user = await GoogleSignInApi.login();
-    // GoogleSignInAuthentication googleToken = await user!.authentication;
+    final user = await GoogleSignInApi.login();
+    GoogleSignInAuthentication googleToken = await user!.authentication;
 
-    // await DioHelper.postData(
-    //     path: signInGoogle,
-    //     data: {'accessToken': googleToken.idToken}).then((response) async {
-    //   if (response.statusCode == 200 || response.statusCode == 201) {
-    //     Navigator.of(context).pushNamed(HomeScreen.routeName);
-    //   }
-    // }).catchError((err) {
-    //   err = err as DioError;
-    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //     content: Text(err.response!.data['message']),
-    //     backgroundColor: ColorManager.red,
-    //   ));
-    // });
+    await DioHelper.postData(
+        path: signInGoogle,
+        data: {'accessToken': googleToken.idToken}).then((response) async {
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        Navigator.of(context).pushNamed(HomeScreen.routeName);
+      }
+    }).catchError((err) {
+      err = err as DioError;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(err.response!.data['message']),
+        backgroundColor: ColorManager.red,
+      ));
+    });
   }
 
   @override

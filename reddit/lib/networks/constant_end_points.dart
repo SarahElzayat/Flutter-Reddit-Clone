@@ -22,6 +22,7 @@ const loginForgetPassword = '/login/forget-password';
 const loginForgetUserName = '/login/forget-username';
 const signInGoogle = '/signin/google';
 const signInFacebook = '/signin/facebook';
+const getRandom = '/random-username';
 
 // settings endpoints
 const changeEmail = '/change-email';

@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/screens/main_screen.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../data/sign_in_And_sign_up_models/sign_in_model.dart';
@@ -106,229 +107,247 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
     final navigator = Navigator.of(context);
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
-        return Scaffold(
-          body: Form(
-            key: _myKey,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                // the image box
-                SizedBox(
-
-                    // in the website it is fixed not relative
-                    width: mediaQuery.size.width > 600 ? 140 : 120,
-                    height: 100.h,
-                    child: Image.asset(
-                      'assets/images/WebSideBarBackGroundImage.png',
-                      fit: BoxFit.fitHeight,
-                    )),
-
-                // the main screen.
-                Container(
-                  margin: const EdgeInsets.only(left: 28),
-                  height: 100.h,
-
-                  // in the website it is fixed
-                  width: 295,
-                  child: Column(
+        return mediaQuery.size.height < 675
+            ? const SignInScreen()
+            : Scaffold(
+                body: Form(
+                  key: _myKey,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      // the text container
-                      Container(
-                          margin: const EdgeInsets.only(bottom: 30, top: 120),
-                          height: 15.h,
-                          width: 295,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Container(
-                                  alignment: Alignment.centerLeft,
-                                  child: const Text(
-                                    'Log in',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  )),
-                              RichText(
-                                text: TextSpan(children: [
-                                  const TextSpan(
-                                      text: 'By continuing, you agree to our ',
-                                      style: TextStyle(
-                                        color: ColorManager.eggshellWhite,
-                                        fontSize: 14.5,
-                                      )),
-                                  TextSpan(
-                                    text: 'User Agreement',
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        navigator.pushNamed(
-                                            UserAgreementScreen.routeName);
-                                      },
-                                    style: const TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      color: ColorManager.primaryColor,
-                                      fontSize: 14.5,
-                                    ),
-                                  ),
-                                  const TextSpan(
-                                    text: ' And ',
-                                    style: TextStyle(
-                                      color: ColorManager.eggshellWhite,
-                                      fontSize: 14.5,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: 'Privacy Policy',
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        navigator.pushNamed(
-                                            PrivacyAndPolicy.routeName);
-                                      },
-                                    style: const TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      color: ColorManager.primaryColor,
-                                      fontSize: 14.5,
-                                    ),
-                                  ),
-                                ]),
-                                textAlign: TextAlign.left,
-                              ),
-                            ],
-                          )),
-                      Container(
-                          margin: const EdgeInsets.only(bottom: 40),
-                          child: const ContinueWithGoogleOrFbWeb()),
-                      const Text('OR'),
+                      // the image box
                       SizedBox(
-                        height: 30.h,
+
+                          // in the website it is fixed not relative
+                          width: mediaQuery.size.width > 600 ? 140 : 120,
+                          height: 100.h,
+                          child: Image.asset(
+                            'assets/images/WebSideBarBackGroundImage.png',
+                            fit: BoxFit.fitHeight,
+                          )),
+
+                      // the main screen.
+                      Container(
+                        margin: const EdgeInsets.only(left: 28),
+                        height: 100.h,
+
+                        // in the website it is fixed
+                        width: 295,
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            DefaultTextField(
-                              key: const Key('UsernameTextField'),
-                              validator: (username) {
-                                if (!Validator.validUserName(username!)) {
-                                  return 'username length must be less than 21 and greater 2';
-                                } else {
-                                  return null;
-                                }
-                              },
-                              formController: usernameController,
-                              onChanged: (string) {
-                                setState(
-                                    () {}); // this empty set state to be able to change the color of the button
-                                // whenever the user enter any string in the field
-                              },
-                              labelText: 'USERNAME',
-                            ),
-                            DefaultTextField(
-                              isPassword: true,
-                              key: const Key('passwordTextField'),
-                              validator: (password) {
-                                if (!Validator.validPasswordValidation(
-                                    password!)) {
-                                  return 'password length must more than 7 characters';
-                                } else {
-                                  return null;
-                                }
-                              },
-                              onChanged: (string) {
-                                setState(
-                                    () {}); // this empty set state to be able to change the color of the button
-                                // whenever the user enter any string in the field
-                              },
-                              formController: passwordController,
-                              labelText: 'PASSWORD',
-                            ),
-                            Button(
-                                key: const Key('LoginButton'),
-                                textFontWeight: FontWeight.normal,
-                                text: 'LOG IN',
-                                isPressable:
-                                    usernameController.text.isNotEmpty &&
-                                        passwordController.text.isNotEmpty,
-                                textColor:
-                                    (usernameController.text.isNotEmpty &&
-                                            passwordController.text.isNotEmpty)
-                                        ? ColorManager.white
-                                        : ColorManager.eggshellWhite,
-                                backgroundColor: ColorManager.upvoteRed,
-                                borderColor:
-                                    usernameController.text.isNotEmpty &&
-                                            passwordController.text.isNotEmpty
-                                        ? ColorManager.upvoteRed
-                                        : ColorManager.grey,
-                                buttonWidth: 25.w,
-                                borderRadius: 5,
-                                buttonHeight: 40,
-                                textFontSize: 14,
-                                onPressed: loginChecker),
+                            // the text container
                             Container(
-                              alignment: Alignment.centerLeft,
-                              child: RichText(
-                                text: TextSpan(children: [
-                                  const TextSpan(
-                                      text: 'Forgot your ',
-                                      style: TextStyle(
-                                        color: ColorManager.eggshellWhite,
-                                        fontSize: 14.5,
-                                      )),
-                                  TextSpan(
-                                    text: 'username',
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        navigator.pushNamed(
-                                            ForgetUserNameWebScreen.routeName);
-                                      },
-                                    style: const TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      color: ColorManager.primaryColor,
-                                      fontSize: 14.5,
-                                    ),
-                                  ),
-                                  const TextSpan(
-                                    text: ' or ',
-                                    style: TextStyle(
-                                      color: ColorManager.eggshellWhite,
-                                      fontSize: 14.5,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: 'password',
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        navigator.pushNamed(
-                                            ForgetPasswordWebScreen.routeName);
-                                      },
-                                    style: const TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      color: ColorManager.primaryColor,
-                                      fontSize: 14.5,
-                                    ),
-                                  ),
-                                ]),
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 10),
-                              child: Row(
-                                children: [
-                                  const Text(
-                                    'New to Reddit?',
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w200),
-                                  ),
-                                  TextButton(
-                                      key: const Key('SignUpButton'),
-                                      onPressed: () {
-                                        Navigator.pushReplacementNamed(context,
-                                            SignUpForWebScreen.routeName);
-                                      },
-                                      child: const Text('SIGN UP',
+                                margin:
+                                    const EdgeInsets.only(bottom: 30, top: 120),
+                                height: 15.h,
+                                width: 295,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: const Text(
+                                          'Log in',
                                           style: TextStyle(
-                                              color:
-                                                  ColorManager.primaryColor)))
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        )),
+                                    RichText(
+                                      text: TextSpan(children: [
+                                        const TextSpan(
+                                            text:
+                                                'By continuing, you agree to our ',
+                                            style: TextStyle(
+                                              color: ColorManager.eggshellWhite,
+                                              fontSize: 14.5,
+                                            )),
+                                        TextSpan(
+                                          text: 'User Agreement',
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              navigator.pushNamed(
+                                                  UserAgreementScreen
+                                                      .routeName);
+                                            },
+                                          style: const TextStyle(
+                                            decoration:
+                                                TextDecoration.underline,
+                                            color: ColorManager.primaryColor,
+                                            fontSize: 14.5,
+                                          ),
+                                        ),
+                                        const TextSpan(
+                                          text: ' And ',
+                                          style: TextStyle(
+                                            color: ColorManager.eggshellWhite,
+                                            fontSize: 14.5,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: 'Privacy Policy',
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              navigator.pushNamed(
+                                                  PrivacyAndPolicy.routeName);
+                                            },
+                                          style: const TextStyle(
+                                            decoration:
+                                                TextDecoration.underline,
+                                            color: ColorManager.primaryColor,
+                                            fontSize: 14.5,
+                                          ),
+                                        ),
+                                      ]),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ],
+                                )),
+                            Container(
+                                margin: const EdgeInsets.only(bottom: 40),
+                                child: const ContinueWithGoogleOrFbWeb()),
+                            const Text('OR'),
+                            SizedBox(
+                              height: 30.h,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  DefaultTextField(
+                                    key: const Key('UsernameTextField'),
+                                    validator: (username) {
+                                      if (!Validator.validUserName(username!)) {
+                                        return 'username length must be less than 21 and greater 2';
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                    formController: usernameController,
+                                    onChanged: (string) {
+                                      setState(
+                                          () {}); // this empty set state to be able to change the color of the button
+                                      // whenever the user enter any string in the field
+                                    },
+                                    labelText: 'USERNAME',
+                                  ),
+                                  DefaultTextField(
+                                    isPassword: true,
+                                    key: const Key('passwordTextField'),
+                                    validator: (password) {
+                                      if (!Validator.validPasswordValidation(
+                                          password!)) {
+                                        return 'password length must more than 7 characters';
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                    onChanged: (string) {
+                                      setState(
+                                          () {}); // this empty set state to be able to change the color of the button
+                                      // whenever the user enter any string in the field
+                                    },
+                                    formController: passwordController,
+                                    labelText: 'PASSWORD',
+                                  ),
+                                  Button(
+                                      key: const Key('LoginButton'),
+                                      textFontWeight: FontWeight.normal,
+                                      text: 'LOG IN',
+                                      isPressable: usernameController
+                                              .text.isNotEmpty &&
+                                          passwordController.text.isNotEmpty,
+                                      textColor:
+                                          (usernameController.text.isNotEmpty &&
+                                                  passwordController
+                                                      .text.isNotEmpty)
+                                              ? ColorManager.white
+                                              : ColorManager.eggshellWhite,
+                                      backgroundColor: ColorManager.upvoteRed,
+                                      borderColor: usernameController
+                                                  .text.isNotEmpty &&
+                                              passwordController.text.isNotEmpty
+                                          ? ColorManager.upvoteRed
+                                          : ColorManager.grey,
+                                      buttonWidth: 25.w,
+                                      borderRadius: 5,
+                                      buttonHeight: 40,
+                                      textFontSize: 14,
+                                      onPressed: loginChecker),
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: RichText(
+                                      text: TextSpan(children: [
+                                        const TextSpan(
+                                            text: 'Forgot your ',
+                                            style: TextStyle(
+                                              color: ColorManager.eggshellWhite,
+                                              fontSize: 14.5,
+                                            )),
+                                        TextSpan(
+                                          text: 'username',
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              navigator.pushNamed(
+                                                  ForgetUserNameWebScreen
+                                                      .routeName);
+                                            },
+                                          style: const TextStyle(
+                                            decoration:
+                                                TextDecoration.underline,
+                                            color: ColorManager.primaryColor,
+                                            fontSize: 14.5,
+                                          ),
+                                        ),
+                                        const TextSpan(
+                                          text: ' or ',
+                                          style: TextStyle(
+                                            color: ColorManager.eggshellWhite,
+                                            fontSize: 14.5,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: 'password',
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              navigator.pushNamed(
+                                                  ForgetPasswordWebScreen
+                                                      .routeName);
+                                            },
+                                          style: const TextStyle(
+                                            decoration:
+                                                TextDecoration.underline,
+                                            color: ColorManager.primaryColor,
+                                            fontSize: 14.5,
+                                          ),
+                                        ),
+                                      ]),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 10),
+                                    child: Row(
+                                      children: [
+                                        const Text(
+                                          'New to Reddit?',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w200),
+                                        ),
+                                        TextButton(
+                                            key: const Key('SignUpButton'),
+                                            onPressed: () {
+                                              Navigator.pushReplacementNamed(
+                                                  context,
+                                                  SignUpForWebScreen.routeName);
+                                            },
+                                            child: const Text('SIGN UP',
+                                                style: TextStyle(
+                                                    color: ColorManager
+                                                        .primaryColor)))
+                                      ],
+                                    ),
+                                  )
                                 ],
                               ),
                             )
@@ -337,11 +356,8 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
                       )
                     ],
                   ),
-                )
-              ],
-            ),
-          ),
-        );
+                ),
+              );
       },
     );
   }
