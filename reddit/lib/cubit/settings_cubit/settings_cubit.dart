@@ -21,6 +21,10 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
 
   static SettingsCubit get(context) => BlocProvider.of(context);
 
+  void connectToFacebook(ctx) {}
+
+  void connectToGoogle(ctx) {}
+
   Future<void> blockUser(context, PagingController pagingController) async {
     final userToBeBlocked = BlockModel(username: 'abdelazizSalah', block: true);
     await DioHelper.postData(

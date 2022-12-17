@@ -89,12 +89,17 @@ class AccountSettingsScreen extends StatelessWidget {
                 child: ListTileContainer(
               types: const ['', ''],
               handler: [
-                () {},
+                () {
+                  SettingsCubit.get(context).connectToGoogle(context);
+                },
+                () {
+                  SettingsCubit.get(context).connectToFacebook(context);
+                },
                 () {},
               ],
               listTileIcons: const [
-                CustomIcons.google,
-                CustomIcons.facebook,
+                Icons.g_mobiledata,
+                Icons.facebook,
               ],
               listTileTitles: const [
                 'Google',
