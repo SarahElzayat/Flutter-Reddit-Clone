@@ -25,10 +25,19 @@ class ContinueSignUpScreen extends StatefulWidget {
 }
 
 class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
+  @override
+  void initState() {
+    getRandomNames();
+    super.initState();
+  }
+
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final _myKey = GlobalKey<FormState>();
 
+  /// this function is used to select the username from the suggestions
+  /// and put it in the textfield.
+  /// @param [username]: the username which the user has selected from the suggestions
   void selectUsernameFromSuggestions(username) {
     setState(() {
       usernameController.text = username;
@@ -91,8 +100,25 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
     });
   }
 
-  // these names should be returned from the backend but they
-  // haven't implemented this endpoint yet
+  /// this function is used to get random names from the backend.
+  void getRandomNames() async {
+    await DioHelper.getData(path: getRandom, query: {'count': 5})
+        .then((response) {
+      if (response.statusCode == 200) {
+        setState(() {
+          List<String> myList = [];
+          for (String name in response.data['usernames']) {
+            myList.add(name);
+          }
+          dummyNames.clear();
+          dummyNames.addAll(myList);
+        });
+      }
+    }).catchError((error) {
+      error = error as DioError;
+    });
+  }
+
   List<String> dummyNames = [
     'Name1',
     'Name2',
@@ -124,9 +150,16 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('Choose your username'),
                             const Text(
-                                '''Your username is how other community members will see you. This name will be used to credit you for things you share on Reddit. What should we call you?'''),
+                              'Choose your username',
+                              style: TextStyle(color: ColorManager.upvoteRed),
+                            ),
+                            const Text(
+                              '''Your username is how other community members will see you. This name will be used to credit you for things you share on Reddit. What should we call you?''',
+                              style: TextStyle(
+                                color: ColorManager.blue,
+                              ),
+                            ),
                             const Divider(
                               color: ColorManager.white,
                             ),
@@ -181,7 +214,7 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                                           const Text(
                                               'Here are some username suggestions'),
                                           IconButton(
-                                              onPressed: () {},
+                                              onPressed: getRandomNames,
                                               icon:
                                                   const Icon(Icons.restart_alt))
                                         ],
@@ -220,12 +253,15 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                                   navigator.pushReplacementNamed(
                                       SignUpForWebScreen.routeName);
                                 },
-                                child: const Text('Back')),
+                                child: const Text(
+                                  'Back',
+                                  style: TextStyle(color: ColorManager.blue),
+                                )),
                             Container(
-                              margin: const EdgeInsets.only(right: 10),
-                              padding: const EdgeInsets.all(5),
-                              width: 140,
-                              child: ElevatedButton(
+                                margin: const EdgeInsets.only(right: 10),
+                                padding: const EdgeInsets.all(5),
+                                width: 140,
+                                child: ElevatedButton(
                                   key: const Key('SignUpButton'),
                                   style: ButtonStyle(
                                       foregroundColor: MaterialStatePropertyAll(
@@ -248,8 +284,10 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                                         ? loginChecker(_myMail)
                                         : () {};
                                   },
-                                  child: const Text('SIGN UP')),
-                            )
+                                  child: const Text('SIGN UP',
+                                      style: TextStyle(
+                                          color: ColorManager.eggshellWhite)),
+                                ))
                           ]),
                     )
                   ]),

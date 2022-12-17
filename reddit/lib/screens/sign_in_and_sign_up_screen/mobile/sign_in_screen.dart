@@ -100,20 +100,7 @@ class _SignInScreenState extends State<SignInScreen> {
     });
   }
 
-  /// this function is used to toggle the isEmpty boolean to reflect it on the GUI
-  /// @param myString which is the emailContent
-  void textChanger(myString) {
-    setState(() {
-      if (myString.isNotEmpty) {
-        isEmptyEmail = false;
-      } else {
-        isEmptyEmail = true;
-      }
-    });
-  }
-
   final _formKey = GlobalKey<FormState>();
-  bool isEmptyEmail = true;
   bool isEmptyUserName = true;
   @override
   Widget build(BuildContext context) {
@@ -176,7 +163,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           return null;
                         },
                         keyboardType: TextInputType.emailAddress,
-                        onChanged: (myString) => textChanger(myString),
+                        onChanged: (_) => setState(() {}),
                         formController: usernameController,
                         labelText: 'Username',
                         icon: usernameController.text.isNotEmpty
@@ -185,7 +172,6 @@ class _SignInScreenState extends State<SignInScreen> {
                                 onPressed: (() {
                                   setState(() {
                                     usernameController.text = '';
-                                    isEmptyEmail = true;
                                   });
                                 }))
                             : null,
@@ -199,6 +185,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             return null;
                           }
                         },
+                        onChanged: (_) => setState(() {}),
                         formController: passwordController,
                         labelText: 'Password',
                         isPassword: true,
