@@ -69,7 +69,7 @@ class _EditScreenState extends State<EditScreen> {
                     try {
                       final content = _controller!.document.toDelta().toJson();
                       logger.i(content);
-                      var newContent = {"ops": content};
+                      var newContent = {'ops': content};
                       cubit.editIt(newContent).then((value) {
                         if (_isPost) {
                           PostNotifierCubit.get(context).notifyPosts();
