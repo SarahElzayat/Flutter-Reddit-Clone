@@ -8,8 +8,8 @@ class DescriptionModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['description'] = description;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['description'] = this.description;
     return data;
   }
 }

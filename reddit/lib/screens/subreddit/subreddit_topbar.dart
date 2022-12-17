@@ -2,12 +2,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 
 import '../../components/app_bar_components.dart';
 import '../../components/search_field.dart';
-// import '../../cubit/app_cubit.dart';
+import '../../cubit/app_cubit.dart';
 import '../../widgets/subreddit/subreddit_options.dart';
 
 class SubredditAppBar extends SliverPersistentHeaderDelegate {
