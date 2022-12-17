@@ -263,8 +263,7 @@ class ModerationCubit extends Cubit<ModerationState> {
       permissionToManageUsers: permissionValues[0],
     );
 
-    DioHelper.postData(
-            token: token, path: inviteMod, data: inviteModerator.toJson())
+    DioHelper.postData(path: inviteMod, data: inviteModerator.toJson())
         .then((value) {
       if (value.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
@@ -285,10 +284,9 @@ class ModerationCubit extends Cubit<ModerationState> {
     MuteUserModel mutedUser = MuteUserModel(
         username: usernameController.text, muteReason: modNoteController.text);
     DioHelper.postData(
-            path: '/r/yazzooz/mute-user',
-            data: mutedUser.toJson(),
-            token: token)
-        .then((value) {
+      path: '/r/yazooz/mute-user',
+      data: mutedUser.toJson(),
+    ).then((value) {
       if (value.statusCode == 200) {
         getUsers(context, UserManagement.muted);
         emit(MuteUser());
@@ -306,9 +304,7 @@ class ModerationCubit extends Cubit<ModerationState> {
     ApproveUserModel approveUser =
         ApproveUserModel(username: usernameController.text);
     DioHelper.postData(
-            token: token,
-            path: '/r/yazzooz/approve-user',
-            data: approveUser.toJson())
+            path: '/r/yazzooz/approve-user', data: approveUser.toJson())
         .then((value) {
       if (value.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(

@@ -83,13 +83,8 @@ dependencies:
   universal_html: ^2.0.8
   universal_ui: ^0.0.8
   url_launcher: ^6.1.6
-<<<<<<< HEAD
-  video_player: ^2.4.7
-  #video_thumbnail: #^0.5.3
-=======
   video_player: null
   video_thumbnail: ^0.5.3
->>>>>>> 18aa0d386873efdd3e8b71e104e69fd50267371f
   video_trimmer: ^2.0.1
   google_sign_in: ^5.4.2
   visibility_detector: ^0.3.3
@@ -139,10 +134,7 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-<<<<<<< HEAD
-=======
 
->>>>>>> 18aa0d386873efdd3e8b71e104e69fd50267371f
     - family: MyFlutterApp
       fonts:
         - asset: assets/fonts/MyFlutterApp.ttf
