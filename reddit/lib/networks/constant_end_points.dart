@@ -51,6 +51,7 @@ const upvotedHistory = '/upvoted';
 const downvotedHistory = '/downvoted';
 const hiddenHistory = '/hidden';
 const clearHistory = '/clear-history';
+const userProfilePicture = '/profile-picture';
 const search = '/search';
 const searchPosts = 'post';
 const searchUsers = 'user';

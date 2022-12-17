@@ -4,6 +4,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 
@@ -575,5 +576,30 @@ class AppCubit extends Cubit<AppState> {
     }).catchError((onError) {
       emit(ErrorState());
     });
+  }
+
+  void deleteProfilePicture() {
+    DioHelper.deleteData(path: userProfilePicture).then((value) {
+      if (value.statusCode == 200) {
+        emit(DeletedProfilePictureState());
+      } else if (value.statusCode == 400) {
+        emit(NoProfilePictureState());
+      }
+    }).onError((error, stackTrace) {
+      emit(ErrorState());
+    });
+  }
+
+  void changeProfilePicture(XFile image) {
+    DioHelper.putData(path: userProfilePicture, data: {'avatar': image})
+        .then((value) {
+      if (value.statusCode == 200) {
+        emit(ChangedProfilePictureState());
+      }
+    }).onError(
+      (error, stackTrace) {
+        emit(ErrorState());
+      },
+    );
   }
 }

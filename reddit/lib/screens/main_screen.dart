@@ -39,17 +39,9 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
         : _scaffoldKey.currentState?.openDrawer();
   }
 
-  void initialGetters() {
-    // AppCubit.get(context).getHomePosts(limit: 5);
-    AppCubit.get(context).getUsername();
-    AppCubit.get(context).getYourCommunities();
-    AppCubit.get(context).getYourModerating();
-    AppCubit.get(context).getUserProfilePicture();
-  }
 
   @override
   void initState() {
-    // initialGetters();
     super.initState();
   }
 
