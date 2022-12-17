@@ -60,7 +60,7 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
   @override
   Widget build(BuildContext context) {
     // var isMod = widget.post.inYourSubreddit ?? false;
-    var isMod = true;
+    var isMod = widget.post.inYourSubreddit ?? false;
     return BlocBuilder<PostAndCommentActionsCubit, PostActionsState>(
       builder: (context, state) {
         var cubit = PostAndCommentActionsCubit.get(context);
