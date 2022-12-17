@@ -14,6 +14,7 @@ import '../../cubit/app_cubit/app_cubit.dart';
 import '../../widgets/subreddit/subreddit_about.dart';
 import '../../widgets/subreddit/subreddit_posts.dart';
 import '../add_post/add_post.dart';
+import '../moderation/mod_tools.dart';
 import 'subreddit_topbar.dart';
 
 class Subreddit extends StatefulWidget {
@@ -264,9 +265,10 @@ class _SubredditState extends State<Subreddit>
                                     .subreddit!.isModerator!)
                                 ? MaterialButton(
                                     onPressed: () {
-                                      // Navigator.of(context).push(MaterialPageRoute(
-                                      //     builder: ((context) =>
-                                      //         const ModTools())));
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: ((context) =>
+                                                  const ModTools())));
                                     },
                                     child: Row(
                                       children: const [

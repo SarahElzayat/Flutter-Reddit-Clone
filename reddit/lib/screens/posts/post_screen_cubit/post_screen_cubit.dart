@@ -81,7 +81,7 @@ class PostScreenCubit extends Cubit<PostScreenState> {
     DioHelper.getData(
       path: '/comments/${post.id}',
       query: {
-        'before': before ?? false ? lastafter : null,
+        'before': before ?? false ? lastbefore : null,
         'after': after ?? false ? lastafter : null,
         'limit': limit,
         'sort': sort,
@@ -96,7 +96,7 @@ class PostScreenCubit extends Cubit<PostScreenState> {
           CommentsListingModel.fromJson(value.data);
 
       lastafter = commentsListingModel.after;
-
+      lastbefore = commentsListingModel.before;
       commentsListingModel.children?.forEach((element) {
         comments.add(element);
         allCommentsMap[element.id!] = element;
