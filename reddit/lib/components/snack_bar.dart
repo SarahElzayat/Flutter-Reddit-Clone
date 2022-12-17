@@ -1,10 +1,11 @@
+///@author: Yasmine Ghanem
+///@date: 10/12/2022
+///functions that return error and success snack bar
+
 import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-///@author: Yasmine Ghanem
-///@date: 10/12/2022
-///functions that return error and success snack bar
 SnackBar responseSnackBar({message, error = true}) => SnackBar(
     behavior: SnackBarBehavior.floating,
     width: 90.w,

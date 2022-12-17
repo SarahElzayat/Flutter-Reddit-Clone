@@ -7,3 +7,8 @@ abstract class PostNotifierState {}
 class PostNotifierInitial extends PostNotifierState {}
 
 class PostChanged extends PostNotifierState {}
+
+class PostNotifierError extends PostNotifierState {
+  final String error;
+  PostNotifierError(this.error);
+}

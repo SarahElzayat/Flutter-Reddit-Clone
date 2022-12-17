@@ -159,7 +159,6 @@ class ModerationCubit extends Cubit<ModerationState> {
     DescriptionModel descriptionModel =
         DescriptionModel(description: description);
     DioHelper.postData(
-            token: token,
             path: '/r/${settings.communityName}/add-description',
             data: descriptionModel.toJson())
         .then((value) {
@@ -237,8 +236,7 @@ class ModerationCubit extends Cubit<ModerationState> {
         modNote: modNoteController.text,
         noteInclude: userNoteController.text);
 
-    DioHelper.postData(token: token, path: ban, data: banUser.toJson())
-        .then((value) {
+    DioHelper.postData(path: ban, data: banUser.toJson()).then((value) {
       if (value.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
             message: 'User banned successfully', error: false));

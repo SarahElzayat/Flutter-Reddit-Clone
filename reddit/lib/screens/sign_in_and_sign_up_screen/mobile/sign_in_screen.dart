@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../../../components/default_text_field.dart';
 import '../../../components/helpers/color_manager.dart';
+import '../../../constants/constants.dart';
 import '../../../data/sign_in_And_sign_up_models/sign_up_model.dart';
 import '../../../data/sign_in_And_sign_up_models/validators.dart';
 import '../../../networks/constant_end_points.dart';
@@ -65,6 +66,7 @@ class _SignInScreenState extends State<SignInScreen> {
       if (value.statusCode == 200) {
         CacheHelper.putData(key: 'token', value: value.data['token']);
         CacheHelper.putData(key: 'username', value: value.data['username']);
+        token = CacheHelper.getData(key: 'token');
 
         // navigating to the main screen
         Navigator.of(context)
@@ -98,20 +100,7 @@ class _SignInScreenState extends State<SignInScreen> {
     });
   }
 
-  /// this function is used to toggle the isEmpty boolean to reflect it on the GUI
-  /// @param myString which is the emailContent
-  void textChanger(myString) {
-    setState(() {
-      if (myString.isNotEmpty) {
-        isEmptyEmail = false;
-      } else {
-        isEmptyEmail = true;
-      }
-    });
-  }
-
   final _formKey = GlobalKey<FormState>();
-  bool isEmptyEmail = true;
   bool isEmptyUserName = true;
   @override
   Widget build(BuildContext context) {
@@ -174,7 +163,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           return null;
                         },
                         keyboardType: TextInputType.emailAddress,
-                        onChanged: (myString) => textChanger(myString),
+                        onChanged: (_) => setState(() {}),
                         formController: usernameController,
                         labelText: 'Username',
                         icon: usernameController.text.isNotEmpty
@@ -183,7 +172,6 @@ class _SignInScreenState extends State<SignInScreen> {
                                 onPressed: (() {
                                   setState(() {
                                     usernameController.text = '';
-                                    isEmptyEmail = true;
                                   });
                                 }))
                             : null,
@@ -197,6 +185,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             return null;
                           }
                         },
+                        onChanged: (_) => setState(() {}),
                         formController: passwordController,
                         labelText: 'Password',
                         isPassword: true,

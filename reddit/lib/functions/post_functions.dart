@@ -1,12 +1,15 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/data/post_model/approve.dart';
 import 'package:reddit/data/post_model/remove.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../components/bottom_sheet.dart';
 import '../components/helpers/color_manager.dart';
 import '../cubit/post_notifier/post_notifier_state.dart';
 import '../data/post_model/post_model.dart';
@@ -23,32 +26,123 @@ import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import '../screens/posts/post_screen_cubit/post_screen_cubit.dart';
+import '../widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
+import '../widgets/posts/actions_cubit/post_comment_actions_state.dart';
 import '../widgets/posts/dropdown_list.dart';
 
 enum ModOPtions { spoiler, nsfw, lock, unsticky, remove, spam, approve }
 
-BlocBuilder<PostNotifierCubit, PostNotifierState> dropDownDots(post) {
+BlocBuilder<PostNotifierCubit, PostNotifierState> dropDownDots(PostModel post) {
   return BlocBuilder<PostNotifierCubit, PostNotifierState>(
     builder: (context, state) {
       return DropDownList(
-        postId: post.id!,
-        itemClass:
-            (post.saved ?? true) ? ItemsClass.publicSaved : ItemsClass.public,
+        post: post,
+        itemClass: ItemsClass.posts,
       );
     },
   );
 }
 
+String getPlainText(Map<String, dynamic>? body) {
+  Document doc;
+  try {
+    doc = Document.fromJson((body ?? {'ops': []})['ops']);
+  } catch (e) {
+    doc = Document();
+  }
+  return doc.toPlainText();
+}
+
 CircleAvatar subredditAvatar({small = false}) {
   return CircleAvatar(
-      radius: small ? min(3.w, 15) : min(5.5.w, 30),
-      backgroundImage: const NetworkImage(unknownAvatar));
+      radius: small ? min(2.w, 15) : min(5.5.w, 30),
+      backgroundImage: null // const NetworkImage(unknownAvatar),
+      );
+}
+
+Widget commentSortRow(BuildContext context) {
+// a row with a button to choose the sorting type and an icon button for MOD
+// operations
+  return BlocBuilder<PostAndCommentActionsCubit, PostActionsState>(
+    builder: (context, state) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ElevatedButton.icon(
+            onPressed: () async {
+              await modalBottomSheet(
+                context: context,
+                selectedItem: PostScreenCubit.get(context).selectedItem,
+                text: PostScreenCubit.labels,
+                title: 'SORT COMMENTS BY',
+                selectedIcons: PostScreenCubit.icons,
+                unselectedIcons: PostScreenCubit.icons,
+              ).then((value) {
+                PostScreenCubit.get(context).changeSortType(value);
+              });
+            },
+            style: ElevatedButton.styleFrom(
+              shape: const CircleBorder(),
+              padding: const EdgeInsets.all(0),
+              backgroundColor: Colors.transparent,
+            ),
+            icon: Icon(
+              PostScreenCubit.get(context).getSelectedIcon(),
+              color: ColorManager.greyColor,
+            ),
+            label: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  PostScreenCubit.get(context).selectedItem,
+                  style: const TextStyle(
+                    color: ColorManager.greyColor,
+                  ),
+                ),
+                const Icon(
+                  Icons.arrow_drop_down,
+                  color: ColorManager.greyColor,
+                ),
+              ],
+            ),
+          ),
+          const Spacer(),
+          if (PostScreenCubit.get(context).post.inYourSubreddit ?? false)
+            Material(
+              color: Colors.transparent,
+              clipBehavior: Clip.antiAlias,
+              shape: const CircleBorder(),
+              child: BlocBuilder<PostAndCommentActionsCubit, PostActionsState>(
+                builder: (context, state) {
+                  var cubit = PostAndCommentActionsCubit.get(context);
+                  return IconButton(
+                    onPressed: () {
+                      cubit.toggleModTools();
+                    },
+                    constraints: const BoxConstraints(),
+                    padding: const EdgeInsets.all(0),
+                    icon: Icon(
+                      cubit.showModTools ? Icons.shield : Icons.shield_outlined,
+                      color: ColorManager.greyColor,
+                    ),
+                    iconSize: min(6.w, 30),
+                  );
+                },
+              ),
+            ),
+        ],
+      );
+    },
+  );
 }
 
 Widget singleRow({
   bool sub = false,
   bool showIcon = false,
   bool showDots = true,
+  required bool isWeb,
   required PostModel post,
 }) {
   return Row(
@@ -74,7 +168,7 @@ Widget singleRow({
         ),
       ),
       if (showIcon) const Spacer(),
-      if (showDots) dropDownDots(post)
+      if (showDots && !isWeb) dropDownDots(post)
     ],
   );
 }
@@ -150,12 +244,10 @@ void handleLock(
     {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   final lockComments = LockModel(id: post.id, type: 'comment');
 
-  String? token = CacheHelper.getData(key: 'token');
-
   //check whether post is marked or unmarked as nsfw
   String finalPath = post.moderation.lock ?? false ? unlock : lock;
 
-  DioHelper.postData(token: token, path: finalPath, data: lockComments.toJson())
+  DioHelper.postData(path: finalPath, data: lockComments.toJson())
       .then((value) {
     if (value.statusCode == 200) {
       post.moderation.lock = !post.moderation.lock;
@@ -171,10 +263,7 @@ void handleSticky(
   //bool pin = !post.sticky
   final stickUnstickPost = PinPostModel(id: post.id, pin: false);
 
-  String? token = CacheHelper.getData(key: 'token');
-
-  DioHelper.postData(
-          token: token, path: pinPost, data: stickUnstickPost.toJson())
+  DioHelper.postData(path: pinPost, data: stickUnstickPost.toJson())
       .then((value) {
     if (value.statusCode == 200) {
       onSuccess();
@@ -187,9 +276,7 @@ void handleSticky(
 void handleRemove(
     {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   final removePost = RemoveModel(id: post.id, type: 'post');
-  String? token = CacheHelper.getData(key: 'token');
-  DioHelper.postData(token: token, path: remove, data: removePost.toJson())
-      .then((value) {
+  DioHelper.postData(path: remove, data: removePost.toJson()).then((value) {
     if (value.statusCode == 200) {
       onSuccess();
     }
@@ -201,9 +288,7 @@ void handleRemove(
 void handleApprove(
     {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   final approvePost = ApproveModel(id: post.id, type: 'post');
-  var token = CacheHelper.getData(key: 'token');
-  DioHelper.postData(token: token, path: approve, data: approvePost.toJson())
-      .then((value) {
+  DioHelper.postData(path: approve, data: approvePost.toJson()).then((value) {
     // if (value.statusCode == 200) {
     onSuccess();
     // }
@@ -216,7 +301,6 @@ Future<void> showModOperations({
   required BuildContext context,
   required PostModel post,
 }) async {
-  bool isError;
   String message;
   var returnedOption = await showDialog<ModOPtions>(
       context: context,
@@ -295,7 +379,7 @@ Future<void> showModOperations({
             message =
                 '${post.spoiler ?? false ? 'post ' 'marked' : 'unmarked'} as spoiler';
             // update the post after any change in the post that modifies the UI
-            PostNotifierCubit.get(context).NotifyPosts();
+            PostNotifierCubit.get(context).notifyPosts();
           },
           onError: () {
             message =
@@ -312,7 +396,7 @@ Future<void> showModOperations({
             // togle the spoiler in the post
             post.nsfw = !post.nsfw!;
             //NOTE -  You have to update the POSTS after any change in the post that modifies the UI
-            PostNotifierCubit.get(context).NotifyPosts();
+            PostNotifierCubit.get(context).notifyPosts();
           },
           onError: () {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -327,7 +411,7 @@ Future<void> showModOperations({
           post: post,
           onSuccess: () {
             //update the posts after any change in the post that modifies the UI
-            PostNotifierCubit.get(context).NotifyPosts();
+            PostNotifierCubit.get(context).notifyPosts();
           },
           onError: () {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -343,7 +427,7 @@ Future<void> showModOperations({
           onSuccess: () {
             // post.pin = !post.pin
             // update the POSTS after any change in the post that modifies the U
-            PostNotifierCubit.get(context).NotifyPosts();
+            PostNotifierCubit.get(context).notifyPosts();
           },
           onError: () {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -358,7 +442,7 @@ Future<void> showModOperations({
             //mark post moderation as removed
             post.moderation!.remove = true as Remove?;
             //update post after any change in the post that modifies the UI
-            PostNotifierCubit.get(context).NotifyPosts();
+            PostNotifierCubit.get(context).notifyPosts();
           },
           onError: () {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -378,7 +462,7 @@ Future<void> showModOperations({
             post.spammed = true;
             post.moderation!.remove = true as Remove?;
             // update the POSTS after any change in the post that modifies the UI
-            PostNotifierCubit.get(context).NotifyPosts();
+            PostNotifierCubit.get(context).notifyPosts();
           },
           onError: () {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -394,7 +478,7 @@ Future<void> showModOperations({
             //mark post moderation as approved
             post.moderation!.approve = true as Approve?;
             //update post after any change in the post that modifies the UI
-            PostNotifierCubit.get(context).NotifyPosts();
+            PostNotifierCubit.get(context).notifyPosts();
           },
           onError: () {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

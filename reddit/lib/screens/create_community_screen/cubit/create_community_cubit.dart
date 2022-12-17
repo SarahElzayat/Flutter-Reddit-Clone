@@ -13,6 +13,8 @@ import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 
+import '../../comments/add_comment_screen.dart';
+
 part 'create_community_state.dart';
 
 class CreateCommunityCubit extends Cubit<CreateCommunityState> {
@@ -104,10 +106,8 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
             : 'Public';
     final CreateCommunityModel community = CreateCommunityModel(
         subredditName: name, type: finalType, nsfw: nsfw, category: category);
-    String? token = CacheHelper.getData(key: 'token');
 
-    DioHelper.postData(
-            token: token, path: createCommunity, data: community.toJson())
+    DioHelper.postData(path: createCommunity, data: community.toJson())
         .then((value) {
       if (value.statusCode == 201) {
         ///TODO: Nagiate to AddPost with community name to add post to community
@@ -119,7 +119,6 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
       }
     }).catchError((err) {
       err = err as DioError;
-      Logger().e(err.response);
       ScaffoldMessenger.of(context)
           .showSnackBar(responseSnackBar(message: 'Failed to create r/$name'));
     });

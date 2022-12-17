@@ -3,14 +3,14 @@
 ///@description: the screen that shows the history of the user for mobile
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
-import 'package:reddit/screens/main_screen.dart';
-import 'package:reddit/widgets/posts/post_upper_bar.dart';
-import 'package:reddit/widgets/posts/post_widget.dart';
-import '../../cubit/app_cubit.dart';
+import '../../components/helpers/color_manager.dart';
+import '../../components/helpers/enums.dart';
+import '../../screens/main_screen.dart';
+import '../../widgets/posts/post_upper_bar.dart';
+import '../../widgets/posts/post_widget.dart';
+import '../../cubit/post_notifier/post_notifier_cubit.dart';
+import '../../cubit/app_cubit/app_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_state.dart';
 import '../add_post/add_post.dart';
 
@@ -223,7 +223,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
                   /// checking the [histoty] list state, if empty then show the corresponding message
                   /// else show the history
-                  //TODO do the before/after thing
                   state is HistoryEmptyState
                       ? Padding(
                           padding: EdgeInsets.only(
@@ -252,7 +251,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               listener: (context, state) {},
                               builder: (context, state) {
                                 return ListView.builder(
-                                  // controller: _scrollController,
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemBuilder: (context, index) =>
                                       // index < cubit.history.length ?

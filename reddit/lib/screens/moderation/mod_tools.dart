@@ -57,7 +57,7 @@ class _ModToolsState extends State<ModTools> {
         cubit.navigate(context, '/content_tag_screen');
       },
       () {
-        cubit.navigate(context, '/post_types_screen');
+        cubit.navigate(context, '/post_types_screenconst');
       },
       () {
         cubit.navigate(context, '/discovery_screen');
@@ -307,6 +307,7 @@ class _ModToolsState extends State<ModTools> {
                         SizedBox(
                           height: 710,
                           child: ListTileContainer(
+                              types: const [],
                               handler: generalFunctions,
                               title: '      GENERAL',
                               listTileTitles: generalTitles,
@@ -318,6 +319,7 @@ class _ModToolsState extends State<ModTools> {
                         SizedBox(
                           height: 150,
                           child: ListTileContainer(
+                              types: const [],
                               handler: contentAndRegulationsFunctions,
                               title: '      CONTENT & REGULATIONS',
                               listTileTitles: contentAndRegulationsTitles,
@@ -329,6 +331,7 @@ class _ModToolsState extends State<ModTools> {
                         SizedBox(
                           height: 315,
                           child: ListTileContainer(
+                              types: const [],
                               handler: userManagementFunctions,
                               title: '      USER MANAGEMENT',
                               listTileTitles: userManagementTitles,
@@ -340,6 +343,7 @@ class _ModToolsState extends State<ModTools> {
                         SizedBox(
                           height: 315,
                           child: ListTileContainer(
+                              types: const [],
                               handler: resourceLinksFunctions,
                               title: '      RSOURCE LINKS',
                               listTileTitles: resourceLinksTitles,

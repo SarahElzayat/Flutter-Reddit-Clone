@@ -4,6 +4,8 @@
 ///
 import 'dart:io';
 
+import 'package:dio/dio.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:path/path.dart' as p;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -11,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:reddit/components/back_to_top_button.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/home_components/left_drawer.dart';
@@ -21,11 +22,12 @@ import 'package:reddit/screens/posts/post_screen_cubit/post_screen_state.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../../components/helpers/universal_ui/universal_ui.dart';
 import '../../components/home_app_bar.dart';
+import '../../components/snack_bar.dart';
 import '../../data/comment/comment_model.dart';
 import '../../data/post_model/post_model.dart';
-import '../../widgets/comments/comment.dart';
+import '../../widgets/comments/comment_web.dart';
+import '../comments/add_comment_web.dart';
 
 class PostScreenWeb extends StatefulWidget {
   const PostScreenWeb({
@@ -103,6 +105,7 @@ class _PostScreenWebState extends State<PostScreenWeb> {
       controller: _controller!,
       embedButtons: FlutterQuillEmbeds.buttons(
         showVideoButton: false,
+        showCameraButton: false,
         onImagePickCallback: _onImagePickCallback,
         webImagePickImpl: _webImagePickImpl,
       ),
@@ -114,7 +117,14 @@ class _PostScreenWebState extends State<PostScreenWeb> {
         post: widget.post,
       )..getCommentsOfPost(),
       child: BlocConsumer<PostScreenCubit, PostScreenState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is CommentsError) {
+            ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+              message: state.error.toString(),
+              error: true,
+            ));
+          }
+        },
         builder: (context, state) {
           final screenCubit = PostScreenCubit.get(context);
           return Scaffold(
@@ -136,76 +146,52 @@ class _PostScreenWebState extends State<PostScreenWeb> {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
                         width: 50.w,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             PostWidget(
                               post: widget.post,
+                              outsideScreen: false,
                             ),
                             const SizedBox(
                               height: 20,
                             ),
                             // quil editor for web
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.grey,
+                            AddCommentWeb(
+                              controller: _controller,
+                              toolbar: toolbar,
+                              post: widget.post,
+                            ),
+                            DropdownButtonHideUnderline(
+                              child: DropdownButton2(
+                                hint: Text(
+                                  'Select Item',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Theme.of(context).hintColor,
+                                  ),
                                 ),
-                                borderRadius: BorderRadius.circular(3),
-                              ),
-                              clipBehavior: Clip.antiAlias,
-                              height: 200,
-                              width: 50.w,
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                    child: MouseRegion(
-                                      cursor: SystemMouseCursors.text,
-                                      child: QuillEditor(
-                                        controller: _controller!,
-                                        readOnly: false,
-                                        autoFocus: true,
-                                        expands: false,
-                                        scrollable: true,
-                                        scrollController: ScrollController(),
-                                        focusNode: FocusNode(),
-                                        placeholder: 'what are your thoughts?',
-                                        padding: const EdgeInsets.all(8),
-                                        embedBuilders: defaultEmbedBuildersWeb,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    color:
-                                        const Color.fromARGB(255, 48, 48, 48),
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
-                                            width: 50.w - 120, child: toolbar),
-                                        // button to submit comment
-                                        Container(
-                                          width: 100,
-                                          child: TextButton(
-                                            style: TextButton.styleFrom(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(100),
-                                              ),
-                                              backgroundColor:
-                                                  ColorManager.blue,
+                                items: PostScreenCubit.labels
+                                    .map((item) => DropdownMenuItem<String>(
+                                          value: item,
+                                          child: Text(
+                                            item,
+                                            style: const TextStyle(
+                                              fontSize: 14,
                                             ),
-                                            onPressed: () {},
-                                            child: const Text('Comment'),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                        ))
+                                    .toList(),
+                                value: screenCubit.selectedItem,
+                                onChanged: (value) {
+                                  setState(() {
+                                    screenCubit.changeSortType(value!);
+                                  });
+                                },
                               ),
                             ),
                             ..._getCommentsList(screenCubit.comments),
@@ -262,7 +248,7 @@ class _PostScreenWebState extends State<PostScreenWeb> {
     return l
         .map((e) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 0),
-              child: Comment(
+              child: CommentWeb(
                 post: widget.post,
                 comment: e,
               ),
@@ -275,10 +261,10 @@ class _PostScreenWebState extends State<PostScreenWeb> {
   // or Firebase) and then return the uploaded image URL.
   Future<String> _onImagePickCallback(File file) async {
     // Copies the picked file from temporary cache to applications directory
-    final appDocDir = await getApplicationDocumentsDirectory();
-    final copiedFile =
-        await file.copy('${appDocDir.path}/${p.basename(file.path)}');
-    return copiedFile.path.toString();
+    // final appDocDir = await getApplicationDocumentsDirectory();
+    // final copiedFile =
+    //     await file.copy('${appDocDir.path}/${p.basename(file.path)}');
+    return file.path.toString();
   }
 
   Future<String?> _webImagePickImpl(
@@ -290,6 +276,7 @@ class _PostScreenWebState extends State<PostScreenWeb> {
 
     // Take first, because we don't allow picking multiple files.
     final fileName = result.files.first.name;
+
     final file = File(fileName);
 
     return onImagePickCallback(file);

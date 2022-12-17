@@ -9,7 +9,8 @@ const portNumber = String.fromEnvironment('FLUTTER_PORT', defaultValue: '5000');
 // String.fromEnvironment('BASE_URL', defaultValue: 'http://10.0.2.2:3000'); // for mobile
 // const portNumber = 5000;
 const baseUrl = kReleaseMode
-    ? 'http://www.read-it.live/api'
+    ? 'https://web.read-it.live/api'
+    // ? 'http://www.read-it.live/api' TODO: wa3er aly ast5dm el fo2 34an samaa.
     : kIsWeb
         ? 'http://localhost:3000'
         : 'http://10.0.2.2:3000';
@@ -19,6 +20,9 @@ const signUp = '/signup';
 const login = '/login';
 const loginForgetPassword = '/login/forget-password';
 const loginForgetUserName = '/login/forget-username';
+const signInGoogle = '/signin/google';
+const signInFacebook = '/signin/facebook';
+const getRandom = '/random-username';
 
 // settings endpoints
 const changeEmail = '/change-email';
@@ -26,6 +30,7 @@ const changePassword = '/change-password';
 const blockedAccounts = '/blocked-users';
 const accountSettings =
     '/account-settings'; // this end point is used in multi requests.
+const block = '/block-user';
 
 // create community
 const createCommunity = '/create-subreddit';
@@ -41,23 +46,39 @@ const remove = '/remove';
 const approve = '/approve';
 const submitPost = '/submit';
 const user = '/user';
+const about = '/about';
 const recentHistory = '/history';
 const upvotedHistory = '/upvoted';
 const downvotedHistory = '/downvoted';
 const hiddenHistory = '/hidden';
 const clearHistory = '/clear-history';
+const userProfilePicture = '/profile-picture';
 const search = '/search';
 const searchPosts = 'post';
 const searchUsers = 'user';
 const searchComments = 'comment';
-const searchCommunities = 'community';
+const searchSubreddits = 'subreddit';
 const postDetails = '/post-details';
-
+const followUser = '/follow-user';
+const joinCommunity = '/join-subreddit';
+const leaveCommunity = '/leave-subreddit';
 const unknownAvatar =
-    'https://www.investopedia.com/thmb/qDGHg2MCiUni812bkWihr-qdBbM=/1600x900/filters:no_upscale():max_bytes(150000):strip_icc()/Reddit-Logo-e9537b96b55349ac8eb77830f8470c95.jpg';
+    'https://pbs.twimg.com/profile_images/1155645244563742721/tuCu6BT-_400x400.jpg';
 // const savedPosts = ''
 const ban = '/ban';
 const unban = '/unban';
 const inviteMod = '/moderator-invite';
+const joinedSubreddits = '/joined-subreddits';
+const moderatedSubreddits = '/moderated-subreddits';
 // Note : after last / add the subreddit name
 const subredditInfo = '/r';
+const leaveSubreddit = '/leave-subreddit';
+const joinSubreddit = '/join-subreddit';
+const searchForSubreddit = '/search?type=subreddit';
+const userDetails = '/user-details';
+const homeBest = '/best';
+const homeTop = '/top';
+const homeHot = '/hot';
+const homeTrending = '/trending';
+const homeNew = '/new';
+const subreddit = '/r';
