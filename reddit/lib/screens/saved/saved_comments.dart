@@ -2,17 +2,11 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/components/saved_components/saved_comment_container.dart';
 import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 import 'package:reddit/screens/posts/post_screen.dart';
 import 'package:reddit/widgets/comments/comment.dart';
 
 import '../../components/helpers/color_manager.dart';
-import '../../data/post_model/post_model.dart';
-import '../../networks/constant_end_points.dart';
-import '../../networks/dio_helper.dart';
-import '../../widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
-import '../../widgets/posts/post_widget.dart';
 
 class SavedCommentsScreen extends StatefulWidget {
   const SavedCommentsScreen({super.key});
@@ -64,22 +58,21 @@ class _SavedCommentsScreenState extends State<SavedCommentsScreen> {
                   controller: _scrollController,
                   itemCount: cubit.savedCommentsList.length,
                   itemBuilder: (context, index) => InkWell(
-                        onTap: () => DioHelper.getData(
-                            path: postDetails,
-                            query: {
-                              'id': cubit.savedCommentsList[index].parent
-                            }).then((value) => Navigator.push(
+                        onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => PostScreen(
-                                  key: Key(value.data['id']),
-                                  // postView: PostView.classic,
-                                  post: PostModel.fromJson(value.data)),
-                            ))),
+                                  key: Key(cubit
+                                      .savedCommentsPostsList[index].id
+                                      .toString()),
+                                  post: cubit.savedCommentsPostsList[index]),
+                            )),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: SavedCommentContainer(
-                              model: cubit.savedCommentsList[index]),
+                          child: Comment(
+                              viewType: CommentView.inSubreddits,
+                              post: cubit.savedCommentsPostsList[index],
+                              comment: cubit.savedCommentsList[index]),
                         ),
                       )),
         );
