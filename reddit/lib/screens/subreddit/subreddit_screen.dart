@@ -5,6 +5,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/cubit/add_post/cubit/add_post_cubit.dart';
 import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import 'package:reddit/screens/moderation/mod_tools.dart';
 
@@ -98,6 +99,8 @@ class _SubredditState extends State<Subreddit>
           onTap: (value) {
             setState(() {
               if (value == 2) {
+                AddPostCubit.get(context)
+                    .addSubredditName(subredditCubit.subredditName);
                 Navigator.of(context).push(MaterialPageRoute(
                   // TODO:pass the name of subreddit to add post
                   builder: (context) => const AddPost(),

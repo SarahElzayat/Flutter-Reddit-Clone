@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
@@ -25,6 +26,8 @@ part 'add_post_state.dart';
 
 class AddPostCubit extends Cubit<AddPostState> {
   AddPostCubit() : super(AddPostInitial());
+
+  static AddPostCubit get(context) => BlocProvider.of(context);
 
   /// [title] Title textField controller
   TextEditingController title = TextEditingController();
@@ -493,9 +496,7 @@ class AddPostCubit extends Cubit<AddPostState> {
         'subreddit': subredditName,
         'inSubreddit': true,
         'title': title.text,
-        'content': {
-          'ops': optionalText.document.toDelta().toJson()
-        },
+        'content': {'ops': optionalText.document.toDelta().toJson()},
         'nsfw': nsfw,
         'spoiler': spoiler,
       };
