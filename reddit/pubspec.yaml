@@ -33,6 +33,7 @@ dependencies:
   bloc: ^8.1.0
   conditional_builder_null_safety: ^0.0.6
   cupertino_icons: ^1.0.2
+  delta_markdown: ^0.8.0
   dio: ^4.0.6
   dismissible_page: ^0.7.3
   dots_indicator: null

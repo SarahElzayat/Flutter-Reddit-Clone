@@ -25,7 +25,7 @@ class PostSimpleScreen extends StatelessWidget {
       body: Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Text('Title : ${addPostCubit.title.text}'),
-          Text('Text Body : ${addPostCubit.optionalText.document.toDelta()}'),
+          Text('Text Body : ${addPostCubit.optionalText.text}'),
           Text('Number of Image : ${addPostCubit.images.length}'),
           Text('Has Link : ${addPostCubit.link.text}'),
           Text('Number of Poll options : ${addPostCubit.poll.length}'),
