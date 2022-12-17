@@ -54,7 +54,7 @@ class ModeratorsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ModerationCubit cubit = ModerationCubit.get(context);
-    moderators = cubit.getUsers(context, UserManagement.moderator);
+    // moderators = cubit.getUsers(context, UserManagement.moderator);
     return Column(children: [
       Center(
         child: SizedBox(

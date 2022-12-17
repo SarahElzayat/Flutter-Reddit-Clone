@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/components/moderation_components/modtools_components.dart';
 import 'package:reddit/router.dart';
 import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 import '../../../components/button.dart';
 import '../../../components/default_text_field.dart';
 import '../../../components/helpers/color_manager.dart';
@@ -125,11 +123,7 @@ class _DescriptionState extends State<Description> {
                   formController: controller,
                   labelText: 'Describe you community',
                   maxLength: 500,
-                  onChanged: (description) {
-                    // print(cubit.isChanged);
-                    cubit.onChanged(controller.text);
-                    // print(cubit.isChanged);
-                  },
+                  onChanged: (description) => cubit.onChanged(),
                 ))),
           );
         }));

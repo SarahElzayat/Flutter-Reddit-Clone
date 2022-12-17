@@ -1,6 +1,7 @@
 class CommunitySettingsModel {
   String? communityName;
-  List<CommunityTopics>? communityTopics;
+  String? mainTopic;
+  List<String>? subTopics;
   String? communityDescription;
   bool? sendWelcomeMessage;
   String? welcomeMessage;
@@ -14,7 +15,8 @@ class CommunitySettingsModel {
 
   CommunitySettingsModel(
       {this.communityName,
-      this.communityTopics,
+      this.mainTopic,
+      this.subTopics,
       this.communityDescription,
       this.sendWelcomeMessage,
       this.welcomeMessage,
@@ -28,12 +30,8 @@ class CommunitySettingsModel {
 
   CommunitySettingsModel.fromJson(Map<String, dynamic> json) {
     communityName = json['communityName'];
-    if (json['communityTopics'] != null) {
-      communityTopics = <CommunityTopics>[];
-      json['communityTopics'].forEach((v) {
-        communityTopics!.add(CommunityTopics.fromJson(v));
-      });
-    }
+    mainTopic = json['mainTopic'];
+    subTopics = json['subTopics'].cast<String>();
     communityDescription = json['communityDescription'];
     sendWelcomeMessage = json['sendWelcomeMessage'];
     welcomeMessage = json['welcomeMessage'];
@@ -47,12 +45,10 @@ class CommunitySettingsModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['communityName'] = communityName;
-    if (communityTopics != null) {
-      data['communityTopics'] =
-          communityTopics!.map((v) => v.toJson()).toList();
-    }
+    data['mainTopic'] = mainTopic;
+    data['subTopics'] = subTopics;
     data['communityDescription'] = communityDescription;
     data['sendWelcomeMessage'] = sendWelcomeMessage;
     data['welcomeMessage'] = welcomeMessage;
@@ -67,18 +63,25 @@ class CommunitySettingsModel {
   }
 }
 
-class CommunityTopics {
-  String? topicName;
+class ModPostSettingsModel {
+  bool? enableSpoiler;
+  bool? allowImagesInComment;
+  String? suggestedSort;
 
-  CommunityTopics({this.topicName});
+  ModPostSettingsModel(
+      {this.enableSpoiler, this.allowImagesInComment, this.suggestedSort});
 
-  CommunityTopics.fromJson(Map<String, dynamic> json) {
-    topicName = json['topicName'];
+  ModPostSettingsModel.fromJson(Map<String, dynamic> json) {
+    enableSpoiler = json['enableSpoiler'];
+    allowImagesInComment = json['allowImagesInComment'];
+    suggestedSort = json['suggestedSort'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['topicName'] = topicName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['enableSpoiler'] = enableSpoiler;
+    data['allowImagesInComment'] = allowImagesInComment;
+    data['suggestedSort'] = suggestedSort;
     return data;
   }
 }

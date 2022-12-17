@@ -1,67 +1,156 @@
 ///@author: Yasmine Ghanem
 ///@date: 10/12/2022
 ///moderation cubit that handles all moduration functions
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/components/snack_bar.dart';
-import 'package:reddit/data/moderation_models/ban_user_model.dart';
-import 'package:reddit/data/moderation_models/banned_users_model.dart';
+import 'package:reddit/constants/constants.dart';
+import 'package:reddit/data/moderation_models/actions_user_model.dart';
 import 'package:reddit/data/moderation_models/community_settings_model.dart';
 import 'package:reddit/data/moderation_models/description_model.dart';
-import 'package:reddit/data/moderation_models/moderators_model.dart';
+import 'package:reddit/data/moderation_models/get_users_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/router.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
-
 part 'moderation_state.dart';
 
 class ModerationCubit extends Cubit<ModerationState> {
   ///settings of the community
-  CommunitySettingsModel settings = CommunitySettingsModel();
+  late CommunitySettingsModel settings;
+  late ModPostSettingsModel postSettings;
 
   ///suggested topics for a subreddit list
   List<dynamic> topics = [];
-
-  ///text editing controller for [something] textfield
   late TextEditingController controller;
   ModerationCubit() : super(ModerationInitial());
   static ModerationCubit get(context) => BlocProvider.of(context);
 
+  ///text editing controllers for textfields in modtools' screens
+
+  ///text editing controller fo the community description textfield
+  ///userd in description screen
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController welcomeMessageController =
+      TextEditingController();
+  final TextEditingController daysController = TextEditingController();
+  final TextEditingController modNoteController = TextEditingController();
+  final TextEditingController userNoteController = TextEditingController();
+
+  ///@param [context]
   ///@param [name] the name of the subreddit
-  ///returns the current community settings
-  void getCommunitySettings(name, context) {
-    String? token = CacheHelper.getData(key: 'token');
+  ///returns the current community settings of a certain subreddit
+  void getCommunitySettings(context, name) {
     DioHelper.getData(path: '/r/$name/about/edit').then((value) {
       if (value.statusCode == 200) {
         settings = CommunitySettingsModel.fromJson(value.data);
-        emit(LoadSettings());
+        Logger().e(settings.communityDescription);
+        usernameController.text = settings.communityName as String;
+        descriptionController.text = settings.communityDescription as String;
       }
     }).catchError((error) {
       error = error as DioError;
       ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
-          message: 'Failed to ban user\n${error.response}', error: true));
+          message: 'Failed to load community settings loaded'));
     });
+  }
+
+  ///returns the post settings for a certain subreddit
+  ///@param [context]
+  ///@param [name]
+  void getPostSettings(context, name) {
+    DioHelper.getData(path: '/r/$name/about/edit-post-settings').then((value) {
+      if (value.statusCode == 200) {
+        postSettings = ModPostSettingsModel.fromJson(value.data);
+      }
+    }).catchError((error) {
+      error = error as DioError;
+      ScaffoldMessenger.of(context).showSnackBar(
+          responseSnackBar(message: 'Failed loading post settings'));
+    });
+  }
+
+  /// gets the current settings of the subreddit being moderated
+  void getSettings(context, name) {
+    getCommunitySettings(context, name);
+    getPostSettings(context, name);
     emit(LoadSettings());
   }
 
-  List<dynamic> getSuggestedTopics(context) {
-    String? token = CacheHelper.getData(key: 'token');
-    DioHelper.getData(path: '/r/com1/suggested-topics').then((value) {
+  /// updates the community settings when save changes button is pressed
+  void updateCommunitySettings(context) {
+    settings.communityDescription = descriptionController.text;
+    DioHelper.putData(
+            path: '/r/${settings.communityName}/about/edit',
+            data: settings.toJson())
+        .then((value) {
       if (value.statusCode == 200) {
-        topics =
-            value.data.map((topic) => CommunityTopics.fromJson(topic)).toList();
-        print(topics);
-        emit(TopicsLoaded(topics));
+        Logger().e(settings.communityDescription);
+        ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+            message: 'Community settings updated successfully', error: false));
       }
+    });
+  }
+
+  /// updates the post and comments settings when save changes button is pressed
+  void updatePostSettings(context) {
+    DioHelper.putData(
+            path: '/r/${settings.communityName}/about/edit-post-settings',
+            data: postSettings.toJson())
+        .then((value) {
+      if (value.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+            message: 'Post settings updated successfully', error: false));
+      }
+    });
+  }
+
+  ///updates settings when the save changes button is pressed
+  void updateSettings(context) {
+    Logger().e(descriptionController.text);
+    settings.communityDescription = descriptionController.text;
+    settings.communityName = usernameController.text;
+    try {
+      updateCommunitySettings(context);
+      updatePostSettings(context);
+      getCommunitySettings(context, settings.communityName);
+      ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+          message: 'Settings updated successfully', error: false));
+      emit(LoadSettings());
+    } catch (error) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(responseSnackBar(message: 'Failed to update settings'));
+    }
+  }
+
+  void getSuggestedTopics(context) {
+    DioHelper.getData(path: '/r/${settings.communityName}/suggested-topics')
+        .then((value) {
+      if (value.statusCode == 200) {}
     }).catchError((error) {
       error = error as DioError;
       ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
-          message: 'Failed to load topics\n${error.response}', error: true));
+          message: 'Failed to load topics\n${error.response}'));
     });
-    return topics;
+  }
+
+  //handling changing the description
+  bool isChanged = false;
+  bool emptyDescription = true;
+
+  ///@param [description] description currently being edited
+  ///checks if the description being edited is changed to enable save button
+  void onChanged() {
+    if (descriptionController.text != settings.communityDescription) {
+      isChanged = true;
+      emptyDescription = descriptionController.text.isEmpty;
+      settings.communityDescription = descriptionController.text;
+      emit(DescriptionChanged());
+    }
   }
 
   ///@param[description] new description of the community
@@ -69,7 +158,6 @@ class ModerationCubit extends Cubit<ModerationState> {
   void saveDescription(description) {
     DescriptionModel descriptionModel =
         DescriptionModel(description: description);
-    String? token = CacheHelper.getData(key: 'token');
     DioHelper.postData(
             token: token,
             path: '/r/${settings.communityName}/add-description',
@@ -84,49 +172,6 @@ class ModerationCubit extends Cubit<ModerationState> {
           message: 'failed to update community description\n${error.response}',
           error: true);
     });
-  }
-
-  ///@param [name] subreddit name
-  ///@param [type] subreddit type
-  ///@param [nsfw] whether subreddit is not safe for work
-  ///@param [category] subreddit category
-  ///sets the settings of a community
-  void setCommunitySettings(name, type, nsfw, category) {
-    settings = CommunitySettingsModel(
-        communityName: name,
-        type: type,
-        nSFW: nsfw,
-        communityDescription: '',
-        communityTopics: [],
-        region: '',
-        language: '',
-        welcomeMessage: '',
-        sendWelcomeMessage: true,
-        acceptingRequestsToJoin: true,
-        acceptingRequestsToPost: true,
-        approvedUsersHaveTheAbilityTo: 'Post & Comment');
-
-    String? token = CacheHelper.getData(key: 'token');
-
-    DioHelper.putData(path: '/r/$name/about/edit', data: settings.toJson())
-        .then((value) {
-      if (value.statusCode == 200) {}
-    }).catchError((error) {
-      error = error as DioError;
-    });
-  }
-
-  bool isChanged = false;
-  bool emptyDescription = true;
-
-  ///@param [description] description currently being edited
-  ///checks if the description being edited is changed to enable save button
-  void onChanged(String description) {
-    if (description != settings.communityDescription) {
-      isChanged = true;
-      emptyDescription = description.isEmpty;
-    }
-    emit(DescriptionChanged());
   }
 
   ///checkbox state bool
@@ -144,8 +189,8 @@ class ModerationCubit extends Cubit<ModerationState> {
 
   ///@param [days] number of days a user is banned from a subreddit
   ///checks whether a number of days was specified to set permenant check box state
-  void checkDays(String days) {
-    emptyDays = days.isEmpty;
+  void checkDays() {
+    emptyDays = daysController.text.isEmpty;
     if (emptyDays) {
       permenant = true;
     } else {
@@ -171,74 +216,229 @@ class ModerationCubit extends Cubit<ModerationState> {
   /// bool to check if username textfield is empty
   bool emptyUsername = true;
 
-  /// username to ban
-  String? banUsername;
-
   ///@param [username] username of user to ban
   ///updates button state whether enabled or not
   void buttonState(String username) {
     emptyUsername = username.isEmpty;
-    banUsername = username;
     emit(EnableButton());
   }
 
-  ///@param[context] context of banned users screen
-  ///@param [days] number of days a user is banned
-  ///@param [modNote] moderator note, only seen by moderators
-  ///@param [userNote] note to send to the banned user
-  /// this functions bans a user from a subreddit
-  void banUser(context, String days, modNote, userNote) {
-    BanUserModel banUser = BanUserModel(
-        userId: 'user',
-        subreddit: settings.communityName,
-        banPeriod: (permenant) ? null : days as int,
-        reasonForBan: banReason,
-        modNote: modNote,
-        noteInclude: userNote);
+  //User moderation funactions in subreddit
+  // a moderator can ban, mute, approve or invite user as a moderator
 
-    String? token = CacheHelper.getData(key: 'token');
+  ///@param[context] context of banned users screen
+  /// this functions bans a user from a subreddit
+  void banUser(context) {
+    BanUserModel banUser = BanUserModel(
+        username: usernameController.text,
+        subreddit: settings.communityName ?? 'yazzooz',
+        banPeriod: permenant ? 0 : daysController.text as int,
+        reasonForBan: banReason,
+        modNote: modNoteController.text,
+        noteInclude: userNoteController.text);
 
     DioHelper.postData(token: token, path: ban, data: banUser.toJson())
         .then((value) {
       if (value.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
             message: 'User banned successfully', error: false));
+        getUsers(context, UserManagement.banned);
         emit(BanUser());
       }
     }).catchError((error) {
       error = error as DioError;
-      ScaffoldMessenger.of(context).showSnackBar(
-          responseSnackBar(message: 'Failed to ban user', error: true));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(responseSnackBar(message: 'Failed to ban user'));
     });
   }
 
-  ///@param [context] user management screen context
-  ///@param [type]
-  ///gets a list of users based on the user management type [banned, muted, moderator, approved]
-  List<dynamic> getUsers(context, UserManagement type) {
-    List<dynamic> users = [];
-    String? token = CacheHelper.getData(key: 'token');
+  ///@param [context] context of invite moderator screen
+  ///this function invites a user as a moderator
+  void inviteModerator(context) {
+    InviteModeratorModel inviteModerator = InviteModeratorModel(
+      username: usernameController.text,
+      subreddit: settings.communityName,
+      permissionToEverything: isFullPermissions,
+      permissionToManageFlair: permissionValues[2],
+      permissionToManagePostsComments: permissionValues[5],
+      permissionToManageSettings: permissionValues[1],
+      permissionToManageUsers: permissionValues[0],
+    );
 
-    String finalPath = (type == UserManagement.banned)
-        ? 'banned'
-        : (type == UserManagement.approved)
-            ? 'approved'
-            : (type == UserManagement.muted)
-                ? 'muted'
-                : 'moderator';
-    DioHelper.getData(path: '/r/${settings.communityName}/about/$finalPath')
+    DioHelper.postData(
+            token: token, path: inviteMod, data: inviteModerator.toJson())
         .then((value) {
       if (value.statusCode == 200) {
-        users = value.data.map((user) => BannedUser.fromJson(user));
-        emit(UsersLoaded(users));
+        ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+            message: 'u/$invitedModerator was invited', error: false));
+        getUsers(context, UserManagement.moderator);
+        emit(InviteMod());
+      }
+    }).catchError((error) {
+      error = error as DioError;
+      ScaffoldMessenger.of(context).showSnackBar(
+          responseSnackBar(message: 'Error inviting user', error: true));
+    });
+  }
+
+  ///@param [context] context of invite moderator screen
+  ///this function mutes a user in a subreddit
+  void muteUser(context) {
+    MuteUserModel mutedUser = MuteUserModel(
+        username: usernameController.text, muteReason: modNoteController.text);
+    DioHelper.postData(
+            path: '/r/yazzooz/mute-user',
+            data: mutedUser.toJson(),
+            token: token)
+        .then((value) {
+      if (value.statusCode == 200) {
+        getUsers(context, UserManagement.muted);
+        emit(MuteUser());
       }
     }).catchError((error) {
       error = error as DioError;
       ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
-          message: 'Failed loading ${type.toString()} user', error: true));
+          message: 'Error muting user\n${error.response!.data}'));
     });
-    return users;
   }
+
+  ///@param [context] context of invite moderator screen
+  ///this function approves a user into a subreddit
+  void approveUser(context) {
+    ApproveUserModel approveUser =
+        ApproveUserModel(username: usernameController.text);
+    DioHelper.postData(
+            token: token,
+            path: '/r/yazzooz/approve-user',
+            data: approveUser.toJson())
+        .then((value) {
+      if (value.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            responseSnackBar(message: 'User approved', error: false));
+        getUsers(context, UserManagement.approved);
+        emit(ApproveUser());
+      }
+    }).catchError((error) {
+      error = error as DioError;
+      ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+          message: 'Error approving user\n${error.response!.data}'));
+    });
+  }
+
+  List<dynamic> users = [];
+
+  void getUsers(context, UserManagement type) {
+    String finalPath = (type == UserManagement.banned)
+        ? 'banned'
+        : (type == UserManagement.muted)
+            ? 'muted'
+            : (type == UserManagement.approved)
+                ? 'approved'
+                : 'moderators';
+    DioHelper.getData(path: '/r/yazzooz/about/$finalPath').then((value) {
+      Logger().e(value.data['children']);
+      if (value.statusCode == 200) {
+        users = value.data['children']
+            .map((value) => (type == UserManagement.banned)
+                ? BannedUsersModel.fromJson(value as Map<String, dynamic>)
+                : (type == UserManagement.muted)
+                    ? MuteUserModel.fromJson(value as Map<String, dynamic>)
+                    : (type == UserManagement.approved)
+                        ? ApprovedUsersModel.fromJson(
+                            value as Map<String, dynamic>)
+                        : ModeratorsModel.fromJson(
+                            value as Map<String, dynamic>))
+            .toList();
+        emit(UsersLoaded());
+      }
+    }).catchError((error) {
+      error = error as DioError;
+      ScaffoldMessenger.of(context).showSnackBar(
+          responseSnackBar(message: 'Failed loading muted users', error: true));
+    });
+  }
+
+  List<dynamic> bannedUsers = [];
+
+  ///@param [context] user management screen context
+  ///gets a list of users based on the user management type [banned, muted, moderator, approved]
+  void getBannedUsers(context) {
+    DioHelper.getData(path: '/r/yazzooz/about/banned').then((value) {
+      if (value.statusCode == 200) {
+        print(value.data);
+        bannedUsers = value.data['children']
+            .map((value) =>
+                BannedUsersModel.fromJson(value as Map<String, dynamic>))
+            .toList();
+        emit(UsersLoaded());
+      }
+    }).catchError((error) {
+      error = error as DioError;
+      ScaffoldMessenger.of(context).showSnackBar(
+          responseSnackBar(message: 'Failed loading banned users'));
+    });
+  }
+
+  List<dynamic> mutedUsers = [];
+
+  void getMutedUsers(context) {
+    DioHelper.getData(path: '/r/yazzooz/about/muted').then((value) {
+      if (value.statusCode == 200) {
+        mutedUsers = value.data['children']
+            .map((value) =>
+                MuteUserModel.fromJson(value as Map<String, dynamic>))
+            .toList();
+        emit(UsersLoaded());
+      }
+    }).catchError((error) {
+      error = error as DioError;
+      ScaffoldMessenger.of(context).showSnackBar(
+          responseSnackBar(message: 'Failed loading muted users', error: true));
+    });
+  }
+
+  List<dynamic> approvedUsers = [];
+
+  void getApprovedUsers(context) {
+    DioHelper.getData(path: '/r/yazzooz/about/approved').then((value) {
+      if (value.statusCode == 200) {
+        print(value.data);
+        approvedUsers = value.data['children']
+            .map((approvedUser) => ApproveUserModel.fromJson(approvedUser))
+            .toList();
+        emit(UsersLoaded());
+      }
+    }).catchError((error) {
+      error = error as DioError;
+      ScaffoldMessenger.of(context).showSnackBar(
+          responseSnackBar(message: 'Failed loading approved users'));
+    });
+  }
+
+  List<dynamic> moderators = [];
+
+  void getModerators(context) {
+    DioHelper.getData(path: '/r/yazzooz/about/moderators').then((value) {
+      if (value.statusCode == 200) {
+        Logger().e(value.data['children']);
+        moderators = value.data['children']
+            .map((user) => ModeratorsModel.fromJson(user))
+            .toList();
+        emit(UsersLoaded());
+      }
+    }).catchError((error) {
+      error = error as DioError;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(responseSnackBar(message: 'Failed loading moderators'));
+    });
+  }
+
+  //Queues related functions
+  void getSpam() {}
+
+  void getEdited() {}
+
+  void getUnmoderated() {}
 
   ///@param [context] mod tools screen context
   ///@param [route] the route to which screen navigates to
@@ -310,30 +510,154 @@ class ModerationCubit extends Cubit<ModerationState> {
     }
   }
 
-  ///@param [context] context of invite moderator screen
-  void inviteModerator(context) {
-    String? token = CacheHelper.getData(key: 'token');
-    Moderator moderator = Moderator(
-      username: invitedModerator,
-      subreddit: settings.communityName,
-      permissionToEverything: isFullPermissions,
-      permissionToManageFlair: permissionValues[2],
-      permissionToManagePostsComments: permissionValues[5],
-      permissionToManageSettings: permissionValues[1],
-      permissionToManageUsers: permissionValues[0],
-    );
+  ///selected item from enum [ModToolsSelectedItem] indicates the lit tile chosen to act accoridingly
+  ///the function sets it to the incoming item
+  ///the default is spam
+  ///shows the spam widget
+  ModToolsSelectedItem webSelectedItem = ModToolsSelectedItem.spam;
+  ModToolsGroup webSelectedGroup = ModToolsGroup.queues;
 
-    DioHelper.postData(token: token, path: inviteMod, data: moderator.toJson())
-        .then((value) {
-      if (value.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
-            message: 'u/$invitedModerator was invited', error: false));
-        emit(InviteMod());
-      }
-    }).catchError((error) {
-      error = error as DioError;
-      ScaffoldMessenger.of(context).showSnackBar(
-          responseSnackBar(message: 'Error inviting user', error: true));
-    });
+  ///@param [item] the tile chosen from the mod tools in web
+  setWebSelectedItem(context, ModToolsSelectedItem item, ModToolsGroup group) {
+    webSelectedItem = item;
+    webSelectedGroup = group;
+    if (webSelectedGroup == ModToolsGroup.userManagement) {
+      UserManagement type = (item == ModToolsSelectedItem.approved)
+          ? UserManagement.approved
+          : (item == ModToolsSelectedItem.banned)
+              ? UserManagement.banned
+              : (item == ModToolsSelectedItem.muted)
+                  ? UserManagement.muted
+                  : UserManagement.moderator;
+      getUsers(context, type);
+    }
+    emit(WebModTools());
+  }
+
+  ///List of posts
+  ///could be spam, edited, unmoderated
+  List<dynamic> posts = [];
+
+  ///value of selected sorting iem
+  String? sortingValue = sortingItems.first;
+
+  ///@param [value] the tile chosen from the mod tools in web
+  setSortType(value) {
+    sortingValue = value;
+    emit(SetDropdownItem());
+  }
+
+  ///value of selected listing iem
+  String? listingTypeValue = listingTypes.first;
+
+  ///@param [value] the tile chosen from the mod tools in web
+  setListType(String? value) {
+    listingTypeValue = value;
+    emit(SetDropdownItem());
+  }
+
+  /// value of selected view
+  String? viewValue = view.first;
+
+  ///@param [value] the tile chosen from the mod tools in web
+  setView(String? value) {
+    viewValue = value;
+    emit(SetDropdownItem());
+  }
+
+  ///@param [value] new switch value to toggle switch
+  toggleNSFWSwitch(value) {
+    settings.nSFW = value;
+    emit(Toggle());
+  }
+
+  ///@param [value] new switch value to toggle switch
+  toggleMessageSwitch(value) {
+    settings.sendWelcomeMessage ?? false;
+    settings.sendWelcomeMessage = value;
+    emit(Toggle());
+  }
+
+  ///@param [value] chosen community language
+  setCommunityLanguage(String? value) {
+    settings.language = value;
+    emit(SetDropdownItem());
+  }
+
+  ///@param [value] chosen community region
+  setCommunityRegion(String? value) {
+    settings.region = value;
+    emit(SetDropdownItem());
+  }
+
+  String communityTopic = 'Activism';
+
+  ///@param [value] chosen community region
+  setCommunityTopic(value) {
+    communityTopic = value;
+    settings.subTopics = [communityTopic, communityTopic];
+    settings.mainTopic = communityTopic;
+    emit(SetDropdownItem());
+  }
+
+  // bool settingsChanged = false;
+  bool settingsChanged() {
+    return true;
+  }
+
+  //MOD NOTIFICATIONS
+  bool notificationsSwitch = false;
+  void toggleModNotifications() {
+    notificationsSwitch = !notificationsSwitch;
+    emit(Toggle());
+  }
+
+  bool milestoneSwitch = false;
+  void toggleMilestone() {
+    milestoneSwitch = !milestoneSwitch;
+    emit(Toggle());
+  }
+
+  bool tipsSwitch = false;
+  void toggleTips() {
+    tipsSwitch = !tipsSwitch;
+    emit(Toggle());
+  }
+
+  //POST AND COMMENT SETTINGS
+  ///post type
+  String postOption = postOptions.first;
+
+  ///@param [value] chosen post type from dropdown list
+  void setPostType(value) {
+    postOption = value;
+    emit(SetDropdownItem());
+  }
+
+  /// suggested sort
+  String sort = suggestedSort.first;
+
+  ///@param [value] chosen post type from dropdown list
+  void setSuggestedSort(value) {
+    sort = value;
+    emit(SetDropdownItem());
+  }
+
+  // all switches in the comments section settings
+  Map<String, bool> commentsSwitches = {
+    'crossposting': false,
+    'archivePosts': false,
+    'spoilerTag': false,
+    'multipleImages': false,
+    'predictions': false,
+    'collapseComments': false,
+    'giphy': false,
+    'images': false,
+    'gifs': false
+  };
+
+  void toggleCommentSwitches(key, value) {
+    commentsSwitches[key] = value;
+    emit(Toggle());
   }
 }

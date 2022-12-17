@@ -21,14 +21,16 @@ class EnableButton extends ModerationState {}
 
 class BanUser extends ModerationState {}
 
+class MuteUser extends ModerationState {}
+
+class ApproveUser extends ModerationState {}
+
 class InviteMod extends ModerationState {}
 
-class UsersLoaded extends ModerationState {
-  List<dynamic>? users;
-  UsersLoaded(this.users);
-}
+class WebModTools extends ModerationState {}
 
-class TopicsLoaded extends ModerationState {
-  final List<dynamic> topics;
-  TopicsLoaded(this.topics);
-}
+class SetDropdownItem extends ModerationState {}
+
+class UsersLoaded extends ModerationState {}
+
+class TopicsLoaded extends ModerationState {}

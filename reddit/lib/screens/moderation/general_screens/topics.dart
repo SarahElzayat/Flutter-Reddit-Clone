@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/moderation_components/modtools_components.dart';
-import 'package:reddit/constants/constants.dart';
 import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -93,9 +92,7 @@ class _TopicsState extends State<Topics> {
   Widget build(BuildContext context) {
     final ModerationCubit cubit = ModerationCubit.get(context);
     return BlocConsumer<ModerationCubit, ModerationState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
           appBar:

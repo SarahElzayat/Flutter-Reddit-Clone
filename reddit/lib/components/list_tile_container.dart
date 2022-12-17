@@ -3,6 +3,7 @@
 /// this is a common container for the list tiles because
 /// it is used alot in the mod tools
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -76,12 +77,19 @@ class ListTileContainer extends StatelessWidget {
               padding: EdgeInsets.zero,
               itemCount: listTileTitles.length,
               itemBuilder: (BuildContext context, int index) {
-                return ListTileWidget(
-                    items: _ourItems(index),
-                    leadingIcon: Icon(listTileIcons[index]),
-                    title: listTileTitles[index],
-                    handler: handler[index],
-                    tailingObj: trailingObject[index]);
+                return Theme(
+                  data: ThemeData(
+                      hoverColor: ColorManager.grey.withOpacity(0.5),
+                      splashColor: (kIsWeb)
+                          ? Colors.transparent
+                          : ColorManager.lightGrey.withOpacity(0.5)),
+                  child: ListTileWidget(
+                      items: _ourItems(index),
+                      leadingIcon: Icon(listTileIcons[index]),
+                      title: listTileTitles[index],
+                      handler: handler[index],
+                      tailingObj: trailingObject[index]),
+                );
               }),
         ),
       ],

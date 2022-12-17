@@ -14,7 +14,6 @@ import 'package:reddit/screens/moderation/general_screens/discovery/discovery.da
 import 'package:reddit/screens/moderation/general_screens/location.dart';
 import 'package:reddit/screens/moderation/general_screens/media_in_comments.dart';
 import 'package:reddit/screens/moderation/general_screens/mod_notifications.dart';
-import 'package:reddit/screens/moderation/general_screens/modmail.dart';
 import 'package:reddit/screens/moderation/general_screens/post_types.dart';
 import 'package:reddit/screens/moderation/general_screens/topics.dart';
 import 'package:reddit/screens/moderation/general_screens/welcome_message/welcome_message.dart';
@@ -101,7 +100,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) {
           return BlocProvider.value(
             value: _modCubit,
-            child: const ModTools(),
+            child: ModTools(),
           );
         });
 
@@ -161,14 +160,6 @@ class AppRouter {
           );
         });
 
-      case '/modmail_screen':
-        return MaterialPageRoute(builder: (_) {
-          return BlocProvider.value(
-            value: _modCubit,
-            child: const ModMail(),
-          );
-        });
-
       case '/mod_notifications_screen':
         return MaterialPageRoute(builder: (_) {
           return BlocProvider.value(
@@ -221,7 +212,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) {
           return BlocProvider.value(
             value: _modCubit,
-            child: ApprovedUsers(),
+            child: const ApprovedUsers(),
           );
         });
 
@@ -229,7 +220,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) {
           return BlocProvider.value(
             value: _modCubit,
-            child: MutedUsers(),
+            child: const MutedUsers(),
           );
         });
 
@@ -237,7 +228,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) {
           return BlocProvider.value(
             value: _modCubit,
-            child: BannedUsers(),
+            child: const BannedUsers(),
           );
         });
 

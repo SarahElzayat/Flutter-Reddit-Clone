@@ -2,6 +2,7 @@
 /// @date 26/10/2022
 /// This is a listTile bluePrint which is
 /// built to be a reuseable widget for further uses
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/cubit/settings_cubit/settings_cubit.dart';
@@ -77,13 +78,15 @@ class _ListTileWidgetState extends State<ListTileWidget> {
   Widget buildIconButton(ctx) {
     final mediaQuery = MediaQuery.of(ctx);
     return SizedBox(
-      width: 0.15 * mediaQuery.size.width,
+      width: (kIsWeb) ? 40 : 0.15 * mediaQuery.size.width,
       child: FittedBox(
         fit: BoxFit.cover,
         child: IconButton(
+          splashRadius: 0.1,
+          splashColor: Colors.transparent,
           icon: const Icon(
             Icons.arrow_forward,
-            color: Colors.grey,
+            color: (kIsWeb) ? Colors.transparent : Colors.grey,
           ),
           onPressed: widget.handler,
         ),

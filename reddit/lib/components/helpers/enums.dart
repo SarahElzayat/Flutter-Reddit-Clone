@@ -40,3 +40,29 @@ enum UserManagement {
   muted,
   moderator,
 }
+
+enum ModToolsSelectedItem {
+  spam,
+  unmoderated,
+  edited,
+  banned,
+  muted,
+  approved,
+  moderator,
+  userFlair,
+  postFlair,
+  scheduledPost,
+  communitySettings,
+  postsAndComments,
+  notifications,
+  trafficStats
+}
+
+enum ModToolsGroup {
+  queues,
+  userManagement,
+  flair,
+  content,
+  settings,
+  communityActivity
+}
