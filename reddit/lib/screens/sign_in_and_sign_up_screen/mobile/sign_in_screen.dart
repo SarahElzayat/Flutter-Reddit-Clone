@@ -90,6 +90,7 @@ class _SignInScreenState extends State<SignInScreen> {
       //         content: Text('Username is already in use')),
       //   );
       // } else {
+      print(error.response!.data['error'].toString());
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             backgroundColor: ColorManager.red,

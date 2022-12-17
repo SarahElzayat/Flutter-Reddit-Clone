@@ -10,10 +10,11 @@ import 'package:reddit/data/comment/comment_model.dart';
 
 import 'package:reddit/data/home/drawer_communities_model.dart';
 import 'package:reddit/data/saved/saved_comments_model.dart';
+import 'package:reddit/screens/bottom_navigation_bar_screens/chat_screen.dart';
+import 'package:reddit/screens/inbox/Inbox_screen.dart';
+import 'package:reddit/screens/inbox/notifications_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
-import 'package:reddit/screens/bottom_navigation_bar_screens/inbox_screen.dart';
-import 'package:reddit/screens/bottom_navigation_bar_screens/notifications_screen.dart';
 import 'package:reddit/screens/saved/saved_comments.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 import '../../data/post_model/post_model.dart';
@@ -44,8 +45,9 @@ class AppCubit extends Cubit<AppState> {
     const HomeScreen(),
     const ExploreScreen(),
     const AddPostScreen(),
+    // const AddPost(),
+    const ChatScreen(),
     const InboxScreen(),
-    const NotificationsScreen()
   ];
 
   ///@param[screensNames] a list of the icons of the bottom navigation bar screens
