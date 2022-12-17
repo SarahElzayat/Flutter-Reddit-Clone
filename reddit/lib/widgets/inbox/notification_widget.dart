@@ -69,30 +69,24 @@ class NotificationWidget extends StatelessWidget {
                 'Disable updates from this community',
                 'Turn off this notification'
               ],
-              selectedItem: 0,
+              selectedItem: 'Disable updates from this community',
               selectedIcons: [
                 Icons.visibility_off,
-                Icons.notifications_off_outlined
+                Icons.notifications_off_outlined,
+                Icons.notifications_off_outlined,
+              ],
+              unselectedIcons: [
+                Icons.visibility_off,
+                Icons.notifications_off_outlined,
+                Icons.notifications_off_outlined,
+              ],
+              items: [
+                'Hide this notification',
+                'Disable updates from this community',
+                'Turn off this notification'
               ]);
         },
       ),
-
-      // PopupMenuButton(
-      //   onSelected: (option) {},
-      //   itemBuilder: (context) {
-      //     return [
-      //       /// TODO: add here the pop items
-      //       // const PopupMenuItem(
-      //       //   value: FilterOptions.all,
-      //       //   child: Text('All'),
-      //       // ),
-      //       // const PopupMenuItem(
-      //       //   value: FilterOptions.isFavorites,
-      //       //   child: Text('Only Favorite'),
-      //       // ),
-      //     ];
-      //   },
-      // ),
     );
   }
 }
