@@ -5,7 +5,9 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/data/comment/comment_model.dart';
+import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/widgets/comments/comment.dart';
+import 'package:reddit/widgets/posts/post_widget.dart';
 
 import '../../components/helpers/color_manager.dart';
 import 'cubit/search_cubit.dart';
@@ -37,7 +39,7 @@ class _ResultsCommentsState extends State<ResultsComments> {
 
   @override
   Widget build(BuildContext context) {
-    final SearchCubit cubit = SearchCubit.get(context)..getComments();
+    final SearchCubit cubit = SearchCubit.get(context); //..getComments();
     return BlocConsumer<SearchCubit, SearchState>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -59,10 +61,18 @@ class _ResultsCommentsState extends State<ResultsComments> {
               : ListView.builder(
                   controller: _scrollController,
                   itemCount: cubit.comments.length,
-                  itemBuilder: (context, index) => Comment(
-                    key: Key(cubit.comments[index].id.toString()),
-                    comment: cubit.comments[index],
-                    post: cubit.commentsPosts[index],
+                  itemBuilder: (context, index) => InkWell(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              PostWidget(post: cubit.commentsPosts[index])),
+                    ),
+                    child: Comment(
+                      key: Key(cubit.comments[index].id.toString()),
+                      comment: cubit.comments[index],
+                      post: cubit.commentsPosts[index],
+                    ),
                   ),
                 ),
         );

@@ -64,7 +64,6 @@ class AppCubit extends Cubit<AppState> {
   String homePostsAfterId = '';
   String homePostsBeforeId = '';
 
-
   /// gets the posts of the home page
   void getHomePosts(
       {bool loadMore = false,
@@ -488,9 +487,9 @@ class AppCubit extends Cubit<AppState> {
           savedCommentsBeforeId = value.data['before'];
         }
 
-        // logger.wtf(value.data.toString());
+        logger.wtf(value.data.toString());
         for (int i = 0; i < value.data['children'].length; i++) {
-          if (value.data['children'][i]['type'] == 'post' && isPosts) {
+          if (value.data['children'][i]['type'] == 'post') {
             logger.wtf('POOOOSTTTTSSS');
             logger.wtf(value.data['children'][i]['data']['post'].toString());
 
@@ -500,7 +499,7 @@ class AppCubit extends Cubit<AppState> {
                 value.data['children'][i]['id'];
 
             // logger.e('tmmmmamaamammama');
-          } else {
+          } else if (value.data['children'][i]['type'] == 'comments') {
             logger.wtf('COOOMMMMEEENNNTSSSS');
             logger.wtf(value.data['children'][i]['data'].toString());
             for (int j = 0;
@@ -508,6 +507,21 @@ class AppCubit extends Cubit<AppState> {
                 j++) {
               savedCommentsList.add(SavedCommentModel.fromJson(
                   value.data['children'][i]['data']['comments'][j]));
+              savedCommentsList[savedCommentsList.length - 1].postTitle =
+                  value.data['children'][i]['data']['post']['title'];
+            }
+          } else {
+            savedPostsList.add(
+                PostModel.fromJson(value.data['children'][i]['data']['post']));
+            savedPostsList[savedPostsList.length - 1].id =
+                value.data['children'][i]['id'];
+            for (int j = 0;
+                j < value.data['children'][i]['data']['comments'].length;
+                j++) {
+              savedCommentsList.add(SavedCommentModel.fromJson(
+                  value.data['children'][i]['data']['comments'][j]));
+                         savedCommentsList[savedCommentsList.length - 1].postTitle =
+                  value.data['children'][i]['data']['post']['title'];
             }
           }
         }
@@ -525,7 +539,6 @@ class AppCubit extends Cubit<AppState> {
       }
     });
   }
-
 
   /// clears the user's history
   void clearHistoy() {

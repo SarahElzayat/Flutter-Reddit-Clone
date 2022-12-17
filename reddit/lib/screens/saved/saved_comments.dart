@@ -1,10 +1,15 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/components/saved_components/saved_comment_container.dart';
 import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 
 import '../../components/helpers/color_manager.dart';
-
+import '../../data/post_model/post_model.dart';
+import '../../networks/constant_end_points.dart';
+import '../../networks/dio_helper.dart';
+import '../../widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
+import '../../widgets/posts/post_widget.dart';
 
 class SavedCommentsScreen extends StatefulWidget {
   const SavedCommentsScreen({super.key});
@@ -55,8 +60,11 @@ class _SavedCommentsScreenState extends State<SavedCommentsScreen> {
               : ListView.builder(
                   controller: _scrollController,
                   itemCount: cubit.savedCommentsList.length,
-                  itemBuilder: (context, index) =>Text(''),
-                ),
+                  itemBuilder: (context, index) => Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SavedCommentContainer(
+                            model: cubit.savedCommentsList[index]),
+                      )),
         );
       },
     );

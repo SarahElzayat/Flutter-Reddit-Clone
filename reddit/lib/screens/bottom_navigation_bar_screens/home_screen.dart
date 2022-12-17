@@ -22,7 +22,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   /// @param [_scrollController] the scroll controller of the ListView to load more at the bottom of the screen
   final ScrollController _scrollController = ScrollController();
 
@@ -72,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
   /// the method that's callled on pull down to refresh
   Future<void> _onRefresh() async {
     setState(() {
-      AppCubit.get(context).getHomePosts();
+      AppCubit.get(context).getHomePosts(limit: 5);
     });
   }
 
@@ -80,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
   /// loads necessary data from backend
   @override
   void initState() {
-    AppCubit.get(context).getHomePosts(limit: 10);
+    AppCubit.get(context).getHomePosts(limit: 5);
     _scrollController.addListener(_scrollListener);
     if (kIsWeb) {
       AppCubit.get(context).getUsername();
@@ -121,31 +120,24 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(
-                  child: SizedBox(
-                    width: kIsWeb ? width * 0.5 : width,
-                    child: RefreshIndicator(
-                      color: ColorManager.blue,
-
-                      onRefresh: _onRefresh,
-                      child: ListView.builder(
-                        // physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        controller: _scrollController,
-                        scrollDirection: Axis.vertical,
-                        itemCount: cubit.homePosts.length,
-                        itemBuilder: (context, index) => Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 0, vertical: 5),
-                          // child: PostWidget(
-                          //   post: cubit.homePosts[index],
-                          // ),
-
-                          child: cubit.homePosts[index],
-                        ),
+                SizedBox(
+                  width: kIsWeb ? width * 0.5 : width,
+                  child: RefreshIndicator(
+                    color: ColorManager.blue,
+                    onRefresh: _onRefresh,
+                    child: ListView.builder(
+                      // physics: const NeverScrollableScrollPhysics(),
+                      // shrinkWrap: true,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      controller: _scrollController,
+                      scrollDirection: Axis.vertical,
+                      itemCount: cubit.homePosts.length,
+                      itemBuilder: (context, index) => Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 0, vertical: 5),
+                        child: cubit.homePosts[index],
                       ),
                     ),
-
                   ),
                 ),
                 if (kIsWeb)
