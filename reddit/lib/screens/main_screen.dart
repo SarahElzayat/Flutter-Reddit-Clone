@@ -23,7 +23,6 @@ class HomeScreenForMobile extends StatefulWidget {
 class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-
   bool isAndroid = !kIsWeb;
 
   ///The method changes the end drawer state from open to closed and vice versa
@@ -48,11 +47,9 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
     AppCubit.get(context).getUserProfilePicture();
   }
 
- 
-
   @override
   void initState() {
-    initialGetters();
+    // initialGetters();
     super.initState();
   }
 

@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/components/saved_components/saved_comment_container.dart';
 import 'package:reddit/cubit/app_cubit/app_cubit.dart';
+import 'package:reddit/screens/posts/post_screen.dart';
+import 'package:reddit/widgets/comments/comment.dart';
 
 import '../../components/helpers/color_manager.dart';
 import '../../data/post_model/post_model.dart';
@@ -69,11 +71,9 @@ class _SavedCommentsScreenState extends State<SavedCommentsScreen> {
                             }).then((value) => Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => PostWidget(
+                              builder: (context) => PostScreen(
                                   key: Key(value.data['id']),
                                   // postView: PostView.classic,
-                                  
-                                  outsideScreen: false,
                                   post: PostModel.fromJson(value.data)),
                             ))),
                         child: Padding(
