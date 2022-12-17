@@ -20,6 +20,8 @@ const signUp = '/signup';
 const login = '/login';
 const loginForgetPassword = '/login/forget-password';
 const loginForgetUserName = '/login/forget-username';
+const signInGoogle = '/signin/google';
+const signInFacebook = '/signin/facebook';
 
 // settings endpoints
 const changeEmail = '/change-email';
@@ -42,6 +44,7 @@ const remove = '/remove';
 const approve = '/approve';
 const submitPost = '/submit';
 const user = '/user';
+const about = '/about';
 const recentHistory = '/history';
 const upvotedHistory = '/upvoted';
 const downvotedHistory = '/downvoted';
@@ -62,8 +65,17 @@ const unknownAvatar =
 const ban = '/ban';
 const unban = '/unban';
 const inviteMod = '/moderator-invite';
+const joinedSubreddits = '/joined-subreddits';
+const moderatedSubreddits = '/moderated-subreddits';
 // Note : after last / add the subreddit name
 const subredditInfo = '/r';
 const leaveSubreddit = '/leave-subreddit';
 const joinSubreddit = '/join-subreddit';
 const searchForSubreddit = '/search?type=subreddit';
+const userDetails = '/user-details';
+const homeBest = '/best';
+const homeTop = '/top';
+const homeHot = '/hot';
+const homeTrending = '/trending';
+const homeNew = '/new';
+const subreddit = '/r';

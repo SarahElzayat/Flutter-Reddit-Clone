@@ -8,6 +8,8 @@ import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 
+import '../../comments/add_comment_screen.dart';
+
 part 'create_community_state.dart';
 
 class CreateCommunityCubit extends Cubit<CreateCommunityState> {
@@ -36,15 +38,15 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
     DioHelper.postData(path: createCommunity, data: community.toJson())
         .then((value) {
       if (value.statusCode == 201) {
-        print('community created successfully');
+        logger.wtf('community created successfully');
 
         ///TODO: Nagiate to AddPost with community name to add post to community
 
       }
     }).catchError((err) {
       err = err as DioError;
-      print(err.message);
-      print(err.response!.data['error']);
+      logger.wtf(err.message);
+      logger.wtf(err.response!.data['error']);
     });
     emit(CreateCommunity());
   }

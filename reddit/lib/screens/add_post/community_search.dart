@@ -118,7 +118,7 @@ class _CommunitySearchState extends State<CommunitySearch> {
                 ),
               );
             } else {
-              return SizedBox();
+              return const SizedBox();
             }
           },
         ),

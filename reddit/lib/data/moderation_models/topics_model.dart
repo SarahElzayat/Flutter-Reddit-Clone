@@ -8,16 +8,16 @@ class SuggestedTopics {
     if (json['communityTopics'] != null) {
       communityTopics = <CommunityTopics>[];
       json['communityTopics'].forEach((v) {
-        communityTopics!.add(new CommunityTopics.fromJson(v));
+        communityTopics!.add(CommunityTopics.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.communityTopics != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (communityTopics != null) {
       data['communityTopics'] =
-          this.communityTopics!.map((v) => v.toJson()).toList();
+          communityTopics!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -33,8 +33,8 @@ class CommunityTopics {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['topicName'] = this.topicName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['topicName'] = topicName;
     return data;
   }
 }

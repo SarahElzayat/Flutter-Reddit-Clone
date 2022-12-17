@@ -43,9 +43,8 @@ class Data {
     numberOfMembers = json['numberOfMembers'];
     nsfw = json['nsfw'];
     joined = json['joined'];
-        profilePicture = json['profilePicture'];
-        description = json['description'];
-
+    profilePicture = json['profilePicture'];
+    description = json['description'];
   }
 
   Map<String, dynamic> toJson() {
@@ -55,8 +54,8 @@ class Data {
     data['numberOfMembers'] = numberOfMembers;
     data['nsfw'] = nsfw;
     data['joined'] = joined;
-        data['profilePicture'] = profilePicture;
-        data['description'] = description;
+    data['profilePicture'] = profilePicture;
+    data['description'] = description;
 
     return data;
   }

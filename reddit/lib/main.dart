@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/components/helpers/enums.dart';
+import 'package:reddit/screens/comments/add_comment_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../cubit/settings_cubit/settings_cubit.dart';
@@ -50,6 +52,9 @@ Future<void> main() async {
     CacheHelper.putData(key: 'isAndroid', value: false);
     CacheHelper.putData(key: 'isWindows', value: true);
   }
+
+  CacheHelper.putData(key: 'sort', value: HomeSort.best.index);
+  logger.w(CacheHelper.getData(key: 'sort'));
 
   /// and this is used to initialize Dio
   DioHelper.init();

@@ -5,10 +5,24 @@ import '../post_model/flair.dart';
 import '../post_model/image.dart';
 import '../post_model/post_model.dart';
 
-String quillContent =
-    '''{"ops": [{"insert":"This is a post written with Quill\\n","attributes":{"bold":true}},
-    {"insert":"bold and italic","attributes":{"bold":true,"italic":true}},{"insert":"\\n"},
-    {"insert":"link","attributes":{"link":"pub.dev/packages/quill_markdown"}},{"insert":"\\n"}]}''';
+const quillContent = {
+  "ops": [
+    {
+      "insert": "This is a post written with Quill\\n",
+      "attributes": {"bold": true}
+    },
+    {
+      "insert": "bold and italic",
+      "attributes": {"bold": true, "italic": true}
+    },
+    {"insert": "\\n"},
+    {
+      "insert": "link",
+      "attributes": {"link": "pub.dev/packages/quill_markdown"}
+    },
+    {"insert": "\\n"}
+  ]
+};
 
 var textPost = PostModel(
   id: '639a42443a8a2b305120762f',
@@ -25,8 +39,8 @@ var textPost = PostModel(
     backgroundColor: '#FFAA00',
     textColor: '#0E0EEE',
   ),
-  saved: false,
-  sharePostId: '639a42443a8a2b305120762f',
+  saved: true,
+  sharePostId: '639c4d7dd072d62eaf3792c5',
   spoiler: true,
   inYourSubreddit: false,
   nsfw: false,
@@ -91,7 +105,7 @@ var oneImagePost = PostModel(
   id: '639508b2b02950743a541875',
   kind: 'image',
   title: 'That\'s a Post with only image inside it',
-  content: '[]',
+  content: {'ops': []},
   subreddit: 'news',
   postedBy: 'Atta',
   postedAt: '2019-08-24T14:15:22Z',
@@ -174,7 +188,7 @@ var linkPost = PostModel(
   id: '639508b2b02950743a541875',
   kind: 'link',
   title: lorem(paragraphs: 1, words: 24),
-  content: '',
+  content: {'ops': []},
   link: 'https://github.com/',
   subreddit: 'Flutter',
   postedBy: 'Atta',
@@ -248,7 +262,7 @@ var tryData = PostModel.fromJsonwithData({
 
 CommentModel childCommentEx = CommentModel(
   children: [],
-  commentBody: 'This is a comment',
+  commentBody: quillContent,
   id: '123',
   commentedBy: 'username',
   editTime: '2019-08-24T14:15:22Z',
@@ -265,7 +279,7 @@ CommentModel childCommentEx = CommentModel(
 
 CommentModel commentEx = CommentModel(
   children: [childCommentEx],
-  commentBody: 'This is a comment',
+  commentBody: quillContent,
   id: '123',
   commentedBy: 'username',
   editTime: '2019-08-24T14:15:22Z',
