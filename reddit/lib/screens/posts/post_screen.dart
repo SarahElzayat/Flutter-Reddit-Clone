@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/screens/posts/post_screen_cubit/post_screen_cubit.dart';
@@ -51,7 +52,7 @@ class PostScreen extends StatelessWidget {
         BlocProvider(
           create: (context) => PostScreenCubit(
             post: post,
-          )..getCommentsOfPost(),
+          )..getCommentsOfPost(limit: 10),
         ),
       ],
       child: Scaffold(
@@ -71,14 +72,27 @@ class PostScreen extends StatelessWidget {
           ],
         ),
         body: BlocConsumer<PostScreenCubit, PostScreenState>(
-          listener: (context, state) {},
+          listener: (context, state) {
+            if (state is CommentsLoadingMore) {
+              Logger().i('loading more comments');
+              PostScreenCubit.get(context).getCommentsOfPost(after: true);
+            }
+          },
           builder: (context, state) {
             var screenCubit = PostScreenCubit.get(context);
+
             return Column(
               children: [
                 Expanded(
                   child: SingleChildScrollView(
-                    child: BlocBuilder<PostNotifierCubit, PostNotifierState>(
+                    controller: screenCubit.scrollController,
+                    child: BlocConsumer<PostNotifierCubit, PostNotifierState>(
+                      listener: (context, state) {
+                        if (state is CommentsLoadingMore) {
+                          Logger().i('loading more comments');
+                          screenCubit.getCommentsOfPost(after: true);
+                        }
+                      },
                       builder: (context, state) {
                         return Column(
                           children: [
@@ -139,6 +153,7 @@ class PostScreen extends StatelessWidget {
         .map((e) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 0),
               child: Comment(
+                key: ValueKey(e.id),
                 post: post,
                 comment: e,
               ),
