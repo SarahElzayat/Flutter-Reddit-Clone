@@ -422,8 +422,8 @@ class _CommentState extends State<Comment> {
         Text(
           widget.post.title ?? '',
           style: TextStyle(
-            color: ColorManager.lightGrey,
-            fontSize: 15.sp,
+            color: ColorManager.eggshellWhite,
+            fontSize: 16.sp,
           ),
         ),
         Row(
@@ -454,8 +454,8 @@ class _CommentState extends State<Comment> {
         Text(
           _controller!.document.toPlainText(),
           style: TextStyle(
-            color: ColorManager.lightGrey,
-            fontSize: 15.sp,
+            color: ColorManager.eggshellWhite,
+            fontSize: 16.sp,
           ),
         )
       ],

@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/enums.dart';
+import 'package:reddit/data/comment/comment_model.dart';
 
 import 'package:reddit/data/home/drawer_communities_model.dart';
 import 'package:reddit/data/saved/saved_comments_model.dart';
@@ -440,7 +441,8 @@ class AppCubit extends Cubit<AppState> {
   String savedPostsBeforeId = '';
   String savedPostsAfterId = '';
 
-  List<SavedCommentModel> savedCommentsList = [];
+  List<CommentModel> savedCommentsList = [];
+  List<PostModel> savedCommentsPostsList = [];
   String savedCommentsBeforeId = '';
   String savedCommentsAfterId = '';
 
@@ -458,6 +460,7 @@ class AppCubit extends Cubit<AppState> {
     if (!loadMore) {
       savedPostsList.clear();
       savedCommentsList.clear();
+      savedCommentsPostsList.clear();
       savedPostsBeforeId = '';
       savedPostsAfterId = '';
       savedCommentsBeforeId = '';
@@ -514,17 +517,19 @@ class AppCubit extends Cubit<AppState> {
             savedPostsList[savedPostsList.length - 1].id =
                 value.data['children'][i]['id'];
 
-            // logger.e('tmmmmamaamammama');
-          } else if (value.data['children'][i]['type'] == 'comments') {
+            logger.e('tmmmmamaamammama');
+          } else if (value.data['children'][i]['type'] == 'comment') {
             logger.wtf('COOOMMMMEEENNNTSSSS');
             logger.wtf(value.data['children'][i]['data'].toString());
             for (int j = 0;
                 j < value.data['children'][i]['data']['comments'].length;
                 j++) {
-              savedCommentsList.add(SavedCommentModel.fromJson(
+              savedCommentsList.add(CommentModel.fromJson(
                   value.data['children'][i]['data']['comments'][j]));
-              savedCommentsList[savedCommentsList.length - 1].postTitle =
-                  value.data['children'][i]['data']['post']['title'];
+              savedCommentsPostsList.add(PostModel.fromJson(
+                  value.data['children'][i]['data']['post']));
+
+              logger.e('tmmmmamaamammama');
             }
           } else {
             savedPostsList.add(
@@ -534,10 +539,10 @@ class AppCubit extends Cubit<AppState> {
             for (int j = 0;
                 j < value.data['children'][i]['data']['comments'].length;
                 j++) {
-              savedCommentsList.add(SavedCommentModel.fromJson(
+              savedCommentsList.add(CommentModel.fromJson(
                   value.data['children'][i]['data']['comments'][j]));
-                         savedCommentsList[savedCommentsList.length - 1].postTitle =
-                  value.data['children'][i]['data']['post']['title'];
+              savedCommentsPostsList.add(PostModel.fromJson(
+                  value.data['children'][i]['data']['post']));
             }
           }
         }
