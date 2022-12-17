@@ -152,4 +152,20 @@ class DioHelper {
       options: options,
     );
   }
+
+  static Future<Response> deleteData({required String path}) async {
+    Options options;
+
+    options = Options(
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json; charset=utf-8'
+      },
+    );
+
+    return await dio.delete(
+      path,
+      options: options,
+    );
+  }
 }
