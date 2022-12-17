@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/enums.dart';
+import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
 import 'package:reddit/screens/comments/add_comment_screen.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/web/continue_sign_up_screen.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
@@ -83,6 +84,10 @@ class Main extends StatelessWidget {
           create: (context) => SubredditCubit(),
           lazy: false,
         ),
+        BlocProvider(
+          create: (context) => UserProfileCubit(),
+          lazy: false,
+        ),
         BlocProvider(create: (context) => VideosCubit()),
       ],
       child: BlocBuilder<AppCubit, AppState>(
@@ -90,6 +95,7 @@ class Main extends StatelessWidget {
           return ResponsiveSizer(
             builder: (context, orientation, screenType) {
               return MaterialApp(
+                navigatorKey: navigatorKey,
                 initialRoute:
                     CacheHelper.getData(key: 'token')?.toString().isNotEmpty ??
                             false
