@@ -21,12 +21,15 @@ bool isjoined = true;
 enum ShowingOtions { onlyUser, onlySubreddit, both }
 
 class PostUpperBar extends StatefulWidget {
-  const PostUpperBar({
-    Key? key,
-    required this.post,
-    this.showRowsSelect = ShowingOtions.both,
-    this.outSide = true,
-  }) : super(key: key);
+  final bool isWeb;
+
+  const PostUpperBar(
+      {Key? key,
+      required this.post,
+      this.showRowsSelect = ShowingOtions.both,
+      this.outSide = true,
+      required this.isWeb})
+      : super(key: key);
 
   /// The post to be displayed
   final PostModel post;
@@ -57,10 +60,18 @@ class _PostUpperBarState extends State<PostUpperBar> {
           },
           caseBuilders: {
             ShowingOtions.onlyUser: (ctx) {
-              return singleRow(sub: false, showIcon: true, post: widget.post);
+              return singleRow(
+                  sub: false,
+                  showIcon: true,
+                  post: widget.post,
+                  isWeb: widget.isWeb);
             },
             ShowingOtions.onlySubreddit: (_) {
-              return singleRow(sub: true, showIcon: true, post: widget.post);
+              return singleRow(
+                  sub: true,
+                  showIcon: true,
+                  post: widget.post,
+                  isWeb: widget.isWeb);
             },
             ShowingOtions.both: (_) {
               return _bothRows();
@@ -91,7 +102,7 @@ class _PostUpperBarState extends State<PostUpperBar> {
         children: [
           subredditAvatar(),
           SizedBox(
-            width: min(3.w, 0.1.dp),
+            width: min(2.w, 10),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -110,7 +121,11 @@ class _PostUpperBarState extends State<PostUpperBar> {
                   ),
                 ),
               ),
-              singleRow(sub: false, showDots: false, post: widget.post),
+              singleRow(
+                  sub: false,
+                  showDots: false,
+                  post: widget.post,
+                  isWeb: widget.isWeb),
             ],
           ),
           const Spacer(),
@@ -131,7 +146,7 @@ class _PostUpperBarState extends State<PostUpperBar> {
                 backgroundColor: ColorManager.blue,
               ),
             )
-          else if (widget.outSide)
+          else if (widget.outSide && !widget.isWeb)
             dropDownDots(widget.post),
         ],
       ),
@@ -143,10 +158,9 @@ class _PostUpperBarState extends State<PostUpperBar> {
     return BlocBuilder<PostNotifierCubit, PostNotifierState>(
       builder: (context, state) {
         return DropDownList(
-          postId: widget.post.id!,
-          itemClass: (widget.post.saved ?? true)
-              ? ItemsClass.publicSaved
-              : ItemsClass.public,
+          post: widget.post,
+          itemClass: ItemsClass.posts,
+          outsideScreen: widget.outSide,
         );
       },
     );

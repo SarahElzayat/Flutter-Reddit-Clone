@@ -36,8 +36,8 @@ class _AddModeratorState extends State<AddModerator> {
         shadowColor: ColorManager.white,
         elevation: 0.5,
         backgroundColor: ColorManager.darkGrey,
-        leading: IconButton(onPressed: () {}, icon: Icon(Icons.close)),
-        title: Text('Add a moderator'),
+        leading: IconButton(onPressed: () {}, icon: const Icon(Icons.close)),
+        title: const Text('Add a moderator'),
         actions: [
           Button(
             onPressed: () {},
@@ -56,13 +56,13 @@ class _AddModeratorState extends State<AddModerator> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Username'),
+            const Text('Username'),
             SizedBox(
               height: 2.h,
             ),
             SquareTextField(
               labelText: 'username',
-              prefix: Text('u/'),
+              prefix: const Text('u/'),
               formController: controller,
               onChanged: (username) => onChanged,
               showSuffix: false,
@@ -70,7 +70,7 @@ class _AddModeratorState extends State<AddModerator> {
             SizedBox(
               height: 3.h,
             ),
-            Text('Permissions')
+            const Text('Permissions')
           ],
         ),
       ),

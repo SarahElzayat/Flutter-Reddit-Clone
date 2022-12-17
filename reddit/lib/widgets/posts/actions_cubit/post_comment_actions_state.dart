@@ -3,31 +3,44 @@
 /// @Author: Ahmed Atta
 import 'package:dio/dio.dart';
 
-abstract class PostState {}
+abstract class PostActionsState {}
 
-class PostsInitial extends PostState {}
+class PostsInitial extends PostActionsState {}
 
-class VotedSuccess extends PostState {}
+class HiddenChangedState extends PostActionsState {}
 
-class VotedError extends PostState {
+class VotedSuccess extends PostActionsState {}
+
+class BlockedChangedState extends PostActionsState {}
+
+class FollowedChangedState extends PostActionsState {}
+
+class EditedState extends PostActionsState {}
+
+class VotedError extends PostActionsState {
   final DioError? error;
   VotedError({this.error});
 }
 
-class CommentsModToolsToggled extends PostState {}
+class OpError extends PostActionsState {
+  final String? error;
+  OpError({this.error});
+}
 
-class PostsSaved extends PostState {}
+class CommentsModToolsToggled extends PostActionsState {}
 
-class PostsSavedError extends PostState {}
+class SavedChangedState extends PostActionsState {}
 
-class PostsHideChange extends PostState {}
+class PostsSavedError extends PostActionsState {}
 
-class PostsReported extends PostState {}
+class PostsHideChange extends PostActionsState {}
 
-class PostsDeleted extends PostState {}
+class PostsReported extends PostActionsState {}
 
-class PostsError extends PostState {}
+class PostsDeleted extends PostActionsState {}
 
-class PostsLoaded extends PostState {}
+class PostsError extends PostActionsState {}
 
-class PostsLoading extends PostState {}
+class PostsLoaded extends PostActionsState {}
+
+class PostsLoading extends PostActionsState {}

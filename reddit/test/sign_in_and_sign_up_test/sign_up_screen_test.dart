@@ -9,7 +9,7 @@ void main() {
   testWidgets('Hello new friend, welcome to Reddit text found',
       (WidgetTester tester) async {
     /// here we must build the UI first
-    await tester.pumpWidget(MaterialApp(
+    await tester.pumpWidget(const MaterialApp(
       home: SignUpScreen(),
     ));
 
@@ -19,7 +19,7 @@ void main() {
 
   testWidgets('privacy and policy text exists', (WidgetTester tester) async {
     /// here we must build the UI first
-    await tester.pumpWidget(MaterialApp(
+    await tester.pumpWidget(const MaterialApp(
       home: SignUpScreen(),
     ));
 
@@ -39,7 +39,7 @@ void main() {
 
   testWidgets('there is a log in with google button',
       (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(home: SignUpScreen()));
+    await tester.pumpWidget(const MaterialApp(home: SignUpScreen()));
 
     // this is how to insert data into certain textfield
     // await tester.enterText(find.byType(TextField), 'Abcdef');
@@ -50,23 +50,23 @@ void main() {
   });
   testWidgets('there is a log in with facebook button',
       (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(home: SignUpScreen()));
+    await tester.pumpWidget(const MaterialApp(home: SignUpScreen()));
     expect(find.text('Continue with facebook'), findsOneWidget);
   });
   testWidgets('there is a log in button', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(home: SignUpScreen()));
+    await tester.pumpWidget(const MaterialApp(home: SignUpScreen()));
     expect(find.text('Log in'), findsOneWidget);
   });
   testWidgets('there is username textfield', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(home: SignUpScreen()));
+    await tester.pumpWidget(const MaterialApp(home: SignUpScreen()));
     expect(find.text('Username'), findsOneWidget);
   });
   testWidgets('there is password textfield', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(home: SignUpScreen()));
+    await tester.pumpWidget(const MaterialApp(home: SignUpScreen()));
     expect(find.text('Password'), findsOneWidget);
   });
   testWidgets('there is email textfield', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(home: SignUpScreen()));
+    await tester.pumpWidget(const MaterialApp(home: SignUpScreen()));
     expect(find.text('Email'), findsOneWidget);
   });
 }

@@ -5,16 +5,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/screens/create_community_screen/create_community_screen.dart';
 import 'package:reddit/components/app_bar_components.dart';
-import 'package:reddit/components/home_dropdown_menu.dart';
+// import 'package:reddit/components/home_dropdown_menu.dart';
 import 'package:reddit/components/search_field.dart';
 
-import '../screens/create_community_screen/create_community_screen.dart';
-import '../components/app_bar_components.dart';
-import '../components/home_dropdown_menu.dart';
-import '../components/search_field.dart';
-
-
-import '../cubit/app_cubit.dart';
+import '../cubit/app_cubit/app_cubit.dart';
 
 ///@param [index] is the index of the bottom navigation bar screen
 ///@param [context] is the context of the parent widget
@@ -29,7 +23,8 @@ AppBar homeAppBar(context, index) {
     return AppBar(
       titleSpacing: 0,
       title: cubit.screensNames[index] == 'Home'
-          ? const HomeDropdownMenu()
+          // ? const HomeDropdownMenu()
+          ? null
           : cubit.screensNames[index] == 'Discover'
               ? SearchField(textEditingController: TextEditingController())
               : cubit.screensNames[index] == 'Inbox'
@@ -69,11 +64,13 @@ AppBar homeAppBar(context, index) {
                 scale: 6,
               ),
             ),
-            const HomeDropdownMenu(),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.5,
-              child: SearchField(
-                textEditingController: TextEditingController(),
+            // const HomeDropdownMenu(),
+            Center(
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.5,
+                child: SearchField(
+                  textEditingController: TextEditingController(),
+                ),
               ),
             ),
             const Spacer(),

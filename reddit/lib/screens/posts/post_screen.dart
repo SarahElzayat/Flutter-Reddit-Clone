@@ -62,10 +62,9 @@ class PostScreen extends StatelessWidget {
               builder: (context, state) {
                 return DropDownList(
                   // key: const Key('dropDownList-button'),
-                  postId: post.id!,
-                  itemClass: (post.saved ?? true)
-                      ? ItemsClass.publicSaved
-                      : ItemsClass.public,
+                  post: post,
+                  itemClass: ItemsClass.posts,
+                  outsideScreen: false,
                 );
               },
             ),
