@@ -489,9 +489,9 @@ class AppCubit extends Cubit<AppState> {
 
         // logger.wtf(value.data.toString());
         for (int i = 0; i < value.data['children'].length; i++) {
-          if (value.data['children'][i]['data']['comments'].length == 0) {
-            // logger.wtf('POOOOSTTTTSSS');
-            // logger.wtf(value.data['children'][i]['data'].toString());
+          if (value.data['children'][i]['type'] == 'post' && isPosts) {
+            logger.wtf('POOOOSTTTTSSS');
+            logger.wtf(value.data['children'][i]['data']['post'].toString());
 
             savedPostsList.add(
                 PostModel.fromJson(value.data['children'][i]['data']['post']));
@@ -514,6 +514,7 @@ class AppCubit extends Cubit<AppState> {
 
         // logger.wtf(' om el id ${savedPostsList[0].id.toString()}');
         logger.w('length ${savedPostsList.length}');
+        logger.w('length ${savedCommentsList.length}');
 
         loadMore ? emit(LoadedMoreSavedState()) : emit(LoadedSavedState());
       }
