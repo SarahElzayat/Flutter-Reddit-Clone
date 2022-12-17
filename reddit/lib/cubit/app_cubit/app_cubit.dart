@@ -122,6 +122,8 @@ class AppCubit extends Cubit<AppState> {
       if (kDebugMode) {
         logger.wtf(error.toString());
       }
+    }).catchError((error) {
+      emit(ErrorState());
     });
   }
 
@@ -207,6 +209,8 @@ class AppCubit extends Cubit<AppState> {
       } else {
         emit(ErrorState());
       }
+    }).catchError((onError) {
+      emit(ErrorState());
     });
   }
 
@@ -223,6 +227,8 @@ class AppCubit extends Cubit<AppState> {
       } else {
         emit(ErrorState());
       }
+    }).catchError((onError) {
+      emit(ErrorState());
     });
   }
 
@@ -241,6 +247,11 @@ class AppCubit extends Cubit<AppState> {
       } else {
         emit(ErrorState());
       }
+    }).catchError((error) {
+      emit(ErrorState());
+      print('Error In get Picture Profile $error');
+    }).catchError((onError) {
+      emit(ErrorState());
     });
   }
 
@@ -270,6 +281,9 @@ class AppCubit extends Cubit<AppState> {
       } else {
         emit(ErrorState());
       }
+    }).catchError((error) {
+      print('Error In Get User Details $error');
+      emit(ErrorState());
     });
   }
 
@@ -343,6 +357,8 @@ class AppCubit extends Cubit<AppState> {
       if (kDebugMode) {
         logger.wtf(error.toString());
       }
+    }).catchError((onError) {
+      emit(ErrorState());
     });
   }
 
@@ -537,6 +553,8 @@ class AppCubit extends Cubit<AppState> {
       if (kDebugMode) {
         logger.wtf(error.toString());
       }
+    }).catchError((onError) {
+      emit(ErrorState());
     });
   }
 
@@ -549,6 +567,8 @@ class AppCubit extends Cubit<AppState> {
       if (value.statusCode == 200) history.clear();
       emit(ClearHistoryState());
       emit(HistoryEmptyState());
+    }).catchError((onError) {
+      emit(ErrorState());
     });
   }
 }

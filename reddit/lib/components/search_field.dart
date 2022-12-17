@@ -70,7 +70,9 @@ class _SearchFieldState extends State<SearchField> {
                 borderRadius: BorderRadius.circular(10),
               )
             : const StadiumBorder(),
-        color: ColorManager.darkGrey,
+        color: (widget.isSubreddit)
+            ? Color.fromARGB(120, 0, 0, 0)
+            : ColorManager.darkGrey,
       ),
       child: TextField(
         onTap: () {
