@@ -72,7 +72,10 @@ class Main extends StatelessWidget {
         BlocProvider(create: (context) => SettingsCubit()),
         BlocProvider(create: (context) => CreateCommunityCubit()),
         BlocProvider(create: (context) => ModerationCubit()),
-        BlocProvider(create: (context) => SubredditCubit()),
+        BlocProvider(
+          create: (context) => SubredditCubit(),
+          lazy: false,
+        ),
         BlocProvider(create: (context) => VideosCubit()),
       ],
       child: BlocBuilder<AppCubit, AppState>(

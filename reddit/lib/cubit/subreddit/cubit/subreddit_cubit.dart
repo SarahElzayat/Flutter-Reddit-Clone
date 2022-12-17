@@ -1,6 +1,12 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:reddit/data/post_model/post_model.dart';
+import 'package:reddit/data/subreddit/list_of_post_model.dart';
 import 'package:reddit/data/subreddit/subreddit_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
@@ -15,9 +21,13 @@ class SubredditCubit extends Cubit<SubredditState> {
 
   static SubredditCubit get(context) => BlocProvider.of(context);
 
-  late SubredditModel subreddit;
+  SubredditModel? subreddit;
   late String subredditName;
   late ModeratorModel moderators;
+  List<PostModel> posts = [];
+  late PagingController<String?, PostModel> pagingController;
+
+  int selectedIndex = 0;
 
   void setSubredditName(BuildContext context, String name) {
     Map<String, String> query = {'subreddit': name};
@@ -27,7 +37,7 @@ class SubredditCubit extends Cubit<SubredditState> {
         print(value.data);
         subreddit = SubredditModel.fromJson(value.data);
         subredditName = name;
-        if (subreddit.isMember == null) return;
+        if (subreddit!.isMember == null) return;
 
         // emit(subredditChange());
       }
@@ -65,7 +75,7 @@ class SubredditCubit extends Cubit<SubredditState> {
         data: {'subredditName': subredditName}).then((value) {
       if (value.statusCode == 200) {
         print('Leaved Successfully');
-        subreddit.isMember = false;
+        subreddit!.isMember = false;
         emit(leaveSubredditState());
       }
     }).catchError((error) {
@@ -78,14 +88,42 @@ class SubredditCubit extends Cubit<SubredditState> {
     DioHelper.postData(
         token: token,
         path: joinSubreddit,
-        data: {'subredditId': subreddit.subredditId}).then((value) {
+        data: {'subredditId': subreddit!.subredditId}).then((value) {
       if (value.statusCode == 200) {
         print('joined Successfully');
-        subreddit.isMember = true;
+        subreddit!.isMember = true;
         emit(joinSubredditState());
       }
     }).catchError((error) {
       print('Error In Leave Subreddit : $error');
+    });
+  }
+
+  void fetchPosts({String? after, required String sortBy}) {
+    final query = {'after': after, 'subreddit': subredditName};
+    print('URL : /r/$subredditName/$sortBy');
+    print(query);
+    DioHelper.getData(path: '/r/$subredditName/$sortBy', query: query)
+        .then((value) {
+      if (value.statusCode == 200) {
+        List<PostModel> fetchedPosts = [];
+        for (int i = 0; i < value.data['children'].length; i++) {
+          // logger.wtf(i);
+          final post = (PostModel.fromJsonwithData(value.data['children'][i]));
+          fetchedPosts.add(post);
+          print(i);
+          print(post.title);
+        }
+        print(value.data['after'] as String);
+        if (value.data['after'] as String == '') {
+          pagingController.appendLastPage(fetchedPosts);
+        } else {
+          pagingController.appendPage(
+              fetchedPosts, value.data['after'] as String);
+        }
+      }
+    }).catchError((error) {
+      print('Error In Fetch Posts ==> $error');
     });
   }
 }

@@ -3,10 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import 'package:reddit/screens/moderation/mod_tools.dart';
 
+import '../../components/Button.dart';
 import '../../components/home_components/right_drawer.dart';
 import '../../cubit/app_cubit.dart';
 import '../../widgets/subreddit/subreddit_about.dart';
@@ -36,9 +38,23 @@ class _SubredditState extends State<Subreddit>
   final GlobalKey _con2 = GlobalKey();
   final GlobalKey _con3 = GlobalKey();
 
+  final List<String> _text = [
+    'Hot',
+    'New',
+    'Top',
+    'Trending',
+  ];
+
   @override
   void initState() {
     super.initState();
+    final subredditCubit = SubredditCubit.get(context);
+    subredditCubit.pagingController = PagingController(firstPageKey: null);
+    subredditCubit.pagingController.addPageRequestListener((pageKey) {
+      subredditCubit.fetchPosts(
+          after: pageKey,
+          sortBy: _text[subredditCubit.selectedIndex].toLowerCase());
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) => getHeight());
   }
 
@@ -67,82 +83,88 @@ class _SubredditState extends State<Subreddit>
     final navigator = Navigator.of(context);
     final subredditCubit = BlocProvider.of<SubredditCubit>(context);
     final AppCubit cubit = AppCubit.get(context);
-    return Scaffold(
-      key: _scaffoldKey,
-      endDrawer: const RightDrawer(),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: cubit.currentIndex,
-        items: cubit.bottomNavBarIcons,
-        onTap: (value) {
-          setState(() {
-            if (value == 2) {
-              Navigator.of(context).push(MaterialPageRoute(
-                // TODO:pass the name of subreddit to add post
-                builder: (context) => const AddPost(),
-              ));
-            } else {
-              Navigator.of(context).popUntil((route) => route.isFirst);
-              cubit.changeIndex(value);
-            }
-          });
-        },
-      ),
-      body: NestedScrollView(
-        headerSliverBuilder: (context2, innerBoxIsScrolled) {
-          return [
-            SliverPersistentHeader(
+    return WillPopScope(
+      onWillPop: () async {
+        subredditCubit.pagingController.dispose();
+        return true;
+      },
+      child: Scaffold(
+        key: _scaffoldKey,
+        endDrawer: const RightDrawer(),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          currentIndex: cubit.currentIndex,
+          items: cubit.bottomNavBarIcons,
+          onTap: (value) {
+            setState(() {
+              if (value == 2) {
+                Navigator.of(context).push(MaterialPageRoute(
+                  // TODO:pass the name of subreddit to add post
+                  builder: (context) => const AddPost(),
+                ));
+              } else {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+                cubit.changeIndex(value);
+              }
+            });
+          },
+        ),
+        body: NestedScrollView(
+          headerSliverBuilder: (context2, innerBoxIsScrolled) {
+            return [
+              SliverPersistentHeader(
+                  pinned: true,
+                  delegate: SubredditAppBar(
+                      scaffoldKey: _scaffoldKey,
+                      maxExtent: 90,
+                      minExtent: 85,
+                      subredditCubit: subredditCubit)),
+              SliverAppBar(
                 pinned: true,
-                delegate: SubredditAppBar(
-                    scaffoldKey: _scaffoldKey,
-                    maxExtent: 90,
-                    minExtent: 85,
-                    subredditCubit: subredditCubit)),
-            SliverAppBar(
-              pinned: true,
-              automaticallyImplyLeading: false,
-              primary: false,
-              actions: <Widget>[Container()],
+                automaticallyImplyLeading: false,
+                primary: false,
+                actions: <Widget>[Container()],
 
-              bottom: PreferredSize(
-                  preferredSize: const Size.fromHeight(0),
-                  child: Container(
-                    key: _con1,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: mediaQuery.size.width * 0.15),
-                    color: ColorManager.black,
-                    child: TabBar(
-                        indicatorColor: ColorManager.blue,
-                        controller: controller,
-                        tabs: [
-                          Text(
-                            'Posts',
-                            style: TextStyle(
-                                fontSize: 25 * mediaQuery.textScaleFactor),
-                          ),
-                          Text(
-                            'About',
-                            style: TextStyle(
-                                fontSize: 25 * mediaQuery.textScaleFactor),
-                          )
-                        ]),
-                  )),
-              // pinned: true,
-              // floating: true,
-              // snap: true,
-              backgroundColor: Colors.black,
-              // actionsIconTheme: IconThemeData(opacity: 0.0),
-              expandedHeight: sliverHeight,
-              flexibleSpace: FlexibleSpaceBar(
-                  // key: _subInof,
-                  background: subredditInfo(mediaQuery, subredditCubit)),
-            )
-          ];
-        },
-        body: TabBarView(controller: controller, children: const [
-          SubredditPostsWidget(),
-          SubredditAboutWidget(),
-        ]),
+                bottom: PreferredSize(
+                    preferredSize: const Size.fromHeight(0),
+                    child: Container(
+                      key: _con1,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: mediaQuery.size.width * 0.15),
+                      color: ColorManager.black,
+                      child: TabBar(
+                          indicatorColor: ColorManager.blue,
+                          controller: controller,
+                          tabs: [
+                            Text(
+                              'Posts',
+                              style: TextStyle(
+                                  fontSize: 25 * mediaQuery.textScaleFactor),
+                            ),
+                            Text(
+                              'About',
+                              style: TextStyle(
+                                  fontSize: 25 * mediaQuery.textScaleFactor),
+                            )
+                          ]),
+                    )),
+                // pinned: true,
+                // floating: true,
+                // snap: true,
+                backgroundColor: Colors.black,
+                // actionsIconTheme: IconThemeData(opacity: 0.0),
+                expandedHeight: sliverHeight,
+                flexibleSpace: FlexibleSpaceBar(
+                    // key: _subInof,
+                    background: subredditInfo(mediaQuery, subredditCubit)),
+              )
+            ];
+          },
+          body: TabBarView(controller: controller, children: [
+            SubredditPostsWidget(),
+            const SubredditAboutWidget(),
+          ]),
+        ),
       ),
     );
   }
@@ -167,18 +189,18 @@ class _SubredditState extends State<Subreddit>
                   children: [
                     CircleAvatar(
                       backgroundColor:
-                          (subredditCubit.subreddit.picture == null ||
-                                  subredditCubit.subreddit.picture == '')
+                          (subredditCubit.subreddit!.picture == null ||
+                                  subredditCubit.subreddit!.picture == '')
                               ? ColorManager.blue
                               : null,
                       radius: 25,
-                      backgroundImage:
-                          (subredditCubit.subreddit.picture == null ||
-                                  subredditCubit.subreddit.picture == '')
-                              ? null
-                              : NetworkImage(subredditCubit.subreddit.picture!),
-                      child: (subredditCubit.subreddit.picture == null ||
-                              subredditCubit.subreddit.picture == '')
+                      backgroundImage: (subredditCubit.subreddit!.picture ==
+                                  null ||
+                              subredditCubit.subreddit!.picture == '')
+                          ? null
+                          : NetworkImage(subredditCubit.subreddit!.picture!),
+                      child: (subredditCubit.subreddit!.picture == null ||
+                              subredditCubit.subreddit!.picture == '')
                           ? const Text(
                               'r/',
                               style: TextStyle(
@@ -187,7 +209,7 @@ class _SubredditState extends State<Subreddit>
                             )
                           : null,
                     ),
-                    if (subredditCubit.subreddit.isModerator!)
+                    if (subredditCubit.subreddit!.isModerator!)
                       const CircleAvatar(
                         backgroundColor: Colors.transparent,
                         radius: 25,
@@ -222,9 +244,9 @@ class _SubredditState extends State<Subreddit>
                             });
                           }),
                           child: Text(
-                            (subredditCubit.subreddit.title == null)
+                            (subredditCubit.subreddit!.title == null)
                                 ? ''
-                                : 'r/${subredditCubit.subreddit.title}',
+                                : 'r/${subredditCubit.subreddit!.title}',
                             // key: _con3,
                             maxLines: titleFlag ? 1 : 2,
                             overflow: titleFlag ? TextOverflow.ellipsis : null,
@@ -237,7 +259,7 @@ class _SubredditState extends State<Subreddit>
                                 (current is leaveSubredditState ||
                                     current is joinSubredditState),
                             builder: (context, state) => (subredditCubit
-                                    .subreddit.isModerator!)
+                                    .subreddit!.isModerator!)
                                 ? MaterialButton(
                                     onPressed: () {
                                       // Navigator.of(context).push(MaterialPageRoute(
@@ -253,8 +275,14 @@ class _SubredditState extends State<Subreddit>
                                   )
                                 : MaterialButton(
                                     onPressed: () {
-                                      if (!subredditCubit.subreddit.isMember!) {
+                                      if (!subredditCubit
+                                          .subreddit!.isMember!) {
                                         subredditCubit.joinCommunity();
+                                      } else {
+                                        popupLeaveSubreddit(
+                                            Navigator.of(context),
+                                            subredditCubit,
+                                            mediaQuery);
                                       }
                                     },
                                     child: Container(
@@ -262,24 +290,24 @@ class _SubredditState extends State<Subreddit>
                                           vertical: 5, horizontal: 12),
                                       decoration: BoxDecoration(
                                           border: (!subredditCubit
-                                                  .subreddit.isMember!)
+                                                  .subreddit!.isMember!)
                                               ? null
                                               : Border.all(
                                                   color: ColorManager.blue),
                                           color: (!subredditCubit
-                                                  .subreddit.isMember!)
+                                                  .subreddit!.isMember!)
                                               ? ColorManager.blue
                                               : ColorManager.black,
                                           borderRadius:
                                               BorderRadius.circular(20)),
                                       child: Text(
-                                        (!subredditCubit.subreddit.isMember!)
+                                        (!subredditCubit.subreddit!.isMember!)
                                             ? 'Join'
                                             : 'Joined',
                                         style: TextStyle(
                                             fontSize: 20,
                                             color: (!subredditCubit
-                                                    .subreddit.isMember!)
+                                                    .subreddit!.isMember!)
                                                 ? ColorManager.eggshellWhite
                                                 : ColorManager.blue),
                                       ),
@@ -291,7 +319,7 @@ class _SubredditState extends State<Subreddit>
                       child: Align(
                           alignment: Alignment.bottomLeft,
                           child: Text(
-                            'r/${subredditCubit.subreddit.nickname}',
+                            'r/${subredditCubit.subreddit!.nickname}',
                             style: TextStyle(
                                 fontSize: 17 * mediaQuery.textScaleFactor),
                           )),
@@ -320,7 +348,7 @@ class _SubredditState extends State<Subreddit>
                     });
                   }),
                   child: Text(
-                    subredditCubit.subreddit.description ?? '',
+                    subredditCubit.subreddit!.description ?? '',
                     key: _con3,
                     maxLines: descriptionFlag ? 2 : null,
                     overflow: descriptionFlag ? TextOverflow.ellipsis : null,
@@ -330,6 +358,57 @@ class _SubredditState extends State<Subreddit>
           height: 10,
         )
       ],
+    );
+  }
+
+  void popupLeaveSubreddit(NavigatorState navigator,
+      SubredditCubit subredditCubit, MediaQueryData mediaQuery) {
+    Future.delayed(
+      const Duration(seconds: 0),
+      () => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: ColorManager.grey,
+          insetPadding: EdgeInsets.zero,
+          content: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Are you sure you want to leave the r/${subredditCubit.subredditName} community',
+                  style: TextStyle(fontSize: 17 * mediaQuery.textScaleFactor),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            Button(
+                onPressed: () {
+                  navigator.pop();
+                  return;
+                },
+                text: ('Cancel'),
+                textColor: ColorManager.white,
+                backgroundColor: Colors.transparent,
+                buttonWidth: mediaQuery.size.width * 0.3,
+                buttonHeight: 40,
+                textFontSize: 15,
+                splashColor: Color.fromARGB(40, 0, 0, 0)),
+            Button(
+                onPressed: () {
+                  subredditCubit.leaveCommunity();
+                  navigator.pop();
+                },
+                text: ('Leave'),
+                textColor: ColorManager.white,
+                backgroundColor: Colors.red,
+                buttonWidth: mediaQuery.size.width * 0.3,
+                buttonHeight: 40,
+                textFontSize: 15,
+                splashColor: Color.fromARGB(40, 0, 0, 0))
+          ],
+        ),
+      ),
     );
   }
 }

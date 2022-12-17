@@ -35,59 +35,9 @@ class SubredditOpion extends StatelessWidget {
       builder: (context, state) {
         return PopupMenuButton(
             itemBuilder: (_) => [
-                  if (subredditCubit.subreddit.isModerator!)
+                  if (subredditCubit.subreddit!.isModerator!)
                     PopupMenuItem(
-                        onTap: () {
-                          Future.delayed(
-                            const Duration(seconds: 0),
-                            () => showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                backgroundColor: ColorManager.grey,
-                                insetPadding: EdgeInsets.zero,
-                                content: Container(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        'Are you sure you want to leave the r/${subredditCubit.subredditName} community',
-                                        style: TextStyle(
-                                            fontSize: 17 *
-                                                mediaQuery.textScaleFactor),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                actions: [
-                                  Button(
-                                      onPressed: () {
-                                        navigator.pop();
-                                        return;
-                                      },
-                                      text: ('Cancel'),
-                                      textColor: ColorManager.white,
-                                      backgroundColor: Colors.transparent,
-                                      buttonWidth: mediaQuery.size.width * 0.3,
-                                      buttonHeight: 40,
-                                      textFontSize: 15,
-                                      splashColor: Color.fromARGB(40, 0, 0, 0)),
-                                  Button(
-                                      onPressed: () {
-                                        subredditCubit.leaveCommunity();
-                                        navigator.pop();
-                                      },
-                                      text: ('Leave'),
-                                      textColor: ColorManager.white,
-                                      backgroundColor: Colors.red,
-                                      buttonWidth: mediaQuery.size.width * 0.3,
-                                      buttonHeight: 40,
-                                      textFontSize: 15,
-                                      splashColor: Color.fromARGB(40, 0, 0, 0))
-                                ],
-                              ),
-                            ),
-                          );
-                        },
+                        onTap: () {},
                         child: Row(
                           children: [
                             const Padding(
@@ -111,7 +61,7 @@ class SubredditOpion extends StatelessWidget {
                         Expanded(
                           child: Text(
                             (index == 0)
-                                ? '${itemsText[index]} r/${subredditCubit.subreddit.nickname}'
+                                ? '${itemsText[index]} r/${subredditCubit.subreddit!.nickname}'
                                 : itemsText[index],
                             style: TextStyle(
                                 fontSize: 15 * mediaQuery.textScaleFactor),

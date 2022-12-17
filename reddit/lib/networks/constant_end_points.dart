@@ -64,9 +64,6 @@ const unban = '/unban';
 const inviteMod = '/moderator-invite';
 // Note : after last / add the subreddit name
 const subredditInfo = '/r';
-<<<<<<< HEAD
 const leaveSubreddit = '/leave-subreddit';
 const joinSubreddit = '/join-subreddit';
-=======
 const searchForSubreddit = '/search?type=subreddit';
->>>>>>> origin/development

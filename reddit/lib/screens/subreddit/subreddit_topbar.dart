@@ -40,13 +40,13 @@ class SubredditAppBar extends SliverPersistentHeaderDelegate {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            (subredditCubit.subreddit.banner == null ||
-                    subredditCubit.subreddit.banner == '')
+            (subredditCubit.subreddit!.banner == null ||
+                    subredditCubit.subreddit!.banner == '')
                 ? Container(
                     color: ColorManager.blue,
                   )
                 : Image.network(
-                    subredditCubit.subreddit.banner!,
+                    subredditCubit.subreddit!.banner!,
                     width: double.maxFinite,
                     fit: BoxFit.cover,
                   ),
@@ -96,7 +96,7 @@ class SubredditAppBar extends SliverPersistentHeaderDelegate {
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Text(
-                                        subredditCubit.subreddit.title!,
+                                        subredditCubit.subreddit!.title!,
                                         style: TextStyle(
                                             fontSize: 20 *
                                                 mediaQuery.textScaleFactor),
@@ -116,20 +116,54 @@ class SubredditAppBar extends SliverPersistentHeaderDelegate {
                                       isSubreddit: true,
                                       isResult: true,
                                       labelText:
-                                          'r/${subredditCubit.subreddit.nickname!}',
+                                          'r/${subredditCubit.subreddit!.nickname!}',
                                       textEditingController:
                                           TextEditingController(),
                                     ),
                                   ),
                                 ),
-                          SubredditOpion(),
-                          InkWell(
-                              onTap: () {
-                                scaffoldKey.currentState!.isEndDrawerOpen
-                                    ? scaffoldKey.currentState?.closeEndDrawer()
-                                    : scaffoldKey.currentState?.openEndDrawer();
-                              },
-                              child: avatar())
+                          // SubredditOpion(),
+                          if (subredditCubit.subreddit!.isModerator != null &&
+                              subredditCubit.subreddit!.isModerator != false)
+                            PopupMenuButton(
+                                itemBuilder: ((context) => [
+                                      PopupMenuItem(
+                                          child: Row(
+                                        children: [
+                                          const Padding(
+                                              padding:
+                                                  EdgeInsets.only(right: 10),
+                                              child: Icon(
+                                                  Icons.notifications_none)),
+                                          Expanded(
+                                            child: Text(
+                                              'Manage Mod Notification',
+                                              style: TextStyle(
+                                                  fontSize: 15 *
+                                                      mediaQuery
+                                                          .textScaleFactor),
+                                            ),
+                                          )
+                                        ],
+                                      )),
+                                    ])),
+                          Container(
+                            margin: (subredditCubit.subreddit!.isModerator ==
+                                        null ||
+                                    subredditCubit.subreddit!.isModerator ==
+                                        false)
+                                ? const EdgeInsets.only(left: 10)
+                                : null,
+                            child: InkWell(
+                                onTap: () {
+                                  scaffoldKey.currentState!.isEndDrawerOpen
+                                      ? scaffoldKey.currentState
+                                          ?.closeEndDrawer()
+                                      : scaffoldKey.currentState
+                                          ?.openEndDrawer();
+                                },
+                                child: avatar()),
+                          )
                         ],
                       ),
                     ),
