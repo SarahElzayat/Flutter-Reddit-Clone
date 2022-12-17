@@ -10,7 +10,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:reddit/cubit/comment_notifier/comment_notifier_cubit.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/data/post_model/post_model.dart';
-import 'package:reddit/screens/posts/post_screen.dart';
 import 'package:reddit/screens/posts/post_screen_cubit/post_screen_cubit.dart';
 import 'package:path/path.dart' as p;
 import 'package:responsive_sizer/responsive_sizer.dart';

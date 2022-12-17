@@ -2,15 +2,10 @@
 /// @date 9/11/2022
 /// this is the screen fpr the main home
 ///
-import 'dart:io';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:path/path.dart' as p;
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_quill/flutter_quill.dart' hide Text;
-import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:reddit/components/back_to_top_button.dart';
 import 'package:reddit/components/home_components/left_drawer.dart';
 import 'package:reddit/components/home_components/right_drawer.dart';
@@ -37,8 +32,6 @@ class PostScreenWeb extends StatelessWidget {
   final ScrollController scrollController = ScrollController();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -186,14 +179,5 @@ class PostScreenWeb extends StatelessWidget {
               ),
             ))
         .toList();
-  }
-
-  // Renders the image picked by imagePicker from local file storage
-  Future<String> _onImagePickCallback(File file) async {
-    // Copies the picked file from temporary cache to applications directory
-    // final appDocDir = await getApplicationDocumentsDirectory();
-    // final copiedFile =
-    //     await file.copy('${appDocDir.path}/${p.basename(file.path)}');
-    return file.path.toString();
   }
 }

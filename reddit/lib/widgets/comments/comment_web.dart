@@ -16,7 +16,6 @@ import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/functions/post_functions.dart';
 import 'package:reddit/screens/comments/add_comment_web.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:reddit/screens/comments/add_comment_screen.dart';
 import 'package:reddit/screens/posts/post_screen_cubit/post_screen_cubit.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:reddit/widgets/posts/votes_widget.dart';
@@ -52,7 +51,6 @@ class _CommentWebState extends State<CommentWeb> {
   bool isCompressed = false;
   bool openReplay = false;
   QuillController? _controller;
-  QuillController? _addCommentController;
   final FocusNode _focusNode = FocusNode();
   QuillController getController() {
     Document doc;

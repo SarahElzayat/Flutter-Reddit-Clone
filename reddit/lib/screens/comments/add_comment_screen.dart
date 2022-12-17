@@ -38,7 +38,6 @@ class AddCommentScreen extends StatefulWidget {
 
 class _AddCommentScreenState extends State<AddCommentScreen> {
   QuillController? _controller;
-  final FocusNode _focusNode = FocusNode();
   @override
   void initState() {
     _controller = QuillController.basic();
