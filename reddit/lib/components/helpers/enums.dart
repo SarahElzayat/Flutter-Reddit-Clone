@@ -4,7 +4,7 @@
 
 /// this enum is used to determine the type of the trailing posts
 enum TrailingObjects {
-  /// TODO: here we should add a button
+  // TODO: here we should add a button
   switchButton,
   dropBox,
   tailingIcon,
@@ -50,3 +50,4 @@ enum UserManagement {
   muted,
   moderator,
 }
+enum HomeSort { hot, best, top, trending, newPosts, raising, controversial }

@@ -3,6 +3,7 @@
 /// @Author: Ahmed Atta
 
 import 'package:flutter/material.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/screens/posts/edit_screen.dart';
@@ -86,16 +87,16 @@ class MenuItems {
   static const mute = MenuItem(text: 'Mute', icon: Icons.volume_off_sharp);
 
   /// builds the row of the menu Item
-  static Widget buildDropMenuItem(MenuItem item) {
+  static Widget buildDropMenuItem(MenuItem item, {iconColor = Colors.white}) {
     return Row(
       children: [
-        Icon(item.icon, color: Colors.white, size: 22),
+        Icon(item.icon, color: iconColor, size: 22),
         const SizedBox(
           width: 10,
         ),
         Text(
           item.text,
-          style: const TextStyle(color: Colors.white, fontSize: 15),
+          style: TextStyle(color: iconColor, fontSize: 15),
         ),
       ],
     );

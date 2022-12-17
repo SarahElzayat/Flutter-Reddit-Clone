@@ -1,3 +1,6 @@
+/// @author Sarah Elzayat
+/// states of the app cubit
+
 part of 'app_cubit.dart';
 
 @immutable
@@ -19,6 +22,7 @@ class ChangeLeftDrawerState extends AppState {}
 class ChangeModeratingListState extends AppState {}
 
 class ChangeYourCommunitiesState extends AppState {}
+class LoadedCommunitiesState extends AppState {}
 
 class ChangeHistoryCategoryState extends AppState {}
 
@@ -48,12 +52,22 @@ class LoadingSavedCommentsState extends AppState {}
 
 class LoadingMoreSavedCommentsState extends AppState {}
 
-class LoadedSavedCommentsState extends AppState {}
+class LoadedSavedState extends AppState {}
 
 class LoadedMoreSavedState extends AppState {}
 
 class NoMoreSavedToLoadState extends AppState {}
 
-class SavedEmptyState extends AppState {}
 
-class ErrorState extends AppState {}
+
+class LoadingResultsState extends AppState{}
+class LoadedResultsState extends AppState{}
+class ResultEmptyState extends AppState{}
+class NoMoreResultsToLoadState extends AppState{}
+
+
+class SavedEmptyState extends AppState{}
+class ErrorState extends AppState{}
+
+
+

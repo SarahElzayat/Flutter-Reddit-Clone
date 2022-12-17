@@ -1,9 +1,14 @@
+/// @author Sarah Elzayat
+/// @description the component that shows the subreddit results in search page
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import 'package:reddit/data/search/search_result_subbredit_model.dart';
 
 import '../../screens/search/cubit/search_cubit.dart';
 import '../helpers/color_manager.dart';
+
+///@param [model] model of subreddit result
 
 class SubredditResultsContainer extends StatelessWidget {
   const SubredditResultsContainer({super.key, required this.model});
@@ -14,7 +19,8 @@ class SubredditResultsContainer extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         return InkWell(
-          //TODO on tap => navigate to profile
+          onTap: () => SubredditCubit.get(context)
+              .setSubredditName(context, model.data!.subredditName.toString()),
           child: Container(
             padding: const EdgeInsets.all(8),
             decoration: const BoxDecoration(
@@ -70,7 +76,8 @@ class SubredditResultsContainer extends StatelessWidget {
                   ],
                 ),
                 const Spacer(),
-                //TODO navigate to subreddit
+
+                ///The button toggels the joind/join subreddit state
                 MaterialButton(
                   shape: const StadiumBorder(),
                   color: ColorManager.darkGrey,

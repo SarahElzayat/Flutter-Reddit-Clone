@@ -5,12 +5,10 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../components/helpers/enums.dart';
-import '../../data/post_model/post_model.dart';
-import '../../networks/dio_helper.dart';
 import '../../screens/search/cubit/search_cubit.dart';
 import '../../widgets/posts/post_upper_bar.dart';
 import '../../widgets/posts/post_widget.dart';
-import '../../Components/Helpers/color_manager.dart';
+import '../../Components/helpers/color_manager.dart';
 
 class ResultsPosts extends StatefulWidget {
   const ResultsPosts({super.key});
@@ -21,7 +19,7 @@ class ResultsPosts extends StatefulWidget {
 
 class _ResultsPostsState extends State<ResultsPosts> {
   final _scrollController = ScrollController();
-  List<PostModel> posts = [];
+  // List<PostModel> posts = [];
   void _scrollListener() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
@@ -38,12 +36,6 @@ class _ResultsPostsState extends State<ResultsPosts> {
   }
 
   @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final SearchCubit cubit = SearchCubit.get(context); //..getPosts();
     return BlocConsumer<SearchCubit, SearchState>(
@@ -53,9 +45,10 @@ class _ResultsPostsState extends State<ResultsPosts> {
           condition:
               state is! LoadedResultsState || state is! LoadedMoreResultsState,
           fallback: (context) => const Center(
-              child: CircularProgressIndicator(
-            color: ColorManager.blue,
-          )),
+            child: CircularProgressIndicator(
+              color: ColorManager.blue,
+            ),
+          ),
           builder: (context) => cubit.posts.isEmpty
               ? Center(
                   child: Text(
@@ -66,26 +59,15 @@ class _ResultsPostsState extends State<ResultsPosts> {
               : ListView.builder(
                   controller: _scrollController,
                   itemCount: cubit.posts.length,
-                  itemBuilder: (context, index) => InkWell(
-                    onTap: () => DioHelper.getData(
-                            path: '/post-details?id=${cubit.posts[index].id}')
-                        .then((value) => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PostWidget(
-                                post: PostModel.fromJson(value.data),
-                                outsideScreen: false,
-                              ),
-                            ))),
-                    child: PostWidget(
-                        upperRowType: cubit.posts[index].inYourSubreddit == null
-                            ? ShowingOtions.onlyUser
-                            : ShowingOtions.both,
-                        // TODO check this
-                        // upperRowType: ShowingOtions.onlyUser,
-                        post: cubit.posts[index],
-                        postView: PostView.classic),
-                  ),
+                  itemBuilder: (context, index) => PostWidget(
+                      key: Key(cubit.posts[index].id.toString()),
+                      upperRowType: cubit.posts[index].inYourSubreddit == null
+                          ? ShowingOtions.onlyUser
+                          : ShowingOtions.both,
+                      // TODO check this
+                      // upperRowType: ShowingOtions.onlyUser,
+                      post: cubit.posts[index],
+                      postView: PostView.classic),
                 ),
         );
       },

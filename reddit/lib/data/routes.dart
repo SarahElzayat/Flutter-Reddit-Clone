@@ -86,6 +86,6 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   PaintScreen.routeName: (ctx) => PaintScreen(),
   TrimmerView.routeName: (ctx) => const TrimmerView(),
   PostSimpleScreen.routeName: (ctx) => const PostSimpleScreen(),
-  CommunitySearch.routeName: (ctx) => CommunitySearch(),
+  CommunitySearch.routeName: (ctx) => const CommunitySearch(),
   PostRules.routeName: (ctx) => const PostRules(),
 };

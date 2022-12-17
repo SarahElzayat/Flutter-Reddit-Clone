@@ -44,10 +44,10 @@ BlocBuilder<PostNotifierCubit, PostNotifierState> dropDownDots(PostModel post) {
   );
 }
 
-String getPlainText(String? body) {
+String getPlainText(Map<String, dynamic>? body) {
   Document doc;
   try {
-    doc = Document.fromJson(jsonDecode(body ?? '[]')['ops']);
+    doc = Document.fromJson((body ?? {'ops': []})['ops']);
   } catch (e) {
     doc = Document();
   }
@@ -64,7 +64,7 @@ CircleAvatar subredditAvatar({small = false}) {
 Widget commentSortRow(BuildContext context) {
 // a row with a button to choose the sorting type and an icon button for MOD
 // operations
-  return BlocBuilder<PostAndCommentActionsCubit, PostState>(
+  return BlocBuilder<PostAndCommentActionsCubit, PostActionsState>(
     builder: (context, state) {
       return Row(
         mainAxisSize: MainAxisSize.min,
@@ -114,7 +114,7 @@ Widget commentSortRow(BuildContext context) {
               color: Colors.transparent,
               clipBehavior: Clip.antiAlias,
               shape: const CircleBorder(),
-              child: BlocBuilder<PostAndCommentActionsCubit, PostState>(
+              child: BlocBuilder<PostAndCommentActionsCubit, PostActionsState>(
                 builder: (context, state) {
                   var cubit = PostAndCommentActionsCubit.get(context);
                   return IconButton(
@@ -142,6 +142,7 @@ Widget singleRow({
   bool sub = false,
   bool showIcon = false,
   bool showDots = true,
+  required bool isWeb,
   required PostModel post,
 }) {
   return Row(
@@ -167,7 +168,7 @@ Widget singleRow({
         ),
       ),
       if (showIcon) const Spacer(),
-      if (showDots) dropDownDots(post)
+      if (showDots && !isWeb) dropDownDots(post)
     ],
   );
 }
@@ -243,7 +244,6 @@ void handleLock(
     {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   final lockComments = LockModel(id: post.id, type: 'comment');
 
-
   //check whether post is marked or unmarked as nsfw
   String finalPath = post.moderation.lock ?? false ? unlock : lock;
 
@@ -262,7 +262,6 @@ void handleSticky(
     {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   //bool pin = !post.sticky
   final stickUnstickPost = PinPostModel(id: post.id, pin: false);
-
 
   DioHelper.postData(path: pinPost, data: stickUnstickPost.toJson())
       .then((value) {
@@ -289,7 +288,6 @@ void handleRemove(
 void handleApprove(
     {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   final approvePost = ApproveModel(id: post.id, type: 'post');
-  var token = CacheHelper.getData(key: 'token');
   DioHelper.postData(path: approve, data: approvePost.toJson()).then((value) {
     // if (value.statusCode == 200) {
     onSuccess();
@@ -303,7 +301,6 @@ Future<void> showModOperations({
   required BuildContext context,
   required PostModel post,
 }) async {
-  bool isError;
   String message;
   var returnedOption = await showDialog<ModOPtions>(
       context: context,

@@ -1,16 +1,16 @@
 // To parse this JSON data, do
 //
-//     final subredditModel = subredditModelFromJson(jsonString);
+//     final moderatorModel = moderatorModelFromJson(jsonString);
 
 import 'dart:convert';
 
-SubredditModel subredditModelFromJson(String str) =>
-    SubredditModel.fromJson(json.decode(str));
+ModeratorModel moderatorModelFromJson(String str) =>
+    ModeratorModel.fromJson(json.decode(str));
 
-String subredditModelToJson(SubredditModel data) => json.encode(data.toJson());
+String moderatorModelToJson(ModeratorModel data) => json.encode(data.toJson());
 
-class SubredditModel {
-  SubredditModel({
+class ModeratorModel {
+  ModeratorModel({
     this.before,
     this.after,
     this.children,
@@ -20,20 +20,17 @@ class SubredditModel {
   String? after;
   List<Child>? children;
 
-  factory SubredditModel.fromJson(Map<String, dynamic> json) => SubredditModel(
-        before: json['before'],
-        after: json['after'],
-        children: (json['children'] == null || json['children'] == [])
-            ? []
-            : List<Child>.from(json['children'].map((x) => x)),
+  factory ModeratorModel.fromJson(Map<String, dynamic> json) => ModeratorModel(
+        before: json['before'] ?? '',
+        after: json['after'] ?? '',
+        children:
+            List<Child>.from(json['children'].map((x) => Child.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         'before': before,
         'after': after,
-        'children': (children!.isNotEmpty)
-            ? List<dynamic>.from(children!.map((x) => x))
-            : [],
+        'children': List<dynamic>.from(children!.map((x) => x.toJson())),
       };
 }
 
@@ -48,7 +45,7 @@ class Child {
   String? username;
   String? avatar;
   String? dateOfModeration;
-  List<String>? permissions;
+  List<dynamic>? permissions;
 
   factory Child.fromJson(Map<String, dynamic> json) => Child(
         username: json['username'],
@@ -56,15 +53,13 @@ class Child {
         dateOfModeration: json['dateOfModeration'],
         permissions: (json['permissions'] == null || json['permissions'] == [])
             ? []
-            : List<String>.from(json['children'].map((x) => x)),
+            : List<dynamic>.from(json['permissions'].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
         'username': username,
         'avatar': avatar,
         'dateOfModeration': dateOfModeration,
-        'permissions': (permissions!.isNotEmpty)
-            ? List<dynamic>.from(permissions!.map((x) => x))
-            : [],
+        'permissions': List<dynamic>.from(permissions!.map((x) => x)),
       };
 }

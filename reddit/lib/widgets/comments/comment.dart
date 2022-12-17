@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional_switch.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
-import 'package:logger/logger.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/cubit/comment_notifier/comment_notifier_cubit.dart';
@@ -51,13 +50,14 @@ class Comment extends StatefulWidget {
 
 class _CommentState extends State<Comment> {
   bool isCompressed = false;
+  bool openReplay = false;
   QuillController? _controller;
   final FocusNode _focusNode = FocusNode();
   QuillController getController() {
     Document doc;
     var content = widget.comment.commentBody;
     try {
-      doc = Document.fromJson(jsonDecode(content ?? '[]')['ops']);
+      doc = Document.fromJson((content ?? {'ops': []})['ops']);
     } catch (e) {
       doc = Document();
     }
@@ -88,7 +88,7 @@ class _CommentState extends State<Comment> {
         focusNode: _focusNode,
         autoFocus: false,
         readOnly: true,
-        placeholder: 'Such empty',
+        placeholder: '',
         expands: false,
         showCursor: false,
         padding: EdgeInsets.zero,
