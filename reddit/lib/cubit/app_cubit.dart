@@ -108,8 +108,7 @@ class AppCubit extends Cubit<AppState> {
           logger.wtf('after $homePostsAfterId');
           for (int i = 0; i < value.data['children'].length; i++) {
             homePosts.add(PostWidget(
-                post: PostModel.fromJson(
-                    value.data['children'][i]['data'])));
+                post: PostModel.fromJson(value.data['children'][i]['data'])));
             logger.e(i);
           }
         }
@@ -122,6 +121,8 @@ class AppCubit extends Cubit<AppState> {
       if (kDebugMode) {
         logger.wtf(error.toString());
       }
+    }).catchError((error) {
+      emit(ErrorState());
     });
   }
 
@@ -207,6 +208,8 @@ class AppCubit extends Cubit<AppState> {
       } else {
         emit(ErrorState());
       }
+    }).catchError((onError) {
+      emit(ErrorState());
     });
   }
 
@@ -222,6 +225,8 @@ class AppCubit extends Cubit<AppState> {
       } else {
         emit(ErrorState());
       }
+    }).catchError((onError) {
+      emit(ErrorState());
     });
   }
 
@@ -239,6 +244,11 @@ class AppCubit extends Cubit<AppState> {
       } else {
         emit(ErrorState());
       }
+    }).catchError((error) {
+      emit(ErrorState());
+      print('Error In get Picture Profile $error');
+    }).catchError((onError) {
+      emit(ErrorState());
     });
   }
 
@@ -248,8 +258,8 @@ class AppCubit extends Cubit<AppState> {
   int? karma = 1;
 
   /// the function get the user's username from the backend
-  void getUsername() {
-    username = CacheHelper.getData(key: 'username');
+  void getUsername() async {
+    username = await CacheHelper.getData(key: 'username');
     DioHelper.getData(path: '$userDetails/$username').then((value) {
       if (value.statusCode == 200) {
         karma = value.data['karma'];
@@ -264,6 +274,9 @@ class AppCubit extends Cubit<AppState> {
       } else {
         emit(ErrorState());
       }
+    }).catchError((error) {
+      print('Error In Get User Details $error');
+      emit(ErrorState());
     });
   }
 
@@ -337,6 +350,8 @@ class AppCubit extends Cubit<AppState> {
       if (kDebugMode) {
         logger.wtf(error.toString());
       }
+    }).catchError((onError) {
+      emit(ErrorState());
     });
   }
 
@@ -515,6 +530,8 @@ class AppCubit extends Cubit<AppState> {
       if (kDebugMode) {
         logger.wtf(error.toString());
       }
+    }).catchError((onError) {
+      emit(ErrorState());
     });
   }
 
@@ -526,6 +543,8 @@ class AppCubit extends Cubit<AppState> {
       if (value.statusCode == 200) history.clear();
       emit(ClearHistoryState());
       emit(HistoryEmptyState());
+    }).catchError((onError) {
+      emit(ErrorState());
     });
   }
 }
