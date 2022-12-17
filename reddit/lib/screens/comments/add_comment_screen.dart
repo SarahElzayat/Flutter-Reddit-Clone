@@ -49,65 +49,6 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // var toolbar = QuillToolbar.basic(
-    //   showUndo: false,
-    //   showRedo: false,
-    //   showBoldButton: false,
-    //   showItalicButton: false,
-    //   showBackgroundColorButton: false,
-    //   showCenterAlignment: false,
-    //   showLeftAlignment: false,
-    //   showRightAlignment: false,
-    //   showJustifyAlignment: false,
-    //   showHeaderStyle: false,
-    //   showListNumbers: false,
-    //   showListBullets: false,
-    //   showCodeBlock: false,
-    //   showStrikeThrough: false,
-    //   showFontSize: false,
-    //   multiRowsDisplay: false,
-    //   showClearFormat: false,
-    //   showIndent: false,
-    //   showQuote: false,
-    //   showColorButton: false,
-    //   showSearchButton: false,
-    //   showDirection: false,
-    //   showDividers: false,
-    //   showFontFamily: false,
-    //   showInlineCode: false,
-    //   showListCheck: false,
-    //   showUnderLineButton: false,
-    //   // showSmallButton: false,
-    //   controller: _controller!,
-    //   embedButtons: FlutterQuillEmbeds.buttons(
-    //     showVideoButton: false,
-    //     showCameraButton: false,
-
-    //     // provide a callback to enable picking images from device.
-    //     // if omit, "image" button only allows adding images from url.
-    //     // same goes for videos.
-    //     onImagePickCallback: _onImagePickCallback,
-    //     onVideoPickCallback: _onVideoPickCallback,
-    //     // uncomment to provide a custom "pick from" dialog.
-    //     // mediaPickSettingSelector: _selectMediaPickSetting,
-    //     // uncomment to provide a custom "pick from" dialog.
-    //     // cameraPickSettingSelector: _selectCameraPickSetting,
-    //   ),
-    //   showAlignmentButtons: true,
-    //   afterButtonPressed: _focusNode.requestFocus,
-    // );
-    // if (kIsWeb) {
-    //   toolbar = QuillToolbar.basic(
-    //     controller: _controller!,
-    //     embedButtons: FlutterQuillEmbeds.buttons(
-    //       onImagePickCallback: _onImagePickCallback,
-    //       webImagePickImpl: _webImagePickImpl,
-    //     ),
-    //     showAlignmentButtons: true,
-    //     afterButtonPressed: _focusNode.requestFocus,
-    //   );
-    // }
-
     return Scaffold(
       appBar: AppBar(
         title: Text(_isPostParent() ? 'Add comment' : 'Reply'),

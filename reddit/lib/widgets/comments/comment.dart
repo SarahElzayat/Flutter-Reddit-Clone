@@ -50,7 +50,6 @@ class Comment extends StatefulWidget {
 
 class _CommentState extends State<Comment> {
   bool isCompressed = false;
-  bool openReplay = false;
   QuillController? _controller;
   final FocusNode _focusNode = FocusNode();
   QuillController getController() {
@@ -295,36 +294,6 @@ class _CommentState extends State<Comment> {
           builder: (context, state) {
             return VotesPart(post: widget.post);
           },
-        ),
-      ],
-    );
-  }
-
-  _addCommentsRow() {
-    return Row(
-      children: [
-        Expanded(
-          child: Row(
-            children: [
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    isCompressed = !isCompressed;
-                  });
-                },
-                icon: const Icon(Icons.arrow_drop_down),
-              ),
-              // const  Text('Comments'),
-            ],
-          ),
-        ),
-        IconButton(
-          onPressed: () {
-            setState(() {
-              isCompressed = !isCompressed;
-            });
-          },
-          icon: const Icon(Icons.arrow_drop_up),
         ),
       ],
     );

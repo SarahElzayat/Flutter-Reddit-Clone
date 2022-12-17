@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../components/helpers/posts/helper_funcs.dart';
 import '../../../data/comment/comments_listing.dart';
 
@@ -15,7 +16,7 @@ Logger logger = Logger();
 class PostScreenCubit extends Cubit<PostScreenState> {
   final PostModel post;
   final List<CommentModel> comments = [];
-
+  bool? showbtn;
   final ScrollController scrollController = ScrollController();
   PostScreenCubit({
     required this.post,
@@ -24,6 +25,9 @@ class PostScreenCubit extends Cubit<PostScreenState> {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
         emit(CommentsLoadingMore());
+
+        //scroll listener
+        showbtn = scrollController.offset > 50.h;
       }
     });
   }
@@ -69,11 +73,11 @@ class PostScreenCubit extends Cubit<PostScreenState> {
   void getCommentsOfPost({
     bool? before,
     bool? after,
-    String sort = 'best',
+    String? sort,
     int? limit,
   }) {
     emit(CommentsLoading());
-
+    sort ??= selectedItem.toLowerCase();
     DioHelper.getData(
       path: '/comments/${post.id}',
       query: {
