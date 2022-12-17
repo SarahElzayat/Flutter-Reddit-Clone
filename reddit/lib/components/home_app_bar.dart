@@ -3,13 +3,11 @@
 /// App bar of the application
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/components/community_components/create_community_dialog.dart';
-import 'package:reddit/components/app_bar_components.dart';
-// import 'package:reddit/components/home_dropdown_menu.dart';
-import 'package:reddit/components/search_field.dart';
-import 'package:reddit/screens/moderation/mod_tools.dart';
-
-import '../cubit/app_cubit.dart';
+import '../../components/community_components/create_community_dialog.dart';
+import '../../components/app_bar_components.dart';
+import '../../components/search_field.dart';
+import '../../cubit/app_cubit/app_cubit.dart';
+import '../../screens/moderation/mod_tools.dart';
 
 ///@param [index] is the index of the bottom navigation bar screen
 ///@param [context] is the context of the parent widget
