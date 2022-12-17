@@ -51,7 +51,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void _scrollListener() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      AppCubit.get(context).getHomePosts(after: true, loadMore: true, limit: 5);
+      AppCubit.get(context).getHomePosts(
+        after: true,
+        loadMore: true,
+      );
     }
 
     double showoffset = MediaQuery.of(context).size.height /
@@ -73,11 +76,11 @@ class _HomeScreenState extends State<HomeScreen> {
   /// the method that's callled on pull down to refresh
   Future<void> _onRefresh() async {
     setState(() {
-      AppCubit.get(context).getHomePosts(limit: 5);
+      AppCubit.get(context).getHomePosts();
       AppCubit.get(context).getUsername();
       AppCubit.get(context).getYourCommunities();
       AppCubit.get(context).getYourModerating();
-      Logger().i(token);
+      AppCubit.get(context).getUserProfilePicture();
     });
   }
 
@@ -85,11 +88,14 @@ class _HomeScreenState extends State<HomeScreen> {
   /// loads necessary data from backend
   @override
   void initState() {
-    AppCubit.get(context).getHomePosts(limit: 5);
+
     _scrollController.addListener(_scrollListener);
+    AppCubit.get(context).getHomePosts();
     AppCubit.get(context).getUsername();
     AppCubit.get(context).getYourCommunities();
     AppCubit.get(context).getYourModerating();
+    AppCubit.get(context).getUserProfilePicture();
+
     super.initState();
   }
 

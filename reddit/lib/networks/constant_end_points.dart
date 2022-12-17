@@ -30,6 +30,7 @@ const changePassword = '/change-password';
 const blockedAccounts = '/blocked-users';
 const accountSettings =
     '/account-settings'; // this end point is used in multi requests.
+const block = '/block-user';
 
 // create community
 const createCommunity = '/create-subreddit';
@@ -51,6 +52,7 @@ const upvotedHistory = '/upvoted';
 const downvotedHistory = '/downvoted';
 const hiddenHistory = '/hidden';
 const clearHistory = '/clear-history';
+const userProfilePicture = '/profile-picture';
 const search = '/search';
 const searchPosts = 'post';
 const searchUsers = 'user';
