@@ -67,7 +67,9 @@ class _SearchFieldState extends State<SearchField> {
                 borderRadius: BorderRadius.circular(10),
               )
             : const StadiumBorder(),
-        color: ColorManager.darkGrey,
+        color: (widget.isSubreddit)
+            ? Color.fromARGB(120, 0, 0, 0)
+            : ColorManager.darkGrey,
       ),
       child: TextField(
         onTap: () {
@@ -87,7 +89,6 @@ class _SearchFieldState extends State<SearchField> {
         },
         focusNode: _focus,
         onSubmitted: widget.onSubmitted,
-
         cursorColor: ColorManager.eggshellWhite,
         onChanged: (value) => setState(() {
           (widget.textEditingController.text);
