@@ -52,14 +52,15 @@ class DioHelper {
 
     /// which is the content of the JSON
     Map<String, dynamic>? query,
-    String? token,
+    String? sentToken,
     bool isFormdata = false,
 
     /// additional query
   }) async {
+    sentToken ??= token;
     var options = Options(
       headers: {
-        'Authorization': 'Bearer ${token ?? CacheHelper.getData(key: 'token')}',
+        'Authorization': 'Bearer ${sentToken ?? ''}',
         'Content-Type': (isFormdata)
             ? 'multipart/form-data; boundary=<calculated when request is sent>'
             : 'application/json'

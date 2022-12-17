@@ -488,15 +488,14 @@ class AddPostCubit extends Cubit<AddPostState> {
         'spoiler': spoiler,
       };
     } else if (postType == 2) {
-      final content = jsonEncode(optionalText.document.toDelta().toJson());
-      var sent = '{"ops":$content}';
-
       body = {
         'kind': postTypes[postType],
         'subreddit': subredditName,
         'inSubreddit': true,
         'title': title.text,
-        'content': sent,
+        'content': {
+          'ops': optionalText.document.toDelta().toJson()
+        },
         'nsfw': nsfw,
         'spoiler': spoiler,
       };
@@ -527,7 +526,7 @@ class AddPostCubit extends Cubit<AddPostState> {
             path: submitPost,
             isFormdata: (postType == 0 || postType == 1),
             data: formData,
-            token: CacheHelper.getData(key: 'token'))
+            sentToken: CacheHelper.getData(key: 'token'))
         .then((value) {
       print(value);
       ScaffoldMessenger.of(context).showSnackBar(

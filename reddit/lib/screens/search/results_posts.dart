@@ -9,8 +9,7 @@ import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/screens/search/cubit/search_cubit.dart';
 import 'package:reddit/widgets/posts/post_upper_bar.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
-
-import '../../Components/Helpers/color_manager.dart';
+import '../../Components/helpers/color_manager.dart';
 
 class ResultsPosts extends StatefulWidget {
   const ResultsPosts({super.key});

@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:logger/logger.dart';
 import 'package:reddit/components/helpers/mocks/mock_functions.dart';
 import 'package:reddit/constants/constants.dart';
@@ -15,12 +16,13 @@ import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/functions/post_functions.dart';
 import 'package:reddit/networks/dio_helper.dart';
 
+import '../../../data/comment/sended_comment_model.dart';
 import '../../../networks/constant_end_points.dart';
 import 'post_comment_actions_state.dart';
 
 Logger logger = Logger();
 
-class PostAndCommentActionsCubit extends Cubit<PostState> {
+class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
   final PostModel post;
   final CommentModel? currentComment;
   final List<CommentModel> comments = [];
@@ -77,6 +79,7 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
     String path = isSaved ? '/unsave' : '/save';
     return DioHelper.postData(
       path: path,
+      sentToken: token,
       data: {
         'id': isPost ? post.id : currentComment!.id,
         'type': isPost ? 'post' : 'comment',
@@ -93,12 +96,21 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
 
   /// this function is used to hide a post
   Future hide() {
-    return mockDio.post(
-      '$baseUrl/hide',
+    String path = post.hidden ?? false ? '/unhide' : '/hide';
+
+    return DioHelper.postData(
+      path: path,
       data: {
         'id': post.id,
       },
-    ).then((value) => print(value.data));
+    ).then((value) {
+      post.hidden = !post.hidden!;
+      emit(HiddenChangedState());
+    }).catchError((error) {
+      error = error as DioError;
+      logger.e(error.response?.data);
+      emit(OpError(error: error.response?.data['error'] ?? ''));
+    });
   }
 
   /// this function is used to block the author of a post
@@ -186,7 +198,7 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
     return Clipboard.setData(ClipboardData(text: text));
   }
 
-  Future<void> editIt(String newContent) {
+  Future<void> editIt(Map<String, dynamic> newContent) {
     String path = isPost ? '/edit-post' : '/edit-user-text';
 
     if (isPost) {
@@ -220,7 +232,7 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
       },
     ).then((value) {
       if (isPost) {
-        post.title = newContent;
+        post.title = Document.fromJson(newContent['ops']).toPlainText();
       } else {
         currentComment!.commentBody = newContent;
       }
@@ -245,6 +257,23 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
       logger.e(error.response?.data);
       emit(OpError(error: error.response?.data['error'] ?? ''));
       throw error;
+    });
+  }
+
+  static postComment({
+    required VoidCallback onSuccess,
+    required void Function(DioError) onError,
+    required SendedCommentModel c,
+  }) {
+    logger.e(c.toJson());
+    DioHelper.postData(path: '/comment', data: c.toJson()).then((value) {
+      onSuccess();
+      return null;
+    }).catchError((e) {
+      onError(e as DioError);
+      Map<String, dynamic> error = e.response!.data;
+
+      logger.w(error['error']);
     });
   }
 }

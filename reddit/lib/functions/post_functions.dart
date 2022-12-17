@@ -44,10 +44,10 @@ BlocBuilder<PostNotifierCubit, PostNotifierState> dropDownDots(PostModel post) {
   );
 }
 
-String getPlainText(String? body) {
+String getPlainText(Map<String, dynamic>? body) {
   Document doc;
   try {
-    doc = Document.fromJson(jsonDecode(body ?? '[]')['ops']);
+    doc = Document.fromJson((body ?? {'ops': []})['ops']);
   } catch (e) {
     doc = Document();
   }
@@ -64,7 +64,7 @@ CircleAvatar subredditAvatar({small = false}) {
 Widget commentSortRow(BuildContext context) {
 // a row with a button to choose the sorting type and an icon button for MOD
 // operations
-  return BlocBuilder<PostAndCommentActionsCubit, PostState>(
+  return BlocBuilder<PostAndCommentActionsCubit, PostActionsState>(
     builder: (context, state) {
       return Row(
         mainAxisSize: MainAxisSize.min,
@@ -114,7 +114,7 @@ Widget commentSortRow(BuildContext context) {
               color: Colors.transparent,
               clipBehavior: Clip.antiAlias,
               shape: const CircleBorder(),
-              child: BlocBuilder<PostAndCommentActionsCubit, PostState>(
+              child: BlocBuilder<PostAndCommentActionsCubit, PostActionsState>(
                 builder: (context, state) {
                   var cubit = PostAndCommentActionsCubit.get(context);
                   return IconButton(
@@ -142,6 +142,7 @@ Widget singleRow({
   bool sub = false,
   bool showIcon = false,
   bool showDots = true,
+  required bool isWeb,
   required PostModel post,
 }) {
   return Row(
@@ -167,7 +168,7 @@ Widget singleRow({
         ),
       ),
       if (showIcon) const Spacer(),
-      if (showDots) dropDownDots(post)
+      if (showDots && !isWeb) dropDownDots(post)
     ],
   );
 }

@@ -1,5 +1,5 @@
 class SendedCommentModel {
-  String? content;
+  Map<String, dynamic>? content;
   String? postId;
   String? parentId;
   String? parentType;
@@ -19,7 +19,7 @@ class SendedCommentModel {
 
   factory SendedCommentModel.fromJson(Map<String, dynamic> json) {
     return SendedCommentModel(
-      content: json['content'] as String?,
+      content: json['content'] as Map<String, dynamic>?,
       postId: json['postId'] as String?,
       parentId: json['parentId'] as String?,
       parentType: json['parentType'] as String?,
