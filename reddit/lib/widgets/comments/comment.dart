@@ -7,9 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional_switch.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
-import 'package:logger/logger.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/helpers/enums.dart';
+import 'package:reddit/cubit/comment_notifier/comment_notifier_cubit.dart';
+import 'package:reddit/cubit/comment_notifier/comment_notifier_state.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 import 'package:reddit/data/comment/comment_model.dart';
@@ -49,42 +50,28 @@ class Comment extends StatefulWidget {
 
 class _CommentState extends State<Comment> {
   bool isCompressed = false;
+  bool openReplay = false;
   QuillController? _controller;
   final FocusNode _focusNode = FocusNode();
-
-  Future<void> _loadFromAssets() async {
-    // try {
-    //   final result = await rootBundle.loadString('assets/sample_data.json');
-    //   final doc = Document.fromJson(jsonDecode(result));
-    //   setState(() {
-    //     _controller = QuillController(
-    //         document: doc, selection: const TextSelection.collapsed(offset: 0));
-    //   });
-    // } catch (error) {
-    //   final doc = Document()..insert(0, 'Empty asset');
-    //   setState(() {
-    //     _controller = QuillController(
-    //         document: doc, selection: const TextSelection.collapsed(offset: 0));
-    //   });
-    // }
+  QuillController getController() {
     Document doc;
+    var content = widget.comment.commentBody;
     try {
-      doc = Document.fromJson(
-          jsonDecode(widget.comment.commentBody ?? '[]')['ops']);
+      doc = Document.fromJson((content ?? {'ops': []})['ops']);
     } catch (e) {
       doc = Document();
     }
 
-    setState(() {
-      _controller = QuillController(
-          document: doc, selection: const TextSelection.collapsed(offset: 0));
-    });
+    return QuillController(
+      document: doc,
+      selection: const TextSelection.collapsed(offset: 0),
+    );
   }
 
   @override
   void initState() {
     super.initState();
-    _loadFromAssets();
+    _controller = getController();
   }
 
   @override
@@ -101,7 +88,7 @@ class _CommentState extends State<Comment> {
         focusNode: _focusNode,
         autoFocus: false,
         readOnly: true,
-        placeholder: 'Such empty',
+        placeholder: '',
         expands: false,
         showCursor: false,
         padding: EdgeInsets.zero,
@@ -136,17 +123,30 @@ class _CommentState extends State<Comment> {
           ),
         ),
       ],
-      child: ConditionalSwitch.single(
-        context: context,
-        valueBuilder: (BuildContext context) => widget.viewType,
-        caseBuilders: {
-          CommentView.normal: (BuildContext context) =>
-              _normalComment(quillEditor),
-          CommentView.inSearch: (BuildContext context) =>
-              _searchComment(quillEditor),
-          CommentView.inSubreddits: (BuildContext context) => _subComments(),
+      child: BlocConsumer<CommentNotifierCubit, CommentsNotifierState>(
+        listener: (context, state) {
+          if (state is CommentsContentChanged) {
+            setState(() {
+              _controller = getController();
+            });
+          }
         },
-        fallbackBuilder: (BuildContext context) => _normalComment(quillEditor),
+        builder: (context, state) {
+          return ConditionalSwitch.single(
+            context: context,
+            valueBuilder: (BuildContext context) => widget.viewType,
+            caseBuilders: {
+              CommentView.normal: (BuildContext context) =>
+                  _normalComment(quillEditor),
+              CommentView.inSearch: (BuildContext context) =>
+                  _searchComment(quillEditor),
+              CommentView.inSubreddits: (BuildContext context) =>
+                  _subComments(),
+            },
+            fallbackBuilder: (BuildContext context) =>
+                _normalComment(quillEditor),
+          );
+        },
       ),
     );
   }
@@ -422,8 +422,8 @@ class _CommentState extends State<Comment> {
         Text(
           widget.post.title ?? '',
           style: TextStyle(
-            color: ColorManager.lightGrey,
-            fontSize: 15.sp,
+            color: ColorManager.eggshellWhite,
+            fontSize: 16.sp,
           ),
         ),
         Row(
@@ -454,8 +454,8 @@ class _CommentState extends State<Comment> {
         Text(
           _controller!.document.toPlainText(),
           style: TextStyle(
-            color: ColorManager.lightGrey,
-            fontSize: 15.sp,
+            color: ColorManager.eggshellWhite,
+            fontSize: 16.sp,
           ),
         )
       ],

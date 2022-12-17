@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flick_video_player/flick_video_player.dart';
-import 'package:provider/provider.dart';
 import 'package:reddit/data/post_model/post_model.dart';
 
-import '../../cubit/videos_cubit/videos_cubit.dart';
 import '../../widgets/posts/video_page_view.dart';
 import 'flick_multi_manager.dart';
 
@@ -22,8 +20,8 @@ class FeedPlayerPortraitControls extends StatelessWidget {
     // FlickDisplayManager displayManager =
     // Provider.of<FlickDisplayManager>(context);
 
-    FlickControlManager controlManager =
-        Provider.of<FlickControlManager>(context);
+    // FlickControlManager controlManager =
+    //     Provider.of<FlickControlManager>(context);
     return Container(
       color: Colors.transparent,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),

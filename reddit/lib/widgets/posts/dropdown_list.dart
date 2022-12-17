@@ -3,7 +3,6 @@
 /// @Author: Ahmed Atta
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart' hide MenuItem;
-import 'package:logger/logger.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/data/post_model/post_model.dart';
@@ -22,6 +21,7 @@ class DropDownList extends StatelessWidget {
     this.comment,
     this.itemClass = ItemsClass.posts,
     this.outsideScreen = false,
+    this.isWeb = false,
   }) : super(key: key);
 
   /// The [PostModel] of targeted Post
@@ -35,12 +35,13 @@ class DropDownList extends StatelessWidget {
 
   final bool outsideScreen;
 
+  final bool isWeb;
   List<MenuItem> getList() {
     switch (itemClass) {
       case ItemsClass.comments:
         return _chooseForComments();
       case ItemsClass.posts:
-        return _chooseForPosts();
+        return _chooseForPosts(isWeb: isWeb);
     }
   }
 
@@ -77,10 +78,16 @@ class DropDownList extends StatelessWidget {
 
   List<MenuItem> _chooseForComments() {
     List<MenuItem> l = MenuItems.commentItems.toList();
+
+    l.add((comment?.followed ?? false) ? MenuItems.unfollow : MenuItems.follow);
+    l.insert(0, (comment?.saved ?? false) ? MenuItems.unsave : MenuItems.save);
+    if (!outsideScreen) {
+      l.add(MenuItems.edit);
+    }
     return l;
   }
 
-  List<MenuItem> _chooseForPosts() {
+  List<MenuItem> _chooseForPosts({bool? isWeb}) {
     List<MenuItem> l = [];
     if (post.saved ?? false) {
       l.add(MenuItems.unsave);
@@ -95,12 +102,20 @@ class DropDownList extends StatelessWidget {
       l.add(MenuItems.block);
     } else {
       l.add(MenuItems.delete);
+      if (!outsideScreen && post.kind == 'hybrid') {
+        l.add(MenuItems.edit);
+      }
     }
 
     if (!outsideScreen) {
       l.add(MenuItems.share);
       l.add(MenuItems.copy);
-      l.add(MenuItems.follow);
+      l.add((post.followed ?? false) ? MenuItems.unfollow : MenuItems.follow);
+    }
+
+    if (isWeb ?? false) {
+      l.removeWhere(
+          (element) => (element.text == 'Save' || element.text == 'UnSave'));
     }
     return l;
   }

@@ -4,8 +4,8 @@ import 'dart:typed_data';
 import 'package:delta_markdown/delta_markdown.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
@@ -26,6 +26,8 @@ part 'add_post_state.dart';
 
 class AddPostCubit extends Cubit<AddPostState> {
   AddPostCubit() : super(AddPostInitial());
+
+  static AddPostCubit get(context) => BlocProvider.of(context);
 
   /// [title] Title textField controller
   TextEditingController title = TextEditingController();
@@ -102,13 +104,13 @@ class AddPostCubit extends Cubit<AddPostState> {
 
   /// Add List of Images To The List And Rebuild The widget
   void addImages({required List<XFile> images}) {
-    images.forEach((element) {
+    for (var element in images) {
       this.images.add(element);
       captionController.add(TextEditingController());
       imagesLinkController.add(TextEditingController());
       captionControllerTemp.add(TextEditingController());
       imagesLinkControllerTemp.add(TextEditingController());
-    });
+    }
     checkPostValidation();
     emit(ImageAddedOrRemoved());
   }
@@ -527,7 +529,7 @@ class AddPostCubit extends Cubit<AddPostState> {
             path: submitPost,
             isFormdata: (postType == 0 || postType == 1),
             data: formData,
-            token: CacheHelper.getData(key: 'token'))
+            sentToken: CacheHelper.getData(key: 'token'))
         .then((value) {
       print(value);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -659,7 +661,6 @@ class AddPostCubit extends Cubit<AddPostState> {
         );
       } else if (index == 1 && postType != index) {
         pickVideo(true);
-        // videoFunc(context);
       }
       changePostType(postTypeIndex: index);
     }

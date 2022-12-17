@@ -3,8 +3,10 @@
 /// @Author: Ahmed Atta
 
 import 'package:flutter/material.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/data/post_model/post_model.dart';
+import 'package:reddit/screens/posts/edit_screen.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 import '../../functions/post_functions.dart';
@@ -47,8 +49,6 @@ class MenuItems {
 
   static const List<MenuItem> commentItems = [
     share,
-    save,
-    follow,
     copy,
     collapse,
     block,
@@ -68,6 +68,8 @@ class MenuItems {
   // all the menu items that we choose from
   static const save = MenuItem(text: 'Save', icon: Icons.bookmark_border);
   static const follow = MenuItem(text: 'Follow', icon: Icons.notification_add);
+  static const unfollow =
+      MenuItem(text: 'Unfollow', icon: Icons.notifications_active);
   static const collapse =
       MenuItem(text: 'Collapse Thread', icon: Icons.compare_arrows);
   static const unsave = MenuItem(text: 'UnSave', icon: Icons.bookmark);
@@ -85,16 +87,16 @@ class MenuItems {
   static const mute = MenuItem(text: 'Mute', icon: Icons.volume_off_sharp);
 
   /// builds the row of the menu Item
-  static Widget buildDropMenuItem(MenuItem item) {
+  static Widget buildDropMenuItem(MenuItem item, {iconColor = Colors.white}) {
     return Row(
       children: [
-        Icon(item.icon, color: Colors.white, size: 22),
+        Icon(item.icon, color: iconColor, size: 22),
         const SizedBox(
           width: 10,
         ),
         Text(
           item.text,
-          style: const TextStyle(color: Colors.white, fontSize: 15),
+          style: TextStyle(color: iconColor, fontSize: 15),
         ),
       ],
     );
@@ -137,9 +139,20 @@ class MenuItems {
 
         break;
       case MenuItems.edit:
-        //Do something
-        break;
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return EditScreen(
+            post: post,
+            currentComment: cubit.currentComment,
+          );
+        }));
 
+        break;
+      case MenuItems.follow:
+      case MenuItems.unfollow:
+        cubit.follow().then((value) {
+          PostNotifierCubit.get(context).notifyPosts();
+        });
+        break;
       case MenuItems.copy:
         cubit.copyText().then((value) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -158,8 +171,6 @@ class MenuItems {
         });
         break;
 
-
-        
       default:
         break;
     }

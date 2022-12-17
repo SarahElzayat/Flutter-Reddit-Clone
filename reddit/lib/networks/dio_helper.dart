@@ -4,6 +4,7 @@
 /// and deal with the server
 import 'package:dio/dio.dart';
 import '../constants/constants.dart';
+import '../shared/local/shared_preferences.dart';
 import 'constant_end_points.dart';
 
 class DioHelper {
@@ -51,14 +52,15 @@ class DioHelper {
 
     /// which is the content of the JSON
     Map<String, dynamic>? query,
-    String? token,
+    String? sentToken,
     bool isFormdata = false,
 
     /// additional query
   }) async {
+    sentToken ??= token;
     var options = Options(
       headers: {
-        'Authorization': 'Bearer ${token ?? ''}',
+        'Authorization': 'Bearer ${sentToken ?? ''}',
         'Content-Type': (isFormdata)
             ? 'multipart/form-data; boundary=<calculated when request is sent>'
             : 'application/json'
@@ -147,6 +149,22 @@ class DioHelper {
     return await dio.get(
       path,
       queryParameters: query,
+      options: options,
+    );
+  }
+
+  static Future<Response> deleteData({required String path}) async {
+    Options options;
+
+    options = Options(
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json; charset=utf-8'
+      },
+    );
+
+    return await dio.delete(
+      path,
       options: options,
     );
   }

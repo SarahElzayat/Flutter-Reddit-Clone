@@ -1,8 +1,9 @@
 /// The Main Post Widget that shows in the home and other places
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
-import 'dart:convert';
-import 'package:logger/logger.dart';
+import 'package:flutter/foundation.dart';
+import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
+import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 import 'package:reddit/widgets/comments/comment.dart';
 import 'package:reddit/widgets/posts/video_page_view.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -17,7 +18,6 @@ import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/components/helpers/widgets/responsive_widget.dart';
 import 'package:reddit/functions/post_functions.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
@@ -27,7 +27,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../components/helpers/posts/helper_funcs.dart';
-import '../../cubit/videos_cubit/videos_cubit.dart';
+// import '../../cubit/videos_cubit/videos_cubit.dart';
 import '../../data/comment/comment_model.dart';
 import '../../data/post_model/post_model.dart';
 import '../../widgets/posts/inline_image_viewer.dart';
@@ -48,6 +48,7 @@ class PostWidget extends StatefulWidget {
     this.upperRowType = ShowingOtions.both,
     this.postView = PostView.card,
     this.comment,
+    this.insideProfiles = false,
   });
 
   /// determines if the post is in the home page or in the post screen
@@ -73,6 +74,7 @@ class PostWidget extends StatefulWidget {
 
   final CommentModel? comment;
 
+  final bool insideProfiles;
   @override
   State<PostWidget> createState() => _PostWidgetState();
 }
@@ -106,7 +108,8 @@ class _PostWidgetState extends State<PostWidget> {
       create: (context) => PostAndCommentActionsCubit(post: widget.post),
       child: ResponsiveBuilder(
         builder: (buildContext, sizingInformation) {
-          bool isWeb = !ResponsiveWidget.isSmallScreen(context);
+          bool isWeb = kIsWeb; //!ResponsiveWidget.isSmallScreen(context);
+
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return Container(
@@ -140,7 +143,7 @@ class _PostWidgetState extends State<PostWidget> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 // A row with the Avatar, title and the subreddit
-                                _upperPart(),
+                                _upperPart(isWeb),
                                 // title and flairs
                                 _titleWithFlairs(),
 
@@ -200,7 +203,7 @@ class _PostWidgetState extends State<PostWidget> {
                                 SizedBox(height: 1.h),
                                 _lowerPart(isWeb),
                                 BlocBuilder<PostAndCommentActionsCubit,
-                                    PostState>(
+                                    PostActionsState>(
                                   builder: (context, state) {
                                     return AnimatedSwitcher(
                                         duration:
@@ -249,8 +252,6 @@ class _PostWidgetState extends State<PostWidget> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
                             ),
-                            width: constraints.maxWidth * 0.2,
-                            height: constraints.maxWidth * 0.2,
                             child: InlineImageViewer(
                               key: const Key('inline-image-viewer'),
                               post: widget.post,
@@ -270,7 +271,7 @@ class _PostWidgetState extends State<PostWidget> {
     );
   }
 
-  Widget _upperPart() {
+  Widget _upperPart(isWeb) {
     if (widget.isNested) {
       return Row(
         mainAxisSize: MainAxisSize.min,
@@ -304,6 +305,7 @@ class _PostWidgetState extends State<PostWidget> {
       post: widget.post,
       outSide: widget.outsideScreen,
       showRowsSelect: widget.upperRowType,
+      isWeb: isWeb,
     );
   }
 
@@ -311,7 +313,8 @@ class _PostWidgetState extends State<PostWidget> {
     return (!widget.outsideScreen && widget.post.kind != 'link') ||
         (widget.outsideScreen &&
             widget.post.kind == 'hybrid' &&
-            ((widget.post.content ?? '').length > 90));
+            (((widget.post.content ?? {'ops': []})['ops'] ?? false).length >
+                90));
   }
 
   Row _lowerPart(bool isWeb) {
@@ -345,6 +348,7 @@ class _PostWidgetState extends State<PostWidget> {
           child: PostLowerBarWithoutVotes(
               post: widget.post,
               isWeb: isWeb,
+              showIsights: widget.insideProfiles,
               pad: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10)),
         ),
       ],
@@ -431,20 +435,24 @@ class _PostWidgetState extends State<PostWidget> {
   }
 
   Widget _bodyText() {
-    return QuillEditor(
-      controller: getController(),
-      readOnly: true,
-      autoFocus: false,
-      enableInteractiveSelection: false,
-      expands: false,
-      scrollable: false,
-      placeholder: 'such empty...',
-      scrollController: ScrollController(),
-      focusNode: FocusNode(),
-      padding: EdgeInsets.zero,
-      embedBuilders: [
-        ...FlutterQuillEmbeds.builders(),
-      ],
+    return BlocBuilder<PostNotifierCubit, PostNotifierState>(
+      builder: (context, state) {
+        return QuillEditor(
+          controller: getController(),
+          readOnly: true,
+          autoFocus: false,
+          enableInteractiveSelection: false,
+          expands: false,
+          scrollable: false,
+          placeholder: '',
+          scrollController: ScrollController(),
+          focusNode: FocusNode(),
+          padding: EdgeInsets.zero,
+          embedBuilders: [
+            ...FlutterQuillEmbeds.builders(),
+          ],
+        );
+      },
     );
   }
 
@@ -452,7 +460,7 @@ class _PostWidgetState extends State<PostWidget> {
     Document doc;
 
     try {
-      doc = Document.fromJson(jsonDecode(widget.post.content ?? '[]')['ops']);
+      doc = Document.fromJson((widget.post.content ?? {'ops': []})['ops']);
     } catch (e) {
       doc = Document();
     }

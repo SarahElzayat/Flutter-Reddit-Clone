@@ -32,16 +32,16 @@ class _ResultsCommunitiesState extends State<ResultsCommunities> {
   @override
   void initState() {
     _scrollController.addListener(_scrollListener);
-
+    SearchCubit.get(context).getSubbreddits();
     super.initState();
   }
 
-  @override
-  void dispose() {
-    SearchCubit.get(context).getSubbreddits();
-    _scrollController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   SearchCubit.get(context).getSubbreddits();
+  //   _scrollController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {

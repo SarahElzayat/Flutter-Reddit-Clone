@@ -3,8 +3,9 @@
 /// This file contains the Screen of the account settings.
 
 import 'package:flutter/material.dart';
+import 'package:reddit/cubit/settings_cubit/settings_cubit.dart';
 import '../../screens/settings/blocked_accounts.dart';
-import '../../widgets/settings/facebook_icon.dart';
+import '../../widgets/settings/custom_icons.dart';
 import '../../components/helpers/enums.dart';
 import '../../components/list_tile_container.dart';
 import '../../screens/settings/change_password_screen.dart';
@@ -41,9 +42,14 @@ class AccountSettingsScreen extends StatelessWidget {
                       navigator.pushNamed(ChangePassword.routeName);
                     },
                     () {
-                      navigator.pushNamed(CountriesScreen.routeName);
+                      navigator.pushNamed(CountriesScreen.routeName,
+                          arguments: (country) {
+                        SettingsCubit.get(context)
+                            .changeCountry(country, context);
+                        Navigator.of(context).pop();
+                      });
                     },
-                    requestChangeGender,
+                    () {},
                   ],
                   listTileIcons: const [
                     Icons.settings,
@@ -72,16 +78,28 @@ class AccountSettingsScreen extends StatelessWidget {
                       'Female',
                     ],
                   ],
+                  types: const [
+                    'changeEmail',
+                    'changePassword',
+                    'changeCountry',
+                    'changeGender'
+                  ],
                 )),
             Expanded(
                 child: ListTileContainer(
+              types: const ['', ''],
               handler: [
-                () {},
+                () {
+                  SettingsCubit.get(context).connectToGoogle(context);
+                },
+                () {
+                  SettingsCubit.get(context).connectToFacebook(context);
+                },
                 () {},
               ],
               listTileIcons: const [
-                CustomIcons.google,
-                CustomIcons.facebookSquared,
+                Icons.g_mobiledata,
+                Icons.facebook,
               ],
               listTileTitles: const [
                 'Google',
@@ -99,8 +117,10 @@ class AccountSettingsScreen extends StatelessWidget {
             )),
             Expanded(
               child: ListTileContainer(
+                types: const ['', 'allowPeopleToFollowYou'],
                 handler: [
                   () {
+                    // SettingsCubit.get(context).getBlockedUsers(context, '');
                     navigator.pushNamed(BlockedAccounts.routeName);
                   },
                   () {},
