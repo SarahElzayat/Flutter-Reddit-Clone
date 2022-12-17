@@ -42,6 +42,8 @@ import '../screens/settings/settings_main_screen.dart';
 import '../screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import '../screens/sign_in_and_sign_up_screen/mobile/sign_up_screen.dart';
 import '../screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
+import '../screens/user_profile/user_profile_edit_screen.dart';
+import '../screens/user_profile/user_profile_screen.dart';
 
 Map<String, Widget Function(BuildContext)> myRoutes = {
   // sign in sign up screens
@@ -93,4 +95,6 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   PostSimpleScreen.routeName: (ctx) => const PostSimpleScreen(),
   CommunitySearch.routeName: (ctx) => const CommunitySearch(),
   PostRules.routeName: (ctx) => const PostRules(),
+  UserProfileScreen.routeName: (ctx) => const UserProfileScreen(),
+  UserProfileEditScreen.routeName: (ctx) => const UserProfileEditScreen(),
 };
