@@ -22,6 +22,7 @@ const loginForgetPassword = '/login/forget-password';
 const loginForgetUserName = '/login/forget-username';
 const signInGoogle = '/signin/google';
 const signInFacebook = '/signin/facebook';
+const getRandom = '/random-username';
 
 // settings endpoints
 const changeEmail = '/change-email';
@@ -69,6 +70,8 @@ const joinedSubreddits = '/joined-subreddits';
 const moderatedSubreddits = '/moderated-subreddits';
 // Note : after last / add the subreddit name
 const subredditInfo = '/r';
+const leaveSubreddit = '/leave-subreddit';
+const joinSubreddit = '/join-subreddit';
 const searchForSubreddit = '/search?type=subreddit';
 const userDetails = '/user-details';
 const homeBest = '/best';

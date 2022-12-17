@@ -31,9 +31,7 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController usernameController = TextEditingController();
-
   TextEditingController passwordController = TextEditingController();
-
   TextEditingController emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool isEmptyEmail = true;
@@ -167,15 +165,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           return null;
                         },
                         keyboardType: TextInputType.emailAddress,
-                        onChanged: (myString) {
-                          setState(() {
-                            if (myString.isNotEmpty) {
-                              isEmptyEmail = false;
-                            } else {
-                              isEmptyEmail = true;
-                            }
-                          });
-                        },
+                        onChanged: (_) => setState(() {}),
                         formController: emailController,
                         icon: emailController.text.isNotEmpty
                             ? IconButton(
@@ -183,7 +173,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 onPressed: (() {
                                   setState(() {
                                     emailController.text = '';
-                                    isEmptyEmail = true;
                                   });
                                 }))
                             : null,
@@ -196,15 +185,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           }
                           return null;
                         },
-                        onChanged: (myString) {
-                          setState(() {
-                            if (myString.isNotEmpty) {
-                              isEmptyUserName = false;
-                            } else {
-                              isEmptyUserName = true;
-                            }
-                          });
-                        },
+                        onChanged: (_) => setState(() {}),
                         formController: usernameController,
                         labelText: 'Username',
                         icon: usernameController.text.isNotEmpty ||
@@ -227,6 +208,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           }
                           return null;
                         },
+                        onChanged: (_) => setState(() {}),
                         formController: passwordController,
                         labelText: 'Password',
                         isPassword: true,

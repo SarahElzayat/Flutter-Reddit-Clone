@@ -19,10 +19,13 @@ class SubredditAboutWidget extends StatelessWidget {
             children: const [Text('Moderators'), Icon(Icons.mail_outline)],
           ),
           const Divider(),
-          for (int index = 0; index < 40; index++)
+          for (int index = 0;
+              index < subredditCubit.moderators.children!.length;
+              index++)
             Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
-              child: Text('User $index'),
+              child: Text(
+                  subredditCubit.moderators.children![index].username ?? ''),
             )
         ],
       ),
