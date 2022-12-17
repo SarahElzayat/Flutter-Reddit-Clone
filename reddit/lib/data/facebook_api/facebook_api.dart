@@ -39,7 +39,7 @@ class FacebookLoginAPI {
 
   static Future<Map<String, dynamic>> login() async {
     final LoginResult result = await FacebookAuth.instance
-        .login(permissions: ['public_profile', 'email']).then((response) {
+        .login(permissions: ['email', 'public_profile']).then((response) {
       print(response);
       FacebookAuth.instance.getUserData().then((userData) async {
         print('here is the user Details \n\n\n $userData');

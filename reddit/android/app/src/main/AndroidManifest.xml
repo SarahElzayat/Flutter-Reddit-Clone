@@ -3,15 +3,16 @@
 
     <queries>
         <provider android:authorities="com.facebook.katana.provider.PlatformProvider" />
+        <provider android:authorities="com.facebook.orca.provider.PlatformProvider" /> <!-- allows sharing to Messenger app -->
     </queries>
 
-                            <!--           Zizo           -->
+
+
+                                      <!-- Zizo           -->
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
+    <!-- to make this work delete the last variable. -->
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
                             <!--           Zizo           -->
-
-    
-
     <application
         android:usesCleartextTraffic="true"
         android:label="reddit-clone"
@@ -50,7 +51,7 @@
 
         <!--             Zizo                   -->
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
-       	<meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
+   	<meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
 
         
     <activity android:name="com.facebook.FacebookActivity"

@@ -221,6 +221,7 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
                               labelText: 'USERNAME',
                             ),
                             DefaultTextField(
+                              isPassword: true,
                               key: const Key('passwordTextField'),
                               validator: (password) {
                                 if (!Validator.validPasswordValidation(

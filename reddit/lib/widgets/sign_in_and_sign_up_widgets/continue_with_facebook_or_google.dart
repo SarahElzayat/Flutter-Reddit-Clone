@@ -18,7 +18,9 @@ class ContinueWithGoOrFB extends StatelessWidget {
 
   final width;
 
+  /// this function is used to sign in with google
   Future signInWithGoogle(context) async {
+    // await FacebookLoginAPI.logOut();
     final user = await GoogleSignInApi.login();
     GoogleSignInAuthentication googleToken = await user!.authentication;
 
@@ -37,9 +39,16 @@ class ContinueWithGoOrFB extends StatelessWidget {
     });
   }
 
+  /// this function is used to sign in with facebook
   Future signInWithFacebook() async {
-    await GoogleSignInApi.logOut();
-    print('Signed out');
+    final user = await FacebookLoginAPI.login().catchError((err) {
+      print(err.toString());
+    });
+    print(user);
+    // await GoogleSignInApi.logOut().catchError((err) {
+    //   print(err.toString());
+    // });
+    // print('Signed out');
     // await FacebookLoginAPI.login();
   }
 

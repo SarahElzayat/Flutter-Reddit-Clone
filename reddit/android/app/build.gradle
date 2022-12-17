@@ -80,7 +80,6 @@ android {
         }
         release {
             signingConfig signingConfigs.debug
-        
         }
     }
 }
@@ -90,6 +89,10 @@ flutter {
 }
 
 dependencies {
-    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+    // this was [4,5) fana 5letha 5,6 esht8let.
+    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    /// this is what i added to make it work for facebook.
+    implementation 'com.facebook.android:facebook-login:latest.release'
 }

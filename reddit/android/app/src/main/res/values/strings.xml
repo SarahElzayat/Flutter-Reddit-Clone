@@ -2,8 +2,8 @@
 <resources>
 
     <string name="app_name">Read-It</string>
-    <string name="facebook_app_id">3489561554609769</string>
-    <string name="fb_login_protocol_scheme">fb3489561554609769</string>
+    <string name="facebook_app_id">1122096355117062</string>
+    <string name="fb_login_protocol_scheme">fb1122096355117062</string>
     <string name="facebook_client_token">56789</string>
 
 
