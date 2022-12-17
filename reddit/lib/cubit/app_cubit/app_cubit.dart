@@ -75,7 +75,7 @@ class AppCubit extends Cubit<AppState> {
     if (!loadMore) {
       homePosts.clear();
     }
-    int sort = CacheHelper.getData(key: 'sort');
+    int sort = CacheHelper.getData(key: 'SortHome');
     String path = '';
     if (HomeSort.best.index == sort) {
       path = homeBest;

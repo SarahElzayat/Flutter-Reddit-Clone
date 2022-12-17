@@ -55,8 +55,8 @@ Future<void> main() async {
     CacheHelper.putData(key: 'isWindows', value: true);
   }
 
-  CacheHelper.putData(key: 'sort', value: HomeSort.best.index);
-  logger.w(CacheHelper.getData(key: 'sort'));
+  CacheHelper.putData(key: 'SortHome', value: HomeSort.best.index);
+  logger.w(CacheHelper.getData(key: 'SortHome'));
 
   /// and this is used to initialize Dio
   DioHelper.init();
