@@ -133,6 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       scrollDirection: Axis.vertical,
                       itemCount: cubit.homePosts.length,
                       itemBuilder: (context, index) => Container(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
                         margin: const EdgeInsets.symmetric(
                             horizontal: 0, vertical: 5),
                         child: cubit.homePosts[index],
