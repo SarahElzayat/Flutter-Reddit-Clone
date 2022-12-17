@@ -1,3 +1,6 @@
+///@author Sarah Elzayat
+///@description user's model in search results
+
 class SearchResultProfileModel {
   String? id;
   Data? data;

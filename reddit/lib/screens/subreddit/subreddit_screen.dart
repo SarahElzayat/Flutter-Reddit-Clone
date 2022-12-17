@@ -11,7 +11,7 @@ import 'package:reddit/screens/moderation/mod_tools.dart';
 
 import '../../components/Button.dart';
 import '../../components/home_components/right_drawer.dart';
-import '../../cubit/app_cubit.dart';
+import '../../cubit/app_cubit/app_cubit.dart';
 import '../../widgets/subreddit/subreddit_about.dart';
 import '../../widgets/subreddit/subreddit_posts.dart';
 import '../add_post/add_post.dart';
