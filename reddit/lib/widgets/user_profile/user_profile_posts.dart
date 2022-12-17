@@ -33,9 +33,9 @@ class _UserProfilePostsState extends State<UserProfilePosts> {
         Expanded(
           child: RefreshIndicator(
             onRefresh: () =>
-                Future.sync(() => userProfileCubit.pagingController.refresh()),
+                Future.sync(() => userProfileCubit.postController.refresh()),
             child: PagedListView<String?, PostModel>(
-              pagingController: userProfileCubit.pagingController,
+              pagingController: userProfileCubit.postController,
               builderDelegate: PagedChildBuilderDelegate<PostModel>(
                 itemBuilder: (context, item, index) => Container(
                   margin: const EdgeInsets.symmetric(vertical: 5),

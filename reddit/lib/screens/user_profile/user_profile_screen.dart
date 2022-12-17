@@ -9,7 +9,10 @@ import 'package:reddit/components/button.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
+import 'package:reddit/widgets/comments/comment.dart';
+import 'package:reddit/widgets/user_profile/user_profile_comments.dart';
 
+import '../../components/helpers/enums.dart';
 import '../../data/user_profile.dart/about_user_model.dart';
 import '../../networks/dio_helper.dart';
 import '../../widgets/user_profile/user_profile_posts.dart';
@@ -55,9 +58,15 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     // });
     final userProfileCubit = UserProfileCubit.get(context);
 
-    userProfileCubit.pagingController = PagingController(firstPageKey: null);
-    userProfileCubit.pagingController.addPageRequestListener((pageKey) {
+    userProfileCubit.postController = PagingController(firstPageKey: null);
+    userProfileCubit.postController.addPageRequestListener((pageKey) {
       userProfileCubit.fetchPosts(
+        after: pageKey,
+      );
+    });
+    userProfileCubit.commentController = PagingController(firstPageKey: null);
+    userProfileCubit.commentController.addPageRequestListener((pageKey) {
+      userProfileCubit.fetchComments(
         after: pageKey,
       );
     });
@@ -274,7 +283,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
             // height: 50,
             child: TabBarView(controller: controller, children: [
               UserProfilePosts(),
-              Text('Comments'),
+              // Text('Comments'),
+              // Comment(post: post, comment: comment,viewType: CommentView.inSubreddits,)
+              // Text('Comments'),
+              UserProfileComments(),
               Text('About')
             ]),
           ),
