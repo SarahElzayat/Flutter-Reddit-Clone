@@ -4,8 +4,8 @@
 /// built to be a reuseable widget for further uses
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/cubit/settings_cubit/settings_cubit.dart';
 
+import '../cubit/settings_cubit/settings_cubit.dart';
 import '../cubit/settings_cubit/settings_cubit_state.dart';
 import 'helpers/color_manager.dart';
 import 'helpers/enums.dart';
@@ -30,12 +30,18 @@ class ListTileWidget extends StatefulWidget {
   /// function handler which should be executed whenever something is changed
   final handler;
 
+  /// type of the function that should be executed
+  final String? type;
+
   ListTileWidget(
       {super.key,
       required this.leadingIcon,
+      // this.initialValue,
+      // required this.leadingIcon,
       required this.title,
       required this.handler,
       required this.tailingObj,
+      this.type,
       this.items});
 
   @override
@@ -45,6 +51,7 @@ class ListTileWidget extends StatefulWidget {
 class _ListTileWidgetState extends State<ListTileWidget> {
   /// this can be either Switch, DropBox or Icon
   String? dropDownValue = 'Empty';
+
   bool setBool = false;
 
   /// utility handlertion to build if the tailing object was switch
@@ -60,11 +67,13 @@ class _ListTileWidgetState extends State<ListTileWidget> {
           activeColor: ColorManager.blue,
           value: setBool,
 
-          /// TODO: all these onChanged should be changed
-          /// when we are doing the settings
+          // when we are doing the settings
           onChanged: (value) {
             setState(() {
-              SettingsCubit.get(ctx).changeSwitch(value);
+              if (widget.type != null) {
+                print(value);
+                SettingsCubit.get(ctx).changeSwitch(value, widget.type!);
+              }
               setBool = value;
             });
           },
@@ -130,7 +139,9 @@ class _ListTileWidgetState extends State<ListTileWidget> {
         // change button value to selected value
         onChanged: (String? newValue) {
           setState(() {
-            dropDownValue = newValue!;
+            SettingsCubit.get(context)
+                .changeDropValue(newValue, widget.type!, context);
+            dropDownValue = newValue;
           });
         },
       ),

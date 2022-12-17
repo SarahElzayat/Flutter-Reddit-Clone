@@ -2,6 +2,7 @@
 /// @date 1/11/2022
 /// this file containes all our routes in order to avoid destraction in the main file.
 import 'package:flutter/material.dart';
+import 'package:reddit/cubit/settings_cubit/settings_cubit.dart';
 import 'package:reddit/screens/add_post/add_post.dart';
 import 'package:reddit/screens/add_post/community_search.dart';
 import 'package:reddit/screens/add_post/post_rules.dart';

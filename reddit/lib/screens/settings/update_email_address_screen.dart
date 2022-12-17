@@ -3,11 +3,9 @@
 /// This file contains the Update email address screen.
 
 import 'package:flutter/material.dart';
-import 'package:reddit/data/settings_models/update_email_model.dart';
-import 'package:reddit/data/sign_in_And_sign_up_models/validators.dart';
-import 'package:reddit/networks/constant_end_points.dart';
-import 'package:reddit/networks/dio_helper.dart';
-import 'package:reddit/screens/forget_user_name_and_password/mobile/forget_password_screen.dart';
+import '../../cubit/settings_cubit/settings_cubit.dart';
+import '../../data/sign_in_And_sign_up_models/validators.dart';
+import '../../screens/forget_user_name_and_password/mobile/forget_password_screen.dart';
 import '../../components/default_text_field.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../widgets/settings/bottom_buttons.dart';
@@ -32,23 +30,8 @@ class _UpdateEmailAddressScreenState extends State<UpdateEmailAddressScreen> {
   /// to update the email of the user.
   void updateMyMail() {
     if (_validateTextFields()) {
-      final update = UpdateEmail(
-          currentPassword: passwordController.text,
-          newEmail: mailController.text);
-
-      DioHelper.putData(path: changeEmail, data: update.toJson())
-          .then((response) {
-        if (response.statusCode == 200) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text('Email has been sent!'),
-              backgroundColor: ColorManager.green));
-        }
-      }).catchError((error) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('The inserted password is incorrect'),
-          backgroundColor: ColorManager.red,
-        ));
-      });
+      SettingsCubit.get(context).changeEmailAddress(
+          passwordController.text, mailController.text, context);
     }
   }
 
@@ -98,6 +81,7 @@ class _UpdateEmailAddressScreenState extends State<UpdateEmailAddressScreen> {
                         email: 'Email of the user',
                       ),
                       DefaultTextField(
+                        formController: mailController,
                         labelText: 'New email address',
                         validator: (email) {
                           if (!Validator.validEmailValidator(email!)) {
@@ -107,6 +91,7 @@ class _UpdateEmailAddressScreenState extends State<UpdateEmailAddressScreen> {
                         },
                       ),
                       DefaultTextField(
+                        formController: passwordController,
                         labelText: 'Reddit password',
                         isPassword: true,
                         validator: (password) {
