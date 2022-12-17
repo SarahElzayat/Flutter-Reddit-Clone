@@ -5,10 +5,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../components/home_app_bar.dart';
-import '../cubit/app_cubit.dart';
+import '../cubit/app_cubit/app_cubit.dart';
 import '../screens/add_post/add_post.dart';
 import '../components/home_components/left_drawer.dart';
 import '../components/home_components/right_drawer.dart';
@@ -23,7 +22,6 @@ class HomeScreenForMobile extends StatefulWidget {
 
 class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
 
   bool isAndroid = !kIsWeb;
 
@@ -41,19 +39,9 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
         : _scaffoldKey.currentState?.openDrawer();
   }
 
-  void initialGetters() {
-    // AppCubit.get(context).getHomePosts(limit: 5);
-    AppCubit.get(context).getUsername();
-    AppCubit.get(context).getYourCommunities();
-    AppCubit.get(context).getYourModerating();
-    AppCubit.get(context).getUserProfilePicture();
-  }
-
- 
 
   @override
   void initState() {
-    initialGetters();
     super.initState();
   }
 
