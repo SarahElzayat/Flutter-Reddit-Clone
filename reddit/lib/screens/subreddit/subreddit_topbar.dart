@@ -115,8 +115,8 @@ class SubredditAppBar extends SliverPersistentHeaderDelegate {
                                     child: SearchField(
                                       isSubreddit: true,
                                       isResult: true,
-                                      labelText:
-                                          'r/${subredditCubit.subreddit!.nickname!}',
+                                      subredditName:
+                                          'r/${subredditCubit.subredditName}',
                                       textEditingController:
                                           TextEditingController(),
                                     ),

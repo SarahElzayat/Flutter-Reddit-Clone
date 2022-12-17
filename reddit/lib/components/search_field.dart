@@ -80,13 +80,6 @@ class _SearchFieldState extends State<SearchField> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => SearchScreen(
-<<<<<<< HEAD
-                    query: widget.textEditingController.text,
-                  ),
-                ))
-            : null,
-        readOnly: widget.isResult,
-=======
                     subredditName: widget.subredditName,
                     isSubreddit: widget.isSubreddit,
                     query: widget.textEditingController.text,
@@ -94,10 +87,8 @@ class _SearchFieldState extends State<SearchField> {
                 ));
           }
         },
->>>>>>> origin/development
         focusNode: _focus,
         onSubmitted: widget.onSubmitted,
-
         cursorColor: ColorManager.eggshellWhite,
         onChanged: (value) => setState(() {
           (widget.textEditingController.text);
