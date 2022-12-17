@@ -25,7 +25,8 @@ class SubredditCubit extends Cubit<SubredditState> {
 
   int selectedIndex = 0;
 
-  void setSubredditName(BuildContext context, String name) async {
+  void setSubredditName(BuildContext context, String name,
+      {bool replace = false}) async {
     Map<String, String> query = {'subreddit': name};
     print(query);
     print('Set Subreddit');
@@ -57,7 +58,11 @@ class SubredditCubit extends Cubit<SubredditState> {
         print(value.data);
         moderators = ModeratorModel.fromJson(value.data);
         print('convert to mod model');
-        Navigator.of(context).pushNamed(Subreddit.routeName);
+        if (!replace)
+          Navigator.of(context).pushNamed(Subreddit.routeName);
+        else
+          Navigator.of(context).pushReplacementNamed(Subreddit.routeName);
+
         print('navigate');
       }
     }).catchError((error) {
