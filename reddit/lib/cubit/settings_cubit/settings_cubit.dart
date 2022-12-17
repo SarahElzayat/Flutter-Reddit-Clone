@@ -24,10 +24,9 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
   Future<void> blockUser(context, PagingController pagingController) async {
     final userToBeBlocked = BlockModel(username: 'abdelazizSalah', block: true);
     await DioHelper.postData(
-            path: block,
-            data: userToBeBlocked.toJson(),
-            token: CacheHelper.getData(key: 'token'))
-        .then((response) {
+      path: block,
+      data: userToBeBlocked.toJson(),
+    ).then((response) {
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('abdelazizHasBeenBlocked')));
@@ -79,10 +78,9 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
     final blockUser = BlockModel(block: false, username: userName);
 
     await DioHelper.postData(
-            path: block,
-            data: blockUser.toJson(),
-            token: CacheHelper.getData(key: 'token'))
-        .then((response) {
+      path: block,
+      data: blockUser.toJson(),
+    ).then((response) {
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('You have unblocked $userName')));

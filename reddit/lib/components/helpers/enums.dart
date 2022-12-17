@@ -50,4 +50,3 @@ enum UserManagement {
   muted,
   moderator,
 }
-enum HomeSort { hot, best, top, trending, newPosts, raising, controversial }
