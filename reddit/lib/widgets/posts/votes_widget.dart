@@ -48,7 +48,7 @@ class VotesPart extends StatelessWidget {
                 oldDir: 1,
               )
                   .then((value) {
-                PostNotifierCubit.get(context).NotifyPosts();
+                PostNotifierCubit.get(context).notifyPosts();
               });
             },
             constraints: const BoxConstraints(),
@@ -82,7 +82,7 @@ class VotesPart extends StatelessWidget {
           child: IconButton(
             onPressed: () {
               cubit.vote(oldDir: -1).then((value) {
-                PostNotifierCubit.get(context).NotifyPosts();
+                PostNotifierCubit.get(context).notifyPosts();
               });
             },
             constraints: const BoxConstraints(),
@@ -98,17 +98,18 @@ class VotesPart extends StatelessWidget {
       ];
     }
 
-    return BlocBuilder<PostAndCommentActionsCubit, PostState>(
+    return BlocBuilder<PostAndCommentActionsCubit, PostActionsState>(
       builder: (context, state) {
         return BlocBuilder<PostNotifierCubit, PostNotifierState>(
             builder: (context, state) {
-          return !isWeb
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          return isWeb
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
                   children: getchildren(),
                 )
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: getchildren(),
                 );
         });

@@ -33,9 +33,16 @@ class DioHelper {
         // receiveTimeout: 20 * 1000,
 
         /// this is a map of headers
-        headers: {'Content-Type': 'application/json; charset=utf-8'},
+        // headers: {
+        //   'Content-Type':
+        //       'multipart/form-data; boundary=<calculated when request is sent>'
+        // },
+        // contentType:
+        //     'multipart/form-data; boundary=<calculated when request is sent>',
       ),
+
     );
+    
   }
 
   /// now we need to define the web Services
@@ -46,14 +53,18 @@ class DioHelper {
 
     /// which is the content of the JSON
     Map<String, dynamic>? query,
-    String? token,
+    String? sentToken,
+    bool isFormdata = false,
 
     /// additional query
   }) async {
+    sentToken ??= token;
     var options = Options(
       headers: {
-        'Authorization': 'Bearer ${token ?? ''}',
-        'Content-Type': 'application/json; charset=utf-8'
+        'Authorization': 'Bearer ${sentToken ?? ''}',
+        'Content-Type': (isFormdata)
+            ? 'multipart/form-data; boundary=<calculated when request is sent>'
+            : 'application/json'
       },
     );
 
@@ -139,6 +150,22 @@ class DioHelper {
     return await dio.get(
       path,
       queryParameters: query,
+      options: options,
+    );
+  }
+
+  static Future<Response> deleteData({required String path}) async {
+    Options options;
+
+    options = Options(
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json; charset=utf-8'
+      },
+    );
+
+    return await dio.delete(
+      path,
       options: options,
     );
   }

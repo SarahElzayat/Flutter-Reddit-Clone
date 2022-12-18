@@ -47,10 +47,12 @@ class VideoPost extends StatelessWidget {
         SizedBox(
           width: width * 0.4,
           height: height * 0.23,
-          child: Image.memory(
-            addPostCubit.videoThumbnail!,
-            fit: BoxFit.fill,
-          ),
+          child: (addPostCubit.videoThumbnail == null)
+              ? null
+              : Image.memory(
+                  addPostCubit.videoThumbnail!,
+                  fit: BoxFit.fill,
+                ),
         ),
         Container(
           margin: const EdgeInsets.only(
@@ -77,7 +79,6 @@ class VideoPost extends StatelessWidget {
                       size: 25,
                     ),
                     onTap: () {
-                      print('Remove widget');
                       addPostCubit.removeVideo();
                     },
                   ),

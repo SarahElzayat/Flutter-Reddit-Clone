@@ -47,7 +47,7 @@ class CommunitySettingsModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['communityName'] = communityName;
     if (communityTopics != null) {
       data['communityTopics'] =
@@ -77,7 +77,7 @@ class CommunityTopics {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['topicName'] = topicName;
     return data;
   }
