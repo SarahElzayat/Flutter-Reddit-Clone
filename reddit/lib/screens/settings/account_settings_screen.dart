@@ -29,6 +29,7 @@ class AccountSettingsScreen extends StatelessWidget {
       body: SizedBox(
         height: mediaQuery.size.height * 0.8,
         child: Column(
+          /// TODO : add the next to icon value
           children: [
             Expanded(
                 flex: 2,
@@ -87,7 +88,7 @@ class AccountSettingsScreen extends StatelessWidget {
                 )),
             Expanded(
                 child: ListTileContainer(
-              types: const ['', ''],
+              types: const ['connectGoogle', 'connectFaceBook'],
               handler: [
                 () {
                   SettingsCubit.get(context).connectToGoogle(context);
@@ -98,8 +99,11 @@ class AccountSettingsScreen extends StatelessWidget {
                 () {},
               ],
               listTileIcons: const [
-                Icons.g_mobiledata,
-                Icons.facebook,
+                // Icons.g_mobiledata,
+                // Icons.facebook,
+
+                CustomIcons.google,
+                CustomIcons.facebook,
               ],
               listTileTitles: const [
                 'Google',
