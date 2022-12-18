@@ -82,6 +82,7 @@ Widget listButton(
               padding: const EdgeInsets.only(
                 left: 10,
               ),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: list.length,
               itemBuilder: (context, index) {
                 return InkWell(

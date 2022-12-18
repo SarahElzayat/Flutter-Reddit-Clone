@@ -28,15 +28,15 @@ class LeftDrawer extends StatelessWidget {
                   listButton(context, 'Moderating', cubit.moderatingListItems,
                       cubit.changeModeratingListState, cubit.moderatingListOpen,
                       isModerating: true, navigateToSubreddit: () {}),
-                if (cubit.yourCommunitiesList.isNotEmpty)
-                  listButton(
-                      context,
-                      'Your Communities',
-                      cubit.yourCommunitiesList,
-                      cubit.changeYourCommunitiesState,
-                      cubit.yourCommunitiesistOpen,
-                      isCommunity: true,
-                      navigateToSubreddit: () {}),
+                // if (cubit.yourCommunitiesList.isNotEmpty)
+                listButton(
+                    context,
+                    'Your Communities',
+                    cubit.yourCommunitiesList,
+                    cubit.changeYourCommunitiesState,
+                    cubit.yourCommunitiesistOpen,
+                    isCommunity: true,
+                    navigateToSubreddit: () {}),
                 genericTextButton(context, Icons.bar_chart_rounded, 'All',
                     const ToBeDoneScreen(text: 'All'),
                     isLeftDrawer: true)
