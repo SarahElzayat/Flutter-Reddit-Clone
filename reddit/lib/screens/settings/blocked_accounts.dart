@@ -3,6 +3,7 @@
 /// This is the Screen which manages the blocked accounts in the settings.
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/settings_models/blocked_accounts_getter_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
@@ -95,6 +96,8 @@ class _BlockedAccountsState extends State<BlockedAccounts> {
 
   @override
   void initState() {
+    print('this is my token');
+    print(token);
     _getBlockedUsers();
     super.initState();
   }
