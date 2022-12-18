@@ -3,6 +3,7 @@
 /// This is the Screen which manages the blocked accounts in the settings.
 
 import 'package:flutter/material.dart';
+import 'package:reddit/constants/constants.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../components/default_text_field.dart';
 import '../../data/settings/settings_models/blocked_accounts_getter_model.dart';
@@ -27,7 +28,6 @@ class _BlockedAccountsState extends State<BlockedAccounts> {
     screenController = PagingController(
       firstPageKey: null,
     );
-
     screenController.addPageRequestListener((pageKey) {
       SettingsCubit.get(context)
           .getBlockedUsers(context, pageKey, screenController);
