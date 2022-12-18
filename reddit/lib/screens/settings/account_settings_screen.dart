@@ -99,8 +99,11 @@ class AccountSettingsScreen extends StatelessWidget {
                 () {},
               ],
               listTileIcons: const [
-                Icons.g_mobiledata,
-                Icons.facebook,
+                // Icons.g_mobiledata,
+                // Icons.facebook,
+
+                CustomIcons.google,
+                CustomIcons.facebook,
               ],
               listTileTitles: const [
                 'Google',

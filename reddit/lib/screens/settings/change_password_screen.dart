@@ -54,6 +54,200 @@ class _ChangePasswordState extends State<ChangePassword> {
     }
   }
 
+  void buildForgetUserName() {
+    final mediaQuery = MediaQuery.of(context);
+    showDialog(
+        context: context,
+        builder: (context) {
+          TextEditingController emailController = TextEditingController();
+          return AlertDialog(
+            title: SizedBox(
+                height: mediaQuery.size.height * 0.3,
+                width: mediaQuery.size.width,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Recover username',
+                                textAlign: TextAlign.left,
+                              ),
+                              DefaultTextField(
+                                labelText: 'Email',
+                                formController: emailController,
+                                validator: (email) {
+                                  if (!Validator.validEmailValidator(email!)) {
+                                    return 'opps, you have inserted wrong email formate';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(
+                                height: 3,
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Unfortunately, if you have never given us your email, we cannot help you.',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: ColorManager.upvoteRed),
+                                ),
+                              ),
+                              TextButton(
+                                  onPressed: () {},
+                                  child: const Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'Having trouble?',
+                                      style: TextStyle(
+                                          color: ColorManager.blue,
+                                          fontSize: 12),
+                                    ),
+                                  )),
+                            ]),
+                      ),
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                                onPressed: (() {
+                                  Navigator.of(context).pop();
+                                }),
+                                child: const Text('Cancel')),
+                            TextButton(
+                                onPressed: (() {}),
+                                child: const Text('Email Me')),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                )),
+          );
+        });
+  }
+
+  /// TODO: Fix what happens when the keyboard raises.
+
+  void buildForgetPass() {
+    final mediaQuery = MediaQuery.of(context);
+    showDialog(
+        context: context,
+        builder: (context) {
+          TextEditingController usernameController = TextEditingController();
+          TextEditingController emailController = TextEditingController();
+          return AlertDialog(
+            title: SizedBox(
+                height: mediaQuery.size.height * 0.5,
+                width: mediaQuery.size.width,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 8,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Forgot your password?',
+                                textAlign: TextAlign.left,
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              DefaultTextField(
+                                formController: usernameController,
+                                labelText: 'Username',
+                                validator: (username) {
+                                  if (!Validator.validUserName(username!)) {
+                                    return 'opps, you have inserted wrong username formate';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      buildForgetUserName();
+                                    },
+                                    child: const Text(
+                                      'Forgot username?',
+                                      textAlign: TextAlign.left,
+                                      style:
+                                          TextStyle(color: ColorManager.blue),
+                                    )),
+                              ),
+                              DefaultTextField(
+                                labelText: 'Email',
+                                formController: emailController,
+                                validator: (email) {
+                                  if (!Validator.validEmailValidator(email!)) {
+                                    return 'opps, you have inserted wrong email formate';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(
+                                height: 3,
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Unfortunately, if you have never given us your email, we cannot help you.',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: ColorManager.upvoteRed),
+                                ),
+                              ),
+                              TextButton(
+                                  onPressed: () {},
+                                  child: const Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'Having trouble?',
+                                      style: TextStyle(
+                                          color: ColorManager.blue,
+                                          fontSize: 12),
+                                    ),
+                                  )),
+                            ]),
+                      ),
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                                onPressed: (() {
+                                  Navigator.of(context).pop();
+                                }),
+                                child: const Text('Cancel')),
+                            TextButton(
+                                onPressed: (() {}),
+                                child: const Text('Email Me')),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                )),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     final navigator = Navigator.of(context);
@@ -95,7 +289,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
-                            onPressed: () {},
+                            onPressed: buildForgetPass,
                             child: const Text(
                               'Forget password?',
                               style: TextStyle(
