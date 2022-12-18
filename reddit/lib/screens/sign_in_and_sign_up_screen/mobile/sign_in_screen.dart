@@ -4,13 +4,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/data/settings/settings_models/user_settings.dart';
-import 'package:reddit/data/sign_in_And_sign_up_models/sign_in_model.dart';
 
 import '../../../components/default_text_field.dart';
 import '../../../components/helpers/color_manager.dart';
 import '../../../constants/constants.dart';
-import '../../../data/sign_in_And_sign_up_models/sign_up_model.dart';
+import '../../../data/settings/settings_models/user_settings.dart';
+import '../../../data/sign_in_And_sign_up_models/sign_in_model.dart';
 import '../../../data/sign_in_And_sign_up_models/validators.dart';
 import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
