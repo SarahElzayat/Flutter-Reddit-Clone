@@ -87,6 +87,16 @@ class _SignInScreenState extends State<SignInScreen> {
     }).catchError((error) {
       // casting the error as a dio error to be able to use its content
       error = error as DioError;
+      // checking for our main error, which is that the user trying to insert
+      // username which is already taken
+      // if (error.message.toString() == 'Http status error [400]') {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(
+      //         backgroundColor: ColorManager.red,
+      //         content: Text('Username is already in use')),
+      //   );
+      // } else {
+      print(error.response!.data['error'].toString());
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             backgroundColor: ColorManager.red,

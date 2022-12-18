@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-
+import 'package:delta_markdown/delta_markdown.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +62,7 @@ class AddPostCubit extends Cubit<AddPostState> {
   Uint8List? videoThumbnail;
 
   /// [optionalText] Optional Text controller
-  quill.QuillController optionalText = quill.QuillController.basic();
+  TextEditingController optionalText = TextEditingController();
 
   /// [link] URL textField controller
   TextEditingController link = TextEditingController();
@@ -238,7 +238,7 @@ class AddPostCubit extends Cubit<AddPostState> {
       case 1:
         return (video != null && videoThumbnail != null);
       case 2:
-        return (!optionalText.document.isEmpty());
+        return (optionalText.text.isNotEmpty);
       case 3:
         return (link.text.isNotEmpty);
       case 4:
@@ -246,7 +246,7 @@ class AddPostCubit extends Cubit<AddPostState> {
           return true;
         } else {
           poll = [TextEditingController(), TextEditingController()];
-          optionalText = quill.QuillController.basic();
+          optionalText = TextEditingController();
           return false;
         }
       default:
@@ -265,7 +265,7 @@ class AddPostCubit extends Cubit<AddPostState> {
         videoThumbnail = null;
         break;
       case 2:
-        optionalText = quill.QuillController.basic();
+        optionalText = TextEditingController();
         break;
       case 3:
         link = TextEditingController();
@@ -496,7 +496,9 @@ class AddPostCubit extends Cubit<AddPostState> {
         'subreddit': subredditName,
         'inSubreddit': true,
         'title': title.text,
-        'content': {'ops': optionalText.document.toDelta().toJson()},
+        'content': {
+          'ops': markdownToDelta(optionalText.text),
+        },
         'nsfw': nsfw,
         'spoiler': spoiler,
       };
@@ -659,7 +661,6 @@ class AddPostCubit extends Cubit<AddPostState> {
         );
       } else if (index == 1 && postType != index) {
         pickVideo(true);
-        // videoFunc(context);
       }
       changePostType(postTypeIndex: index);
     }

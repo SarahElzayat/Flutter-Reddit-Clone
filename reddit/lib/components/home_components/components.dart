@@ -6,7 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
+import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
 import 'package:reddit/data/home/drawer_communities_model.dart';
+import 'package:reddit/screens/user_profile/user_profile_edit_screen.dart';
+import 'package:reddit/screens/user_profile/user_profile_screen.dart';
+import 'package:reddit/shared/local/shared_preferences.dart';
 
 import '../../screens/create_community_screen/create_community_screen.dart';
 import '../../screens/to_be_done_screen.dart';
@@ -108,10 +112,18 @@ Widget genericTextButton(context, icon, text, route, {required isLeftDrawer}) =>
           } else {
             AppCubit.get(context).changeRightDrawer();
           }
+          if (route is UserProfileScreen) {
+            UserProfileCubit.get(context).setUsername(
+                CacheHelper.getData(key: 'username'),
+                navigate: true);
+          }
+
           // AppCubit.get(context)();
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => route,
-          ));
+          else {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => route,
+            ));
+          }
         },
         child: Row(
           mainAxisSize: MainAxisSize.min,
