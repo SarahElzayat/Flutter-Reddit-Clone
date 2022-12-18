@@ -24,8 +24,6 @@ class _BlockedAccountsState extends State<BlockedAccounts> {
   late TextEditingController searchController = TextEditingController();
   @override
   void initState() {
-    print('this is my token');
-    print(token);
     super.initState();
     screenController = PagingController(
       firstPageKey: null,
