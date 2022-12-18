@@ -133,7 +133,7 @@ class MenuItems {
         break;
       case MenuItems.delete:
         //Do something
-        cubit.delete();
+        cubit.delete().then((value) {});
         PostNotifierCubit.get(context).notifyPosts();
 
         break;

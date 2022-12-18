@@ -8,16 +8,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:logger/logger.dart';
-import 'package:reddit/components/helpers/mocks/mock_functions.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/data/post_model/insights_model.dart';
 import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/functions/post_functions.dart';
 import 'package:reddit/networks/dio_helper.dart';
-
 import '../../../data/comment/sended_comment_model.dart';
-import '../../../networks/constant_end_points.dart';
 import 'post_comment_actions_state.dart';
 
 Logger logger = Logger();
@@ -133,12 +130,19 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
 
   /// this function is used to delete a post
   Future delete() {
-    return mockDio.post(
-      '$baseUrl/delete',
+    return DioHelper.postData(
+      path: '/delete',
       data: {
-        'id': post.id,
+        'id': isPost ? post.id : currentComment!.id,
+        'type': isPost ? 'post' : 'comment'
       },
-    ).then((value) => print(value.data));
+    ).then((value) {
+      emit(PostsDeleted());
+    }).catchError((error) {
+      logger.e(error.toString());
+      error = error as DioError;
+      emit(OpError(error: error.response?.data['error'] ?? ''));
+    });
   }
 
   Future follow() {
