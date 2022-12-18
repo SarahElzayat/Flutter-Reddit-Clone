@@ -276,4 +276,8 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
       logger.w(error['error']);
     });
   }
+
+  void sharePost({bool subreddit = true}){
+
+  }
 }

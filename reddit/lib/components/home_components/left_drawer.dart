@@ -28,7 +28,6 @@ class LeftDrawer extends StatelessWidget {
                   listButton(context, 'Moderating', cubit.moderatingListItems,
                       cubit.changeModeratingListState, cubit.moderatingListOpen,
                       isModerating: true, navigateToSubreddit: () {}),
-                // if (cubit.yourCommunitiesList.isNotEmpty)
                 listButton(
                     context,
                     'Your Communities',

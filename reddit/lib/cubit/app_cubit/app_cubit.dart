@@ -204,6 +204,7 @@ class AppCubit extends Cubit<AppState> {
   void getYourCommunities() {
     yourCommunitiesList.clear();
     DioHelper.getData(path: joinedSubreddits).then((value) {
+      logger.e(value.data);
       if (value.statusCode == 200) {
         for (int i = 0; i < value.data['children'].length; i++) {
           yourCommunitiesList
