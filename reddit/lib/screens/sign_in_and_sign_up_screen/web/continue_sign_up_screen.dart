@@ -4,6 +4,7 @@
 /// he enter his email, and to continue the sign up process
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/data/settings/settings_models/user_settings.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../components/default_text_field.dart';
@@ -69,11 +70,12 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
         password: passwordController.text,
         username: usernameController.text);
 
-    DioHelper.postData(path: signUp, data: user.toJson()).then((value) {
+    await DioHelper.postData(path: signUp, data: user.toJson()).then((value) {
       if (value.statusCode == 201) {
         CacheHelper.putData(key: 'token', value: value.data['token']);
         CacheHelper.putData(key: 'username', value: value.data['username']);
-
+        UserSettingsModel.fromJson(value.data);
+        UserSettingsModel.cacheUserSettings();
         // navigating to the main screen
         Navigator.of(context)
             .pushReplacementNamed(HomeScreenForMobile.routeName);

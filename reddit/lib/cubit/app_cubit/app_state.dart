@@ -1,3 +1,6 @@
+/// @author Sarah Elzayat
+/// states of the app cubit
+
 part of 'app_cubit.dart';
 
 @immutable
@@ -65,6 +68,12 @@ class NoMoreResultsToLoadState extends AppState{}
 
 class SavedEmptyState extends AppState{}
 class ErrorState extends AppState{}
+
+
+class DeletedProfilePictureState extends AppState{}
+class NoProfilePictureState extends AppState{}
+class ChangedProfilePictureState extends AppState{}
+
 
 
 
