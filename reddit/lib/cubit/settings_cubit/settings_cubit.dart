@@ -51,7 +51,9 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
   void getBlockedUsers(
       context, String? after, PagingController pagingController) async {
     emit(UnBlockState(false));
-    await DioHelper.getData(path: blockedAccounts, query: {'after': after})
+    print('Token is');
+    print(CacheHelper.getData(key: 'token'));
+    await DioHelper.getData(path: blockedAccounts, query: {'after': 'after'})
         .then((response) {
       if (response.statusCode == 200) {
         blockedUsers.clear();
