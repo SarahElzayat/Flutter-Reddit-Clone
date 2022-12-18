@@ -29,7 +29,7 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
   void connectToGoogle(ctx) {}
 
   Future<void> blockUser(context, PagingController pagingController) async {
-    final userToBeBlocked = BlockModel(username: 'abdelazizSalah', block: true);
+    final userToBeBlocked = BlockModel(username: 'saraah', block: true);
     await DioHelper.postData(
       path: block,
       data: userToBeBlocked.toJson(),
@@ -53,27 +53,49 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
     emit(UnBlockState(false));
     print('Token is');
     print(CacheHelper.getData(key: 'token'));
-    await DioHelper.getData(path: blockedAccounts, query: {'after': 'after'})
-        .then((response) {
-      if (response.statusCode == 200) {
-        blockedUsers.clear();
-        for (var elem in response.data['children']) {
-          blockedUsers.add(BlockedAccountsGetterModel.fromJson(elem));
-        }
-        pagingController.appendLastPage(blockedUsers);
+    if (after == null) {
+      await DioHelper.getData(path: blockedAccounts).then((response) {
+        if (response.statusCode == 200) {
+          blockedUsers.clear();
+          for (var elem in response.data['children']) {
+            blockedUsers.add(BlockedAccountsGetterModel.fromJson(elem));
+          }
+          pagingController.appendLastPage(blockedUsers);
 
-        // if (response.data['after'] as String == '') {
-        //   pagingController.appendLastPage(blockedUsers);
-        // } else {
-        //   pagingController.appendPage(
-        //       blockedUsers, response.data['after'] as String);
-        // }
-      }
-    }).catchError((error) {
-      error = error as DioError;
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(error.message.toString())));
-    });
+          // if (response.data['after'] as String == '') {
+          //   pagingController.appendLastPage(blockedUsers);
+          // } else {
+          //   pagingController.appendPage(
+          //       blockedUsers, response.data['after'] as String);
+          // }
+        }
+      }).catchError((error) {
+        error = error as DioError;
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(error.message.toString())));
+      });
+    } else {
+      await DioHelper.getData(
+          path: blockedAccounts,
+          query: {'after': 'after', 'limit': '5'}).then((response) {
+        if (response.statusCode == 200) {
+          blockedUsers.clear();
+          for (var elem in response.data['children']) {
+            blockedUsers.add(BlockedAccountsGetterModel.fromJson(elem));
+          }
+          if (response.data['after'] as String == '') {
+            pagingController.appendLastPage(blockedUsers);
+          } else {
+            pagingController.appendPage(
+                blockedUsers, response.data['after'] as String);
+          }
+        }
+      }).catchError((error) {
+        error = error as DioError;
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(error.message.toString())));
+      });
+    }
 
     emit(UnBlockState(true));
   }
