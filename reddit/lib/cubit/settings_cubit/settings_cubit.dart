@@ -175,10 +175,42 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
   }
 
   void _connectGoogle(newValue) async {
-    if (newValue == 'Connect') {
+    await GoogleSignInApi.logOut().then((response) {
+      print(response);
+    }).catchError((err) {
+      print(err);
+    });
+
+    print('try to connect with google');
+    if (newValue == 'Connected') {
       final user = await GoogleSignInApi.login();
+
       GoogleSignInAuthentication googleToken = await user!.authentication;
 
+      // final user = await GoogleSignInApi.login().then((response) {
+      //   print(response!.displayName);
+      // }).catchError((err) {
+      //   print(err);
+      // });
+
+      print(googleToken);
+      await DioHelper.postData(
+          path: signInGoogle,
+          data: {'accessToken': googleToken.idToken}).then((response) async {
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          print('Now You are connected with Google');
+          await DioHelper.getData(path: accountSettings).then((response) {
+            if (response.statusCode == 200) {
+              CacheHelper.putData(
+                  key: 'googleEmail', value: response.data['googeEmail']);
+              print('Logged in with google successfully');
+            }
+          });
+        }
+      }).catchError((error) {
+        error = error as DioError;
+        print(error.response!.data);
+      });
       // emit(ConnectGoogle());
     } else {
       GoogleSignInApi.logOut();
@@ -197,6 +229,7 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
     } else if (type == 'changeGender') {
       _changeGender(newValue, context);
     } else if (type == 'connectGoogle') {
+      print('Trying');
       _connectGoogle(newValue);
     } else if (type == 'connectFaceBook') {
       // _connectFaceBook(newValue);

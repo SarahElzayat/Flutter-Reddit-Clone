@@ -35,9 +35,12 @@ class ListTileWidget extends StatefulWidget {
   /// type of the function that should be executed
   final String? type;
 
+  /// type of the function that should be executed
+  final String? nextToIcon;
   ListTileWidget(
       {super.key,
       required this.leadingIcon,
+      this.nextToIcon,
       // this.initialValue,
       // required this.leadingIcon,
       required this.title,
@@ -100,16 +103,21 @@ class _ListTileWidgetState extends State<ListTileWidget> {
   Widget buildIconButton(ctx) {
     final mediaQuery = MediaQuery.of(ctx);
     return SizedBox(
-      width: 0.15 * mediaQuery.size.width,
+      width: widget.nextToIcon != null
+          ? 0.25 * mediaQuery.size.width
+          : 0.15 * mediaQuery.size.width,
       child: FittedBox(
         fit: BoxFit.cover,
-        child: IconButton(
-          icon: const Icon(
-            Icons.arrow_forward,
-            color: Colors.grey,
+        child: Row(children: [
+          Text(widget.nextToIcon ?? ''),
+          IconButton(
+            icon: const Icon(
+              Icons.arrow_forward,
+              color: Colors.grey,
+            ),
+            onPressed: widget.handler,
           ),
-          onPressed: widget.handler,
-        ),
+        ]),
       ),
     );
   }
@@ -151,16 +159,13 @@ class _ListTileWidgetState extends State<ListTileWidget> {
       } else {
         dropDownValue = 'Female';
       }
-    }
-    // else if (widget.title.contains('gle')) {
-    //   print('EhYASYAYAYDYAF ${CacheHelper.getData(key: 'googleEmail')}');
-    //   dropDownValue = 'google';
-    //   print(dropDownValue);
-    // }
-    else if (widget.title.contains('Hi')) {
-      print('fdasfsadfsa${CacheHelper.getData(key: 'googleEmail')}');
-      dropDownValue = 'xyz';
-      print(dropDownValue);
+    } else if (widget.title.contains('Google')) {
+      String mail = CacheHelper.getData(key: 'googleEmail');
+      print('mail is $mail');
+      dropDownValue = mail.isEmpty ? 'Disconnected' : 'Connected';
+    } else if (widget.title.contains('Facebook')) {
+      String mail = CacheHelper.getData(key: 'facebookEmail');
+      dropDownValue = mail.isEmpty ? 'Disconnected' : 'Connected';
     }
   }
 
@@ -202,6 +207,7 @@ class _ListTileWidgetState extends State<ListTileWidget> {
         onChanged: (String? newValue) {
           SettingsCubit.get(context)
               .changeDropValue(newValue, widget.type!, context);
+          print(newValue);
           _setDropDownValue();
         },
       ),
