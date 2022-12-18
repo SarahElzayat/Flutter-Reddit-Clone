@@ -102,8 +102,8 @@ class AccountSettingsScreen extends StatelessWidget {
                 Icons.facebook,
               ],
               listTileTitles: const [
-                'Google',
-                'Facebook',
+                'Hi',
+                'Hello',
               ],
               title: 'Connected Accounts',
               trailingObject: const [

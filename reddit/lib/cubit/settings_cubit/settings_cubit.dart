@@ -1,10 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:reddit/constants/constants.dart';
+import 'package:reddit/data/google_api/google_sign_in_api.dart';
 import 'package:reddit/data/settings/settings_models/block_user_model.dart';
 import 'package:reddit/data/settings/settings_models/blocked_accounts_getter_model.dart';
+import 'package:reddit/data/settings/settings_models/user_settings.dart';
 import 'package:reddit/screens/settings/blocked_accounts.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../data/settings/settings_models/change_password_model.dart';
@@ -171,6 +174,18 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
     emit(ChangeEmail());
   }
 
+  void _connectGoogle(newValue) async {
+    if (newValue == 'Connect') {
+      final user = await GoogleSignInApi.login();
+      GoogleSignInAuthentication googleToken = await user!.authentication;
+
+      // emit(ConnectGoogle());
+    } else {
+      GoogleSignInApi.logOut();
+      // emit(DisconnectGoogle());
+    }
+  }
+
   /// this is a function responsible for applying the function of any
   /// dropDown box.
   /// @param [newValue] which is the newValue to be set.
@@ -182,13 +197,17 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
     } else if (type == 'changeGender') {
       _changeGender(newValue, context);
     } else if (type == 'connectGoogle') {
-    } else if (type == 'connectFaceBook') {}
+      _connectGoogle(newValue);
+    } else if (type == 'connectFaceBook') {
+      // _connectFaceBook(newValue);
+    }
   }
 
   void changeSwitch(bool newValue, String type) {
     if (type == 'allowPeopleToFollowYou') {
       _allowPeopleToFollowYou(newValue);
-    } else if (type == 'showNSFW') {
+    } else if (type == 'show NSFW') {
+      print('changing here');
       _showNFSW(newValue);
     } else if (type == 'autoPlay') {
       _autoPlay(newValue);
@@ -198,9 +217,9 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
   /// this is a utility function used to allow the videos to be autoplayed.
   /// @param [newValue] which is a boolean true for allow
   /// false for disallow.
-  void _autoPlay(newValue) {
+  void _autoPlay(newValue) async {
     final request = {'autoplayMedia': newValue};
-    DioHelper.patchData(
+    await DioHelper.patchData(
       token: CacheHelper.getData(key: 'token'),
       path: accountSettings,
       data: request,
@@ -208,7 +227,11 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
         .then((response) => {
               // if changed correctly then emit to all listeners that the
               // settings has been changed, else leave every thing as is.
-              if (response.statusCode == 200) {emit(ChangeSwitchState())}
+              if (response.statusCode == 200)
+                {
+                  CacheHelper.putData(key: 'autoplayMedia', value: newValue),
+                  emit(ChangeSwitchState())
+                }
             })
         .catchError((error) {
       error = error as DioError;
@@ -227,7 +250,9 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
               // settings has been changed, else leave every thing as is.
               if (response.statusCode == 200)
                 {
+                  CacheHelper.putData(key: 'country', value: newCountry),
                   emit(ChangeSwitchState()),
+
                   // ScaffoldMessenger.of(ctx).showSnackBar(const SnackBar(
                   //     content: Center(
                   //   child: Text('Hello'),
@@ -264,6 +289,7 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
               // settings has been changed, else leave every thing as is.
               if (response.statusCode == 200)
                 {
+                  CacheHelper.putData(key: 'gender', value: newGender),
                   emit(ChangeSwitchState()),
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text(
@@ -292,20 +318,25 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
   /// the helpers folder.
   /// these values are: [best, hot, new, top, raising, controversial].
 
+// { hot, best, top, trending, newPosts, raising, controversial }
   void _sortHome(newValue) {
     if (newValue == 'Best') {
-      CacheHelper.putData(key: 'SortHome', value: HomeSort.best.index);
+      CacheHelper.putData(key: 'SortHome', value: 1);
     } else if (newValue == 'Hot') {
-      CacheHelper.putData(key: 'SortHome', value: HomeSort.hot.index);
+      CacheHelper.putData(key: 'SortHome', value: 0);
     } else if (newValue == 'New') {
-      CacheHelper.putData(key: 'SortHome', value: HomeSort.newPosts.index);
+      CacheHelper.putData(key: 'SortHome', value: 4);
     } else if (newValue == 'Top') {
-      CacheHelper.putData(key: 'SortHome', value: HomeSort.top.index);
+      CacheHelper.putData(key: 'SortHome', value: 2);
     } else if (newValue == 'Raising') {
-      CacheHelper.putData(key: 'SortHome', value: HomeSort.raising.index);
+      CacheHelper.putData(key: 'SortHome', value: 5);
     } else if (newValue == 'Controversial') {
-      CacheHelper.putData(key: 'SortHome', value: HomeSort.controversial.index);
+      CacheHelper.putData(key: 'SortHome', value: 6);
+    } else {
+      /// trending
+      CacheHelper.putData(key: 'SortHome', value: 3);
     }
+
     emit(ChangeSwitchState());
   }
 
@@ -322,7 +353,11 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
         .then((response) => {
               // if changed correctly then emit to all listeners that the
               // settings has been changed, else leave every thing as is.
-              if (response.statusCode == 200) {emit(ChangeSwitchState())}
+              if (response.statusCode == 200)
+                {
+                  CacheHelper.putData(key: 'allowToFollowYou', value: newValue),
+                  emit(ChangeSwitchState())
+                }
             })
         .catchError((error) {
       error = error as DioError;
@@ -342,7 +377,11 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
         .then((response) => {
               // if changed correctly then emit to all listeners that the
               // settings has been changed, else leave every thing as is.
-              if (response.statusCode == 200) {emit(ChangeSwitchState())}
+              if (response.statusCode == 200)
+                {
+                  CacheHelper.putData(key: 'nsfw', value: newValue),
+                  emit(ChangeSwitchState())
+                }
             })
         .catchError((error) {
       error = error as DioError;

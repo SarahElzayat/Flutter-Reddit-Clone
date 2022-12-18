@@ -2,6 +2,7 @@
 /// @date 12/12/2022
 /// this file contains the screen of the change password
 import 'package:flutter/material.dart';
+import 'package:reddit/shared/local/shared_preferences.dart';
 import '../../cubit/settings_cubit/settings_cubit.dart';
 import '../../components/default_text_field.dart';
 import '../../components/helpers/color_manager.dart';
@@ -73,54 +74,59 @@ class _ChangePasswordState extends State<ChangePassword> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SingleChildScrollView(
-                  child: Column(children: [
-                    const HeaderContainsAvatar(
-                        email: 'Email of the user', usrName: 'UserName'),
-                    DefaultTextField(
-                      formController: passwordController,
-                      labelText: 'Current password',
-                      isPassword: true,
-                      validator: (password) {
-                        if (!Validator.validPasswordValidation(password!)) {
-                          return 'opps, you have inserted wrong password formate';
-                        }
-                        return null;
-                      },
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            'Forget password?',
-                            style: TextStyle(
-                                color: ColorManager.upvoteRed,
-                                fontWeight: FontWeight.bold),
-                          )),
-                    ),
-                    DefaultTextField(
-                      formController: newPasswordController,
-                      labelText: 'New Password',
-                      isPassword: true,
-                      validator: (password) {
-                        if (!Validator.validPasswordValidation(password!)) {
-                          return 'opps, you have inserted wrong password formate';
-                        }
-                        return null;
-                      },
-                    ),
-                    DefaultTextField(
-                      formController: confirmPasswordtroller,
-                      labelText: 'Confirm New Password',
-                      isPassword: true,
-                      validator: (password) {
-                        if (!Validator.validPasswordValidation(password!)) {
-                          return 'opps, you have inserted wrong password formate';
-                        }
-                        return null;
-                      },
-                    )
-                  ]),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(children: [
+                      HeaderContainsAvatar(
+                        usrName: CacheHelper.getData(key: 'username'),
+                        email: CacheHelper.getData(key: 'email'),
+                      ),
+                      DefaultTextField(
+                        formController: passwordController,
+                        labelText: 'Current password',
+                        isPassword: true,
+                        validator: (password) {
+                          if (!Validator.validPasswordValidation(password!)) {
+                            return 'opps, you have inserted wrong password formate';
+                          }
+                          return null;
+                        },
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                            onPressed: () {},
+                            child: const Text(
+                              'Forget password?',
+                              style: TextStyle(
+                                  color: ColorManager.upvoteRed,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                      ),
+                      DefaultTextField(
+                        formController: newPasswordController,
+                        labelText: 'New Password',
+                        isPassword: true,
+                        validator: (password) {
+                          if (!Validator.validPasswordValidation(password!)) {
+                            return 'opps, you have inserted wrong password formate';
+                          }
+                          return null;
+                        },
+                      ),
+                      DefaultTextField(
+                        formController: confirmPasswordtroller,
+                        labelText: 'Confirm New Password',
+                        isPassword: true,
+                        validator: (password) {
+                          if (!Validator.validPasswordValidation(password!)) {
+                            return 'opps, you have inserted wrong password formate';
+                          }
+                          return null;
+                        },
+                      )
+                    ]),
+                  ),
                 ),
                 BottomButtons(
                     string1: 'Cancel',

@@ -3,6 +3,7 @@
 /// This file contains the Update email address screen.
 
 import 'package:flutter/material.dart';
+import 'package:reddit/shared/local/shared_preferences.dart';
 import '../../cubit/settings_cubit/settings_cubit.dart';
 import '../../data/sign_in_And_sign_up_models/validators.dart';
 import '../../screens/forget_user_name_and_password/mobile/forget_password_screen.dart';
@@ -76,9 +77,9 @@ class _UpdateEmailAddressScreenState extends State<UpdateEmailAddressScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      const HeaderContainsAvatar(
-                        usrName: 'UserName',
-                        email: 'Email of the user',
+                      HeaderContainsAvatar(
+                        usrName: CacheHelper.getData(key: 'username'),
+                        email: CacheHelper.getData(key: 'email'),
                       ),
                       DefaultTextField(
                         formController: mailController,
