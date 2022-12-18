@@ -1,6 +1,6 @@
+<!-- I changed the name of the package to make it work on google console for both notifications and google signin -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.reddit">
-
+    package="ReadItPackage"> 
     <queries>
         <provider android:authorities="com.facebook.katana.provider.PlatformProvider" />
         <provider android:authorities="com.facebook.orca.provider.PlatformProvider" /> <!-- allows sharing to Messenger app -->
