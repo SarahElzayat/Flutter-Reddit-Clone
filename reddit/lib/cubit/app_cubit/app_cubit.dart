@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reddit/components/helpers/enums.dart';
+import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 
 import 'package:reddit/data/home/drawer_communities_model.dart';
@@ -604,5 +605,38 @@ class AppCubit extends Cubit<AppState> {
         emit(ErrorState());
       },
     );
+  }
+
+  void addFavoriteSubreddit({required String subredditName}) {
+    DioHelper.patchData(
+        token: token,
+        path: '$subreddit/$subredditName/$makeFavorite',
+        data: {}).then((value) {
+      if (value.statusCode == 200) {
+        // yourCommunitiesList.
+        // getYourCommunities();
+        // getYourModerating();
+        emit(ChangedSubredditFavoriteState());
+      } else {
+        emit(ErrorState());
+      }
+    }).onError((error, stackTrace) {
+      emit(ErrorState());
+    });
+  }
+
+  void removeFavoriteSubreddit({required String subredditName}) {
+    DioHelper.patchData(
+        token: token,
+        path: '$subreddit/$subredditName/$removeFavorite',
+        data: {}).then((value) {
+      if (value.statusCode == 200) {
+        emit(ChangedSubredditFavoriteState());
+      } else {
+        emit(ErrorState());
+      }
+    }).onError((error, stackTrace) {
+      emit(ErrorState());
+    });
   }
 }

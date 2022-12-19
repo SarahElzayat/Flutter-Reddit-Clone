@@ -75,5 +75,6 @@ class NoProfilePictureState extends AppState{}
 class ChangedProfilePictureState extends AppState{}
 
 
+class ChangedSubredditFavoriteState extends AppState{}
 
 

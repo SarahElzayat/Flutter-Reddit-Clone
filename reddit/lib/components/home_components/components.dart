@@ -8,7 +8,6 @@ import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
 import 'package:reddit/data/home/drawer_communities_model.dart';
-import 'package:reddit/screens/user_profile/user_profile_edit_screen.dart';
 import 'package:reddit/screens/user_profile/user_profile_screen.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 
@@ -117,10 +116,7 @@ Widget genericTextButton(context, icon, text, route, {required isLeftDrawer}) =>
             UserProfileCubit.get(context).setUsername(
                 CacheHelper.getData(key: 'username'),
                 navigate: true);
-          }
-
-          // AppCubit.get(context)();
-          else {
+          } else {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => route,
             ));
@@ -165,6 +161,23 @@ Widget yourCommunitiesCard(DrawerCommunitiesModel model) {
               style: Theme.of(context).textTheme.displayMedium,
             ),
             const Spacer(),
+            IconButton(
+              icon: Icon(
+                model.isFavorite!
+                    ? Icons.star_rounded
+                    : Icons.star_outline_rounded,
+                color: ColorManager.lightGrey,
+                size: 20,
+              ),
+              onPressed: () {
+                model.isFavorite!
+                    ? AppCubit.get(context)
+                        .removeFavoriteSubreddit(subredditName: model.title!)
+                    : AppCubit.get(context)
+                        .addFavoriteSubreddit(subredditName: model.title!);
+                // model.isFavorite = !model.isFavorite!;
+              },
+            )
           ],
         ),
       );

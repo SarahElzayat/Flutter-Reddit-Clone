@@ -14,9 +14,12 @@ class LeftDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
-    final AppCubit cubit = AppCubit.get(context);
+    final AppCubit cubit = AppCubit.get(context)
+      ..getYourCommunities()
+      ..getYourModerating();
 
-    return BlocBuilder<AppCubit, AppState>(
+    return BlocConsumer<AppCubit, AppState>(
+      listener: (context, state) {},
       builder: (context, state) {
         return SafeArea(
             child: Drawer(

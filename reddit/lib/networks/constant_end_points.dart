@@ -82,3 +82,6 @@ const homeHot = '/hot';
 const homeTrending = '/trending';
 const homeNew = '/new';
 const subreddit = '/r';
+const makeFavorite = '/make-favorite';
+const removeFavorite = '/remove-favorite';
+

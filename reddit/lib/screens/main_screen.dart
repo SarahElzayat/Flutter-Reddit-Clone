@@ -39,7 +39,6 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
         : _scaffoldKey.currentState?.openDrawer();
   }
 
-
   @override
   void initState() {
     super.initState();
