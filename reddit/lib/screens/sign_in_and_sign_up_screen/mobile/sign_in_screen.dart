@@ -68,40 +68,44 @@ class _SignInScreenState extends State<SignInScreen> {
         CacheHelper.putData(key: 'token', value: value.data['token']);
         CacheHelper.putData(key: 'username', value: value.data['username']);
         token = CacheHelper.getData(key: 'token');
+        print(token);
 
         /// caching the user settings in the shared preferences
         await DioHelper.getData(path: accountSettings).then((response) {
           if (response.statusCode == 200) {
             UserSettingsModel.fromJson(response.data);
             UserSettingsModel.cacheUserSettings();
+            // navigating to the main screen
+            Navigator.of(context)
+                .pushReplacementNamed(HomeScreenForMobile.routeName);
           }
         });
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              backgroundColor: ColorManager.red,
-              content: Text(value.data['error'].toString())),
-        );
       }
     }).catchError((error) {
       // casting the error as a dio error to be able to use its content
       error = error as DioError;
-      // checking for our main error, which is that the user trying to insert
-      // username which is already taken
-      // if (error.message.toString() == 'Http status error [400]') {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //     const SnackBar(
-      //         backgroundColor: ColorManager.red,
-      //         content: Text('Username is already in use')),
-      //   );
-      // } else {
-      print(error.response!.data['error'].toString());
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            backgroundColor: ColorManager.red,
-            content: Text(
-                'Something went wrong!, please change the inputs and try again')),
-      );
+      if (error.response!.statusCode == 400 ||
+          error.response!.statusCode == 401) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              backgroundColor: ColorManager.red,
+              content: Text(error.response!.data['error'].toString())),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              backgroundColor: ColorManager.red,
+              content: Text(
+                  'Something went wrong!, please change the inputs and try again')),
+        );
+      }
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //       backgroundColor: ColorManager.red,
+      //       content: Text(
+      //           'Something went wrong!, please change the inputs and try again')),
+      // );
+      // }
     });
   }
 
@@ -279,9 +283,6 @@ class _SignInScreenState extends State<SignInScreen> {
                               passwordController.text.isNotEmpty,
                           appliedFunction: () {
                             continueToTheHomePage();
-                            // navigating to the main screen
-                            Navigator.of(context).pushReplacementNamed(
-                                HomeScreenForMobile.routeName);
                           })
                     ],
                   ),
