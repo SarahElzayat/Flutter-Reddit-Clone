@@ -169,7 +169,10 @@ class MenuItems {
           );
         });
         break;
-
+      case MenuItems.collapse:
+        cubit.collapse();
+        PostNotifierCubit.get(context).notifyPosts();
+        break;
       default:
         break;
     }
