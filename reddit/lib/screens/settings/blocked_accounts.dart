@@ -3,10 +3,17 @@
 /// This is the Screen which manages the blocked accounts in the settings.
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import '../../components/default_text_field.dart';
+import '../../data/settings/settings_models/blocked_accounts_getter_model.dart';
+import '../../cubit/settings_cubit/settings_cubit.dart';
+
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/settings_models/blocked_accounts_getter_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
+
 import '../../components/helpers/color_manager.dart';
 import '../../widgets/settings/settings_app_bar.dart';
 
@@ -100,6 +107,17 @@ class _BlockedAccountsState extends State<BlockedAccounts> {
     print(token);
     _getBlockedUsers();
     super.initState();
+    screenController = PagingController(
+      firstPageKey: null,
+    );
+    for (int i = 0; i < 5; i++) {
+      SettingsCubit.get(context).blockUser(context, screenController);
+    }
+
+    screenController.addPageRequestListener((pageKey) {
+      SettingsCubit.get(context)
+          .getBlockedUsers(context, pageKey, screenController);
+
   }
 
   /// this is a utility function used to get
