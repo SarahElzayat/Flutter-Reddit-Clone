@@ -2,6 +2,7 @@
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
 import 'package:flutter/foundation.dart';
+import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 import 'package:reddit/widgets/comments/comment.dart';
@@ -117,151 +118,160 @@ class _PostWidgetState extends State<PostWidget> {
                 // margin: const EdgeInsets.symmetric(vertical: 5),
                 padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
                 // a Row that contains the votes column and post
-                child: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                child: BlocConsumer<PostNotifierCubit, PostNotifierState>(
+                  listener: (context, state) {},
+                  builder: (context, state) {
+                    return Column(
                       children: [
-                        if (isWeb)
-                          VotesPart(
-                            post: widget.post,
-                            isWeb: isWeb,
-                          ),
-                        Expanded(
-                          child: InkWell(
-                            onTap: widget.outsideScreen
-                                ? () {
-                                    goToPost(
-                                      context,
-                                      widget.post,
-                                      widget.upperRowType,
-                                    );
-                                  }
-                                : null,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                // A row with the Avatar, title and the subreddit
-                                _upperPart(isWeb),
-                                // title and flairs
-                                _titleWithFlairs(),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (isWeb)
+                              VotesPart(
+                                post: widget.post,
+                                isWeb: isWeb,
+                              ),
+                            Expanded(
+                              child: InkWell(
+                                onTap: widget.outsideScreen
+                                    ? () {
+                                        goToPost(
+                                          context,
+                                          widget.post,
+                                          widget.upperRowType,
+                                        );
+                                      }
+                                    : null,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    // A row with the Avatar, title and the subreddit
+                                    _upperPart(isWeb),
+                                    // title and flairs
+                                    _titleWithFlairs(),
 
-                                // image or video viewrs
-                                if (widget.postView == PostView.card)
-                                  InlineImageViewer(
-                                    key: const Key('inline-image-viewer'),
-                                    post: widget.post,
-                                    isWeb: isWeb,
-                                    outsideScreen: widget.outsideScreen,
-                                  ),
+                                    // image or video viewrs
+                                    if (widget.postView == PostView.card)
+                                      InlineImageViewer(
+                                        key: const Key('inline-image-viewer'),
+                                        post: widget.post,
+                                        isWeb: isWeb,
+                                        outsideScreen: widget.outsideScreen,
+                                      ),
 
-                                // the body text or the link bar
-                                ConditionalSwitch.single(
-                                  context: context,
-                                  valueBuilder: (context) {
+                                    // the body text or the link bar
+                                    ConditionalSwitch.single(
+                                      context: context,
+                                      valueBuilder: (context) {
+                                        if (widget.postView ==
+                                            PostView.withCommentsInSearch) {
+                                          return 'commentBody';
+                                        }
+                                        if (widget.post.kind == 'post') {
+                                          return 'postBody';
+                                        }
+                                        if (widget.post.kind == 'video') {
+                                          return 'videoBody';
+                                        }
+                                        if (_showTextBody()) {
+                                          return 'bodytext';
+                                        }
+                                        if (widget.post.kind == 'link' &&
+                                            !widget.outsideScreen) {
+                                          return 'link';
+                                        }
+
+                                        return 'notAny';
+                                      },
+                                      caseBuilders: {
+                                        'commentBody': (context) =>
+                                            _commentBody(),
+                                        'bodytext': (context) => _bodyText(),
+                                        'link': (context) => _linkBar(),
+                                        'videoBody': (context) => InkWell(
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      WholeScreenVideoViewer(
+                                                    post: widget.post,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: videoBody(
+                                                context, widget.post)),
+                                        'postBody': (context) => _postBody(),
+                                      },
+                                      fallbackBuilder: (context) => Container(),
+                                    ),
+                                    SizedBox(height: 1.h),
+                                    _lowerPart(isWeb),
+                                    BlocBuilder<PostAndCommentActionsCubit,
+                                        PostActionsState>(
+                                      builder: (context, state) {
+                                        return AnimatedSwitcher(
+                                            duration: const Duration(
+                                                milliseconds: 300),
+                                            child:
+                                                (PostAndCommentActionsCubit.get(
+                                                            context)
+                                                        .showModTools)
+                                                    ? _modRow(context)
+                                                    : Container(
+                                                        key: const Key(
+                                                            'mod-row-empty'),
+                                                      ));
+                                      },
+                                    ),
+                                    if (!widget.outsideScreen && !isWeb)
+                                      commentSortRow(context),
+
                                     if (widget.postView ==
-                                        PostView.withCommentsInSearch) {
-                                      return 'commentBody';
-                                    }
-                                    if (widget.post.kind == 'post') {
-                                      return 'postBody';
-                                    }
-                                    if (widget.post.kind == 'video') {
-                                      return 'videoBody';
-                                    }
-                                    if (_showTextBody()) {
-                                      return 'bodytext';
-                                    }
-                                    if (widget.post.kind == 'link' &&
-                                        !widget.outsideScreen) {
-                                      return 'link';
-                                    }
-
-                                    return 'notAny';
-                                  },
-                                  caseBuilders: {
-                                    'commentBody': (context) => _commentBody(),
-                                    'bodytext': (context) => _bodyText(),
-                                    'link': (context) => _linkBar(),
-                                    'videoBody': (context) => InkWell(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  WholeScreenVideoViewer(
-                                                post: widget.post,
+                                        PostView.withCommentsInSearch)
+                                      Row(
+                                        children: [
+                                          TextButton(
+                                            onPressed: () {
+                                              goToPost(
+                                                context,
+                                                widget.post,
+                                                widget.upperRowType,
+                                              );
+                                            },
+                                            child: const Text(
+                                              'View comments',
+                                              style: TextStyle(
+                                                color: ColorManager.hoverOrange,
                                               ),
                                             ),
-                                          );
-                                        },
-                                        child: videoBody(context, widget.post)),
-                                    'postBody': (context) => _postBody(),
-                                  },
-                                  fallbackBuilder: (context) => Container(),
-                                ),
-                                SizedBox(height: 1.h),
-                                _lowerPart(isWeb),
-                                BlocBuilder<PostAndCommentActionsCubit,
-                                    PostActionsState>(
-                                  builder: (context, state) {
-                                    return AnimatedSwitcher(
-                                        duration:
-                                            const Duration(milliseconds: 300),
-                                        child: (PostAndCommentActionsCubit.get(
-                                                    context)
-                                                .showModTools)
-                                            ? _modRow(context)
-                                            : Container(
-                                                key: const Key('mod-row-empty'),
-                                              ));
-                                  },
-                                ),
-                                if (!widget.outsideScreen && !isWeb)
-                                  commentSortRow(context),
-
-                                if (widget.postView ==
-                                    PostView.withCommentsInSearch)
-                                  Row(
-                                    children: [
-                                      TextButton(
-                                        onPressed: () {
-                                          goToPost(
-                                            context,
-                                            widget.post,
-                                            widget.upperRowType,
-                                          );
-                                        },
-                                        child: const Text(
-                                          'View comments',
-                                          style: TextStyle(
-                                            color: ColorManager.hoverOrange,
                                           ),
-                                        ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                              ],
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
+                            if ((widget.post.kind != 'link') &&
+                                widget.postView == PostView.classic)
+                              Container(
+                                clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: InlineImageViewer(
+                                  key: const Key('inline-image-viewer'),
+                                  post: widget.post,
+                                  isWeb: isWeb,
+                                  postView: widget.postView,
+                                ),
+                              ),
+                          ],
                         ),
-                        if ((widget.post.kind != 'link') &&
-                            widget.postView == PostView.classic)
-                          Container(
-                            clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: InlineImageViewer(
-                              key: const Key('inline-image-viewer'),
-                              post: widget.post,
-                              isWeb: isWeb,
-                              postView: widget.postView,
-                            ),
-                          ),
                       ],
-                    ),
-                  ],
+                    );
+                  },
                 ),
               );
             },
@@ -366,12 +376,34 @@ class _PostWidgetState extends State<PostWidget> {
           clipBehavior: Clip.antiAlias,
           shape: const CircleBorder(),
           child: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              handleApprove(
+                  post: widget.post,
+                  onSuccess: () {
+                    PostNotifierCubit.get(context).notifyPosts();
+
+                    ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+                      message: 'Post Approved',
+                      error: false,
+                    ));
+                  },
+                  onError: (err) {
+                    PostNotifierCubit.get(context).notifyPosts();
+
+                    ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+                      message:
+                          err.response?.data['error'] ?? 'Something went wrong',
+                      error: false,
+                    ));
+                  });
+            },
             constraints: const BoxConstraints(),
             padding: const EdgeInsets.all(0),
-            icon: const Icon(
+            icon: Icon(
               Icons.check,
-              color: ColorManager.greyColor,
+              color: isApproved(widget.post)
+                  ? ColorManager.green
+                  : ColorManager.greyColor,
             ),
             iconSize: min(5.5.w, 30),
           ),
@@ -384,12 +416,32 @@ class _PostWidgetState extends State<PostWidget> {
           clipBehavior: Clip.antiAlias,
           shape: const CircleBorder(),
           child: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              handleSpam(
+                  onSuccess: () {
+                    PostNotifierCubit.get(context).notifyPosts();
+                    ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+                      message: 'Post Marked Spam',
+                      error: false,
+                    ));
+                  },
+                  onError: (err) {
+                    PostNotifierCubit.get(context).notifyPosts();
+                    ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+                      message:
+                          err.response?.data['error'] ?? 'Something went wrong',
+                      error: false,
+                    ));
+                  },
+                  post: widget.post);
+            },
             constraints: const BoxConstraints(),
             padding: const EdgeInsets.all(0),
-            icon: const Icon(
+            icon: Icon(
               Icons.block,
-              color: ColorManager.greyColor,
+              color: isSpammed(widget.post)
+                  ? ColorManager.red
+                  : ColorManager.greyColor,
             ),
             iconSize: min(5.5.w, 30),
           ),
@@ -402,12 +454,32 @@ class _PostWidgetState extends State<PostWidget> {
           clipBehavior: Clip.antiAlias,
           shape: const CircleBorder(),
           child: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              handleRemove(
+                  onSuccess: () {
+                    PostNotifierCubit.get(context).notifyPosts();
+                    ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+                      message: 'Post Removed',
+                      error: false,
+                    ));
+                  },
+                  onError: (err) {
+                    PostNotifierCubit.get(context).notifyPosts();
+                    ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+                      message:
+                          err.response?.data['error'] ?? 'Something went wrong',
+                      error: false,
+                    ));
+                  },
+                  post: widget.post);
+            },
             constraints: const BoxConstraints(),
             padding: const EdgeInsets.all(0),
-            icon: const Icon(
+            icon: Icon(
               Icons.delete,
-              color: ColorManager.greyColor,
+              color: isRemoved(widget.post)
+                  ? ColorManager.gradientRed
+                  : ColorManager.greyColor,
             ),
             iconSize: min(5.5.w, 30),
           ),
