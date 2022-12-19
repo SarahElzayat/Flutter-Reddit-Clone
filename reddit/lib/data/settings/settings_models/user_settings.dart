@@ -30,27 +30,33 @@ class UserSettingsModel {
         key: 'googleEmail', value: UserSettingsModel.googleEmail ?? '');
     CacheHelper.putData(
         key: 'facebookEmail', value: UserSettingsModel.facebookEmail ?? '');
-    CacheHelper.putData(key: 'country', value: UserSettingsModel.country);
-    CacheHelper.putData(key: 'gender', value: UserSettingsModel.gender);
     CacheHelper.putData(
-        key: 'displayName', value: UserSettingsModel.displayName);
-    CacheHelper.putData(key: 'about', value: UserSettingsModel.about);
+        key: 'country', value: UserSettingsModel.country ?? 'Egypt');
     CacheHelper.putData(
-        key: 'havePassword', value: UserSettingsModel.havePassword);
+        key: 'gender', value: UserSettingsModel.gender ?? 'Male');
     CacheHelper.putData(
-        key: 'hasVerifiedEmail', value: UserSettingsModel.hasVerifiedEmail);
-    CacheHelper.putData(key: 'nsfw', value: UserSettingsModel.nsfw);
+        key: 'displayName', value: UserSettingsModel.displayName ?? 'No Name');
     CacheHelper.putData(
-        key: 'allowToFollowYou', value: UserSettingsModel.allowToFollowYou);
+        key: 'about', value: UserSettingsModel.about ?? 'No About');
     CacheHelper.putData(
-        key: 'adultContent', value: UserSettingsModel.adultContent);
+        key: 'havePassword', value: UserSettingsModel.havePassword ?? 'false');
     CacheHelper.putData(
-        key: 'autoplayMedia', value: UserSettingsModel.autoplayMedia);
+        key: 'hasVerifiedEmail',
+        value: UserSettingsModel.hasVerifiedEmail ?? 'false');
+    CacheHelper.putData(key: 'nsfw', value: UserSettingsModel.nsfw ?? 'false');
     CacheHelper.putData(
-        key: 'newFollowerEmail', value: UserSettingsModel.newFollowerEmail);
+        key: 'allowToFollowYou',
+        value: UserSettingsModel.allowToFollowYou ?? 'true');
+    CacheHelper.putData(
+        key: 'adultContent', value: UserSettingsModel.adultContent ?? 'false');
+    CacheHelper.putData(
+        key: 'autoplayMedia', value: UserSettingsModel.autoplayMedia ?? 'true');
+    CacheHelper.putData(
+        key: 'newFollowerEmail',
+        value: UserSettingsModel.newFollowerEmail ?? 'true');
     CacheHelper.putData(
         key: 'unsubscribeFromEmails',
-        value: UserSettingsModel.unsubscribeFromEmails);
+        value: UserSettingsModel.unsubscribeFromEmails ?? 'false');
   }
 
   /// this is a named constructor to create a new object from the json file.
