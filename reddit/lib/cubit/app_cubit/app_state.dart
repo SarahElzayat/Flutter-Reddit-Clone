@@ -20,9 +20,11 @@ class ChangeLeftDrawerState extends AppState {}
 // class ChangeEndDrawerState extends AppState {}
 
 class ChangeModeratingListState extends AppState {}
+
 class ChangeFavoritesListState extends AppState {}
 
 class ChangeYourCommunitiesState extends AppState {}
+
 class LoadedCommunitiesState extends AppState {}
 
 class ChangeHistoryCategoryState extends AppState {}
@@ -59,23 +61,24 @@ class LoadedMoreSavedState extends AppState {}
 
 class NoMoreSavedToLoadState extends AppState {}
 
+class LoadingResultsState extends AppState {}
 
+class LoadedResultsState extends AppState {}
 
-class LoadingResultsState extends AppState{}
-class LoadedResultsState extends AppState{}
-class ResultEmptyState extends AppState{}
-class NoMoreResultsToLoadState extends AppState{}
+class ResultEmptyState extends AppState {}
 
+class NoMoreResultsToLoadState extends AppState {}
 
-class SavedEmptyState extends AppState{}
-class ErrorState extends AppState{}
+class SavedEmptyState extends AppState {}
 
+class ErrorState extends AppState {}
 
-class DeletedProfilePictureState extends AppState{}
-class NoProfilePictureState extends AppState{}
-class ChangedProfilePictureState extends AppState{}
+class DeletedProfilePictureState extends AppState {}
 
+class NoProfilePictureState extends AppState {}
 
-class ChangedSubredditFavoriteState extends AppState{}
+class ChangedProfilePictureState extends AppState {}
 
+class LoadedProfilePictureState extends AppState {}
 
+class ChangedSubredditFavoriteState extends AppState {}

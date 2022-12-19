@@ -1,6 +1,7 @@
 /// @author Sarah El-Zayat
 /// @date 9/11/2022
 /// App cubit for handling application's state management for home, history, drawers...
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/comment/comment_model.dart';
+import 'package:http_parser/http_parser.dart';
 
 import 'package:reddit/data/home/drawer_communities_model.dart';
 import 'package:reddit/data/saved/saved_comments_model.dart';
@@ -316,12 +318,13 @@ class AppCubit extends Cubit<AppState> {
   /// gets the profile picture of the user
   void getUserProfilePicture() {
     DioHelper.getData(path: '$user/$username/$about').then((value) {
-      // //logger.wtf(value.data);
+      // logger.wtf(value.data);
       if (value.statusCode == 200) {
         if (value.data['picture'] != null) {
           profilePicture = value.data['picture'];
-          // //logger.w('message $profilePicture');
+          logger.w('message $profilePicture');
         }
+        emit(LoadedProfilePictureState());
       } else {
         emit(ErrorState());
       }
@@ -639,6 +642,7 @@ class AppCubit extends Cubit<AppState> {
   /// clears the user's history
   void clearHistoy() {
     DioHelper.postData(
+      sentToken: token,
       path: clearHistory,
       data: {'username': username},
     ).then((value) {
@@ -652,7 +656,8 @@ class AppCubit extends Cubit<AppState> {
 
   void deleteProfilePicture() {
     DioHelper.deleteData(path: userProfilePicture).then((value) {
-      if (value.statusCode == 200) {
+      if (value.statusCode == 204) {
+        profilePicture = '';
         emit(DeletedProfilePictureState());
       } else if (value.statusCode == 400) {
         emit(NoProfilePictureState());
@@ -662,10 +667,19 @@ class AppCubit extends Cubit<AppState> {
     });
   }
 
-  void changeProfilePicture(XFile image) {
-    DioHelper.putData(path: userProfilePicture, data: {'avatar': image})
-        .then((value) {
+  Future<void> changeProfilePicture(XFile image) async {
+    MultipartFile file = await MultipartFile.fromFile(image.path,
+        filename: image.path.split('/').last,
+        contentType: MediaType('image', 'png'));
+
+    DioHelper.postData(
+      isFormdata: true,
+      path: userProfilePicture,
+      data: FormData.fromMap({'avatar': file}),
+      sentToken: token,
+    ).then((value) {
       if (value.statusCode == 200) {
+        getUserProfilePicture();
         emit(ChangedProfilePictureState());
       }
     }).onError(
