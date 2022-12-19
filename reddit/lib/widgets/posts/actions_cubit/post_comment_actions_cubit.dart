@@ -156,6 +156,7 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
         'commentId': currentComment?.id,
       },
     ).then((value) {
+      logger.w('followed: ${post.followed}');
       if (isPost) {
         post.followed = !post.followed!;
       } else {
@@ -163,8 +164,8 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
       }
       emit(FollowedChangedState());
     }).catchError((error) {
+      logger.e(error.toString());
       error = error as DioError;
-      logger.e(error.response?.data);
       emit(OpError(error: error.response?.data['error'] ?? ''));
     });
   }
@@ -277,7 +278,7 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
     });
   }
 
-  void sharePost({bool subreddit = true}){
-
+  void collapse() {
+    currentComment!.isCollapsed = !((currentComment?.isCollapsed) ?? true);
   }
 }
