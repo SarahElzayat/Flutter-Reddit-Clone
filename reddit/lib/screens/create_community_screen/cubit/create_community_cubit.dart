@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import 'package:reddit/data/create_community_model/create_community_model.dart';
 import 'package:reddit/data/create_community_model/saved_categories_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
@@ -30,10 +31,9 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
     return categories;
   }
 
-  void creatCommunity(name, type, nsfw, category) {
+  void creatCommunity(name, type, nsfw, category, context) {
     final CreateCommunityModel community = CreateCommunityModel(
         subredditName: name, type: type, nsfw: nsfw, category: category);
-    String? token = CacheHelper.getData(key: 'token');
 
     DioHelper.postData(path: createCommunity, data: community.toJson())
         .then((value) {
@@ -42,6 +42,8 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
 
         ///TODO: Nagiate to AddPost with community name to add post to community
 
+        SubredditCubit.get(context)
+            .setSubredditName(context, name, replace: true);
       }
     }).catchError((err) {
       err = err as DioError;

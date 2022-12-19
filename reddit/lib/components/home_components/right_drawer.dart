@@ -2,17 +2,15 @@
 ///@description the right (end) drawer that's present through the whole application
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/screens/history/history_screen_for_web.dart';
-import 'package:reddit/screens/create_community_screen/create_community_screen.dart';
-import 'package:reddit/screens/saved/saved_screen.dart';
-import 'package:reddit/screens/settings/change_profile_picture_screen.dart';
-
-import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
-
-import 'package:reddit/screens/settings/settings_main_screen.dart';
-import '../../cubit/app_cubit.dart';
+import '../../screens/create_community_screen/create_community_screen.dart';
+import '../../screens/saved/saved_screen.dart';
+import '../../screens/settings/change_profile_picture_screen.dart';
+import '../../screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
+import '../../screens/user_profile/user_profile_screen.dart';
+import '../../screens/settings/settings_main_screen.dart';
+import '../../shared/local/shared_preferences.dart';
+import '../../cubit/app_cubit/app_cubit.dart';
 import '../../screens/history/history_screen.dart';
 import '../../screens/to_be_done_screen.dart';
 import '../helpers/color_manager.dart';
@@ -28,8 +26,8 @@ class RightDrawer extends StatelessWidget {
 
     ///@param [rightDrawerItems] the list of right drawer items
     List<Widget> rightDrawerItems = [
-      genericTextButton(context, Icons.person, 'My profile',
-          const ToBeDoneScreen(text: 'My profile'),
+      genericTextButton(
+          context, Icons.person, 'My profile', const UserProfileScreen(),
           isLeftDrawer: false),
       genericTextButton(context, Icons.add, 'Create a community',
           const CreateCommunityScreen(),
@@ -68,13 +66,12 @@ class RightDrawer extends StatelessWidget {
               children: [
                 const CircleAvatar(
                     radius: 80,
-                    backgroundImage: 
-                    AssetImage('./assets/images/Logo.png')),
-                    // NetworkImage(kReleaseMode
-                    //     ? 'https://web.read-it.live/${cubit.profilePicture}'
-                    //     : Uri.parse(
-                    //             'https://localhost:3000/${cubit.profilePicture}')
-                    //         .toString())),
+                    backgroundImage: AssetImage('./assets/images/Logo.png')),
+                // NetworkImage(kReleaseMode
+                //     ? 'https://web.read-it.live/${cubit.profilePicture}'
+                //     : Uri.parse(
+                //             'https://localhost:3000/${cubit.profilePicture}')
+                //         .toString())),
 
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -95,19 +92,19 @@ class RightDrawer extends StatelessWidget {
                         ColorManager.gradientRed
                       ])),
                   child: MaterialButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const ChangeProfilePicutre(),
-                            ));
-                      },
-                      padding: EdgeInsets.zero,
-                      shape: const StadiumBorder(),
-                      child: const Text(
-                        'Change Profile Picture',
-                      )),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ChangeProfilePicutre(),
+                          ));
+                    },
+                    padding: EdgeInsets.zero,
+                    shape: const StadiumBorder(),
+                    child: const Text(
+                      'Change Profile Picture',
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),

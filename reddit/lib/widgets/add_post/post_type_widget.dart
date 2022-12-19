@@ -1,13 +1,8 @@
 /// Model Post Type widget
 /// @author Haitham Mohamed
 /// @date 4/11/2022
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_quill/flutter_quill.dart';
-import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
-import 'package:reddit/constants/constants.dart';
 
 import '../../cubit/add_post/cubit/add_post_cubit.dart';
 import 'add_post_textfield.dart';
@@ -55,48 +50,18 @@ class PostTypeWidget extends StatelessWidget {
 
           case 2:
             return Column(
-              mainAxisSize: MainAxisSize.max,
               children: [
-                SingleChildScrollView(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                        minHeight: 100,
-                        maxHeight: (keyboardIsOpened)
-                            ? mediaQuery.size.height * 0.2
-                            : mediaQuery.size.height * 0.4),
-                    child: QuillEditor.basic(
-                      controller: addPostCubit.optionalText,
-                      embedBuilders: FlutterQuillEmbeds.builders(),
-                      readOnly: false,
-                    ),
-                  ),
-                ),
-                QuillToolbar.basic(
-                  controller: addPostCubit.optionalText,
-                  embedButtons: FlutterQuillEmbeds.buttons(
-                      showCameraButton: false,
-                      // mediaPickSettingSelector:MediaPickSettingSelector.(context) =>
-                      onImagePickCallback: (file) async {
-                        return file.path;
-                      },
-                      onVideoPickCallback: (file) async {
-                        return file.path;
-                      },
-                      mediaPickSettingSelector: ((context) async {
-                        return MediaPickSetting.Gallery;
-                      })),
-                ),
+                AddPostTextField(
+                    onChanged: ((string) {
+                      addPostCubit.checkPostValidation();
+                    }),
+                    controller: addPostCubit.optionalText,
+                    mltiline: true,
+                    isBold: false,
+                    fontSize: 18,
+                    hintText: 'Add optional body text'),
               ],
             );
-          // AddPostTextField(
-          //     onChanged: ((string) {
-          //       addPostCubit.checkPostValidation();
-          //     }),
-          //     controller: addPostCubit.optionalText,
-          //     mltiline: true,
-          //     isBold: false,
-          //     fontSize: 18,
-          //     hintText: 'Add optional body text');
 
           case 3:
             return AddPostTextField(

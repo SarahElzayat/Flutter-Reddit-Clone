@@ -11,7 +11,7 @@ class Banned {
     if (json['children'] != null) {
       children = <Children>[];
       json['children'].forEach((v) {
-        children!.add(new Children.fromJson(v));
+        children!.add(Children.fromJson(v));
       });
     }
   }
@@ -35,7 +35,7 @@ class Children {
 
   Children.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    data = json['data'] != null ? new BannedUser.fromJson(json['data']) : null;
+    data = json['data'] != null ? BannedUser.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {

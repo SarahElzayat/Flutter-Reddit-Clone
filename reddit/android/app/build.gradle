@@ -66,9 +66,9 @@ android {
     /// Adding the key for logging in using google
     signingConfigs{
         debug{
-            keyAlias 'googleKey'
+            keyAlias 'androiddebugkey'
             keyPassword 'readit'
-            storeFile file('googleKey.jks')
+            storeFile file('myKey.jks')
             storePassword 'readit'
         }
     }

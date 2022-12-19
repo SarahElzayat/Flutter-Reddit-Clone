@@ -6,9 +6,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:reddit/networks/constant_end_points.dart';
-import 'package:reddit/networks/dio_helper.dart';
-import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
+import '../../networks/constant_end_points.dart';
+import '../../networks/dio_helper.dart';
+import '../../screens/bottom_navigation_bar_screens/home_screen.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../data/facebook_api/facebook_api.dart';
 import '../../data/google_api/google_sign_in_api.dart';
@@ -21,10 +21,8 @@ class ContinueWithGoOrFB extends StatelessWidget {
   /// this function is used to sign in with google
   Future signInWithGoogle(context) async {
     // await FacebookLoginAPI.logOut();
-    print('logging in');
     final user = await GoogleSignInApi.login();
     GoogleSignInAuthentication googleToken = await user!.authentication;
-    print('passed');
 
     await DioHelper.postData(
         path: signInGoogle,
@@ -32,7 +30,6 @@ class ContinueWithGoOrFB extends StatelessWidget {
       if (response.statusCode == 200 || response.statusCode == 201) {
         Navigator.of(context).pushNamed(HomeScreen.routeName);
       }
-      print('Loged in');
     }).catchError((err) {
       err = err as DioError;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -44,13 +41,13 @@ class ContinueWithGoOrFB extends StatelessWidget {
 
   /// this function is used to sign in with facebook
   Future signInWithFacebook() async {
-    await GoogleSignInApi.logOut().catchError((err) {
-      print(err.toString());
-    });
     final user = await FacebookLoginAPI.login().catchError((err) {
       print(err.toString());
     });
     print(user);
+    // await GoogleSignInApi.logOut().catchError((err) {
+    //   print(err.toString());
+    // });
     // print('Signed out');
     // await FacebookLoginAPI.login();
   }
