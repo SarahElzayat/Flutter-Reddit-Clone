@@ -40,9 +40,7 @@ class DioHelper {
         // contentType:
         //     'multipart/form-data; boundary=<calculated when request is sent>',
       ),
-
     );
-    
   }
 
   /// now we need to define the web Services
@@ -154,7 +152,11 @@ class DioHelper {
     );
   }
 
-  static Future<Response> deleteData({required String path}) async {
+  static Future<Response> deleteData({
+    required String path,
+    Map<String, dynamic>? query,
+    Map<String, dynamic>? data,
+  }) async {
     Options options;
 
     options = Options(
@@ -167,6 +169,8 @@ class DioHelper {
     return await dio.delete(
       path,
       options: options,
+      queryParameters: query,
+      data: data,
     );
   }
 }

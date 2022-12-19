@@ -5,7 +5,6 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/snack_bar.dart';
-import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/screens/posts/edit_screen.dart';
 import 'package:reddit/screens/posts/pick_community.dart';
@@ -120,8 +119,16 @@ class MenuItems {
         break;
       case MenuItems.hide:
         //Do something
-        cubit.save().then((value) {
-          PostNotifierCubit.get(context).notifyPosts();
+        cubit.hide().then((value) {
+          if (value == true) {
+            PostNotifierCubit.get(context).deletedPost(cubit.post.id!);
+            ScaffoldMessenger.of(context).showSnackBar(
+              responseSnackBar(
+                message: 'Post Hidden',
+                error: false,
+              ),
+            );
+          }
         });
         break;
       case MenuItems.block:
@@ -142,7 +149,23 @@ class MenuItems {
         break;
       case MenuItems.delete:
         //Do something
-        cubit.delete();
+        cubit.delete().then((value) {
+          if (value == null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              responseSnackBar(
+                message: 'Something went wrong',
+                error: true,
+              ),
+            );
+            return;
+          }
+          if (value) {
+            PostNotifierCubit.get(context).deletedPost(cubit.post.id!);
+          } else {
+            PostNotifierCubit.get(context)
+                .deletedComment(cubit.currentComment!.id!);
+          }
+        });
         PostNotifierCubit.get(context).notifyPosts();
 
         break;

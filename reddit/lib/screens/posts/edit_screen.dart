@@ -17,7 +17,7 @@ import '../../data/post_model/post_model.dart';
 var logger = Logger();
 
 class EditScreen extends StatefulWidget {
-  static const routeName = 'add-comment';
+  static const routeName = 'edit-screen';
   const EditScreen({super.key, required this.post, this.currentComment});
 
   /// the post to which the comment will be added

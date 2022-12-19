@@ -178,4 +178,15 @@ class PostScreenCubit extends Cubit<PostScreenState> {
       emit(PostError());
     });
   }
+
+  /// deletes comment from the post
+  /// @param [commentId] the id of the comment to delete
+  void deleteComment(String commentId) {
+    emit(CommentsLoading());
+    
+    allCommentsMap.remove(commentId);
+    comments.removeWhere((element) => element.id == commentId);
+
+    emit(CommentsLoaded());
+  }
 }
