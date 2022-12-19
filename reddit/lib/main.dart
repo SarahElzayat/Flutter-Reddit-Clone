@@ -5,8 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
 import 'package:reddit/screens/comments/add_comment_screen.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/continue_sign_up_for_mobile.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/web/continue_sign_up_screen.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/web/testScreen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../cubit/settings_cubit/settings_cubit.dart';
@@ -57,7 +59,6 @@ Future<void> main() async {
   }
 
   CacheHelper.putData(key: 'SortHome', value: HomeSort.best.index);
-  logger.w(CacheHelper.getData(key: 'SortHome'));
 
   /// and this is used to initialize Dio
   DioHelper.init();

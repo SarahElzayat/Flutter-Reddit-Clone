@@ -3,6 +3,7 @@
 /// This screen contains the regions from which the user should come from.
 
 import 'package:flutter/material.dart';
+import 'package:reddit/shared/local/shared_preferences.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../cubit/settings_cubit/settings_cubit.dart';
 import '../../widgets/settings/settings_app_bar.dart';
@@ -31,7 +32,7 @@ class _CountriesScreenState extends State<CountriesScreen> {
           return RadioListTile(
             toggleable: true,
             groupValue: country,
-            value: myVal,
+            value: CacheHelper.getData(key: 'country'),
             onChanged: (value) {
               handler(country);
             },
