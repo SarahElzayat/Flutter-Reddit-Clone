@@ -14,3 +14,9 @@ class CommentsError extends PostScreenState {
 class CommentsLoaded extends PostScreenState {}
 
 class CommentsLoadingMore extends PostScreenState {}
+
+class PostError extends PostScreenState {}
+
+class PostLoaded extends PostScreenState {}
+
+class PostLoading extends PostScreenState {}
