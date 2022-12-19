@@ -164,35 +164,4 @@ class PostModel {
         'inYourSubreddit': inYourSubreddit,
         'moderation': moderation?.toJson(),
       };
-
-  void overrideWithOther(PostModel postModel) {
-    id = postModel.id;
-    kind = postModel.kind;
-    title = postModel.title;
-    subreddit = postModel.subreddit;
-    link = postModel.link;
-    images = postModel.images;
-    video = postModel.video;
-    content = postModel.content;
-    nsfw = postModel.nsfw;
-    spoiler = postModel.spoiler;
-    sharePostId = postModel.sharePostId;
-    flair = postModel.flair;
-    comments = postModel.comments;
-    votes = postModel.votes;
-    postedAt = postModel.postedAt;
-    sendReplies = postModel.sendReplies;
-    markedSpam = postModel.markedSpam;
-    suggestedSort = postModel.suggestedSort;
-    editedAt = postModel.editedAt;
-    postedBy = postModel.postedBy;
-    votingType = postModel.votingType;
-    saved = postModel.saved;
-    followed = postModel.followed;
-    hidden = postModel.hidden;
-    spammed = postModel.spammed;
-    inYourSubreddit = postModel.inYourSubreddit;
-    moderation = postModel.moderation;
-
-  }
 }

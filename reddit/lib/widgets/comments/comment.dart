@@ -54,6 +54,7 @@ class Comment extends StatefulWidget {
 //     {"insert":"link","attributes":{"link":"pub.dev/packages/quill_markdown"}},{"insert":"\\n"}]''';
 
 class _CommentState extends State<Comment> {
+  bool isCompressed = false;
   QuillController? _controller;
   final FocusNode _focusNode = FocusNode();
 
@@ -139,54 +140,12 @@ class _CommentState extends State<Comment> {
           ),
         ),
       ],
-<<<<<<< HEAD
       child: InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         onLongPress: () {
-=======
-      child: BlocConsumer<CommentNotifierCubit, CommentsNotifierState>(
-        listener: (context, state) {
-          if (state is CommentsContentChanged) {
-            setState(() {
-              _controller = getController();
-            });
-          }
-        },
-        builder: (context, state) {
-          return ConditionalSwitch.single(
-            context: context,
-            valueBuilder: (BuildContext context) => widget.viewType,
-            caseBuilders: {
-              CommentView.normal: (BuildContext context) =>
-                  _normalComment(quillEditor),
-              CommentView.inSearch: (BuildContext context) =>
-                  _searchComment(quillEditor),
-              CommentView.inSubreddits: (BuildContext context) =>
-                  _subComments(),
-            },
-            fallbackBuilder: (BuildContext context) =>
-                _normalComment(quillEditor),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _normalComment(quillEditor) {
-    return InkWell(
-      splashColor: Colors.transparent,
-      highlightColor: Colors.transparent,
-      onLongPress: () {
-        setState(() {
-          widget.comment.isCollapsed = !widget.comment.isCollapsed;
-        });
-      },
-      onTap: () {
-        if (widget.comment.isCollapsed) {
->>>>>>> 40631d0f69581fdc20be242bf49bcd860a53f2da
           setState(() {
-            widget.comment.isCollapsed = !widget.comment.isCollapsed;
+            isCompressed = !isCompressed;
           });
         },
         onTap: () {
@@ -215,7 +174,6 @@ class _CommentState extends State<Comment> {
             bottom: 5,
           ),
 
-<<<<<<< HEAD
           // margin: EdgeInsets.only(left: widget.level * 10.0),
           child: ConditionalBuilder(
             condition: isCompressed,
@@ -242,27 +200,6 @@ class _CommentState extends State<Comment> {
                   ),
                   quillEditor,
                   // _commentsRow(),
-=======
-        // margin: EdgeInsets.only(left: widget.level * 10.0),
-        child: ConditionalBuilder(
-          condition: widget.comment.isCollapsed,
-          builder: (context) {
-            return commentAsRow(
-                comment: widget.comment,
-                showContent: true,
-                content:
-                    _controller!.document.toPlainText().replaceAll('\\n', ''));
-          },
-          fallback: (context) {
-            return Column(
-              children: [
-                commentAsRow(
-                  comment: widget.comment,
-                  showDots: false,
-                ),
-                quillEditor,
-                // _commentsRow(),
->>>>>>> 40631d0f69581fdc20be242bf49bcd860a53f2da
 
                   _commentsControlRow(),
                   widget.comment.children != null
@@ -392,7 +329,7 @@ class _CommentState extends State<Comment> {
     bool showDots = true,
     bool showContent = false,
     String content = '',
-    required CommentModel comment,
+    required CommentModel post,
   }) {
     return Row(
       children: [
@@ -401,14 +338,14 @@ class _CommentState extends State<Comment> {
           width: min(5.w, 10),
         ),
         Text(
-          '${'u'}/${comment.commentedBy} ',
+          '${'u'}/${post.commentedBy} ',
           style: const TextStyle(
             color: ColorManager.greyColor,
             fontSize: 15,
           ),
         ),
         Text(
-          '• ${timeago.format(DateTime.tryParse(comment.editTime ?? '') ?? DateTime.now(), locale: 'en_short')}',
+          '• ${timeago.format(DateTime.tryParse(post.editTime ?? '') ?? DateTime.now(), locale: 'en_short')}',
           style: const TextStyle(
             color: ColorManager.greyColor,
             fontSize: 15,
@@ -426,100 +363,7 @@ class _CommentState extends State<Comment> {
               ),
             ),
           ),
-<<<<<<< HEAD
         if (showDots) dropDownDots(post)
-=======
-        if (showDots)
-          BlocBuilder<PostNotifierCubit, PostNotifierState>(
-            builder: (context, state) {
-              return DropDownList(
-                post: widget.post,
-                comment: widget.comment,
-                itemClass: ItemsClass.comments,
-              );
-            },
-          )
-      ],
-    );
-  }
-
-  Widget _searchComment(quillEditor) {
-    return Container(
-      color: ColorManager.darkGrey,
-      margin: const EdgeInsets.only(top: 5, bottom: 5),
-      padding: const EdgeInsets.all(8),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Column(
-          children: [
-            commentAsRow(
-              comment: widget.comment,
-              showDots: false,
-            ),
-            quillEditor,
-            SizedBox(height: 2.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  '${widget.comment.votes ?? 0} points',
-                  style: TextStyle(
-                    color: ColorManager.lightGrey,
-                    fontSize: 15.sp,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _subComments() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          widget.post.title ?? '',
-          style: TextStyle(
-            color: ColorManager.eggshellWhite,
-            fontSize: 16.sp,
-          ),
-        ),
-        Row(
-          children: [
-            Text(
-              'r/${widget.post.subreddit}',
-              style: TextStyle(
-                color: ColorManager.lightGrey,
-                fontSize: 15.sp,
-              ),
-            ),
-            Text(
-              ' • ${timeago.format(DateTime.tryParse(widget.post.postedAt ?? '') ?? DateTime.now(), locale: 'en_short')}',
-              style: TextStyle(
-                color: ColorManager.greyColor,
-                fontSize: 15.sp,
-              ),
-            ),
-            Text(
-              ' • ${widget.post.votes ?? ''} upvotes',
-              style: TextStyle(
-                color: ColorManager.lightGrey,
-                fontSize: 15.sp,
-              ),
-            ),
-          ],
-        ),
-        Text(
-          _controller!.document.toPlainText(),
-          style: TextStyle(
-            color: ColorManager.eggshellWhite,
-            fontSize: 16.sp,
-          ),
-        )
->>>>>>> 40631d0f69581fdc20be242bf49bcd860a53f2da
       ],
     );
   }

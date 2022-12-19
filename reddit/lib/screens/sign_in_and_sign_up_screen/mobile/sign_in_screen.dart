@@ -64,7 +64,6 @@ class _SignInScreenState extends State<SignInScreen> {
     DioHelper.postData(path: login, data: user.toJson()).then((value) {
       if (value.statusCode == 200) {
         CacheHelper.putData(key: 'token', value: value.data['token']);
-        print(CacheHelper.getData(key: 'token'));
         CacheHelper.putData(key: 'username', value: value.data['username']);
 
         // navigating to the main screen
