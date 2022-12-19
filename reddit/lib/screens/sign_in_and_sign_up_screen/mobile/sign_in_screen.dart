@@ -66,10 +66,8 @@ class _SignInScreenState extends State<SignInScreen> {
       if (value.statusCode == 200) {
         /// saving the token and the username in the shared preferences
         CacheHelper.putData(key: 'token', value: value.data['token']);
-        print(CacheHelper.getData(key: 'token'));
         CacheHelper.putData(key: 'username', value: value.data['username']);
         token = CacheHelper.getData(key: 'token');
-        print(token);
 
         /// caching the user settings in the shared preferences
         await DioHelper.getData(path: accountSettings).then((response) {

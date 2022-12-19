@@ -3,14 +3,13 @@
 /// this screen is built to show the UI in case that the user is using the app through the web
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/settings/settings_models/user_settings.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../data/sign_in_And_sign_up_models/sign_in_model.dart';
-import '../../../screens/main_screen.dart';
 import '../../../screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import '../../../screens/bottom_navigation_bar_screens/home_screen.dart';
 import '../../../screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
@@ -73,7 +72,7 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
         CacheHelper.putData(key: 'username', value: value.data['username']);
         UserSettingsModel.fromJson(value.data);
         UserSettingsModel.cacheUserSettings();
-
+        token = CacheHelper.getData(key: 'token');
         // navigating to the main screen
         Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
       }

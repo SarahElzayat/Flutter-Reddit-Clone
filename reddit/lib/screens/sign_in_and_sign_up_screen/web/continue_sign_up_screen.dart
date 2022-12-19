@@ -4,6 +4,7 @@
 /// he enter his email, and to continue the sign up process
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/settings/settings_models/user_settings.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -76,6 +77,7 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
         CacheHelper.putData(key: 'username', value: value.data['username']);
         UserSettingsModel.fromJson(value.data);
         UserSettingsModel.cacheUserSettings();
+        token = CacheHelper.getData(key: 'token');
         // navigating to the main screen
         Navigator.of(context)
             .pushReplacementNamed(HomeScreenForMobile.routeName);
