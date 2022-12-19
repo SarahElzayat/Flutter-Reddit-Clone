@@ -95,6 +95,13 @@ class PostScreen extends StatelessWidget {
                           Logger().i('loading more comments');
                           screenCubit.getCommentsOfPost(after: true);
                         }
+
+                        if (state is PostDeleted) {
+                          Navigator.of(context).pop();
+                        }
+                        if (state is CommentDeleted) {
+                          screenCubit.deleteComment(state.id);
+                        }
                       },
                       builder: (context, state) {
                         return Column(

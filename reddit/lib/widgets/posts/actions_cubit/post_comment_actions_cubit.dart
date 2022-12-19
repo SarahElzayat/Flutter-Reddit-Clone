@@ -92,7 +92,7 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
   }
 
   /// this function is used to hide a post
-  Future hide() {
+  Future<bool?> hide() {
     String path = post.hidden ?? false ? '/unhide' : '/hide';
 
     return DioHelper.postData(
@@ -102,7 +102,9 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
       },
     ).then((value) {
       post.hidden = !post.hidden!;
+
       emit(HiddenChangedState());
+      return true;
     }).catchError((error) {
       error = error as DioError;
       logger.e(error.response?.data);
@@ -129,8 +131,8 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
   }
 
   /// this function is used to delete a post
-  Future delete() {
-    return DioHelper.postData(
+  Future<bool?> delete() {
+    return DioHelper.deleteData(
       path: '/delete',
       data: {
         'id': isPost ? post.id : currentComment!.id,
@@ -138,9 +140,10 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
       },
     ).then((value) {
       emit(PostsDeleted());
+      return isPost;
     }).catchError((error) {
-      logger.e(error.toString());
       error = error as DioError;
+      logger.e(error.response?.data);
       emit(OpError(error: error.response?.data['error'] ?? ''));
     });
   }
@@ -270,7 +273,7 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
     required void Function(DioError) onError,
     required SendedCommentModel c,
   }) {
-    logger.e(c.toJson());
+    logger.d(c.toJson());
     DioHelper.postData(path: '/comment', data: c.toJson()).then((value) {
       onSuccess();
       return null;

@@ -5,8 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:logger/logger.dart';
 import 'package:reddit/components/snack_bar.dart';
-import 'package:reddit/data/post_model/approve.dart';
-import 'package:reddit/data/post_model/remove.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../components/bottom_sheet.dart';
