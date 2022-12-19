@@ -4,27 +4,24 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/data/comment/comment_model.dart';
 
 import 'package:reddit/data/home/drawer_communities_model.dart';
 import 'package:reddit/data/saved/saved_comments_model.dart';
-import 'package:reddit/screens/bottom_navigation_bar_screens/chat_screen.dart';
-import 'package:reddit/screens/inbox/Inbox_screen.dart';
-import 'package:reddit/screens/inbox/notifications_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
+import 'package:reddit/screens/bottom_navigation_bar_screens/inbox_screen.dart';
+import 'package:reddit/screens/bottom_navigation_bar_screens/notifications_screen.dart';
 import 'package:reddit/screens/saved/saved_comments.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
-import '../../data/post_model/post_model.dart';
-import '../../data/temp_data/tmp_data.dart';
-import '../../networks/constant_end_points.dart';
-import '../../networks/dio_helper.dart';
-import '../../screens/bottom_navigation_bar_screens/add_post_screen.dart';
-import '../../screens/comments/add_comment_screen.dart';
-import '../../screens/saved/saved_posts.dart';
-import '../../widgets/posts/post_widget.dart';
+import '../data/post_model/post_model.dart';
+import '../data/temp_data/tmp_data.dart';
+import '../networks/constant_end_points.dart';
+import '../networks/dio_helper.dart';
+import '../screens/bottom_navigation_bar_screens/add_post_screen.dart';
+import '../screens/comments/add_comment_screen.dart';
+import '../screens/saved/saved_posts.dart';
+import '../widgets/posts/post_widget.dart';
 
 part 'app_state.dart';
 
@@ -45,9 +42,8 @@ class AppCubit extends Cubit<AppState> {
     const HomeScreen(),
     const ExploreScreen(),
     const AddPostScreen(),
-    // const AddPost(),
-    const ChatScreen(),
     const InboxScreen(),
+    const NotificationsScreen()
   ];
 
   ///@param[screensNames] a list of the icons of the bottom navigation bar screens
@@ -68,7 +64,6 @@ class AppCubit extends Cubit<AppState> {
   String homePostsAfterId = '';
   String homePostsBeforeId = '';
 
-  /// gets the posts of the home page
   void getHomePosts(
       {bool loadMore = false,
       bool before = false,
@@ -77,7 +72,7 @@ class AppCubit extends Cubit<AppState> {
     if (!loadMore) {
       homePosts.clear();
     }
-    int sort = CacheHelper.getData(key: 'SortHome');
+    int sort = CacheHelper.getData(key: 'sort');
     String path = '';
     if (HomeSort.best.index == sort) {
       path = homeBest;
@@ -113,7 +108,8 @@ class AppCubit extends Cubit<AppState> {
           logger.wtf('after $homePostsAfterId');
           for (int i = 0; i < value.data['children'].length; i++) {
             homePosts.add(PostWidget(
-                post: PostModel.fromJson(value.data['children'][i]['data'])));
+                post: PostModel.fromJson(
+                    value.data['children'][i]['data'])));
             logger.e(i);
           }
         }
@@ -126,8 +122,6 @@ class AppCubit extends Cubit<AppState> {
       if (kDebugMode) {
         logger.wtf(error.toString());
       }
-    }).catchError((error) {
-      emit(ErrorState());
     });
   }
 
@@ -213,12 +207,9 @@ class AppCubit extends Cubit<AppState> {
       } else {
         emit(ErrorState());
       }
-    }).catchError((onError) {
-      emit(ErrorState());
     });
   }
 
-  /// gets the list of the subreddits the user moderates
   void getYourModerating() {
     moderatingListItems.clear();
     DioHelper.getData(path: moderatedSubreddits).then((value) {
@@ -231,15 +222,12 @@ class AppCubit extends Cubit<AppState> {
       } else {
         emit(ErrorState());
       }
-    }).catchError((onError) {
-      emit(ErrorState());
     });
   }
 
   ///@param [profilePicture] the profile picture of the user
   String profilePicture = '';
 
-  /// gets the profile picture of the user
   void getUserProfilePicture() {
     DioHelper.getData(path: '$user/$username/$about').then((value) {
       logger.wtf(value.data);
@@ -251,24 +239,15 @@ class AppCubit extends Cubit<AppState> {
       } else {
         emit(ErrorState());
       }
-    }).catchError((error) {
-      emit(ErrorState());
-      print('Error In get Picture Profile $error');
-    }).catchError((onError) {
-      emit(ErrorState());
     });
   }
 
   ///@param [username] is the username of the user
   String? username = 'Anonymous';
-
-  ///@param [age] is the user's age
   String? age = '';
-
-  ///@param [karma] is the user's karma
   int? karma = 1;
 
-  /// the function get the user's username, age and karma from the backend
+  /// the function get the user's username from the backend
   void getUsername() {
     username = CacheHelper.getData(key: 'username');
     DioHelper.getData(path: '$userDetails/$username').then((value) {
@@ -280,14 +259,11 @@ class AppCubit extends Cubit<AppState> {
         } else if (DateTime.now().month - joinDate.month > 0) {
           age = '${DateTime.now().month - joinDate.month} m';
         } else {
-          age = '${DateTime.now().day - joinDate.day + 1} d';
+          age = '${DateTime.now().day - joinDate.day} d';
         }
       } else {
         emit(ErrorState());
       }
-    }).catchError((error) {
-      print('Error In Get User Details $error');
-      emit(ErrorState());
     });
   }
 
@@ -361,8 +337,6 @@ class AppCubit extends Cubit<AppState> {
       if (kDebugMode) {
         logger.wtf(error.toString());
       }
-    }).catchError((onError) {
-      emit(ErrorState());
     });
   }
 
@@ -444,8 +418,7 @@ class AppCubit extends Cubit<AppState> {
   String savedPostsBeforeId = '';
   String savedPostsAfterId = '';
 
-  List<CommentModel> savedCommentsList = [];
-  List<PostModel> savedCommentsPostsList = [];
+  List<SavedCommentModel> savedCommentsList = [];
   String savedCommentsBeforeId = '';
   String savedCommentsAfterId = '';
 
@@ -463,7 +436,6 @@ class AppCubit extends Cubit<AppState> {
     if (!loadMore) {
       savedPostsList.clear();
       savedCommentsList.clear();
-      savedCommentsPostsList.clear();
       savedPostsBeforeId = '';
       savedPostsAfterId = '';
       savedCommentsBeforeId = '';
@@ -509,43 +481,26 @@ class AppCubit extends Cubit<AppState> {
           savedCommentsBeforeId = value.data['before'];
         }
 
-        logger.wtf(value.data.toString());
+        // logger.wtf(value.data.toString());
         for (int i = 0; i < value.data['children'].length; i++) {
-          if (value.data['children'][i]['type'] == 'post') {
-            logger.wtf('POOOOSTTTTSSS');
-            logger.wtf(value.data['children'][i]['data']['post'].toString());
+          if (value.data['children'][i]['data']['comments'].length == 0) {
+            // logger.wtf('POOOOSTTTTSSS');
+            // logger.wtf(value.data['children'][i]['data'].toString());
 
             savedPostsList.add(
                 PostModel.fromJson(value.data['children'][i]['data']['post']));
             savedPostsList[savedPostsList.length - 1].id =
                 value.data['children'][i]['id'];
 
-            logger.e('tmmmmamaamammama');
-          } else if (value.data['children'][i]['type'] == 'comment') {
+            // logger.e('tmmmmamaamammama');
+          } else {
             logger.wtf('COOOMMMMEEENNNTSSSS');
             logger.wtf(value.data['children'][i]['data'].toString());
             for (int j = 0;
                 j < value.data['children'][i]['data']['comments'].length;
                 j++) {
-              savedCommentsList.add(CommentModel.fromJson(
+              savedCommentsList.add(SavedCommentModel.fromJson(
                   value.data['children'][i]['data']['comments'][j]));
-              savedCommentsPostsList.add(PostModel.fromJson(
-                  value.data['children'][i]['data']['post']));
-
-              logger.e('tmmmmamaamammama');
-            }
-          } else {
-            savedPostsList.add(
-                PostModel.fromJson(value.data['children'][i]['data']['post']));
-            savedPostsList[savedPostsList.length - 1].id =
-                value.data['children'][i]['id'];
-            for (int j = 0;
-                j < value.data['children'][i]['data']['comments'].length;
-                j++) {
-              savedCommentsList.add(CommentModel.fromJson(
-                  value.data['children'][i]['data']['comments'][j]));
-              savedCommentsPostsList.add(PostModel.fromJson(
-                  value.data['children'][i]['data']['post']));
             }
           }
         }
@@ -553,7 +508,6 @@ class AppCubit extends Cubit<AppState> {
 
         // logger.wtf(' om el id ${savedPostsList[0].id.toString()}');
         logger.w('length ${savedPostsList.length}');
-        logger.w('length ${savedCommentsList.length}');
 
         loadMore ? emit(LoadedMoreSavedState()) : emit(LoadedSavedState());
       }
@@ -561,12 +515,9 @@ class AppCubit extends Cubit<AppState> {
       if (kDebugMode) {
         logger.wtf(error.toString());
       }
-    }).catchError((onError) {
-      emit(ErrorState());
     });
   }
 
-  /// clears the user's history
   void clearHistoy() {
     DioHelper.postData(
       path: clearHistory,
@@ -575,33 +526,6 @@ class AppCubit extends Cubit<AppState> {
       if (value.statusCode == 200) history.clear();
       emit(ClearHistoryState());
       emit(HistoryEmptyState());
-    }).catchError((onError) {
-      emit(ErrorState());
     });
-  }
-
-  void deleteProfilePicture() {
-    DioHelper.deleteData(path: userProfilePicture).then((value) {
-      if (value.statusCode == 200) {
-        emit(DeletedProfilePictureState());
-      } else if (value.statusCode == 400) {
-        emit(NoProfilePictureState());
-      }
-    }).onError((error, stackTrace) {
-      emit(ErrorState());
-    });
-  }
-
-  void changeProfilePicture(XFile image) {
-    DioHelper.putData(path: userProfilePicture, data: {'avatar': image})
-        .then((value) {
-      if (value.statusCode == 200) {
-        emit(ChangedProfilePictureState());
-      }
-    }).onError(
-      (error, stackTrace) {
-        emit(ErrorState());
-      },
-    );
   }
 }

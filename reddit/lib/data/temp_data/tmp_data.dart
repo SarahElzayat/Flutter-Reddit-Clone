@@ -6,21 +6,21 @@ import '../post_model/image.dart';
 import '../post_model/post_model.dart';
 
 const quillContent = {
-  'ops': [
+  "ops": [
     {
-      'insert': 'This is a post written with Quill\\n',
-      'attributes': {'bold': true}
+      "insert": "This is a post written with Quill\\n",
+      "attributes": {"bold": true}
     },
     {
-      'insert': 'bold and italic',
-      'attributes': {'bold': true, 'italic': true}
+      "insert": "bold and italic",
+      "attributes": {"bold": true, "italic": true}
     },
-    {'insert': '\\n'},
+    {"insert": "\\n"},
     {
-      'insert': 'link',
-      'attributes': {'link': 'pub.dev/packages/quill_markdown'}
+      "insert": "link",
+      "attributes": {"link": "pub.dev/packages/quill_markdown"}
     },
-    {'insert': '\\n'}
+    {"insert": "\\n"}
   ]
 };
 

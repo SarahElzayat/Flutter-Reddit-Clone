@@ -10,7 +10,6 @@ import 'package:giphy_get/giphy_get.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -38,6 +37,7 @@ class AddCommentScreen extends StatefulWidget {
 
 class _AddCommentScreenState extends State<AddCommentScreen> {
   QuillController? _controller;
+  final FocusNode _focusNode = FocusNode();
   @override
   void initState() {
     _controller = QuillController.basic();
@@ -48,6 +48,65 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // var toolbar = QuillToolbar.basic(
+    //   showUndo: false,
+    //   showRedo: false,
+    //   showBoldButton: false,
+    //   showItalicButton: false,
+    //   showBackgroundColorButton: false,
+    //   showCenterAlignment: false,
+    //   showLeftAlignment: false,
+    //   showRightAlignment: false,
+    //   showJustifyAlignment: false,
+    //   showHeaderStyle: false,
+    //   showListNumbers: false,
+    //   showListBullets: false,
+    //   showCodeBlock: false,
+    //   showStrikeThrough: false,
+    //   showFontSize: false,
+    //   multiRowsDisplay: false,
+    //   showClearFormat: false,
+    //   showIndent: false,
+    //   showQuote: false,
+    //   showColorButton: false,
+    //   showSearchButton: false,
+    //   showDirection: false,
+    //   showDividers: false,
+    //   showFontFamily: false,
+    //   showInlineCode: false,
+    //   showListCheck: false,
+    //   showUnderLineButton: false,
+    //   // showSmallButton: false,
+    //   controller: _controller!,
+    //   embedButtons: FlutterQuillEmbeds.buttons(
+    //     showVideoButton: false,
+    //     showCameraButton: false,
+
+    //     // provide a callback to enable picking images from device.
+    //     // if omit, "image" button only allows adding images from url.
+    //     // same goes for videos.
+    //     onImagePickCallback: _onImagePickCallback,
+    //     onVideoPickCallback: _onVideoPickCallback,
+    //     // uncomment to provide a custom "pick from" dialog.
+    //     // mediaPickSettingSelector: _selectMediaPickSetting,
+    //     // uncomment to provide a custom "pick from" dialog.
+    //     // cameraPickSettingSelector: _selectCameraPickSetting,
+    //   ),
+    //   showAlignmentButtons: true,
+    //   afterButtonPressed: _focusNode.requestFocus,
+    // );
+    // if (kIsWeb) {
+    //   toolbar = QuillToolbar.basic(
+    //     controller: _controller!,
+    //     embedButtons: FlutterQuillEmbeds.buttons(
+    //       onImagePickCallback: _onImagePickCallback,
+    //       webImagePickImpl: _webImagePickImpl,
+    //     ),
+    //     showAlignmentButtons: true,
+    //     afterButtonPressed: _focusNode.requestFocus,
+    //   );
+    // }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(_isPostParent() ? 'Add comment' : 'Reply'),
@@ -80,7 +139,6 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
               PostAndCommentActionsCubit.postComment(
                 c: c,
                 onSuccess: () {
-                  PostNotifierCubit.get(context).notifyPosts();
                   Navigator.of(context).pop(true);
                 },
                 onError: (DioError error) {
@@ -190,6 +248,7 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
 
   QuillController getController() {
     Document doc;
+
     try {
       doc = Document.fromJson((widget.post.content ?? {'ops': []})['ops']);
     } catch (e) {
@@ -252,5 +311,16 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
     final file = File(fileName);
 
     return onImagePickCallback(file);
+  }
+
+  /// Renders the video picked by imagePicker from local file storage
+  /// You can also upload the picked video to any server (eg : AWS s3
+  /// or Firebase) and then return the uploaded video URL.
+  Future<String> _onVideoPickCallback(File file) async {
+    // Copies the picked file from temporary cache to applications directory
+    final appDocDir = await getApplicationDocumentsDirectory();
+    final copiedFile =
+        await file.copy('${appDocDir.path}/${p.basename(file.path)}');
+    return copiedFile.path.toString();
   }
 }

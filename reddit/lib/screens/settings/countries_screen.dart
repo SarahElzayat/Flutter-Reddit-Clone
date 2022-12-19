@@ -3,40 +3,24 @@
 /// This screen contains the regions from which the user should come from.
 
 import 'package:flutter/material.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
-import '../../components/helpers/color_manager.dart';
-import '../../cubit/settings_cubit/settings_cubit.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
 import '../../widgets/settings/settings_app_bar.dart';
 import '../../data/settings/countries.dart';
 
-class CountriesScreen extends StatefulWidget {
+class CountriesScreen extends StatelessWidget {
   static const routeName = '/countries_screen';
   const CountriesScreen({super.key});
-
-  @override
-  State<CountriesScreen> createState() => _CountriesScreenState();
-}
-
-class _CountriesScreenState extends State<CountriesScreen> {
   final myList = countries;
-  int myVal = 0;
-
   @override
   Widget build(BuildContext context) {
-    Function handler = ModalRoute.of(context)?.settings.arguments as Function;
-
     return Scaffold(
       appBar: const SettingsAppBar(title: 'Select country/region'),
       body: ListView(
         children: myList.map((country) {
-          return RadioListTile(
-            toggleable: true,
-            groupValue: country,
-            value: CacheHelper.getData(key: 'country'),
-            onChanged: (value) {
-              handler(country);
-            },
-            title: SizedBox(
+          return InkWell(
+            /// TODO: this function should be implemented
+            onTap: () {},
+            child: SizedBox(
               height: 40,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -50,9 +34,7 @@ class _CountriesScreenState extends State<CountriesScreen> {
                       child: Text(
                         country,
                         style: const TextStyle(
-                            fontSize: 16,
-                            color: ColorManager.eggshellWhite,
-                            fontWeight: FontWeight.bold),
+                            fontSize: 18, color: ColorManager.eggshellWhite),
                       ),
                     ),
                   ),

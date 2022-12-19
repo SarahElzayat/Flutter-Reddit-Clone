@@ -10,7 +10,7 @@ import '../../screens/main_screen.dart';
 import '../../widgets/posts/post_upper_bar.dart';
 import '../../widgets/posts/post_widget.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
-import '../../cubit/app_cubit/app_cubit.dart';
+import '../../cubit/app_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_state.dart';
 import '../add_post/add_post.dart';
 

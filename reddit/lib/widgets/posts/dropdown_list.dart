@@ -3,6 +3,7 @@
 /// @Author: Ahmed Atta
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart' hide MenuItem;
+import 'package:logger/logger.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/data/post_model/post_model.dart';
