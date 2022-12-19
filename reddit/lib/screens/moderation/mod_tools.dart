@@ -33,7 +33,7 @@ class ModTools extends StatelessWidget {
         cubit.navigate(context, '/content_tag_screen');
       },
       () {
-        cubit.navigate(context, '/post_types_screen');
+        cubit.navigate(context, '/post_types_screenconst');
       },
       () {
         cubit.navigate(context, '/discovery_screen');
@@ -120,7 +120,8 @@ class ModTools extends StatelessWidget {
               SizedBox(
                 height: 710,
                 child: ListTileContainer(
-                    handler: generalFunctions,
+                    types: const [''],
+                    handler: [() {}],
                     title: '      GENERAL',
                     listTileTitles: generalTitles,
                     listTileIcons: generalIcons,
@@ -129,7 +130,8 @@ class ModTools extends StatelessWidget {
               SizedBox(
                 height: 150,
                 child: ListTileContainer(
-                    handler: contentAndRegulationsFunctions,
+                    types: const [''],
+                    handler: [() {}],
                     title: '      CONTENT & REGULATIONS',
                     listTileTitles: contentAndRegulationsTitles,
                     listTileIcons: contentAndRegulationsIcons,
@@ -138,6 +140,7 @@ class ModTools extends StatelessWidget {
               SizedBox(
                 height: 315,
                 child: ListTileContainer(
+                    types: const [''],
                     handler: userManagementFunctions,
                     title: '      USER MANAGEMENT',
                     listTileTitles: userManagementTitles,
@@ -147,6 +150,7 @@ class ModTools extends StatelessWidget {
               SizedBox(
                 height: 315,
                 child: ListTileContainer(
+                    types: const [''],
                     handler: resourceLinksFunctions,
                     title: '      RSOURCE LINKS',
                     listTileTitles: resourceLinksTitles,
@@ -164,9 +168,6 @@ class ModTools extends StatelessWidget {
               )
             ],
           ),
-        )
-        // ],
-        // ),
-        );
+        ));
   }
 }

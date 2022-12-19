@@ -1,8 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../components/helpers/posts/helper_funcs.dart';
-import '../../../constants/constants.dart';
 import '../../../data/comment/comments_listing.dart';
 
 import '../../../data/comment/comment_model.dart';
@@ -15,10 +16,21 @@ Logger logger = Logger();
 class PostScreenCubit extends Cubit<PostScreenState> {
   final PostModel post;
   final List<CommentModel> comments = [];
-
+  bool? showbtn;
+  final ScrollController scrollController = ScrollController();
   PostScreenCubit({
     required this.post,
-  }) : super(PostScreenInitial());
+  }) : super(PostScreenInitial()) {
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        emit(CommentsLoadingMore());
+
+        //scroll listener
+        showbtn = scrollController.offset > 50.h;
+      }
+    });
+  }
 
   static PostScreenCubit get(context) => BlocProvider.of(context);
 
@@ -52,27 +64,39 @@ class PostScreenCubit extends Cubit<PostScreenState> {
     emit(CommentsSortTypeChanged());
   }
 
-  void getCommentsOfPost({
-    String? before,
-    String? after,
-    String sort = 'best',
-    int? limit,
-  }) async {
-    emit(CommentsLoading());
+  String? lastafter;
+  String? lastbefore;
 
+  /// get  comments section
+  /// @param [limit] the number of replies to show
+  /// @param [sort] the sort type of the replies
+  void getCommentsOfPost({
+    bool? before,
+    bool? after,
+    String? sort,
+    int? limit,
+  }) {
+    emit(CommentsLoading());
+    sort ??= selectedItem.toLowerCase();
     DioHelper.getData(
       path: '/comments/${post.id}',
       query: {
-        'before': before,
-        'after': after,
+        'before': before ?? false ? lastbefore : null,
+        'after': after ?? false ? lastafter : null,
         'limit': limit,
         'sort': sort,
       },
     ).then((value) {
-      comments.clear();
-      allCommentsMap.clear();
+      if (!(after ?? false)) {
+        comments.clear();
+        allCommentsMap.clear();
+      }
+
       CommentsListingModel commentsListingModel =
           CommentsListingModel.fromJson(value.data);
+
+      lastafter = commentsListingModel.after;
+      lastbefore = commentsListingModel.before;
       commentsListingModel.children?.forEach((element) {
         comments.add(element);
         allCommentsMap[element.id!] = element;
@@ -80,11 +104,10 @@ class PostScreenCubit extends Cubit<PostScreenState> {
           allCommentsMap[element.id!] = element;
         });
       });
-      logger.d(allCommentsMap);
       emit(CommentsLoaded());
     }).catchError((error) {
       logger.e('error in coments $error');
-      emit(CommentsError());
+      emit(CommentsError((error as DioError).response!.data['error']));
     });
   }
 
@@ -118,15 +141,12 @@ class PostScreenCubit extends Cubit<PostScreenState> {
           CommentsListingModel.fromJson(value.data);
       // there is only one comment as the parent
 
-      logger.d(allCommentsMap);
       for (var child in commentsListingModel.children!) {
         if (allCommentsMap.containsKey(child.id!)) {
           allCommentsMap[child.id!]!.overrideWithOther(child);
-          logger.d('comment ${child.commentBody} already exists');
         } else {
           allCommentsMap[child.id!] = child;
           currentComment!.children!.add(child);
-          logger.d('comment ${child.id} added');
         }
 
         getChildrenOfComment(child).forEach((element) {
@@ -138,7 +158,7 @@ class PostScreenCubit extends Cubit<PostScreenState> {
     }).catchError((error) {
       logger.e('error in show More $error');
 
-      emit(CommentsError());
+      emit(CommentsError('error in show more'));
     });
   }
 }
