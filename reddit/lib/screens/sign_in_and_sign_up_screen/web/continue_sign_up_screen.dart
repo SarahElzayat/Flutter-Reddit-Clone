@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/settings/settings_models/user_settings.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/continue_sign_up_for_mobile.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../components/default_text_field.dart';
@@ -81,6 +82,20 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
         // navigating to the main screen
         Navigator.of(context)
             .pushReplacementNamed(HomeScreenForMobile.routeName);
+
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Title'),
+                content: const SizedBox(
+                    width: 400, child: ContinueSignUpForMobile()),
+                actions: [
+                  TextButton(onPressed: () {}, child: Text('Cancel')),
+                  TextButton(onPressed: () {}, child: Text('Ok')),
+                ],
+              );
+            });
       }
     }).catchError((error) {
       // casting the error as a dio error to be able to use its content
