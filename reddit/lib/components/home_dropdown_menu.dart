@@ -50,10 +50,10 @@ class _HomeDropdownMenuState extends State<HomeDropdownMenu> {
             // borderRadius: BorderRadius.circular(14),
             color: ColorManager.black,
           ),
-          dropdownWidth: CacheHelper.getData(key: 'isAndroid')!
+          dropdownWidth: !kIsWeb
               ? MediaQuery.of(context).size.width
               : 300,
-          buttonWidth: !CacheHelper.getData(key: 'isAndroid')!
+          buttonWidth: kIsWeb
               ? MediaQuery.of(context).size.width * 0.2
               : null,
           // barrierColor: ColorManager.black, //DA 7ELW MOMKEN A7TAGO

@@ -3,10 +3,11 @@
 /// @Author: Ahmed Atta
 
 import 'package:flutter/material.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/snack_bar.dart';
-import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/screens/posts/edit_screen.dart';
+import 'package:reddit/screens/posts/pick_community.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 import '../../functions/post_functions.dart';
@@ -138,7 +139,13 @@ class MenuItems {
 
         break;
       case MenuItems.share:
+        showModalBottomSheet(
+          context: context,
+          builder: (context) =>
+              shareModalBottomSheet(context: context, post: post),
+        );
         //Do something
+
         break;
       case MenuItems.delete:
         //Do something
@@ -202,4 +209,58 @@ class MenuItems {
         break;
     }
   }
+}
+
+shareModalBottomSheet(
+    {required BuildContext context, required PostModel post}) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        shareIcon(icon: Icons.link, label: 'Copy link', onPressed: () {}),
+        shareIcon(
+            icon: Icons.fork_right,
+            label: 'Community',
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PickCommunityScreen(
+                    sharedPost: post,
+                  ),
+                ))),
+        shareIcon(
+            icon: Icons.person_outline_rounded,
+            label: 'Profile',
+            onPressed: () {}),
+      ],
+    ),
+  );
+}
+
+Widget shareIcon({required IconData icon, required label, required onPressed}) {
+  return Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      InkWell(
+        onTap: onPressed,
+        child: CircleAvatar(
+          radius: 30,
+          backgroundColor: ColorManager.black,
+          child: Icon(icon),
+        ),
+      ),
+      const SizedBox(
+        height: 10,
+      ),
+      Text(
+        label,
+        style: const TextStyle(
+          fontSize: 16,
+          color: ColorManager.eggshellWhite,
+        ),
+      )
+    ],
+  );
 }

@@ -8,7 +8,6 @@ import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
 import 'package:reddit/data/home/drawer_communities_model.dart';
-import 'package:reddit/screens/user_profile/user_profile_edit_screen.dart';
 import 'package:reddit/screens/user_profile/user_profile_screen.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 
@@ -21,8 +20,11 @@ import '../../screens/to_be_done_screen.dart';
 /// @param [onPressed] is the function that controls the list
 /// @param [isOpen] is the state of the list
 Widget listButton(
-    context, text, List<DrawerCommunitiesModel> list, onPressed, isOpen,
-    {isCommunity = false, isModerating = false, required navigateToSubreddit}) {
+    context, text, Map<String, DrawerCommunitiesModel> list, onPressed, isOpen,
+    {isCommunity = false,
+    isModerating = false,
+    isFavorites = false,
+    required navigateToSubreddit}) {
   return Container(
     decoration: const BoxDecoration(
         border: BorderDirectional(
@@ -82,14 +84,15 @@ Widget listButton(
               padding: const EdgeInsets.only(
                 left: 10,
               ),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: list.length,
               itemBuilder: (context, index) {
                 return InkWell(
                     onTap: () => SubredditCubit.get(context).setSubredditName(
-                        context, list[index].title.toString()),
+                        context, list.values.elementAt(index).title.toString()),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: yourCommunitiesCard(list[index]),
+                      child: yourCommunitiesCard(list.values.elementAt(index)),
                     ));
               },
               shrinkWrap: true,
@@ -116,10 +119,7 @@ Widget genericTextButton(context, icon, text, route, {required isLeftDrawer}) =>
             UserProfileCubit.get(context).setUsername(
                 CacheHelper.getData(key: 'username'),
                 navigate: true);
-          }
-
-          // AppCubit.get(context)();
-          else {
+          } else {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => route,
             ));
@@ -148,24 +148,38 @@ Widget yourCommunitiesCard(DrawerCommunitiesModel model) {
   return BlocConsumer<AppCubit, AppState>(
     listener: (context, state) {},
     builder: (context, state) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5.0),
-        child: Row(
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(right: 8.0),
-              child: CircleAvatar(
-                backgroundImage: AssetImage('./assets/images/uranus.png'),
-                radius: 10,
-              ),
+      return Row(
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(right: 8.0),
+            child: CircleAvatar(
+              backgroundImage: AssetImage('./assets/images/uranus.png'),
+              radius: 10,
             ),
-            Text(
-              'r/${model.title.toString()}',
-              style: Theme.of(context).textTheme.displayMedium,
+          ),
+          Text(
+            'r/${model.title.toString()}',
+            style: Theme.of(context).textTheme.displayMedium,
+          ),
+          const Spacer(),
+          IconButton(
+            icon: Icon(
+              model.isFavorite!
+                  ? Icons.star_rounded
+                  : Icons.star_outline_rounded,
+              color: ColorManager.lightGrey,
+              size: 20,
             ),
-            const Spacer(),
-          ],
-        ),
+            onPressed: () {
+              model.isFavorite!
+                  ? AppCubit.get(context)
+                      .removeFavoriteSubreddit(subredditName: model.title!)
+                  : AppCubit.get(context)
+                      .addFavoriteSubreddit(subredditName: model.title!);
+              // model.isFavorite = !model.isFavorite!;
+            },
+          )
+        ],
       );
     },
   );
