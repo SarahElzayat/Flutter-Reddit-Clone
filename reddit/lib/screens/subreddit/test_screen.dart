@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/cubit/app_cubit/app_cubit.dart';
+import 'package:reddit/cubit/app_cubit.dart';
 import 'package:reddit/screens/subreddit/subreddit_screen_web.dart';
 import '../../router.dart';
 import '../../theme/theme_data.dart';

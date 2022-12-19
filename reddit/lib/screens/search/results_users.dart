@@ -4,7 +4,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/components/search_components/profile_result_container.dart';
+import 'package:reddit/components/search_components/profile_result.dart';
 import 'package:reddit/data/search/search_result_profile_model.dart';
 import 'package:reddit/screens/search/cubit/search_cubit.dart';
 
@@ -19,7 +19,6 @@ class ResultsUsers extends StatefulWidget {
 
 class _ResultsUsersState extends State<ResultsUsers> {
   final _scrollController = ScrollController();
-  final GlobalKey _globalKey = GlobalKey();
   List<SearchResultProfileModel> users = [];
   void _scrollListener() {
     if (_scrollController.offset ==
@@ -31,21 +30,22 @@ class _ResultsUsersState extends State<ResultsUsers> {
   @override
   void initState() {
     SearchCubit.get(context).getUsers();
-    // cubit.users =
+    // users =
     _scrollController.addListener(_scrollListener);
 
     super.initState();
   }
 
-  // @override
-  // void dispose() {
-  //   _scrollController.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     SearchCubit cubit = SearchCubit.get(context);
+    users = cubit.users;
 
     return BlocConsumer<SearchCubit, SearchState>(
       listener: (context, state) {},
@@ -58,7 +58,7 @@ class _ResultsUsersState extends State<ResultsUsers> {
             color: ColorManager.blue,
           )),
           builder: (context) {
-            return cubit.users.isEmpty
+            return users.isEmpty
                 ? Center(
                     child: Text(
                       'Wow, such empty',
@@ -66,14 +66,12 @@ class _ResultsUsersState extends State<ResultsUsers> {
                     ),
                   )
                 : ListView.builder(
-                    // itemExtent: 400,
-                    key: _globalKey,
                     controller: _scrollController,
-                    itemCount: cubit.users.length, //cubit.cubit.users.length,
+                    itemCount: users.length, //cubit.users.length,
                     shrinkWrap: true,
                     itemBuilder: (context, index) => IntrinsicHeight(
-                          child: ProfileResultContainer(
-                            model: cubit.users[index],
+                          child: ProfileResult(
+                            model: users[index],
                           ),
                         ));
           },

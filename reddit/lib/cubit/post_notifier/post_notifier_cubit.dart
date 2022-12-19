@@ -12,7 +12,7 @@ class PostNotifierCubit extends Cubit<PostNotifierState> {
   static PostNotifierCubit get(context) => BlocProvider.of(context);
 
   /// updates the UI of the Posts
-  void notifyPosts() {
+  void NotifyPosts() {
     emit(PostChanged());
   }
 }

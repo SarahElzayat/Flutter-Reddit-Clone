@@ -4,10 +4,8 @@
 /// built to be a reuseable widget for further uses
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/data/settings/settings_models/user_settings.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
+import 'package:reddit/cubit/settings_cubit/settings_cubit.dart';
 
-import '../cubit/settings_cubit/settings_cubit.dart';
 import '../cubit/settings_cubit/settings_cubit_state.dart';
 import 'helpers/color_manager.dart';
 import 'helpers/enums.dart';
@@ -32,21 +30,12 @@ class ListTileWidget extends StatefulWidget {
   /// function handler which should be executed whenever something is changed
   final handler;
 
-  /// type of the function that should be executed
-  final String? type;
-
-  /// type of the function that should be executed
-  final String? nextToIcon;
   ListTileWidget(
       {super.key,
       required this.leadingIcon,
-      this.nextToIcon,
-      // this.initialValue,
-      // required this.leadingIcon,
       required this.title,
       required this.handler,
       required this.tailingObj,
-      this.type,
       this.items});
 
   @override
@@ -54,23 +43,9 @@ class ListTileWidget extends StatefulWidget {
 }
 
 class _ListTileWidgetState extends State<ListTileWidget> {
-  bool setBool = false;
-
   /// this can be either Switch, DropBox or Icon
   String? dropDownValue = 'Empty';
-
-  /// this is a utility function used to load the
-  /// user initial values from the cache.
-  bool _setBoolDecider() {
-    if (widget.title == 'AutoPlay') {
-      setBool = CacheHelper.getData(key: 'autoplayMedia');
-    } else if (widget.title.contains('Show NSFW content')) {
-      setBool = CacheHelper.getData(key: 'nsfw');
-    } else if (widget.title.contains('follow you')) {
-      setBool = CacheHelper.getData(key: 'allowToFollowYou');
-    }
-    return setBool;
-  }
+  bool setBool = false;
 
   /// utility handlertion to build if the tailing object was switch
   Widget buildSwitch(ctx) {
@@ -83,15 +58,14 @@ class _ListTileWidgetState extends State<ListTileWidget> {
         fit: BoxFit.fitWidth,
         child: Switch(
           activeColor: ColorManager.blue,
-          value: _setBoolDecider(),
+          value: setBool,
 
-          // when we are doing the settings
+          /// TODO: all these onChanged should be changed
+          /// when we are doing the settings
           onChanged: (value) {
             setState(() {
-              if (widget.type != null) {
-                SettingsCubit.get(ctx).changeSwitch(value, widget.type!);
-              }
-              _setBoolDecider();
+              SettingsCubit.get(ctx).changeSwitch(value);
+              setBool = value;
             });
           },
         ),
@@ -103,76 +77,26 @@ class _ListTileWidgetState extends State<ListTileWidget> {
   Widget buildIconButton(ctx) {
     final mediaQuery = MediaQuery.of(ctx);
     return SizedBox(
-      width: widget.nextToIcon != null
-          ? 0.25 * mediaQuery.size.width
-          : 0.15 * mediaQuery.size.width,
+      width: 0.15 * mediaQuery.size.width,
       child: FittedBox(
         fit: BoxFit.cover,
-        child: Row(children: [
-          Text(widget.nextToIcon ?? ''),
-          IconButton(
-            icon: const Icon(
-              Icons.arrow_forward,
-              color: Colors.grey,
-            ),
-            onPressed: widget.handler,
+        child: IconButton(
+          icon: const Icon(
+            Icons.arrow_forward,
+            color: Colors.grey,
           ),
-        ]),
+          onPressed: widget.handler,
+        ),
       ),
     );
-  }
-
-// { hot, best, top, trending, newPosts, raising, controversial }
-  void _setDropDownValue() {
-    int res = CacheHelper.getData(key: 'SortHome');
-    if (widget.title.contains('Sort home posts by')) {
-      switch (res) {
-        case 0:
-          dropDownValue = 'Hot';
-          break;
-        case 1:
-          dropDownValue = 'Best';
-          break;
-        case 2:
-          dropDownValue = 'Top';
-          break;
-        case 3:
-          dropDownValue = 'Trending';
-          break;
-        case 4:
-          dropDownValue = 'New';
-          break;
-        case 5:
-          dropDownValue = 'Raising';
-          break;
-        case 6:
-          dropDownValue = 'Controversial';
-          break;
-        default:
-          dropDownValue = 'Best';
-      }
-    } else if (widget.title.contains('Gender')) {
-      // dropDownValue = CacheHelper.getData(key: 'gender');
-      if (CacheHelper.getData(key: 'gender') == 'man' ||
-          CacheHelper.getData(key: 'gender') == 'Male') {
-        dropDownValue = 'Male';
-      } else {
-        dropDownValue = 'Female';
-      }
-    } else if (widget.title.contains('Google')) {
-      String mail = CacheHelper.getData(key: 'googleEmail');
-      print('mail is $mail');
-      dropDownValue = mail.isEmpty ? 'Disconnected' : 'Connected';
-    } else if (widget.title.contains('Facebook')) {
-      String mail = CacheHelper.getData(key: 'facebookEmail');
-      dropDownValue = mail.isEmpty ? 'Disconnected' : 'Connected';
-    }
   }
 
   /// utility handlertion to build if the tailing object was dropDown
   Widget buildDropDown(ctx) {
     final mediaQuery = MediaQuery.of(ctx);
-    _setDropDownValue();
+    dropDownValue =
+        dropDownValue == 'Empty' ? widget.items?.first : dropDownValue;
+
     return DropdownButtonHideUnderline(
       child: DropdownButton(
         // Initial Value
@@ -205,10 +129,9 @@ class _ListTileWidgetState extends State<ListTileWidget> {
         // After selecting the desired option,it will
         // change button value to selected value
         onChanged: (String? newValue) {
-          SettingsCubit.get(context)
-              .changeDropValue(newValue, widget.type!, context);
-          print(newValue);
-          _setDropDownValue();
+          setState(() {
+            dropDownValue = newValue!;
+          });
         },
       ),
     );

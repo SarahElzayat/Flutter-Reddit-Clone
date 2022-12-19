@@ -15,7 +15,7 @@ class LogInModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['username'] = username;
     data['password'] = password;
     return data;

@@ -4,7 +4,6 @@
 /// he enter his email, and to continue the sign up process
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/data/settings/settings_models/user_settings.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../components/default_text_field.dart';
@@ -26,19 +25,10 @@ class ContinueSignUpScreen extends StatefulWidget {
 }
 
 class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
-  @override
-  void initState() {
-    getRandomNames();
-    super.initState();
-  }
-
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final _myKey = GlobalKey<FormState>();
 
-  /// this function is used to select the username from the suggestions
-  /// and put it in the textfield.
-  /// @param [username]: the username which the user has selected from the suggestions
   void selectUsernameFromSuggestions(username) {
     setState(() {
       usernameController.text = username;
@@ -70,12 +60,11 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
         password: passwordController.text,
         username: usernameController.text);
 
-    await DioHelper.postData(path: signUp, data: user.toJson()).then((value) {
+    DioHelper.postData(path: signUp, data: user.toJson()).then((value) {
       if (value.statusCode == 201) {
         CacheHelper.putData(key: 'token', value: value.data['token']);
         CacheHelper.putData(key: 'username', value: value.data['username']);
-        UserSettingsModel.fromJson(value.data);
-        UserSettingsModel.cacheUserSettings();
+
         // navigating to the main screen
         Navigator.of(context)
             .pushReplacementNamed(HomeScreenForMobile.routeName);
@@ -102,25 +91,8 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
     });
   }
 
-  /// this function is used to get random names from the backend.
-  void getRandomNames() async {
-    await DioHelper.getData(path: getRandom, query: {'count': 5})
-        .then((response) {
-      if (response.statusCode == 200) {
-        setState(() {
-          List<String> myList = [];
-          for (String name in response.data['usernames']) {
-            myList.add(name);
-          }
-          dummyNames.clear();
-          dummyNames.addAll(myList);
-        });
-      }
-    }).catchError((error) {
-      error = error as DioError;
-    });
-  }
-
+  // these names should be returned from the backend but they
+  // haven't implemented this endpoint yet
   List<String> dummyNames = [
     'Name1',
     'Name2',
@@ -152,16 +124,9 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            const Text('Choose your username'),
                             const Text(
-                              'Choose your username',
-                              style: TextStyle(color: ColorManager.upvoteRed),
-                            ),
-                            const Text(
-                              '''Your username is how other community members will see you. This name will be used to credit you for things you share on Reddit. What should we call you?''',
-                              style: TextStyle(
-                                color: ColorManager.blue,
-                              ),
-                            ),
+                                '''Your username is how other community members will see you. This name will be used to credit you for things you share on Reddit. What should we call you?'''),
                             const Divider(
                               color: ColorManager.white,
                             ),
@@ -216,7 +181,7 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                                           const Text(
                                               'Here are some username suggestions'),
                                           IconButton(
-                                              onPressed: getRandomNames,
+                                              onPressed: () {},
                                               icon:
                                                   const Icon(Icons.restart_alt))
                                         ],
@@ -255,15 +220,12 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                                   navigator.pushReplacementNamed(
                                       SignUpForWebScreen.routeName);
                                 },
-                                child: const Text(
-                                  'Back',
-                                  style: TextStyle(color: ColorManager.blue),
-                                )),
+                                child: const Text('Back')),
                             Container(
-                                margin: const EdgeInsets.only(right: 10),
-                                padding: const EdgeInsets.all(5),
-                                width: 140,
-                                child: ElevatedButton(
+                              margin: const EdgeInsets.only(right: 10),
+                              padding: const EdgeInsets.all(5),
+                              width: 140,
+                              child: ElevatedButton(
                                   key: const Key('SignUpButton'),
                                   style: ButtonStyle(
                                       foregroundColor: MaterialStatePropertyAll(
@@ -286,10 +248,8 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                                         ? loginChecker(_myMail)
                                         : () {};
                                   },
-                                  child: const Text('SIGN UP',
-                                      style: TextStyle(
-                                          color: ColorManager.eggshellWhite)),
-                                ))
+                                  child: const Text('SIGN UP')),
+                            )
                           ]),
                     )
                   ]),

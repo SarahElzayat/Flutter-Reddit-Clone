@@ -8,7 +8,6 @@ import 'package:reddit/screens/add_post/community_search.dart';
 
 import '../../components/button.dart';
 import '../../components/helpers/color_manager.dart';
-import '../../screens/add_post/post_rules.dart';
 
 /// Button that navigate to the post screen after check the validation
 class CreatePostButton extends StatelessWidget {
@@ -20,8 +19,6 @@ class CreatePostButton extends StatelessWidget {
     bool isDisabled = true;
     final navigator = Navigator.of(context);
     final mediaQuery = MediaQuery.of(context);
-    final addPostCubit = BlocProvider.of<AddPostCubit>(context);
-
     return BlocBuilder<AddPostCubit, AddPostState>(
       buildWhen: (previous, current) {
         if (current is CanCreatePost) {
@@ -46,15 +43,7 @@ class CreatePostButton extends StatelessWidget {
             onPressed: isDisabled
                 ? () {}
                 : (() {
-                    if (addPostCubit.subredditName != null &&
-                        addPostCubit.subredditName != '') {
-                      navigator.pushNamed(PostRules.routeName);
-                    } else {
-                      navigator.push(MaterialPageRoute(
-                          builder: ((context) => const CommunitySearch(
-                                goToRules: true,
-                              ))));
-                    }
+                    navigator.pushNamed(CommunitySearch.routeName);
                   }));
       },
     );

@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../components/home_app_bar.dart';
-import '../cubit/app_cubit/app_cubit.dart';
+import '../cubit/app_cubit.dart';
 import '../screens/add_post/add_post.dart';
+import '../components/helpers/color_manager.dart';
 import '../components/home_components/left_drawer.dart';
 import '../components/home_components/right_drawer.dart';
 
@@ -22,8 +23,6 @@ class HomeScreenForMobile extends StatefulWidget {
 
 class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  bool isAndroid = !kIsWeb;
 
   ///The method changes the end drawer state from open to closed and vice versa
   void _changeEndDrawer() {
@@ -39,15 +38,25 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
         : _scaffoldKey.currentState?.openDrawer();
   }
 
+  bool isAndroid = !kIsWeb;
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
+  List<Widget> items = [
+    const Text(
+      'Test ',
+      style: TextStyle(color: ColorManager.eggshellWhite),
+    ),
+    const Text(
+      'Test ',
+      style: TextStyle(color: ColorManager.eggshellWhite),
+    ),
+    const Text(
+      'Test ',
+      style: TextStyle(color: ColorManager.eggshellWhite),
+    ),
+  ];
   @override
   Widget build(BuildContext context) {
-    final AppCubit cubit = AppCubit.get(context); //..getUsername();
+    final AppCubit cubit = AppCubit.get(context)..getUsername();
 
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {

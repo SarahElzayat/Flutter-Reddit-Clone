@@ -10,7 +10,7 @@ class PostModel {
   String? link;
   List<Image>? images;
   String? video;
-  Map<String, dynamic>? content;
+  String? content;
   bool? nsfw;
   bool? spoiler;
   String? sharePostId;
@@ -72,7 +72,7 @@ class PostModel {
           ?.map((e) => Image.fromJson(e as Map<String, dynamic>?))
           .toList(),
       video: json['data']['video'] as String?,
-      content: json['data']['content'] as Map<String, dynamic>?,
+      content: json['data']['content'] as String?,
       nsfw: json['data']['nsfw'] as bool?,
       spoiler: json['data']['spoiler'] as bool?,
       sharePostId: json['data']['sharePostId'] as String?,
@@ -109,7 +109,7 @@ class PostModel {
             ?.map((e) => Image.fromJson(e as Map<String, dynamic>))
             .toList(),
         video: json['video'] as String?,
-        content: json['content'] as Map<String, dynamic>?,
+        content: json['content'] as String?,
         nsfw: json['nsfw'] as bool?,
         spoiler: json['spoiler'] as bool?,
         sharePostId: json['sharePostId'] as String?,

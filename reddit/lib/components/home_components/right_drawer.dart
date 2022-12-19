@@ -3,18 +3,20 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/screens/history/history_screen_for_web.dart';
-import '../../screens/create_community_screen/create_community_screen.dart';
-import '../../screens/saved/saved_screen.dart';
-import '../../screens/settings/change_profile_picture_screen.dart';
-import '../../screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
-import '../../screens/user_profile/user_profile_screen.dart';
-import '../../screens/settings/settings_main_screen.dart';
-import '../../shared/local/shared_preferences.dart';
-import '../../cubit/app_cubit/app_cubit.dart';
+import 'package:reddit/screens/create_community_screen/create_community_screen.dart';
+import 'package:reddit/screens/saved/saved_screen.dart';
+
+
+import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
+import 'package:reddit/shared/local/shared_preferences.dart';
+
+import 'package:reddit/screens/settings/settings_main_screen.dart';
+import '../../cubit/app_cubit.dart';
 import '../../screens/history/history_screen.dart';
 import '../../screens/to_be_done_screen.dart';
 import '../helpers/color_manager.dart';
 import 'components.dart';
+
 
 class RightDrawer extends StatelessWidget {
   const RightDrawer({super.key});
@@ -26,8 +28,7 @@ class RightDrawer extends StatelessWidget {
 
     ///@param [rightDrawerItems] the list of right drawer items
     List<Widget> rightDrawerItems = [
-      genericTextButton(
-          context, Icons.person, 'My profile', const UserProfileScreen(),
+      genericTextButton(context, Icons.person, 'My profile', null,
           isLeftDrawer: false),
       genericTextButton(context, Icons.add, 'Create a community',
           const CreateCommunityScreen(),
@@ -45,11 +46,9 @@ class RightDrawer extends StatelessWidget {
                   bottomNavBarScreenIndex: cubit.currentIndex,
                 ),
           isLeftDrawer: false),
-      genericTextButton(context, Icons.pending_outlined, 'Pending Posts',
-          const ToBeDoneScreen(text: 'Pending posts'),
+      genericTextButton(context, Icons.pending_outlined, 'Pending Posts', null,
           isLeftDrawer: false),
-      genericTextButton(context, Icons.drafts_outlined, 'Drafts',
-          const ToBeDoneScreen(text: 'Drafts'),
+      genericTextButton(context, Icons.drafts_outlined, 'Drafts', null,
           isLeftDrawer: false),
     ];
 
@@ -64,25 +63,18 @@ class RightDrawer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                     radius: 80,
-                    backgroundImage: AssetImage('./assets/images/Logo.png')),
-                // NetworkImage(kReleaseMode
-                //     ? 'https://web.read-it.live/${cubit.profilePicture}'
-                //     : Uri.parse(
-                //             'https://localhost:3000/${cubit.profilePicture}')
-                //         .toString())),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  child: Text(
-                    'u/${cubit.username.toString()}',
-                    style: const TextStyle(
-                        color: ColorManager.eggshellWhite,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ),
+                    backgroundImage: AssetImage(
+                      cubit.profilePicture,
+                    )),
+                // Text
+                genericTextButton(
+                    context,
+                    Icons.keyboard_arrow_down,
+                    cubit.username,
+                    const ToBeDoneScreen(text: 'account options'),
+                    isLeftDrawer: false),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.7,
                   decoration: const ShapeDecoration(
@@ -92,87 +84,21 @@ class RightDrawer extends StatelessWidget {
                         ColorManager.gradientRed
                       ])),
                   child: MaterialButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ChangeProfilePicutre(),
-                          ));
-                    },
-                    padding: EdgeInsets.zero,
-                    shape: const StadiumBorder(),
-                    child: const Text(
-                      'Change Profile Picture',
-                    ),
-                  ),
+                      onPressed: () {},
+                      padding: EdgeInsets.zero,
+                      shape: const StadiumBorder(),
+                      child: const Text(
+                        'Change Profile Picture',
+                      )),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(right: 8.0),
-                            child: Icon(
-                              Icons.keyboard_command_key_outlined,
-                              color: ColorManager.blue,
-                              size: 30,
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                cubit.karma.toString(),
-                                style: const TextStyle(
-                                    fontSize: 18,
-                                    color: ColorManager.eggshellWhite,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              const Text(
-                                'karma',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: ColorManager.lightGrey,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(right: 8.0),
-                            child: Icon(
-                              Icons.cake_outlined,
-                              color: ColorManager.blue,
-                              size: 30,
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                cubit.age.toString(),
-                                style: const TextStyle(
-                                    fontSize: 18,
-                                    color: ColorManager.eggshellWhite,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              const Text(
-                                'Reddit age',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: ColorManager.lightGrey,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: const [
+                      //TODO do them properly
+                      Text('Karma'),
+                      Text('Age'),
                     ],
                   ),
                 ),
@@ -188,6 +114,7 @@ class RightDrawer extends StatelessWidget {
                 isLeftDrawer: false),
             TextButton(
                 onPressed: () {
+
                   CacheHelper.removeData(key: 'token');
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: (context) => const SignInScreen(),

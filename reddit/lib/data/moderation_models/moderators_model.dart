@@ -38,7 +38,7 @@ class Moderator {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['username'] = username;
     data['subreddit'] = subreddit;
     data['avatar'] = avatar;

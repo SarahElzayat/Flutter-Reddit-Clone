@@ -10,7 +10,7 @@ import '../../screens/main_screen.dart';
 import '../../widgets/posts/post_upper_bar.dart';
 import '../../widgets/posts/post_widget.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
-import '../../cubit/app_cubit/app_cubit.dart';
+import '../../cubit/app_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_state.dart';
 import '../add_post/add_post.dart';
 
@@ -223,6 +223,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
                   /// checking the [histoty] list state, if empty then show the corresponding message
                   /// else show the history
+                  //TODO do the before/after thing
                   state is HistoryEmptyState
                       ? Padding(
                           padding: EdgeInsets.only(
@@ -251,6 +252,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               listener: (context, state) {},
                               builder: (context, state) {
                                 return ListView.builder(
+                                  // controller: _scrollController,
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemBuilder: (context, index) =>
                                       // index < cubit.history.length ?

@@ -4,9 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 
-// ignore: must_be_immutable
 class Button extends StatelessWidget {
-  // ignore: annotate_overrides, overridden_fields
   Key? key;
 
   ///the text on the button

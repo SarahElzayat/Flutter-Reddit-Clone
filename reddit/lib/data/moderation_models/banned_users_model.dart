@@ -11,17 +11,17 @@ class Banned {
     if (json['children'] != null) {
       children = <Children>[];
       json['children'].forEach((v) {
-        children!.add(Children.fromJson(v));
+        children!.add(new Children.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['before'] = before;
-    data['after'] = after;
-    if (children != null) {
-      data['children'] = children!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['before'] = this.before;
+    data['after'] = this.after;
+    if (this.children != null) {
+      data['children'] = this.children!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -35,12 +35,12 @@ class Children {
 
   Children.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    data = json['data'] != null ? BannedUser.fromJson(json['data']) : null;
+    data = json['data'] != null ? new BannedUser.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -77,14 +77,14 @@ class BannedUser {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['username'] = username;
-    data['userPhoto'] = userPhoto;
-    data['bannedAt'] = bannedAt;
-    data['banPeriod'] = banPeriod;
-    data['modNote'] = modNote;
-    data['noteInclude'] = noteInclude;
-    data['reasonForBan'] = reasonForBan;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['username'] = this.username;
+    data['userPhoto'] = this.userPhoto;
+    data['bannedAt'] = this.bannedAt;
+    data['banPeriod'] = this.banPeriod;
+    data['modNote'] = this.modNote;
+    data['noteInclude'] = this.noteInclude;
+    data['reasonForBan'] = this.reasonForBan;
     return data;
   }
 }

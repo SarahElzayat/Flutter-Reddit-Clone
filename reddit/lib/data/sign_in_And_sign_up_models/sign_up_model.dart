@@ -21,7 +21,7 @@ class SignUpModel {
   /// this function convert the data members into json formate
   /// it returns [Map] of string and dynamic object depending on its value.
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = new Map<String, dynamic>();
     data['email'] = email;
     data['username'] = username;
     data['password'] = password;

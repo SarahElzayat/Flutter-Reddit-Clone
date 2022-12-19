@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class SettingsAppBar extends StatelessWidget implements PreferredSizeWidget {
   /// this is the title to be shown in each screen.
-  final String title;
+  final title;
   const SettingsAppBar({super.key, required this.title});
 
   @override

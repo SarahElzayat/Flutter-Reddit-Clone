@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/screens/comments/add_comment_screen.dart';
 import 'package:reddit/screens/history/history_screen.dart';
 import 'package:reddit/screens/history/history_screen_for_web.dart';
-import 'package:reddit/cubit/app_cubit/app_cubit.dart';
+import 'package:reddit/cubit/app_cubit.dart';
 import 'package:reddit/screens/moderation/content_and_regulation/create_flair.dart';
 import 'package:reddit/screens/moderation/content_and_regulation/post_flair.dart';
 import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
@@ -67,6 +66,7 @@ class AppRouter {
 
       case '/trimmerView_screen_route':
         return MaterialPageRoute(builder: (_) {
+          print('Go to Video Trimeer');
           return BlocProvider.value(
             value: _addPostCubit,
             child: const TrimmerView(),

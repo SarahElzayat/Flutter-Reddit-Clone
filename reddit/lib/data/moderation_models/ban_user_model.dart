@@ -24,13 +24,13 @@ class BanUserModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['userId'] = userId;
-    data['subreddit'] = subreddit;
-    data['banPeriod'] = banPeriod;
-    data['reasonForBan'] = reasonForBan;
-    data['modNote'] = modNote;
-    data['noteInclude'] = noteInclude;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['userId'] = this.userId;
+    data['subreddit'] = this.subreddit;
+    data['banPeriod'] = this.banPeriod;
+    data['reasonForBan'] = this.reasonForBan;
+    data['modNote'] = this.modNote;
+    data['noteInclude'] = this.noteInclude;
     return data;
   }
 }

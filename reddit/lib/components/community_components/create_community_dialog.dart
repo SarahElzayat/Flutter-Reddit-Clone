@@ -7,6 +7,7 @@ import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/components/square_text_field.dart';
 import 'package:reddit/screens/create_community_screen/cubit/create_community_cubit.dart';
+import 'package:reddit/screens/moderation/general_screens/community_types.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class CreateCommunityWeb extends StatefulWidget {
@@ -318,8 +319,7 @@ class _CreateCommunityWindow extends State<CreateCommunityWeb> {
                                       communityName,
                                       _chosenCommunityType,
                                       isAdultContent,
-                                      'Sports',
-                                      context)),
+                                      'Sports')),
                           SizedBox(width: 1.w)
                         ],
                       ),

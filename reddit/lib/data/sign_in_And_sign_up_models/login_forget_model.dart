@@ -13,10 +13,10 @@ class LogInForgetModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['type'] = type;
-    data['username'] = username;
-    data['email'] = email;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['type'] = this.type;
+    data['username'] = this.username;
+    data['email'] = this.email;
     return data;
   }
 }

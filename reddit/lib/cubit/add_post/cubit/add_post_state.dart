@@ -45,12 +45,3 @@ class ImageCaptionOrLinkEdited extends AddPostState {
 class PreviewImage extends AddPostState {}
 
 class PostCreated extends AddPostState {}
-
-class SubredditSearch extends AddPostState {
-  bool isLoaded;
-  SubredditSearch({
-    required this.isLoaded,
-  });
-}
-
-class ChangeSubredditName extends AddPostState {}

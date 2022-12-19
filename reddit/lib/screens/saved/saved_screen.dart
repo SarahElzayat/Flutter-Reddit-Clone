@@ -1,8 +1,8 @@
-///@author
+///@author 
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/cubit/app_cubit/app_cubit.dart';
+import 'package:reddit/cubit/app_cubit.dart';
 import '../../components/helpers/color_manager.dart';
 
 class SavedScreen extends StatefulWidget {
@@ -22,7 +22,7 @@ class _SavedScreenState extends State<SavedScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    
+    //TODO add it to cubit
   }
 
   @override
@@ -30,6 +30,7 @@ class _SavedScreenState extends State<SavedScreen>
     final AppCubit cubit = AppCubit.get(context);
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {
+        // TODO: implement listener
       },
       builder: (context, state) {
         return Scaffold(

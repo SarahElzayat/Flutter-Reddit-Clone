@@ -40,47 +40,44 @@ class PostTypeWidget extends StatelessWidget {
           return false;
         }
       }),
-      builder: ((context, state) {
-        final mediaQuery = MediaQuery.of(context);
-        switch (addPostCubit.postType) {
-          case 0:
-            return const ImageWidget();
-          case 1:
-            return const VideoPost();
+      builder: (context, state) {
+        if (state is PostTypeChanged) {
+          switch (state.getPostType) {
+            case 0:
+              return const ImageWidget();
+            case 1:
+              return const VideoPost();
 
-          case 2:
-            return Column(
-              children: [
-                AddPostTextField(
-                    onChanged: ((string) {
-                      addPostCubit.checkPostValidation();
-                    }),
-                    controller: addPostCubit.optionalText,
-                    mltiline: true,
-                    isBold: false,
-                    fontSize: 18,
-                    hintText: 'Add optional body text'),
-              ],
-            );
-
-          case 3:
-            return AddPostTextField(
-                onChanged: ((string) {
-                  addPostCubit.checkPostValidation();
-                }),
-                controller: addPostCubit.link,
-                mltiline: true,
-                isBold: false,
-                fontSize: 18,
-                hintText: 'URL');
-          case 4:
-            return Poll(
-              isOpen: keyboardIsOpened,
-            );
-          default:
-            return const SizedBox();
+            case 2:
+              return AddPostTextField(
+                  onChanged: ((string) {
+                    addPostCubit.checkPostValidation();
+                  }),
+                  controller: addPostCubit.optionalText,
+                  mltiline: true,
+                  isBold: false,
+                  fontSize: 18,
+                  hintText: 'Add optional body text');
+            case 3:
+              return AddPostTextField(
+                  onChanged: ((string) {
+                    addPostCubit.checkPostValidation();
+                  }),
+                  controller: addPostCubit.link,
+                  mltiline: true,
+                  isBold: false,
+                  fontSize: 18,
+                  hintText: 'URL');
+            case 4:
+              return Poll(
+                isOpen: keyboardIsOpened,
+              );
+            default:
+              return const SizedBox();
+          }
         }
-      }),
+        return const SizedBox();
+      },
     );
   }
 }

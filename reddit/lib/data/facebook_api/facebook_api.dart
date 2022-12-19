@@ -39,13 +39,7 @@ class FacebookLoginAPI {
 
   static Future<Map<String, dynamic>> login() async {
     final LoginResult result = await FacebookAuth.instance
-        .login(permissions: ['email', 'public_profile']).then((response) {
-      print(response);
-      FacebookAuth.instance.getUserData().then((userData) async {
-        print('here is the user Details \n\n\n $userData');
-      });
-      return response;
-    }); // by default we request the email and the public profile
+        .login(); // by default we request the email and the public profile
 
     // loginBehavior is only supported for Android devices, for ios it will be ignored
     // final result = await FacebookAuth.instance.login(

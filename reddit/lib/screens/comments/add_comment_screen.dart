@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
@@ -10,14 +12,14 @@ import 'package:giphy_get/giphy_get.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
-import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../components/helpers/color_manager.dart';
+import '../../constants/constants.dart';
 import '../../data/comment/comment_model.dart';
 import '../../data/comment/sended_comment_model.dart';
 import '../../data/post_model/post_model.dart';
+import '../../networks/dio_helper.dart';
 
 var logger = Logger();
 
@@ -38,6 +40,7 @@ class AddCommentScreen extends StatefulWidget {
 
 class _AddCommentScreenState extends State<AddCommentScreen> {
   QuillController? _controller;
+  final FocusNode _focusNode = FocusNode();
   @override
   void initState() {
     _controller = QuillController.basic();
@@ -48,6 +51,92 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // var toolbar = QuillToolbar.basic(
+    //   showUndo: false,
+    //   showRedo: false,
+    //   showBoldButton: false,
+    //   showItalicButton: false,
+    //   showBackgroundColorButton: false,
+    //   showCenterAlignment: false,
+    //   showLeftAlignment: false,
+    //   showRightAlignment: false,
+    //   showJustifyAlignment: false,
+    //   showHeaderStyle: false,
+    //   showListNumbers: false,
+    //   showListBullets: false,
+    //   showCodeBlock: false,
+    //   showStrikeThrough: false,
+    //   showFontSize: false,
+    //   multiRowsDisplay: false,
+    //   showClearFormat: false,
+    //   showIndent: false,
+    //   showQuote: false,
+    //   showColorButton: false,
+    //   showSearchButton: false,
+    //   showDirection: false,
+    //   showDividers: false,
+    //   showFontFamily: false,
+    //   showInlineCode: false,
+    //   showListCheck: false,
+    //   showUnderLineButton: false,
+    //   // showSmallButton: false,
+    //   controller: _controller!,
+    //   embedButtons: FlutterQuillEmbeds.buttons(
+    //     showVideoButton: false,
+    //     showCameraButton: false,
+
+    //     // provide a callback to enable picking images from device.
+    //     // if omit, "image" button only allows adding images from url.
+    //     // same goes for videos.
+    //     onImagePickCallback: _onImagePickCallback,
+    //     onVideoPickCallback: _onVideoPickCallback,
+    //     // uncomment to provide a custom "pick from" dialog.
+    //     // mediaPickSettingSelector: _selectMediaPickSetting,
+    //     // uncomment to provide a custom "pick from" dialog.
+    //     // cameraPickSettingSelector: _selectCameraPickSetting,
+    //   ),
+    //   showAlignmentButtons: true,
+    //   afterButtonPressed: _focusNode.requestFocus,
+    // );
+    // if (kIsWeb) {
+    //   toolbar = QuillToolbar.basic(
+    //     controller: _controller!,
+    //     embedButtons: FlutterQuillEmbeds.buttons(
+    //       onImagePickCallback: _onImagePickCallback,
+    //       webImagePickImpl: _webImagePickImpl,
+    //     ),
+    //     showAlignmentButtons: true,
+    //     afterButtonPressed: _focusNode.requestFocus,
+    //   );
+    // }
+    void postComment({
+      required VoidCallback onSuccess,
+      required void Function(DioError) onError,
+    }) {
+      final content = jsonEncode(_controller!.document.toDelta().toJson());
+      SendedCommentModel c = SendedCommentModel(
+        content: content,
+        postId: widget.post.id!,
+        parentType: _isPostParent() ? 'post' : 'comment',
+        haveSubreddit: widget.post.subreddit != null,
+        level: _isPostParent() ? 1 : (widget.parentComment!.level! + 1),
+        parentId: _isPostParent() ? widget.post.id : widget.parentComment!.id,
+        subredditName: widget.post.subreddit,
+      );
+      DioHelper.postData(token: token, path: '/comment', data: c.toJson())
+          .then((value) {
+        onSuccess();
+
+        //TODO HANDLE THIS IN THE CUBIT
+        return null;
+      }).catchError((e) {
+        // TODO HANDLE THIS IN THE CUBIT
+        onError(e as DioError);
+        Map<String, dynamic> error = e.response!.data;
+        logger.w(error['error']);
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(_isPostParent() ? 'Add comment' : 'Reply'),
@@ -62,29 +151,13 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
                     content: Text('Comment cannot be empty'),
                   ),
                 );
-                return;
               }
-              final content = _controller!.document.toDelta().toJson();
-              logger.i(content);
-              SendedCommentModel c = SendedCommentModel(
-                content: {'ops': content},
-                postId: widget.post.id!,
-                parentType: _isPostParent() ? 'post' : 'comment',
-                haveSubreddit: widget.post.subreddit != null,
-                level: _isPostParent() ? 1 : (widget.parentComment!.level! + 1),
-                parentId:
-                    _isPostParent() ? widget.post.id : widget.parentComment!.id,
-                subredditName: widget.post.subreddit,
-              );
 
-              PostAndCommentActionsCubit.postComment(
-                c: c,
+              postComment(
                 onSuccess: () {
-                  PostNotifierCubit.get(context).notifyPosts();
                   Navigator.of(context).pop(true);
                 },
                 onError: (DioError error) {
-                  logger.wtf(error);
                   Map<String, dynamic> errorData = error.response!.data;
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -105,7 +178,11 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
       body: Column(
         children: [
           QuillEditor(
-            controller: getController(),
+            controller: QuillController(
+              document:
+                  Document.fromJson(jsonDecode(widget.post.content ?? '[]')),
+              selection: const TextSelection(baseOffset: 0, extentOffset: 0),
+            ),
             readOnly: true,
             enableInteractiveSelection: false,
             autoFocus: false,
@@ -177,7 +254,7 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
                       _linkSubmitted(gif.images?.original?.url);
                     }
                   },
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.gif_box_outlined,
                     color: ColorManager.blue,
                   )),
@@ -185,21 +262,6 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  QuillController getController() {
-    Document doc;
-    try {
-      doc = Document.fromJson((widget.post.content ?? {'ops': []})['ops']);
-    } catch (e) {
-      logger.wtf(e);
-      doc = Document();
-    }
-
-    return QuillController(
-      document: doc,
-      selection: const TextSelection.collapsed(offset: 0),
     );
   }
 
@@ -252,5 +314,16 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
     final file = File(fileName);
 
     return onImagePickCallback(file);
+  }
+
+  /// Renders the video picked by imagePicker from local file storage
+  /// You can also upload the picked video to any server (eg : AWS s3
+  /// or Firebase) and then return the uploaded video URL.
+  Future<String> _onVideoPickCallback(File file) async {
+    // Copies the picked file from temporary cache to applications directory
+    final appDocDir = await getApplicationDocumentsDirectory();
+    final copiedFile =
+        await file.copy('${appDocDir.path}/${p.basename(file.path)}');
+    return copiedFile.path.toString();
   }
 }

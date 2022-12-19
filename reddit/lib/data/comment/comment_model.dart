@@ -1,11 +1,10 @@
-
 class CommentModel {
   String? id;
   String? commentedBy;
   String? userImage;
   String? editTime;
   String? publishTime;
-  Map<String, dynamic>? commentBody;
+  String? commentBody;
   int? votes;
   bool? saved;
   bool? followed;
@@ -38,7 +37,7 @@ class CommentModel {
         userImage: json['userImage'] as String?,
         editTime: json['editTime'] as String?,
         publishTime: json['publishTime'] as String?,
-        commentBody: json['commentBody'] as Map<String, dynamic>?,
+        commentBody: json['commentBody'] as String?,
         votes: json['votes'] as int?,
         saved: json['saved'] as bool?,
         followed: json['followed'] as bool?,

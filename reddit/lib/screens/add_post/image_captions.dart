@@ -78,7 +78,7 @@ class _AddImageCaptionState extends State<AddImageCaption> {
                     text: 'Save',
                     textColor: isEdited ? ColorManager.blue : ColorManager.grey,
                     backgroundColor: Colors.black,
-                    buttonWidth: 80,
+                    buttonWidth: 70,
                     buttonHeight: 20,
                     textFontSize: 20,
                     onPressed: isEdited
@@ -192,6 +192,7 @@ class _AddImageCaptionState extends State<AddImageCaption> {
       initialScale: PhotoViewComputedScale.contained,
       minScale: PhotoViewComputedScale.contained * (0.5),
       maxScale: PhotoViewComputedScale.covered * 4.1,
+      // TODO: Add hero tag to the image
       heroAttributes: PhotoViewHeroAttributes(tag: item),
     );
   }

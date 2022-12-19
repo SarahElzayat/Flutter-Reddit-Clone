@@ -67,18 +67,20 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
                           for (int index = 0; index < 4; index++)
                             InkWell(
                               onTap: (() {
-                                addPostCubit.onTapFunc(
-                                    index, context, navigator, mediaQuery);
+                                onTapFunc(
+                                    index, addPostCubit, navigator, mediaQuery);
                               }),
                               child: Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 15),
                                 child: Icon(
-                                  (index == addPostCubit.postType)
+                                  (state is PostTypeChanged &&
+                                          index == state.getPostType)
                                       ? selectedIcons[index]
                                       : icons[index],
                                   size: 32 * mediaQuery.textScaleFactor,
-                                  color: (index == addPostCubit.postType)
+                                  color: (state is PostTypeChanged &&
+                                          index == state.getPostType)
                                       ? Colors.blue
                                       : Colors.white,
                                 ),
@@ -92,8 +94,8 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
                         for (int index = 0; index < 4; index++)
                           InkWell(
                             onTap: (() {
-                              addPostCubit.onTapFunc(
-                                  index, context, navigator, mediaQuery);
+                              onTapFunc(
+                                  index, addPostCubit, navigator, mediaQuery);
                             }),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 7),
@@ -103,7 +105,8 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10),
                                     child: Icon(
-                                      (index == addPostCubit.postType)
+                                      (state is PostTypeChanged &&
+                                              index == state.getPostType)
                                           ? selectedIcons[index]
                                           : icons[index],
                                       size: 25 * mediaQuery.textScaleFactor,
@@ -112,15 +115,16 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
                                   Text(
                                     labels[index],
                                     style: TextStyle(
-                                        fontWeight:
-                                            (index == addPostCubit.postType)
-                                                ? FontWeight.w700
-                                                : FontWeight.w200,
+                                        fontWeight: (state is PostTypeChanged &&
+                                                index == state.getPostType)
+                                            ? FontWeight.w700
+                                            : FontWeight.w200,
                                         fontSize:
                                             20 * mediaQuery.textScaleFactor),
                                   ),
                                   const Spacer(),
-                                  if (index == addPostCubit.postType)
+                                  if (state is PostTypeChanged &&
+                                      index == state.getPostType)
                                     const Icon(
                                       Icons.done,
                                       color: Colors.blue,
@@ -134,5 +138,81 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
             );
           },
         ));
+  }
+
+  /// Show TO User If Change The Post Type And the Exist Data in the current
+  /// Post type it Show Pop-up to Choose if continue and remove the data or Not
+  onTapFunc(int index, AddPostCubit addPostCubit, NavigatorState navigator,
+      MediaQueryData mediaQuery) {
+    if (addPostCubit.postType != index && addPostCubit.discardCheck()) {
+      showDialog(
+          context: context,
+          builder: ((context) => AlertDialog(
+                backgroundColor: ColorManager.grey,
+                insetPadding: EdgeInsets.zero,
+                title: const Text('Change Post Type'),
+                content: Text(
+                  'Some of your post will be deleted if you continue',
+                  style: TextStyle(fontSize: 15 * mediaQuery.textScaleFactor),
+                ),
+                actions: [
+                  SizedBox(
+                    width: mediaQuery.size.width * 0.42,
+                    child: Button(
+                      textFontWeight: FontWeight.normal,
+                      onPressed: () {
+                        navigator.pop();
+                        return;
+                      },
+                      text: ('Cancel'),
+                      textColor: ColorManager.lightGrey,
+                      backgroundColor: Colors.transparent,
+                      buttonWidth: mediaQuery.size.width * 0.42,
+                      buttonHeight: 40,
+                      textFontSize: 15,
+                      borderRadius: 20,
+                    ),
+                  ),
+                  SizedBox(
+                    width: mediaQuery.size.width * 0.42,
+                    child: Button(
+                      textFontWeight: FontWeight.normal,
+                      onPressed: () {
+                        addPostCubit.removeExistData();
+
+                        navigator.pop();
+                        if (index == 0 && addPostCubit.postType != index) {
+                          addPostCubit.chooseSourceWidget(
+                              context, mediaQuery, navigator);
+                        } else if (index == 1 &&
+                            addPostCubit.postType != index) {
+                          addPostCubit.pickVideo(true);
+                        }
+                        addPostCubit.changePostType(postTypeIndex: index);
+                      },
+                      text: ('Containue'),
+                      textColor: ColorManager.white,
+                      backgroundColor: ColorManager.red,
+                      buttonWidth: mediaQuery.size.width * 0.42,
+                      buttonHeight: 40,
+                      textFontSize: 15,
+                      borderRadius: 20,
+                    ),
+                  ),
+                ],
+              )));
+    } else {
+      if (index == 0 && addPostCubit.postType != index) {
+        addPostCubit.chooseSourceWidget(
+          context,
+          mediaQuery,
+          navigator,
+        );
+      } else if (index == 1 && addPostCubit.postType != index) {
+        addPostCubit.pickVideo(true);
+        // videoFunc(context);
+      }
+      addPostCubit.changePostType(postTypeIndex: index);
+    }
   }
 }

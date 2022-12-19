@@ -4,7 +4,7 @@
 
 /// this enum is used to determine the type of the trailing posts
 enum TrailingObjects {
-  // TODO: here we should add a button
+  /// TODO: here we should add a button
   switchButton,
   dropBox,
   tailingIcon,
@@ -29,19 +29,9 @@ enum SortType {
 enum PostView {
   classic,
   card,
-  withCommentsInSearch,
-}
-
-enum CommentView {
-  normal,
-  inSearch,
-  inSubreddits,
 }
 
 enum HistoyCategory { recent, upvoted, downvoted, hidden }
-
-enum HomeSort { hot, best, top, trending, newPosts, raising, controversial }
-// enum HomeSort { best, hot, newPosts, top, raising, controversial }
 
 /// used to indicate which users to get
 enum UserManagement {
