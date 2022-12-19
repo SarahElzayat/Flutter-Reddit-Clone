@@ -79,6 +79,7 @@ class VideoPost extends StatelessWidget {
                       size: 25,
                     ),
                     onTap: () {
+                      print('Remove widget');
                       addPostCubit.removeVideo();
                     },
                   ),

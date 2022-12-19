@@ -13,7 +13,8 @@ const baseUrl = kReleaseMode
     // ? 'http://www.read-it.live/api' TODO: wa3er aly ast5dm el fo2 34an samaa.
     : kIsWeb
         ? 'http://localhost:3000'
-        : 'http://10.0.2.2:3000';
+        // : 'http://10.0.2.2:3000'; TODO
+        : 'https://web.read-it.live/api';
 
 // login and signup
 const signUp = '/signup';
@@ -30,7 +31,6 @@ const changePassword = '/change-password';
 const blockedAccounts = '/blocked-users';
 const accountSettings =
     '/account-settings'; // this end point is used in multi requests.
-const block = '/block-user';
 
 // create community
 const createCommunity = '/create-subreddit';
@@ -52,7 +52,6 @@ const upvotedHistory = '/upvoted';
 const downvotedHistory = '/downvoted';
 const hiddenHistory = '/hidden';
 const clearHistory = '/clear-history';
-const userProfilePicture = '/profile-picture';
 const search = '/search';
 const searchPosts = 'post';
 const searchUsers = 'user';
@@ -72,8 +71,6 @@ const joinedSubreddits = '/joined-subreddits';
 const moderatedSubreddits = '/moderated-subreddits';
 // Note : after last / add the subreddit name
 const subredditInfo = '/r';
-const leaveSubreddit = '/leave-subreddit';
-const joinSubreddit = '/join-subreddit';
 const searchForSubreddit = '/search?type=subreddit';
 const userDetails = '/user-details';
 const homeBest = '/best';

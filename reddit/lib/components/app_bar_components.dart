@@ -20,7 +20,6 @@ Widget avatar({image}) {
 }
 
 /// the method navigates to search screen
-/// @param [context] is the context of the screen that's required to navigate to
 Future<Object?> navigateToSearch(context) {
   return Navigator.push(
       context, MaterialPageRoute(builder: (context) => const SearchScreen()));

@@ -1,7 +1,3 @@
-///@author Sarah Elzayat
-///@description sybreddit's model in search results
-
-
 class SearchResultSubredditModel {
   String? id;
   Data? data;

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/foundation.dart';
@@ -48,6 +49,9 @@ class Comment extends StatefulWidget {
 }
 
 class _CommentState extends State<Comment> {
+
+  bool isCompressed = false;
+  bool openReplay = false;
   QuillController? _controller;
   final FocusNode _focusNode = FocusNode();
   QuillController getController() {
@@ -297,6 +301,36 @@ class _CommentState extends State<Comment> {
     );
   }
 
+  _addCommentsRow() {
+    return Row(
+      children: [
+        Expanded(
+          child: Row(
+            children: [
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    isCompressed = !isCompressed;
+                  });
+                },
+                icon: const Icon(Icons.arrow_drop_down),
+              ),
+              // const  Text('Comments'),
+            ],
+          ),
+        ),
+        IconButton(
+          onPressed: () {
+            setState(() {
+              isCompressed = !isCompressed;
+            });
+          },
+          icon: const Icon(Icons.arrow_drop_up),
+        ),
+      ],
+    );
+  }
+
   Widget commentAsRow({
     bool showDots = true,
     bool showContent = false,
@@ -389,8 +423,8 @@ class _CommentState extends State<Comment> {
         Text(
           widget.post.title ?? '',
           style: TextStyle(
-            color: ColorManager.eggshellWhite,
-            fontSize: 16.sp,
+            color: ColorManager.lightGrey,
+            fontSize: 15.sp,
           ),
         ),
         Row(
@@ -421,8 +455,8 @@ class _CommentState extends State<Comment> {
         Text(
           _controller!.document.toPlainText(),
           style: TextStyle(
-            color: ColorManager.eggshellWhite,
-            fontSize: 16.sp,
+            color: ColorManager.lightGrey,
+            fontSize: 15.sp,
           ),
         )
       ],

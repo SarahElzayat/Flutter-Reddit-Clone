@@ -1,12 +1,10 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/cubit/app_cubit/app_cubit.dart';
-import 'package:reddit/screens/posts/post_screen.dart';
-import 'package:reddit/widgets/comments/comment.dart';
+import 'package:reddit/cubit/app_cubit.dart';
 
 import '../../components/helpers/color_manager.dart';
+
 
 class SavedCommentsScreen extends StatefulWidget {
   const SavedCommentsScreen({super.key});
@@ -57,24 +55,8 @@ class _SavedCommentsScreenState extends State<SavedCommentsScreen> {
               : ListView.builder(
                   controller: _scrollController,
                   itemCount: cubit.savedCommentsList.length,
-                  itemBuilder: (context, index) => InkWell(
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PostScreen(
-                                  key: Key(cubit
-                                      .savedCommentsPostsList[index].id
-                                      .toString()),
-                                  post: cubit.savedCommentsPostsList[index]),
-                            )),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Comment(
-                              viewType: CommentView.inSubreddits,
-                              post: cubit.savedCommentsPostsList[index],
-                              comment: cubit.savedCommentsList[index]),
-                        ),
-                      )),
+                  itemBuilder: (context, index) =>Text(''),
+                ),
         );
       },
     );

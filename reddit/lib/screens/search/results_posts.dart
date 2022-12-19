@@ -4,10 +4,11 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../components/helpers/enums.dart';
-import '../../screens/search/cubit/search_cubit.dart';
-import '../../widgets/posts/post_upper_bar.dart';
-import '../../widgets/posts/post_widget.dart';
+import 'package:reddit/components/helpers/enums.dart';
+import 'package:reddit/data/post_model/post_model.dart';
+import 'package:reddit/screens/search/cubit/search_cubit.dart';
+import 'package:reddit/widgets/posts/post_upper_bar.dart';
+import 'package:reddit/widgets/posts/post_widget.dart';
 import '../../Components/helpers/color_manager.dart';
 
 class ResultsPosts extends StatefulWidget {
@@ -37,7 +38,7 @@ class _ResultsPostsState extends State<ResultsPosts> {
 
   @override
   Widget build(BuildContext context) {
-    final SearchCubit cubit = SearchCubit.get(context); //..getPosts();
+    final SearchCubit cubit = SearchCubit.get(context);
     return BlocConsumer<SearchCubit, SearchState>(
       listener: (context, state) {},
       builder: (context, state) {

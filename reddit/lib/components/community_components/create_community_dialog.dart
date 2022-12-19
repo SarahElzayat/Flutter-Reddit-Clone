@@ -318,8 +318,7 @@ class _CreateCommunityWindow extends State<CreateCommunityWeb> {
                                       communityName,
                                       _chosenCommunityType,
                                       isAdultContent,
-                                      'Sports',
-                                      context)),
+                                      'Sports')),
                           SizedBox(width: 1.w)
                         ],
                       ),

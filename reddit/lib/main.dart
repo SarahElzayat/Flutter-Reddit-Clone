@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
 import 'package:reddit/screens/comments/add_comment_screen.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/web/continue_sign_up_screen.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
@@ -28,7 +27,7 @@ import 'components/helpers/mocks/mock_functions.dart';
 import 'cubit/add_post/cubit/add_post_cubit.dart';
 import 'networks/dio_helper.dart';
 import 'components/helpers/bloc_observer.dart';
-import 'cubit/app_cubit/app_cubit.dart';
+import 'cubit/app_cubit.dart';
 import 'screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import 'shared/local/shared_preferences.dart';
 
@@ -56,8 +55,8 @@ Future<void> main() async {
     CacheHelper.putData(key: 'isWindows', value: true);
   }
 
-  CacheHelper.putData(key: 'SortHome', value: HomeSort.best.index);
-  logger.w(CacheHelper.getData(key: 'SortHome'));
+  CacheHelper.putData(key: 'sort', value: HomeSort.best.index);
+  logger.w(CacheHelper.getData(key: 'sort'));
 
   /// and this is used to initialize Dio
   DioHelper.init();
@@ -80,14 +79,7 @@ class Main extends StatelessWidget {
         BlocProvider(create: (context) => SettingsCubit()),
         BlocProvider(create: (context) => CreateCommunityCubit()),
         BlocProvider(create: (context) => ModerationCubit()),
-        BlocProvider(
-          create: (context) => SubredditCubit(),
-          lazy: false,
-        ),
-        BlocProvider(
-          create: (context) => UserProfileCubit(),
-          lazy: false,
-        ),
+        BlocProvider(create: (context) => SubredditCubit()),
         BlocProvider(create: (context) => VideosCubit()),
       ],
       child: BlocBuilder<AppCubit, AppState>(
@@ -95,7 +87,6 @@ class Main extends StatelessWidget {
           return ResponsiveSizer(
             builder: (context, orientation, screenType) {
               return MaterialApp(
-                navigatorKey: navigatorKey,
                 initialRoute:
                     CacheHelper.getData(key: 'token')?.toString().isNotEmpty ??
                             false

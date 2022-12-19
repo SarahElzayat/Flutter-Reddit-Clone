@@ -40,9 +40,6 @@ enum CommentView {
 
 enum HistoyCategory { recent, upvoted, downvoted, hidden }
 
-enum HomeSort { hot, best, top, trending, newPosts, raising, controversial }
-// enum HomeSort { best, hot, newPosts, top, raising, controversial }
-
 /// used to indicate which users to get
 enum UserManagement {
   banned,
@@ -50,3 +47,4 @@ enum UserManagement {
   muted,
   moderator,
 }
+enum HomeSort { hot, best, top, trending, newPosts, raising, controversial }

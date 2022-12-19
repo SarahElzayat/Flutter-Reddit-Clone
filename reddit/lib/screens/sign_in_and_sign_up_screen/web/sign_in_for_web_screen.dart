@@ -6,12 +6,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/data/settings/settings_models/user_settings.dart';
+import 'package:reddit/screens/main_screen.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../data/sign_in_And_sign_up_models/sign_in_model.dart';
-import '../../../screens/main_screen.dart';
-import '../../../screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
 import '../../../screens/bottom_navigation_bar_screens/home_screen.dart';
 import '../../../screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
 import '../../../screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
@@ -67,36 +66,38 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
         password: passwordController.text, username: usernameController.text);
 
     DioHelper.postData(path: login, data: user.toJson()).then((value) {
+      print('Im here');
+
       // if valid request then we can navigate to another screen after sending the data to the backend
       if (value.statusCode == 200) {
         CacheHelper.putData(key: 'token', value: value.data['token']);
         CacheHelper.putData(key: 'username', value: value.data['username']);
-        UserSettingsModel.fromJson(value.data);
-        UserSettingsModel.cacheUserSettings();
 
         // navigating to the main screen
-        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+        kIsWeb
+            ? Navigator.of(context).pushReplacementNamed(HomeScreen.routeName)
+            : Navigator.of(context)
+                .pushReplacementNamed(HomeScreenForMobile.routeName);
       }
     }).catchError((error) {
-      /// TODO: show appropriate error message to the user
       // casting the error as a dio error to be able to use its content
       error = error as DioError;
       // checking for our main error, which is that the user trying to insert
       // username which is already taken
-      if (error.message.toString() == 'Http status error [400]') {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              backgroundColor: ColorManager.red,
-              content: Text('Username is already in use')),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              backgroundColor: ColorManager.red,
-              content: Text(
-                  'Something went wrong!, please change the inputs and try again')),
-        );
-      }
+      // if (error.message.toString() == 'Http status error [400]') {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(
+      //         backgroundColor: ColorManager.red,
+      //         content: Text('Username is already in use')),
+      //   );
+      // } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            backgroundColor: ColorManager.red,
+            content: Text(
+                'Something went wrong!, please change the inputs and try again')),
+      );
+      // }
     });
   }
 

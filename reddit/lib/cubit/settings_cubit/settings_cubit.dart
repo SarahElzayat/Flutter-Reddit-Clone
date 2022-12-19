@@ -1,26 +1,8 @@
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:reddit/constants/constants.dart';
-import 'package:reddit/data/google_api/google_sign_in_api.dart';
-import 'package:reddit/data/settings/settings_models/block_user_model.dart';
-import 'package:reddit/data/settings/settings_models/blocked_accounts_getter_model.dart';
-import 'package:reddit/data/settings/settings_models/user_settings.dart';
-import 'package:reddit/screens/settings/blocked_accounts.dart';
-import '../../components/helpers/color_manager.dart';
-import '../../data/settings/settings_models/change_password_model.dart';
-import '../../data/settings/settings_models/update_email_model.dart';
-import '../../components/helpers/enums.dart';
-import '../../shared/local/shared_preferences.dart';
-import '../../networks/constant_end_points.dart';
-import '../../networks/dio_helper.dart';
-import '../../cubit/settings_cubit/settings_cubit_state.dart';
+import 'package:reddit/cubit/settings_cubit/settings_cubit_state.dart';
 
 class SettingsCubit extends Cubit<SettingsCubitState> {
   SettingsCubit() : super(SettingsCubitInitial());
-  List<BlockedAccountsGetterModel> blockedUsers = [];
 
   static SettingsCubit get(context) => BlocProvider.of(context);
 
@@ -394,55 +376,7 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
       CacheHelper.putData(key: 'SortHome', value: 3);
     }
 
+
     emit(ChangeSwitchState());
-  }
-
-  /// this function is utility function which is responsible
-  /// for making the user allow other users
-  /// to follow him by toggling a switch
-  /// @param [newValue] which is a boolean either true or false.
-  void _allowPeopleToFollowYou(newValue) {
-    final request = {'allowToFollowYou': newValue};
-    DioHelper.patchData(
-            token: CacheHelper.getData(key: 'token'),
-            path: accountSettings,
-            data: request)
-        .then((response) => {
-              // if changed correctly then emit to all listeners that the
-              // settings has been changed, else leave every thing as is.
-              if (response.statusCode == 200)
-                {
-                  CacheHelper.putData(key: 'allowToFollowYou', value: newValue),
-                  emit(ChangeSwitchState())
-                }
-            })
-        .catchError((error) {
-      error = error as DioError;
-      debugPrint(error.message);
-    });
-  }
-
-  /// this is a utility function allowing the user to see NSFW content
-  /// @param [newValue] which is a boolean either true for show
-  /// or false to hide.
-  void _showNFSW(newValue) {
-    final request = {'nsfw': newValue};
-    DioHelper.patchData(
-            token: CacheHelper.getData(key: 'token'),
-            path: accountSettings,
-            data: request)
-        .then((response) => {
-              // if changed correctly then emit to all listeners that the
-              // settings has been changed, else leave every thing as is.
-              if (response.statusCode == 200)
-                {
-                  CacheHelper.putData(key: 'nsfw', value: newValue),
-                  emit(ChangeSwitchState())
-                }
-            })
-        .catchError((error) {
-      error = error as DioError;
-      debugPrint(error.message);
-    });
   }
 }

@@ -5,9 +5,11 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/search_components/subreddit_results_container.dart';
+import 'package:reddit/data/subreddit/moderators_model.dart';
 import 'package:reddit/screens/search/cubit/search_cubit.dart';
 
 import '../../components/helpers/color_manager.dart';
+import '../../components/search_components/profile_result_container.dart';
 import '../../data/search/search_result_subbredit_model.dart';
 
 class ResultsCommunities extends StatefulWidget {

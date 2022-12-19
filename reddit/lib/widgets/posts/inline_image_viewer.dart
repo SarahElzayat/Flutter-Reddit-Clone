@@ -100,11 +100,8 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                   },
             child: SizedBox(
               // expand the image to the width of the screen with max height of 60% of the screen
-              width: widget.postView == PostView.classic
-                  ? constraints.maxWidth * 0.2
-                  : constraints.maxWidth,
               height: widget.postView == PostView.classic
-                  ? constraints.maxWidth * 0.2
+                  ? constraints.maxHeight * 0.7
                   : widget.outsideScreen
                       ? min(70.h, aspectRatio * constraints.maxWidth)
                       : 50.h,

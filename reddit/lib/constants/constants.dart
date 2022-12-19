@@ -184,5 +184,3 @@ const List<String> banReasons = [
 ];
 
 String? token;
-
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
