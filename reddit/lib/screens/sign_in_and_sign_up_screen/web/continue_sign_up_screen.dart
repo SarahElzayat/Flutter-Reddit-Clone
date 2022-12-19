@@ -136,169 +136,192 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
     final _myMail = ModalRoute.of(context)!.settings.arguments as String;
     final navigator = Navigator.of(context);
     return Scaffold(
-      body: ResponsiveSizer(
-        builder: (context, orientation, screenType) {
-          return Container(
-            constraints: const BoxConstraints(minWidth: 1000),
-            height: 100.h,
-            width: 100.w,
-            child: Form(
-              key: _myKey,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                        margin: const EdgeInsets.all(30),
-                        alignment: Alignment.centerLeft,
-                        width: 100.w,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Choose your username',
-                              style: TextStyle(color: ColorManager.upvoteRed),
-                            ),
-                            const Text(
-                              '''Your username is how other community members will see you. This name will be used to credit you for things you share on Reddit. What should we call you?''',
-                              style: TextStyle(
-                                color: ColorManager.blue,
-                              ),
-                            ),
-                            const Divider(
-                              color: ColorManager.white,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  width: 30.w,
-                                  child: Column(
+      body: MediaQuery.of(context).size.height < 400
+          ? const Center(
+              child: Scaffold(
+                  body: Center(
+                      child: Text('Increse the size of the window please'))),
+            )
+          : ResponsiveSizer(
+              builder: (context, orientation, screenType) {
+                return Container(
+                  constraints: const BoxConstraints(minWidth: 1000),
+                  height: 100.h,
+                  width: 100.w,
+                  child: Form(
+                    key: _myKey,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                              margin: const EdgeInsets.all(30),
+                              alignment: Alignment.centerLeft,
+                              width: 100.w,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Choose your username',
+                                    style: TextStyle(
+                                        color: ColorManager.upvoteRed),
+                                  ),
+                                  const Text(
+                                    '''Your username is how other community members will see you. This name will be used to credit you for things you share on Reddit. What should we call you?''',
+                                    style: TextStyle(
+                                      color: ColorManager.blue,
+                                    ),
+                                  ),
+                                  const Divider(
+                                    color: ColorManager.white,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      DefaultTextField(
-                                        onChanged: (p0) => setState(() {}),
-                                        key: const Key('UsernameTextField'),
-                                        validator: (username) {
-                                          if (!Validator.validUserName(
-                                              username!)) {
-                                            return 'username must be greater than 2 characters and less than 21.';
-                                          } else {
-                                            return null;
-                                          }
-                                        },
-                                        formController: usernameController,
-                                        labelText: 'CHOOSE A USERNAME',
+                                      SizedBox(
+                                        width: 30.w,
+                                        child: Column(
+                                          children: [
+                                            DefaultTextField(
+                                              onChanged: (p0) =>
+                                                  setState(() {}),
+                                              key: const Key(
+                                                  'UsernameTextField'),
+                                              validator: (username) {
+                                                if (!Validator.validUserName(
+                                                    username!)) {
+                                                  return 'username must be greater than 2 characters and less than 21.';
+                                                } else {
+                                                  return null;
+                                                }
+                                              },
+                                              formController:
+                                                  usernameController,
+                                              labelText: 'CHOOSE A USERNAME',
+                                            ),
+                                            DefaultTextField(
+                                              onChanged: (p0) =>
+                                                  setState(() {}),
+                                              key: const Key(
+                                                  'PasswordTextField'),
+                                              validator: (password) {
+                                                if (!Validator
+                                                    .validPasswordValidation(
+                                                        password!)) {
+                                                  return 'password must be greater than 7 characters.';
+                                                } else {
+                                                  return null;
+                                                }
+                                              },
+                                              formController:
+                                                  passwordController,
+                                              isPassword: true,
+                                              labelText: 'PASSWORD',
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      DefaultTextField(
-                                        onChanged: (p0) => setState(() {}),
-                                        key: const Key('PasswordTextField'),
-                                        validator: (password) {
-                                          if (!Validator
-                                              .validPasswordValidation(
-                                                  password!)) {
-                                            return 'password must be greater than 7 characters.';
-                                          } else {
-                                            return null;
-                                          }
-                                        },
-                                        formController: passwordController,
-                                        isPassword: true,
-                                        labelText: 'PASSWORD',
+                                      Container(
+                                        alignment: Alignment.bottomLeft,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                const Text(
+                                                    'Here are some username suggestions'),
+                                                IconButton(
+                                                    onPressed: getRandomNames,
+                                                    icon: const Icon(
+                                                        Icons.restart_alt))
+                                              ],
+                                            ),
+                                            ...dummyNames.map((item) {
+                                              return TextButton(
+                                                onPressed: () =>
+                                                    selectUsernameFromSuggestions(
+                                                        item),
+                                                child: Text(
+                                                  item,
+                                                  style: const TextStyle(
+                                                      color: ColorManager.blue,
+                                                      decoration: TextDecoration
+                                                          .underline),
+                                                ),
+                                              );
+                                            }).toList(),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
-                                ),
-                                Container(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          const Text(
-                                              'Here are some username suggestions'),
-                                          IconButton(
-                                              onPressed: getRandomNames,
-                                              icon:
-                                                  const Icon(Icons.restart_alt))
-                                        ],
-                                      ),
-                                      ...dummyNames.map((item) {
-                                        return TextButton(
-                                          onPressed: () =>
-                                              selectUsernameFromSuggestions(
-                                                  item),
-                                          child: Text(
-                                            item,
-                                            style: const TextStyle(
-                                                color: ColorManager.blue,
-                                                decoration:
-                                                    TextDecoration.underline),
-                                          ),
-                                        );
-                                      }).toList(),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        )),
-                    Container(
-                      width: 100.w,
-                      height: 5.h,
-                      decoration: const BoxDecoration(color: ColorManager.grey),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            TextButton(
-                                key: const Key('BackButton'),
-                                onPressed: () {
-                                  navigator.pushReplacementNamed(
-                                      SignUpForWebScreen.routeName);
-                                },
-                                child: const Text(
-                                  'Back',
-                                  style: TextStyle(color: ColorManager.blue),
-                                )),
-                            Container(
-                                margin: const EdgeInsets.only(right: 10),
-                                padding: const EdgeInsets.all(5),
-                                width: 140,
-                                child: ElevatedButton(
-                                  key: const Key('SignUpButton'),
-                                  style: ButtonStyle(
-                                      foregroundColor: MaterialStatePropertyAll(
-                                        (usernameController.text.isNotEmpty &&
-                                                passwordController
-                                                    .text.isNotEmpty)
-                                            ? ColorManager.white
-                                            : ColorManager.eggshellWhite,
-                                      ),
-                                      backgroundColor: MaterialStatePropertyAll(
-                                        (usernameController.text.isNotEmpty &&
-                                                passwordController
-                                                    .text.isNotEmpty)
-                                            ? ColorManager.blue
-                                            : ColorManager.grey,
+                                ],
+                              )),
+                          Container(
+                            width: 100.w,
+                            height: 5.h,
+                            decoration:
+                                const BoxDecoration(color: ColorManager.grey),
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  TextButton(
+                                      key: const Key('BackButton'),
+                                      onPressed: () {
+                                        navigator.pushReplacementNamed(
+                                            SignUpForWebScreen.routeName);
+                                      },
+                                      child: const Text(
+                                        'Back',
+                                        style:
+                                            TextStyle(color: ColorManager.blue),
                                       )),
-                                  onPressed: () {
-                                    (usernameController.text.isNotEmpty &&
-                                            passwordController.text.isNotEmpty)
-                                        ? loginChecker(_myMail)
-                                        : () {};
-                                  },
-                                  child: const Text('SIGN UP',
-                                      style: TextStyle(
-                                          color: ColorManager.eggshellWhite)),
-                                ))
-                          ]),
-                    )
-                  ]),
+                                  Container(
+                                      margin: const EdgeInsets.only(right: 10),
+                                      padding: const EdgeInsets.all(5),
+                                      width: 140,
+                                      child: ElevatedButton(
+                                        key: const Key('SignUpButton'),
+                                        style: ButtonStyle(
+                                            foregroundColor:
+                                                MaterialStatePropertyAll(
+                                              (usernameController
+                                                          .text.isNotEmpty &&
+                                                      passwordController
+                                                          .text.isNotEmpty)
+                                                  ? ColorManager.white
+                                                  : ColorManager.eggshellWhite,
+                                            ),
+                                            backgroundColor:
+                                                MaterialStatePropertyAll(
+                                              (usernameController
+                                                          .text.isNotEmpty &&
+                                                      passwordController
+                                                          .text.isNotEmpty)
+                                                  ? ColorManager.blue
+                                                  : ColorManager.grey,
+                                            )),
+                                        onPressed: () {
+                                          (usernameController.text.isNotEmpty &&
+                                                  passwordController
+                                                      .text.isNotEmpty)
+                                              ? loginChecker(_myMail)
+                                              : () {};
+                                        },
+                                        child: const Text('SIGN UP',
+                                            style: TextStyle(
+                                                color: ColorManager
+                                                    .eggshellWhite)),
+                                      ))
+                                ]),
+                          )
+                        ]),
+                  ),
+                );
+              },
             ),
-          );
-        },
-      ),
     );
   }
 }
