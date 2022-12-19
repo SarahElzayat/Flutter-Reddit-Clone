@@ -111,8 +111,10 @@ class _PostScreenWebState extends State<PostScreenWeb> {
     );
     return BlocProvider(
       create: (context) => PostScreenCubit(
-        post: widget.post,
-      )..getCommentsOfPost(),
+        post: post,
+      )
+        ..getCommentsOfPost()
+        ..getPostDetails(),
       child: BlocConsumer<PostScreenCubit, PostScreenState>(
         listener: (context, state) {},
         builder: (context, state) {

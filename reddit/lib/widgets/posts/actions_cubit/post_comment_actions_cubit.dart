@@ -133,6 +133,38 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
     ).then((value) => print(value.data));
   }
 
+<<<<<<< HEAD
+=======
+  Future follow() {
+    String path = isPost
+        ? '/follow-post'
+        : (currentComment!.followed ?? false)
+            ? '/unfollow-comment'
+            : '/follow-comment';
+
+    return DioHelper.postData(
+      path: path,
+      data: {
+        'id': post.id,
+        'follow': !(post.followed ?? false),
+        'commentId': currentComment?.id,
+      },
+    ).then((value) {
+      logger.w('followed: ${post.followed}');
+      if (isPost) {
+        post.followed = !post.followed!;
+      } else {
+        currentComment!.followed = !currentComment!.followed!;
+      }
+      emit(FollowedChangedState());
+    }).catchError((error) {
+      logger.e(error.toString());
+      error = error as DioError;
+      emit(OpError(error: error.response?.data['error'] ?? ''));
+    });
+  }
+
+>>>>>>> 40631d0f69581fdc20be242bf49bcd860a53f2da
   dynamic get getModel => currentComment ?? post;
 
   /// gets the voting type of the post (up, down ,..)
@@ -150,4 +182,100 @@ class PostAndCommentActionsCubit extends Cubit<PostState> {
     showModTools = !showModTools;
     emit(CommentsModToolsToggled());
   }
+<<<<<<< HEAD
+=======
+
+  Future<void> copyText() {
+    String text = post.title ?? '';
+
+    if (currentComment != null) {
+      text = getPlainText(currentComment!.commentBody);
+    }
+
+    return Clipboard.setData(ClipboardData(text: text));
+  }
+
+  Future<void> editIt(Map<String, dynamic> newContent) {
+    String path = isPost ? '/edit-post' : '/edit-user-text';
+
+    if (isPost) {
+      return DioHelper.postData(
+        path: path,
+        data: {
+          'postId': post.id,
+          'id': currentComment?.id,
+          'content': newContent,
+        },
+      ).then((value) {
+        if (isPost) {
+          post.content = newContent;
+        } else {
+          currentComment!.commentBody = newContent;
+        }
+        emit(EditedState());
+      }).catchError((error) {
+        error = error as DioError;
+        logger.e(error.response?.data);
+        emit(OpError(error: error.response?.data['error'] ?? ''));
+      });
+    }
+
+    return DioHelper.putData(
+      path: path,
+      data: {
+        'postId': post.id,
+        'id': currentComment?.id,
+        'content': newContent,
+      },
+    ).then((value) {
+      if (isPost) {
+        post.title = Document.fromJson(newContent['ops']).toPlainText();
+      } else {
+        currentComment!.commentBody = newContent;
+      }
+      emit(EditedState());
+    }).catchError((error) {
+      error = error as DioError;
+      logger.e(error.response?.data);
+      emit(OpError(error: error.response?.data['error'] ?? ''));
+    });
+  }
+
+  Future<InsightsModel> getInsights() {
+    return DioHelper.getData(
+      path: '/post-insights',
+      query: {
+        'id': post.id,
+      },
+    ).then((value) {
+      return InsightsModel.fromJson(value.data);
+    }).catchError((error) {
+      error = error as DioError;
+      logger.e(error.response?.data);
+      emit(OpError(error: error.response?.data['error'] ?? ''));
+      throw error;
+    });
+  }
+
+  static postComment({
+    required VoidCallback onSuccess,
+    required void Function(DioError) onError,
+    required SendedCommentModel c,
+  }) {
+    logger.e(c.toJson());
+    DioHelper.postData(path: '/comment', data: c.toJson()).then((value) {
+      onSuccess();
+      return null;
+    }).catchError((e) {
+      onError(e as DioError);
+      Map<String, dynamic> error = e.response!.data;
+
+      logger.w(error['error']);
+    });
+  }
+
+  void collapse() {
+    currentComment!.isCollapsed = !((currentComment?.isCollapsed) ?? true);
+  }
+>>>>>>> 40631d0f69581fdc20be242bf49bcd860a53f2da
 }

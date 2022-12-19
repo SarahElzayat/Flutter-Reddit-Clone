@@ -103,7 +103,46 @@ class MenuItems {
         PostNotifierCubit.get(context).NotifyPosts();
 
         break;
+<<<<<<< HEAD
 
+=======
+      case MenuItems.edit:
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return EditScreen(
+            post: post,
+            currentComment: cubit.currentComment,
+          );
+        }));
+
+        break;
+      case MenuItems.follow:
+      case MenuItems.unfollow:
+        cubit.follow().then((value) {
+          PostNotifierCubit.get(context).notifyPosts();
+        });
+        break;
+      case MenuItems.copy:
+        cubit.copyText().then((value) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            responseSnackBar(
+              message: 'Your copy is ready for pasta!',
+              error: false,
+            ),
+          );
+        }).catchError((err) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            responseSnackBar(
+              message: 'Error while copying',
+              error: true,
+            ),
+          );
+        });
+        break;
+      case MenuItems.collapse:
+        cubit.collapse();
+        PostNotifierCubit.get(context).notifyPosts();
+        break;
+>>>>>>> 40631d0f69581fdc20be242bf49bcd860a53f2da
       default:
         break;
     }
