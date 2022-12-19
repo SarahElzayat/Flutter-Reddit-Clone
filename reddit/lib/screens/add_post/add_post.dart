@@ -56,8 +56,7 @@ class AddPost extends StatelessWidget {
                       (current is ChangeSubredditName ||
                           (previous is ChangeSubredditName)),
                   builder: (context, state) {
-                    return Expanded(
-                        child: MaterialButton(
+                    return MaterialButton(
                       onPressed: () {
                         navigator.pushNamed(CommunitySearch.routeName);
                       },
@@ -68,7 +67,7 @@ class AddPost extends StatelessWidget {
                           const Icon(Icons.keyboard_arrow_down)
                         ],
                       ),
-                    ));
+                    );
                   },
                 ),
               Padding(

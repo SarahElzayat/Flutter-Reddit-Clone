@@ -1,6 +1,8 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/components/bottom_sheet.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
 import 'package:reddit/widgets/user_profile/user_profile_eidt_image.dart';
 
 class UserProfileEditScreen extends StatelessWidget {
@@ -12,6 +14,7 @@ class UserProfileEditScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaquery = MediaQuery.of(context);
     final navigator = Navigator.of(context);
+    final userProfile = UserProfileCubit.get(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit'),
@@ -111,12 +114,62 @@ class UserProfileEditScreen extends StatelessWidget {
                     children: [
                       // for (int i = 0; i < 7; i++)
                       Container(
-                        margin: EdgeInsets.symmetric(vertical: 2),
+                        margin: const EdgeInsets.symmetric(vertical: 2),
                         child: MaterialButton(
                           padding: EdgeInsets.zero,
-                          onPressed: (() {}),
+                          onPressed: (() {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: ((context) {
+                                  return Container(
+                                    color: ColorManager.darkGrey,
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          margin: const EdgeInsets.all(15),
+                                          child: const Text(
+                                            'Add Social Link',
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                color:
+                                                    ColorManager.eggshellWhite),
+                                          ),
+                                        ),
+                                        // Divider(),
+                                        Container(
+                                          color: ColorManager.deepDarkGrey,
+                                          margin: const EdgeInsets.all(7),
+                                          child: TextFormField(
+                                            style:
+                                                const TextStyle(fontSize: 22),
+                                            decoration: const InputDecoration(
+                                                border: InputBorder.none,
+                                                label: Text('Display text'),
+                                                labelStyle:
+                                                    TextStyle(fontSize: 22)),
+                                          ),
+                                        ),
+                                        Container(
+                                          color: ColorManager.deepDarkGrey,
+                                          margin: const EdgeInsets.all(7),
+                                          child: TextFormField(
+                                            style:
+                                                const TextStyle(fontSize: 22),
+                                            decoration: const InputDecoration(
+                                                border: InputBorder.none,
+                                                label:
+                                                    Text('https://website.com'),
+                                                labelStyle:
+                                                    TextStyle(fontSize: 22)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }));
+                          }),
                           child: Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 15, vertical: 5),
                             decoration: BoxDecoration(
                                 color: ColorManager.grey,

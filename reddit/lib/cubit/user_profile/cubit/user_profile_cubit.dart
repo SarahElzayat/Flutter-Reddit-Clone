@@ -121,4 +121,60 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       print('Error In Fetch comments ==> $error');
     });
   }
+
+  showPopupUserWidget(BuildContext context, String username) {
+    showDialog(
+        context: context,
+        builder: ((context) {
+          return AlertDialog(
+            content: Column(mainAxisSize: MainAxisSize.min, children: [
+              CircleAvatar(
+                radius: 30,
+                child: Image.asset(
+                  'assets/images/Logo.png',
+                  fit: BoxFit.cover,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                'u/${username}',
+                style: TextStyle(fontSize: 16),
+              ),
+              ListTile(
+                title: Text(
+                  '${userData!.karma}',
+                  style: TextStyle(fontSize: 18),
+                ),
+                subtitle: Text('Karma'),
+              ),
+              TextButton(
+                  onPressed: () {},
+                  child: Row(
+                    children: const [
+                      Icon(Icons.person),
+                      Text('  View profile')
+                    ],
+                  )),
+              TextButton(
+                  onPressed: () {},
+                  child: Row(
+                    children: const [
+                      Icon(Icons.block_flipped),
+                      Text('  Block Account')
+                    ],
+                  )),
+              TextButton(
+                  onPressed: () {},
+                  child: Row(
+                    children: const [
+                      Icon(Icons.mail_outline_outlined),
+                      Text('  Invite to Community')
+                    ],
+                  )),
+            ]),
+          );
+        }));
+  }
 }
