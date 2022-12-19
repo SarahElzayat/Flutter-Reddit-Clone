@@ -7,9 +7,8 @@ import 'package:reddit/components/community_components/create_community_dialog.d
 import 'package:reddit/components/app_bar_components.dart';
 // import 'package:reddit/components/home_dropdown_menu.dart';
 import 'package:reddit/components/search_field.dart';
+import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 import 'package:reddit/screens/moderation/mod_tools.dart';
-
-import '../cubit/app_cubit.dart';
 
 ///@param [index] is the index of the bottom navigation bar screen
 ///@param [context] is the context of the parent widget

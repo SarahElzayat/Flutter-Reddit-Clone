@@ -34,3 +34,15 @@ class SetDropdownItem extends ModerationState {}
 class UsersLoaded extends ModerationState {}
 
 class TopicsLoaded extends ModerationState {}
+
+class LoadingMoreQueue extends ModerationState {}
+
+class LoadedMoreQueue extends ModerationState {}
+
+class LoadingQueue extends ModerationState {}
+
+class LoadedQueue extends ModerationState {}
+
+class NoMoreQueueToLoad extends ModerationState {}
+
+class EmptyQueue extends ModerationState {}

@@ -3,8 +3,10 @@
 ///moderation cubit that handles all moduration functions
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:logger/logger.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/components/snack_bar.dart';
@@ -13,21 +15,25 @@ import 'package:reddit/data/moderation_models/actions_user_model.dart';
 import 'package:reddit/data/moderation_models/community_settings_model.dart';
 import 'package:reddit/data/moderation_models/description_model.dart';
 import 'package:reddit/data/moderation_models/get_users_model.dart';
+import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/router.dart';
+import 'package:reddit/screens/comments/add_comment_screen.dart';
 part 'moderation_state.dart';
 
 class ModerationCubit extends Cubit<ModerationState> {
+  ModerationCubit() : super(ModerationInitial());
+
+  /// for accessing the cubit outside the class
+  static ModerationCubit get(context) => BlocProvider.of(context);
+
   ///settings of the community
   late CommunitySettingsModel settings;
   late ModPostSettingsModel postSettings;
 
   ///suggested topics for a subreddit list
   List<dynamic> topics = [];
-  late TextEditingController controller;
-  ModerationCubit() : super(ModerationInitial());
-  static ModerationCubit get(context) => BlocProvider.of(context);
 
   ///text editing controllers for textfields in modtools' screens
 
@@ -41,7 +47,9 @@ class ModerationCubit extends Cubit<ModerationState> {
   final TextEditingController modNoteController = TextEditingController();
   final TextEditingController userNoteController = TextEditingController();
 
-  ///@param [context]
+  late PagingController<String?, PostModel> pagingController;
+
+  ///@param [context] screen context
   ///@param [name] the name of the subreddit
   ///returns the current community settings of a certain subreddit
   void getCommunitySettings(context, name) {
@@ -60,8 +68,8 @@ class ModerationCubit extends Cubit<ModerationState> {
   }
 
   ///returns the post settings for a certain subreddit
-  ///@param [context]
-  ///@param [name]
+  ///@param [context] screen context
+  ///@param [name] name of the subreddit
   void getPostSettings(context, name) {
     DioHelper.getData(path: '/r/$name/about/edit-post-settings').then((value) {
       if (value.statusCode == 200) {
@@ -74,6 +82,8 @@ class ModerationCubit extends Cubit<ModerationState> {
     });
   }
 
+  ///@param [context] screen context
+  ///@param [name] name of the subreddit
   /// gets the current settings of the subreddit being moderated
   void getSettings(context, name) {
     getCommunitySettings(context, name);
@@ -81,6 +91,7 @@ class ModerationCubit extends Cubit<ModerationState> {
     emit(LoadSettings());
   }
 
+  ///@param [context] screen context
   /// updates the community settings when save changes button is pressed
   void updateCommunitySettings(context) {
     settings.communityDescription = descriptionController.text;
@@ -96,6 +107,7 @@ class ModerationCubit extends Cubit<ModerationState> {
     });
   }
 
+  ///@param [context] screen context
   /// updates the post and comments settings when save changes button is pressed
   void updatePostSettings(context) {
     DioHelper.putData(
@@ -109,6 +121,7 @@ class ModerationCubit extends Cubit<ModerationState> {
     });
   }
 
+  ///@param [context] screen context
   ///updates settings when the save changes button is pressed
   void updateSettings(context) {
     Logger().e(descriptionController.text);
@@ -127,6 +140,80 @@ class ModerationCubit extends Cubit<ModerationState> {
     }
   }
 
+  List<PostModel> posts = [];
+  String afterId = '';
+  String beforeId = '';
+  //Queues related functions
+  void getQueuePosts(
+      {context,
+      bool loadMore = false,
+      bool before = false,
+      bool after = false,
+      int limit = 10}) {
+    if (kDebugMode) {
+      logger.wtf('after$afterId');
+      logger.wtf('before$beforeId');
+    }
+
+    loadMore ? emit(LoadingMoreQueue()) : emit(LoadingQueue());
+    if (!loadMore) {
+      posts.clear();
+      beforeId = '';
+      afterId = '';
+    } else {
+      if (kDebugMode) {
+        logger.wtf('AFFFTEEEEERRRRRR ');
+      }
+      if (kDebugMode) {
+        logger.wtf(posts[posts.length - 1].id);
+      }
+    }
+    final query = {
+      'after': after ? afterId : null,
+      'before': before ? beforeId : null,
+      'limit': limit,
+      'sort': sortingValue!.toLowerCase(),
+      'only': listingTypeValue!.toLowerCase()
+    };
+
+    String finalPath = (webSelectedItem == ModToolsSelectedItem.spam)
+        ? 'spam'
+        : (webSelectedItem == ModToolsSelectedItem.edited)
+            ? 'edited'
+            : 'unmoderated';
+
+    DioHelper.getData(
+            path: '/r/${settings.communityName}/about/$finalPath', query: query)
+        .then((value) {
+      if (value.statusCode == 200) {
+        if (value.data['children'].length == 0) {
+          if (kDebugMode) {
+            logger.wtf('EMPPPTTYYYYY');
+          }
+
+          // if (loadMore) {
+          //   emit(NoMoreQueueToLoad());
+          // } else {
+          //   emit(EmptyQueue());
+          // }
+        } else {
+          logger.wtf(value.data['children']);
+          for (int i = 0; i < value.data['children'].length; i++) {
+            // logger.wtf(i);
+            posts.add(PostModel.fromJsonwithData(value.data['children'][i]));
+            loadMore ? emit(LoadedMoreQueue()) : emit(LoadedQueue());
+          }
+        }
+      }
+    }).catchError((error) {
+      error = error as DioError;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(responseSnackBar(message: 'Error loading posts'));
+    });
+  }
+
+  void getPosts() {}
+
   void getSuggestedTopics(context) {
     DioHelper.getData(path: '/r/${settings.communityName}/suggested-topics')
         .then((value) {
@@ -142,7 +229,6 @@ class ModerationCubit extends Cubit<ModerationState> {
   bool isChanged = false;
   bool emptyDescription = true;
 
-  ///@param [description] description currently being edited
   ///checks if the description being edited is changed to enable save button
   void onChanged() {
     if (descriptionController.text != settings.communityDescription) {
@@ -264,7 +350,7 @@ class ModerationCubit extends Cubit<ModerationState> {
     );
 
     DioHelper.postData(
-            token: token, path: inviteMod, data: inviteModerator.toJson())
+            sentToken: token, path: inviteMod, data: inviteModerator.toJson())
         .then((value) {
       if (value.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
@@ -287,7 +373,7 @@ class ModerationCubit extends Cubit<ModerationState> {
     DioHelper.postData(
             path: '/r/yazzooz/mute-user',
             data: mutedUser.toJson(),
-            token: token)
+            sentToken: token)
         .then((value) {
       if (value.statusCode == 200) {
         getUsers(context, UserManagement.muted);
@@ -306,7 +392,7 @@ class ModerationCubit extends Cubit<ModerationState> {
     ApproveUserModel approveUser =
         ApproveUserModel(username: usernameController.text);
     DioHelper.postData(
-            token: token,
+            sentToken: token,
             path: '/r/yazzooz/approve-user',
             data: approveUser.toJson())
         .then((value) {
@@ -355,88 +441,6 @@ class ModerationCubit extends Cubit<ModerationState> {
           responseSnackBar(message: 'Failed loading muted users', error: true));
     });
   }
-
-  List<dynamic> bannedUsers = [];
-
-  ///@param [context] user management screen context
-  ///gets a list of users based on the user management type [banned, muted, moderator, approved]
-  void getBannedUsers(context) {
-    DioHelper.getData(path: '/r/yazzooz/about/banned').then((value) {
-      if (value.statusCode == 200) {
-        print(value.data);
-        bannedUsers = value.data['children']
-            .map((value) =>
-                BannedUsersModel.fromJson(value as Map<String, dynamic>))
-            .toList();
-        emit(UsersLoaded());
-      }
-    }).catchError((error) {
-      error = error as DioError;
-      ScaffoldMessenger.of(context).showSnackBar(
-          responseSnackBar(message: 'Failed loading banned users'));
-    });
-  }
-
-  List<dynamic> mutedUsers = [];
-
-  void getMutedUsers(context) {
-    DioHelper.getData(path: '/r/yazzooz/about/muted').then((value) {
-      if (value.statusCode == 200) {
-        mutedUsers = value.data['children']
-            .map((value) =>
-                MuteUserModel.fromJson(value as Map<String, dynamic>))
-            .toList();
-        emit(UsersLoaded());
-      }
-    }).catchError((error) {
-      error = error as DioError;
-      ScaffoldMessenger.of(context).showSnackBar(
-          responseSnackBar(message: 'Failed loading muted users', error: true));
-    });
-  }
-
-  List<dynamic> approvedUsers = [];
-
-  void getApprovedUsers(context) {
-    DioHelper.getData(path: '/r/yazzooz/about/approved').then((value) {
-      if (value.statusCode == 200) {
-        print(value.data);
-        approvedUsers = value.data['children']
-            .map((approvedUser) => ApproveUserModel.fromJson(approvedUser))
-            .toList();
-        emit(UsersLoaded());
-      }
-    }).catchError((error) {
-      error = error as DioError;
-      ScaffoldMessenger.of(context).showSnackBar(
-          responseSnackBar(message: 'Failed loading approved users'));
-    });
-  }
-
-  List<dynamic> moderators = [];
-
-  void getModerators(context) {
-    DioHelper.getData(path: '/r/yazzooz/about/moderators').then((value) {
-      if (value.statusCode == 200) {
-        Logger().e(value.data['children']);
-        moderators = value.data['children']
-            .map((user) => ModeratorsModel.fromJson(user))
-            .toList();
-        emit(UsersLoaded());
-      }
-    }).catchError((error) {
-      error = error as DioError;
-      ScaffoldMessenger.of(context)
-          .showSnackBar(responseSnackBar(message: 'Failed loading moderators'));
-    });
-  }
-
-  //Queues related functions
-  void getSpam() {}
-
-  void getEdited() {}
-
-  void getUnmoderated() {}
 
   ///@param [context] mod tools screen context
   ///@param [route] the route to which screen navigates to
@@ -531,10 +535,6 @@ class ModerationCubit extends Cubit<ModerationState> {
     }
     emit(WebModTools());
   }
-
-  ///List of posts
-  ///could be spam, edited, unmoderated
-  List<dynamic> posts = [];
 
   ///value of selected sorting iem
   String? sortingValue = sortingItems.first;

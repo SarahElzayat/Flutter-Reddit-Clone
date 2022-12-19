@@ -183,16 +183,11 @@ const List<String> banReasons = [
   'Other issues'
 ];
 
-const List<String> sortingItems = [
-  'This is spam',
-  'This is misinformation',
-  'This is abusive or harrasing',
-  'Other issues'
-];
+const List<String> sortingItems = ['Newest First', 'New', 'Old'];
 
 /// drop down list items to show type
 /// could be posts or comments or both
-const List<String> listingTypes = ['Posts and Comments', 'Posts', 'Comments'];
+const List<String> listingTypes = ['Posts', 'Comments'];
 
 /// drop down list to show view of list
 /// could be card or classic or both
