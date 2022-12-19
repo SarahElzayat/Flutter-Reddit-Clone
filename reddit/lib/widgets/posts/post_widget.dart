@@ -25,6 +25,7 @@ import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.da
 import 'package:reddit/widgets/posts/post_lower_bar.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:tuple/tuple.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../components/helpers/posts/helper_funcs.dart';
@@ -518,6 +519,54 @@ class _PostWidgetState extends State<PostWidget> {
           expands: false,
           scrollable: false,
           placeholder: '',
+          customStyles: DefaultStyles(
+            paragraph: DefaultTextBlockStyle(
+              const TextStyle(
+                fontSize: 14,
+                color: Colors.black,
+                height: 1.15,
+                fontWeight: FontWeight.w300,
+              ),
+              const Tuple2(16, 0),
+              const Tuple2(0, 0),
+              null,
+            ),
+            quote: DefaultTextBlockStyle(
+              const TextStyle(
+                fontSize: 14,
+                color: Colors.black,
+                height: 1.15,
+                fontWeight: FontWeight.w300,
+              ),
+              const Tuple2(16, 0),
+              const Tuple2(0, 0),
+              null,
+            ),
+            code: DefaultTextBlockStyle(
+              const TextStyle(
+                fontSize: 14,
+                color: Colors.red,
+                height: 1.15,
+                fontWeight: FontWeight.w300,
+              ),
+              const Tuple2(16, 0),
+              const Tuple2(0, 0),
+              null,
+            ),
+            inlineCode:
+                InlineCodeStyle(style: const TextStyle(color: Colors.red)),
+            h1: DefaultTextBlockStyle(
+                const TextStyle(
+                  fontSize: 32,
+                  color: Colors.black,
+                  height: 1.15,
+                  fontWeight: FontWeight.w300,
+                ),
+                const Tuple2(16, 0),
+                const Tuple2(0, 0),
+                null),
+            sizeSmall: const TextStyle(fontSize: 9),
+          ),
           scrollController: ScrollController(),
           focusNode: FocusNode(),
           padding: EdgeInsets.zero,
