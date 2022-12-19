@@ -83,8 +83,8 @@ dependencies:
   universal_html: ^2.0.8
   universal_ui: ^0.0.8
   url_launcher: ^6.1.6
-  video_player: ^2.4.7
-  video_thumbnail: #^0.5.3
+  video_player: null
+  video_thumbnail: ^0.5.3
   video_trimmer: ^2.0.1
   google_sign_in: ^5.4.2
   visibility_detector: ^0.3.3

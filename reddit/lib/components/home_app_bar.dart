@@ -9,6 +9,11 @@ import 'package:reddit/components/app_bar_components.dart';
 import 'package:reddit/components/search_field.dart';
 import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 import 'package:reddit/screens/moderation/mod_tools.dart';
+import '../../components/community_components/create_community_dialog.dart';
+import '../../components/app_bar_components.dart';
+import '../../components/search_field.dart';
+import '../../cubit/app_cubit/app_cubit.dart';
+import '../../screens/moderation/mod_tools.dart';
 
 ///@param [index] is the index of the bottom navigation bar screen
 ///@param [context] is the context of the parent widget
