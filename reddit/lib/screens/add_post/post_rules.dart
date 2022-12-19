@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/screens/add_post/schedule_date.dart';
 import 'package:reddit/screens/main_screen.dart';
 
 import '../../components/button.dart';
@@ -125,7 +126,18 @@ class _PostRulesState extends State<PostRules> {
               nfswAndSpoiler(true, addPostCubit.spoiler, ' Spoiler',
                   addPostCubit, mediaQuery)
             ],
-          )
+          ),
+          TextButton(
+              onPressed: () {
+                navigator.push(
+                    MaterialPageRoute(builder: ((context) => ScheduleDate())));
+              },
+              child: Row(
+                children: [
+                  Text('Schedule Post'),
+                  Icon(Icons.arrow_forward_outlined)
+                ],
+              ))
         ]),
       ),
     );

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
 import 'package:reddit/data/add_post/subredditsSearchListModel.dart';
 import 'package:video_player/video_player.dart';
@@ -46,6 +47,8 @@ class AddPostCubit extends Cubit<AddPostState> {
   List<TextEditingController> imagesLinkControllerTemp = [];
 
   int imageCurrentIndex = 0;
+
+  DateTime? scheduleDate;
 
   /// [editableImage] Image that User will edit it
   late XFile editableImage;
@@ -469,6 +472,10 @@ class AddPostCubit extends Cubit<AddPostState> {
         'imageLinks': imageLinks,
         'nsfw': nsfw,
         'spoiler': spoiler,
+        if (scheduleDate != null)
+          'scheduleDate': DateFormat('yyyy-MM-dd').format(scheduleDate!),
+        // if (scheduleDate != null)
+        //   'scheduleTime': DateFormat('hh:mm:ss').format(scheduleDate!),
       };
     }
     if (postType == 1) {
@@ -489,6 +496,8 @@ class AddPostCubit extends Cubit<AddPostState> {
         'inSubreddit': true,
         'nsfw': nsfw,
         'spoiler': spoiler,
+        if (scheduleDate != null)
+          'scheduleDate': DateFormat('yyyy-MM-dd').format(scheduleDate!),
       };
     } else if (postType == 2) {
       body = {
@@ -501,6 +510,8 @@ class AddPostCubit extends Cubit<AddPostState> {
         },
         'nsfw': nsfw,
         'spoiler': spoiler,
+        if (scheduleDate != null)
+          'scheduleDate': DateFormat('yyyy-MM-dd').format(scheduleDate!),
       };
     } else if (postType == 3) {
       body = {
@@ -511,6 +522,8 @@ class AddPostCubit extends Cubit<AddPostState> {
         'link': link.text,
         'nsfw': nsfw,
         'spoiler': spoiler,
+        if (scheduleDate != null)
+          'scheduleDate': DateFormat('yyyy-MM-dd').format(scheduleDate!),
       };
     } else if (postType == 5) {
       body = {
@@ -520,13 +533,22 @@ class AddPostCubit extends Cubit<AddPostState> {
         'title': title.text,
         'nsfw': nsfw,
         'spoiler': spoiler,
+        if (scheduleDate != null)
+          'scheduleDate': DateFormat('yyyy-MM-dd').format(scheduleDate!),
       };
     }
-    FormData formData = FormData.fromMap(body);
-    print('Toke : ${CacheHelper.getData(key: 'token')}');
 
+    FormData formData = FormData.fromMap(body);
+
+    print('Toke : ${CacheHelper.getData(key: 'token')}');
+    print(body);
     await DioHelper.postData(
             path: submitPost,
+            onSendProgress: ((postType == 0 || postType == 1))
+                ? ((count, total) {
+                    showProgress(context, count, total);
+                  })
+                : null,
             isFormdata: (postType == 0 || postType == 1),
             data: formData,
             sentToken: CacheHelper.getData(key: 'token'))
@@ -664,5 +686,30 @@ class AddPostCubit extends Cubit<AddPostState> {
       }
       changePostType(postTypeIndex: index);
     }
+  }
+
+  showProgress(BuildContext context, int count, int total) {
+    return showDialog(
+        context: context,
+        builder: ((context) {
+          return AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                LinearProgressIndicator(
+                  backgroundColor: ColorManager.white,
+                  valueColor: AlwaysStoppedAnimation<Color>(ColorManager.blue),
+                  color: ColorManager.white,
+                  value: count.toDouble() / total.toDouble(),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Text(
+                    'Uploading : ${((count.toDouble() / total.toDouble()) * 100).toStringAsFixed(2)}')
+              ],
+            ),
+          );
+        }));
   }
 }
