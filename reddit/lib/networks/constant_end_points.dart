@@ -13,7 +13,8 @@ const baseUrl = kReleaseMode
     // ? 'http://www.read-it.live/api' TODO: wa3er aly ast5dm el fo2 34an samaa.
     : kIsWeb
         ? 'http://localhost:3000'
-        : 'http://10.0.2.2:3000';
+        // : 'http://10.0.2.2:3000'; TODO
+        : 'https://web.read-it.live/api';
 
 // login and signup
 const signUp = '/signup';

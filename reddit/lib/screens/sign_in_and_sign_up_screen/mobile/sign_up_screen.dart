@@ -4,6 +4,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/settings/settings_models/user_settings.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 
@@ -71,6 +72,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       if (value.statusCode == 201) {
         CacheHelper.putData(key: 'token', value: value.data['token']);
         CacheHelper.putData(key: 'username', value: value.data['username']);
+        token = CacheHelper.getData(key: 'token');
+        print(token);
         UserSettingsModel.fromJson(value.data);
         UserSettingsModel.cacheUserSettings();
         // navigating to the main screen
