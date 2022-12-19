@@ -21,8 +21,10 @@ class ContinueWithGoOrFB extends StatelessWidget {
   /// this function is used to sign in with google
   Future signInWithGoogle(context) async {
     // await FacebookLoginAPI.logOut();
+    print('logging in');
     final user = await GoogleSignInApi.login();
     GoogleSignInAuthentication googleToken = await user!.authentication;
+    print('passed');
 
     await DioHelper.postData(
         path: signInGoogle,
@@ -30,6 +32,7 @@ class ContinueWithGoOrFB extends StatelessWidget {
       if (response.statusCode == 200 || response.statusCode == 201) {
         Navigator.of(context).pushNamed(HomeScreen.routeName);
       }
+      print('Loged in');
     }).catchError((err) {
       err = err as DioError;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -41,13 +44,13 @@ class ContinueWithGoOrFB extends StatelessWidget {
 
   /// this function is used to sign in with facebook
   Future signInWithFacebook() async {
+    await GoogleSignInApi.logOut().catchError((err) {
+      print(err.toString());
+    });
     final user = await FacebookLoginAPI.login().catchError((err) {
       print(err.toString());
     });
     print(user);
-    // await GoogleSignInApi.logOut().catchError((err) {
-    //   print(err.toString());
-    // });
     // print('Signed out');
     // await FacebookLoginAPI.login();
   }
