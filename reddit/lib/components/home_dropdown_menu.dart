@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 
-import '../cubit/app_cubit/app_cubit.dart';
+import '../cubit/app_cubit.dart';
 
 class HomeDropdownMenu extends StatefulWidget {
   const HomeDropdownMenu({super.key});

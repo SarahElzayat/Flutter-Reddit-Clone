@@ -252,6 +252,8 @@ class _PostWidgetState extends State<PostWidget> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
                             ),
+                            width: constraints.maxWidth * 0.2,
+                            height: constraints.maxWidth * 0.2,
                             child: InlineImageViewer(
                               key: const Key('inline-image-viewer'),
                               post: widget.post,

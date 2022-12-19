@@ -3,6 +3,7 @@
 /// @Author: Ahmed Atta
 
 import 'package:flutter/material.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/screens/posts/edit_screen.dart';
