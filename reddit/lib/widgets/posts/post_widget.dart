@@ -323,8 +323,9 @@ class _PostWidgetState extends State<PostWidget> {
     return (!widget.outsideScreen && widget.post.kind != 'link') ||
         (widget.outsideScreen &&
             widget.post.kind == 'hybrid' &&
-            (((widget.post.content ?? {'ops': []})['ops'] ?? false).length >
-                90));
+            ((((widget.post.content ?? {'ops': []})['ops'] ?? false).length >
+                    90) ||
+                widget.post.kind == 'hybrid'));
   }
 
   Row _lowerPart(bool isWeb) {
