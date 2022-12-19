@@ -20,8 +20,11 @@ import '../../screens/to_be_done_screen.dart';
 /// @param [onPressed] is the function that controls the list
 /// @param [isOpen] is the state of the list
 Widget listButton(
-    context, text, List<DrawerCommunitiesModel> list, onPressed, isOpen,
-    {isCommunity = false, isModerating = false, required navigateToSubreddit}) {
+    context, text, Map<String, DrawerCommunitiesModel> list, onPressed, isOpen,
+    {isCommunity = false,
+    isModerating = false,
+    isFavorites = false,
+    required navigateToSubreddit}) {
   return Container(
     decoration: const BoxDecoration(
         border: BorderDirectional(
@@ -86,10 +89,10 @@ Widget listButton(
               itemBuilder: (context, index) {
                 return InkWell(
                     onTap: () => SubredditCubit.get(context).setSubredditName(
-                        context, list[index].title.toString()),
+                        context, list.values.elementAt(index).title.toString()),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: yourCommunitiesCard(list[index]),
+                      child: yourCommunitiesCard(list.values.elementAt(index)),
                     ));
               },
               shrinkWrap: true,
@@ -145,41 +148,38 @@ Widget yourCommunitiesCard(DrawerCommunitiesModel model) {
   return BlocConsumer<AppCubit, AppState>(
     listener: (context, state) {},
     builder: (context, state) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5.0),
-        child: Row(
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(right: 8.0),
-              child: CircleAvatar(
-                backgroundImage: AssetImage('./assets/images/uranus.png'),
-                radius: 10,
-              ),
+      return Row(
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(right: 8.0),
+            child: CircleAvatar(
+              backgroundImage: AssetImage('./assets/images/uranus.png'),
+              radius: 10,
             ),
-            Text(
-              'r/${model.title.toString()}',
-              style: Theme.of(context).textTheme.displayMedium,
+          ),
+          Text(
+            'r/${model.title.toString()}',
+            style: Theme.of(context).textTheme.displayMedium,
+          ),
+          const Spacer(),
+          IconButton(
+            icon: Icon(
+              model.isFavorite!
+                  ? Icons.star_rounded
+                  : Icons.star_outline_rounded,
+              color: ColorManager.lightGrey,
+              size: 20,
             ),
-            const Spacer(),
-            IconButton(
-              icon: Icon(
-                model.isFavorite!
-                    ? Icons.star_rounded
-                    : Icons.star_outline_rounded,
-                color: ColorManager.lightGrey,
-                size: 20,
-              ),
-              onPressed: () {
-                model.isFavorite!
-                    ? AppCubit.get(context)
-                        .removeFavoriteSubreddit(subredditName: model.title!)
-                    : AppCubit.get(context)
-                        .addFavoriteSubreddit(subredditName: model.title!);
-                // model.isFavorite = !model.isFavorite!;
-              },
-            )
-          ],
-        ),
+            onPressed: () {
+              model.isFavorite!
+                  ? AppCubit.get(context)
+                      .removeFavoriteSubreddit(subredditName: model.title!)
+                  : AppCubit.get(context)
+                      .addFavoriteSubreddit(subredditName: model.title!);
+              // model.isFavorite = !model.isFavorite!;
+            },
+          )
+        ],
       );
     },
   );

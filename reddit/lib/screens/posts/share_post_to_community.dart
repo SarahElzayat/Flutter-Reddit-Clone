@@ -75,7 +75,7 @@ class _SharePostToCommunityScreenState
                                   ),
                                 ),
                                 Text(
-                                  'r/${cubit.yourCommunitiesList[index].title!}',
+                                  'r/${cubit.yourCommunitiesList.values.elementAt(index).title!}',
                                   style: const TextStyle(
                                       color: ColorManager.eggshellWhite,
                                       fontSize: 18),

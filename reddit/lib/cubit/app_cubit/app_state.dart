@@ -20,6 +20,7 @@ class ChangeLeftDrawerState extends AppState {}
 // class ChangeEndDrawerState extends AppState {}
 
 class ChangeModeratingListState extends AppState {}
+class ChangeFavoritesListState extends AppState {}
 
 class ChangeYourCommunitiesState extends AppState {}
 class LoadedCommunitiesState extends AppState {}

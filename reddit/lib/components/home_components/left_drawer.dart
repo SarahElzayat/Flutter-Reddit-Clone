@@ -17,7 +17,6 @@ class LeftDrawer extends StatelessWidget {
     final AppCubit cubit = AppCubit.get(context)
       ..getYourCommunities()
       ..getYourModerating();
-
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -27,6 +26,12 @@ class LeftDrawer extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (cubit.favoriteCommunities.isNotEmpty)
+                  listButton(context, 'Favorites', cubit.favoriteCommunities,
+                      cubit.changeFavoritesListState, cubit.favoritesListOpen,
+                      // isModerating: true,
+                      isFavorites: true,
+                      navigateToSubreddit: () {}),
                 if (cubit.moderatingListItems.isNotEmpty)
                   listButton(context, 'Moderating', cubit.moderatingListItems,
                       cubit.changeModeratingListState, cubit.moderatingListOpen,
