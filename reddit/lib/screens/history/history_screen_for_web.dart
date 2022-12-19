@@ -9,7 +9,7 @@ import 'package:reddit/widgets/posts/post_widget.dart';
 
 // import '../../components/helpers/color_manager.dart';
 import '../../components/helpers/color_manager.dart';
-import '../../cubit/app_cubit.dart';
+import '../../cubit/app_cubit/app_cubit.dart';
 import '../../widgets/posts/post_upper_bar.dart';
 
 class HistoryScreenForWeb extends StatefulWidget {

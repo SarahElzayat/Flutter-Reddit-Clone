@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class CommentModel {
   String? id;
   String? commentedBy;
@@ -15,6 +13,7 @@ class CommentModel {
   int? level;
   int? numberofChildren;
   List<CommentModel>? children;
+  bool isCollapsed = false;
 
   CommentModel({
     this.id,

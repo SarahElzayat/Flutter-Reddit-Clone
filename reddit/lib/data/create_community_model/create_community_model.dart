@@ -15,11 +15,11 @@ class CreateCommunityModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['subredditName'] = this.subredditName;
-    data['type'] = this.type;
-    data['nsfw'] = this.nsfw;
-    data['category'] = this.category;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['subredditName'] = subredditName;
+    data['type'] = type;
+    data['nsfw'] = nsfw;
+    data['category'] = category;
     return data;
   }
 }

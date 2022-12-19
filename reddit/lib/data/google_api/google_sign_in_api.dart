@@ -2,6 +2,7 @@
 /// @date 11/4/2022
 /// this is the API which is responsible for singing in or out
 /// using google account for both web app and the mobile app
+import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleSignInApi {
@@ -20,17 +21,13 @@ class GoogleSignInApi {
   static Future logOut() => _googleSignIn.disconnect();
 
   static Future<void> getToken() async {
-    print('getting the token\n');
     try {
-      print('in my way\n');
       GoogleSignInAccount? user = await _googleSignIn.signIn();
 
       googleSignInAuthentication = await user!.authentication;
-
-      print(googleSignInAuthentication.accessToken);
     } catch (error) {
-      print('error in getting the token\n\n\n');
-      print(error);
+      debugPrint('error in getting the token\n\n\n');
+      debugPrint('error');
     }
   }
 }

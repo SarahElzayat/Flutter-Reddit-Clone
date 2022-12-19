@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/constants/constants.dart';
+import 'package:reddit/data/settings/settings_models/user_settings.dart';
 
 import 'package:reddit/shared/local/shared_preferences.dart';
 
@@ -68,15 +69,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
         email: emailController.text,
         password: passwordController.text,
         username: usernameController.text);
-    print(baseUrl);
-    DioHelper.postData(path: signUp, data: user.toJson()).then((value) {
+    await DioHelper.postData(path: signUp, data: user.toJson()).then((value) {
       if (value.statusCode == 201) {
         CacheHelper.putData(key: 'token', value: value.data['token']);
         CacheHelper.putData(key: 'username', value: value.data['username']);
-        token = CacheHelper.getData(key: 'token');
-
         UserSettingsModel.fromJson(value.data);
         UserSettingsModel.cacheUserSettings();
+        token = CacheHelper.getData(key: 'token');
+
         // navigating to the main screen
         Navigator.of(context)
             .pushReplacementNamed(HomeScreenForMobile.routeName);
@@ -86,7 +86,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       error = error as DioError;
       // checking for our main error, which is that the user trying to insert
       // username which is already taken
-      print(error.message);
 
       if (error.message.toString() == 'Http status error [400]') {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -283,7 +282,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         isPressable: emailController.text.isNotEmpty &&
                             usernameController.text.isNotEmpty &&
                             passwordController.text.isNotEmpty,
-                        appliedFunction: continueFunction,
+                        appliedFunction: () {
+                          continueFunction();
+                        },
                       )
                     ],
                   ),
