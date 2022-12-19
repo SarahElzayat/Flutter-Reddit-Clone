@@ -41,11 +41,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {

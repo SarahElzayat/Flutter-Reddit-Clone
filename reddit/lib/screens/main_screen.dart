@@ -5,6 +5,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 
 import '../components/home_app_bar.dart';
 import '../cubit/app_cubit/app_cubit.dart';
@@ -39,9 +40,15 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
         : _scaffoldKey.currentState?.openDrawer();
   }
 
-
   @override
   void initState() {
+    if (kIsWeb) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
+          ));
+    }
     super.initState();
   }
 

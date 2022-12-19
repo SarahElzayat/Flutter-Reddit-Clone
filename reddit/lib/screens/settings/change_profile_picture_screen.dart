@@ -17,7 +17,7 @@ class _ChangeProfilePicutreState extends State<ChangeProfilePicutre> {
 
   @override
   Widget build(BuildContext context) {
-    AppCubit cubit = AppCubit.get(context);
+    AppCubit cubit = AppCubit.get(context)..getUserProfilePicture();
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -34,21 +34,24 @@ class _ChangeProfilePicutreState extends State<ChangeProfilePicutre> {
                   //todo use the one from backend
                   const CircleAvatar(
                     backgroundColor: Colors.red,
+                    radius: 100,
                   ),
-                  Flexible(
-                    child: MaterialButton(
-                      shape: const StadiumBorder(),
-                      color: ColorManager.gradientRed,
-                      onPressed: () => cubit.deleteProfilePicture(),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 7.0),
-                        child: Text(
-                          'Delete profile picture',
-                          style: TextStyle(fontSize: 18.sp),
+                  const Spacer(),
+                  if (cubit.profilePicture.isNotEmpty)
+                    Flexible(
+                      child: MaterialButton(
+                        shape: const StadiumBorder(),
+                        color: ColorManager.gradientRed,
+                        onPressed: () => cubit.deleteProfilePicture(),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 7.0),
+                          child: Text(
+                            'Delete profile picture',
+                            style: TextStyle(fontSize: 18.sp),
+                          ),
                         ),
                       ),
                     ),
-                  ),
                   Flexible(
                     child: MaterialButton(
                       shape: const StadiumBorder(),
