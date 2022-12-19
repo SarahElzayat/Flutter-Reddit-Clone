@@ -229,7 +229,6 @@ class AppCubit extends Cubit<AppState> {
               DrawerCommunitiesModel.fromJson(value.data['children'][i]);
           yourCommunitiesList[temp.title!] = temp;
           if (temp.isFavorite!) favoriteCommunities[temp.title!] = temp;
-          logger.d(favoriteCommunities.length);
         }
         emit(LoadedCommunitiesState());
       } else {
@@ -318,11 +317,9 @@ class AppCubit extends Cubit<AppState> {
   /// gets the profile picture of the user
   void getUserProfilePicture() {
     DioHelper.getData(path: '$user/$username/$about').then((value) {
-      // logger.wtf(value.data);
       if (value.statusCode == 200) {
         if (value.data['picture'] != null) {
           profilePicture = value.data['picture'];
-          logger.w('message $profilePicture');
         }
         emit(LoadedProfilePictureState());
       } else {

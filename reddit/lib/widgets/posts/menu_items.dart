@@ -8,7 +8,7 @@ import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/screens/posts/edit_screen.dart';
-import 'package:reddit/screens/posts/share_post_to_community.dart';
+import 'package:reddit/screens/posts/pick_community.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 import '../../functions/post_functions.dart';
@@ -134,7 +134,8 @@ class MenuItems {
       case MenuItems.share:
         showModalBottomSheet(
           context: context,
-          builder: (context) => shareModalBottomSheet(context: context, post: post),
+          builder: (context) =>
+              shareModalBottomSheet(context: context, post: post),
         );
         //Do something
 
@@ -184,7 +185,8 @@ class MenuItems {
   }
 }
 
-shareModalBottomSheet({required BuildContext context, required PostModel post}) {
+shareModalBottomSheet(
+    {required BuildContext context, required PostModel post}) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Row(
@@ -198,7 +200,9 @@ shareModalBottomSheet({required BuildContext context, required PostModel post}) 
             onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SharePostToCommunityScreen(sharedPost: post,),
+                  builder: (context) => PickCommunityScreen(
+                    sharedPost: post,
+                  ),
                 ))),
         shareIcon(
             icon: Icons.person_outline_rounded,

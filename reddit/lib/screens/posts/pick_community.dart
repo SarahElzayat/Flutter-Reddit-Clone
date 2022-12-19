@@ -2,20 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/app_cubit/app_cubit.dart';
+import 'package:reddit/screens/posts/share_to_community.dart';
 
 import '../../data/post_model/post_model.dart';
 
-class SharePostToCommunityScreen extends StatefulWidget {
-  const SharePostToCommunityScreen({super.key, required this.sharedPost});
+class PickCommunityScreen extends StatefulWidget {
+  const PickCommunityScreen({super.key, required this.sharedPost});
 
   final PostModel sharedPost;
   @override
-  State<SharePostToCommunityScreen> createState() =>
-      _SharePostToCommunityScreenState();
+  State<PickCommunityScreen> createState() => _PickCommunityScreenState();
 }
 
-class _SharePostToCommunityScreenState
-    extends State<SharePostToCommunityScreen> {
+class _PickCommunityScreenState extends State<PickCommunityScreen> {
   @override
   void initState() {
     AppCubit.get(context).getYourCommunities();
@@ -58,8 +57,17 @@ class _SharePostToCommunityScreenState
                       shrinkWrap: true,
                       itemCount: cubit.yourCommunitiesList.length,
                       itemBuilder: (context, index) => InkWell(
-                        //TODO share post 
-                        onTap: () {},
+                        //TODO share post
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ShareToCommunityScreen(
+                                    community: cubit.yourCommunitiesList.values
+                                        .elementAt(index),
+                                    sharedPost: widget.sharedPost),
+                              ));
+                        },
                         child: IntrinsicHeight(
                           child: Padding(
                             padding: const EdgeInsets.all(5.0),
@@ -69,8 +77,8 @@ class _SharePostToCommunityScreenState
                                 const Padding(
                                   padding: EdgeInsets.only(right: 8.0),
                                   child: CircleAvatar(
-                                    backgroundImage:
-                                        AssetImage('./assets/images/uranus.png'),
+                                    backgroundImage: AssetImage(
+                                        './assets/images/uranus.png'),
                                     radius: 20,
                                   ),
                                 ),
