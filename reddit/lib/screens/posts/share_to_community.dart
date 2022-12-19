@@ -9,9 +9,15 @@ import 'package:reddit/widgets/posts/post_widget.dart';
 
 class ShareToCommunityScreen extends StatelessWidget {
   const ShareToCommunityScreen(
-      {super.key, required this.community, required this.sharedPost});
-  final DrawerCommunitiesModel community;
+      {super.key,
+      this.community,
+      required this.sharedPost,
+      required this.isCommunity,
+      this.username});
+  final DrawerCommunitiesModel? community;
   final PostModel sharedPost;
+  final bool isCommunity;
+  final String? username;
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +33,8 @@ class ShareToCommunityScreen extends StatelessWidget {
                 'title': textEditingController.text,
                 'sharePostId': sharedPost.id,
                 'kind': 'post',
-                'inSubreddit': true,
-                'subreddit': community.title
+                'inSubreddit': isCommunity ? true : false,
+                'subreddit': isCommunity ? community!.title : ''
               }).then((value) {
                 if (value.statusCode == 201) {
                   Navigator.pushReplacement(
@@ -48,32 +54,38 @@ class ShareToCommunityScreen extends StatelessWidget {
           ),
         ),
       ]),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          MaterialButton(
-              color: ColorManager.grey,
-              shape: const StadiumBorder(),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text(
-                'r/${community.title} ',
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              MaterialButton(
+                  color: ColorManager.grey,
+                  shape: const StadiumBorder(),
+                  onPressed: () => isCommunity ? Navigator.pop(context) : null,
+                  child: Text(
+                    isCommunity
+                        ? 'r/${community!.title}'
+                        : 'u/${username.toString()}',
+                    style: const TextStyle(
+                        fontSize: 16, color: ColorManager.eggshellWhite),
+                  )),
+              TextField(
+                controller: textEditingController,
                 style:
-                    const TextStyle(fontSize: 16, color: ColorManager.eggshellWhite),
-              )),
-          TextField(
-            controller: textEditingController,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            decoration: const InputDecoration(border: InputBorder.none),
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                decoration: const InputDecoration(border: InputBorder.none),
+              ),
+              PostWidget(
+                isNested: true,
+                post: sharedPost,
+                // insideProfiles: true,
+                // postView: PostView.withCommentsInSearch,
+              )
+            ],
           ),
-          PostWidget(
-            isNested: true,
-            post: sharedPost,
-            // insideProfiles: true,
-            // postView: PostView.withCommentsInSearch,
-          )
-        ],
+        ),
       ),
     );
   }

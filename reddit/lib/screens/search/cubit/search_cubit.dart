@@ -82,9 +82,7 @@ class SearchCubit extends Cubit<SearchState> {
     }
 
     DioHelper.getData(
-        path: subredditName.isNotEmpty
-            ? '$subreddit/$subredditName$search'
-            : search,
+        path: subredditName.isNotEmpty ? '/$subredditName$search' : search,
         query: {
           'type': searchPosts,
           'q': searchQuery,
@@ -109,7 +107,6 @@ class SearchCubit extends Cubit<SearchState> {
         // print(value.data);
         loadMore ? emit(LoadedMoreResultsState()) : emit(LoadedResultsState());
       } else {
-        
         emit(SearchErrorState());
       }
     }).onError((error, stackTrace) {
@@ -187,15 +184,14 @@ class SearchCubit extends Cubit<SearchState> {
     }
 
     DioHelper.getData(
-      path: subredditName.isNotEmpty
-            ? '$subreddit/$subredditName$search'
-            : search, query: {
-      'type': searchComments,
-      'q': searchQuery,
-      'limit': limit,
-      'after': after ? commentsAfterId : null,
-      'before': before ? commentsBeforeId : null,
-    }).then((value) {
+        path: subredditName.isNotEmpty ? '/$subredditName$search' : search,
+        query: {
+          'type': searchComments,
+          'q': searchQuery,
+          'limit': limit,
+          'after': after ? commentsAfterId : null,
+          'before': before ? commentsBeforeId : null,
+        }).then((value) {
       if (value.statusCode == 200) {
         if (value.data.length == 0) {
           loadMore
