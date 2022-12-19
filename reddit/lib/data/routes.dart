@@ -9,6 +9,7 @@ import 'package:reddit/screens/add_post/community_search.dart';
 import 'package:reddit/screens/add_post/post_rules.dart';
 import 'package:reddit/screens/saved/saved_screen.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/continue_sign_up_for_mobile.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/web/testScreen.dart';
 import 'package:reddit/screens/subreddit/subreddit_screen.dart';
 
 import '../../screens/bottom_navigation_bar_screens/add_post_screen.dart';

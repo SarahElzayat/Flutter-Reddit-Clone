@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/settings_cubit/settings_cubit.dart';
 import 'package:reddit/screens/main_screen.dart';
 import 'package:reddit/widgets/sign_in_and_sign_up_widgets/app_bar.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ContinueSignUpForMobile extends StatefulWidget {
   static const String routeName = '/continue-sign-up-for-mobile';
@@ -88,79 +90,82 @@ class _ContinueSignUpForMobileState extends State<ContinueSignUpForMobile> {
 
   int numOfInterests = 0;
   Widget _buildInterests(double fontFactor, context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height * 0.7,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          /// the interests
-          Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
-              alignment: WrapAlignment.center,
-              spacing: 5,
-              children: _interestsOption.map((interest) {
-                colors[interest] == ColorManager.upvoteRed
-                    ? colors[interest] = ColorManager.upvoteRed
-                    : colors[interest] = ColorManager.grey;
-                return Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (colors[interest] == ColorManager.upvoteRed) {
-                        setState(() {
-                          print(colors[interest]);
-                          numOfInterests--;
-                          colors[interest] = ColorManager.grey;
-                          print(numOfInterests);
-                        });
-                      } else if (numOfInterests < 3) {
-                        setState(() {
-                          numOfInterests++;
-                          colors[interest] = ColorManager.upvoteRed;
-                        });
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: colors[interest],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+    final mediaQuery = MediaQuery.of(context);
+    return ResponsiveSizer(builder: ((p0, p1, p2) {
+      return SizedBox(
+        width: mediaQuery.size.width,
+        height: kIsWeb ? 300 : mediaQuery.size.height * 0.7,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            /// the interests
+            Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                alignment: WrapAlignment.center,
+                spacing: 5,
+                children: _interestsOption.map((interest) {
+                  colors[interest] == ColorManager.upvoteRed
+                      ? colors[interest] = ColorManager.upvoteRed
+                      : colors[interest] = ColorManager.grey;
+                  return Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (colors[interest] == ColorManager.upvoteRed) {
+                          setState(() {
+                            print(colors[interest]);
+                            numOfInterests--;
+                            colors[interest] = ColorManager.grey;
+                            print(numOfInterests);
+                          });
+                        } else if (numOfInterests < 3) {
+                          setState(() {
+                            numOfInterests++;
+                            colors[interest] = ColorManager.upvoteRed;
+                          });
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: colors[interest],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
+                      child: Text(interest),
                     ),
-                    child: Text(interest),
+                  );
+                }).toList()),
+            // continue button.
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: numOfInterests < 3
+                      ? ColorManager.grey
+                      : ColorManager.upvoteRed,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                );
-              }).toList()),
-          // continue button.
-          ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: numOfInterests < 3
-                    ? ColorManager.grey
-                    : ColorManager.upvoteRed,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
                 ),
-              ),
-              onPressed: () {
-                if (numOfInterests == 3) {
-                  _setGender();
+                onPressed: () {
+                  if (numOfInterests == 3) {
+                    _setGender();
 
-                  /// continue
-                  Navigator.of(context)
-                      .pushReplacementNamed(HomeScreenForMobile.routeName);
-                }
-              },
-              child: Text(
-                'Continue $numOfInterests / 3',
-                style: TextStyle(
-                    color: numOfInterests > 2
-                        ? ColorManager.white
-                        : ColorManager.eggshellWhite,
-                    fontSize: 18),
-              ))
-        ],
-      ),
-    );
+                    /// continue
+                    Navigator.of(context)
+                        .pushReplacementNamed(HomeScreenForMobile.routeName);
+                  }
+                },
+                child: Text(
+                  'Continue $numOfInterests / 3',
+                  style: TextStyle(
+                      color: numOfInterests > 2
+                          ? ColorManager.white
+                          : ColorManager.eggshellWhite,
+                      fontSize: 18),
+                ))
+          ],
+        ),
+      );
+    }));
   }
 
   /// this is a utilty function used to set the user gender during signup.

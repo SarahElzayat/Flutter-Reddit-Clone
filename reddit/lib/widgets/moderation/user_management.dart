@@ -3,11 +3,11 @@
 ///User management widget
 
 import 'package:flutter/material.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/components/search_field.dart';
-import 'package:reddit/router.dart';
-import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../components/helpers/color_manager.dart';
+import '../../components/search_field.dart';
+import '../../router.dart';
+import '../../screens/moderation/cubit/moderation_cubit.dart';
 
 class UserManagementWidget extends StatelessWidget {
   final String screenTitle;
