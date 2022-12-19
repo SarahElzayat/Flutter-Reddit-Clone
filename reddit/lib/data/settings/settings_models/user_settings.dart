@@ -1,5 +1,9 @@
+/// @author: Abdelaziz Salah
+/// this is the model for the UserSettings
+/// which can get and cache all of them.
 import 'package:reddit/shared/local/shared_preferences.dart';
 
+/// this is the model for the UserSettings.
 class UserSettingsModel {
   static String? email;
   static String? googleEmail;
@@ -49,6 +53,7 @@ class UserSettingsModel {
         value: UserSettingsModel.unsubscribeFromEmails);
   }
 
+  /// this is a named constructor to create a new object from the json file.
   UserSettingsModel.fromJson(Map<String, dynamic> json) {
     email = json['email'];
     googleEmail = json['googleEmail'];
@@ -73,6 +78,7 @@ class UserSettingsModel {
     unsubscribeFromEmails = json['unsubscribeFromEmails'];
   }
 
+  /// this is a utility function to convert the object to json.
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {
       'email': email,
@@ -98,6 +104,7 @@ class UserSettingsModel {
   }
 }
 
+/// this is the model for the SocialLinks
 class SocialLinks {
   String? type;
   String? displayText;
@@ -105,12 +112,14 @@ class SocialLinks {
 
   SocialLinks({this.type, this.displayText, this.link});
 
+  /// this is a named constructor to create a new object from the json file.
   SocialLinks.fromJson(Map<String, dynamic> json) {
     type = json['type'];
     displayText = json['displayText'];
     link = json['link'];
   }
 
+  /// this is a utility function to convert the object to json.
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {
       'type': type,
