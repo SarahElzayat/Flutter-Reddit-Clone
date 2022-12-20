@@ -35,7 +35,7 @@ class _MessageWidgetState extends State<MessageWidget> {
 
     print('Marking message as read');
     await DioHelper.patchData(
-        // token: token,
+        token: token,
         path: markMessageAsRead,
         data: {'id': widget.myMessage.id}).then((response) {
       if (response.statusCode == 200) {
