@@ -91,16 +91,14 @@ class _CommunitySearchState extends State<CommunitySearch> {
                   itemCount: addPostCubit.subredditsList!.children!.length,
                   itemBuilder: (BuildContext context, int index) {
                     return ListTile(
-                      onTap: () async {
+                      onTap: () {
                         addPostCubit.addSubredditName(addPostCubit
                             .subredditsList!
                             .children![index]
                             .data!
                             .subredditName!);
                         if (widget.goToRules) {
-                          await addPostCubit.getSubredditFlair();
                           navigator.pop();
-
                           navigator.pushNamed(PostRules.routeName);
                         } else {
                           navigator.pop();

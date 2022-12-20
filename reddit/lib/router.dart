@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/screens/comments/add_comment_screen.dart';
 import 'package:reddit/screens/history/history_screen.dart';
 import 'package:reddit/screens/history/history_screen_for_web.dart';
 import 'package:reddit/cubit/app_cubit/app_cubit.dart';
+import 'package:reddit/screens/moderation/content_and_regulation/create_flair.dart';
 import 'package:reddit/screens/moderation/content_and_regulation/post_flair.dart';
-import 'package:reddit/screens/moderation/create_flair.dart';
 import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
 import 'package:reddit/screens/moderation/general_screens/archive_posts.dart';
 import 'package:reddit/screens/moderation/general_screens/community_types.dart';
@@ -14,6 +15,7 @@ import 'package:reddit/screens/moderation/general_screens/discovery/discovery.da
 import 'package:reddit/screens/moderation/general_screens/location.dart';
 import 'package:reddit/screens/moderation/general_screens/media_in_comments.dart';
 import 'package:reddit/screens/moderation/general_screens/mod_notifications.dart';
+import 'package:reddit/screens/moderation/general_screens/modmail.dart';
 import 'package:reddit/screens/moderation/general_screens/post_types.dart';
 import 'package:reddit/screens/moderation/general_screens/topics.dart';
 import 'package:reddit/screens/moderation/general_screens/welcome_message/welcome_message.dart';
@@ -95,6 +97,14 @@ class AppRouter {
           );
         });
 
+      case '/mod_tools_screen':
+        return MaterialPageRoute(builder: (_) {
+          return BlocProvider.value(
+            value: _modCubit,
+            child: const ModTools(),
+          );
+        });
+
       case '/description_screen':
         return MaterialPageRoute(builder: (_) {
           return BlocProvider.value(
@@ -151,6 +161,14 @@ class AppRouter {
           );
         });
 
+      case '/modmail_screen':
+        return MaterialPageRoute(builder: (_) {
+          return BlocProvider.value(
+            value: _modCubit,
+            child: const ModMail(),
+          );
+        });
+
       case '/mod_notifications_screen':
         return MaterialPageRoute(builder: (_) {
           return BlocProvider.value(
@@ -203,7 +221,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) {
           return BlocProvider.value(
             value: _modCubit,
-            child: const ApprovedUsers(),
+            child: ApprovedUsers(),
           );
         });
 
@@ -211,7 +229,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) {
           return BlocProvider.value(
             value: _modCubit,
-            child: const MutedUsers(),
+            child: MutedUsers(),
           );
         });
 
@@ -219,7 +237,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) {
           return BlocProvider.value(
             value: _modCubit,
-            child: const BannedUsers(),
+            child: BannedUsers(),
           );
         });
 

@@ -1,7 +1,6 @@
 class CommunitySettingsModel {
   String? communityName;
-  String? mainTopic;
-  List<String>? subTopics;
+  List<CommunityTopics>? communityTopics;
   String? communityDescription;
   bool? sendWelcomeMessage;
   String? welcomeMessage;
@@ -15,8 +14,7 @@ class CommunitySettingsModel {
 
   CommunitySettingsModel(
       {this.communityName,
-      this.mainTopic,
-      this.subTopics,
+      this.communityTopics,
       this.communityDescription,
       this.sendWelcomeMessage,
       this.welcomeMessage,
@@ -30,14 +28,18 @@ class CommunitySettingsModel {
 
   CommunitySettingsModel.fromJson(Map<String, dynamic> json) {
     communityName = json['communityName'];
-    mainTopic = json['mainTopic'];
-    subTopics = json['subTopics'].cast<String>();
+    if (json['communityTopics'] != null) {
+      communityTopics = <CommunityTopics>[];
+      json['communityTopics'].forEach((v) {
+        communityTopics!.add(CommunityTopics.fromJson(v));
+      });
+    }
     communityDescription = json['communityDescription'];
     sendWelcomeMessage = json['sendWelcomeMessage'];
     welcomeMessage = json['welcomeMessage'];
     language = json['language'];
-    region = json['region'];
-    type = json['type'];
+    region = json['Region'];
+    type = json['Type'];
     nSFW = json['NSFW'];
     acceptingRequestsToJoin = json['acceptingRequestsToJoin'];
     acceptingRequestsToPost = json['acceptingRequestsToPost'];
@@ -47,14 +49,16 @@ class CommunitySettingsModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['communityName'] = communityName;
-    data['mainTopic'] = mainTopic;
-    data['subTopics'] = subTopics;
+    if (communityTopics != null) {
+      data['communityTopics'] =
+          communityTopics!.map((v) => v.toJson()).toList();
+    }
     data['communityDescription'] = communityDescription;
     data['sendWelcomeMessage'] = sendWelcomeMessage;
     data['welcomeMessage'] = welcomeMessage;
     data['language'] = language;
-    data['region'] = region;
-    data['type'] = type;
+    data['Region'] = region;
+    data['Type'] = type;
     data['NSFW'] = nSFW;
     data['acceptingRequestsToJoin'] = acceptingRequestsToJoin;
     data['acceptingRequestsToPost'] = acceptingRequestsToPost;
@@ -63,25 +67,18 @@ class CommunitySettingsModel {
   }
 }
 
-class ModPostSettingsModel {
-  bool? enableSpoiler;
-  bool? allowImagesInComment;
-  String? suggestedSort;
+class CommunityTopics {
+  String? topicName;
 
-  ModPostSettingsModel(
-      {this.enableSpoiler, this.allowImagesInComment, this.suggestedSort});
+  CommunityTopics({this.topicName});
 
-  ModPostSettingsModel.fromJson(Map<String, dynamic> json) {
-    enableSpoiler = json['enableSpoiler'];
-    allowImagesInComment = json['allowImagesInComment'];
-    suggestedSort = json['suggestedSort'];
+  CommunityTopics.fromJson(Map<String, dynamic> json) {
+    topicName = json['topicName'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['enableSpoiler'] = enableSpoiler;
-    data['allowImagesInComment'] = allowImagesInComment;
-    data['suggestedSort'] = suggestedSort;
+    data['topicName'] = topicName;
     return data;
   }
 }
