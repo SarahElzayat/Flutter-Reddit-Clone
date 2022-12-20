@@ -82,12 +82,14 @@ class DioHelper {
 
     /// which is the content of the JSON
     Map<String, dynamic>? query,
+    String? sentToken,
 
     /// additional query
   }) async {
+    sentToken ??= token;
     var options = Options(
       headers: {
-        'Authorization': 'Bearer ${token ?? ''}',
+        'Authorization': 'Bearer ${sentToken ?? ''}',
         'Content-Type': 'application/json; charset=utf-8'
       },
     );

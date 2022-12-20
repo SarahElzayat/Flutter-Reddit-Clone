@@ -79,9 +79,7 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
     //create community screen
     final CreateCommunityCubit cubit = CreateCommunityCubit.get(context);
     return BlocConsumer<CreateCommunityCubit, CreateCommunityState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
           backgroundColor: Colors.black,
@@ -238,8 +236,8 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
                       onPressed: (isEmpty || !isValidated)
                           ? () {}
                           : () {
-                              cubit.creatCommunity(communityName, communityType,
-                                  isSwitched, category, context);
+                              cubit.creatCommunity(context, communityName,
+                                  communityType, isSwitched, category);
                             },
                     ))
                   ],

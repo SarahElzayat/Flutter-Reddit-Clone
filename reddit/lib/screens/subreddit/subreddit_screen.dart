@@ -13,7 +13,6 @@ import 'package:reddit/screens/search/cubit/search_cubit.dart';
 import '../../components/Button.dart';
 import '../../components/home_components/right_drawer.dart';
 import '../../cubit/app_cubit/app_cubit.dart';
-import '../../networks/constant_end_points.dart';
 import '../../widgets/subreddit/subreddit_about.dart';
 import '../../widgets/subreddit/subreddit_posts.dart';
 import '../add_post/add_post.dart';
@@ -284,8 +283,9 @@ class _SubredditState extends State<Subreddit>
                                     onPressed: () {
                                       Navigator.of(context).push(
                                           MaterialPageRoute(
-                                              builder: ((context) =>
-                                                  const ModTools())));
+                                              builder: ((context) => ModTools(
+                                                  communityName: subredditCubit
+                                                      .subredditName))));
                                     },
                                     child: Row(
                                       children: const [

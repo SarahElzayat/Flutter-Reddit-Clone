@@ -3,14 +3,15 @@
 /// App bar of the application
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/screens/create_community_screen/create_community_screen.dart';
 import 'package:reddit/components/app_bar_components.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
 // import 'package:reddit/components/home_dropdown_menu.dart';
 import 'package:reddit/components/search_field.dart';
 
 import '../cubit/app_cubit/app_cubit.dart';
 import '../networks/constant_end_points.dart';
+import '../screens/moderation/mod_tools.dart';
+import 'Community_Components/create_community_dialog.dart';
 
 ///@param [index] is the index of the bottom navigation bar screen
 ///@param [context] is the context of the parent widget
@@ -85,7 +86,7 @@ AppBar homeAppBar(context, index) {
               splashColor: Colors.transparent,
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () => CreateCommunityWindow().dialogBuilder(context),
               icon: const Icon(Icons.notifications_outlined),
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
@@ -94,7 +95,9 @@ AppBar homeAppBar(context, index) {
               onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const CreateCommunityScreen(),
+                    builder: (context) => const ModTools(
+                      communityName: 'web lesa',
+                    ),
                   )),
               icon: const Icon(Icons.add),
               highlightColor: Colors.transparent,

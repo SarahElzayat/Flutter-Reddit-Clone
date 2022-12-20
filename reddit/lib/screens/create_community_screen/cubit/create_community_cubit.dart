@@ -1,16 +1,13 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import 'package:reddit/data/create_community_model/create_community_model.dart';
 import 'package:reddit/data/create_community_model/saved_categories_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 
-import '../../comments/add_comment_screen.dart';
-
+import '../../../components/snack_bar.dart';
 part 'create_community_state.dart';
 
 class CreateCommunityCubit extends Cubit<CreateCommunityState> {
@@ -31,25 +28,21 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
     return categories;
   }
 
-  void creatCommunity(name, type, nsfw, category, context) {
+  void creatCommunity(context, name, type, nsfw, category) {
     final CreateCommunityModel community = CreateCommunityModel(
         subredditName: name, type: type, nsfw: nsfw, category: category);
+    String? token = CacheHelper.getData(key: 'token');
 
     DioHelper.postData(path: createCommunity, data: community.toJson())
         .then((value) {
       if (value.statusCode == 201) {
-        logger.wtf('community created successfully');
-
         ///TODO: Nagiate to AddPost with community name to add post to community
 
-        SubredditCubit.get(context)
-            .setSubredditName(context, name, replace: true);
       }
     }).catchError((err) {
       err = err as DioError;
-      logger.wtf(err.message);
-      logger.wtf(err.response!.data['error']);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(responseSnackBar(message: 'Failed to create r/$name'));
     });
-    emit(CreateCommunity());
   }
 }
