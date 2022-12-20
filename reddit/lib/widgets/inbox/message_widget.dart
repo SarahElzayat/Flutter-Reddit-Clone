@@ -113,7 +113,7 @@ class _MessageWidgetState extends State<MessageWidget> {
               ]),
         ),
         trailing: IconButton(
-          icon: const Icon(Icons.menu),
+          icon: const Icon(Icons.more_vert),
           onPressed: () {
             modalBottomSheet(
                 context: context,

@@ -2,7 +2,7 @@ class NotificationModel {
   String? before;
   String? after;
   int? unreadCount;
-  List<Children>? children;
+  List<NotificationItSelf>? children;
 
   NotificationModel({this.before, this.after, this.unreadCount, this.children});
 
@@ -11,9 +11,9 @@ class NotificationModel {
     after = json['after'];
     unreadCount = json['unreadCount'];
     if (json['children'] != null) {
-      children = <Children>[];
+      children = <NotificationItSelf>[];
       json['children'].forEach((v) {
-        children!.add(Children.fromJson(v));
+        children!.add(NotificationItSelf.fromJson(v));
       });
     }
   }
@@ -29,7 +29,7 @@ class NotificationModel {
   }
 }
 
-class Children {
+class NotificationItSelf {
   String? id;
   String? title;
   String? type;
@@ -37,10 +37,10 @@ class Children {
   String? sendAt;
   bool? isRead;
 
-  Children(
+  NotificationItSelf(
       {this.id, this.title, this.type, this.link, this.sendAt, this.isRead});
 
-  Children.fromJson(Map<String, dynamic> json) {
+  NotificationItSelf.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     type = json['type'];

@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/components/snack_bar.dart';
+import 'package:reddit/data/notifications/notification_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/widgets/inbox/notification_widget.dart';
@@ -15,20 +17,23 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen> {
   void fetch() async {
-    print('fetching notifications');
     await DioHelper.getData(path: notificationPoint).then(
       (response) {
         if (response.statusCode == 200) {
-          print('success');
+          NotificationModel allNotifications =
+              NotificationModel.fromJson(response.data);
+          for (NotificationItSelf notification in allNotifications.children!) {
+            notifications.add(NotificationWidget(notification: notification));
+          }
 
-          /// TODO : add here the notificatios which were fetched to the notifications list.
-          print(response.data);
+          ScaffoldMessenger.of(context).showSnackBar(
+              responseSnackBar(message: response.statusMessage, error: false));
         }
       },
     ).catchError((err) {
       err = err as DioError;
-      print('error');
-      print(err.response!.data);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(responseSnackBar(message: err.message, error: true));
     });
   }
 
@@ -40,102 +45,62 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   List<NotificationWidget> notifications = [
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'post',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'post',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'post',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'post',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'post',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'post',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'post',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'post',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'post',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'post',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'comment',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'post',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
+    NotificationWidget(
+        notification: NotificationItSelf(
+            id: '1',
+            isRead: false,
+            link: 'fnkjas',
+            sendAt: '2019-08-24T14:15:22',
+            title: 'Hellooooooooooooooooooooooo',
+            type: 'comment')),
+    NotificationWidget(
+        notification: NotificationItSelf(
+            id: '1',
+            isRead: false,
+            link: 'fnkjas',
+            sendAt: '2019-08-24T14:15:22',
+            title: 'Hellooooooooooooooooooooooo2',
+            type: 'comment')),
+    NotificationWidget(
+        notification: NotificationItSelf(
+            id: '1',
+            isRead: false,
+            link: 'fnkjas',
+            sendAt: '2019-08-24T14:15:22',
+            title: 'Hellooooooooooooooooooooooo2',
+            type: 'comment')),
+    NotificationWidget(
+        notification: NotificationItSelf(
+            id: '1',
+            isRead: false,
+            link: 'fnkjas',
+            sendAt: '2019-08-24T14:15:22',
+            title: 'Hellooooooooooooooooooooooo2',
+            type: 'comment')),
+    NotificationWidget(
+        notification: NotificationItSelf(
+            id: '1',
+            isRead: false,
+            link: 'fnkjas',
+            sendAt: '2019-08-24T14:15:22',
+            title: 'Hellooooooooooooooooooooooo2',
+            type: 'comment')),
+    NotificationWidget(
+        notification: NotificationItSelf(
+            id: '1',
+            isRead: false,
+            link: 'fnkjas',
+            sendAt: '2019-08-24T14:15:22',
+            title: 'Hellooooooooooooooooooooooo2',
+            type: 'comment')),
+    NotificationWidget(
+        notification: NotificationItSelf(
+            id: '1',
+            isRead: false,
+            link: 'fnkjas',
+            sendAt: '2019-08-24T14:15:22',
+            title: 'Hellooooooooooooooooooooooo2',
+            type: 'comment')),
   ];
   @override
   Widget build(BuildContext context) {

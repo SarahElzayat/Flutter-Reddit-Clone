@@ -43,6 +43,8 @@ const replyToMessage = '/message/compose';
 
 // notifications
 const notificationPoint = '/notifications';
+const markAllNotificationsAsRead = '/mark-all-notifications-read';
+const hideNotification = '/hide-notification-read';
 
 // create community
 const createCommunity = '/create-subreddit';
