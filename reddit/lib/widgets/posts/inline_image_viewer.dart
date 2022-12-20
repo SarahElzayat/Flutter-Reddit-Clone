@@ -103,7 +103,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
               // expand the image to the width of the screen with max height of 60% of the screen
               width: widget.postView == PostView.classic
                   ? 20.w
-                  : constraints.maxWidth,
+                  : min(constraints.maxWidth, 100.w),
               height: widget.postView == PostView.classic
                   ? 20.w
                   : widget.outsideScreen
@@ -115,6 +115,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
                     scrollPhysics: const BouncingScrollPhysics(),
                     builder: _buildItem,
                     wantKeepAlive: true,
+                    enableRotation: false,
 
                     itemCount: widget.post.images!.length,
                     // loadingBuilder: widget.loadingBuilder,
@@ -285,6 +286,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
     final String item = '$baseUrl/${widget.post.images![index].path!}';
     return PhotoViewGalleryPageOptions(
+      disableGestures: true,
       imageProvider: NetworkImage(item),
       //NOTE - i changed this to covered so that the image fits small containers
       initialScale: widget.isWeb
