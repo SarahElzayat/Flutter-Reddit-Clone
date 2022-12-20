@@ -8,16 +8,21 @@ import '../../components/helpers/color_manager.dart';
 
 class BottomButtons extends StatelessWidget {
   /// this is the first string to be shown on the first button
+  // ignore: prefer_typing_uninitialized_variables
   final string1;
 
   /// this is the second string to be shown on the second button
+  // ignore: prefer_typing_uninitialized_variables
   final string2;
 
   /// this is the first function to be shown on the first button
+  // ignore: prefer_typing_uninitialized_variables
   final handler1;
 
   /// this is the second function to be shown on the second button
+  // ignore: prefer_typing_uninitialized_variables
   final handler2;
+
   const BottomButtons(
       {super.key,
       required this.string1,

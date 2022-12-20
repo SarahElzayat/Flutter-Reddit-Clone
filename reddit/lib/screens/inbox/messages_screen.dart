@@ -121,11 +121,9 @@ class _MessagesScreenState extends State<MessagesScreen> {
   ];
 
   void fetch() async {
-    print('fetching messages');
     await DioHelper.getData(path: messagesPoint).then(
       (response) {
         if (response.statusCode == 200) {
-          print(response.data);
           MessageModel msgs = MessageModel.fromJson(response.data);
           for (MessageChildren msg in msgs.children!) {
             messages.add(MessageWidget(
@@ -136,14 +134,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
       },
     ).catchError((err) {
       err = err as DioError;
-      print('error');
-      print(err.response!.data);
     });
   }
 
   @override
   void initState() {
-    // TODO: here we should send a request to the backend to get the messages
     fetch();
     super.initState();
   }

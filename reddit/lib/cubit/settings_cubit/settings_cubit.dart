@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import '../../constants/constants.dart';
 import '../../data/google_api/google_sign_in_api.dart';
 import '../../data/settings/settings_models/block_user_model.dart';
 import '../../data/settings/settings_models/blocked_accounts_getter_model.dart';
-import '../../data/settings/settings_models/user_settings.dart';
-import '../../screens/settings/blocked_accounts.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../data/settings/settings_models/change_password_model.dart';
 import '../../data/settings/settings_models/update_email_model.dart';
@@ -51,8 +48,6 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
   void getBlockedUsers(
       context, String? after, PagingController pagingController) async {
     emit(UnBlockState(false));
-    print('Token is');
-    print(CacheHelper.getData(key: 'token'));
     if (after == null) {
       await DioHelper.getData(path: blockedAccounts).then((response) {
         if (response.statusCode == 200) {
@@ -199,41 +194,30 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
   }
 
   void _connectGoogle(newValue) async {
-    await GoogleSignInApi.logOut().then((response) {
-      print(response);
-    }).catchError((err) {
-      print(err);
-    });
+    await GoogleSignInApi.logOut().then((response) {}).catchError((err) {});
 
-    print('try to connect with google');
     if (newValue == 'Connected') {
       final user = await GoogleSignInApi.login();
 
       GoogleSignInAuthentication googleToken = await user!.authentication;
 
       // final user = await GoogleSignInApi.login().then((response) {
-      //   print(response!.displayName);
       // }).catchError((err) {
-      //   print(err);
       // });
 
-      print(googleToken);
       await DioHelper.postData(
           path: signInGoogle,
           data: {'accessToken': googleToken.idToken}).then((response) async {
         if (response.statusCode == 200 || response.statusCode == 201) {
-          print('Now You are connected with Google');
           await DioHelper.getData(path: accountSettings).then((response) {
             if (response.statusCode == 200) {
               CacheHelper.putData(
                   key: 'googleEmail', value: response.data['googeEmail']);
-              print('Logged in with google successfully');
             }
           });
         }
       }).catchError((error) {
         error = error as DioError;
-        print(error.response!.data);
       });
       // emit(ConnectGoogle());
     } else {
@@ -253,7 +237,6 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
     } else if (type == 'changeGender') {
       _changeGender(newValue, context);
     } else if (type == 'connectGoogle') {
-      print('Trying');
       _connectGoogle(newValue);
     } else if (type == 'connectFaceBook') {
       // _connectFaceBook(newValue);
@@ -264,7 +247,6 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
     if (type == 'allowPeopleToFollowYou') {
       _allowPeopleToFollowYou(newValue);
     } else if (type == 'show NSFW') {
-      print('changing here');
       _showNFSW(newValue);
     } else if (type == 'autoPlay') {
       _autoPlay(newValue);
@@ -292,7 +274,6 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
             })
         .catchError((error) {
       error = error as DioError;
-      debugPrint(error.message);
     });
   }
 
@@ -327,7 +308,6 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
             })
         .catchError((error) {
       error = error as DioError;
-      debugPrint(error.message);
       ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
           // content: Text('${error.response?.data}'),
           content: Text('${error.response!.data}'),
@@ -337,7 +317,6 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
 
   void _changeGender(newGender, context) {
     final request = {'gender': newGender};
-    print('Setting the gender $newGender');
     DioHelper.patchData(
             token: CacheHelper.getData(key: 'token'),
             path: accountSettings,
@@ -362,7 +341,6 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
             })
         .catchError((error) {
       error = error as DioError;
-      debugPrint(error.message);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('${error.response?.data}'),
           backgroundColor: ColorManager.red));
@@ -419,7 +397,6 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
             })
         .catchError((error) {
       error = error as DioError;
-      debugPrint(error.message);
     });
   }
 
@@ -443,7 +420,6 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
             })
         .catchError((error) {
       error = error as DioError;
-      debugPrint(error.message);
     });
   }
 }

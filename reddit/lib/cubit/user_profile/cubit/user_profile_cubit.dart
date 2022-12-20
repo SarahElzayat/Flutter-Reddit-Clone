@@ -1,29 +1,21 @@
-import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:meta/meta.dart';
 import '../../../components/button.dart';
 import '../../../components/helpers/color_manager.dart';
 import '../../../components/snack_bar.dart';
 import '../../../data/comment/comment_model.dart';
-import '../../../data/settings/settings_models/user_settings.dart';
 import '../../../data/user_profile.dart/about_user_model.dart';
 import '../../../networks/dio_helper.dart';
 import '../../../screens/user_profile/user_profile_screen.dart';
-
+// ignore: depend_on_referenced_packages
+import 'package:http_parser/http_parser.dart';
 import '../../../constants/constants.dart';
 import '../../../data/post_model/post_model.dart';
 import '../../../networks/constant_end_points.dart';
-import '../../../screens/moderation/user_management_screens/invite_moderator.dart';
-import '../../../screens/moderation/user_management_screens/moderators.dart';
 import '../../../shared/local/shared_preferences.dart';
-
-import 'package:http_parser/src/media_type.dart';
-
 part 'user_profile_state.dart';
 
 class UserProfileCubit extends Cubit<UserProfileState> {
@@ -44,31 +36,23 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       if (value.statusCode == 200) {
         username = userName;
         userData = AboutUserModel.fromJson(value.data);
-        print('All Done');
-        print(userData!.displayName);
         if (userData!.displayName == null || userData!.displayName == '') {
           userData!.displayName = username;
         }
-        if (navigate)
+        if (navigate) {
           navigatorKey.currentState!.pushNamed(UserProfileScreen.routeName);
+        }
         // return true;
       }
-    }).catchError((error) {
-      print('Error in fetch user data ==> $error');
-    });
+    }).catchError((error) {});
   }
 
   void setUsername(String usernamePass, {bool navigate = true}) {
-    print('User Name : $usernamePass');
-    print(token);
     fetchUserData(usernamePass);
   }
 
   void fetchPosts({String? after}) {
     final query = {'after': after, 'username': username};
-    print('URL : /user/$username/posts');
-    print(query);
-    print(token);
     DioHelper.getData(path: '/user/$username/posts', query: query)
         .then((value) {
       if (value.statusCode == 200) {
@@ -77,11 +61,7 @@ class UserProfileCubit extends Cubit<UserProfileState> {
           // logger.wtf(i);
           final post = (PostModel.fromJsonwithData(value.data['children'][i]));
           fetchedPosts.add(post);
-          print(i);
-          print(post.title);
-          print(post.id);
         }
-        print(value.data['after'] as String);
         if (value.data['after'] as String == '') {
           postController.appendLastPage(fetchedPosts);
         } else {
@@ -89,15 +69,11 @@ class UserProfileCubit extends Cubit<UserProfileState> {
               fetchedPosts, value.data['after'] as String);
         }
       }
-    }).catchError((error) {
-      print('Error In Fetch Posts ==> $error');
-    });
+    }).catchError((error) {});
   }
 
   void fetchComments({String? after}) {
     final query = {'after': after, 'username': username};
-    print('URL : /user/$username/comments');
-    print(query);
     DioHelper.getData(path: '/user/$username/comments', query: query)
         .then((value) {
       if (value.statusCode == 200) {
@@ -108,32 +84,19 @@ class UserProfileCubit extends Cubit<UserProfileState> {
               (PostModel.fromJson(value.data['children'][i]['data']['post']));
           // post.id = value.data['children'][i]['id'];
           post.id = value.data['children'][i]['id'];
-          print(post.id);
           for (int j = 0;
               j < value.data['children'][i]['data']['comments'].length;
               j++) {
             final comment = (CommentModel.fromJson(
                 value.data['children'][i]['data']['comments'][j]));
 
-            print('Post ID : ${post.id}');
-            print('Comment ID : ${comment.id}');
             var item = {
               'post': post,
               'comment': comment,
             };
             fetchedPosts.add(item);
           }
-
-          // // fetchedPosts.add(post);
-          // var data = {
-          //   'post': post,
-          //   'comment': comment,
-          // };
-          // fetchedPosts.add(data);
-          // print(i);
-          // print(post.title);
         }
-        print(value.data['after'] as String);
         if (value.data['after'] as String == '') {
           commentController.appendLastPage(fetchedPosts);
         } else {
@@ -141,24 +104,18 @@ class UserProfileCubit extends Cubit<UserProfileState> {
               fetchedPosts, value.data['after'] as String);
         }
       }
-    }).catchError((error) {
-      print('Error In Fetch comments ==> $error');
-    });
+    }).catchError((error) {});
   }
 
   followOrUnfollowUser(bool follow) {
-    print('Follow $follow');
     DioHelper.postData(
         path: followUser,
         data: {'username': username, 'follow': follow}).then((value) {
       if (value.statusCode == 200) {
-        print('Success');
         userData!.followed = !(userData!.followed!);
         emit(FollowOrUnfollowState());
       }
-    }).catchError((error) {
-      print(error);
-    });
+    }).catchError((error) {});
   }
 
   showPopupUserWidget(BuildContext context, String userName) async {
@@ -265,7 +222,6 @@ class UserProfileCubit extends Cubit<UserProfileState> {
                               'username': username,
                             },
                           ).then((value) {
-                            print('Blocked');
                             Navigator.of(context).pop();
                             ScaffoldMessenger.of(context).showSnackBar(
                                 responseSnackBar(
@@ -337,8 +293,6 @@ class UserProfileCubit extends Cubit<UserProfileState> {
   }
 
   void addSocialLink(BuildContext context, String text, String url) {
-    print({'type': 'custom', 'displayText': text, 'link': url});
-
     DioHelper.postData(
             path: socialLink,
             data: {'type': 'custom', 'displayText': text, 'link': url})
@@ -346,14 +300,11 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       if (value.statusCode == 201) {
         userData!.socialLinks!
             .add(SocialLink(displayText: text, link: url, type: 'custom'));
-        print('Sccess');
         emit(ChangeUserProfileSocialLinks());
         ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
             responseSnackBar(message: 'Add Link Successfully', error: false));
       }
     }).catchError((onError) {
-      print('error');
-
       ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
           responseSnackBar(message: 'An Error, Please Try Again', error: true));
     });
@@ -361,7 +312,6 @@ class UserProfileCubit extends Cubit<UserProfileState> {
 
   void deleteSocialLink(
       BuildContext context, String text, String url, int index) {
-    print({'type': 'custom', 'displayText': text, 'link': url});
     DioHelper.deleteData(path: socialLink, data: {
       'type': 'custom',
       'displayText': text,
@@ -369,15 +319,12 @@ class UserProfileCubit extends Cubit<UserProfileState> {
     }).then((value) {
       if (value.statusCode == 204) {
         userData!.socialLinks!.removeAt(index);
-        print('Sccess');
         emit(ChangeUserProfileSocialLinks());
         ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
             responseSnackBar(
                 message: 'Link Deleted Successfully', error: false));
       }
     }).catchError((onError) {
-      print('error');
-
       ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
           responseSnackBar(message: 'An Error, Please Try Again', error: true));
     });
@@ -387,7 +334,6 @@ class UserProfileCubit extends Cubit<UserProfileState> {
     MultipartFile file = await MultipartFile.fromFile(image!.path,
         filename: image.path.split('/').last,
         contentType: MediaType('image', 'png'));
-    print('Change Profile Picture');
     DioHelper.postData(
       isFormdata: true,
       path: userProfileBanner,
@@ -395,7 +341,6 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       sentToken: token,
     ).then((value) {
       if (value.statusCode == 200) {
-        print('success Profile Picture');
         emit(ChangeUserProfileBanner());
 
         ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(

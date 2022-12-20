@@ -1,6 +1,5 @@
 /// @author Abdelaziz Salah
 /// @date 26/10/2022
-/// This is a listTile bluePrint which is
 /// built to be a reuseable widget for further uses
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -160,7 +159,6 @@ class _ListTileWidgetState extends State<ListTileWidget> {
       }
     } else if (widget.title.contains('Google')) {
       String mail = CacheHelper.getData(key: 'googleEmail');
-      print('mail is $mail');
       dropDownValue = mail.isEmpty ? 'Disconnected' : 'Connected';
     } else if (widget.title.contains('Facebook')) {
       String mail = CacheHelper.getData(key: 'facebookEmail');
@@ -206,7 +204,6 @@ class _ListTileWidgetState extends State<ListTileWidget> {
         onChanged: (String? newValue) {
           SettingsCubit.get(context)
               .changeDropValue(newValue, widget.type!, context);
-          print(newValue);
           _setDropDownValue();
         },
       ),
@@ -217,9 +214,7 @@ class _ListTileWidgetState extends State<ListTileWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SettingsCubit, SettingsCubitState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return SizedBox(
           child: Material(

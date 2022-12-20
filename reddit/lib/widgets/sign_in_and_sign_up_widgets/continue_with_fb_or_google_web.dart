@@ -13,15 +13,10 @@ class ContinueWithGoogleOrFbWeb extends StatelessWidget {
   const ContinueWithGoogleOrFbWeb({super.key});
 
   Future signInWithFacebook() async {
-    print('trying to log in to facebook');
     await FacebookLoginAPI.login();
-    print('logged in to facebook successfully');
   }
 
   Future signInWithGoogle(context) async {
-    // FacebookLoginAPI.logOut();
-    // print('Sign out');
-
     final user = await GoogleSignInApi.login();
     GoogleSignInAuthentication googleToken = await user!.authentication;
 

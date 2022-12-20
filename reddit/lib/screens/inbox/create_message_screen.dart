@@ -7,7 +7,6 @@ import '../../data/messages/send_message_model.dart';
 import '../../data/sign_in_And_sign_up_models/validators.dart';
 import '../../networks/constant_end_points.dart';
 import '../../networks/dio_helper.dart';
-import '../../shared/local/shared_preferences.dart';
 
 class CreateMessageScreen extends StatefulWidget {
   static const routeName = '/creates_message_screen';
@@ -24,8 +23,6 @@ class _CreateMessageScreenState extends State<CreateMessageScreen> {
 
   /// this is a utility function used to send the message to the required user.
   void sendTheMessage() async {
-    print('sending');
-
     if (!Validator.validUserName(userNameController.text)) {
       ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
           message: 'Username must be greate than 2 in length'));

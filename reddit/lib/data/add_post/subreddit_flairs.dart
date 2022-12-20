@@ -20,11 +20,11 @@ class SubredditFlairModel {
   factory SubredditFlairModel.fromJson(Map<String, dynamic> json) =>
       SubredditFlairModel(
         postFlairs: List<PostFlair>.from(
-            json["postFlairs"].map((x) => PostFlair.fromJson(x))),
+            json['postFlairs'].map((x) => PostFlair.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "postFlairs": List<dynamic>.from(postFlairs!.map((x) => x.toJson())),
+        'postFlairs': List<dynamic>.from(postFlairs!.map((x) => x.toJson())),
       };
 }
 
@@ -46,21 +46,21 @@ class PostFlair {
   Settings? settings;
 
   factory PostFlair.fromJson(Map<String, dynamic> json) => PostFlair(
-        flairId: json["flairId"],
-        flairName: json["flairName"],
-        flairOrder: json["flairOrder"],
-        backgroundColor: json["backgroundColor"],
-        textColor: json["textColor"],
-        settings: Settings.fromJson(json["settings"]),
+        flairId: json['flairId'],
+        flairName: json['flairName'],
+        flairOrder: json['flairOrder'],
+        backgroundColor: json['backgroundColor'],
+        textColor: json['textColor'],
+        settings: Settings.fromJson(json['settings']),
       );
 
   Map<String, dynamic> toJson() => {
-        "flairId": flairId,
-        "flairName": flairName,
-        "flairOrder": flairOrder,
-        "backgroundColor": backgroundColor,
-        "textColor": textColor,
-        "settings": settings!.toJson(),
+        'flairId': flairId,
+        'flairName': flairName,
+        'flairOrder': flairOrder,
+        'backgroundColor': backgroundColor,
+        'textColor': textColor,
+        'settings': settings!.toJson(),
       };
 }
 
@@ -78,16 +78,16 @@ class Settings {
   int? emojisLimit;
 
   factory Settings.fromJson(Map<String, dynamic> json) => Settings(
-        modOnly: json["modOnly"],
-        allowUserEdits: json["allowUserEdits"],
-        flairType: json["flairType"],
-        emojisLimit: json["emojisLimit"],
+        modOnly: json['modOnly'],
+        allowUserEdits: json['allowUserEdits'],
+        flairType: json['flairType'],
+        emojisLimit: json['emojisLimit'],
       );
 
   Map<String, dynamic> toJson() => {
-        "modOnly": modOnly,
-        "allowUserEdits": allowUserEdits,
-        "flairType": flairType,
-        "emojisLimit": emojisLimit,
+        'modOnly': modOnly,
+        'allowUserEdits': allowUserEdits,
+        'flairType': flairType,
+        'emojisLimit': emojisLimit,
       };
 }
