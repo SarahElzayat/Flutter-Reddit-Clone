@@ -289,3 +289,4 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
     currentComment!.isCollapsed = !((currentComment?.isCollapsed) ?? true);
   }
 }
+

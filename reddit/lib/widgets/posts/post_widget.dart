@@ -91,10 +91,12 @@ class _PostWidgetState extends State<PostWidget> {
         'id': widget.post.sharePostId,
       }).then((value) {
         if (value.statusCode == 200) {
-          setState(() {
-            childPost = PostModel.fromJson(value.data);
-            logger.d(childPost!.title);
-          });
+          if (mounted) {
+            setState(() {
+              childPost = PostModel.fromJson(value.data);
+              logger.d(childPost!.title);
+            });
+          }
         }
       }).catchError((e) {
         logger.e(e);

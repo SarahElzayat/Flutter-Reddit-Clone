@@ -63,6 +63,7 @@ class _PickCommunityScreenState extends State<PickCommunityScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ShareToCommunityScreen(
+                                    isCommunity: true,
                                     community: cubit.yourCommunitiesList.values
                                         .elementAt(index),
                                     sharedPost: widget.sharedPost),
