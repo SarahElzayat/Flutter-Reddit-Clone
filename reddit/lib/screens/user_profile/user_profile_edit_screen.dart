@@ -45,189 +45,206 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
   @override
   Widget build(BuildContext context) {
     final userProfile = UserProfileCubit.get(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit'),
-        actions: [
-          TextButton(
-              onPressed: () {
-                userProfile.changeUserProfileInfo(context,
-                    displatNameController.text, aboutUserController.text);
-              },
-              child: const Text(
-                'SAVE',
-                style: TextStyle(color: ColorManager.blue),
-              ))
-        ],
-      ),
-      body: BlocBuilder<UserProfileCubit, UserProfileState>(
-        builder: (context, state) {
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const UserProfileEditImage(),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10),
-                        child: const Text(
-                          'Display name',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+    return WillPopScope(
+      onWillPop: () async {
+        UserProfileCubit.get(context).img = null;
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Edit'),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  userProfile.changeUserProfileInfo(
+                      context,
+                      displatNameController.text,
+                      aboutUserController.text,
+                      userProfile.img);
+                },
+                child: const Text(
+                  'SAVE',
+                  style: TextStyle(color: ColorManager.blue),
+                ))
+          ],
+        ),
+        body: BlocBuilder<UserProfileCubit, UserProfileState>(
+          builder: (context, state) {
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  UserProfileEditImage(),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          child: const Text(
+                            'Display name',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18),
+                          ),
                         ),
-                      ),
-                      Container(
-                          // height: 30,
-                          color: ColorManager.darkGrey,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 15),
-                            child: TextFormField(
-                              controller: displatNameController,
-                              maxLength: 30,
-                              cursorColor: ColorManager.blue,
-                              style: const TextStyle(fontSize: 18),
-                              decoration: const InputDecoration(
-                                hintStyle: TextStyle(
-                                    color: ColorManager.bottomSheetTitle),
-                                hintText: 'Shown on your profile page',
-                                border: InputBorder.none,
+                        Container(
+                            // height: 30,
+                            color: ColorManager.darkGrey,
+                            child: Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              child: TextFormField(
+                                controller: displatNameController,
+                                maxLength: 30,
+                                cursorColor: ColorManager.blue,
+                                style: const TextStyle(fontSize: 18),
+                                decoration: const InputDecoration(
+                                  hintStyle: TextStyle(
+                                      color: ColorManager.bottomSheetTitle),
+                                  hintText: 'Shown on your profile page',
+                                  border: InputBorder.none,
+                                ),
                               ),
-                            ),
-                          )),
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10),
-                        child: const Text(
-                          'This will be displayed to viewers of your profile page and does not change your username',
+                            )),
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          child: const Text(
+                            'This will be displayed to viewers of your profile page and does not change your username',
+                            style:
+                                TextStyle(color: ColorManager.bottomSheetTitle),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          child: const Text(
+                            'About you',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18),
+                          ),
+                        ),
+                        Container(
+                            // height: 30,
+                            color: ColorManager.darkGrey,
+                            child: Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              child: TextFormField(
+                                controller: aboutUserController,
+                                maxLength: 200,
+                                // expands: true,
+                                maxLines: 4,
+                                minLines: 4,
+                                cursorColor: ColorManager.blue,
+                                style: const TextStyle(fontSize: 18),
+                                decoration: const InputDecoration(
+                                  hintStyle: TextStyle(
+                                      color: ColorManager.bottomSheetTitle),
+                                  hintText: 'A little description of yourself',
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            )),
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          child: const Text(
+                            'Social Links (5 max)',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18),
+                          ),
+                        ),
+                        const Text(
+                          'People who visit your Reddit profile will see your social links',
                           style:
                               TextStyle(color: ColorManager.bottomSheetTitle),
                         ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10),
-                        child: const Text(
-                          'About you',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                      ),
-                      Container(
-                          // height: 30,
-                          color: ColorManager.darkGrey,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 15),
-                            child: TextFormField(
-                              controller: aboutUserController,
-                              maxLength: 200,
-                              // expands: true,
-                              maxLines: 4,
-                              minLines: 4,
-                              cursorColor: ColorManager.blue,
-                              style: const TextStyle(fontSize: 18),
-                              decoration: const InputDecoration(
-                                hintStyle: TextStyle(
-                                    color: ColorManager.bottomSheetTitle),
-                                hintText: 'A little description of yourself',
-                                border: InputBorder.none,
-                              ),
-                            ),
-                          )),
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10),
-                        child: const Text(
-                          'Social Links (5 max)',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                      ),
-                      const Text(
-                        'People who visit your Reddit profile will see your social links',
-                        style: TextStyle(color: ColorManager.bottomSheetTitle),
-                      ),
-                      BlocBuilder<UserProfileCubit, UserProfileState>(
-                        buildWhen: ((previous, current) {
-                          if (previous is ChangeUserProfileSocialLinks ||
-                              current is ChangeUserProfileSocialLinks) {
-                            return true;
-                          } else {
-                            return false;
-                          }
-                        }),
-                        builder: (context, state) {
-                          return Wrap(
-                            spacing: 5,
-                            children: [
-                              for (int i = 0;
-                                  i < userProfile.userData!.socialLinks!.length;
-                                  i++)
-                                Container(
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 2),
-                                  child: InkWell(
-                                    onTap: () {
-                                      userProfile.deleteSocialLink(
-                                          context,
-                                          userProfile.userData!.socialLinks![i]
-                                              .displayText!,
-                                          userProfile
-                                              .userData!.socialLinks![i].link!,
-                                          i);
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 15, vertical: 5),
-                                      decoration: BoxDecoration(
-                                          color: ColorManager.grey,
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                      child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(userProfile.userData!
-                                                .socialLinks![i].displayText!),
-                                            Icon(Icons.close),
-                                          ]),
+                        BlocBuilder<UserProfileCubit, UserProfileState>(
+                          buildWhen: ((previous, current) {
+                            if (previous is ChangeUserProfileSocialLinks ||
+                                current is ChangeUserProfileSocialLinks) {
+                              return true;
+                            } else {
+                              return false;
+                            }
+                          }),
+                          builder: (context, state) {
+                            return Wrap(
+                              spacing: 5,
+                              children: [
+                                for (int i = 0;
+                                    i <
+                                        userProfile
+                                            .userData!.socialLinks!.length;
+                                    i++)
+                                  Container(
+                                    margin:
+                                        const EdgeInsets.symmetric(vertical: 2),
+                                    child: InkWell(
+                                      onTap: () {
+                                        userProfile.deleteSocialLink(
+                                            context,
+                                            userProfile.userData!
+                                                .socialLinks![i].displayText!,
+                                            userProfile.userData!
+                                                .socialLinks![i].link!,
+                                            i);
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 15, vertical: 5),
+                                        decoration: BoxDecoration(
+                                            color: ColorManager.grey,
+                                            borderRadius:
+                                                BorderRadius.circular(15)),
+                                        child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(userProfile
+                                                  .userData!
+                                                  .socialLinks![i]
+                                                  .displayText!),
+                                              Icon(Icons.close),
+                                            ]),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              if (userProfile.userData!.socialLinks!.length < 5)
-                                Container(
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 2),
-                                  child: InkWell(
-                                    onTap: (() {
-                                      modelBottomSheet(userProfile);
-                                    }),
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 15, vertical: 5),
-                                      decoration: BoxDecoration(
-                                          color: ColorManager.grey,
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                      child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: const [
-                                            Icon(Icons.add),
-                                            Text('Add')
-                                          ]),
+                                if (userProfile.userData!.socialLinks!.length <
+                                    5)
+                                  Container(
+                                    margin:
+                                        const EdgeInsets.symmetric(vertical: 2),
+                                    child: InkWell(
+                                      onTap: (() {
+                                        modelBottomSheet(userProfile);
+                                      }),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 15, vertical: 5),
+                                        decoration: BoxDecoration(
+                                            color: ColorManager.grey,
+                                            borderRadius:
+                                                BorderRadius.circular(15)),
+                                        child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: const [
+                                              Icon(Icons.add),
+                                              Text('Add')
+                                            ]),
+                                      ),
                                     ),
-                                  ),
-                                )
-                            ],
-                          );
-                        },
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          );
-        },
+                                  )
+                              ],
+                            );
+                          },
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

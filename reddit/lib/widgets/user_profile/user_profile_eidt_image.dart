@@ -1,15 +1,26 @@
+import 'dart:io';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
 
 import '../../components/helpers/color_manager.dart';
 
-class UserProfileEditImage extends StatelessWidget {
-  const UserProfileEditImage({Key? key}) : super(key: key);
+class UserProfileEditImage extends StatefulWidget {
+  UserProfileEditImage({Key? key}) : super(key: key);
 
+  @override
+  State<UserProfileEditImage> createState() => _UserProfileEditImageState();
+}
+
+class _UserProfileEditImageState extends State<UserProfileEditImage> {
+  final ImagePicker _picker = ImagePicker();
   @override
   Widget build(BuildContext context) {
     final mediaquery = MediaQuery.of(context);
     final navigator = Navigator.of(context);
+    final userProfile = UserProfileCubit.get(context);
     return SizedBox(
       width: mediaquery.size.width,
       height: 145,
@@ -26,14 +37,61 @@ class UserProfileEditImage extends StatelessWidget {
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
-                      Image.asset(
-                        'assets/images/profile_banner.jpg',
-                        fit: BoxFit.fitWidth,
-                      ),
-                      const Center(
-                        child: Icon(
-                          Icons.camera_alt_outlined,
-                          size: 25,
+                      (userProfile.img != null)
+                          ? Image.file(
+                              File(userProfile.img!.path),
+                              fit: BoxFit.fitWidth,
+                            )
+                          : (userProfile.userData!.banner != null &&
+                                  userProfile.userData!.banner != '')
+                              ? Image.network(
+                                  userProfile.userData!.banner!,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.asset(
+                                  'assets/images/profile_banner.jpg',
+                                  fit: BoxFit.fitWidth,
+                                ),
+                      Center(
+                        child: IconButton(
+                          onPressed: (() async {
+                            showDialog(
+                                context: context,
+                                builder: ((context) {
+                                  return AlertDialog(
+                                    content: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          TextButton(
+                                              onPressed: () async {
+                                                var pickedImg =
+                                                    await _picker.pickImage(
+                                                        source: ImageSource
+                                                            .gallery);
+                                                setState(() {
+                                                  if (pickedImg != null) {
+                                                    userProfile.img = pickedImg;
+                                                  }
+                                                });
+                                                navigator.pop();
+                                              },
+                                              child: Text('Add Banner')),
+                                          TextButton(
+                                              onPressed: () {
+                                                userProfile.deleteBannerImage();
+                                                navigator.pop();
+                                              },
+                                              child: Text('Remove Banner'))
+                                        ]),
+                                  );
+                                }));
+                          }),
+                          icon: Icon(
+                            Icons.camera_alt_outlined,
+                            size: 25,
+                          ),
                         ),
                       ),
                     ],
@@ -50,10 +108,16 @@ class UserProfileEditImage extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 30,
-                    child: Image.asset(
-                      'assets/images/Logo.png',
-                      fit: BoxFit.cover,
-                    ),
+                    child: (userProfile.userData!.picture != null &&
+                            userProfile.userData!.picture != '')
+                        ? Image.network(
+                            userProfile.userData!.picture!,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset(
+                            'assets/images/Logo.png',
+                            fit: BoxFit.cover,
+                          ),
                   ),
                   Align(
                       alignment: Alignment.bottomRight,

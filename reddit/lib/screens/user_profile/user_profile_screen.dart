@@ -135,12 +135,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
       body: CustomScrollView(slivers: [
         BlocBuilder<UserProfileCubit, UserProfileState>(
           buildWhen: (previous, current) {
-            if (previous is ChangeUserProfileInfo ||
-                current is ChangeUserProfileInfo) {
-              setState(() {});
-              return true;
-            }
-            return false;
+            return true;
           },
           builder: (context, state) {
             return SliverAppBar(

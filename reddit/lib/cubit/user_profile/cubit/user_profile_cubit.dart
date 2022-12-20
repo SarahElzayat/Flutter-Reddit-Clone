@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meta/meta.dart';
 import 'package:reddit/components/button.dart';
@@ -21,6 +22,8 @@ import '../../../screens/moderation/user_management_screens/invite_moderator.dar
 import '../../../screens/moderation/user_management_screens/moderators.dart';
 import '../../../shared/local/shared_preferences.dart';
 
+import 'package:http_parser/src/media_type.dart';
+
 part 'user_profile_state.dart';
 
 class UserProfileCubit extends Cubit<UserProfileState> {
@@ -28,6 +31,8 @@ class UserProfileCubit extends Cubit<UserProfileState> {
   static UserProfileCubit get(context) => BlocProvider.of(context);
   AboutUserModel? userData;
   String? username;
+
+  XFile? img;
 
   late PagingController<String?, PostModel> postController;
   late PagingController<String?, Map<String, dynamic>> commentController;
@@ -192,27 +197,28 @@ class UserProfileCubit extends Cubit<UserProfileState> {
                       Text('  View profile')
                     ],
                   )),
-              TextButton(
-                  onPressed: () {
-                    blockUser(context);
-                  },
-                  child: Row(
-                    children: const [
-                      Icon(Icons.block_flipped),
-                      Text('  Block Account')
-                    ],
-                  )),
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: ((context) => const Moderators())));
-                  },
-                  child: Row(
-                    children: const [
-                      Icon(Icons.mail_outline_outlined),
-                      Text('  Invite to Community')
-                    ],
-                  )),
+              if (username != CacheHelper.getData(key: 'username'))
+                TextButton(
+                    onPressed: () {
+                      blockUser(context);
+                    },
+                    child: Row(
+                      children: const [
+                        Icon(Icons.block_flipped),
+                        Text('  Block Account')
+                      ],
+                    )),
+              // TextButton(
+              //     onPressed: () {
+              //       Navigator.of(context).push(MaterialPageRoute(
+              //           builder: ((context) => const Moderators())));
+              //     },
+              //     child: Row(
+              //       children: const [
+              //         Icon(Icons.mail_outline_outlined),
+              //         Text('  Invite to Community')
+              //       ],
+              //     )),
             ]),
           );
         }));
@@ -289,18 +295,17 @@ class UserProfileCubit extends Cubit<UserProfileState> {
             )));
   }
 
-  /// 0 -> change Display name
-  /// 1 -> change About User
-  /// 2 -> Add Social Link
-  /// 3 -> Edit Profile Banner
   void changeUserProfileInfo(
-      BuildContext context, String displayName, String aboutYou) {
+      BuildContext context, String displayName, String aboutYou, XFile? img) {
     Map<String, String> data = {};
     if (userData!.displayName != displayName) {
       data['displayName'] = displayName;
     }
     if (userData!.about != aboutYou) {
       data['about'] = aboutYou;
+    }
+    if (img != null) {
+      changeProfileBanner(context, img);
     }
     if (data.isNotEmpty) {
       DioHelper.patchData(
@@ -312,12 +317,13 @@ class UserProfileCubit extends Cubit<UserProfileState> {
           userData!.displayName = displayName;
           userData!.about = aboutYou;
           emit(ChangeUserProfileInfo());
-          ScaffoldMessenger.of(context).showSnackBar(
+          ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
               responseSnackBar(message: 'Update Successfully', error: false));
         }
       }).catchError((error) {
-        ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
-            message: 'An Error, Please Try Again', error: true));
+        ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
+            responseSnackBar(
+                message: 'An Error, Please Try Again', error: true));
       });
     }
     Navigator.of(context).pop();
@@ -335,13 +341,13 @@ class UserProfileCubit extends Cubit<UserProfileState> {
             .add(SocialLink(displayText: text, link: url, type: 'custom'));
         print('Sccess');
         emit(ChangeUserProfileSocialLinks());
-        ScaffoldMessenger.of(context).showSnackBar(
+        ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
             responseSnackBar(message: 'Add Link Successfully', error: false));
       }
     }).catchError((onError) {
       print('error');
 
-      ScaffoldMessenger.of(context).showSnackBar(
+      ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
           responseSnackBar(message: 'An Error, Please Try Again', error: true));
     });
   }
@@ -358,14 +364,59 @@ class UserProfileCubit extends Cubit<UserProfileState> {
         userData!.socialLinks!.removeAt(index);
         print('Sccess');
         emit(ChangeUserProfileSocialLinks());
-        ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
-            message: 'Link Deleted Successfully', error: false));
+        ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
+            responseSnackBar(
+                message: 'Link Deleted Successfully', error: false));
       }
     }).catchError((onError) {
       print('error');
 
-      ScaffoldMessenger.of(context).showSnackBar(
+      ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
           responseSnackBar(message: 'An Error, Please Try Again', error: true));
+    });
+  }
+
+  Future<void> changeProfileBanner(BuildContext context, XFile? image) async {
+    MultipartFile file = await MultipartFile.fromFile(image!.path,
+        filename: image.path.split('/').last,
+        contentType: MediaType('image', 'png'));
+    print('Change Profile Picture');
+    DioHelper.postData(
+      isFormdata: true,
+      path: userProfileBanner,
+      data: FormData.fromMap({'banner': file}),
+      sentToken: token,
+    ).then((value) {
+      if (value.statusCode == 200) {
+        print('success Profile Picture');
+        emit(ChangeUserProfileBanner());
+
+        ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
+            responseSnackBar(
+                message: 'Banner Uploaded Successfully', error: false));
+        setUsername(username!, navigate: false);
+        img = null;
+      }
+    }).catchError(
+      (error) {
+        ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
+            responseSnackBar(message: 'Error When Upload Banner', error: true));
+      },
+    );
+  }
+
+  void deleteBannerImage() {
+    DioHelper.deleteData(path: userProfileBanner).then((value) {
+      if (value.statusCode == 204) {
+        ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
+            responseSnackBar(
+                message: 'Banner Deleted Successfully', error: false));
+        img = null;
+        emit(ChangeUserProfileBanner());
+      }
+    }).catchError((error) {
+      ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
+          responseSnackBar(message: 'Error When Delete Banner', error: true));
     });
   }
 }

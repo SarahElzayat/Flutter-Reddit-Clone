@@ -10,3 +10,5 @@ class FollowOrUnfollowState extends UserProfileState {}
 class ChangeUserProfileInfo extends UserProfileState {}
 
 class ChangeUserProfileSocialLinks extends UserProfileState {}
+
+class ChangeUserProfileBanner extends UserProfileState {}
