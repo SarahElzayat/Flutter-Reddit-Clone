@@ -39,6 +39,9 @@ const block = '/block-user';
 const messagesPoint = '/message/inbox';
 const markMessageAsRead = '/unread-message';
 
+// notifications
+const notificationPoint = '/notifications';
+
 // create community
 const createCommunity = '/create-subreddit';
 const savedCategories = '/saved-categories';

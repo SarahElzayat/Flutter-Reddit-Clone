@@ -1,5 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/networks/constant_end_points.dart';
+import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/widgets/inbox/notification_widget.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -11,6 +14,31 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+  void fetch() async {
+    print('fetching notifications');
+    await DioHelper.getData(path: notificationPoint).then(
+      (response) {
+        if (response.statusCode == 200) {
+          print('success');
+
+          /// TODO : add here the notificatios which were fetched to the notifications list.
+          print(response.data);
+        }
+      },
+    ).catchError((err) {
+      err = err as DioError;
+      print('error');
+      print(err.response!.data);
+    });
+  }
+
+  @override
+  void initState() {
+    // fetching the data
+    fetch();
+    super.initState();
+  }
+
   List<NotificationWidget> notifications = [
     const NotificationWidget(
       bodyContent: 'helloMyBrotherWelcomHere',
