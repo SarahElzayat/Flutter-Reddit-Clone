@@ -534,15 +534,20 @@ class AddPostCubit extends Cubit<AddPostState> {
             sentToken: CacheHelper.getData(key: 'token'))
         .then((value) {
       print(value);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            backgroundColor: ColorManager.eggshellWhite,
-            content: Text('Post success')),
-      );
-      if (value.statusCode == 200) {
+
+      if (value.statusCode == 201) {
         print('Post success');
-        Navigator.of(context)
-            .pushReplacementNamed(HomeScreenForMobile.routeName);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              backgroundColor: ColorManager.eggshellWhite,
+              content: Text('Post success')),
+        );
+        Navigator.pushAndRemoveUntil(
+          navigatorKey.currentContext!,
+          MaterialPageRoute(
+              builder: (BuildContext context) => HomeScreenForMobile()),
+          ModalRoute.withName('/'),
+        );
       } else if (value.statusCode == 400) {
         print(value);
       } else if (value.statusCode == 401) {
@@ -555,7 +560,7 @@ class AddPostCubit extends Cubit<AddPostState> {
     }).catchError((error) {
       print('The errorrr isss :::::: ${(error as DioError).response?.data}');
     });
-    emit(PostCreated());
+    // emit(PostCreated());
   }
 
   void subredditSearch(String subredditName) {

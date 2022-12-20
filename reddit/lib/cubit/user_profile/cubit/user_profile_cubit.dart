@@ -106,12 +106,17 @@ class UserProfileCubit extends Cubit<UserProfileState> {
           // logger.wtf(i);
           final post =
               (PostModel.fromJson(value.data['children'][i]['data']['post']));
-          print(value.data['children'][i]['data']['comments']);
+          // post.id = value.data['children'][i]['id'];
+          post.id = value.data['children'][i]['id'];
+          print(post.id);
           for (int j = 0;
               j < value.data['children'][i]['data']['comments'].length;
               j++) {
             final comment = (CommentModel.fromJson(
                 value.data['children'][i]['data']['comments'][j]));
+
+            print('Post ID : ${post.id}');
+            print('Comment ID : ${comment.id}');
             var item = {
               'post': post,
               'comment': comment,
