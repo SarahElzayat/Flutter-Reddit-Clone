@@ -9,22 +9,23 @@ import 'package:image_picker/image_picker.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/comment/comment_model.dart';
-// ignore: depend_on_referenced_packages
 import 'package:http_parser/http_parser.dart';
 
 import 'package:reddit/data/home/drawer_communities_model.dart';
+import 'package:reddit/data/saved/saved_comments_model.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/chat_screen.dart';
 import 'package:reddit/screens/inbox/Inbox_screen.dart';
+import 'package:reddit/screens/inbox/notifications_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/saved/saved_comments.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
-import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_state.dart';
 import '../../data/post_model/post_model.dart';
 import '../../data/temp_data/tmp_data.dart';
 import '../../networks/constant_end_points.dart';
 import '../../networks/dio_helper.dart';
 import '../../screens/bottom_navigation_bar_screens/add_post_screen.dart';
+import '../../screens/comments/add_comment_screen.dart';
 import '../../screens/saved/saved_posts.dart';
 import '../../widgets/posts/post_widget.dart';
 
@@ -131,11 +132,6 @@ class AppCubit extends Cubit<AppState> {
     }).catchError((error) {
       emit(ErrorState());
     });
-  }
-
-  void removeSavedPost(String postId) {
-    savedPostsList.removeWhere((element) => element.id == postId);
-    emit(LoadedSavedState());
   }
 
   ///@param [popularPosts] dummy data for home screen
@@ -385,12 +381,25 @@ class AppCubit extends Cubit<AppState> {
       bool before = false,
       bool after = false,
       int limit = 10}) {
-    // loadMore ? emit(LoadingMoreHistoryState()) : emit(LoadingHistoryState());
+    if (kDebugMode) {
+      // //logger.wtf('after$afterId');
+      // //logger.wtf('before$beforeId');
+    }
+    if (kDebugMode) {
+      // //logger.wtf('CATEGOOORYYYY $currentHistoryCategory');
+    }
+    loadMore ? emit(LoadingMoreHistoryState()) : emit(LoadingHistoryState());
     if (!loadMore) {
       history.clear();
       beforeId = '';
       afterId = '';
-      emit(LoadingHistoryState());
+    } else {
+      if (kDebugMode) {
+        // //logger.wtf('AFFFTEEEEERRRRRR ');
+      }
+      if (kDebugMode) {
+        // //logger.wtf(history[history.length - 1].id);
+      }
     }
     DioHelper.getData(
       path: path != null
@@ -403,7 +412,13 @@ class AppCubit extends Cubit<AppState> {
       },
     ).then((value) {
       if (value.data['children'].length == 0) {
-        if (!loadMore) {
+        if (kDebugMode) {
+          // //logger.wtf('EMPPPTTYYYYY');
+        }
+
+        if (loadMore) {
+          emit(NoMoreHistoryToLoadState());
+        } else {
           emit(HistoryEmptyState());
         }
       } else {
@@ -517,9 +532,9 @@ class AppCubit extends Cubit<AppState> {
       bool loadMore = false,
       bool before = false,
       bool after = false,
-      int limit = 25}) {
-    // if (loadMore && isPosts) emit(LoadingMoreSavedPostsState());
-    // if (loadMore && isComments) emit(LoadingMoreSavedCommentsState());
+      int limit = 5}) {
+    if (loadMore && isPosts) emit(LoadingMoreSavedPostsState());
+    if (loadMore && isComments) emit(LoadingMoreSavedCommentsState());
     if (!loadMore) {
       savedPostsList.clear();
       savedCommentsList.clear();
@@ -555,7 +570,9 @@ class AppCubit extends Cubit<AppState> {
           //logger.wtf('EMPPPTTYYYYY');
         }
 
-        if (!loadMore) {
+        if (loadMore) {
+          emit(NoMoreSavedToLoadState());
+        } else {
           emit(SavedEmptyState());
         }
       } else {
@@ -667,11 +684,5 @@ class AppCubit extends Cubit<AppState> {
         emit(ErrorState());
       },
     );
-  }
-
-  void deletePost(String id) {
-    homePosts.removeWhere((element) {
-      return (element is PostWidget) && element.post.id == id;
-    });
   }
 }

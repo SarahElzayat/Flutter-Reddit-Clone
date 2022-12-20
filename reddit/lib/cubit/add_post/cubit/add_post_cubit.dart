@@ -36,8 +36,6 @@ class AddPostCubit extends Cubit<AddPostState> {
   /// This number is the index of post Type in add post screen
   int postType = 2;
 
-  bool isSubreddit = true;
-
   /// [images] Images that User Added
   List<XFile> images = <XFile>[];
 
@@ -464,7 +462,7 @@ class AddPostCubit extends Cubit<AddPostState> {
       body = {
         'kind': postTypes[postType],
         'subreddit': subredditName,
-        'inSubreddit': isSubreddit,
+        'inSubreddit': true,
         'title': title.text,
         'images': imagesData,
         'imageCaptions': imageCaptions,
@@ -488,7 +486,7 @@ class AddPostCubit extends Cubit<AddPostState> {
         'title': title.text,
         'kind': 'video',
         'subreddit': subredditName,
-        'inSubreddit': isSubreddit,
+        'inSubreddit': true,
         'nsfw': nsfw,
         'spoiler': spoiler,
       };
@@ -496,10 +494,10 @@ class AddPostCubit extends Cubit<AddPostState> {
       body = {
         'kind': postTypes[postType],
         'subreddit': subredditName,
-        'inSubreddit': isSubreddit,
+        'inSubreddit': true,
         'title': title.text,
         'content': {
-          'ops': jsonDecode(markdownToDelta(optionalText.text)),
+          'ops': markdownToDelta(optionalText.text),
         },
         'nsfw': nsfw,
         'spoiler': spoiler,
@@ -508,7 +506,7 @@ class AddPostCubit extends Cubit<AddPostState> {
       body = {
         'kind': postTypes[postType],
         'subreddit': subredditName,
-        'inSubreddit': isSubreddit,
+        'inSubreddit': true,
         'title': title.text,
         'link': link.text,
         'nsfw': nsfw,
@@ -518,14 +516,14 @@ class AddPostCubit extends Cubit<AddPostState> {
       body = {
         'kind': postTypes[postType],
         'subreddit': subredditName,
-        'inSubreddit': isSubreddit,
+        'inSubreddit': true,
         'title': title.text,
         'nsfw': nsfw,
         'spoiler': spoiler,
       };
     }
     FormData formData = FormData.fromMap(body);
-    print('Token : ${CacheHelper.getData(key: 'token')}');
+    print('Toke : ${CacheHelper.getData(key: 'token')}');
 
     await DioHelper.postData(
             path: submitPost,
@@ -553,7 +551,7 @@ class AddPostCubit extends Cubit<AddPostState> {
         print('Server Error');
       }
     }).catchError((error) {
-      print('The errorrr isss :::::: ${(error as DioError).response?.data}');
+      print('The errorrr isss :::::: ${error.toString()}');
     });
     emit(PostCreated());
   }
@@ -625,7 +623,6 @@ class AddPostCubit extends Cubit<AddPostState> {
                         if (isPop) {
                           title.text = '';
                           subredditName = null;
-                          isSubreddit = true;
                           changePostType(postTypeIndex: 2);
 
                           navigator.pop();
@@ -652,7 +649,6 @@ class AddPostCubit extends Cubit<AddPostState> {
     } else if (isPop) {
       title.text = '';
       subredditName = null;
-      isSubreddit = true;
       changePostType(postTypeIndex: 2);
 
       navigator.pop();
