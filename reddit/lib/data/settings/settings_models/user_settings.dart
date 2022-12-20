@@ -22,22 +22,53 @@ class UserSettingsModel {
   static bool? newFollowerEmail;
   static bool? unsubscribeFromEmails;
 
+  /// this is a utility function used to clear the cached settings.
   static void clearCachedSettings() {
-    CacheHelper.putData(key: 'email', value: '');
-    CacheHelper.putData(key: 'googleEmail', value: '');
-    CacheHelper.putData(key: 'facebookEmail', value: '');
-    CacheHelper.putData(key: 'country', value: '');
-    CacheHelper.putData(key: 'gender', value: 'Male');
-    CacheHelper.putData(key: 'displayName', value: 'No Name');
-    CacheHelper.putData(key: 'about', value: 'No About');
-    CacheHelper.putData(key: 'havePassword', value: 'false');
-    CacheHelper.putData(key: 'hasVerifiedEmail', value: 'false');
-    CacheHelper.putData(key: 'nsfw', value: 'false');
-    CacheHelper.putData(key: 'allowToFollowYou', value: 'true');
-    CacheHelper.putData(key: 'adultContent', value: 'false');
-    CacheHelper.putData(key: 'autoplayMedia', value: 'true');
-    CacheHelper.putData(key: 'newFollowerEmail', value: 'true');
-    CacheHelper.putData(key: 'unsubscribeFromEmails', value: 'false');
+    CacheHelper.removeData(
+      key: 'email',
+    );
+    CacheHelper.removeData(
+      key: 'googleEmail',
+    );
+    CacheHelper.removeData(
+      key: 'facebookEmail',
+    );
+    CacheHelper.removeData(
+      key: 'country',
+    );
+    CacheHelper.removeData(
+      key: 'gender',
+    );
+    CacheHelper.removeData(
+      key: 'displayName',
+    );
+    CacheHelper.removeData(
+      key: 'about',
+    );
+    CacheHelper.removeData(
+      key: 'havePassword',
+    );
+    CacheHelper.removeData(
+      key: 'hasVerifiedEmail',
+    );
+    CacheHelper.removeData(
+      key: 'nsfw',
+    );
+    CacheHelper.removeData(
+      key: 'allowToFollowYou',
+    );
+    CacheHelper.removeData(
+      key: 'adultContent',
+    );
+    CacheHelper.removeData(
+      key: 'autoplayMedia',
+    );
+    CacheHelper.removeData(
+      key: 'newFollowerEmail',
+    );
+    CacheHelper.removeData(
+      key: 'unsubscribeFromEmails',
+    );
   }
 
   /// this is a utility function used to cache the user settings.
