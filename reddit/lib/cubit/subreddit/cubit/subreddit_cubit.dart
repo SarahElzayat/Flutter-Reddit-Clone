@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/post_model/post_model.dart';
+import 'package:reddit/data/settings/settings_models/user_settings.dart';
 import 'package:reddit/data/subreddit/subreddit_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
@@ -41,6 +42,20 @@ class SubredditCubit extends Cubit<SubredditState> {
         subreddit = SubredditModel.fromJson(value.data);
         subredditName = name;
         if (subreddit!.isMember == null) return;
+
+        if (subreddit!.type == 'private' && subreddit!.isMember == false) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              responseSnackBar(message: 'Subreddit is Private', error: true));
+          return;
+        }
+
+        if (UserSettingsModel.nsfw == false &&
+            subreddit!.nsfw != null &&
+            subreddit!.nsfw == true) {
+          ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+              message: 'Subreddit is NSFW , Edit Setting', error: true));
+          return;
+        }
       }
     }).catchError((error) {
       return;
