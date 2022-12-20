@@ -35,6 +35,10 @@ const accountSettings =
     '/account-settings'; // this end point is used in multi requests.
 const block = '/block-user';
 
+// messages and inbox
+const messagesPoint = '/message/inbox';
+const markMessageAsRead = '/unread-message';
+
 // create community
 const createCommunity = '/create-subreddit';
 const savedCategories = '/saved-categories';
