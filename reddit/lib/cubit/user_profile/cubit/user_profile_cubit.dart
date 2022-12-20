@@ -322,4 +322,50 @@ class UserProfileCubit extends Cubit<UserProfileState> {
     }
     Navigator.of(context).pop();
   }
+
+  void addSocialLink(BuildContext context, String text, String url) {
+    print({'type': 'custom', 'displayText': text, 'link': url});
+
+    DioHelper.postData(
+            path: socialLink,
+            data: {'type': 'custom', 'displayText': text, 'link': url})
+        .then((value) {
+      if (value.statusCode == 201) {
+        userData!.socialLinks!
+            .add(SocialLink(displayText: text, link: url, type: 'custom'));
+        print('Sccess');
+        emit(ChangeUserProfileSocialLinks());
+        ScaffoldMessenger.of(context).showSnackBar(
+            responseSnackBar(message: 'Add Link Successfully', error: false));
+      }
+    }).catchError((onError) {
+      print('error');
+
+      ScaffoldMessenger.of(context).showSnackBar(
+          responseSnackBar(message: 'An Error, Please Try Again', error: true));
+    });
+  }
+
+  void deleteSocialLink(
+      BuildContext context, String text, String url, int index) {
+    print({'type': 'custom', 'displayText': text, 'link': url});
+    DioHelper.deleteData(path: socialLink, data: {
+      'type': 'custom',
+      'displayText': text,
+      'link': url,
+    }).then((value) {
+      if (value.statusCode == 204) {
+        userData!.socialLinks!.removeAt(index);
+        print('Sccess');
+        emit(ChangeUserProfileSocialLinks());
+        ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+            message: 'Link Deleted Successfully', error: false));
+      }
+    }).catchError((onError) {
+      print('error');
+
+      ScaffoldMessenger.of(context).showSnackBar(
+          responseSnackBar(message: 'An Error, Please Try Again', error: true));
+    });
+  }
 }

@@ -8,3 +8,5 @@ class UserProfileInitial extends UserProfileState {}
 class FollowOrUnfollowState extends UserProfileState {}
 
 class ChangeUserProfileInfo extends UserProfileState {}
+
+class ChangeUserProfileSocialLinks extends UserProfileState {}

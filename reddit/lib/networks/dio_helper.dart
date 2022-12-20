@@ -152,7 +152,10 @@ class DioHelper {
     );
   }
 
-  static Future<Response> deleteData({required String path}) async {
+  static Future<Response> deleteData({
+    required String path,
+    dynamic data,
+  }) async {
     Options options;
 
     options = Options(
@@ -162,9 +165,6 @@ class DioHelper {
       },
     );
 
-    return await dio.delete(
-      path,
-      options: options,
-    );
+    return await dio.delete(path, options: options, data: data);
   }
 }

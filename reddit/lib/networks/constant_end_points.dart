@@ -87,3 +87,4 @@ const homeNew = '/new';
 const subreddit = '/r';
 const makeFavorite = '/make-favorite';
 const removeFavorite = '/remove-favorite';
+const socialLink = '/social-link';

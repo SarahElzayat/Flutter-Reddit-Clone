@@ -15,6 +15,7 @@ import 'package:reddit/screens/settings/change_profile_picture_screen.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 import 'package:reddit/widgets/comments/comment.dart';
 import 'package:reddit/widgets/user_profile/user_profile_comments.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../components/helpers/enums.dart';
 import '../../cubit/add_post/cubit/add_post_cubit.dart';
@@ -363,27 +364,86 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                     'u/${userProfileCubit.userData!.displayName} *${userProfileCubit.userData!.karma} Karma *${DateFormat('dd/MM/yyyy').format((userProfileCubit.userData!.cakeDate!))}'),
                                 Text(userProfileCubit.userData!.about ?? ''),
                                 (isMyProfile)
-                                    ? Container(
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 2),
-                                        child: MaterialButton(
-                                          padding: EdgeInsets.zero,
-                                          onPressed: (() {}),
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 15, vertical: 5),
-                                            decoration: BoxDecoration(
-                                                color: ColorManager.grey,
-                                                borderRadius:
-                                                    BorderRadius.circular(15)),
-                                            child: Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: const [
-                                                  Icon(Icons.add),
-                                                  Text('Add Social Link')
-                                                ]),
-                                          ),
-                                        ),
+                                    ? Wrap(
+                                        spacing: 5,
+                                        children: [
+                                          for (int i = 0;
+                                              i <
+                                                  userProfileCubit.userData!
+                                                      .socialLinks!.length;
+                                              i++)
+                                            Container(
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 2),
+                                              child: InkWell(
+                                                onTap: () async {
+                                                  Uri url = Uri.parse(
+                                                      userProfileCubit
+                                                          .userData!
+                                                          .socialLinks![i]
+                                                          .link!);
+                                                  await launchUrl(url);
+                                                  // if (await canLaunchUrl(url)) {
+                                                  //   await launchUrl(url);
+                                                  // }
+                                                },
+                                                child: Container(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 15,
+                                                      vertical: 5),
+                                                  decoration: BoxDecoration(
+                                                      color: ColorManager.grey,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15)),
+                                                  child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Icon(Icons.link),
+                                                        Text(userProfileCubit
+                                                            .userData!
+                                                            .socialLinks![i]
+                                                            .displayText!),
+                                                      ]),
+                                                ),
+                                              ),
+                                            ),
+                                          if (userProfileCubit.userData!
+                                                  .socialLinks!.length <
+                                              5)
+                                            Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: 2),
+                                              child: InkWell(
+                                                // padding: EdgeInsets.zero,
+                                                onTap: (() {
+                                                  navigator.pushNamed(
+                                                      UserProfileEditScreen
+                                                          .routeName);
+                                                }),
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 15,
+                                                      vertical: 5),
+                                                  decoration: BoxDecoration(
+                                                      color: ColorManager.grey,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15)),
+                                                  child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: const [
+                                                        Icon(Icons.add),
+                                                        Text('Add Social Link')
+                                                      ]),
+                                                ),
+                                              ),
+                                            ),
+                                        ],
                                       )
                                     : const SizedBox(),
                               ],
