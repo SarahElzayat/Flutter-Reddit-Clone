@@ -26,6 +26,13 @@ class _SavedCommentsScreenState extends State<SavedCommentsScreen> {
     }
   }
 
+  /// the method that's callled on pull down to refresh
+  Future<void> _onRefresh() async {
+    setState(() {
+      AppCubit.get(context).getSaved(isComments: true);
+    });
+  }
+
   @override
   void initState() {
     AppCubit.get(context).getSaved(isComments: true);
@@ -54,27 +61,31 @@ class _SavedCommentsScreenState extends State<SavedCommentsScreen> {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 )
-              : ListView.builder(
-                  controller: _scrollController,
-                  itemCount: cubit.savedCommentsList.length,
-                  itemBuilder: (context, index) => InkWell(
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PostScreen(
-                                  key: Key(cubit
-                                      .savedCommentsPostsList[index].id
-                                      .toString()),
-                                  post: cubit.savedCommentsPostsList[index]),
-                            )),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Comment(
-                              viewType: CommentView.inSubreddits,
-                              post: cubit.savedCommentsPostsList[index],
-                              comment: cubit.savedCommentsList[index]),
-                        ),
-                      )),
+              : RefreshIndicator(
+                  onRefresh: _onRefresh,
+                  child: ListView.builder(
+                      controller: _scrollController,
+                      itemCount: cubit.savedCommentsList.length,
+                      itemBuilder: (context, index) => InkWell(
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PostScreen(
+                                      key: Key(cubit
+                                          .savedCommentsPostsList[index].id
+                                          .toString()),
+                                      post:
+                                          cubit.savedCommentsPostsList[index]),
+                                )),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Comment(
+                                  viewType: CommentView.inSubreddits,
+                                  post: cubit.savedCommentsPostsList[index],
+                                  comment: cubit.savedCommentsList[index]),
+                            ),
+                          )),
+                ),
         );
       },
     );

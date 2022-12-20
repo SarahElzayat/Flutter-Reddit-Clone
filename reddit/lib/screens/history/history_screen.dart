@@ -41,7 +41,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     ///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
@@ -138,8 +137,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
               )
             ],
           ),
-
-          //TODO make it a fucking reusable zeft
           bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             currentIndex: cubit.currentIndex,
@@ -156,9 +153,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
               });
             },
           ),
-
           body: SingleChildScrollView(
             controller: _scrollController,
+            // physics: const NeverScrollableScrollPhysics(),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Column(
@@ -195,7 +192,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       ),
                       const Spacer(),
 
-                      //TODO change the history view (card-classic)
                       TextButton(
                           onPressed: () => showModalBottomSheet(
                                 context: context,
@@ -246,6 +242,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               listener: (context, state) {},
                               builder: (context, state) {
                                 return ListView.builder(
+                                  // controller: _scrollController,
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemBuilder: (context, index) =>
                                       // index < cubit.history.length ?

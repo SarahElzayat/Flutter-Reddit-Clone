@@ -30,6 +30,7 @@ class _SearchResultsState extends State<SearchResults>
   @override
   void initState() {
     _textEditingController.text = widget.searchWord;
+
     _tabController =
         TabController(length: widget.isSubreddit ? 2 : 4, vsync: this);
     super.initState();
@@ -38,16 +39,20 @@ class _SearchResultsState extends State<SearchResults>
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (ctx) => SearchCubit()
-        ..setSearchQuery(widget.searchWord)
-        ..setSearchSubreddit(widget.subredditName),
+      create: (ctx) {
+        return SearchCubit()..setSearchQuery(widget.searchWord);
+        // ..setSearchSubreddit(widget.subredditName);
+      },
       child: BlocConsumer<SearchCubit, SearchState>(
         listener: (context, state) {},
         builder: (context, state) {
+          if (widget.isSubreddit) {
+            SearchCubit.get(context).setSearchSubreddit(widget.subredditName);
+          }
           return Scaffold(
             appBar: AppBar(
               title: SearchField(
-                subredditName: widget.subredditName,
+                subredditName: widget.isSubreddit ? widget.subredditName : null,
                 isSubreddit: widget.isSubreddit,
                 textEditingController: _textEditingController,
                 isResult: true,
