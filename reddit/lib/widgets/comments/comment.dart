@@ -117,7 +117,7 @@ class _CommentState extends State<Comment> {
           create: (context) => PostAndCommentActionsCubit(
             post: widget.post,
             currentComment: widget.comment,
-          ),
+          )..getUserDetails(),
         ),
       ],
       child: BlocConsumer<CommentNotifierCubit, CommentsNotifierState>(
@@ -305,7 +305,12 @@ class _CommentState extends State<Comment> {
   }) {
     return Row(
       children: [
-        subredditAvatar(small: true),
+        subredditAvatar(
+            small: true,
+            imageUrl:
+                PostAndCommentActionsCubit.get(context).subreddit?.picture ??
+                    PostAndCommentActionsCubit.get(context).user?.picture ??
+                    ''),
         SizedBox(
           width: min(5.w, 10),
         ),

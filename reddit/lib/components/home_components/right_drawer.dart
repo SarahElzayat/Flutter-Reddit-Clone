@@ -66,7 +66,7 @@ class RightDrawer extends StatelessWidget {
               children: [
                 const CircleAvatar(
                     radius: 80,
-                    backgroundImage: AssetImage('./assets/images/Logo.png')),
+                    backgroundImage:  AssetImage('./assets/images/Logo.png')),
                 // NetworkImage(kReleaseMode
                 //     ? 'https://web.read-it.live/${cubit.profilePicture}'
                 //     : Uri.parse(

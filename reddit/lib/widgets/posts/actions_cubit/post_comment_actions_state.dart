@@ -48,3 +48,5 @@ class PostsError extends PostActionsState {}
 class PostsLoaded extends PostActionsState {}
 
 class PostsLoading extends PostActionsState {}
+
+class UserDetailsFetched extends PostActionsState {}

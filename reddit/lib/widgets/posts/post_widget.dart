@@ -107,8 +107,9 @@ class _PostWidgetState extends State<PostWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          PostAndCommentActionsCubit(post: widget.post)..getSubDetails(),
+      create: (context) => PostAndCommentActionsCubit(post: widget.post)
+        ..getSubDetails()
+        ..getUserDetails(),
       child: ResponsiveBuilder(
         builder: (buildContext, sizingInformation) {
           bool isWeb = kIsWeb; //!ResponsiveWidget.isSmallScreen(context);

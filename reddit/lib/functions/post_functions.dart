@@ -53,12 +53,14 @@ String getPlainText(Map<String, dynamic>? body) {
   return doc.toPlainText();
 }
 
-CircleAvatar subredditAvatar({small = false}) {
+CircleAvatar subredditAvatar({small = false, required String imageUrl}) {
   return CircleAvatar(
-      radius: small ? min(2.w, 15) : min(5.5.w, 30),
-      //TODO: IMPPPP
-      backgroundImage: null // const NetworkImage(unknownAvatar),
-      );
+    radius: small ? min(2.w, 15) : min(5.5.w, 30),
+    backgroundImage: NetworkImage(
+      '$baseUrl/$imageUrl',
+    ), // const NetworkImage(unknownAvatar),
+    onBackgroundImageError: (exception, stackTrace) {},
+  );
 }
 
 Widget commentSortRow(BuildContext context) {
@@ -138,7 +140,8 @@ Widget commentSortRow(BuildContext context) {
   );
 }
 
-Widget singleRow({
+Widget singleRow(
+  context, {
   bool sub = false,
   bool showIcon = false,
   bool showDots = true,
@@ -147,7 +150,13 @@ Widget singleRow({
 }) {
   return Row(
     children: [
-      if (showIcon) subredditAvatar(small: true),
+      if (showIcon)
+        subredditAvatar(
+            small: true,
+            imageUrl:
+                PostAndCommentActionsCubit.get(context).subreddit?.picture ??
+                    PostAndCommentActionsCubit.get(context).user?.picture ??
+                    ''),
       if (showIcon)
         SizedBox(
           width: min(5.w, 0.2.dp),
@@ -274,7 +283,9 @@ void handleLock(
 }
 
 void handleSticky(
-    {required VoidCallback onSuccess, required VoidCallback onError, required PostModel post}) {
+    {required VoidCallback onSuccess,
+    required VoidCallback onError,
+    required PostModel post}) {
   //bool pin = !post.sticky
   final stickUnstickPost = PinPostModel(id: post.id, pin: false);
 

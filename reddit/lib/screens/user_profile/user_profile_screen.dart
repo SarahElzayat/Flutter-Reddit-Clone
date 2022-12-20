@@ -178,8 +178,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                       )),
                                     ),
                                     Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 15, top: 10),
+                                      padding: const EdgeInsets.only(
+                                          left: 15, top: 10),
                                       child: Button(
                                           text: 'Edit',
                                           textFontSize: 20,

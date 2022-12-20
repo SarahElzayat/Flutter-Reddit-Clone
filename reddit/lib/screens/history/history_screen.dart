@@ -41,7 +41,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     ///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
@@ -138,7 +137,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
               )
             ],
           ),
-
           bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             currentIndex: cubit.currentIndex,
@@ -155,7 +153,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
               });
             },
           ),
-
           body: SingleChildScrollView(
             controller: _scrollController,
             child: Padding(
@@ -258,7 +255,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                             ? ShowingOtions.both
                                             : ShowingOtions.onlyUser,
                                   ),
-
                                   itemCount: cubit.history.length,
                                   shrinkWrap: true,
                                 );
