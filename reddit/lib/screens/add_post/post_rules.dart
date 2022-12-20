@@ -143,7 +143,8 @@ class _PostRulesState extends State<PostRules> {
                   Icon(Icons.arrow_forward_outlined)
                 ],
               )),
-          if (addPostCubit.flairs!.postFlairs!.length > 0)
+          if (addPostCubit.isSubreddit &&
+              addPostCubit.flairs!.postFlairs!.length > 0)
             TextButton(
                 onPressed: () {
                   navigator.push(MaterialPageRoute(
