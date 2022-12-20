@@ -310,13 +310,14 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
   UserDataModel? user;
   void getUserDetails() {
     String? a = isPost ? post.postedBy : currentComment!.commentedBy;
-    DioHelper.getData(path: '$a/about').then((value) {
+    DioHelper.getData(path: '/user/$a/about').then((value) {
       if (value.statusCode == 200) {
         user = UserDataModel.fromJson(value.data);
-        logger.wtf(user);
         emit(UserDetailsFetched());
       }
     }).catchError((error) {
+      logger.wtf('USER:' + (error as DioError?)?.response?.data);
+
       return;
     });
   }

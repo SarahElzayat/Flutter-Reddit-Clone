@@ -155,6 +155,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           ),
           body: SingleChildScrollView(
             controller: _scrollController,
+            // physics: const NeverScrollableScrollPhysics(),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Column(
@@ -241,6 +242,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               listener: (context, state) {},
                               builder: (context, state) {
                                 return ListView.builder(
+                                  // controller: _scrollController,
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemBuilder: (context, index) =>
                                       // index < cubit.history.length ?

@@ -54,11 +54,12 @@ String getPlainText(Map<String, dynamic>? body) {
 }
 
 CircleAvatar subredditAvatar({small = false, required String imageUrl}) {
+  Logger().wtf('avatar url: $imageUrl');
   return CircleAvatar(
     radius: small ? min(2.w, 15) : min(5.5.w, 30),
     backgroundImage: NetworkImage(
       '$baseUrl/$imageUrl',
-    ), // const NetworkImage(unknownAvatar),
+    ),
     onBackgroundImageError: (exception, stackTrace) {},
   );
 }
