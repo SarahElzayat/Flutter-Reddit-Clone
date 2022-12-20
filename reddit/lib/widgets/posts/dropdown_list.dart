@@ -81,8 +81,10 @@ class DropDownList extends StatelessWidget {
 
     l.add((comment?.followed ?? false) ? MenuItems.unfollow : MenuItems.follow);
     l.insert(0, (comment?.saved ?? false) ? MenuItems.unsave : MenuItems.save);
-    if (!outsideScreen) {
+    if ((comment?.commentedBy != null) &&
+        comment?.commentedBy == CacheHelper.getData(key: 'username')) {
       l.add(MenuItems.edit);
+      l.add(MenuItems.delete);
     }
     return l;
   }
@@ -97,7 +99,7 @@ class DropDownList extends StatelessWidget {
 
     // not my post
     if (post.postedBy != CacheHelper.getData(key: 'username')) {
-      l.add(MenuItems.report);
+      // l.add(MenuItems.report);
       l.add(MenuItems.hide);
       l.add(MenuItems.block);
     } else {

@@ -2,15 +2,17 @@
 ///@description the right (end) drawer that's present through the whole application
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/components/app_bar_components.dart';
+import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/screens/history/history_screen_for_web.dart';
-import 'package:reddit/screens/create_community_screen/create_community_screen.dart';
-import 'package:reddit/screens/saved/saved_screen.dart';
-import 'package:reddit/screens/settings/change_profile_picture_screen.dart';
-
-import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
-
-import 'package:reddit/screens/settings/settings_main_screen.dart';
+import '../../screens/create_community_screen/create_community_screen.dart';
+import '../../screens/saved/saved_screen.dart';
+import '../../screens/settings/change_profile_picture_screen.dart';
+import '../../screens/sign_in_and_sign_up_screen/mobile/sign_in_screen.dart';
+import '../../screens/user_profile/user_profile_screen.dart';
+import '../../screens/settings/settings_main_screen.dart';
+import '../../shared/local/shared_preferences.dart';
 import '../../cubit/app_cubit/app_cubit.dart';
 import '../../screens/history/history_screen.dart';
 import '../../screens/to_be_done_screen.dart';
@@ -27,8 +29,8 @@ class RightDrawer extends StatelessWidget {
 
     ///@param [rightDrawerItems] the list of right drawer items
     List<Widget> rightDrawerItems = [
-      genericTextButton(context, Icons.person, 'My profile',
-          const ToBeDoneScreen(text: 'My profile'),
+      genericTextButton(
+          context, Icons.person, 'My profile', const UserProfileScreen(),
           isLeftDrawer: false),
       genericTextButton(context, Icons.add, 'Create a community',
           const CreateCommunityScreen(),
@@ -54,160 +56,167 @@ class RightDrawer extends StatelessWidget {
           isLeftDrawer: false),
     ];
 
-    return SafeArea(
-        child: Drawer(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const CircleAvatar(
-                    radius: 80,
-                    backgroundImage: AssetImage('./assets/images/Logo.png')),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  child: Text(
-                    'u/${cubit.username.toString()}',
-                    style: const TextStyle(
-                        color: ColorManager.eggshellWhite,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  decoration: const ShapeDecoration(
-                      shape: StadiumBorder(),
-                      gradient: LinearGradient(colors: [
-                        ColorManager.gradientOrange,
-                        ColorManager.gradientRed
-                      ])),
-                  child: MaterialButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ChangeProfilePicutre(),
-                          ));
-                    },
-                    padding: EdgeInsets.zero,
-                    shape: const StadiumBorder(),
-                    child: const Text(
-                      'Change Profile Picture',
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return BlocConsumer<AppCubit, AppState>(
+      listener: (context, state) {
+        // TODO: implement listener
+      },
+      builder: (context, state) {
+        return SafeArea(
+          child: Drawer(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Row(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(right: 8.0),
-                            child: Icon(
-                              Icons.keyboard_command_key_outlined,
-                              color: ColorManager.blue,
-                              size: 30,
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                cubit.karma.toString(),
-                                style: const TextStyle(
-                                    fontSize: 18,
-                                    color: ColorManager.eggshellWhite,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              const Text(
-                                'karma',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: ColorManager.lightGrey,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
-                          )
-                        ],
+                      avatar(context: context, radius: 80),
+
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20.0),
+                        child: Text(
+                          'u/${cubit.username.toString()}',
+                          style: const TextStyle(
+                              color: ColorManager.eggshellWhite,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),
+                        ),
                       ),
-                      Row(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(right: 8.0),
-                            child: Icon(
-                              Icons.cake_outlined,
-                              color: ColorManager.blue,
-                              size: 30,
-                            ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        decoration: const ShapeDecoration(
+                            shape: StadiumBorder(),
+                            gradient: LinearGradient(colors: [
+                              ColorManager.gradientOrange,
+                              ColorManager.gradientRed
+                            ])),
+                        child: MaterialButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ChangeProfilePicutre(),
+                                ));
+                          },
+                          padding: EdgeInsets.zero,
+                          shape: const StadiumBorder(),
+                          child: const Text(
+                            'Change Profile Picture',
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                cubit.age.toString(),
-                                style: const TextStyle(
-                                    fontSize: 18,
-                                    color: ColorManager.eggshellWhite,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              const Text(
-                                'Reddit age',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: ColorManager.lightGrey,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
-                          )
-                        ],
+                        ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(right: 8.0),
+                                  child: Icon(
+                                    Icons.keyboard_command_key_outlined,
+                                    color: ColorManager.blue,
+                                    size: 30,
+                                  ),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      cubit.karma.toString(),
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          color: ColorManager.eggshellWhite,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    const Text(
+                                      'karma',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: ColorManager.lightGrey,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(right: 8.0),
+                                  child: Icon(
+                                    Icons.cake_outlined,
+                                    color: ColorManager.blue,
+                                    size: 30,
+                                  ),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      cubit.age.toString(),
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          color: ColorManager.eggshellWhite,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    const Text(
+                                      'Reddit age',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: ColorManager.lightGrey,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Column(
                     ],
                   ),
-                ),
-                // Column(
-              ],
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: rightDrawerItems,
+                  ),
+                  genericTextButton(context, Icons.settings_outlined,
+                      'Settings', const SettingsMainScreen(),
+                      isLeftDrawer: false),
+                  TextButton(
+                      onPressed: () {
+                        CacheHelper.removeData(key: 'token');
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const SignInScreen(),
+                        ));
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.door_front_door_outlined,
+                            color: ColorManager.eggshellWhite,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Text(
+                              'Log out',
+                              style: Theme.of(context).textTheme.displaySmall,
+                            ),
+                          )
+                        ],
+                      ))
+                ],
+              ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: rightDrawerItems,
-            ),
-            genericTextButton(context, Icons.settings_outlined, 'Settings',
-                const SettingsMainScreen(),
-                isLeftDrawer: false),
-            TextButton(
-                onPressed: () {
-                  CacheHelper.removeData(key: 'token');
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (context) => const SignInScreen(),
-                  ));
-                },
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      Icons.door_front_door_outlined,
-                      color: ColorManager.eggshellWhite,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Text(
-                        'Log out',
-                        style: Theme.of(context).textTheme.displaySmall,
-                      ),
-                    )
-                  ],
-                ))
-          ],
-        ),
-      ),
-    ));
+          ),
+        );
+      },
+    );
   }
 }

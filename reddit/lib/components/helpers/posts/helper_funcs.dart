@@ -2,6 +2,8 @@
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
 
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/screens/posts/post_screen_web.dart';
@@ -26,7 +28,7 @@ void goToPost(BuildContext context, PostModel post, upperRowType) {
 }
 
 /// A row with link that opens the url in the browser
-TextButton linkRow(String link, Color textColor) {
+Widget linkRow(String link, Color textColor) {
   return TextButton(
     key: const Key('linkRow-button'),
     style: ButtonStyle(
@@ -40,9 +42,14 @@ TextButton linkRow(String link, Color textColor) {
       await launchUrl(Uri.parse(link)).catchError((err) {});
     },
     child: Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Text(link),
-        const Icon(Icons.open_in_new),
+        Text(
+          link.substring(0, min(link.length, 20)),
+          overflow: TextOverflow.ellipsis,
+        ),
+        if (link.isNotEmpty) const Icon(Icons.open_in_new),
       ],
     ),
   );

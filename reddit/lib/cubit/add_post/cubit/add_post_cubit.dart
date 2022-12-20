@@ -503,7 +503,7 @@ class AddPostCubit extends Cubit<AddPostState> {
         'inSubreddit': true,
         'title': title.text,
         'content': {
-          'ops': markdownToDelta(optionalText.text),
+          'ops': jsonDecode(markdownToDelta(optionalText.text)),
         },
         'nsfw': nsfw,
         'spoiler': spoiler,

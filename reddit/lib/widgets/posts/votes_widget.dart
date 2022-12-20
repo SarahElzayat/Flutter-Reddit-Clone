@@ -37,7 +37,7 @@ class VotesPart extends StatelessWidget {
       int dir = cubit.getVotingType();
       return [
         Material(
-          key: const Key('upvoteButton'),
+          key: const ValueKey('upvoteButton'),
           color: Colors.transparent,
           clipBehavior: Clip.antiAlias,
           shape: const CircleBorder(),

@@ -4,7 +4,6 @@
 /// and deal with the server
 import 'package:dio/dio.dart';
 import '../constants/constants.dart';
-import '../shared/local/shared_preferences.dart';
 import 'constant_end_points.dart';
 
 class DioHelper {
@@ -30,7 +29,6 @@ class DioHelper {
         /// I want it to wait 10 seconds before ending
         // connectTimeout: 10 * 1000,
 
-        // /// time waited to receive something from the server
         // receiveTimeout: 20 * 1000,
 
         /// this is a map of headers
@@ -139,14 +137,13 @@ class DioHelper {
     required String path,
   }) async {
     Options options;
-
     options = Options(
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json; charset=utf-8'
       },
     );
-
+    
     return await dio.get(
       path,
       queryParameters: query,
@@ -154,7 +151,11 @@ class DioHelper {
     );
   }
 
-  static Future<Response> deleteData({required String path}) async {
+  static Future<Response> deleteData({
+    required String path,
+    Map<String, dynamic>? query,
+    Map<String, dynamic>? data,
+  }) async {
     Options options;
 
     options = Options(
@@ -167,6 +168,8 @@ class DioHelper {
     return await dio.delete(
       path,
       options: options,
+      queryParameters: query,
+      data: data,
     );
   }
 }

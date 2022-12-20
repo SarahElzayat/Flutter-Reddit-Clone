@@ -1,12 +1,8 @@
 /// Model Post Type widget
 /// @author Haitham Mohamed
 /// @date 4/11/2022
-import 'dart:convert';
-
-import 'package:delta_markdown/delta_markdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/constants/constants.dart';
 
 import '../../cubit/add_post/cubit/add_post_cubit.dart';
 import 'add_post_textfield.dart';

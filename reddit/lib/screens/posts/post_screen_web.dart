@@ -2,19 +2,11 @@
 /// @date 9/11/2022
 /// this is the screen fpr the main home
 ///
-import 'dart:io';
-
-import 'package:dio/dio.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:path/path.dart' as p;
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_quill/flutter_quill.dart' hide Text;
-import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:reddit/components/back_to_top_button.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/home_components/left_drawer.dart';
 import 'package:reddit/components/home_components/right_drawer.dart';
 import 'package:reddit/screens/posts/post_screen_cubit/post_screen_cubit.dart';
@@ -29,93 +21,26 @@ import '../../data/post_model/post_model.dart';
 import '../../widgets/comments/comment_web.dart';
 import '../comments/add_comment_web.dart';
 
-class PostScreenWeb extends StatefulWidget {
-  const PostScreenWeb({
+class PostScreenWeb extends StatelessWidget {
+  PostScreenWeb({
     super.key,
     required this.post,
   });
 
   final PostModel post;
 
-  @override
-  State<PostScreenWeb> createState() => _PostScreenWebState();
-}
+  final ScrollController scrollController = ScrollController();
 
-class _PostScreenWebState extends State<PostScreenWeb> {
-  ScrollController scrollController = ScrollController();
-  bool showbtn = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  QuillController? _controller;
-  final FocusNode _focusNode = FocusNode();
-
-  @override
-  void initState() {
-    _controller = QuillController.basic();
-
-    scrollController.addListener(() {
-      //scroll listener
-      double showoffset = MediaQuery.of(context).size.height /
-          2; //Back to top botton will show on scroll offset 10.0
-
-      if (scrollController.offset > showoffset) {
-        showbtn = true;
-        setState(() {
-          //update state
-        });
-      } else {
-        showbtn = false;
-        setState(() {
-          //update state
-        });
-      }
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
-    var toolbar = QuillToolbar.basic(
-      showUndo: false,
-      showRedo: false,
-      showBoldButton: true,
-      showItalicButton: true,
-      showBackgroundColorButton: false,
-      showCenterAlignment: false,
-      showLeftAlignment: false,
-      showRightAlignment: false,
-      showJustifyAlignment: false,
-      showHeaderStyle: false,
-      showListNumbers: true,
-      showListBullets: true,
-      showCodeBlock: true,
-      showStrikeThrough: true,
-      showFontSize: false,
-      multiRowsDisplay: false,
-      showClearFormat: false,
-      showIndent: false,
-      showQuote: false,
-      showColorButton: false,
-      showSearchButton: false,
-      showDirection: false,
-      showDividers: false,
-      showFontFamily: false,
-      showInlineCode: false,
-      showListCheck: false,
-      showUnderLineButton: false,
-      controller: _controller!,
-      embedButtons: FlutterQuillEmbeds.buttons(
-        showVideoButton: false,
-        showCameraButton: false,
-        onImagePickCallback: _onImagePickCallback,
-        webImagePickImpl: _webImagePickImpl,
-      ),
-      showAlignmentButtons: true,
-      afterButtonPressed: _focusNode.requestFocus,
-    );
     return BlocProvider(
       create: (context) => PostScreenCubit(
-        post: widget.post,
-      )..getCommentsOfPost(),
+        post: post,
+      )
+        ..getCommentsOfPost()
+        ..getPostDetails(),
       child: BlocConsumer<PostScreenCubit, PostScreenState>(
         listener: (context, state) {
           if (state is CommentsError) {
@@ -124,6 +49,10 @@ class _PostScreenWebState extends State<PostScreenWeb> {
               error: true,
             ));
           }
+
+          if (state is CommentsLoadingMore) {
+            PostScreenCubit.get(context).getCommentsOfPost(after: true);
+          }
         },
         builder: (context, state) {
           final screenCubit = PostScreenCubit.get(context);
@@ -131,12 +60,13 @@ class _PostScreenWebState extends State<PostScreenWeb> {
             key: _scaffoldKey,
             appBar: kIsWeb ? homeAppBar(context, 0) : null,
             floatingActionButton: kIsWeb
-                ? BackToTopButton(scrollController: scrollController)
+                ? BackToTopButton(
+                    scrollController: screenCubit.scrollController)
                 : null,
             drawer: kIsWeb ? const LeftDrawer() : null,
             endDrawer: kIsWeb ? const RightDrawer() : null,
             body: SingleChildScrollView(
-              controller: scrollController, //set controller
+              controller: screenCubit.scrollController, //set controller
 
               physics: const BouncingScrollPhysics(),
               child: Column(
@@ -154,7 +84,7 @@ class _PostScreenWebState extends State<PostScreenWeb> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             PostWidget(
-                              post: widget.post,
+                              post: post,
                               outsideScreen: false,
                             ),
                             const SizedBox(
@@ -162,9 +92,7 @@ class _PostScreenWebState extends State<PostScreenWeb> {
                             ),
                             // quil editor for web
                             AddCommentWeb(
-                              controller: _controller,
-                              toolbar: toolbar,
-                              post: widget.post,
+                              post: post,
                             ),
                             DropdownButtonHideUnderline(
                               child: DropdownButton2(
@@ -188,9 +116,7 @@ class _PostScreenWebState extends State<PostScreenWeb> {
                                     .toList(),
                                 value: screenCubit.selectedItem,
                                 onChanged: (value) {
-                                  setState(() {
-                                    screenCubit.changeSortType(value!);
-                                  });
+                                  screenCubit.changeSortType(value!);
                                 },
                               ),
                             ),
@@ -249,36 +175,11 @@ class _PostScreenWebState extends State<PostScreenWeb> {
         .map((e) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 0),
               child: CommentWeb(
-                post: widget.post,
+                key: Key(e.id!),
+                post: post,
                 comment: e,
               ),
             ))
         .toList();
-  }
-
-  // Renders the image picked by imagePicker from local file storage
-  // You can also upload the picked image to any server (eg : AWS s3
-  // or Firebase) and then return the uploaded image URL.
-  Future<String> _onImagePickCallback(File file) async {
-    // Copies the picked file from temporary cache to applications directory
-    // final appDocDir = await getApplicationDocumentsDirectory();
-    // final copiedFile =
-    //     await file.copy('${appDocDir.path}/${p.basename(file.path)}');
-    return file.path.toString();
-  }
-
-  Future<String?> _webImagePickImpl(
-      OnImagePickCallback onImagePickCallback) async {
-    final result = await FilePicker.platform.pickFiles();
-    if (result == null) {
-      return null;
-    }
-
-    // Take first, because we don't allow picking multiple files.
-    final fileName = result.files.first.name;
-
-    final file = File(fileName);
-
-    return onImagePickCallback(file);
   }
 }

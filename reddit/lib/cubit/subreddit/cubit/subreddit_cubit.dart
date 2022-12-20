@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/data/subreddit/subreddit_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
@@ -24,12 +25,18 @@ class SubredditCubit extends Cubit<SubredditState> {
 
   int selectedIndex = 0;
 
-  void setSubredditName(BuildContext context, String name) {
+  void setSubredditName(BuildContext context, String name,
+      {bool replace = false}) async {
     Map<String, String> query = {'subreddit': name};
-    DioHelper.getData(path: '$subredditInfo/$name', query: query).then((value) {
+    print(query);
+    print('Set Subreddit');
+    print(token);
+    await DioHelper.getData(path: '$subredditInfo/$name', query: query)
+        .then((value) {
       if (value.statusCode == 200) {
-        logger.wtf('Subreddit Info ====>');
-        logger.wtf(value.data);
+        // logger.wtf('Subreddit Info ====>');
+        // logger.wtf(value.data);
+        print('Subreddit model');
         subreddit = SubredditModel.fromJson(value.data);
         subredditName = name;
         if (subreddit!.isMember == null) return;
@@ -43,7 +50,7 @@ class SubredditCubit extends Cubit<SubredditState> {
 
     print('Get Moderators');
 
-    DioHelper.getData(path: '/r/$name/about/moderators', query: {
+    await DioHelper.getData(path: '/r/$name/about/moderators', query: {
       'subreddit': name,
     }).then((value) {
       if (value.statusCode == 200) {
@@ -51,7 +58,11 @@ class SubredditCubit extends Cubit<SubredditState> {
         print(value.data);
         moderators = ModeratorModel.fromJson(value.data);
         print('convert to mod model');
-        Navigator.of(context).pushNamed(Subreddit.routeName);
+        if (!replace)
+          Navigator.of(context).pushNamed(Subreddit.routeName);
+        else
+          Navigator.of(context).pushReplacementNamed(Subreddit.routeName);
+
         print('navigate');
       }
     }).catchError((error) {
