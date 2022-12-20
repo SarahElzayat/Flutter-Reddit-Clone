@@ -5,7 +5,6 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
 
 import '../cubit/app_cubit/app_cubit.dart';
 
@@ -50,12 +49,8 @@ class _HomeDropdownMenuState extends State<HomeDropdownMenu> {
             // borderRadius: BorderRadius.circular(14),
             color: ColorManager.black,
           ),
-          dropdownWidth: !kIsWeb
-              ? MediaQuery.of(context).size.width
-              : 300,
-          buttonWidth: kIsWeb
-              ? MediaQuery.of(context).size.width * 0.2
-              : null,
+          dropdownWidth: !kIsWeb ? MediaQuery.of(context).size.width : 300,
+          buttonWidth: kIsWeb ? MediaQuery.of(context).size.width * 0.2 : null,
           // barrierColor: ColorManager.black, //DA 7ELW MOMKEN A7TAGO
         ),
       ),

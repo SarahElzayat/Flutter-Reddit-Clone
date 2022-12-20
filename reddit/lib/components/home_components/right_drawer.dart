@@ -3,6 +3,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/data/settings/settings_models/user_settings.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/components/app_bar_components.dart';
+import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/screens/history/history_screen_for_web.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
 import '../../screens/create_community_screen/create_community_screen.dart';
@@ -55,123 +59,158 @@ class RightDrawer extends StatelessWidget {
           isLeftDrawer: false),
     ];
 
-    return SafeArea(
-        child: Drawer(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const CircleAvatar(
-                    radius: 80,
-                    backgroundImage: AssetImage('./assets/images/Logo.png')),
-                // NetworkImage(kReleaseMode
-                //     ? 'https://web.read-it.live/${cubit.profilePicture}'
-                //     : Uri.parse(
-                //             'https://localhost:3000/${cubit.profilePicture}')
-                //         .toString())),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  child: Text(
-                    'u/${cubit.username.toString()}',
-                    style: const TextStyle(
-                        color: ColorManager.eggshellWhite,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  decoration: const ShapeDecoration(
-                      shape: StadiumBorder(),
-                      gradient: LinearGradient(colors: [
-                        ColorManager.gradientOrange,
-                        ColorManager.gradientRed
-                      ])),
-                  child: MaterialButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ChangeProfilePicutre(),
-                          ));
-                    },
-                    padding: EdgeInsets.zero,
-                    shape: const StadiumBorder(),
-                    child: const Text(
-                      'Change Profile Picture',
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return BlocConsumer<AppCubit, AppState>(
+      listener: (context, state) {
+        // TODO: implement listener
+      },
+      builder: (context, state) {
+        return SafeArea(
+          child: Drawer(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Row(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(right: 8.0),
-                            child: Icon(
-                              Icons.keyboard_command_key_outlined,
-                              color: ColorManager.blue,
-                              size: 30,
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                cubit.karma.toString(),
-                                style: const TextStyle(
-                                    fontSize: 18,
-                                    color: ColorManager.eggshellWhite,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              const Text(
-                                'karma',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: ColorManager.lightGrey,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
-                          )
-                        ],
+                      avatar(context: context, radius: 80),
+
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20.0),
+                        child: Text(
+                          'u/${cubit.username.toString()}',
+                          style: const TextStyle(
+                              color: ColorManager.eggshellWhite,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),
+                        ),
                       ),
-                      Row(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(right: 8.0),
-                            child: Icon(
-                              Icons.cake_outlined,
-                              color: ColorManager.blue,
-                              size: 30,
-                            ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        decoration: const ShapeDecoration(
+                            shape: StadiumBorder(),
+                            gradient: LinearGradient(colors: [
+                              ColorManager.gradientOrange,
+                              ColorManager.gradientRed
+                            ])),
+                        child: MaterialButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ChangeProfilePicutre(),
+                                ));
+                          },
+                          padding: EdgeInsets.zero,
+                          shape: const StadiumBorder(),
+                          child: const Text(
+                            'Change Profile Picture',
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                cubit.age.toString(),
-                                style: const TextStyle(
-                                    fontSize: 18,
-                                    color: ColorManager.eggshellWhite,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              const Text(
-                                'Reddit age',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: ColorManager.lightGrey,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(right: 8.0),
+                                  child: Icon(
+                                    Icons.keyboard_command_key_outlined,
+                                    color: ColorManager.blue,
+                                    size: 30,
+                                  ),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      cubit.karma.toString(),
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          color: ColorManager.eggshellWhite,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    const Text(
+                                      'karma',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: ColorManager.lightGrey,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(right: 8.0),
+                                  child: Icon(
+                                    Icons.cake_outlined,
+                                    color: ColorManager.blue,
+                                    size: 30,
+                                  ),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      cubit.age.toString(),
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          color: ColorManager.eggshellWhite,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    const Text(
+                                      'Reddit age',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: ColorManager.lightGrey,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Column(
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: rightDrawerItems,
+                  ),
+                  genericTextButton(context, Icons.settings_outlined,
+                      'Settings', const SettingsMainScreen(),
+                      isLeftDrawer: false),
+                  TextButton(
+                      onPressed: () {
+                        CacheHelper.removeData(key: 'token');
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const SignInScreen(),
+                        ));
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.door_front_door_outlined,
+                            color: ColorManager.eggshellWhite,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Text(
+                              'Log out',
+                              style: Theme.of(context).textTheme.displaySmall,
+                            ),
                           )
                         ],
                       ),
@@ -219,5 +258,6 @@ class RightDrawer extends StatelessWidget {
         ),
       ),
     ));
+=
   }
 }

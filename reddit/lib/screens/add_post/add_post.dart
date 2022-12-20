@@ -49,26 +49,29 @@ class AddPost extends StatelessWidget {
           body: SizedBox(
             height: mediaQuery.size.height,
             child: Column(children: [
-              if (addPostCubit.subredditName != null &&
-                  addPostCubit.subredditName != '')
+              if ((addPostCubit.subredditName != null &&
+                      addPostCubit.subredditName != '') ||
+                  !addPostCubit.isSubreddit)
                 BlocBuilder<AddPostCubit, AddPostState>(
                   buildWhen: (previous, current) =>
                       (current is ChangeSubredditName ||
                           (previous is ChangeSubredditName)),
                   builder: (context, state) {
-                    return Expanded(
-                        child: MaterialButton(
+                    return MaterialButton(
                       onPressed: () {
                         navigator.pushNamed(CommunitySearch.routeName);
                       },
                       child: Row(
                         children: [
-                          Text(addPostCubit.subredditName ?? '',
+                          Text(
+                              (addPostCubit.isSubreddit)
+                                  ? addPostCubit.subredditName ?? ''
+                                  : 'My Profile',
                               style: Theme.of(context).textTheme.titleSmall),
                           const Icon(Icons.keyboard_arrow_down)
                         ],
                       ),
-                    ));
+                    );
                   },
                 ),
               Padding(

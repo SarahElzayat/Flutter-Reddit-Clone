@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import 'package:reddit/data/search/search_result_subbredit_model.dart';
 
+import '../../networks/constant_end_points.dart';
 import '../../screens/search/cubit/search_cubit.dart';
 import '../helpers/color_manager.dart';
 
@@ -33,7 +34,10 @@ class SubredditResultsContainer extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 8.0),
                   child: CircleAvatar(
                     backgroundImage: model.data!.profilePicture != null
-                        ? NetworkImage(model.data!.profilePicture.toString())
+                        // ignore: prefer_interpolation_to_compose_strings
+                        ? NetworkImage(baseUrl +
+                            '/' +
+                            model.data!.profilePicture.toString())
                         : null,
                     radius: 20,
                   ),
