@@ -43,18 +43,18 @@ class _CreateMessageScreenState extends State<CreateMessageScreen> {
       );
 
       // send it to the backend
-      await DioHelper.postData(path: replyToMessage, data: msg.toJson())
-          .then((response) {
-        if (response.statusCode == 201) {
-          ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
-              message: 'Message has been sent Successfully 😊', error: false));
-        }
-      }).onError((error, stackTrace) {
-        error = error as DioError;
+      // await DioHelper.postData(path: replyToMessage, data: msg.toJson())
+      //     .then((response) {
+      //   if (response.statusCode == 201) {
+      //     ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+      //         message: 'Message has been sent Successfully 😊', error: false));
+      //   }
+      // }).onError((error, stackTrace) {
+      //   error = error as DioError;
 
-        ScaffoldMessenger.of(context).showSnackBar(
-            responseSnackBar(message: error.message, error: true));
-      });
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //       responseSnackBar(message: error.message, error: true));
+      // });
     }
   }
 
