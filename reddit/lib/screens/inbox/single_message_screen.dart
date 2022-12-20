@@ -117,10 +117,7 @@ class _SingleMessageScreenState extends State<SingleMessageScreen> {
                 return;
               }
 
-              /// TODO: here we should see what to send either text or json.
-              final content = _controller!.document.toDelta().toJson();
-              Map sentContent = {'ops': content};
-              sendTheReply(sentContent, myMessage);
+              sendTheReply(myMessageText!, myMessage);
             },
             child: const Text(
               'Post',
@@ -134,7 +131,7 @@ class _SingleMessageScreenState extends State<SingleMessageScreen> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(myMessageText!,
+              child: Text(myMessageText ?? 'empty',
                   overflow: TextOverflow.clip,
                   style: TextStyle(
                     fontSize: 21.sp,

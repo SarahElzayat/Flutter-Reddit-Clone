@@ -48,8 +48,8 @@ import '../screens/user_profile/user_profile_screen.dart';
 
 Map<String, Widget Function(BuildContext)> myRoutes = {
   // sign in sign up screens
-  RecoverUserName.routeName: (ctx) => const RecoverUserName(),
   // SignInForWebScreen.routeName: (ctx) => const SignInForWebScreen(),
+  RecoverUserName.routeName: (ctx) => const RecoverUserName(),
   SignInForWebScreen.routeName: (ctx) => const SignInForWebScreen(),
   SignUpForWebScreen.routeName: (ctx) => const SignUpForWebScreen(),
   ContinueSignUpScreen.routeName: (ctx) => const ContinueSignUpScreen(),
