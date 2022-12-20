@@ -2,19 +2,24 @@
 /// @date 9/11/2022
 /// The file contains helping components for the app bar
 import 'package:flutter/material.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/cubit/app_cubit/app_cubit.dart';
+
+import '../networks/constant_end_points.dart';
 import '../screens/search/search_screen.dart';
 
 ///@param [image] is the user's profile picture
 /// the functions returns the user's profile picture as a circle avatara
-Widget avatar({image}) {
+Widget avatar({required context, image, double radius = 20}) {
   return Padding(
     padding: const EdgeInsets.only(right: 8.0),
     child: CircleAvatar(
-      radius: 15,
-      child: image ??
-          Image.asset(
-            'assets/images/Logo.png',
-          ),
+      // backgroundColor: Colors.red,
+      backgroundColor: ColorManager.darkGrey,
+      backgroundImage: image != null? NetworkImage('$baseUrl/$image'): AppCubit.get(context).profilePicture.isEmpty
+          ? const AssetImage('./assets/images/Logo.png') as ImageProvider
+          : NetworkImage('$baseUrl/${AppCubit.get(context).profilePicture}'),
+      radius: radius,
     ),
   );
 }
@@ -23,5 +28,9 @@ Widget avatar({image}) {
 /// @param [context] is the context of the screen that's required to navigate to
 Future<Object?> navigateToSearch(context) {
   return Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const SearchScreen()));
+      context,
+      MaterialPageRoute(
+          builder: (context) => const SearchScreen(
+                isSubreddit: false,
+              )));
 }

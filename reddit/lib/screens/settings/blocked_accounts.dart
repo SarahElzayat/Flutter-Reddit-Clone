@@ -1,14 +1,14 @@
 /// @author Abdelaziz Salah
 /// @date 12/12/2022
 /// This is the Screen which manages the blocked accounts in the settings.
-
 import 'package:flutter/material.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+
 import '../../components/default_text_field.dart';
-import '../../data/settings/settings_models/blocked_accounts_getter_model.dart';
-import '../../cubit/settings_cubit/settings_cubit.dart';
 import '../../components/helpers/color_manager.dart';
+import '../../cubit/settings_cubit/settings_cubit.dart';
+import '../../data/settings/settings_models/blocked_accounts_getter_model.dart';
 import '../../widgets/settings/settings_app_bar.dart';
 
 class BlockedAccounts extends StatefulWidget {

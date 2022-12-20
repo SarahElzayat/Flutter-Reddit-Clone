@@ -3,26 +3,27 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
-import 'package:reddit/components/snack_bar.dart';
-import 'package:reddit/data/post_model/approve.dart';
-import 'package:reddit/data/post_model/remove.dart';
+import 'package:logger/logger.dart';
+import '../components/snack_bar.dart';
+import '../cubit/user_profile/cubit/user_profile_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../components/bottom_sheet.dart';
 import '../components/helpers/color_manager.dart';
 import '../cubit/post_notifier/post_notifier_state.dart';
+import '../data/comment/comment_model.dart';
 import '../data/post_model/post_model.dart';
-import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
-import 'package:reddit/data/mod_in_post_models/approve_model.dart';
-import 'package:reddit/data/mod_in_post_models/lock_model.dart';
-import 'package:reddit/data/mod_in_post_models/mark_nsfw_model.dart';
-import 'package:reddit/data/mod_in_post_models/mark_spoiler_model.dart';
-import 'package:reddit/data/mod_in_post_models/remove_model.dart';
+import '../cubit/post_notifier/post_notifier_cubit.dart';
+import '../data/mod_in_post_models/approve_model.dart';
+import '../data/mod_in_post_models/lock_model.dart';
+import '../data/mod_in_post_models/mark_nsfw_model.dart';
+import '../data/mod_in_post_models/mark_spoiler_model.dart';
+import '../data/mod_in_post_models/remove_model.dart';
 import 'package:dio/dio.dart';
-import 'package:reddit/data/mod_in_post_models/unsticky_post_model.dart';
-import 'package:reddit/networks/constant_end_points.dart';
-import 'package:reddit/networks/dio_helper.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
+import '../data/mod_in_post_models/unsticky_post_model.dart';
+import '../networks/constant_end_points.dart';
+import '../networks/dio_helper.dart';
+import '../shared/local/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../screens/posts/post_screen_cubit/post_screen_cubit.dart';
@@ -53,11 +54,14 @@ String getPlainText(Map<String, dynamic>? body) {
   return doc.toPlainText();
 }
 
-CircleAvatar subredditAvatar({small = false}) {
+CircleAvatar subredditAvatar({small = false, required String imageUrl}) {
   return CircleAvatar(
-      radius: small ? min(2.w, 15) : min(5.5.w, 30),
-      backgroundImage: null // const NetworkImage(unknownAvatar),
-      );
+    radius: small ? min(2.w, 15) : min(5.5.w, 30),
+    backgroundImage: NetworkImage(
+      '$baseUrl/$imageUrl',
+    ),
+    onBackgroundImageError: (exception, stackTrace) {},
+  );
 }
 
 Widget commentSortRow(BuildContext context) {
@@ -137,7 +141,8 @@ Widget commentSortRow(BuildContext context) {
   );
 }
 
-Widget singleRow({
+Widget singleRow(
+  context, {
   bool sub = false,
   bool showIcon = false,
   bool showDots = true,
@@ -146,16 +151,29 @@ Widget singleRow({
 }) {
   return Row(
     children: [
-      if (showIcon) subredditAvatar(small: true),
+      if (showIcon)
+        subredditAvatar(
+            small: true,
+            imageUrl:
+                PostAndCommentActionsCubit.get(context).subreddit?.picture ??
+                    PostAndCommentActionsCubit.get(context).user?.picture ??
+                    ''),
       if (showIcon)
         SizedBox(
           width: min(5.w, 0.2.dp),
         ),
-      Text(
-        '${sub ? 'r' : 'u'}/${post.postedBy} • ',
-        style: const TextStyle(
-          color: ColorManager.greyColor,
-          fontSize: 15,
+      InkWell(
+        onTap: () {
+          // print('Hello Hello Hello Hello ');
+          UserProfileCubit.get(context)
+              .showPopupUserWidget(context, post.postedBy!);
+        },
+        child: Text(
+          '${sub ? 'r' : 'u'}/${post.postedBy} • ',
+          style: const TextStyle(
+            color: ColorManager.greyColor,
+            fontSize: 15,
+          ),
         ),
       ),
       Text(
@@ -195,11 +213,19 @@ Widget buildModItem(icon, text, {bool disabled = false}) {
   );
 }
 
-bool _isApproved(post) {
+bool isApproved(PostModel post) {
   if (post.moderation?.approve?.approvedBy == null) {
     return false;
   }
   return true;
+}
+
+bool isSpammed(PostModel post) {
+  return (post.moderation?.spam?.spammedBy != null);
+}
+
+bool isRemoved(PostModel post) {
+  return (post.moderation?.remove?.removedBy != null);
 }
 
 void handleSpoiler(
@@ -240,16 +266,23 @@ void handleNSFW(
 }
 
 void handleLock(
-    {required VoidCallback onSuccess, required VoidCallback onError, post}) {
-  final lockComments = LockModel(id: post.id, type: 'comment');
-
-  //check whether post is marked or unmarked as nsfw
-  String finalPath = post.moderation.lock ?? false ? unlock : lock;
+    {required VoidCallback onSuccess,
+    required VoidCallback onError,
+    PostModel? post,
+    CommentModel? comment,
+    bool isPost = true}) {
+  dynamic obj = isPost ? post : comment;
+  final lockComments = LockModel(id: obj.id, type: isPost ? 'post' : 'comment');
+  String finalPath = obj.moderation?.lock ?? false ? unlock : lock;
 
   DioHelper.postData(path: finalPath, data: lockComments.toJson())
       .then((value) {
     if (value.statusCode == 200) {
-      post.moderation.lock = !post.moderation.lock;
+      if (isPost) {
+        obj.moderation!.lock = !(obj.moderation!.lock ?? true);
+      } else {
+        obj.locked = !(obj.locked ?? true);
+      }
       onSuccess();
     }
   }).catchError((err) {
@@ -258,7 +291,9 @@ void handleLock(
 }
 
 void handleSticky(
-    {required VoidCallback onSuccess, required VoidCallback onError, post}) {
+    {required VoidCallback onSuccess,
+    required VoidCallback onError,
+    required PostModel post}) {
   //bool pin = !post.sticky
   final stickUnstickPost = PinPostModel(id: post.id, pin: false);
 
@@ -273,26 +308,67 @@ void handleSticky(
 }
 
 void handleRemove(
-    {required VoidCallback onSuccess, required VoidCallback onError, post}) {
+    {required VoidCallback onSuccess,
+    required void Function(DioError) onError,
+    required PostModel post}) {
   final removePost = RemoveModel(id: post.id, type: 'post');
   DioHelper.postData(path: remove, data: removePost.toJson()).then((value) {
     if (value.statusCode == 200) {
+      post.moderation?.remove?.removedBy = CacheHelper.getData(key: 'username');
+      post.moderation?.approve?.approvedBy = null;
+      post.moderation?.spam?.spammedBy = null;
       onSuccess();
     }
   }).catchError((err) {
-    onError();
+    onError(err as DioError);
   });
 }
 
-void handleApprove(
-    {required VoidCallback onSuccess, required VoidCallback onError, post}) {
+void handleApprove({
+  required VoidCallback onSuccess,
+  required void Function(DioError) onError,
+  required PostModel post,
+  bool isPost = true,
+  CommentModel? comment,
+}) {
   final approvePost = ApproveModel(id: post.id, type: 'post');
   DioHelper.postData(path: approve, data: approvePost.toJson()).then((value) {
-    // if (value.statusCode == 200) {
+    if (isPost) {
+      post.moderation?.approve?.approvedBy =
+          CacheHelper.getData(key: 'username');
+      post.moderation?.spam?.spammedBy = null;
+      post.moderation?.remove?.removedBy = null;
+    }
     onSuccess();
     // }
   }).catchError((err) {
-    onError();
+    err = err as DioError;
+    Logger().e(err.response?.data);
+    onError(err);
+  });
+}
+
+void handleSpam({
+  required VoidCallback onSuccess,
+  required void Function(DioError) onError,
+  required PostModel post,
+  bool isPost = true,
+  CommentModel? comment,
+}) {
+  final approvePost = ApproveModel(id: post.id, type: 'post');
+  DioHelper.postData(path: '/mod-spam', data: approvePost.toJson())
+      .then((value) {
+    if (isPost) {
+      post.moderation?.spam?.spammedBy = CacheHelper.getData(key: 'username');
+      post.moderation?.approve?.approvedBy = null;
+      post.moderation?.remove?.removedBy = null;
+    }
+
+    onSuccess();
+  }).catchError((err) {
+    err = err as DioError;
+    Logger().e(err.response?.data);
+    onError(err);
   });
 }
 
@@ -339,28 +415,37 @@ Future<void> showModOperations({
             ),
             SimpleDialogOption(
               key: const Key('remove-option'),
-              onPressed: () {
-                Navigator.pop(context, ModOPtions.remove);
-              },
-              child: buildModItem(Icons.cancel, 'Remove Post'),
+              onPressed: isRemoved(post)
+                  ? null
+                  : () {
+                      Navigator.pop(context, ModOPtions.remove);
+                    },
+              child: buildModItem(
+                Icons.cancel,
+                'Remove Post',
+                disabled: isRemoved(post),
+              ),
             ),
             SimpleDialogOption(
               key: const Key('spam-option'),
-              onPressed: () {
-                Navigator.pop(context, ModOPtions.spam);
-              },
-              child: buildModItem(Icons.delete, 'Remove as Spam'),
+              onPressed: isSpammed(post)
+                  ? null
+                  : () {
+                      Navigator.pop(context, ModOPtions.spam);
+                    },
+              child: buildModItem(Icons.delete, 'Remove as Spam',
+                  disabled: isSpammed(post)),
             ),
             SimpleDialogOption(
               key: const Key('approve-option'),
-              onPressed: _isApproved(post)
+              onPressed: isApproved(post)
                   ? null
                   : () {
                       Navigator.pop(context, ModOPtions.approve);
                     },
               child: buildModItem(
-                  Icons.check, 'Approve${_isApproved(post) ? 'd' : ''} Post',
-                  disabled: true),
+                  Icons.check, 'Approve${isApproved(post) ? 'd' : ''} Post',
+                  disabled: isApproved(post)),
             ),
           ],
         );
@@ -436,38 +521,40 @@ Future<void> showModOperations({
     case ModOPtions.remove:
       // removes a post from subreddit
       handleRemove(
-          post: post,
           onSuccess: () {
-            //mark post moderation as removed
-            post.moderation!.remove = true as Remove?;
-            //update post after any change in the post that modifies the UI
             PostNotifierCubit.get(context).notifyPosts();
+            ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+              message: 'Post Removed As Admin',
+              error: false,
+            ));
           },
-          onError: () {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text(
-                    'Sorry, please try again later\nError removing post')));
-          });
+          onError: (err) {
+            PostNotifierCubit.get(context).notifyPosts();
+            ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+              message: err.response?.data['error'] ?? 'Something went wrong',
+              error: false,
+            ));
+          },
+          post: post);
       break;
     case ModOPtions.spam:
       // removes post or comment as spam
-      handleRemove(
-          post: post,
+      handleSpam(
           onSuccess: () {
-            //TODO: why 2 and should it be removed?
-            //update post to be marked as spam
-            //remove post
-            post.markedSpam = true;
-            post.spammed = true;
-            post.moderation!.remove = true as Remove?;
-            // update the POSTS after any change in the post that modifies the UI
             PostNotifierCubit.get(context).notifyPosts();
+            ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+              message: 'Post Marked Spam',
+              error: false,
+            ));
           },
-          onError: () {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text(
-                    'Sorry, please try again later\nError removing as spam')));
-          });
+          onError: (err) {
+            PostNotifierCubit.get(context).notifyPosts();
+            ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+              message: err.response?.data['error'] ?? 'Something went wrong',
+              error: false,
+            ));
+          },
+          post: post);
       break;
     case ModOPtions.approve:
       // approves a post to be posted in a subreddit
@@ -475,11 +562,10 @@ Future<void> showModOperations({
           post: post,
           onSuccess: () {
             //mark post moderation as approved
-            post.moderation!.approve = true as Approve?;
             //update post after any change in the post that modifies the UI
             PostNotifierCubit.get(context).notifyPosts();
           },
-          onError: () {
+          onError: (err) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text(
                     'Sorry, please try again later\nError approving post')));

@@ -4,7 +4,6 @@
 /// built to be a reuseable widget for further uses
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/data/settings/settings_models/user_settings.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 
 import '../cubit/settings_cubit/settings_cubit.dart';
@@ -161,7 +160,7 @@ class _ListTileWidgetState extends State<ListTileWidget> {
       }
     } else if (widget.title.contains('Google')) {
       String mail = CacheHelper.getData(key: 'googleEmail');
-      print('mail is $mail');
+      // print('mail is $mail');
       dropDownValue = mail.isEmpty ? 'Disconnected' : 'Connected';
     } else if (widget.title.contains('Facebook')) {
       String mail = CacheHelper.getData(key: 'facebookEmail');
@@ -207,7 +206,7 @@ class _ListTileWidgetState extends State<ListTileWidget> {
         onChanged: (String? newValue) {
           SettingsCubit.get(context)
               .changeDropValue(newValue, widget.type!, context);
-          print(newValue);
+          // print(newValue);
           _setDropDownValue();
         },
       ),
@@ -219,7 +218,6 @@ class _ListTileWidgetState extends State<ListTileWidget> {
   Widget build(BuildContext context) {
     return BlocConsumer<SettingsCubit, SettingsCubitState>(
       listener: (context, state) {
-        // TODO: implement listener
       },
       builder: (context, state) {
         return SizedBox(

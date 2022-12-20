@@ -4,7 +4,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/settings/settings_models/user_settings.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/continue_sign_up_for_mobile.dart';
+
 import 'package:reddit/shared/local/shared_preferences.dart';
 
 import '../../../components/default_text_field.dart';
@@ -16,7 +19,6 @@ import '../../../networks/dio_helper.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/continue_button.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/continue_with_facebook_or_google.dart';
-import '../../main_screen.dart';
 import '../../to_go_screens/privacy_and_policy.dart';
 import '../../to_go_screens/user_agreement_screen.dart';
 import 'sign_in_screen.dart';
@@ -73,9 +75,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
         CacheHelper.putData(key: 'username', value: value.data['username']);
         UserSettingsModel.fromJson(value.data);
         UserSettingsModel.cacheUserSettings();
-        // navigating to the main screen
+        token = CacheHelper.getData(key: 'token');
+
+        // navigating to the interests screen
         Navigator.of(context)
-            .pushReplacementNamed(HomeScreenForMobile.routeName);
+            .pushReplacementNamed(ContinueSignUpForMobile.routeName);
       }
     }).catchError((error) {
       // casting the error as a dio error to be able to use its content

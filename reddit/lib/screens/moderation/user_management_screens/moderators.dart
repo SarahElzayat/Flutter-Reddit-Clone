@@ -3,9 +3,11 @@
 ///this screen displays the moderators for a certain subreddit
 
 import 'package:flutter/material.dart';
+import 'package:reddit/components/bottom_sheet.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/router.dart';
 import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
+import 'package:reddit/screens/moderation/user_management_screens/invite_moderator.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../components/helpers/color_manager.dart';
 import '../../../components/search_field.dart';
@@ -29,9 +31,8 @@ class Moderators extends StatelessWidget {
           title: const Text('Moderators'),
           actions: [
             IconButton(
-                onPressed: () => Navigator.of(context).push(
-                    AppRouter.onGenerateRoute(
-                        const RouteSettings(name: '/invite_moderator_screen'))),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: ((context) => InviteModerator()))),
                 icon: Icon(Icons.add, size: 24.sp))
           ],
           bottom: const TabBar(
@@ -44,17 +45,28 @@ class Moderators extends StatelessWidget {
   }
 }
 
-class ModeratorsWidget extends StatelessWidget {
+class ModeratorsWidget extends StatefulWidget {
   ModeratorsWidget({super.key});
 
+  @override
+  State<ModeratorsWidget> createState() => _ModeratorsWidgetState();
+}
+
+class _ModeratorsWidgetState extends State<ModeratorsWidget> {
   List<dynamic> moderators = [];
 
   TextEditingController controller = TextEditingController();
+  String? choice;
+
+  @override
+  void initState() {
+    ModerationCubit.get(context).getUsers(context, UserManagement.moderator);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final ModerationCubit cubit = ModerationCubit.get(context);
-    moderators = cubit.getUsers(context, UserManagement.moderator);
     return Column(children: [
       Center(
         child: SizedBox(
@@ -69,9 +81,9 @@ class ModeratorsWidget extends StatelessWidget {
       ),
       Expanded(
           child: ListView.builder(
-              itemCount: moderators.length,
+              itemCount: cubit.users.length,
               itemBuilder: (BuildContext context, int index) {
-                return (moderators.isEmpty)
+                return (cubit.users.isEmpty)
                     ? const Center(
                         child: Text(
                         'No users',
@@ -88,13 +100,25 @@ class ModeratorsWidget extends StatelessWidget {
                             )),
                         child: ListTile(
                             leading: const Icon(Icons.person),
-                            title: moderators[index].username,
+                            title: Text(cubit.users[index].username),
                             onTap: () {
                               //go to user profile
                             },
                             trailing: IconButton(
                               icon: const Icon(Icons.more_vert),
-                              onPressed: () {},
+                              onPressed: () async {
+                                choice = await modalBottomSheet(
+                                    context: context,
+                                    title: '',
+                                    text: ['View profile', 'Remove mod'],
+                                    selectedItem: choice);
+                                (choice == 'Remove mod')
+                                    ? () => cubit.removeModerator()
+                                    : () {
+                                        //go to profile
+                                      };
+                                setState(() {});
+                              },
                             )),
                       );
               }))

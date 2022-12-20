@@ -2,11 +2,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
-import 'package:reddit/screens/comments/add_comment_screen.dart';
-import 'package:reddit/screens/sign_in_and_sign_up_screen/web/continue_sign_up_screen.dart';
-import 'package:reddit/screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
+import 'components/helpers/enums.dart';
+import 'cubit/user_profile/cubit/user_profile_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../cubit/settings_cubit/settings_cubit.dart';
@@ -57,10 +54,13 @@ Future<void> main() async {
   }
 
   CacheHelper.putData(key: 'SortHome', value: HomeSort.best.index);
-  logger.w(CacheHelper.getData(key: 'SortHome'));
 
   /// and this is used to initialize Dio
   DioHelper.init();
+  // CacheHelper.putData(
+  //     key: 'token',
+  //     value:
+  // 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzlkY2Y3YzY2M2I3YmVhY2JmZDc3ZmYiLCJ1c2VybmFtZSI6InNhcmFoIiwiaWF0IjoxNjcxNTIwOTIxfQ.luFT51sAWl1kJr26xxsMAyoote3wV-3fWi0iCnvGuz0');
   token = CacheHelper.getData(key: 'token');
 
   runApp(const Main());

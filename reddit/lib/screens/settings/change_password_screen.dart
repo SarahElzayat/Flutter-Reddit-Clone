@@ -136,8 +136,6 @@ class _ChangePasswordState extends State<ChangePassword> {
         });
   }
 
-  /// TODO: Fix what happens when the keyboard raises.
-
   void buildForgetPass() {
     final mediaQuery = MediaQuery.of(context);
     showDialog(

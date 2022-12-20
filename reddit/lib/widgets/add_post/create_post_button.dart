@@ -45,9 +45,11 @@ class CreatePostButton extends StatelessWidget {
             textFontSize: 17.0 * mediaQuery.textScaleFactor,
             onPressed: isDisabled
                 ? () {}
-                : (() {
+                : (() async {
                     if (addPostCubit.subredditName != null &&
-                        addPostCubit.subredditName != '') {
+                            addPostCubit.subredditName != '' ||
+                        addPostCubit.isSubreddit == false) {
+                      await addPostCubit.getSubredditFlair();
                       navigator.pushNamed(PostRules.routeName);
                     } else {
                       navigator.push(MaterialPageRoute(

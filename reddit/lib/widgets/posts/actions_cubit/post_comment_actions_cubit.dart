@@ -8,15 +8,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:logger/logger.dart';
-import 'package:reddit/components/helpers/mocks/mock_functions.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/data/post_model/insights_model.dart';
 import 'package:reddit/data/post_model/post_model.dart';
+import 'package:reddit/data/user_data_model/user_data_model.dart';
 import 'package:reddit/functions/post_functions.dart';
 import 'package:reddit/networks/dio_helper.dart';
-
 import '../../../data/comment/sended_comment_model.dart';
+import '../../../data/subreddit/subreddit_model.dart';
 import '../../../networks/constant_end_points.dart';
 import 'post_comment_actions_state.dart';
 
@@ -95,7 +95,7 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
   }
 
   /// this function is used to hide a post
-  Future hide() {
+  Future<bool?> hide() {
     String path = post.hidden ?? false ? '/unhide' : '/hide';
 
     return DioHelper.postData(
@@ -105,7 +105,9 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
       },
     ).then((value) {
       post.hidden = !post.hidden!;
+
       emit(HiddenChangedState());
+      return true;
     }).catchError((error) {
       error = error as DioError;
       logger.e(error.response?.data);
@@ -132,13 +134,21 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
   }
 
   /// this function is used to delete a post
-  Future delete() {
-    return mockDio.post(
-      '$baseUrl/delete',
+  Future<bool?> delete() {
+    return DioHelper.deleteData(
+      path: '/delete',
       data: {
-        'id': post.id,
+        'id': isPost ? post.id : currentComment!.id,
+        'type': isPost ? 'post' : 'comment'
       },
-    ).then((value) => print(value.data));
+    ).then((value) {
+      emit(PostsDeleted());
+      return isPost;
+    }).catchError((error) {
+      error = error as DioError;
+      logger.e(error.response?.data);
+      emit(OpError(error: error.response?.data['error'] ?? ''));
+    });
   }
 
   Future follow() {
@@ -156,6 +166,7 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
         'commentId': currentComment?.id,
       },
     ).then((value) {
+      logger.d('followed: ${post.followed}');
       if (isPost) {
         post.followed = !post.followed!;
       } else {
@@ -265,7 +276,7 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
     required void Function(DioError) onError,
     required SendedCommentModel c,
   }) {
-    logger.e(c.toJson());
+    logger.d(c.toJson());
     DioHelper.postData(path: '/comment', data: c.toJson()).then((value) {
       onSuccess();
       return null;
@@ -275,5 +286,50 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
 
       logger.w(error['error']);
     });
+  }
+
+  void collapse() {
+    currentComment!.isCollapsed = !((currentComment?.isCollapsed) ?? true);
+  }
+
+  SubredditModel? subreddit;
+  void getSubDetails() {
+    DioHelper.getData(
+        path: '$subredditInfo/${post.subreddit}',
+        query: {'subreddit': post.subreddit}).then((value) {
+      if (value.statusCode == 200) {
+        subreddit = SubredditModel.fromJson(value.data);
+        emit(SubDetailsFetched());
+        // emit(subredditChange());
+      }
+    }).catchError((error) {
+      return;
+    });
+  }
+
+  UserDataModel? user;
+  void getUserDetails() {
+    String? a = isPost ? post.postedBy : currentComment!.commentedBy;
+    DioHelper.getData(path: '/user/$a/about').then((value) {
+      if (value.statusCode == 200) {
+        user = UserDataModel.fromJson(value.data);
+        emit(UserDetailsFetched());
+      }
+    }).catchError((error) {
+      logger.wtf((error as DioError?)?.response?.data + 'USER:');
+
+      return;
+    });
+  }
+
+  void joinCommunity() {
+    DioHelper.postData(
+        path: joinSubreddit,
+        data: {'subredditId': subreddit?.subredditId}).then((value) {
+      if (value.statusCode == 200) {
+        subreddit!.isMember = true;
+        emit(JoinSubredditState());
+      }
+    }).catchError((error) {});
   }
 }

@@ -10,10 +10,11 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/helpers/posts/helper_funcs.dart';
+import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'actions_cubit/post_comment_actions_state.dart';
-import 'post_lower_bar.dart';
+import 'post_lower_bar_without_votes.dart';
 import '../../data/post_model/post_model.dart';
 import 'votes_widget.dart';
 
@@ -73,7 +74,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
     // to show them in the right size
     // i get the max aspect ratio of the images and use it so constraint their box
     for (var i = 0; i < widget.post.images!.length; i++) {
-      Image(image: NetworkImage(widget.post.images![i].path!))
+      Image(image: NetworkImage('$baseUrl/${widget.post.images![i].path!}'))
           .image
           .resolve(const ImageConfiguration())
           .addListener(ImageStreamListener((info, call) {
@@ -84,6 +85,15 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
     }
 
     super.initState();
+  }
+
+  bool _haveCaptions() {
+    for (var image in widget.post.images!) {
+      if (image.caption != null && image.caption!.isNotEmpty) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @override
@@ -153,7 +163,8 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
                                               fontSize: 15),
                                         )),
                                   if (widget.post.images![currentIndex].link !=
-                                      null)
+                                          null &&
+                                      _haveCaptions())
                                     Container(
                                       alignment: Alignment.centerLeft,
                                       padding: const EdgeInsets.all(8.0),
@@ -212,23 +223,25 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
         children: [
           Row(
             children: [
-              Text(
-                'r/${widget.post.subreddit ?? '-'} • ',
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Colors.white,
-                    ),
-              ),
-              InkWell(
-                onTap: () {
-                  debugPrint('joined');
-                },
-                child: Text(
-                  'Join',
+              if ((widget.post.subreddit ?? '').isNotEmpty)
+                Text(
+                  'r/${widget.post.subreddit ?? '-'} • ',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: Colors.blue,
+                        color: Colors.white,
                       ),
                 ),
-              ),
+              if ((widget.post.subreddit ?? '').isNotEmpty)
+                InkWell(
+                  onTap: () {
+                    debugPrint('joined');
+                  },
+                  child: Text(
+                    'Join',
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Colors.blue,
+                        ),
+                  ),
+                ),
               Text(
                 '  •   u/${widget.post.postedBy ?? '-'}  • ',
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
@@ -265,7 +278,7 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
   ///
   /// [index] is the index of the item
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
-    final String item = widget.post.images![index].path!;
+    final String item = '$baseUrl/${widget.post.images![index].path!}';
     return PhotoViewGalleryPageOptions(
       imageProvider: NetworkImage(item),
       initialScale: PhotoViewComputedScale.contained,

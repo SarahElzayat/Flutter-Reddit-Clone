@@ -29,7 +29,6 @@ class AccountSettingsScreen extends StatelessWidget {
       body: SizedBox(
         height: mediaQuery.size.height * 0.8,
         child: Column(
-          /// TODO : add the next to icon value
           children: [
             Expanded(
                 flex: 2,
