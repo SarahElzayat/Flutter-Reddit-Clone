@@ -16,7 +16,6 @@ import 'package:reddit/data/messages/messages_model.dart';
 import 'package:reddit/data/messages/reply_to_message_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../components/helpers/color_manager.dart';
 
