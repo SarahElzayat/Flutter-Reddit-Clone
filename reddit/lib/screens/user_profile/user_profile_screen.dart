@@ -444,14 +444,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
         ),
         SliverFillRemaining(
           child: SizedBox(
-            // height: 50,
-            child: TabBarView(controller: controller, children: [
+            child: TabBarView(controller: controller, children: const [
               UserProfilePosts(),
-              // Text('Comments'),
-              // Comment(post: post, comment: comment,viewType: CommentView.inSubreddits,)
-              // Text('Comments'),
               UserProfileComments(),
-              const Text('About')
+              Text('About')
             ]),
           ),
         ),

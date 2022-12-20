@@ -69,7 +69,7 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  UserProfileEditImage(),
+                  const UserProfileEditImage(),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 15),
                     child: Column(

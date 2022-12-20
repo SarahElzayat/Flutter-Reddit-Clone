@@ -98,5 +98,5 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   CommunitySearch.routeName: (ctx) => const CommunitySearch(),
   PostRules.routeName: (ctx) => const PostRules(),
   UserProfileScreen.routeName: (ctx) => const UserProfileScreen(),
-  UserProfileEditScreen.routeName: (ctx) => UserProfileEditScreen(),
+  UserProfileEditScreen.routeName: (ctx) => const UserProfileEditScreen(),
 };
