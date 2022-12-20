@@ -2,12 +2,16 @@
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
 
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 
 import 'package:reddit/data/post_model/post_model.dart';
+import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/screens/posts/edit_screen.dart';
 import 'package:reddit/screens/posts/pick_community.dart';
 import 'package:reddit/screens/posts/share_to_community.dart';
@@ -191,7 +195,7 @@ class MenuItems {
         cubit.copyText().then((value) {
           ScaffoldMessenger.of(context).showSnackBar(
             responseSnackBar(
-              message: 'Your copy is ready for pasta!',
+              message: 'Your copy is ready for paste!',
               error: false,
             ),
           );
@@ -222,7 +226,6 @@ shareModalBottomSheet(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        shareIcon(icon: Icons.link, label: 'Copy link', onPressed: () {}),
         shareIcon(
             icon: Icons.fork_right,
             label: 'Community',
