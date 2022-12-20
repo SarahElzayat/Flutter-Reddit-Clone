@@ -21,6 +21,7 @@ import '../../components/helpers/enums.dart';
 import '../../cubit/add_post/cubit/add_post_cubit.dart';
 import '../../cubit/app_cubit/app_cubit.dart';
 import '../../data/user_profile.dart/about_user_model.dart';
+import '../../networks/constant_end_points.dart';
 import '../../networks/dio_helper.dart';
 import '../../widgets/user_profile/user_profile_posts.dart';
 import '../add_post/add_post.dart';
@@ -185,7 +186,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                       fit: BoxFit.cover,
                                     )
                                   : Image.network(
-                                      'read-it.live/api/${userProfileCubit.userData!.banner!}',
+                                      '$baseUrl/${userProfileCubit.userData!.banner!}',
                                       fit: BoxFit.cover,
                                     ),
                               Align(
@@ -210,7 +211,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                                 'assets/images/Logo.png',
                                               )
                                             : Image.network(
-                                                'read-it.live/api/${userProfileCubit.userData!.picture!}',
+                                                '$baseUrl/${userProfileCubit.userData!.picture!}',
                                                 fit: BoxFit.cover,
                                               ),
                                       ),

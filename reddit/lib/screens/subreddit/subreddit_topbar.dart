@@ -8,6 +8,7 @@ import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import '../../components/app_bar_components.dart';
 import '../../components/search_field.dart';
 // import '../../cubit/app_cubit.dart';
+import '../../networks/constant_end_points.dart';
 import '../../widgets/subreddit/subreddit_options.dart';
 
 class SubredditAppBar extends SliverPersistentHeaderDelegate {
@@ -47,7 +48,7 @@ class SubredditAppBar extends SliverPersistentHeaderDelegate {
                     color: ColorManager.blue,
                   )
                 : Image.network(
-                    'read-it.live/api/${subredditCubit.subreddit!.banner!}',
+                    '$baseUrl/${subredditCubit.subreddit!.banner!}',
                     width: double.maxFinite,
                     fit: BoxFit.cover,
                   ),

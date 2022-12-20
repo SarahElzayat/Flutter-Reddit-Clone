@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
 
 import '../../components/helpers/color_manager.dart';
+import '../../networks/constant_end_points.dart';
 
 class UserProfileEditImage extends StatefulWidget {
   UserProfileEditImage({Key? key}) : super(key: key);
@@ -111,7 +112,7 @@ class _UserProfileEditImageState extends State<UserProfileEditImage> {
                     child: (userProfile.userData!.picture != null &&
                             userProfile.userData!.picture != '')
                         ? Image.network(
-                            'read-it.live/api/${userProfile.userData!.picture!}',
+                            '$baseUrl/${userProfile.userData!.picture!}',
                             fit: BoxFit.cover,
                           )
                         : Image.asset(

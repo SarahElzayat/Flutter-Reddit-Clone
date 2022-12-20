@@ -7,6 +7,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/add_post/cubit/add_post_cubit.dart';
 import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
+import 'package:reddit/networks/constant_end_points.dart';
 
 import '../../components/Button.dart';
 import '../../components/home_components/right_drawer.dart';
@@ -202,7 +203,7 @@ class _SubredditState extends State<Subreddit>
                               subredditCubit.subreddit!.picture == '')
                           ? null
                           : NetworkImage(
-                              'read-it.live/api/${subredditCubit.subreddit!.picture!}'),
+                              '$baseUrl/${subredditCubit.subreddit!.picture!}'),
                       child: (subredditCubit.subreddit!.picture == null ||
                               subredditCubit.subreddit!.picture == '')
                           ? const Text(
