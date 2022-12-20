@@ -59,6 +59,8 @@ const downvotedHistory = '/downvoted';
 const hiddenHistory = '/hidden';
 const clearHistory = '/clear-history';
 const userProfilePicture = '/profile-picture';
+const userProfileBanner = '/banner-image';
+
 const search = '/search';
 const searchPosts = 'post';
 const searchUsers = 'user';
@@ -90,3 +92,4 @@ const homeNew = '/new';
 const subreddit = '/r';
 const makeFavorite = '/make-favorite';
 const removeFavorite = '/remove-favorite';
+const socialLink = '/social-link';
