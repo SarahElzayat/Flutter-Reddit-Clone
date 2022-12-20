@@ -553,17 +553,35 @@ class AddPostCubit extends Cubit<AddPostState> {
             data: formData,
             sentToken: CacheHelper.getData(key: 'token'))
         .then((value) {
-      ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
-          message: 'Post Successfully Uploaded', error: false));
-      if (value.statusCode == 200) {
-        Navigator.of(context)
-            .pushReplacementNamed(HomeScreenForMobile.routeName);
+      print(value);
+
+      if (value.statusCode == 201) {
+        print('Post success');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              backgroundColor: ColorManager.eggshellWhite,
+              content: Text('Post success')),
+        );
+        Navigator.pushAndRemoveUntil(
+          navigatorKey.currentContext!,
+          MaterialPageRoute(
+              builder: (BuildContext context) => HomeScreenForMobile()),
+          ModalRoute.withName('/'),
+        );
+      } else if (value.statusCode == 400) {
+        print(value);
+      } else if (value.statusCode == 401) {
+        print('User not allowed to post in this subreddit');
+      } else if (value.statusCode == 404) {
+        print('Subreddit not found');
+      } else if (value.statusCode == 500) {
+        print('Server Error');
       }
     }).catchError((error) {
       ScaffoldMessenger.of(context).showSnackBar(
           responseSnackBar(message: 'An Error Please Try Again', error: true));
     });
-    emit(PostCreated());
+    // emit(PostCreated());
   }
 
   void subredditSearch(String subredditName) {
