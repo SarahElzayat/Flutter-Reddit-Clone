@@ -93,14 +93,14 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
         //   pagingController.appendPage(
         //       blockedUsers, response.data['after'] as String);
         // }
-      }
-    }).catchError((error) {
-      error = error as DioError;
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(error.message.toString())));
-    });
+      }).catchError((error) {
+        error = error as DioError;
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(error.message.toString())));
+      });
 
-    emit(UnBlockState(true));
+      emit(UnBlockState(true));
+    }
   }
 
   void removeItem(item) {
