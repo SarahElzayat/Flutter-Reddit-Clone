@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/cubit/add_post/cubit/add_post_cubit.dart';
+import '../../components/helpers/color_manager.dart';
+import '../../cubit/add_post/cubit/add_post_cubit.dart';
 
 class ScheduleDate extends StatefulWidget {
   ScheduleDate({Key? key}) : super(key: key);

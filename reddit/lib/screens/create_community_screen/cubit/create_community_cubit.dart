@@ -3,16 +3,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
-import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/components/snack_bar.dart';
-import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
-import 'package:reddit/data/create_community_model/create_community_model.dart';
-import 'package:reddit/data/create_community_model/saved_categories_model.dart';
-import 'package:reddit/data/moderation_models/community_settings_model.dart';
-import 'package:reddit/networks/constant_end_points.dart';
-import 'package:reddit/networks/dio_helper.dart';
-import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
+import '../../../components/helpers/enums.dart';
+import '../../../components/snack_bar.dart';
+import '../../../cubit/subreddit/cubit/subreddit_cubit.dart';
+import '../../../data/create_community_model/create_community_model.dart';
+import '../../../data/create_community_model/saved_categories_model.dart';
+import '../../../data/moderation_models/community_settings_model.dart';
+import '../../../networks/constant_end_points.dart';
+import '../../../networks/dio_helper.dart';
+import '../../moderation/cubit/moderation_cubit.dart';
+import '../../../shared/local/shared_preferences.dart';
 
 part 'create_community_state.dart';
 
@@ -48,7 +48,7 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
             : 'Private';
     CommunitySettingsModel settings = CommunitySettingsModel(
         communityName: name,
-        type: finalType,
+        type: type,
         nSFW: nsfw ?? false,
         communityDescription: '',
         mainTopic: 'Activism',

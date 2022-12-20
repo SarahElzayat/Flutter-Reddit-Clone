@@ -1,14 +1,13 @@
 /// Text Field Widget
 /// @author Haitham Mohamed
 /// @date 4/11/2022
-
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 
 import '../../cubit/add_post/cubit/add_post_cubit.dart';
-import 'package:flutter/material.dart';
 
 /// Special Text Field that used in Add Post Screen
 class AddPostTextField extends StatefulWidget {

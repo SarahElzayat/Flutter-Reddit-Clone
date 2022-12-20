@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/components/bottom_sheet.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/components/list_tile.dart';
-import 'package:reddit/components/moderation_components/modtools_components.dart';
-import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
+import '../../../components/bottom_sheet.dart';
+import '../../../components/helpers/color_manager.dart';
+import '../../../components/helpers/enums.dart';
+import '../../../components/list_tile.dart';
+import '../../../components/moderation_components/modtools_components.dart';
+import '../cubit/moderation_cubit.dart';
 
 class FlairSettings extends StatefulWidget {
   const FlairSettings({super.key});

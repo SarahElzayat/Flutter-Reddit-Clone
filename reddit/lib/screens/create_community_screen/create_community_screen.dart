@@ -205,7 +205,9 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
                           key: const Key('create_community_switch'),
                           value: isSwitched,
                           onToggle: (switcher) {
-                            isSwitched = switcher;
+                            setState(() {
+                              isSwitched = switcher;
+                            });
                           },
                           width: 15.w,
                           height: 4.h,

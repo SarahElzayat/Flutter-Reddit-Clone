@@ -3,11 +3,11 @@ import 'dart:math';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/components/bottom_sheet.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
-import 'package:reddit/networks/constant_end_points.dart';
-import 'package:reddit/widgets/user_profile/user_profile_eidt_image.dart';
+import '../../components/bottom_sheet.dart';
+import '../../components/helpers/color_manager.dart';
+import '../../cubit/user_profile/cubit/user_profile_cubit.dart';
+import '../../networks/constant_end_points.dart';
+import '../../widgets/user_profile/user_profile_eidt_image.dart';
 
 class UserProfileEditScreen extends StatefulWidget {
   UserProfileEditScreen({Key? key}) : super(key: key);

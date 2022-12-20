@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/components/moderation_components/modtools_components.dart';
-import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
+import '../../../components/moderation_components/modtools_components.dart';
+import '../cubit/moderation_cubit.dart';
 import '../../../components/default_text_field.dart';
 import '../../../components/helpers/color_manager.dart';
 

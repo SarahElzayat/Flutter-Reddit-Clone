@@ -1,4 +1,4 @@
-import 'package:reddit/data/comment/comment_model.dart';
+import 'comment_model.dart';
 
 class CommentsListingModel {
   String? before;

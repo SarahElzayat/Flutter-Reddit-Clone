@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/components/moderation_components/modtools_components.dart';
-import 'package:reddit/components/square_text_field.dart';
-import 'package:reddit/screens/comments/add_comment_screen.dart';
-import 'package:reddit/screens/moderation/content_and_regulation/post_flair-settings.dart';
-import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
+import '../../components/helpers/color_manager.dart';
+import '../../components/moderation_components/modtools_components.dart';
+import '../../components/square_text_field.dart';
+import '../comments/add_comment_screen.dart';
+import 'content_and_regulation/post_flair-settings.dart';
+import 'cubit/moderation_cubit.dart';
 
 class CreateFlair extends StatefulWidget {
   const CreateFlair({super.key});

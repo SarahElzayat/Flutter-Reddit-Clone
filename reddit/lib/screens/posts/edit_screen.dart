@@ -4,9 +4,9 @@ import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:giphy_get/giphy_get.dart';
 import 'package:logger/logger.dart';
-import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
-import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
-import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_state.dart';
+import '../../cubit/post_notifier/post_notifier_cubit.dart';
+import '../../widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
+import '../../widgets/posts/actions_cubit/post_comment_actions_state.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../components/helpers/color_manager.dart';

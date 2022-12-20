@@ -93,3 +93,12 @@ const subreddit = '/r';
 const makeFavorite = '/make-favorite';
 const removeFavorite = '/remove-favorite';
 const socialLink = '/social-link';
+
+// messages and inbox
+const replyToMessage = '/message/compose';
+const readAllMsgs = '/read-all-msgs';
+
+// notifications
+const notificationPoint = '/notifications';
+const markAllNotificationsAsRead = '/mark-all-notifications-read';
+const hideNotification = '/hide-notification-read';

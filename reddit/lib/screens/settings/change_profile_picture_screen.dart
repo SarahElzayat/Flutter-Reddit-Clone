@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:reddit/components/app_bar_components.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/cubit/app_cubit/app_cubit.dart';
+import '../../components/app_bar_components.dart';
+import '../../components/helpers/color_manager.dart';
+import '../../cubit/app_cubit/app_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../components/snack_bar.dart';

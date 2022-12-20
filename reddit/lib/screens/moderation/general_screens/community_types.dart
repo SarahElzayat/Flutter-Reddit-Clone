@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/components/moderation_components/modtools_components.dart';
-import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
+import '../../../components/helpers/color_manager.dart';
+import '../../../components/moderation_components/modtools_components.dart';
+import '../cubit/moderation_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class CommunityType extends StatefulWidget {

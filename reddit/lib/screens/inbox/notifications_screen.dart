@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/widgets/inbox/notification_widget.dart';
+import '../../components/helpers/color_manager.dart';
+import '../../components/snack_bar.dart';
+import '../../data/notifications/notification_model.dart';
+import '../../networks/constant_end_points.dart';
+import '../../networks/dio_helper.dart';
+import '../comments/add_comment_screen.dart';
+import '../../widgets/inbox/notification_widget.dart';
 
 class NotificationScreen extends StatefulWidget {
   static const routeName = '/notification_screen';
@@ -65,14 +70,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return notifications.isEmpty
-        ? Expanded(
-            child: SizedBox(
-              child: Center(
-                child: Image.asset('assets/images/Empty.jpg'),
-              ),
-            ),
+        ? Center(
+            child: Image.asset('assets/images/Empty.jpg'),
           )
         : ListView.builder(
+            controller: scroller,
             itemBuilder: (context, index) {
               return Card(
                 color: ColorManager.black,

@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/cubit/videos_cubit/videos_state.dart';
+import 'videos_state.dart';
 
 import '../../components/multi_manager/flick_multi_manager.dart';
 

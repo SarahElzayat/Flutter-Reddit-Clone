@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/data/messages/messages_model.dart';
-import 'package:reddit/networks/constant_end_points.dart';
-import 'package:reddit/networks/dio_helper.dart';
+import '../../data/messages/messages_model.dart';
+import '../../networks/constant_end_points.dart';
+import '../../networks/dio_helper.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../widgets/inbox/message_widget.dart';
 

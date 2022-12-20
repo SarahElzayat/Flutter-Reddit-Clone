@@ -1,11 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/components/snack_bar.dart';
-import 'package:reddit/constants/constants.dart';
-import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
-import 'package:reddit/data/post_model/post_model.dart';
-import 'package:reddit/networks/constant_end_points.dart';
-import 'package:reddit/networks/dio_helper.dart';
-import 'package:reddit/screens/posts/post_screen.dart';
+import '../../components/snack_bar.dart';
+import '../../constants/constants.dart';
+import '../../cubit/user_profile/cubit/user_profile_cubit.dart';
+import '../../data/post_model/post_model.dart';
+import '../../networks/constant_end_points.dart';
+import '../../networks/dio_helper.dart';
+import '../../screens/posts/post_screen.dart';
 import '../../components/bottom_sheet.dart';
 import '../../data/notifications/notification_model.dart';
 import '../../screens/inbox/single_notification_screen.dart';
@@ -63,16 +64,16 @@ class _NotificationWidgetState extends State<NotificationWidget> {
           // UserProfileCubit.get(context).showPopupUserWidget(
           //     context, widget.notification.followingUsername!);
         }
-        Navigator.of(context).pushNamed(SignleNotificationScreen.routeName);
+        // Navigator.of(context).pushNamed(SignleNotificationScreen.routeName);
+        
       },
       contentPadding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
       horizontalTitleGap: 10,
-      leading: const CircleAvatar(
+      leading: CircleAvatar(
         backgroundColor: ColorManager.upvoteRed,
         child: widget.notification.photo == null
             ? Image.network(unknownAvatar)
             : Image.network('$baseUrl/${widget.notification.photo!}'),
-
       ),
       title: Row(
         children: [
@@ -81,7 +82,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
             child: SizedBox(
               width: mediaQuery.size.width - 150,
               child: Text(
-                '$userWhoReplied replied to your $type in $subredditName $date',
+                widget.notification.title!,
                 softWrap: true,
                 overflow: TextOverflow.clip,
                 style: TextStyle(
@@ -93,37 +94,52 @@ class _NotificationWidgetState extends State<NotificationWidget> {
         ],
       ),
       subtitle: Text(
-        bodyContent,
+        DateTime.tryParse(widget.notification.sendAt!)!
+            .toLocal()
+            .toIso8601String()
+            .toString(),
         style:
             TextStyle(color: ColorManager.greyColor, fontSize: 13 * fontScale),
       ),
       trailing: IconButton(
-        icon: const Icon(Icons.menu),
+        icon: const Icon(Icons.more_vert),
         onPressed: () {
-          modalBottomSheet(
-              context: context,
-              title: 'Manage Notification',
-              text: [
-                'Hide this notification',
-                'Disable updates from this community',
-                'Turn off this notification'
-              ],
-              selectedItem: 'Disable updates from this community',
-              selectedIcons: [
-                Icons.visibility_off,
-                Icons.notifications_off_outlined,
-                Icons.notifications_off_outlined,
-              ],
-              unselectedIcons: [
-                Icons.visibility_off,
-                Icons.notifications_off_outlined,
-                Icons.notifications_off_outlined,
-              ],
-              items: [
-                'Hide this notification',
-                'Disable updates from this community',
-                'Turn off this notification'
-              ]);
+          setState(() async {
+            setItem = await modalBottomSheet(
+                context: context,
+                title: 'Manage Notification',
+                text: [
+                  'Hide this notification',
+                  'Disable updates from this community',
+                  'Turn off this notification'
+                ],
+                selectedItem: setItem,
+                selectedIcons: [
+                  Icons.visibility_off,
+                  Icons.notifications_off_outlined,
+                  Icons.notifications_off_outlined,
+                ],
+                unselectedIcons: [
+                  Icons.visibility_off,
+                  Icons.notifications_off_outlined,
+                  Icons.notifications_off_outlined,
+                ],
+                items: [
+                  'Hide this notification',
+                  'Disable updates from this community',
+                  'Turn off this notification'
+                ]);
+
+            if (setItem == 'Hide this notification') {
+              hideTheNotifcation();
+            } else if ('Disable updates from this community' == setItem) {
+              /// TODO apply the logic of disable updates here.
+              // does'nt have an endpoint
+            } else {
+              /// Turn of this notification.
+              // does'nt have an endpoint
+            }
+          });
         },
       ),
     );

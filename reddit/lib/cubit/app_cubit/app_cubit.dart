@@ -5,20 +5,20 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// ignore: depend_on_referenced_packages
+import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/comment/comment_model.dart';
-// ignore: depend_on_referenced_packages
-import 'package:http_parser/http_parser.dart';
-
 import 'package:reddit/data/home/drawer_communities_model.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/chat_screen.dart';
-import 'package:reddit/screens/inbox/Inbox_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
+import 'package:reddit/screens/inbox/Inbox_screen.dart';
 import 'package:reddit/screens/saved/saved_comments.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
+
 // import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import '../../data/post_model/post_model.dart';
 import '../../data/temp_data/tmp_data.dart';
@@ -120,7 +120,6 @@ class AppCubit extends Cubit<AppState> {
           for (int i = 0; i < value.data['children'].length; i++) {
             homePosts.add(PostWidget(
                 post: PostModel.fromJson(value.data['children'][i]['data'])));
-            logger.e(i);
           }
         }
         logger.wtf(homePosts.length);
