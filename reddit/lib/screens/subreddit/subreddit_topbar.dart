@@ -177,7 +177,7 @@ class SubredditAppBar extends SliverPersistentHeaderDelegate {
                                       : scaffoldKey.currentState
                                           ?.openEndDrawer();
                                 },
-                                child: avatar()),
+                                child: avatar(context: context)),
                           )
                         ],
                       ),

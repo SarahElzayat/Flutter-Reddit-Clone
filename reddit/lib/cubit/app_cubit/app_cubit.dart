@@ -650,6 +650,7 @@ class AppCubit extends Cubit<AppState> {
   }
 
   void deleteProfilePicture() {
+    print('aho');
     DioHelper.deleteData(path: userProfilePicture).then((value) {
       if (value.statusCode == 204) {
         profilePicture = '';
@@ -658,6 +659,8 @@ class AppCubit extends Cubit<AppState> {
         emit(NoProfilePictureState());
       }
     }).onError((error, stackTrace) {
+      print(error);
+      print('a7eh');
       emit(ErrorState());
     });
   }

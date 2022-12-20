@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:reddit/components/app_bar_components.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
+import '../../networks/constant_end_points.dart';
 
 class ChangeProfilePicutre extends StatefulWidget {
   const ChangeProfilePicutre({super.key});
@@ -31,11 +34,7 @@ class _ChangeProfilePicutreState extends State<ChangeProfilePicutre> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  //todo use the one from backend
-                  const CircleAvatar(
-                    backgroundColor: Colors.red,
-                    radius: 100,
-                  ),
+                  avatar(context: context, radius: 100),
                   const Spacer(),
                   if (cubit.profilePicture.isNotEmpty)
                     Flexible(

@@ -57,10 +57,10 @@ Future<void> main() async {
 
   /// and this is used to initialize Dio
   DioHelper.init();
-  CacheHelper.putData(
-      key: 'token',
-      value:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzlkY2Y3YzY2M2I3YmVhY2JmZDc3ZmYiLCJ1c2VybmFtZSI6InNhcmFoIiwiaWF0IjoxNjcxNTIwOTIxfQ.luFT51sAWl1kJr26xxsMAyoote3wV-3fWi0iCnvGuz0');
+  // CacheHelper.putData(
+  //     key: 'token',
+  //     value:
+  // 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzlkY2Y3YzY2M2I3YmVhY2JmZDc3ZmYiLCJ1c2VybmFtZSI6InNhcmFoIiwiaWF0IjoxNjcxNTIwOTIxfQ.luFT51sAWl1kJr26xxsMAyoote3wV-3fWi0iCnvGuz0');
   token = CacheHelper.getData(key: 'token');
 
   runApp(const Main());

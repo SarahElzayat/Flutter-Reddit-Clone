@@ -244,6 +244,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               listener: (context, state) {},
                               builder: (context, state) {
                                 return ListView.builder(
+                                  controller: _scrollController,
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemBuilder: (context, index) =>
                                       // index < cubit.history.length ?
