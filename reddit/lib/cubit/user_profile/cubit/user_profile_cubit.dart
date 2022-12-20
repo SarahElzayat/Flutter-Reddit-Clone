@@ -170,12 +170,13 @@ class UserProfileCubit extends Cubit<UserProfileState> {
             content: Column(mainAxisSize: MainAxisSize.min, children: [
               CircleAvatar(
                 radius: 30,
-                child: (userData!.picture == null || userData!.picture == '')
-                    ? Image.asset('assets/images/Logo.png', fit: BoxFit.cover)
-                    : Image.network(
-                        userData!.picture!,
-                        fit: BoxFit.cover,
-                      ),
+                backgroundImage:
+                    (userData!.picture == null || userData!.picture == '')
+                        ? Image.asset('assets/images/Logo.png') as ImageProvider
+                        : NetworkImage(
+                            '$baseUrl/${userData!.picture!}',
+                            // fit: BoxFit.cover,
+                          ),
               ),
               const SizedBox(
                 height: 10,
