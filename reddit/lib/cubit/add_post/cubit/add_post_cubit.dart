@@ -1,20 +1,15 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:delta_markdown/delta_markdown.dart';
-import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:mime/mime.dart';
 import '../../../data/add_post/subredditsSearchListModel.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
-
 import '../../../components/button.dart';
 import '../../../components/helpers/color_manager.dart';
 import '../../../components/snack_bar.dart';
@@ -24,6 +19,7 @@ import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
 import '../../../screens/main_screen.dart';
 import '../../../shared/local/shared_preferences.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http_parser/http_parser.dart';
 
 part 'add_post_state.dart';
@@ -449,7 +445,6 @@ class AddPostCubit extends Cubit<AddPostState> {
 
     if (postType == 0) {
       for (var item in images) {
-        final mimeType = lookupMimeType(item.path);
         MultipartFile file = await MultipartFile.fromFile(item.path,
             filename: item.path.split('/').last,
             contentType: MediaType('image', 'png'));
@@ -481,13 +476,9 @@ class AddPostCubit extends Cubit<AddPostState> {
       };
     }
     if (postType == 1) {
-      final mimeType = lookupMimeType(video!.path);
-
       body = {
-        'video': await MultipartFile.fromBytes(
-            File(video!.path).readAsBytesSync(),
-            filename: 'video.mp4',
-            contentType: MediaType('video', 'mp4')),
+        'video': MultipartFile.fromBytes(File(video!.path).readAsBytesSync(),
+            filename: 'video.mp4', contentType: MediaType('video', 'mp4')),
         'title': title.text,
         'kind': 'video',
         'subreddit': subredditName,
@@ -553,10 +544,7 @@ class AddPostCubit extends Cubit<AddPostState> {
             data: formData,
             sentToken: CacheHelper.getData(key: 'token'))
         .then((value) {
-      print(value);
-
       if (value.statusCode == 201) {
-        print('Post success');
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
               backgroundColor: ColorManager.eggshellWhite,
@@ -565,17 +553,9 @@ class AddPostCubit extends Cubit<AddPostState> {
         Navigator.pushAndRemoveUntil(
           navigatorKey.currentContext!,
           MaterialPageRoute(
-              builder: (BuildContext context) => HomeScreenForMobile()),
+              builder: (BuildContext context) => const HomeScreenForMobile()),
           ModalRoute.withName('/'),
         );
-      } else if (value.statusCode == 400) {
-        print(value);
-      } else if (value.statusCode == 401) {
-        print('User not allowed to post in this subreddit');
-      } else if (value.statusCode == 404) {
-        print('Subreddit not found');
-      } else if (value.statusCode == 500) {
-        print('Server Error');
       }
     }).catchError((error) {
       ScaffoldMessenger.of(context).showSnackBar(

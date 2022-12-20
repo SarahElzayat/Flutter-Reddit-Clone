@@ -41,7 +41,6 @@ class PostTypeWidget extends StatelessWidget {
         }
       }),
       builder: ((context, state) {
-        final mediaQuery = MediaQuery.of(context);
         switch (addPostCubit.postType) {
           case 0:
             return const ImageWidget();

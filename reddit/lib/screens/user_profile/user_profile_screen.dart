@@ -1,28 +1,18 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
-
 import 'package:reddit/components/button.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
-import 'package:reddit/data/settings/settings_models/user_settings.dart';
-import 'package:reddit/screens/settings/change_profile_picture_screen.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
-import 'package:reddit/widgets/comments/comment.dart';
 import 'package:reddit/widgets/user_profile/user_profile_comments.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../components/helpers/enums.dart';
 import '../../cubit/add_post/cubit/add_post_cubit.dart';
 import '../../cubit/app_cubit/app_cubit.dart';
-import '../../data/user_profile.dart/about_user_model.dart';
 import '../../networks/constant_end_points.dart';
-import '../../networks/dio_helper.dart';
 import '../../widgets/user_profile/user_profile_posts.dart';
 import '../add_post/add_post.dart';
 import 'user_profile_edit_screen.dart';
@@ -119,10 +109,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                 setState(() {
                   if (value == 2) {
                     AddPostCubit.get(context).isSubreddit = false;
-                    print(AddPostCubit.get(context).isSubreddit);
                     AddPostCubit.get(context).addSubredditName(null);
                     Navigator.of(context).push(MaterialPageRoute(
-                      // TODO:pass the name of subreddit to add post
                       builder: (context) => const AddPost(),
                     ));
                   } else {
@@ -267,7 +255,6 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                                             is FollowOrUnfollowState ||
                                                         previous
                                                             is FollowOrUnfollowState) {
-                                                      print(true);
                                                       return true;
                                                     } else {
                                                       return false;

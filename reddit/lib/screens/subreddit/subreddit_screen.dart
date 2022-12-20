@@ -94,9 +94,7 @@ class _SubredditState extends State<Subreddit>
         create: (context) =>
             SearchCubit()..setSearchSubreddit(subredditCubit.subredditName),
         child: BlocConsumer<SearchCubit, SearchState>(
-          listener: (context, state) {
-            // TODO: implement listener
-          },
+          listener: (context, state) {},
           builder: (context, state) {
             return Scaffold(
               key: _scaffoldKey,
@@ -111,7 +109,6 @@ class _SubredditState extends State<Subreddit>
                       AddPostCubit.get(context)
                           .addSubredditName(subredditCubit.subredditName);
                       Navigator.of(context).push(MaterialPageRoute(
-                        // TODO:pass the name of subreddit to add post
                         builder: (context) => const AddPost(),
                       ));
                     } else {
@@ -175,9 +172,9 @@ class _SubredditState extends State<Subreddit>
                     )
                   ];
                 },
-                body: TabBarView(controller: controller, children: [
+                body: TabBarView(controller: controller, children: const [
                   SubredditPostsWidget(),
-                  const SubredditAboutWidget(),
+                  SubredditAboutWidget(),
                 ]),
               ),
             );

@@ -74,7 +74,6 @@ class _PollState extends State<Poll> {
                                     fontSize: (18 * mediaQuery.textScaleFactor)
                                         .toInt(),
                                     hintText: 'Opition ${index + 1}',
-                                    index: index,
                                   ),
                                 ),
                               ),
