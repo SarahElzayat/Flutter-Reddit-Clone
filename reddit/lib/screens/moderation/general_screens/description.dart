@@ -25,7 +25,7 @@ class _DescriptionState extends State<Description> {
           return Scaffold(
             appBar: moderationAppBar(context, 'Description', () {
               cubit.saveDescription();
-            }, cubit.isChanged),
+            }, cubit.descriptionChanged),
             body: Container(
                 color: ColorManager.darkGrey,
                 padding: const EdgeInsets.all(20),
