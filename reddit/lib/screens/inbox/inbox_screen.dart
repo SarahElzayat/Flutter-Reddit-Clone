@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
+import '../../components/helpers/color_manager.dart';
 import '../inbox/messages_screen.dart';
 import '../inbox/notifications_screen.dart';
 

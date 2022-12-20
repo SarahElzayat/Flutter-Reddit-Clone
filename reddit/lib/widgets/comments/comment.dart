@@ -6,19 +6,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional_switch.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/cubit/comment_notifier/comment_notifier_cubit.dart';
-import 'package:reddit/cubit/comment_notifier/comment_notifier_state.dart';
-import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
-import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
-import 'package:reddit/data/comment/comment_model.dart';
-import 'package:reddit/functions/post_functions.dart';
+import '../../components/helpers/color_manager.dart';
+import '../../components/helpers/enums.dart';
+import '../../cubit/comment_notifier/comment_notifier_cubit.dart';
+import '../../cubit/comment_notifier/comment_notifier_state.dart';
+import '../../cubit/post_notifier/post_notifier_cubit.dart';
+import '../../cubit/post_notifier/post_notifier_state.dart';
+import '../../cubit/user_profile/cubit/user_profile_cubit.dart';
+import '../../data/comment/comment_model.dart';
+import '../../functions/post_functions.dart';
+import '../posts/actions_cubit/post_comment_actions_state.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:reddit/screens/comments/add_comment_screen.dart';
-import 'package:reddit/screens/posts/post_screen_cubit/post_screen_cubit.dart';
-import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
-import 'package:reddit/widgets/posts/votes_widget.dart';
+import '../../screens/comments/add_comment_screen.dart';
+import '../../screens/posts/post_screen_cubit/post_screen_cubit.dart';
+import '../posts/actions_cubit/post_comment_actions_cubit.dart';
+import '../posts/votes_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../components/helpers/universal_ui/universal_ui.dart';
 import '../../data/post_model/post_model.dart';
@@ -48,6 +50,7 @@ class Comment extends StatefulWidget {
 }
 
 class _CommentState extends State<Comment> {
+  bool isCompressed = false;
   QuillController? _controller;
   final FocusNode _focusNode = FocusNode();
   QuillController getController() {
@@ -117,7 +120,7 @@ class _CommentState extends State<Comment> {
           create: (context) => PostAndCommentActionsCubit(
             post: widget.post,
             currentComment: widget.comment,
-          ),
+          )..getUserDetails(),
         ),
       ],
       child: BlocConsumer<CommentNotifierCubit, CommentsNotifierState>(
@@ -154,13 +157,13 @@ class _CommentState extends State<Comment> {
       highlightColor: Colors.transparent,
       onLongPress: () {
         setState(() {
-          widget.comment.isCollapsed = !widget.comment.isCollapsed;
+          isCompressed = !isCompressed;
         });
       },
       onTap: () {
-        if (widget.comment.isCollapsed) {
+        if (isCompressed) {
           setState(() {
-            widget.comment.isCollapsed = !widget.comment.isCollapsed;
+            isCompressed = !isCompressed;
           });
         }
       },
@@ -185,10 +188,10 @@ class _CommentState extends State<Comment> {
 
         // margin: EdgeInsets.only(left: widget.level * 10.0),
         child: ConditionalBuilder(
-          condition: widget.comment.isCollapsed,
+          condition: isCompressed,
           builder: (context) {
             return commentAsRow(
-                comment: widget.comment,
+                post: widget.comment,
                 showContent: true,
                 content:
                     _controller!.document.toPlainText().replaceAll('\\n', ''));
@@ -197,7 +200,7 @@ class _CommentState extends State<Comment> {
             return Column(
               children: [
                 commentAsRow(
-                  comment: widget.comment,
+                  post: widget.comment,
                   showDots: false,
                 ),
                 quillEditor,
@@ -246,54 +249,58 @@ class _CommentState extends State<Comment> {
   }
 
   Widget _commentsControlRow() {
-    return Row(
-      children: [
-        const Spacer(),
-        DropDownList(
-          post: widget.post,
-          comment: widget.comment,
-          itemClass: ItemsClass.comments,
-        ),
-        SizedBox(width: 5.w),
-        InkWell(
-          onTap: () {
-            setState(() {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AddCommentScreen(
-                            post: widget.post,
-                            parentComment: widget.comment,
-                          ))).then((value) {
-                PostScreenCubit.get(context).getCommentsOfPost();
-              });
-            });
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Icon(
-                Icons.reply_rounded,
-                color: ColorManager.greyColor,
-                size: min(5.5.w, 30),
+    return BlocBuilder<PostNotifierCubit, PostNotifierState>(
+      builder: (context, state) {
+        return Row(
+          children: [
+            const Spacer(),
+            DropDownList(
+              post: widget.post,
+              comment: widget.comment,
+              itemClass: ItemsClass.comments,
+            ),
+            SizedBox(width: 5.w),
+            InkWell(
+              onTap: () {
+                setState(() {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddCommentScreen(
+                                post: widget.post,
+                                parentComment: widget.comment,
+                              ))).then((value) {
+                    PostScreenCubit.get(context).getCommentsOfPost();
+                  });
+                });
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Icon(
+                    Icons.reply_rounded,
+                    color: ColorManager.greyColor,
+                    size: min(5.5.w, 30),
+                  ),
+                  const Text(
+                    'Reply',
+                    style: TextStyle(
+                      color: ColorManager.greyColor,
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
               ),
-              const Text(
-                'Reply',
-                style: TextStyle(
-                  color: ColorManager.greyColor,
-                  fontSize: 15,
-                ),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(width: 5.w),
-        BlocBuilder<PostNotifierCubit, PostNotifierState>(
-          builder: (context, state) {
-            return VotesPart(post: widget.post);
-          },
-        ),
-      ],
+            ),
+            SizedBox(width: 5.w),
+            BlocBuilder<PostNotifierCubit, PostNotifierState>(
+              builder: (context, state) {
+                return VotesPart(post: widget.post);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -301,51 +308,67 @@ class _CommentState extends State<Comment> {
     bool showDots = true,
     bool showContent = false,
     String content = '',
-    required CommentModel comment,
+    required CommentModel post,
   }) {
-    return Row(
-      children: [
-        subredditAvatar(small: true),
-        SizedBox(
-          width: min(5.w, 10),
-        ),
-        Text(
-          '${'u'}/${comment.commentedBy} ',
-          style: const TextStyle(
-            color: ColorManager.greyColor,
-            fontSize: 15,
-          ),
-        ),
-        Text(
-          '• ${timeago.format(DateTime.tryParse(comment.editTime ?? '') ?? DateTime.now(), locale: 'en_short')}',
-          style: const TextStyle(
-            color: ColorManager.greyColor,
-            fontSize: 15,
-          ),
-        ),
-        if (showContent)
-          Expanded(
-            child: Text(
-              ' • $content',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: ColorManager.greyColor,
-                fontSize: 15,
+    return BlocBuilder<PostAndCommentActionsCubit, PostActionsState>(
+      builder: (context, state) {
+        return InkWell(
+          onTap: () {
+            UserProfileCubit.get(context).showPopupUserWidget(
+              context,
+              comment.commentedBy ?? '',
+            );
+          },
+          child: Row(
+            children: [
+              subredditAvatar(
+                  small: true,
+                  imageUrl:
+                      PostAndCommentActionsCubit.get(context).user?.picture ??
+                          ''),
+              SizedBox(
+                width: min(5.w, 10),
               ),
-            ),
+              Text(
+                '${'u'}/${comment.commentedBy} ',
+                style: const TextStyle(
+                  color: ColorManager.greyColor,
+                  fontSize: 15,
+                ),
+              ),
+              Text(
+                '• ${timeago.format(DateTime.tryParse(comment.editTime ?? '') ?? DateTime.now(), locale: 'en_short')}',
+                style: const TextStyle(
+                  color: ColorManager.greyColor,
+                  fontSize: 15,
+                ),
+              ),
+              if (showContent)
+                const Expanded(
+                  child: Text(
+                    ' • ',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: ColorManager.greyColor,
+                      fontSize: 15,
+                    ),
+                  ),
+                ),
+              if (showDots)
+                BlocBuilder<PostNotifierCubit, PostNotifierState>(
+                  builder: (context, state) {
+                    return DropDownList(
+                      post: widget.post,
+                      comment: widget.comment,
+                      itemClass: ItemsClass.comments,
+                    );
+                  },
+                )
+            ],
           ),
-        if (showDots)
-          BlocBuilder<PostNotifierCubit, PostNotifierState>(
-            builder: (context, state) {
-              return DropDownList(
-                post: widget.post,
-                comment: widget.comment,
-                itemClass: ItemsClass.comments,
-              );
-            },
-          )
-      ],
+        );
+      },
     );
   }
 
@@ -359,7 +382,7 @@ class _CommentState extends State<Comment> {
         child: Column(
           children: [
             commentAsRow(
-              comment: widget.comment,
+              post: widget.comment,
               showDots: false,
             ),
             quillEditor,

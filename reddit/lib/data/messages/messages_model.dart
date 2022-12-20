@@ -1,10 +1,6 @@
-/// @author Abdelaziz Salah
-/// @date 20/12/2022
-/// This model is used to get the messages from the backend.
-
 class MessageModel {
-  dynamic before;
-  dynamic after;
+  String? before;
+  String? after;
   List<MessageChildren>? children;
 
   MessageModel({this.before, this.after, this.children});
@@ -20,8 +16,8 @@ class MessageModel {
     }
   }
 
-  Map<dynamic, dynamic> toJson() {
-    final Map<dynamic, dynamic> data = {
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {
       'before': before,
       'after': after,
       'children': children ?? '',
@@ -37,13 +33,13 @@ class MessageChildren {
 
   MessageChildren({this.id, this.data});
 
-  MessageChildren.fromJson(Map<dynamic, dynamic> json) {
+  MessageChildren.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     data = json['data'] != null ? MessageChild.fromJson(json['data']) : null;
   }
 
-  Map<dynamic, dynamic> toJson() {
-    final Map<dynamic, dynamic> newdata = {
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> newdata = {
       'id': id,
       'data': data,
     };
@@ -89,8 +85,7 @@ class MessageChild {
       this.postOwner});
 
   MessageChild.fromJson(Map<String, dynamic> json) {
-    // text = json['text'];
-    text = '';
+    text = json['text'];
     senderUsername = json['senderUsername'];
     receiverUsername = json['receiverUsername'];
     sendAt = json['sendAt'];

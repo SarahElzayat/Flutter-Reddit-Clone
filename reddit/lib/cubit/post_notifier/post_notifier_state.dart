@@ -17,7 +17,15 @@ class PostDeleted extends PostNotifierState {
   final String id;
   PostDeleted(this.id);
 }
+
 class CommentDeleted extends PostNotifierState {
   final String id;
   CommentDeleted(this.id);
+}
+
+class PostSavedState extends PostNotifierState {
+  final String id;
+  final String type;
+  final bool newState;
+  PostSavedState(this.id, this.type, this.newState);
 }

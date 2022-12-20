@@ -6,7 +6,8 @@ class DrawerCommunitiesModel {
   int? members;
   bool? isFavorite;
 
-  DrawerCommunitiesModel({this.title, this.picture, this.members,this.isFavorite});
+  DrawerCommunitiesModel(
+      {this.title, this.picture, this.members, this.isFavorite});
 
   DrawerCommunitiesModel.fromJson(Map<String, dynamic> json) {
     title = json['title'];

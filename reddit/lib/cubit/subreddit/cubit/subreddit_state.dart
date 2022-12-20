@@ -5,8 +5,8 @@ abstract class SubredditState {}
 
 class SubredditInitial extends SubredditState {}
 
-class subredditChange extends SubredditState {}
+class SubredditChange extends SubredditState {}
 
-class leaveSubredditState extends SubredditState {}
+class LeaveSubredditState extends SubredditState {}
 
-class joinSubredditState extends SubredditState {}
+class JoinSubredditState extends SubredditState {}

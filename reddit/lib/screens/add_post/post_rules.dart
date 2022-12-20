@@ -62,6 +62,7 @@ class _PostRulesState extends State<PostRules> {
                     addPostCubit.title.text = '';
                     addPostCubit.nsfw = false;
                     addPostCubit.spoiler = false;
+                    addPostCubit.isSubreddit = true;
                   }),
             )
           ],
@@ -76,7 +77,10 @@ class _PostRulesState extends State<PostRules> {
                 },
                 child: Row(
                   children: [
-                    Text(addPostCubit.subredditName!,
+                    Text(
+                        (addPostCubit.isSubreddit)
+                            ? addPostCubit.subredditName!
+                            : 'My Profile',
                         style: Theme.of(context).textTheme.titleSmall),
                     const Icon(Icons.keyboard_arrow_down)
                   ],
@@ -130,23 +134,24 @@ class _PostRulesState extends State<PostRules> {
           ),
           TextButton(
               onPressed: () {
-                navigator.push(
-                    MaterialPageRoute(builder: ((context) => ScheduleDate())));
+                navigator.push(MaterialPageRoute(
+                    builder: ((context) => const ScheduleDate())));
               },
               child: Row(
-                children: [
+                children: const [
                   Text('Schedule Post '),
                   Icon(Icons.arrow_forward_outlined)
                 ],
               )),
-          if (addPostCubit.flairs!.postFlairs!.length > 0)
+          if (addPostCubit.isSubreddit &&
+              addPostCubit.flairs!.postFlairs!.isNotEmpty)
             TextButton(
                 onPressed: () {
                   navigator.push(MaterialPageRoute(
-                      builder: ((context) => SubredditFlairs())));
+                      builder: ((context) => const SubredditFlairs())));
                 },
                 child: Row(
-                  children: [
+                  children: const [
                     Icon(Icons.local_offer_outlined),
                     Text(' Add Flair'),
                   ],

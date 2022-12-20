@@ -16,6 +16,7 @@ import '../../data/google_api/google_sign_in_api.dart';
 class ContinueWithGoOrFB extends StatelessWidget {
   const ContinueWithGoOrFB({super.key, required this.width});
 
+  // ignore: prefer_typing_uninitialized_variables
   final width;
 
   /// this function is used to sign in with google
@@ -41,14 +42,9 @@ class ContinueWithGoOrFB extends StatelessWidget {
 
   /// this function is used to sign in with facebook
   Future signInWithFacebook() async {
-    final user = await FacebookLoginAPI.login().catchError((err) {
-      print(err.toString());
-    });
-    print(user);
+    final user = await FacebookLoginAPI.login().catchError((err) {});
     // await GoogleSignInApi.logOut().catchError((err) {
-    //   print(err.toString());
     // });
-    // print('Signed out');
     // await FacebookLoginAPI.login();
   }
 

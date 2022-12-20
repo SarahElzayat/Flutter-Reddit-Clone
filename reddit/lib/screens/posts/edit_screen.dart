@@ -4,9 +4,9 @@ import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:giphy_get/giphy_get.dart';
 import 'package:logger/logger.dart';
-import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
-import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
-import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_state.dart';
+import '../../cubit/post_notifier/post_notifier_cubit.dart';
+import '../../widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
+import '../../widgets/posts/actions_cubit/post_comment_actions_state.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../components/helpers/color_manager.dart';
@@ -116,6 +116,25 @@ class _EditScreenState extends State<EditScreen> {
                       iconUnselectedColor: ColorManager.greyColor),
                 ),
                 const Spacer(),
+                if (_isPost) ...[
+                  // TextButton.icon(
+                  //     onPressed: () {},
+                  //     icon: Icon(Icons.eighteen_up_rating,
+                  //         color: ColorManager.red, size: 20),
+                  //     label: Text(
+                  //       'NSFW',
+                  //       style: TextStyle(color: ColorManager.red, fontSize: 20),
+                  //     )),
+                  // TextButton.icon(
+                  //     onPressed: () {},
+                  //     icon: Icon(Icons.privacy_tip_outlined,
+                  //         color: ColorManager.eggshellWhite, size: 20),
+                  //     label: Text(
+                  //       'Spoiler',
+                  //       style: TextStyle(
+                  //           color: ColorManager.eggshellWhite, fontSize: 20),
+                  //     )),
+                ],
                 if (!_isPost)
                   IconButton(
                       onPressed: () async {

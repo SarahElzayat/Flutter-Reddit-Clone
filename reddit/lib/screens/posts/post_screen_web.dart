@@ -38,9 +38,7 @@ class PostScreenWeb extends StatelessWidget {
     return BlocProvider(
       create: (context) => PostScreenCubit(
         post: post,
-      )
-        ..getCommentsOfPost()
-        ..getPostDetails(),
+      )..getCommentsOfPost(),
       child: BlocConsumer<PostScreenCubit, PostScreenState>(
         listener: (context, state) {
           if (state is CommentsError) {

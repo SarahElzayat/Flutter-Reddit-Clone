@@ -1,29 +1,25 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:delta_markdown/delta_markdown.dart';
-import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:mime/mime.dart';
-import 'package:reddit/data/add_post/subredditsSearchListModel.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
-
 import '../../../components/button.dart';
 import '../../../components/helpers/color_manager.dart';
 import '../../../components/snack_bar.dart';
 import '../../../constants/constants.dart';
 import '../../../data/add_post/subreddit_flairs.dart';
+import '../../../data/add_post/subreddits_search_list_model.dart';
 import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
 import '../../../screens/main_screen.dart';
 import '../../../shared/local/shared_preferences.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http_parser/http_parser.dart';
 
 part 'add_post_state.dart';
@@ -41,6 +37,8 @@ class AddPostCubit extends Cubit<AddPostState> {
   /// [postType] Number indicate The post Type
   /// This number is the index of post Type in add post screen
   int postType = 2;
+
+  bool isSubreddit = true;
 
   /// [images] Images that User Added
   List<XFile> images = <XFile>[];
@@ -447,7 +445,6 @@ class AddPostCubit extends Cubit<AddPostState> {
 
     if (postType == 0) {
       for (var item in images) {
-        final mimeType = lookupMimeType(item.path);
         MultipartFile file = await MultipartFile.fromFile(item.path,
             filename: item.path.split('/').last,
             contentType: MediaType('image', 'png'));
@@ -464,7 +461,7 @@ class AddPostCubit extends Cubit<AddPostState> {
       body = {
         'kind': postTypes[postType],
         'subreddit': subredditName,
-        'inSubreddit': true,
+        'inSubreddit': isSubreddit,
         'title': title.text,
         'images': imagesData,
         'imageCaptions': imageCaptions,
@@ -479,17 +476,13 @@ class AddPostCubit extends Cubit<AddPostState> {
       };
     }
     if (postType == 1) {
-      final mimeType = lookupMimeType(video!.path);
-
       body = {
-        'video': await MultipartFile.fromBytes(
-            File(video!.path).readAsBytesSync(),
-            filename: 'video.mp4',
-            contentType: MediaType('video', 'mp4')),
+        'video': MultipartFile.fromBytes(File(video!.path).readAsBytesSync(),
+            filename: 'video.mp4', contentType: MediaType('video', 'mp4')),
         'title': title.text,
         'kind': 'video',
         'subreddit': subredditName,
-        'inSubreddit': true,
+        'inSubreddit': isSubreddit,
         'nsfw': nsfw,
         'spoiler': spoiler,
         if (selectedFlair != null) 'flairId': selectedFlair,
@@ -500,10 +493,10 @@ class AddPostCubit extends Cubit<AddPostState> {
       body = {
         'kind': postTypes[postType],
         'subreddit': subredditName,
-        'inSubreddit': true,
+        'inSubreddit': isSubreddit,
         'title': title.text,
         'content': {
-          'ops': markdownToDelta(optionalText.text),
+          'ops': jsonDecode(markdownToDelta(optionalText.text)),
         },
         'nsfw': nsfw,
         'spoiler': spoiler,
@@ -515,7 +508,7 @@ class AddPostCubit extends Cubit<AddPostState> {
       body = {
         'kind': postTypes[postType],
         'subreddit': subredditName,
-        'inSubreddit': true,
+        'inSubreddit': isSubreddit,
         'title': title.text,
         'link': link.text,
         'nsfw': nsfw,
@@ -528,7 +521,7 @@ class AddPostCubit extends Cubit<AddPostState> {
       body = {
         'kind': postTypes[postType],
         'subreddit': subredditName,
-        'inSubreddit': true,
+        'inSubreddit': isSubreddit,
         'title': title.text,
         'nsfw': nsfw,
         'spoiler': spoiler,
@@ -539,7 +532,6 @@ class AddPostCubit extends Cubit<AddPostState> {
     }
 
     FormData formData = FormData.fromMap(body);
-
 
     await DioHelper.postData(
             path: submitPost,
@@ -552,18 +544,24 @@ class AddPostCubit extends Cubit<AddPostState> {
             data: formData,
             sentToken: CacheHelper.getData(key: 'token'))
         .then((value) {
-      ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
-          message: 'Post Successfully Uploaded', error: false));
-      if (value.statusCode == 200) {
-        Navigator.of(context)
-            .pushReplacementNamed(HomeScreenForMobile.routeName);
+      if (value.statusCode == 201) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              backgroundColor: ColorManager.eggshellWhite,
+              content: Text('Post success')),
+        );
+        Navigator.pushAndRemoveUntil(
+          navigatorKey.currentContext!,
+          MaterialPageRoute(
+              builder: (BuildContext context) => const HomeScreenForMobile()),
+          ModalRoute.withName('/'),
+        );
       }
     }).catchError((error) {
       ScaffoldMessenger.of(context).showSnackBar(
           responseSnackBar(message: 'An Error Please Try Again', error: true));
-
     });
-    emit(PostCreated());
+    // emit(PostCreated());
   }
 
   void subredditSearch(String subredditName) {
@@ -629,6 +627,7 @@ class AddPostCubit extends Cubit<AddPostState> {
                         if (isPop) {
                           title.text = '';
                           subredditName = null;
+                          isSubreddit = true;
                           changePostType(postTypeIndex: 2);
 
                           navigator.pop();
@@ -655,6 +654,7 @@ class AddPostCubit extends Cubit<AddPostState> {
     } else if (isPop) {
       title.text = '';
       subredditName = null;
+      isSubreddit = true;
       changePostType(postTypeIndex: 2);
 
       navigator.pop();

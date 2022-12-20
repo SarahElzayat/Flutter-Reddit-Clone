@@ -1,14 +1,9 @@
 /// Text Field Widget
 /// @author Haitham Mohamed
 /// @date 4/11/2022
-
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-
-import '../../cubit/add_post/cubit/add_post_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
 
 /// Special Text Field that used in Add Post Screen
 class AddPostTextField extends StatefulWidget {
@@ -28,17 +23,15 @@ class AddPostTextField extends StatefulWidget {
   final TextEditingController controller;
 
   final bool kIsWeb;
-  void Function(String)? onChanged;
+  final void Function(String)? onChanged;
 
-  int? index;
-  AddPostTextField({
+  const AddPostTextField({
     Key? key,
     // required this.textfieldType,
     required this.mltiline,
     required this.isBold,
     required this.fontSize,
     required this.hintText,
-    this.index,
     required this.onChanged,
     required this.controller,
     this.kIsWeb = false,
@@ -51,7 +44,6 @@ class AddPostTextField extends StatefulWidget {
 class _AddPostTextFieldState extends State<AddPostTextField> {
   @override
   Widget build(BuildContext context) {
-    final addPostCubit = BlocProvider.of<AddPostCubit>(context);
     return TextFormField(
       onChanged: widget.onChanged,
       keyboardType:

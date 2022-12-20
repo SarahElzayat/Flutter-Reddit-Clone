@@ -9,19 +9,13 @@ import 'package:reddit/components/square_text_field.dart';
 import 'package:reddit/screens/create_community_screen/cubit/create_community_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class CreateCommunityWeb extends StatefulWidget {
-  const CreateCommunityWeb({super.key});
-
-  @override
-  State<CreateCommunityWeb> createState() => _CreateCommunityWindow();
-}
-
 /// this widget creates a window to create a community in the web.
-class _CreateCommunityWindow extends State<CreateCommunityWeb> {
+class CreateCommunityWindow extends StatelessWidget {
   CommunityTypes? _chosenCommunityType = CommunityTypes.public;
   bool? isAdultContent = false;
   bool isEmpty = false;
   String communityName = '';
+  String? category = 'Sports';
   final String errorMessage = 'A community name is required';
 
   ///variables for handling the text field (still working on it)
@@ -43,11 +37,11 @@ class _CreateCommunityWindow extends State<CreateCommunityWeb> {
         body: Center(
             child: OutlinedButton(
                 child: const Text('Create Community'),
-                onPressed: () => _dialogBuilder(context))));
+                onPressed: () => dialogBuilder(context))));
   }
 
   ///This is the actual function that build the dialog (popup window) called in the build function
-  Future<void> _dialogBuilder(BuildContext context) {
+  Future<void> dialogBuilder(BuildContext context) {
     return showDialog(
         context: context,
         builder: (BuildContext context) => StatefulBuilder(
@@ -253,7 +247,7 @@ class _CreateCommunityWindow extends State<CreateCommunityWeb> {
                             style: TextStyle(
                                 color: ColorManager.eggshellWhite,
                                 fontWeight: FontWeight.w500,
-                                fontSize: 13.sp),
+                                fontSize: 12.sp),
                           ),
                           Theme(
                             data: ThemeData(
@@ -314,12 +308,13 @@ class _CreateCommunityWindow extends State<CreateCommunityWeb> {
                               textFontSize: 13.sp,
                               textFontWeight: FontWeight.bold,
                               onPressed: () => CreateCommunityCubit.get(context)
-                                  .creatCommunity(
-                                      communityName,
-                                      _chosenCommunityType,
-                                      isAdultContent,
-                                      'Sports',
-                                      context)),
+                                      .creatCommunity(
+                                    context,
+                                    _controller.text,
+                                    _chosenCommunityType,
+                                    isAdultContent,
+                                    'Sports',
+                                  )),
                           SizedBox(width: 1.w)
                         ],
                       ),
