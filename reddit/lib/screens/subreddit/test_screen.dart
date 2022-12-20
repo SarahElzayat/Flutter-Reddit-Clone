@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/cubit/app_cubit.dart';
 import 'package:reddit/screens/subreddit/subreddit_screen_web.dart';
-import '../../router.dart';
 import '../../theme/theme_data.dart';
 
 void main() {
@@ -21,7 +18,7 @@ class AddPostTestScreen extends StatelessWidget {
       title: 'Subreddit Test Screen',
       theme: appTheme(),
       // onGenerateRoute: AppRouter.onGenerateRoute,
-      home: SubredditWeb(),
+      home: const SubredditWeb(),
       // home: BlocProvider(
       //     create: ((context) => AddPostCubit()), child: const AddPost()),
     );

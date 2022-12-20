@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:reddit/components/bottom_sheet.dart';
 import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/constants/constants.dart';
 import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
 
 class SubredditPostsWidget extends StatefulWidget {
-  SubredditPostsWidget({Key? key}) : super(key: key);
+  const SubredditPostsWidget({Key? key}) : super(key: key);
 
   @override
   State<SubredditPostsWidget> createState() => _SubredditPostsWidgetState();
@@ -80,8 +79,8 @@ class _SubredditPostsWidgetState extends State<SubredditPostsWidget> {
                 children: [
                   Container(
                       margin: const EdgeInsets.only(right: 10),
-                      child: Icon(
-                          this._selectedIcons[subredditCubit.selectedIndex])),
+                      child:
+                          Icon(_selectedIcons[subredditCubit.selectedIndex])),
                   Text(
                     _text[subredditCubit.selectedIndex],
                     style: TextStyle(fontSize: 20 * mediaquery.textScaleFactor),
