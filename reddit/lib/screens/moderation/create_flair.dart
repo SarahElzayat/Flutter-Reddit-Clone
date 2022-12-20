@@ -46,6 +46,7 @@ class _CreateFlairState extends State<CreateFlair> {
               context,
               'Add Flair',
               () => cubit.addFlair(
+                  context,
                   _controller.text,
                   colorHex,
                   (textColorPicker)

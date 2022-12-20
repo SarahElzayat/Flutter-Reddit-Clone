@@ -843,7 +843,7 @@ class ModerationCubit extends Cubit<ModerationState> {
   ///@param[name]
   ///@param[backgroundColor]
   ///@param[textColor]
-  void addFlair(name, backgroundColor, textColor) {
+  void addFlair(context, name, backgroundColor, textColor) {
     FlairSettingModel flairSettings = FlairSettingModel(
         modOnly: modOnly,
         flairType: flairType,
@@ -862,6 +862,7 @@ class ModerationCubit extends Cubit<ModerationState> {
       if (value.statusCode == 200) {
         postFlairs.add(postFlair);
         emit(HandleFlairs());
+        Navigator.pop(context);
       }
     }).catchError((error) {
       error = error as DioError;
