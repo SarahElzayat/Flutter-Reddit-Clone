@@ -4,6 +4,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
+import 'package:reddit/screens/settings/change_profile_picture_screen.dart';
 
 import '../../components/helpers/color_manager.dart';
 import '../../networks/constant_end_points.dart';
@@ -46,7 +47,7 @@ class _UserProfileEditImageState extends State<UserProfileEditImage> {
                           : (userProfile.userData!.banner != null &&
                                   userProfile.userData!.banner != '')
                               ? Image.network(
-                                  userProfile.userData!.banner!,
+                                  '$baseUrl/${userProfile.userData!.banner!}',
                                   fit: BoxFit.cover,
                                 )
                               : Image.asset(
@@ -78,18 +79,19 @@ class _UserProfileEditImageState extends State<UserProfileEditImage> {
                                                 });
                                                 navigator.pop();
                                               },
-                                              child: Text('Add Banner')),
+                                              child: const Text('Add Banner')),
                                           TextButton(
                                               onPressed: () {
                                                 userProfile.deleteBannerImage();
                                                 navigator.pop();
                                               },
-                                              child: Text('Remove Banner'))
+                                              child:
+                                                  const Text('Remove Banner'))
                                         ]),
                                   );
                                 }));
                           }),
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.camera_alt_outlined,
                             size: 25,
                           ),
@@ -102,36 +104,41 @@ class _UserProfileEditImageState extends State<UserProfileEditImage> {
           Align(
             alignment: Alignment.bottomLeft,
             child: Container(
-              margin: EdgeInsets.only(left: 20),
+              margin: const EdgeInsets.only(left: 20),
               height: 60,
               width: 60,
-              child: Stack(
-                children: [
-                  CircleAvatar(
-                    radius: 30,
-                    child: (userProfile.userData!.picture != null &&
-                            userProfile.userData!.picture != '')
-                        ? Image.network(
-                            '$baseUrl/${userProfile.userData!.picture!}',
-                            fit: BoxFit.cover,
-                          )
-                        : Image.asset(
-                            'assets/images/Logo.png',
-                            fit: BoxFit.cover,
-                          ),
-                  ),
-                  Align(
-                      alignment: Alignment.bottomRight,
-                      child: InkWell(
-                          onTap: (() {}),
-                          child: const Icon(
-                            Icons.camera_alt_outlined,
-                            shadows: <Shadow>[
-                              Shadow(color: Colors.black, blurRadius: 20.0),
-                              Shadow(color: Colors.black, blurRadius: 20.0)
-                            ],
-                          )))
-                ],
+              child: InkWell(
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ChangeProfilePicutre(),
+                    )),
+                child: Stack(
+                  children: [
+                    CircleAvatar(
+                      radius: 40,
+                      backgroundImage: (userProfile.userData!.picture == null ||
+                              userProfile.userData!.picture == '')
+                          ? Image.asset('assets/images/Logo.png')
+                              as ImageProvider
+                          : NetworkImage(
+                              '$baseUrl/${userProfile.userData!.picture!}',
+                              // fit: BoxFit.cover,
+                            ),
+                    ),
+                    Align(
+                        alignment: Alignment.bottomRight,
+                        child: InkWell(
+                            onTap: (() {}),
+                            child: const Icon(
+                              Icons.camera_alt_outlined,
+                              shadows: <Shadow>[
+                                Shadow(color: Colors.black, blurRadius: 20.0),
+                                Shadow(color: Colors.black, blurRadius: 20.0)
+                              ],
+                            )))
+                  ],
+                ),
               ),
             ),
           )
