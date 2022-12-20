@@ -57,7 +57,6 @@ class _PickCommunityScreenState extends State<PickCommunityScreen> {
                       shrinkWrap: true,
                       itemCount: cubit.yourCommunitiesList.length,
                       itemBuilder: (context, index) => InkWell(
-                        //TODO share post
                         onTap: () {
                           Navigator.push(
                               context,

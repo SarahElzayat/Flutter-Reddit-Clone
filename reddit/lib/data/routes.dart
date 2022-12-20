@@ -75,6 +75,7 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   NotificationScreen.routeName: (ctx) => const NotificationScreen(),
   SignleNotificationScreen.routeName: (ctx) => const SignleNotificationScreen(),
   SingleMessageScreen.routeName: (ctx) => const SingleMessageScreen(),
+
   CreateMessageScreen.routeName: (ctx) => const CreateMessageScreen(),
 
   // home screens
@@ -99,5 +100,5 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   CommunitySearch.routeName: (ctx) => const CommunitySearch(),
   PostRules.routeName: (ctx) => const PostRules(),
   UserProfileScreen.routeName: (ctx) => const UserProfileScreen(),
-  UserProfileEditScreen.routeName: (ctx) => const UserProfileEditScreen(),
+  UserProfileEditScreen.routeName: (ctx) => UserProfileEditScreen(),
 };

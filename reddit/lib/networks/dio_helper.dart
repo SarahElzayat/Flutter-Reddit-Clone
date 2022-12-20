@@ -29,7 +29,6 @@ class DioHelper {
         /// I want it to wait 10 seconds before ending
         // connectTimeout: 10 * 1000,
 
-        // /// time waited to receive something from the server
         // receiveTimeout: 20 * 1000,
 
         /// this is a map of headers
@@ -137,14 +136,13 @@ class DioHelper {
     required String path,
   }) async {
     Options options;
-
     options = Options(
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json; charset=utf-8'
       },
     );
-
+    
     return await dio.get(
       path,
       queryParameters: query,
