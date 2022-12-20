@@ -23,4 +23,8 @@ class PostNotifierCubit extends Cubit<PostNotifierState> {
   void deletedComment(String id) {
     emit(CommentDeleted(id));
   }
+
+  void postsSaveChanged(String id, String type, bool newState) {
+    PostSavedState(id, type, newState);
+  }
 }

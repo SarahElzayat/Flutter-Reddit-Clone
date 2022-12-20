@@ -31,17 +31,17 @@ class MenuItem {
 
 /// container class of all the menu items that are shown iin the dropDownList
 class MenuItems {
-  static const List<MenuItem> publicOutItems = [hide, report, block];
+  static const List<MenuItem> publicOutItems = [hide, block];
   static const List<MenuItem> publicInItems = [
     share,
     follow,
     copy,
     save,
     hide,
-    report,
+    // report,
     block
   ];
-  static const List<MenuItem> publicItemsSaved = [unsave, hide, report, block];
+  static const List<MenuItem> publicItemsSaved = [unsave, hide, block];
   static const List<MenuItem> myPostsOutItems = [save, share, delete];
   static const List<MenuItem> myPostsInItems = [
     share,
@@ -56,7 +56,6 @@ class MenuItems {
     copy,
     collapse,
     block,
-    report,
     markNSFW
   ];
 
@@ -78,7 +77,7 @@ class MenuItems {
       MenuItem(text: 'Collapse Thread', icon: Icons.compare_arrows);
   static const unsave = MenuItem(text: 'UnSave', icon: Icons.bookmark);
   static const hide = MenuItem(text: 'Hide post', icon: Icons.visibility_off);
-  static const report = MenuItem(text: 'Report', icon: Icons.flag_outlined);
+  // static const report = MenuItem(text: 'Report', icon: Icons.flag_outlined);
   static const block = MenuItem(text: 'Block Acount', icon: Icons.block);
   static const share = MenuItem(text: 'Share', icon: Icons.share);
   static const delete = MenuItem(text: 'Delete', icon: Icons.delete);
@@ -114,12 +113,11 @@ class MenuItems {
       case MenuItems.unsave:
         //Do something
         cubit.save().then((value) {
-          PostNotifierCubit.get(context).notifyPosts();
+          PostNotifierCubit.get(context).postsSaveChanged(
+              post.id ?? '', cubit.getModel is PostModel ? 'post' : 'comment', cubit.getModel.saved);
         });
         break;
-      case MenuItems.report:
-        //Do something
-        break;
+
       case MenuItems.hide:
         //Do something
         cubit.hide().then((value) {
