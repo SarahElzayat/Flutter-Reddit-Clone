@@ -308,12 +308,13 @@ class CreateCommunityWindow extends StatelessWidget {
                               textFontSize: 13.sp,
                               textFontWeight: FontWeight.bold,
                               onPressed: () => CreateCommunityCubit.get(context)
-                                  .creatCommunity(
-                                      context,
-                                      _controller.text,
-                                      _chosenCommunityType,
-                                      isAdultContent,
-                                      'Sports')),
+                                      .creatCommunity(
+                                    context,
+                                    _controller.text,
+                                    _chosenCommunityType,
+                                    isAdultContent,
+                                    'Sports',
+                                  )),
                           SizedBox(width: 1.w)
                         ],
                       ),

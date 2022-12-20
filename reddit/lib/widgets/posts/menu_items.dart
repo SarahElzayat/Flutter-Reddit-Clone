@@ -2,11 +2,19 @@
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
 
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/snack_bar.dart';
+import 'package:reddit/cubit/app_cubit/app_cubit.dart';
+
 import 'package:reddit/data/post_model/post_model.dart';
+import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/screens/posts/edit_screen.dart';
+import 'package:reddit/screens/posts/pick_community.dart';
+import 'package:reddit/screens/posts/share_to_community.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 import '../../functions/post_functions.dart';
@@ -27,17 +35,17 @@ class MenuItem {
 
 /// container class of all the menu items that are shown iin the dropDownList
 class MenuItems {
-  static const List<MenuItem> publicOutItems = [hide, report, block];
+  static const List<MenuItem> publicOutItems = [hide, block];
   static const List<MenuItem> publicInItems = [
     share,
     follow,
     copy,
     save,
     hide,
-    report,
+    // report,
     block
   ];
-  static const List<MenuItem> publicItemsSaved = [unsave, hide, report, block];
+  static const List<MenuItem> publicItemsSaved = [unsave, hide, block];
   static const List<MenuItem> myPostsOutItems = [save, share, delete];
   static const List<MenuItem> myPostsInItems = [
     share,
@@ -52,7 +60,6 @@ class MenuItems {
     copy,
     collapse,
     block,
-    report,
     markNSFW
   ];
 
@@ -74,7 +81,7 @@ class MenuItems {
       MenuItem(text: 'Collapse Thread', icon: Icons.compare_arrows);
   static const unsave = MenuItem(text: 'UnSave', icon: Icons.bookmark);
   static const hide = MenuItem(text: 'Hide post', icon: Icons.visibility_off);
-  static const report = MenuItem(text: 'Report', icon: Icons.flag_outlined);
+  // static const report = MenuItem(text: 'Report', icon: Icons.flag_outlined);
   static const block = MenuItem(text: 'Block Acount', icon: Icons.block);
   static const share = MenuItem(text: 'Share', icon: Icons.share);
   static const delete = MenuItem(text: 'Delete', icon: Icons.delete);
@@ -113,13 +120,19 @@ class MenuItems {
           PostNotifierCubit.get(context).notifyPosts();
         });
         break;
-      case MenuItems.report:
-        //Do something
-        break;
+
       case MenuItems.hide:
         //Do something
-        cubit.save().then((value) {
-          PostNotifierCubit.get(context).notifyPosts();
+        cubit.hide().then((value) {
+          if (value == true) {
+            PostNotifierCubit.get(context).deletedPost(cubit.post.id!);
+            ScaffoldMessenger.of(context).showSnackBar(
+              responseSnackBar(
+                message: 'Post Hidden',
+                error: false,
+              ),
+            );
+          }
         });
         break;
       case MenuItems.block:
@@ -130,11 +143,33 @@ class MenuItems {
 
         break;
       case MenuItems.share:
+        showModalBottomSheet(
+          context: context,
+          builder: (context) =>
+              shareModalBottomSheet(context: context, post: post),
+        );
         //Do something
+
         break;
       case MenuItems.delete:
         //Do something
-        cubit.delete();
+        cubit.delete().then((value) {
+          if (value == null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              responseSnackBar(
+                message: 'Something went wrong',
+                error: true,
+              ),
+            );
+            return;
+          }
+          if (value) {
+            PostNotifierCubit.get(context).deletedPost(cubit.post.id!);
+          } else {
+            PostNotifierCubit.get(context)
+                .deletedComment(cubit.currentComment!.id!);
+          }
+        });
         PostNotifierCubit.get(context).notifyPosts();
 
         break;
@@ -157,7 +192,7 @@ class MenuItems {
         cubit.copyText().then((value) {
           ScaffoldMessenger.of(context).showSnackBar(
             responseSnackBar(
-              message: 'Your copy is ready for pasta!',
+              message: 'Your copy is ready for paste!',
               error: false,
             ),
           );
@@ -170,9 +205,73 @@ class MenuItems {
           );
         });
         break;
-
+      case MenuItems.collapse:
+        cubit.collapse();
+        PostNotifierCubit.get(context).notifyPosts();
+        break;
       default:
         break;
     }
   }
+}
+
+shareModalBottomSheet(
+    {required BuildContext context, required PostModel post}) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        shareIcon(
+            icon: Icons.fork_right,
+            label: 'Community',
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PickCommunityScreen(
+                    sharedPost: post,
+                  ),
+                ))),
+        shareIcon(
+            icon: Icons.person_outline_rounded,
+            label: 'Profile',
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ShareToCommunityScreen(
+                    isCommunity: false,
+                    username: AppCubit.get(context).username,
+                    sharedPost: post,
+                  ),
+                ))),
+      ],
+    ),
+  );
+}
+
+Widget shareIcon({required IconData icon, required label, required onPressed}) {
+  return Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      InkWell(
+        onTap: onPressed,
+        child: CircleAvatar(
+          radius: 30,
+          backgroundColor: ColorManager.black,
+          child: Icon(icon),
+        ),
+      ),
+      const SizedBox(
+        height: 10,
+      ),
+      Text(
+        label,
+        style: const TextStyle(
+          fontSize: 16,
+          color: ColorManager.eggshellWhite,
+        ),
+      )
+    ],
+  );
 }

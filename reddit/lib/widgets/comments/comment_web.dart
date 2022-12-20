@@ -14,8 +14,8 @@ import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/functions/post_functions.dart';
+import 'package:reddit/screens/comments/add_comment_web.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:reddit/screens/comments/add_comment_screen.dart';
 import 'package:reddit/screens/posts/post_screen_cubit/post_screen_cubit.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:reddit/widgets/posts/votes_widget.dart';
@@ -78,6 +78,7 @@ class _CommentWebState extends State<CommentWeb> {
     if (_controller == null) {
       return Container();
     }
+
     Widget quillEditor = MouseRegion(
       cursor: SystemMouseCursors.text,
       child: QuillEditor(
@@ -206,6 +207,14 @@ class _CommentWebState extends State<CommentWeb> {
                 // _commentsRow(),
 
                 _commentsControlRow(),
+                if (openReplay)
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: AddCommentWeb(
+                      post: widget.post,
+                      parentComment: widget.comment,
+                    ),
+                  ),
                 widget.comment.children != null
                     ? Column(
                         children: widget.comment.children!
@@ -259,15 +268,7 @@ class _CommentWebState extends State<CommentWeb> {
         InkWell(
           onTap: () {
             setState(() {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AddCommentScreen(
-                            post: widget.post,
-                            parentComment: widget.comment,
-                          ))).then((value) {
-                PostScreenCubit.get(context).getCommentsOfPost();
-              });
+              openReplay = !openReplay;
             });
           },
           child: Row(
@@ -298,36 +299,6 @@ class _CommentWebState extends State<CommentWeb> {
     );
   }
 
-  _addCommentsRow() {
-    return Row(
-      children: [
-        Expanded(
-          child: Row(
-            children: [
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    isCompressed = !isCompressed;
-                  });
-                },
-                icon: const Icon(Icons.arrow_drop_down),
-              ),
-              // const  Text('Comments'),
-            ],
-          ),
-        ),
-        IconButton(
-          onPressed: () {
-            setState(() {
-              isCompressed = !isCompressed;
-            });
-          },
-          icon: const Icon(Icons.arrow_drop_up),
-        ),
-      ],
-    );
-  }
-
   Widget commentAsRow({
     bool showDots = true,
     bool showContent = false,
@@ -336,7 +307,12 @@ class _CommentWebState extends State<CommentWeb> {
   }) {
     return Row(
       children: [
-        subredditAvatar(small: true),
+        subredditAvatar(
+            small: true,
+            imageUrl:
+                PostAndCommentActionsCubit.get(context).subreddit?.picture ??
+                    PostAndCommentActionsCubit.get(context).user?.picture ??
+                    ''),
         SizedBox(
           width: min(5.w, 10),
         ),

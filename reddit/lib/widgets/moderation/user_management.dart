@@ -5,14 +5,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:reddit/components/bottom_sheet.dart';
 import 'package:reddit/components/button.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/components/moderation_components/modtools_components.dart';
 import 'package:reddit/components/search_field.dart';
-import 'package:reddit/router.dart';
 import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
 import 'package:reddit/screens/moderation/user_management_screens/add_approved_user.dart';
 import 'package:reddit/screens/moderation/user_management_screens/add_banned_user.dart';

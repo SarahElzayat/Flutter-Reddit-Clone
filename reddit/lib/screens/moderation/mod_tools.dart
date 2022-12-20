@@ -340,7 +340,7 @@ class _ModToolsState extends State<ModTools> {
                     child: Column(
                       children: [
                         SizedBox(
-                          height: 75.h,
+                          height: 100.h,
                           child: ListTileContainer(
                               handler: generalFunctions,
                               title: '      GENERAL',

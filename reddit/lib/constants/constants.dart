@@ -198,3 +198,5 @@ const List<String> postOptions = ['Any', 'Links Only', 'Text Post Only'];
 const List<String> suggestedSort = ['Top', 'New', 'Best', 'Old'];
 
 String? token;
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

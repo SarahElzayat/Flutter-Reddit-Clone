@@ -76,8 +76,8 @@ class _WelcomeMessageState extends State<WelcomeMessage> {
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(50))),
                                 child: Center(
-                                    child: Text(cubit.settings.welcomeMessage
-                                        .toString())),
+                                    child: Text(
+                                        cubit.welcomeMessageController.text)),
                               ))),
                       text: 'PREVIEW MESSAGE',
                       splashColor: ColorManager.white.withOpacity(0.5),

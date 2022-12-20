@@ -6,10 +6,10 @@ import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/data/search/search_result_profile_model.dart';
 import 'package:reddit/screens/search/cubit/search_cubit.dart';
 
+import '../../networks/constant_end_points.dart';
 
 ///@param [model] model of user result
 class ProfileResultContainer extends StatelessWidget {
-
   const ProfileResultContainer({super.key, required this.model});
   final SearchResultProfileModel model;
 
@@ -34,7 +34,7 @@ class ProfileResultContainer extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 8.0),
                     child: CircleAvatar(
                       backgroundImage: model.data!.avatar != null
-                          ? NetworkImage(model.data!.avatar.toString())
+                          ? NetworkImage('$baseUrl/${model.data!.avatar}')
                           : null,
                       radius: 20,
                     ),
@@ -48,7 +48,7 @@ class ProfileResultContainer extends StatelessWidget {
                         'u/${model.data!.username.toString()}',
                         style: const TextStyle(
                             fontSize: 16, color: ColorManager.eggshellWhite),
-                      ),// const Spacer(),
+                      ), // const Spacer(),
                       Text(
                         '${model.data!.karma} karma',
                         style: const TextStyle(
@@ -68,7 +68,6 @@ class ProfileResultContainer extends StatelessWidget {
                           username: model.data!.username,
                           follow: !model.data!.following!);
                       model.data!.following = !model.data!.following!;
-                      
                     },
                     child: Text(
                       model.data!.following! ? 'Following' : 'Follow',

@@ -100,10 +100,10 @@ class ModerationCubit extends Cubit<ModerationState> {
         //Initialize community settings in all screens
 
         //initialize community description to appear in text field
-        descriptionController.text = settings.communityDescription.toString();
+        descriptionController.text = (settings.communityDescription ?? '');
 
         //initialize community welcome message to appear in text field
-        welcomeMessageController.text = settings.welcomeMessage.toString();
+        welcomeMessageController.text = (settings.welcomeMessage ?? '');
 
         //initialize community location to appear in text field
         regionController.text = settings.region.toString();

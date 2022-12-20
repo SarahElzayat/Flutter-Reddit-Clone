@@ -27,6 +27,10 @@ class OpError extends PostActionsState {
   OpError({this.error});
 }
 
+class SubDetailsFetched extends PostActionsState {}
+
+class JoinSubredditState extends PostActionsState {}
+
 class CommentsModToolsToggled extends PostActionsState {}
 
 class SavedChangedState extends PostActionsState {}
@@ -44,3 +48,5 @@ class PostsError extends PostActionsState {}
 class PostsLoaded extends PostActionsState {}
 
 class PostsLoading extends PostActionsState {}
+
+class UserDetailsFetched extends PostActionsState {}
