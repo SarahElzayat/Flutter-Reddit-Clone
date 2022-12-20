@@ -208,7 +208,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                                 userProfileCubit
                                                         .userData!.picture ==
                                                     '')
-                                            ? Image.asset(
+                                            ? const AssetImage(
                                                     'assets/images/Logo.png')
                                                 as ImageProvider
                                             : NetworkImage(

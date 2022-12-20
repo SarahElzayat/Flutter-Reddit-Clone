@@ -40,11 +40,12 @@ class _ResultsPostsState extends State<ResultsPosts> {
     final SearchCubit cubit = SearchCubit.get(context);
     return BlocConsumer<SearchCubit, SearchState>(
       listener: (context, state) {
-        if (state is NoMoreResultsToLoadState)
+        if (state is NoMoreResultsToLoadState) {
           ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
             message: 'No more results!',
             error: false,
           ));
+        }
       },
       builder: (context, state) {
         return cubit.posts.isEmpty
