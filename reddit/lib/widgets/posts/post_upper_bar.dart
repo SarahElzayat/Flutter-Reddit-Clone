@@ -57,20 +57,12 @@ class PostUpperBar extends StatelessWidget {
               },
               caseBuilders: {
                 ShowingOtions.onlyUser: (ctx) {
-                  return singleRow(
-                      context: context,
-                      sub: false,
-                      showIcon: true,
-                      post: post,
-                      isWeb: isWeb);
+                  return singleRow(context,
+                      sub: false, showIcon: true, post: post, isWeb: isWeb);
                 },
                 ShowingOtions.onlySubreddit: (_) {
-                  return singleRow(
-                      context: context,
-                      sub: true,
-                      showIcon: true,
-                      post: post,
-                      isWeb: isWeb);
+                  return singleRow(context,
+                      sub: true, showIcon: true, post: post, isWeb: isWeb);
                 },
                 ShowingOtions.both: (_) {
                   return _bothRows(context);
@@ -101,7 +93,11 @@ class PostUpperBar extends StatelessWidget {
     return SizedBox(
       child: Row(
         children: [
-          subredditAvatar(),
+          subredditAvatar(
+              imageUrl:
+                  PostAndCommentActionsCubit.get(context).subreddit?.picture ??
+                      PostAndCommentActionsCubit.get(context).user?.picture ??
+                      ''),
           SizedBox(
             width: min(2.w, 10),
           ),
@@ -123,12 +119,8 @@ class PostUpperBar extends StatelessWidget {
                     ),
                   ),
                 ),
-              singleRow(
-                  context: context,
-                  sub: false,
-                  showDots: false,
-                  post: post,
-                  isWeb: isWeb),
+              singleRow(context,
+                  sub: false, showDots: false, post: post, isWeb: isWeb),
             ],
           ),
           const Spacer(),

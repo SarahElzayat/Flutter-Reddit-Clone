@@ -118,7 +118,9 @@ class MenuItems {
         //Do something
         cubit.save().then((value) {
           PostNotifierCubit.get(context).postsSaveChanged(
-              post.id ?? '', cubit.getModel is PostModel ? 'post' : 'comment', cubit.getModel.saved);
+              post.id ?? '',
+              cubit.getModel is PostModel ? 'post' : 'comment',
+              cubit.getModel.saved);
         });
         break;
 

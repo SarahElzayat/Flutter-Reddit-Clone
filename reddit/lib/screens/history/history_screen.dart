@@ -257,7 +257,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                             ? ShowingOtions.both
                                             : ShowingOtions.onlyUser,
                                   ),
-
                                   itemCount: cubit.history.length,
                                   shrinkWrap: true,
                                 );

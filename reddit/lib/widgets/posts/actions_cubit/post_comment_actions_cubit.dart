@@ -12,6 +12,7 @@ import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/data/post_model/insights_model.dart';
 import 'package:reddit/data/post_model/post_model.dart';
+import 'package:reddit/data/user_data_model/user_data_model.dart';
 import 'package:reddit/functions/post_functions.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import '../../../data/comment/sended_comment_model.dart';
@@ -302,6 +303,21 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
         // emit(subredditChange());
       }
     }).catchError((error) {
+      return;
+    });
+  }
+
+  UserDataModel? user;
+  void getUserDetails() {
+    String? a = isPost ? post.postedBy : currentComment!.commentedBy;
+    DioHelper.getData(path: '/user/$a/about').then((value) {
+      if (value.statusCode == 200) {
+        user = UserDataModel.fromJson(value.data);
+        emit(UserDetailsFetched());
+      }
+    }).catchError((error) {
+      logger.wtf('USER:' + (error as DioError?)?.response?.data);
+
       return;
     });
   }
