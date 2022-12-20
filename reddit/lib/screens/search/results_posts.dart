@@ -64,8 +64,6 @@ class _ResultsPostsState extends State<ResultsPosts> {
                       upperRowType: cubit.posts[index].inYourSubreddit == null
                           ? ShowingOtions.onlyUser
                           : ShowingOtions.both,
-                      // TODO check this
-                      // upperRowType: ShowingOtions.onlyUser,
                       post: cubit.posts[index],
                       postView: PostView.classic),
                 ),

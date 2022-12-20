@@ -74,7 +74,7 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   InboxScreen.routeName: (ctx) => const InboxScreen(),
   NotificationScreen.routeName: (ctx) => const NotificationScreen(),
   SignleNotificationScreen.routeName: (ctx) => const SignleNotificationScreen(),
-  SingleMessageScreen.routeName: (ctx) => SingleMessageScreen(),
+  SingleMessageScreen.routeName: (ctx) => const SingleMessageScreen(),
 
   // home screens
   HomeScreenForMobile.routeName: (ctx) => const HomeScreenForMobile(),

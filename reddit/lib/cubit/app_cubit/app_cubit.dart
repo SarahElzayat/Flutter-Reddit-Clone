@@ -9,13 +9,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/comment/comment_model.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http_parser/http_parser.dart';
 
 import 'package:reddit/data/home/drawer_communities_model.dart';
-import 'package:reddit/data/saved/saved_comments_model.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/chat_screen.dart';
 import 'package:reddit/screens/inbox/Inbox_screen.dart';
-import 'package:reddit/screens/inbox/notifications_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/saved/saved_comments.dart';
@@ -25,7 +24,6 @@ import '../../data/temp_data/tmp_data.dart';
 import '../../networks/constant_end_points.dart';
 import '../../networks/dio_helper.dart';
 import '../../screens/bottom_navigation_bar_screens/add_post_screen.dart';
-import '../../screens/comments/add_comment_screen.dart';
 import '../../screens/saved/saved_posts.dart';
 import '../../widgets/posts/post_widget.dart';
 

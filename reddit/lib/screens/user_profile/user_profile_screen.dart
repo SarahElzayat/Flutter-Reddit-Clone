@@ -8,13 +8,8 @@ import 'package:intl/intl.dart';
 import 'package:reddit/components/button.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
-import 'package:reddit/widgets/comments/comment.dart';
 import 'package:reddit/widgets/user_profile/user_profile_comments.dart';
 
-import '../../components/helpers/enums.dart';
-import '../../data/user_profile.dart/about_user_model.dart';
-import '../../networks/dio_helper.dart';
 import '../../widgets/user_profile/user_profile_posts.dart';
 import 'user_profile_edit_screen.dart';
 
@@ -99,7 +94,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
           backgroundColor: ColorManager.blue,
           expandedHeight: sliverHeight,
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(50),
+            preferredSize: const Size.fromHeight(50),
             child: Container(
               color: ColorManager.darkGrey,
               child: TabBar(
@@ -184,7 +179,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                     ),
                                     Padding(
                                       padding:
-                                          EdgeInsets.only(left: 15, top: 10),
+                                          const EdgeInsets.only(left: 15, top: 10),
                                       child: Button(
                                           text: 'Edit',
                                           textFontSize: 20,
@@ -215,10 +210,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                     ),
                     Container(
                       key: _con1,
-                      padding: EdgeInsets.only(bottom: 5),
+                      padding: const EdgeInsets.only(bottom: 5),
                       color: ColorManager.black,
                       child: Container(
-                        margin: EdgeInsets.only(left: 15),
+                        margin: const EdgeInsets.only(left: 15),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           // key: _con1,
@@ -229,7 +224,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                           '')
                                   ? userProfileCubit.username!
                                   : userProfileCubit.userData!.displayName!,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 25, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(
@@ -249,12 +244,12 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                 'u/${userProfileCubit.userData!.displayName} *${userProfileCubit.userData!.karma} Karma *${DateFormat('dd/MM/yyyy').format((userProfileCubit.userData!.cakeDate!))}'),
                             Text(userProfileCubit.userData!.about ?? ''),
                             Container(
-                              margin: EdgeInsets.symmetric(vertical: 2),
+                              margin: const EdgeInsets.symmetric(vertical: 2),
                               child: MaterialButton(
                                 padding: EdgeInsets.zero,
                                 onPressed: (() {}),
                                 child: Container(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       horizontal: 15, vertical: 5),
                                   decoration: BoxDecoration(
                                       color: ColorManager.grey,
@@ -287,7 +282,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
               // Comment(post: post, comment: comment,viewType: CommentView.inSubreddits,)
               // Text('Comments'),
               UserProfileComments(),
-              Text('About')
+              const Text('About')
             ]),
           ),
         ),
