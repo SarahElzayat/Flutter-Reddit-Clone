@@ -36,10 +36,11 @@ class SendMessageModel {
     final Map<String, dynamic> data = {
       'text': text,
       'receiverUsername': '/r/$receiverUsername',
-      'subject': 're:subject',
+      'subject': 'subject',
       'subredditName': subredditName,
       'repliedMsgId': repliedMsgId,
       'isReply': isReply,
+      // 'senderUsername': '/u/zizo',
 
       // I am always the one who send the message.
       'senderUsername': '/u/${CacheHelper.getData(key: 'username')}',
