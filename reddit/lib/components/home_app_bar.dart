@@ -18,6 +18,7 @@ import '../cubit/app_cubit/app_cubit.dart';
 
 /// this is a utility function used to mark all the items in the inbox as read
 void markAllAsRead(context) async {
+  // marking all notifications as read
   await DioHelper.patchData(
           path: markAllNotificationsAsRead, data: {}, token: token)
       .then((response) {
@@ -32,7 +33,49 @@ void markAllAsRead(context) async {
         .showSnackBar(responseSnackBar(message: error.message, error: true));
   });
 
-  /// TODO: check if you should also mark all the messages as read.
+  // marking all post replies as read
+  await DioHelper.patchData(
+          path: readAllMsgs, data: {'type': 'Post Replies'}, token: token)
+      .then((response) {
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+          message: 'all Post Replies has been marked as read 😊',
+          error: false));
+    }
+  }).onError((error, stackTrace) {
+    error = error as DioError;
+    ScaffoldMessenger.of(context)
+        .showSnackBar(responseSnackBar(message: error.message, error: true));
+  });
+
+  // marking all messages as read
+  await DioHelper.patchData(
+          path: readAllMsgs, data: {'type': 'Messages'}, token: token)
+      .then((response) {
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+          message: 'all Messages has been marked as read 😊', error: false));
+    }
+  }).onError((error, stackTrace) {
+    error = error as DioError;
+    ScaffoldMessenger.of(context)
+        .showSnackBar(responseSnackBar(message: error.message, error: true));
+  });
+
+  // marking all username mentions as read
+  await DioHelper.patchData(
+          path: readAllMsgs, data: {'type': 'Username Mentions'}, token: token)
+      .then((response) {
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+          message: 'all Username Mentions has been marked as read 😊',
+          error: false));
+    }
+  }).onError((error, stackTrace) {
+    error = error as DioError;
+    ScaffoldMessenger.of(context)
+        .showSnackBar(responseSnackBar(message: error.message, error: true));
+  });
 }
 
 ///@param [index] is the index of the bottom navigation bar screen

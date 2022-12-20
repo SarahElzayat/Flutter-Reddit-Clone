@@ -5,6 +5,7 @@ import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/data/notifications/notification_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
+import 'package:reddit/screens/comments/add_comment_screen.dart';
 import 'package:reddit/widgets/inbox/notification_widget.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -16,103 +17,65 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+  String after = '';
+  String before = '';
+
+  final scroller = ScrollController();
+  List<NotificationWidget> notifications = [];
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    scroller.dispose();
+    super.dispose();
+  }
+
+  /// this is a utility function used to fetch the notifications.
   void fetch() async {
-    await DioHelper.getData(path: notificationPoint).then(
+    await DioHelper.getData(path: notificationPoint, query: {'after': after})
+        .then(
       (response) {
+        logger.e(response.data);
         if (response.statusCode == 200) {
           NotificationModel allNotifications =
               NotificationModel.fromJson(response.data);
+          after = allNotifications.after ?? '';
           for (NotificationItSelf notification in allNotifications.children!) {
-            notifications.add(NotificationWidget(notification: notification));
+            setState(() {
+              notifications.add(NotificationWidget(notification: notification));
+            });
           }
-
-          ScaffoldMessenger.of(context).showSnackBar(
-              responseSnackBar(message: response.statusMessage, error: false));
         }
       },
     ).catchError((err) {
-      err = err as DioError;
+      // err = err as DioError;
       ScaffoldMessenger.of(context)
-          .showSnackBar(responseSnackBar(message: err.message, error: true));
+          .showSnackBar(responseSnackBar(message: err, error: true));
     });
+  }
+
+  void _scrollListener() {
+    if (scroller.offset == scroller.position.maxScrollExtent) {
+      fetch();
+    }
   }
 
   @override
   void initState() {
     // fetching the data
+    scroller.addListener(_scrollListener);
     fetch();
     super.initState();
   }
 
-  List<NotificationWidget> notifications = [
-    NotificationWidget(
-        notification: NotificationItSelf(
-            id: '1',
-            isRead: false,
-            link: 'fnkjas',
-            sendAt: '2019-08-24T14:15:22',
-            title: 'Hellooooooooooooooooooooooo',
-            type: 'comment')),
-    NotificationWidget(
-        notification: NotificationItSelf(
-            id: '1',
-            isRead: false,
-            link: 'fnkjas',
-            sendAt: '2019-08-24T14:15:22',
-            title: 'Hellooooooooooooooooooooooo2',
-            type: 'comment')),
-    NotificationWidget(
-        notification: NotificationItSelf(
-            id: '1',
-            isRead: false,
-            link: 'fnkjas',
-            sendAt: '2019-08-24T14:15:22',
-            title: 'Hellooooooooooooooooooooooo2',
-            type: 'comment')),
-    NotificationWidget(
-        notification: NotificationItSelf(
-            id: '1',
-            isRead: false,
-            link: 'fnkjas',
-            sendAt: '2019-08-24T14:15:22',
-            title: 'Hellooooooooooooooooooooooo2',
-            type: 'comment')),
-    NotificationWidget(
-        notification: NotificationItSelf(
-            id: '1',
-            isRead: false,
-            link: 'fnkjas',
-            sendAt: '2019-08-24T14:15:22',
-            title: 'Hellooooooooooooooooooooooo2',
-            type: 'comment')),
-    NotificationWidget(
-        notification: NotificationItSelf(
-            id: '1',
-            isRead: false,
-            link: 'fnkjas',
-            sendAt: '2019-08-24T14:15:22',
-            title: 'Hellooooooooooooooooooooooo2',
-            type: 'comment')),
-    NotificationWidget(
-        notification: NotificationItSelf(
-            id: '1',
-            isRead: false,
-            link: 'fnkjas',
-            sendAt: '2019-08-24T14:15:22',
-            title: 'Hellooooooooooooooooooooooo2',
-            type: 'comment')),
-  ];
   @override
   Widget build(BuildContext context) {
     return notifications.isEmpty
-        ? Expanded(
-            child: SizedBox(
-              child: Center(
-                child: Image.asset('assets/images/Empty.jpg'),
-              ),
-            ),
+        ? Center(
+            child: Image.asset('assets/images/Empty.jpg'),
           )
         : ListView.builder(
+            controller: scroller,
             itemBuilder: (context, index) {
               return Card(
                 color: ColorManager.black,

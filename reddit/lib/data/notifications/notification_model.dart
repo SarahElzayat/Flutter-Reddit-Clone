@@ -31,20 +31,34 @@ class NotificationModel {
 
 class NotificationItSelf {
   String? id;
+  String? commentId;
+  String? postId;
   String? title;
   String? type;
   String? link;
+  String? photo;
   String? sendAt;
   bool? isRead;
 
   NotificationItSelf(
-      {this.id, this.title, this.type, this.link, this.sendAt, this.isRead});
+      {this.id,
+      this.title,
+      this.type,
+      this.link,
+      this.sendAt,
+      this.isRead,
+      this.commentId,
+      this.photo,
+      this.postId});
 
   NotificationItSelf.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    commentId = json['commentId'];
+    postId = json['postId'];
     title = json['title'];
     type = json['type'];
     link = json['link'];
+    photo = json['photo'];
     sendAt = json['sendAt'];
     isRead = json['isRead'];
   }
@@ -56,7 +70,10 @@ class NotificationItSelf {
       'type': type,
       'link': link,
       'sendAt': sendAt,
-      'isRead': isRead
+      'isRead': isRead,
+      'commentId': commentId,
+      'postId': postId,
+      'photo': photo,
     };
     return data;
   }

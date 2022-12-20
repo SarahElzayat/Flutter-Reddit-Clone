@@ -40,6 +40,7 @@ const block = '/block-user';
 const messagesPoint = '/message/inbox';
 const markMessageAsRead = '/unread-message';
 const replyToMessage = '/message/compose';
+const readAllMsgs = '/read-all-msgs';
 
 // notifications
 const notificationPoint = '/notifications';

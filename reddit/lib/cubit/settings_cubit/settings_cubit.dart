@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:reddit/constants/constants.dart';
+import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/data/google_api/google_sign_in_api.dart';
 import 'package:reddit/data/settings/settings_models/block_user_model.dart';
 import 'package:reddit/data/settings/settings_models/blocked_accounts_getter_model.dart';
-import 'package:reddit/data/settings/settings_models/user_settings.dart';
-import 'package:reddit/screens/settings/blocked_accounts.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../data/settings/settings_models/change_password_model.dart';
 import '../../data/settings/settings_models/update_email_model.dart';
@@ -113,14 +111,13 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
       data: blockUser.toJson(),
     ).then((response) {
       if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('You have unblocked $userName')));
+        ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+            message: 'You have unblocked $userName  🤍🏳️', error: false));
       }
     }).catchError((err) {
       err = err as DioError;
-
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(err.response!.data)));
+          .showSnackBar(responseSnackBar(message: '${err.response?.data}'));
     });
 
     screenContr.refresh();
@@ -145,15 +142,13 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
       data: changeRequest.toJson(),
     ).then((response) {
       if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Password has been changed!'),
-            backgroundColor: ColorManager.green));
+        ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+            message: 'Password has been changed! 🔑🔑', error: false));
         Navigator.of(context).pop();
       }
     }).catchError((error) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('The password is not correct!'),
-          backgroundColor: ColorManager.red));
+      ScaffoldMessenger.of(context).showSnackBar(
+          responseSnackBar(message: 'The password is incorrect ! 😔'));
     });
 
     emit(ChangePassword());
@@ -176,23 +171,13 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
       data: update.toJson(),
     ).then((response) {
       if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Email has been changed!'),
-            backgroundColor: ColorManager.green));
+        ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+            message: 'Email has been changed! 😊', error: false));
       }
     }).catchError((error) {
       error = error as DioError;
-
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-          '${error.response?.data} :(',
-          style: const TextStyle(
-              color: ColorManager.eggshellWhite,
-              fontWeight: FontWeight.bold,
-              fontSize: 14),
-        ),
-        backgroundColor: ColorManager.red,
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+          responseSnackBar(message: '${error.response?.data}  😔'));
     });
 
     emit(ChangeEmail());
@@ -205,7 +190,6 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
       print(err);
     });
 
-    print('try to connect with google');
     if (newValue == 'Connected') {
       final user = await GoogleSignInApi.login();
 
@@ -217,7 +201,6 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
       //   print(err);
       // });
 
-      print(googleToken);
       await DioHelper.postData(
           path: signInGoogle,
           data: {'accessToken': googleToken.idToken}).then((response) async {
@@ -253,7 +236,6 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
     } else if (type == 'changeGender') {
       _changeGender(newValue, context);
     } else if (type == 'connectGoogle') {
-      print('Trying');
       _connectGoogle(newValue);
     } else if (type == 'connectFaceBook') {
       // _connectFaceBook(newValue);
@@ -264,7 +246,6 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
     if (type == 'allowPeopleToFollowYou') {
       _allowPeopleToFollowYou(newValue);
     } else if (type == 'show NSFW') {
-      print('changing here');
       _showNFSW(newValue);
     } else if (type == 'autoPlay') {
       _autoPlay(newValue);
@@ -309,35 +290,22 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
                 {
                   CacheHelper.putData(key: 'country', value: newCountry),
                   emit(ChangeSwitchState()),
-
-                  // ScaffoldMessenger.of(ctx).showSnackBar(const SnackBar(
-                  //     content: Center(
-                  //   child: Text('Hello'),
-                  // ))),
-                  ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-                      content: Text(
-                        'now you come from $newCountry',
-                        style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: ColorManager.black),
-                      ),
-                      backgroundColor: ColorManager.green)),
+                  ScaffoldMessenger.of(ctx).showSnackBar(responseSnackBar(
+                      message: 'now you come from $newCountry  🗺️',
+                      error: false))
                 }
             })
         .catchError((error) {
       error = error as DioError;
       debugPrint(error.message);
-      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-          // content: Text('${error.response?.data}'),
-          content: Text('${error.response!.data}'),
-          backgroundColor: ColorManager.red));
+
+      ScaffoldMessenger.of(ctx)
+          .showSnackBar(responseSnackBar(message: '${error.response!.data}'));
     });
   }
 
   void _changeGender(newGender, context) {
     final request = {'gender': newGender};
-    print('Setting the gender $newGender');
     DioHelper.patchData(
             token: CacheHelper.getData(key: 'token'),
             path: accountSettings,
@@ -349,23 +317,16 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
                 {
                   CacheHelper.putData(key: 'gender', value: newGender),
                   emit(ChangeSwitchState()),
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(
-                        'Your Gender is now $newGender',
-                        style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: ColorManager.black),
-                      ),
-                      backgroundColor: ColorManager.green))
+                  ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+                      message: 'Your Gender is now $newGender  🧑🧒',
+                      error: false))
                 }
             })
         .catchError((error) {
       error = error as DioError;
       debugPrint(error.message);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('${error.response?.data}'),
-          backgroundColor: ColorManager.red));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(responseSnackBar(message: '${error.response?.data}'));
     });
   }
 
