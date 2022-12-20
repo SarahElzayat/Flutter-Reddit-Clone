@@ -185,7 +185,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                       fit: BoxFit.cover,
                                     )
                                   : Image.network(
-                                      userProfileCubit.userData!.banner!,
+                                      'read-it.live/api/${userProfileCubit.userData!.banner!}',
                                       fit: BoxFit.cover,
                                     ),
                               Align(
@@ -210,8 +210,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                                 'assets/images/Logo.png',
                                               )
                                             : Image.network(
-                                                userProfileCubit
-                                                    .userData!.picture!,
+                                                'read-it.live/api/${userProfileCubit.userData!.picture!}',
                                                 fit: BoxFit.cover,
                                               ),
                                       ),

@@ -111,7 +111,7 @@ class _UserProfileEditImageState extends State<UserProfileEditImage> {
                     child: (userProfile.userData!.picture != null &&
                             userProfile.userData!.picture != '')
                         ? Image.network(
-                            userProfile.userData!.picture!,
+                            'read-it.live/api/${userProfile.userData!.picture!}',
                             fit: BoxFit.cover,
                           )
                         : Image.asset(

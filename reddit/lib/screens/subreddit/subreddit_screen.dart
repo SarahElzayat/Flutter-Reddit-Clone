@@ -201,7 +201,8 @@ class _SubredditState extends State<Subreddit>
                                   null ||
                               subredditCubit.subreddit!.picture == '')
                           ? null
-                          : NetworkImage(subredditCubit.subreddit!.picture!),
+                          : NetworkImage(
+                              'read-it.live/api/${subredditCubit.subreddit!.picture!}'),
                       child: (subredditCubit.subreddit!.picture == null ||
                               subredditCubit.subreddit!.picture == '')
                           ? const Text(

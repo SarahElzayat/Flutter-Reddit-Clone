@@ -47,7 +47,7 @@ class SubredditAppBar extends SliverPersistentHeaderDelegate {
                     color: ColorManager.blue,
                   )
                 : Image.network(
-                    subredditCubit.subreddit!.banner!,
+                    'read-it.live/api/${subredditCubit.subreddit!.banner!}',
                     width: double.maxFinite,
                     fit: BoxFit.cover,
                   ),
