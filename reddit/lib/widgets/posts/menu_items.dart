@@ -117,10 +117,7 @@ class MenuItems {
       case MenuItems.unsave:
         //Do something
         cubit.save().then((value) {
-          PostNotifierCubit.get(context).postsSaveChanged(
-              post.id ?? '',
-              cubit.getModel is PostModel ? 'post' : 'comment',
-              cubit.getModel.saved);
+          PostNotifierCubit.get(context).notifyPosts();
         });
         break;
 

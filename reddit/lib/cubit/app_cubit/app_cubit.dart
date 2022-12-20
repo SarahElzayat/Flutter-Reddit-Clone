@@ -19,6 +19,7 @@ import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/saved/saved_comments.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
+import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_state.dart';
 import '../../data/post_model/post_model.dart';
 import '../../data/temp_data/tmp_data.dart';
@@ -577,7 +578,8 @@ class AppCubit extends Cubit<AppState> {
                 PostModel.fromJson(value.data['children'][i]['data']['post']));
             savedPostsList[savedPostsList.length - 1].id =
                 value.data['children'][i]['id'];
-
+            savedCommentsPostsList[savedCommentsPostsList.length - 1].id =
+                value.data['children'][i]['id'];
             //logger.e('tmmmmamaamammama');
           } else if (value.data['children'][i]['type'] == 'comment') {
             //logger.wtf('COOOMMMMEEENNNTSSSS');
@@ -591,6 +593,8 @@ class AppCubit extends Cubit<AppState> {
                   value.data['children'][i]['data']['post']));
 
               //logger.e('tmmmmamaamammama');
+              savedCommentsPostsList[savedCommentsPostsList.length - 1].id =
+                  value.data['children'][i]['id'];
             }
           } else {
             savedPostsList.add(
@@ -604,6 +608,8 @@ class AppCubit extends Cubit<AppState> {
                   value.data['children'][i]['data']['comments'][j]));
               savedCommentsPostsList.add(PostModel.fromJson(
                   value.data['children'][i]['data']['post']));
+              savedCommentsPostsList[savedCommentsPostsList.length - 1].id =
+                  value.data['children'][i]['id'];
             }
           }
         }

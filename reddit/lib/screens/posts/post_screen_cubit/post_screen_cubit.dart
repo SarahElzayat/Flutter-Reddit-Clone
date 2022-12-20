@@ -106,6 +106,7 @@ class PostScreenCubit extends Cubit<PostScreenState> {
       });
       emit(CommentsLoaded());
     }).catchError((error) {
+      logger.e(post.toJson());
       logger.e(
           'error in comments ${(error as DioError).response!.data['error']}');
       emit(CommentsError((error as DioError).response!.data['error']));

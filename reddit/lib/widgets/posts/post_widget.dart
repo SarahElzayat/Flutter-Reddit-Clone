@@ -673,7 +673,7 @@ class _PostWidgetState extends State<PostWidget> {
               ),
           ],
         ),
-        if (widget.post.flair != null &&
+        if (widget.post.flair?.id != null &&
             !(widget.post.kind == 'link' && widget.outsideScreen))
           _flairWidget()
       ],
@@ -706,12 +706,13 @@ class _PostWidgetState extends State<PostWidget> {
   }
 
   Widget _flairWidget() {
+    logger.d('flair: ${widget.post.flair!}');
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
-          color: HexColor(widget.post.flair!.backgroundColor ?? '#FF00000'),
+          color: HexColor(widget.post.flair!.backgroundColor ?? '#FF0000'),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
