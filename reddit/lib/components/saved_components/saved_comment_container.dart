@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/data/saved/saved_comments_model.dart';
+
+import '../../data/saved/saved_comments_model.dart';
+import '../helpers/color_manager.dart';
 
 class SavedCommentContainer extends StatelessWidget {
   const SavedCommentContainer({super.key, required this.model});

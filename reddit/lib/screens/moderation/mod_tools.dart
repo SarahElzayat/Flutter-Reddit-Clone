@@ -1,8 +1,6 @@
 ///@author: Yasmine Ghanem
 ///@date: 5/12/2022
 ///this screen shows the mod tools to a moderator of the subreddit
-
-// ignore_for_file: prefer_const_constructors
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,13 +11,11 @@ import 'package:reddit/components/list_tile_container.dart';
 import 'package:reddit/components/moderation_components/mod_list_tiles.dart';
 import 'package:reddit/components/moderation_components/modtools_components.dart';
 import 'package:reddit/constants/constants.dart';
-import 'package:reddit/data/moderation_models/community_settings_model.dart';
 import 'package:reddit/screens/moderation/content_and_regulation/post_flair.dart';
 import 'package:reddit/screens/moderation/create_flair.dart';
 import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
 import 'package:reddit/screens/moderation/general_screens/archive_posts.dart';
 import 'package:reddit/screens/moderation/general_screens/community_types.dart';
-import 'package:reddit/screens/moderation/general_screens/content_tag.dart';
 import 'package:reddit/screens/moderation/general_screens/description.dart';
 import 'package:reddit/screens/moderation/general_screens/discovery/discovery.dart';
 import 'package:reddit/screens/moderation/general_screens/location.dart';
@@ -32,11 +28,9 @@ import 'package:reddit/screens/moderation/user_management_screens/approved_users
 import 'package:reddit/screens/moderation/user_management_screens/banned_users.dart';
 import 'package:reddit/screens/moderation/user_management_screens/moderators.dart';
 import 'package:reddit/screens/moderation/user_management_screens/muted_users.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
 import 'package:reddit/widgets/moderation/community_settings.dart';
 import 'package:reddit/widgets/moderation/notification_settings.dart';
 import 'package:reddit/widgets/moderation/posts_comments_settings.dart';
-import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ModTools extends StatefulWidget {

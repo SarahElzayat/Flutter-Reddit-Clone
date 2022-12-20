@@ -1,7 +1,6 @@
 /// @author Abdelaziz Salah
 /// @date 20/12/2022
 /// This model is used to reply to a message.
-
 import 'package:reddit/shared/local/shared_preferences.dart';
 
 class ReplyToMessageModel {

@@ -2,10 +2,8 @@
 /// @date 26/10/2022
 /// This is a listTile bluePrint which is
 /// built to be a reuseable widget for further uses
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/data/settings/settings_models/user_settings.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 
 import '../cubit/settings_cubit/settings_cubit.dart';

@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
+import 'components/helpers/enums.dart';
+import 'cubit/user_profile/cubit/user_profile_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../cubit/settings_cubit/settings_cubit.dart';

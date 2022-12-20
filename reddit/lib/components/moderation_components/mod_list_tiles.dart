@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
+import '../helpers/color_manager.dart';
 
 class ModListTile extends StatelessWidget {
   // ignore: prefer_typing_uninitialized_variables

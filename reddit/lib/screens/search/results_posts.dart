@@ -60,6 +60,7 @@ class _ResultsPostsState extends State<ResultsPosts> {
                 itemCount: cubit.posts.length,
                 itemBuilder: (context, index) => PostWidget(
                     key: Key(cubit.posts[index].id.toString()),
+                    inSearch: true,
                     upperRowType: cubit.posts[index].inYourSubreddit == null
                         ? ShowingOtions.onlyUser
                         : ShowingOtions.both,

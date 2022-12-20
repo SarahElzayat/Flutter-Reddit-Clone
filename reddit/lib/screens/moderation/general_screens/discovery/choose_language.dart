@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/components/moderation_components/modtools_components.dart';
+import '../../../../components/moderation_components/modtools_components.dart';
 
 class ChooseLanguage extends StatefulWidget {
   static const String routeName = 'choose_language';

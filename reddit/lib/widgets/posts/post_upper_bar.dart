@@ -1,7 +1,6 @@
 /// The upper bar of the post that contains the avatar, title and the subreddit and so on
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -11,11 +10,13 @@ import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_state.dart';
 import 'package:reddit/widgets/posts/dropdown_list.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+
 import '../../components/helpers/color_manager.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_state.dart';
+import '../../cubit/user_profile/cubit/user_profile_cubit.dart';
 import '../../data/post_model/post_model.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../functions/post_functions.dart';
 
 enum ShowingOtions { onlyUser, onlySubreddit, both }
@@ -93,11 +94,23 @@ class PostUpperBar extends StatelessWidget {
     return SizedBox(
       child: Row(
         children: [
-          subredditAvatar(
-              imageUrl:
-                  PostAndCommentActionsCubit.get(context).subreddit?.picture ??
-                      PostAndCommentActionsCubit.get(context).user?.picture ??
-                      ''),
+          InkWell(
+            onTap: () {
+              if (post.subreddit != null && post.subreddit!.isNotEmpty) {
+                SubredditCubit.get(context)
+                    .setSubredditName(context, post.subreddit ?? '');
+              } else {
+                UserProfileCubit.get(context)
+                    .showPopupUserWidget(context, post.postedBy!);
+              }
+            },
+            child: subredditAvatar(
+                imageUrl: PostAndCommentActionsCubit.get(context)
+                        .subreddit
+                        ?.picture ??
+                    PostAndCommentActionsCubit.get(context).user?.picture ??
+                    ''),
+          ),
           SizedBox(
             width: min(2.w, 10),
           ),

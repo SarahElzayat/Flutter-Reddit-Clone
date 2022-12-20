@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
-import 'package:reddit/screens/settings/change_profile_picture_screen.dart';
+import '../../cubit/user_profile/cubit/user_profile_cubit.dart';
+import '../../screens/settings/change_profile_picture_screen.dart';
 
 import '../../components/helpers/color_manager.dart';
 import '../../networks/constant_end_points.dart';

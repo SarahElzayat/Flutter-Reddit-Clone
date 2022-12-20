@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:reddit/components/bottom_sheet.dart';
-import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
-import 'package:reddit/data/post_model/post_model.dart';
-import 'package:reddit/widgets/posts/post_widget.dart';
+import '../../components/bottom_sheet.dart';
+import '../../components/helpers/enums.dart';
+import '../../cubit/subreddit/cubit/subreddit_cubit.dart';
+import '../../data/post_model/post_model.dart';
+import '../posts/post_widget.dart';
 
 class SubredditPostsWidget extends StatefulWidget {
   const SubredditPostsWidget({Key? key}) : super(key: key);

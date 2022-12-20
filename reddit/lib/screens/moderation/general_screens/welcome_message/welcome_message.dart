@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/components/button.dart';
-import 'package:reddit/components/moderation_components/modtools_components.dart';
-import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
-import 'package:reddit/screens/moderation/general_screens/welcome_message/add_edit_message.dart';
+import '../../../../components/button.dart';
+import '../../../../components/moderation_components/modtools_components.dart';
+import '../../cubit/moderation_cubit.dart';
+import 'add_edit_message.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
+import '../../../../components/helpers/color_manager.dart';
 
 class WelcomeMessage extends StatefulWidget {
   static const String routeName = 'welcome_message';

@@ -2,12 +2,12 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/components/button.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/components/moderation_components/modtools_components.dart';
-import 'package:reddit/screens/moderation/create_flair.dart';
-import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
+import '../../../components/button.dart';
+import '../../../components/helpers/color_manager.dart';
+import '../../../components/helpers/enums.dart';
+import '../../../components/moderation_components/modtools_components.dart';
+import '../create_flair.dart';
+import '../cubit/moderation_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class PostFlair extends StatefulWidget {
@@ -132,16 +132,20 @@ class _PostFlairState extends State<PostFlair> {
                                   child: Row(
                                     children: [
                                       Container(
-                                        decoration: const BoxDecoration(
-                                            color: Colors.blue,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(50))),
+                                        decoration: BoxDecoration(
+                                            color: Color(cubit.postFlairs[index]
+                                                .backgroundColor),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(50))),
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
                                               cubit.postFlairs[index].flairName,
-                                              style: const TextStyle(
-                                                  color: Colors.black)),
+                                              style: TextStyle(
+                                                  color: Color(cubit
+                                                      .postFlairs[index]
+                                                      .textColor))),
                                         ),
                                       ),
                                       const Spacer(),

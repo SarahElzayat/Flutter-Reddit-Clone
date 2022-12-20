@@ -1,7 +1,6 @@
 /// @author Abdelaziz Salah
 /// @date 20/12/2022
 /// This model is used to send a message.
-
 import 'package:reddit/shared/local/shared_preferences.dart';
 
 class SendMessageModel {
@@ -36,10 +35,11 @@ class SendMessageModel {
     final Map<String, dynamic> data = {
       'text': text,
       'receiverUsername': '/r/$receiverUsername',
-      'subject': 're:subject',
+      'subject': 'subject',
       'subredditName': subredditName,
       'repliedMsgId': repliedMsgId,
       'isReply': isReply,
+      // 'senderUsername': '/u/zizo',
 
       // I am always the one who send the message.
       'senderUsername': '/u/${CacheHelper.getData(key: 'username')}',

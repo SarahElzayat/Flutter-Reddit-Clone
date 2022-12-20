@@ -3,6 +3,7 @@
 /// this is a DioHelper which is a class used to connect us to the backend
 /// and deal with the server
 import 'package:dio/dio.dart';
+import 'package:reddit/shared/local/shared_preferences.dart';
 import '../constants/constants.dart';
 import 'constant_end_points.dart';
 
@@ -86,7 +87,7 @@ class DioHelper {
 
     /// additional query
   }) async {
-    sentToken ??= token;
+    sentToken ??= CacheHelper.getData(key: 'token');
     var options = Options(
       headers: {
         'Authorization': 'Bearer ${sentToken ?? ''}',
@@ -145,7 +146,7 @@ class DioHelper {
         'Content-Type': 'application/json; charset=utf-8'
       },
     );
-    
+
     return await dio.get(
       path,
       queryParameters: query,

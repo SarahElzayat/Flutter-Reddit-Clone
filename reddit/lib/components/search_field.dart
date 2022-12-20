@@ -3,9 +3,7 @@
 /// general search field to be included in home, subreddits, profiles... etc
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/screens/search/cubit/search_cubit.dart';
 import 'package:reddit/screens/search/search_screen.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
 
 import 'helpers/color_manager.dart';
 

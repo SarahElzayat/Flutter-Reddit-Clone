@@ -11,6 +11,7 @@ import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/components/moderation_components/modtools_components.dart';
 import 'package:reddit/components/search_field.dart';
+import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
 import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
 import 'package:reddit/screens/moderation/user_management_screens/add_approved_user.dart';
 import 'package:reddit/screens/moderation/user_management_screens/add_banned_user.dart';
@@ -109,6 +110,9 @@ class _UserManagementWidgetState extends State<UserManagementWidget> {
                                               Text(cubit.users[index].username),
                                           onTap: () {
                                             //go to user profile
+                                            UserProfileCubit.get(context)
+                                                .setUsername(cubit
+                                                    .users[index].username);
                                           },
                                           trailing: IconButton(
                                             icon: const Icon(Icons.more_vert),
@@ -137,7 +141,13 @@ class _UserManagementWidgetState extends State<UserManagementWidget> {
                                                           .username)
                                                       :
                                                       //go to profile
-                                                      () {}
+                                                      () {
+                                                          UserProfileCubit.get(
+                                                                  context)
+                                                              .setUsername(cubit
+                                                                  .users[index]
+                                                                  .username);
+                                                        }
                                                   : (widget.type ==
                                                           UserManagement
                                                               .approved)
@@ -147,13 +157,29 @@ class _UserManagementWidgetState extends State<UserManagementWidget> {
                                                                   .username)
                                                           :
                                                           //go to profile
-                                                          () {}
+                                                          () {
+                                                              UserProfileCubit
+                                                                      .get(
+                                                                          context)
+                                                                  .setUsername(cubit
+                                                                      .users[
+                                                                          index]
+                                                                      .username);
+                                                            }
                                                       : (choice == 'Unmute')
                                                           ? cubit.unmuteUser(
                                                               cubit.users[index]
                                                                   .username)
                                                           : //go to profile
-                                                          () {};
+                                                          () {
+                                                              UserProfileCubit
+                                                                      .get(
+                                                                          context)
+                                                                  .setUsername(cubit
+                                                                      .users[
+                                                                          index]
+                                                                      .username);
+                                                            };
                                               setState(() {});
                                             },
                                           )),

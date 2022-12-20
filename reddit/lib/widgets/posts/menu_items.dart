@@ -80,7 +80,9 @@ class MenuItems {
   static const collapse =
       MenuItem(text: 'Collapse Thread', icon: Icons.compare_arrows);
   static const unsave = MenuItem(text: 'UnSave', icon: Icons.bookmark);
-  static const hide = MenuItem(text: 'Hide post', icon: Icons.visibility_off);
+  static const hide = MenuItem(text: 'UnHide post', icon: Icons.visibility_off);
+  static const unhide =
+      MenuItem(text: 'Hide post', icon: Icons.visibility_rounded);
   // static const report = MenuItem(text: 'Report', icon: Icons.flag_outlined);
   static const block = MenuItem(text: 'Block Acount', icon: Icons.block);
   static const share = MenuItem(text: 'Share', icon: Icons.share);
@@ -122,6 +124,7 @@ class MenuItems {
         break;
 
       case MenuItems.hide:
+      case MenuItems.unhide:
         //Do something
         cubit.hide().then((value) {
           if (value == true) {

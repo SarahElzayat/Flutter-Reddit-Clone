@@ -2,11 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
-import 'package:reddit/data/comment/comment_model.dart';
-import 'package:reddit/data/search/search_result_profile_model.dart';
-import 'package:reddit/data/search/search_result_subbredit_model.dart';
-import 'package:reddit/networks/constant_end_points.dart';
-import 'package:reddit/networks/dio_helper.dart';
+import '../../../data/comment/comment_model.dart';
+import '../../../data/search/search_result_profile_model.dart';
+import '../../../data/search/search_result_subbredit_model.dart';
+import '../../../networks/constant_end_points.dart';
+import '../../../networks/dio_helper.dart';
 
 import '../../../data/post_model/post_model.dart';
 import '../results_comments.dart';

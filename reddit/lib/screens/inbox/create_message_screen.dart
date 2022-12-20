@@ -1,16 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/components/default_text_field.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/components/snack_bar.dart';
-import 'package:reddit/data/messages/send_message_model.dart';
-import 'package:reddit/data/sign_in_And_sign_up_models/validators.dart';
-import 'package:reddit/networks/constant_end_points.dart';
-import 'package:reddit/networks/dio_helper.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
+import '../../components/default_text_field.dart';
+import '../../components/helpers/color_manager.dart';
+import '../../components/snack_bar.dart';
+import '../../data/messages/send_message_model.dart';
+import '../../data/sign_in_And_sign_up_models/validators.dart';
+import '../../networks/constant_end_points.dart';
+import '../../networks/dio_helper.dart';
+import '../../shared/local/shared_preferences.dart';
 
 class CreateMessageScreen extends StatefulWidget {
-  static const routeName = '/create_message_screen';
+  static const routeName = '/creates_message_screen';
   const CreateMessageScreen({super.key});
 
   @override
@@ -35,7 +35,7 @@ class _CreateMessageScreenState extends State<CreateMessageScreen> {
       SendMessageModel msg = SendMessageModel(
         isReply: false,
         receiverUsername: userNameController.text,
-        senderUsername: CacheHelper.getData(key: 'username'),
+        // senderUsername: CacheHelper.getData(key: 'username'),
         subject: subjectController.text,
         text: messageController.text,
         subredditName: '',
@@ -43,18 +43,18 @@ class _CreateMessageScreenState extends State<CreateMessageScreen> {
       );
 
       // send it to the backend
-      // await DioHelper.postData(path: replyToMessage, data: msg.toJson())
-      //     .then((response) {
-      //   if (response.statusCode == 201) {
-      //     ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
-      //         message: 'Message has been sent Successfully 😊', error: false));
-      //   }
-      // }).onError((error, stackTrace) {
-      //   error = error as DioError;
+      await DioHelper.postData(path: replyToMessage, data: msg.toJson())
+          .then((response) {
+        if (response.statusCode == 201) {
+          ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+              message: 'Message has been sent Successfully 😊', error: false));
+        }
+      }).onError((error, stackTrace) {
+        error = error as DioError;
 
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //       responseSnackBar(message: error.message, error: true));
-      // });
+        ScaffoldMessenger.of(context).showSnackBar(
+            responseSnackBar(message: error.message, error: true));
+      });
     }
   }
 

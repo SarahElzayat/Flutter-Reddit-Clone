@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/screens/subreddit/subreddit_screen_web.dart';
+import 'subreddit_screen_web.dart';
 import '../../theme/theme_data.dart';
 
 void main() {
