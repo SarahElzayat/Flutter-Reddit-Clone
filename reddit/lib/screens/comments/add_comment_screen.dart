@@ -10,8 +10,8 @@ import 'package:giphy_get/giphy_get.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
-import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
+import '../../cubit/post_notifier/post_notifier_cubit.dart';
+import '../../widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../components/helpers/color_manager.dart';
@@ -191,6 +191,7 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
   QuillController getController() {
     Document doc;
     try {
+      logger.wtf(widget.post.content ?? {'ops': []});
       doc = Document.fromJson((widget.post.content ?? {'ops': []})['ops']);
     } catch (e) {
       logger.wtf(e);

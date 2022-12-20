@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final subredditsSearchListModel = subredditsSearchListModelFromJson(jsonString);
-
 import 'dart:convert';
 
 SubredditsSearchListModel subredditsSearchListModelFromJson(String str) =>

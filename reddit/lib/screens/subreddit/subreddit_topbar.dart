@@ -1,14 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 
 import '../../components/app_bar_components.dart';
 import '../../components/search_field.dart';
-// import '../../cubit/app_cubit.dart';
-import '../../widgets/subreddit/subreddit_options.dart';
+import '../../networks/constant_end_points.dart';
+import '../search/search_results_main_screen.dart';
 
 class SubredditAppBar extends SliverPersistentHeaderDelegate {
   @override
@@ -29,9 +27,7 @@ class SubredditAppBar extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    print(maxExtent - shrinkOffset);
     final mediaQuery = MediaQuery.of(context);
-    final AppCubit cubit = AppCubit.get(context)..getUsername();
 
     return Container(
       // height: maxExtent,
@@ -43,11 +39,13 @@ class SubredditAppBar extends SliverPersistentHeaderDelegate {
           children: [
             (subredditCubit.subreddit!.banner == null ||
                     subredditCubit.subreddit!.banner == '')
-                ? Container(
-                    color: ColorManager.blue,
+                ? Image.asset(
+                    'assets/images/subredditBackground.jpg',
+                    width: double.maxFinite,
+                    fit: BoxFit.cover,
                   )
                 : Image.network(
-                    subredditCubit.subreddit!.banner!,
+                    '$baseUrl/${subredditCubit.subreddit!.banner!}',
                     width: double.maxFinite,
                     fit: BoxFit.cover,
                   ),
@@ -116,6 +114,19 @@ class SubredditAppBar extends SliverPersistentHeaderDelegate {
                                     child: SearchField(
                                       isSubreddit: true,
                                       isResult: true,
+                                      onSubmitted: (value) {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => SearchResults(
+                                              isSubreddit: true,
+                                              subredditName:
+                                                  'r/${subredditCubit.subredditName}',
+                                              searchWord: value,
+                                            ),
+                                          ),
+                                        );
+                                      },
                                       subredditName:
                                           'r/${subredditCubit.subredditName}',
                                       textEditingController:
@@ -163,7 +174,7 @@ class SubredditAppBar extends SliverPersistentHeaderDelegate {
                                       : scaffoldKey.currentState
                                           ?.openEndDrawer();
                                 },
-                                child: avatar()),
+                                child: avatar(context: context)),
                           )
                         ],
                       ),

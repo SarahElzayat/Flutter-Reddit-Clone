@@ -10,4 +10,6 @@ class SavedCategoriesLoaded extends CreateCommunityState {
   SavedCategoriesLoaded(this.categories);
 }
 
+class InitializeSettings extends CreateCommunityState {}
+
 class CreateCommunity extends CreateCommunityState {}

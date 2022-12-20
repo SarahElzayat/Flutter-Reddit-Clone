@@ -1,7 +1,6 @@
 /// The Main Post Screen with the Comments
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
@@ -12,6 +11,7 @@ import 'package:reddit/screens/posts/post_screen_cubit/post_screen_state.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_state.dart';
 import '../../data/post_model/post_model.dart';
@@ -57,7 +57,7 @@ class PostScreen extends StatelessWidget {
       ],
       child: Scaffold(
         appBar: AppBar(
-          title: Text(post.title!),
+          title: Text(post.title ?? ''),
           actions: [
             BlocBuilder<PostNotifierCubit, PostNotifierState>(
               builder: (context, state) {
@@ -80,6 +80,7 @@ class PostScreen extends StatelessWidget {
           },
           builder: (context, state) {
             var screenCubit = PostScreenCubit.get(context);
+            bool locked = screenCubit.post.moderation?.lock ?? false;
 
             return Column(
               children: [
@@ -91,6 +92,13 @@ class PostScreen extends StatelessWidget {
                         if (state is CommentsLoadingMore) {
                           Logger().i('loading more comments');
                           screenCubit.getCommentsOfPost(after: true);
+                        }
+
+                        if (state is PostDeleted) {
+                          Navigator.of(context).pop();
+                        }
+                        if (state is CommentDeleted) {
+                          screenCubit.deleteComment(state.id);
                         }
                       },
                       builder: (context, state) {
@@ -110,36 +118,37 @@ class PostScreen extends StatelessWidget {
                   ),
                 ),
                 // a container that when tabbed opens the edit comment screen
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(
-                      builder: (context) => AddCommentScreen(
-                        post: post,
-                      ),
-                    ))
-                        .then((value) {
-                      if (value != null && value) {
-                        screenCubit.getCommentsOfPost();
-                      }
-                    });
-                  },
-                  child: Container(
-                    color: ColorManager.betterDarkGrey,
-                    height: 5.h,
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    child: Row(
-                      children: const [
-                        SizedBox(width: 10),
-                        Text(
-                          'Add a comment',
-                          style: TextStyle(color: ColorManager.lightGrey),
+                if (!locked || (screenCubit.post.inYourSubreddit ?? false))
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(
+                        builder: (context) => AddCommentScreen(
+                          post: post,
                         ),
-                      ],
+                      ))
+                          .then((value) {
+                        if (value != null && value) {
+                          screenCubit.getCommentsOfPost();
+                        }
+                      });
+                    },
+                    child: Container(
+                      color: ColorManager.betterDarkGrey,
+                      height: 5.h,
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: Row(
+                        children: const [
+                          SizedBox(width: 10),
+                          Text(
+                            'Add a comment',
+                            style: TextStyle(color: ColorManager.lightGrey),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
               ],
             );
           },

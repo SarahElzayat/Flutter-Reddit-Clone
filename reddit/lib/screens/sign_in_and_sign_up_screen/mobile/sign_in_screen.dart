@@ -4,6 +4,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 import '../../../components/default_text_field.dart';
 import '../../../components/helpers/color_manager.dart';
@@ -68,7 +69,6 @@ class _SignInScreenState extends State<SignInScreen> {
         CacheHelper.putData(key: 'token', value: value.data['token']);
         CacheHelper.putData(key: 'username', value: value.data['username']);
         token = CacheHelper.getData(key: 'token');
-        print(token);
 
         /// caching the user settings in the shared preferences
         await DioHelper.getData(path: accountSettings).then((response) {
@@ -84,8 +84,9 @@ class _SignInScreenState extends State<SignInScreen> {
     }).catchError((error) {
       // casting the error as a dio error to be able to use its content
       error = error as DioError;
-      if (error.response!.statusCode == 400 ||
-          error.response!.statusCode == 401) {
+      Logger().e(error.response!.data);
+      if (error.response?.statusCode == 400 ||
+          error.response?.statusCode == 401) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
               backgroundColor: ColorManager.red,

@@ -1,32 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/screens/comments/add_comment_screen.dart';
-import 'package:reddit/screens/history/history_screen.dart';
-import 'package:reddit/screens/history/history_screen_for_web.dart';
-import 'package:reddit/cubit/app_cubit/app_cubit.dart';
-import 'package:reddit/screens/moderation/content_and_regulation/create_flair.dart';
-import 'package:reddit/screens/moderation/content_and_regulation/post_flair.dart';
-import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
-import 'package:reddit/screens/moderation/general_screens/archive_posts.dart';
-import 'package:reddit/screens/moderation/general_screens/community_types.dart';
-import 'package:reddit/screens/moderation/general_screens/content_tag.dart';
-import 'package:reddit/screens/moderation/general_screens/description.dart';
-import 'package:reddit/screens/moderation/general_screens/discovery/discovery.dart';
-import 'package:reddit/screens/moderation/general_screens/location.dart';
-import 'package:reddit/screens/moderation/general_screens/media_in_comments.dart';
-import 'package:reddit/screens/moderation/general_screens/mod_notifications.dart';
-import 'package:reddit/screens/moderation/general_screens/modmail.dart';
-import 'package:reddit/screens/moderation/general_screens/post_types.dart';
-import 'package:reddit/screens/moderation/general_screens/topics.dart';
-import 'package:reddit/screens/moderation/general_screens/welcome_message/welcome_message.dart';
-import 'package:reddit/screens/moderation/mod_tools.dart';
-import 'package:reddit/screens/moderation/user_management_screens/add_banned_user.dart';
-import 'package:reddit/screens/moderation/user_management_screens/approved_users.dart';
-import 'package:reddit/screens/moderation/user_management_screens/banned_users.dart';
-import 'package:reddit/screens/moderation/user_management_screens/invite_moderator.dart';
-import 'package:reddit/screens/moderation/user_management_screens/moderators.dart';
-import 'package:reddit/screens/moderation/user_management_screens/muted_users.dart';
-import 'package:reddit/screens/moderation/user_management_screens/user_flair.dart';
+import 'screens/history/history_screen.dart';
+import 'screens/history/history_screen_for_web.dart';
+import 'cubit/app_cubit/app_cubit.dart';
+import 'screens/moderation/content_and_regulation/post_flair.dart';
+import 'screens/moderation/create_flair.dart';
+import 'screens/moderation/cubit/moderation_cubit.dart';
+import 'screens/moderation/general_screens/archive_posts.dart';
+import 'screens/moderation/general_screens/community_types.dart';
+import 'screens/moderation/general_screens/content_tag.dart';
+import 'screens/moderation/general_screens/description.dart';
+import 'screens/moderation/general_screens/discovery/discovery.dart';
+import 'screens/moderation/general_screens/location.dart';
+import 'screens/moderation/general_screens/media_in_comments.dart';
+import 'screens/moderation/general_screens/mod_notifications.dart';
+import 'screens/moderation/general_screens/post_types.dart';
+import 'screens/moderation/general_screens/topics.dart';
+import 'screens/moderation/general_screens/welcome_message/welcome_message.dart';
+import 'screens/moderation/user_management_screens/add_banned_user.dart';
+import 'screens/moderation/user_management_screens/approved_users.dart';
+import 'screens/moderation/user_management_screens/banned_users.dart';
+import 'screens/moderation/user_management_screens/invite_moderator.dart';
+import 'screens/moderation/user_management_screens/moderators.dart';
+import 'screens/moderation/user_management_screens/muted_users.dart';
+import 'screens/moderation/user_management_screens/user_flair.dart';
 import 'screens/add_post/video_trimmer.dart';
 
 import 'cubit/add_post/cubit/add_post_cubit.dart';
@@ -97,14 +94,6 @@ class AppRouter {
           );
         });
 
-      case '/mod_tools_screen':
-        return MaterialPageRoute(builder: (_) {
-          return BlocProvider.value(
-            value: _modCubit,
-            child: const ModTools(),
-          );
-        });
-
       case '/description_screen':
         return MaterialPageRoute(builder: (_) {
           return BlocProvider.value(
@@ -161,14 +150,6 @@ class AppRouter {
           );
         });
 
-      case '/modmail_screen':
-        return MaterialPageRoute(builder: (_) {
-          return BlocProvider.value(
-            value: _modCubit,
-            child: const ModMail(),
-          );
-        });
-
       case '/mod_notifications_screen':
         return MaterialPageRoute(builder: (_) {
           return BlocProvider.value(
@@ -221,7 +202,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) {
           return BlocProvider.value(
             value: _modCubit,
-            child: ApprovedUsers(),
+            child: const ApprovedUsers(),
           );
         });
 
@@ -229,7 +210,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) {
           return BlocProvider.value(
             value: _modCubit,
-            child: MutedUsers(),
+            child: const MutedUsers(),
           );
         });
 
@@ -237,7 +218,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) {
           return BlocProvider.value(
             value: _modCubit,
-            child: BannedUsers(),
+            child: const BannedUsers(),
           );
         });
 

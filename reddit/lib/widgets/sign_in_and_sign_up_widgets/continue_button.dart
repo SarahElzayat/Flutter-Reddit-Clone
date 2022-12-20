@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../components/helpers/color_manager.dart';
 
+// ignore: must_be_immutable
 class ContinueButton extends StatelessWidget {
   ContinueButton(
       {super.key,
@@ -14,12 +15,14 @@ class ContinueButton extends StatelessWidget {
 
   /// this is the function that should be executed
   /// when the user presses continue.
+  // ignore: prefer_typing_uninitialized_variables
   final appliedFunction;
 
   /// this is the text that should be displayed on the button.
   String buttonContent = 'Continue';
 
   /// this is a bool to detect whether the button should be pressed or not.
+  // ignore: prefer_typing_uninitialized_variables
   final isPressable;
   @override
   Widget build(BuildContext context) {

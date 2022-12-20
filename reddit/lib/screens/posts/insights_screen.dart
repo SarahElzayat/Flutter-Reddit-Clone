@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/data/post_model/insights_model.dart';
+import '../../components/helpers/color_manager.dart';
+import '../../data/post_model/insights_model.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class InsightsScreen extends StatelessWidget {

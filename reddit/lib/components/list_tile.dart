@@ -160,7 +160,7 @@ class _ListTileWidgetState extends State<ListTileWidget> {
       }
     } else if (widget.title.contains('Google')) {
       String mail = CacheHelper.getData(key: 'googleEmail');
-      print('mail is $mail');
+      // print('mail is $mail');
       dropDownValue = mail.isEmpty ? 'Disconnected' : 'Connected';
     } else if (widget.title.contains('Facebook')) {
       String mail = CacheHelper.getData(key: 'facebookEmail');
@@ -206,7 +206,7 @@ class _ListTileWidgetState extends State<ListTileWidget> {
         onChanged: (String? newValue) {
           SettingsCubit.get(context)
               .changeDropValue(newValue, widget.type!, context);
-          print(newValue);
+          // print(newValue);
           _setDropDownValue();
         },
       ),
@@ -218,7 +218,6 @@ class _ListTileWidgetState extends State<ListTileWidget> {
   Widget build(BuildContext context) {
     return BlocConsumer<SettingsCubit, SettingsCubitState>(
       listener: (context, state) {
-        // TODO: implement listener
       },
       builder: (context, state) {
         return SizedBox(

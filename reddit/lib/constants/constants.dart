@@ -52,10 +52,8 @@ const List<String> generalTitles = [
   'Welcome message',
   'Topics',
   'Community Type',
-  'Content tag',
   'Post types',
   'Discovery',
-  'Modmail',
   'Mod notifications',
   'Location',
   'Archive Posts',
@@ -70,7 +68,7 @@ const List<String> contentAndRegulationsTitles = [
 const List<String> userManagementTitles = [
   'Moderators',
   'Approved users',
-  'Mutes users',
+  'Muted users',
   'Banned users',
   'User flair',
 ];
@@ -182,6 +180,22 @@ const List<String> banReasons = [
   'This is abusive or harrasing',
   'Other issues'
 ];
+
+const List<String> sortingItems = ['Newest First', 'New', 'Old'];
+
+/// drop down list items to show type
+/// could be posts or comments or both
+const List<String> listingTypes = ['Posts', 'Comments'];
+
+/// drop down list to show view of list
+/// could be card or classic or both
+const List<String> view = ['Card', 'Classic'];
+
+const List<String> languages = ['English', 'Arabic', 'French'];
+const List<String> regions = ['Egypt', 'Argentina', 'Brazil'];
+
+const List<String> postOptions = ['Any', 'Links Only', 'Text Post Only'];
+const List<String> suggestedSort = ['Top', 'New', 'Best', 'Old'];
 
 String? token;
 

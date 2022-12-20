@@ -79,9 +79,7 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
     //create community screen
     final CreateCommunityCubit cubit = CreateCommunityCubit.get(context);
     return BlocConsumer<CreateCommunityCubit, CreateCommunityState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
           backgroundColor: Colors.black,
@@ -144,7 +142,6 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
                             text: communityTypes,
                             selectedItem: communityType,
                             selectedIcons: communityTypesIcon);
-                        setState(() {});
                       },
                       splashColor: Colors.transparent,
                       hoverColor: Colors.transparent,
@@ -194,7 +191,6 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
                         }).toList(),
                         onChanged: (chosenCategory) {
                           category = chosenCategory.toString();
-                          setState(() {});
                         }),
                     SizedBox(height: 3.h),
                     Row(
@@ -209,8 +205,9 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
                           key: const Key('create_community_switch'),
                           value: isSwitched,
                           onToggle: (switcher) {
-                            isSwitched = switcher;
-                            setState(() {});
+                            setState(() {
+                              isSwitched = switcher;
+                            });
                           },
                           width: 15.w,
                           height: 4.h,
@@ -238,8 +235,8 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
                       onPressed: (isEmpty || !isValidated)
                           ? () {}
                           : () {
-                              cubit.creatCommunity(communityName, communityType,
-                                  isSwitched, category, context);
+                              cubit.creatCommunity(context, communityName,
+                                  communityType, isSwitched, category);
                             },
                     ))
                   ],

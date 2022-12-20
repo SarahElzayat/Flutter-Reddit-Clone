@@ -14,9 +14,11 @@ class LeftDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
-    final AppCubit cubit = AppCubit.get(context);
-
-    return BlocBuilder<AppCubit, AppState>(
+    final AppCubit cubit = AppCubit.get(context)
+      ..getYourCommunities()
+      ..getYourModerating();
+    return BlocConsumer<AppCubit, AppState>(
+      listener: (context, state) {},
       builder: (context, state) {
         return SafeArea(
             child: Drawer(
@@ -24,19 +26,24 @@ class LeftDrawer extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (cubit.favoriteCommunities.isNotEmpty)
+                  listButton(context, 'Favorites', cubit.favoriteCommunities,
+                      cubit.changeFavoritesListState, cubit.favoritesListOpen,
+                      // isModerating: true,
+                      isFavorites: true,
+                      navigateToSubreddit: () {}),
                 if (cubit.moderatingListItems.isNotEmpty)
                   listButton(context, 'Moderating', cubit.moderatingListItems,
                       cubit.changeModeratingListState, cubit.moderatingListOpen,
                       isModerating: true, navigateToSubreddit: () {}),
-                if (cubit.yourCommunitiesList.isNotEmpty)
-                  listButton(
-                      context,
-                      'Your Communities',
-                      cubit.yourCommunitiesList,
-                      cubit.changeYourCommunitiesState,
-                      cubit.yourCommunitiesistOpen,
-                      isCommunity: true,
-                      navigateToSubreddit: () {}),
+                listButton(
+                    context,
+                    'Your Communities',
+                    cubit.yourCommunitiesList,
+                    cubit.changeYourCommunitiesState,
+                    cubit.yourCommunitiesistOpen,
+                    isCommunity: true,
+                    navigateToSubreddit: () {}),
                 genericTextButton(context, Icons.bar_chart_rounded, 'All',
                     const ToBeDoneScreen(text: 'All'),
                     isLeftDrawer: true)

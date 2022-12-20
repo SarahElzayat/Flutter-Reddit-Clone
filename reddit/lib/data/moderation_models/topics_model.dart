@@ -1,27 +1,36 @@
-//no need
-class SuggestedTopics {
-  List<CommunityTopics>? communityTopics;
+// class CommunityTopics {
+//   String? topicName;
 
-  SuggestedTopics({this.communityTopics});
+//   CommunityTopics({this.topicName});
 
-  SuggestedTopics.fromJson(Map<String, dynamic> json) {
-    if (json['communityTopics'] != null) {
-      communityTopics = <CommunityTopics>[];
-      json['communityTopics'].forEach((v) {
-        communityTopics!.add(CommunityTopics.fromJson(v));
-      });
-    }
-  }
+//   CommunityTopics.fromJson(Map<String, dynamic> json) {
+//     topicName = json['topicName'];
+//   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (communityTopics != null) {
-      data['communityTopics'] =
-          communityTopics!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['topicName'] = topicName;
+//     return data;
+//   }
+// }
+//   SuggestedTopics.fromJson(Map<String, dynamic> json) {
+//     if (json['communityTopics'] != null) {
+//       communityTopics = <CommunityTopics>[];
+//       json['communityTopics'].forEach((v) {
+//         communityTopics!.add(CommunityTopics.fromJson(v));
+//       });
+//     }
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     if (communityTopics != null) {
+//       data['communityTopics'] =
+//           communityTopics!.map((v) => v.toJson()).toList();
+//     }
+//     return data;
+//   }
+// }
 
 class CommunityTopics {
   String? topicName;
