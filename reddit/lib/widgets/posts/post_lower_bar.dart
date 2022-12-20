@@ -110,11 +110,6 @@ class _PostLowerBarWithoutVotesState extends State<PostLowerBarWithoutVotes> {
                       post: widget.post,
                     );
                   } else {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) => shareModalBottomSheet(
-                          context: context, post: widget.post),
-                    );
                     // TODO
                     // sharePost(context, widget.post);
                   }

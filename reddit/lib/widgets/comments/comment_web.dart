@@ -307,12 +307,7 @@ class _CommentWebState extends State<CommentWeb> {
   }) {
     return Row(
       children: [
-        subredditAvatar(
-            small: true,
-            imageUrl:
-                PostAndCommentActionsCubit.get(context).subreddit?.picture ??
-                    PostAndCommentActionsCubit.get(context).user?.picture ??
-                    ''),
+        subredditAvatar(small: true),
         SizedBox(
           width: min(5.w, 10),
         ),

@@ -92,7 +92,6 @@ class _CommunitySearchState extends State<CommunitySearch> {
                   itemBuilder: (BuildContext context, int index) {
                     return ListTile(
                       onTap: () {
-                        addPostCubit.isSubreddit = true;
                         addPostCubit.addSubredditName(addPostCubit
                             .subredditsList!
                             .children![index]

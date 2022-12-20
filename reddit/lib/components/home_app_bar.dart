@@ -9,15 +9,12 @@ import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
-
-import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/screens/create_community_screen/create_community_screen.dart';
 import 'package:reddit/components/app_bar_components.dart';
 import 'package:reddit/components/search_field.dart';
 import 'package:reddit/screens/inbox/create_message_screen.dart';
 
 import '../cubit/app_cubit/app_cubit.dart';
-import '../networks/constant_end_points.dart';
 
 /// this is a utility function used to mark all the items in the inbox as read
 void markAllAsRead(context) async {
@@ -150,9 +147,7 @@ AppBar homeAppBar(context, index) {
                         onPressed: () {},
                         icon: const Icon(Icons.add_comment_outlined))
                     : const Text(''),
-        InkWell(
-            onTap: () => cubit.changeRightDrawer(),
-            child: avatar(context: context))
+        InkWell(onTap: () => cubit.changeRightDrawer(), child: avatar())
       ],
     );
   }
@@ -205,18 +200,7 @@ AppBar homeAppBar(context, index) {
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
             ),
-            InkWell(
-              onTap: () => cubit.changeRightDrawer(),
-              child: CircleAvatar(
-                // backgroundColor: Colors.red,
-                backgroundColor: ColorManager.darkGrey,
-                backgroundImage: cubit.profilePicture.isEmpty
-                    ? const AssetImage('./assets/images/Logo.png')
-                        as ImageProvider
-                    : NetworkImage('$baseUrl/${cubit.profilePicture}'),
-                radius: 100,
-              ),
-            )
+            InkWell(onTap: () => cubit.changeRightDrawer(), child: avatar())
           ],
         ),
       ),
