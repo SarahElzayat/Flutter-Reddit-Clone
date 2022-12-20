@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/components/snack_bar.dart';
+import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import 'package:reddit/data/create_community_model/create_community_model.dart';
 import 'package:reddit/data/create_community_model/saved_categories_model.dart';
 import 'package:reddit/data/moderation_models/community_settings_model.dart';
@@ -116,6 +117,8 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
         ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
             message: 'r/$name created successfully', error: false));
         emit(CreateCommunity());
+        SubredditCubit.get(context)
+            .setSubredditName(context, name, replace: true);
       }
     }).catchError((err) {
       err = err as DioError;
