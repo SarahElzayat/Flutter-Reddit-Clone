@@ -13,6 +13,7 @@ const baseUrl = kReleaseMode
     // ? 'http://www.read-it.live/api' TODO: wa3er aly ast5dm el fo2 34an samaa.
     : kIsWeb
         ? 'http://localhost:3000'
+        // : 'http://10.0.2.2:3000'; // for mobile
         : 'https://www.read-it.live/api';
 // : 'http://10.0.2.2:3000/';
 
@@ -35,6 +36,10 @@ const blockedAccounts = '/blocked-users';
 const accountSettings =
     '/account-settings'; // this end point is used in multi requests.
 const block = '/block-user';
+
+// messages and inbox
+const messagesPoint = '/message/inbox';
+const markMessageAsRead = '/unread-message';
 
 // create community
 const createCommunity = '/create-subreddit';
