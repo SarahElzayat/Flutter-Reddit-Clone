@@ -46,8 +46,8 @@ class _SavedPostsScreenState extends State<SavedPostsScreen> {
           listener: (context, state) {
             if (state is PostSavedState) {
               String id = state.id;
-            
-              cubit.savedPostsList.removeWhere((element) => element.id == id);
+              if (state.type == 'post') {
+              } else {}
             }
           },
           builder: (context, state) {
