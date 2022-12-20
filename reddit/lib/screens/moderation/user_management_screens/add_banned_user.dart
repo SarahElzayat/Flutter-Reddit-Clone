@@ -2,26 +2,27 @@
 ///@date: 10/12/2022
 ///this screens bans a user from a subreddit
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/bottom_sheet.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/components/moderation_components/modtools_components.dart';
 import 'package:reddit/components/square_text_field.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+// ignore: must_be_immutable
 class AddBannedUser extends StatelessWidget {
   static const String routeName = 'add_banned_user';
   AddBannedUser({super.key});
   late dynamic reason = 'Pick a reason';
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController daysController = TextEditingController();
-  final TextEditingController modNoteController = TextEditingController();
-  final TextEditingController userNoteController = TextEditingController();
-  String modNote = '';
-  String userNote = '';
+  // final TextEditingController usernameController = TextEditingController();
+  // final TextEditingController daysController = TextEditingController();
+  // final TextEditingController modNoteController = TextEditingController();
+  // final TextEditingController userNoteController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +30,9 @@ class AddBannedUser extends StatelessWidget {
     return BlocConsumer<ModerationCubit, ModerationState>(
       listener: ((context, state) {}),
       builder: (context, state) => Scaffold(
+        backgroundColor: (kIsWeb) ? ColorManager.darkGrey : ColorManager.black,
         appBar: userManagementAppBar(context, 'Add a banned user', () {
-          cubit.banUser(context, daysController.text, modNote, userNote);
+          cubit.banUser(context);
         }, (!cubit.emptyReason && !cubit.emptyUsername)),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -41,11 +43,11 @@ class AddBannedUser extends StatelessWidget {
                 const Text('Username'),
                 const SizedBox(height: 15),
                 SquareTextField(
-                    formController: usernameController,
+                    formController: cubit.usernameController,
                     labelText: 'username',
                     prefix: const Text('u/'),
                     onChanged: (username) =>
-                        cubit.buttonState(usernameController.text)),
+                        cubit.buttonState(cubit.usernameController.text)),
                 const SizedBox(height: 15),
                 const Text('Reason for ban'),
                 const SizedBox(height: 15),
@@ -71,7 +73,7 @@ class AddBannedUser extends StatelessWidget {
                           Text(reason,
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 18.sp,
+                                  fontSize: 14.sp,
                                   fontWeight: FontWeight.w600)),
                           const Spacer(),
                           const Icon(
@@ -88,7 +90,7 @@ class AddBannedUser extends StatelessWidget {
                 const SizedBox(height: 15),
                 SquareTextField(
                     labelText: 'Only mods will see this',
-                    formController: modNoteController),
+                    formController: cubit.modNoteController),
                 const SizedBox(height: 15),
                 const Text('How long?'),
                 const SizedBox(height: 15),
@@ -98,12 +100,11 @@ class AddBannedUser extends StatelessWidget {
                         height: 50,
                         width: 100,
                         child: SquareTextField(
-                            onChanged: (check) =>
-                                cubit.checkDays(daysController.text),
+                            onChanged: (check) => cubit.checkDays(),
                             labelText: '',
                             showSuffix: false,
                             keyboardType: TextInputType.number,
-                            formController: daysController)),
+                            formController: cubit.daysController)),
                     const SizedBox(width: 10),
                     const Text('Days'),
                     const SizedBox(width: 15),
@@ -119,7 +120,7 @@ class AddBannedUser extends StatelessWidget {
                 const SizedBox(height: 15),
                 SquareTextField(
                     labelText: 'The user will receive this note in a message',
-                    formController: userNoteController)
+                    formController: cubit.userNoteController)
               ],
             ),
           ),

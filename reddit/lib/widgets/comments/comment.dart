@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional_switch.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
+import 'package:logger/logger.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/cubit/comment_notifier/comment_notifier_cubit.dart';
@@ -14,6 +15,7 @@ import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/functions/post_functions.dart';
+import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_state.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:reddit/screens/comments/add_comment_screen.dart';
 import 'package:reddit/screens/posts/post_screen_cubit/post_screen_cubit.dart';
@@ -117,7 +119,7 @@ class _CommentState extends State<Comment> {
           create: (context) => PostAndCommentActionsCubit(
             post: widget.post,
             currentComment: widget.comment,
-          ),
+          )..getUserDetails(),
         ),
       ],
       child: BlocConsumer<CommentNotifierCubit, CommentsNotifierState>(
@@ -246,54 +248,58 @@ class _CommentState extends State<Comment> {
   }
 
   Widget _commentsControlRow() {
-    return Row(
-      children: [
-        const Spacer(),
-        DropDownList(
-          post: widget.post,
-          comment: widget.comment,
-          itemClass: ItemsClass.comments,
-        ),
-        SizedBox(width: 5.w),
-        InkWell(
-          onTap: () {
-            setState(() {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AddCommentScreen(
-                            post: widget.post,
-                            parentComment: widget.comment,
-                          ))).then((value) {
-                PostScreenCubit.get(context).getCommentsOfPost();
-              });
-            });
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Icon(
-                Icons.reply_rounded,
-                color: ColorManager.greyColor,
-                size: min(5.5.w, 30),
+    return BlocBuilder<PostNotifierCubit, PostNotifierState>(
+      builder: (context, state) {
+        return Row(
+          children: [
+            const Spacer(),
+            DropDownList(
+              post: widget.post,
+              comment: widget.comment,
+              itemClass: ItemsClass.comments,
+            ),
+            SizedBox(width: 5.w),
+            InkWell(
+              onTap: () {
+                setState(() {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddCommentScreen(
+                                post: widget.post,
+                                parentComment: widget.comment,
+                              ))).then((value) {
+                    PostScreenCubit.get(context).getCommentsOfPost();
+                  });
+                });
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Icon(
+                    Icons.reply_rounded,
+                    color: ColorManager.greyColor,
+                    size: min(5.5.w, 30),
+                  ),
+                  const Text(
+                    'Reply',
+                    style: TextStyle(
+                      color: ColorManager.greyColor,
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
               ),
-              const Text(
-                'Reply',
-                style: TextStyle(
-                  color: ColorManager.greyColor,
-                  fontSize: 15,
-                ),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(width: 5.w),
-        BlocBuilder<PostNotifierCubit, PostNotifierState>(
-          builder: (context, state) {
-            return VotesPart(post: widget.post);
-          },
-        ),
-      ],
+            ),
+            SizedBox(width: 5.w),
+            BlocBuilder<PostNotifierCubit, PostNotifierState>(
+              builder: (context, state) {
+                return VotesPart(post: widget.post);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -303,49 +309,57 @@ class _CommentState extends State<Comment> {
     String content = '',
     required CommentModel comment,
   }) {
-    return Row(
-      children: [
-        subredditAvatar(small: true),
-        SizedBox(
-          width: min(5.w, 10),
-        ),
-        Text(
-          '${'u'}/${comment.commentedBy} ',
-          style: const TextStyle(
-            color: ColorManager.greyColor,
-            fontSize: 15,
-          ),
-        ),
-        Text(
-          '• ${timeago.format(DateTime.tryParse(comment.editTime ?? '') ?? DateTime.now(), locale: 'en_short')}',
-          style: const TextStyle(
-            color: ColorManager.greyColor,
-            fontSize: 15,
-          ),
-        ),
-        if (showContent)
-          Expanded(
-            child: Text(
-              ' • $content',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+    return BlocBuilder<PostAndCommentActionsCubit, PostActionsState>(
+      builder: (context, state) {
+        return Row(
+          children: [
+            subredditAvatar(
+                small: true,
+                imageUrl:
+                    PostAndCommentActionsCubit.get(context).user?.picture ??
+                        ''),
+            SizedBox(
+              width: min(5.w, 10),
+            ),
+            Text(
+              '${'u'}/${comment.commentedBy} ',
               style: const TextStyle(
                 color: ColorManager.greyColor,
                 fontSize: 15,
               ),
             ),
-          ),
-        if (showDots)
-          BlocBuilder<PostNotifierCubit, PostNotifierState>(
-            builder: (context, state) {
-              return DropDownList(
-                post: widget.post,
-                comment: widget.comment,
-                itemClass: ItemsClass.comments,
-              );
-            },
-          )
-      ],
+            Text(
+              '• ${timeago.format(DateTime.tryParse(comment.editTime ?? '') ?? DateTime.now(), locale: 'en_short')}',
+              style: const TextStyle(
+                color: ColorManager.greyColor,
+                fontSize: 15,
+              ),
+            ),
+            if (showContent)
+              Expanded(
+                child: Text(
+                  ' • ',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: ColorManager.greyColor,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+            if (showDots)
+              BlocBuilder<PostNotifierCubit, PostNotifierState>(
+                builder: (context, state) {
+                  return DropDownList(
+                    post: widget.post,
+                    comment: widget.comment,
+                    itemClass: ItemsClass.comments,
+                  );
+                },
+              )
+          ],
+        );
+      },
     );
   }
 

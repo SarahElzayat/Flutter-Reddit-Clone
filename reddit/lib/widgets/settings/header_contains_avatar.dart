@@ -10,15 +10,8 @@ import '../../components/helpers/color_manager.dart';
 class HeaderContainsAvatar extends StatelessWidget {
   final usrName;
   final email;
-
-  /// TODO: how to get the user image ?
-  // final userImg;
-  const HeaderContainsAvatar({
-    super.key,
-    required this.email,
-    required this.usrName,
-    // required this.userImg
-  });
+  const HeaderContainsAvatar(
+      {super.key, required this.email, required this.usrName});
 
   @override
   Widget build(BuildContext context) {

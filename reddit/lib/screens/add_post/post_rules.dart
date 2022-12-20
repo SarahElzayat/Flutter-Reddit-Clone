@@ -4,6 +4,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/screens/add_post/schedule_date.dart';
+import 'package:reddit/screens/add_post/subreddit_flair.dart';
 import 'package:reddit/screens/main_screen.dart';
 
 import '../../components/button.dart';
@@ -60,6 +62,7 @@ class _PostRulesState extends State<PostRules> {
                     addPostCubit.title.text = '';
                     addPostCubit.nsfw = false;
                     addPostCubit.spoiler = false;
+                    addPostCubit.isSubreddit = true;
                   }),
             )
           ],
@@ -74,7 +77,10 @@ class _PostRulesState extends State<PostRules> {
                 },
                 child: Row(
                   children: [
-                    Text(addPostCubit.subredditName!,
+                    Text(
+                        (addPostCubit.isSubreddit)
+                            ? addPostCubit.subredditName!
+                            : 'My Profile',
                         style: Theme.of(context).textTheme.titleSmall),
                     const Icon(Icons.keyboard_arrow_down)
                   ],
@@ -125,7 +131,30 @@ class _PostRulesState extends State<PostRules> {
               nfswAndSpoiler(true, addPostCubit.spoiler, ' Spoiler',
                   addPostCubit, mediaQuery)
             ],
-          )
+          ),
+          TextButton(
+              onPressed: () {
+                navigator.push(
+                    MaterialPageRoute(builder: ((context) => ScheduleDate())));
+              },
+              child: Row(
+                children: [
+                  Text('Schedule Post '),
+                  Icon(Icons.arrow_forward_outlined)
+                ],
+              )),
+          if (addPostCubit.flairs!.postFlairs!.length > 0)
+            TextButton(
+                onPressed: () {
+                  navigator.push(MaterialPageRoute(
+                      builder: ((context) => SubredditFlairs())));
+                },
+                child: Row(
+                  children: [
+                    Icon(Icons.local_offer_outlined),
+                    Text(' Add Flair'),
+                  ],
+                ))
         ]),
       ),
     );

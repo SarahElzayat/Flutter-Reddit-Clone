@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/constants/constants.dart';
@@ -68,11 +67,12 @@ class _NotificationWidgetState extends State<NotificationWidget> {
       },
       contentPadding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
       horizontalTitleGap: 10,
-      leading: CircleAvatar(
+      leading: const CircleAvatar(
         backgroundColor: ColorManager.upvoteRed,
         child: widget.notification.photo == null
             ? Image.network(unknownAvatar)
             : Image.network('$baseUrl/${widget.notification.photo!}'),
+
       ),
       title: Row(
         children: [
@@ -81,7 +81,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
             child: SizedBox(
               width: mediaQuery.size.width - 150,
               child: Text(
-                widget.notification.title!,
+                '$userWhoReplied replied to your $type in $subredditName $date',
                 softWrap: true,
                 overflow: TextOverflow.clip,
                 style: TextStyle(
@@ -93,52 +93,37 @@ class _NotificationWidgetState extends State<NotificationWidget> {
         ],
       ),
       subtitle: Text(
-        DateTime.tryParse(widget.notification.sendAt!)!
-            .toLocal()
-            .toIso8601String()
-            .toString(),
+        bodyContent,
         style:
             TextStyle(color: ColorManager.greyColor, fontSize: 13 * fontScale),
       ),
       trailing: IconButton(
-        icon: const Icon(Icons.more_vert),
+        icon: const Icon(Icons.menu),
         onPressed: () {
-          setState(() async {
-            setItem = await modalBottomSheet(
-                context: context,
-                title: 'Manage Notification',
-                text: [
-                  'Hide this notification',
-                  'Disable updates from this community',
-                  'Turn off this notification'
-                ],
-                selectedItem: setItem,
-                selectedIcons: [
-                  Icons.visibility_off,
-                  Icons.notifications_off_outlined,
-                  Icons.notifications_off_outlined,
-                ],
-                unselectedIcons: [
-                  Icons.visibility_off,
-                  Icons.notifications_off_outlined,
-                  Icons.notifications_off_outlined,
-                ],
-                items: [
-                  'Hide this notification',
-                  'Disable updates from this community',
-                  'Turn off this notification'
-                ]);
-
-            if (setItem == 'Hide this notification') {
-              hideTheNotifcation();
-            } else if ('Disable updates from this community' == setItem) {
-              /// TODO apply the logic of disable updates here.
-              // does'nt have an endpoint
-            } else {
-              /// Turn of this notification.
-              // does'nt have an endpoint
-            }
-          });
+          modalBottomSheet(
+              context: context,
+              title: 'Manage Notification',
+              text: [
+                'Hide this notification',
+                'Disable updates from this community',
+                'Turn off this notification'
+              ],
+              selectedItem: 'Disable updates from this community',
+              selectedIcons: [
+                Icons.visibility_off,
+                Icons.notifications_off_outlined,
+                Icons.notifications_off_outlined,
+              ],
+              unselectedIcons: [
+                Icons.visibility_off,
+                Icons.notifications_off_outlined,
+                Icons.notifications_off_outlined,
+              ],
+              items: [
+                'Hide this notification',
+                'Disable updates from this community',
+                'Turn off this notification'
+              ]);
         },
       ),
     );
