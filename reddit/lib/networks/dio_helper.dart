@@ -136,7 +136,6 @@ class DioHelper {
     required String path,
   }) async {
     Options options;
-
     options = Options(
       headers: {
         'Authorization': 'Bearer $token',

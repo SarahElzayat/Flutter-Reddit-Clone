@@ -686,4 +686,10 @@ class AppCubit extends Cubit<AppState> {
       },
     );
   }
+
+  void deletePost(String id) {
+    homePosts.removeWhere((element) {
+      return (element is PostWidget) && element.post.id == id;
+    });
+  }
 }
