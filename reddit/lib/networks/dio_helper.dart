@@ -142,7 +142,7 @@ class DioHelper {
         'Content-Type': 'application/json; charset=utf-8'
       },
     );
-
+    
     return await dio.get(
       path,
       queryParameters: query,

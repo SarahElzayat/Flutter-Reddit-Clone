@@ -379,25 +379,12 @@ class AppCubit extends Cubit<AppState> {
       bool before = false,
       bool after = false,
       int limit = 10}) {
-    if (kDebugMode) {
-      // //logger.wtf('after$afterId');
-      // //logger.wtf('before$beforeId');
-    }
-    if (kDebugMode) {
-      // //logger.wtf('CATEGOOORYYYY $currentHistoryCategory');
-    }
-    loadMore ? emit(LoadingMoreHistoryState()) : emit(LoadingHistoryState());
+    // loadMore ? emit(LoadingMoreHistoryState()) : emit(LoadingHistoryState());
     if (!loadMore) {
       history.clear();
       beforeId = '';
       afterId = '';
-    } else {
-      if (kDebugMode) {
-        // //logger.wtf('AFFFTEEEEERRRRRR ');
-      }
-      if (kDebugMode) {
-        // //logger.wtf(history[history.length - 1].id);
-      }
+      emit(LoadingHistoryState());
     }
     DioHelper.getData(
       path: path != null
@@ -410,13 +397,7 @@ class AppCubit extends Cubit<AppState> {
       },
     ).then((value) {
       if (value.data['children'].length == 0) {
-        if (kDebugMode) {
-          // //logger.wtf('EMPPPTTYYYYY');
-        }
-
-        if (loadMore) {
-          emit(NoMoreHistoryToLoadState());
-        } else {
+        if (!loadMore) {
           emit(HistoryEmptyState());
         }
       } else {
@@ -531,8 +512,8 @@ class AppCubit extends Cubit<AppState> {
       bool before = false,
       bool after = false,
       int limit = 5}) {
-    if (loadMore && isPosts) emit(LoadingMoreSavedPostsState());
-    if (loadMore && isComments) emit(LoadingMoreSavedCommentsState());
+    // if (loadMore && isPosts) emit(LoadingMoreSavedPostsState());
+    // if (loadMore && isComments) emit(LoadingMoreSavedCommentsState());
     if (!loadMore) {
       savedPostsList.clear();
       savedCommentsList.clear();
@@ -568,9 +549,7 @@ class AppCubit extends Cubit<AppState> {
           //logger.wtf('EMPPPTTYYYYY');
         }
 
-        if (loadMore) {
-          emit(NoMoreSavedToLoadState());
-        } else {
+        if (!loadMore) {
           emit(SavedEmptyState());
         }
       } else {
@@ -650,7 +629,6 @@ class AppCubit extends Cubit<AppState> {
   }
 
   void deleteProfilePicture() {
-    print('aho');
     DioHelper.deleteData(path: userProfilePicture).then((value) {
       if (value.statusCode == 204) {
         profilePicture = '';
@@ -659,8 +637,6 @@ class AppCubit extends Cubit<AppState> {
         emit(NoProfilePictureState());
       }
     }).onError((error, stackTrace) {
-      print(error);
-      print('a7eh');
       emit(ErrorState());
     });
   }
