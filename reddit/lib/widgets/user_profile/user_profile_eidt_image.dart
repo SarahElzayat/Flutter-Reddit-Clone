@@ -10,7 +10,7 @@ import '../../components/helpers/color_manager.dart';
 import '../../networks/constant_end_points.dart';
 
 class UserProfileEditImage extends StatefulWidget {
-  UserProfileEditImage({Key? key}) : super(key: key);
+  const UserProfileEditImage({Key? key}) : super(key: key);
 
   @override
   State<UserProfileEditImage> createState() => _UserProfileEditImageState();
@@ -32,7 +32,7 @@ class _UserProfileEditImageState extends State<UserProfileEditImage> {
             margin: const EdgeInsets.all(3),
             child: DottedBorder(
                 dashPattern: const [10, 5],
-                color: (true) ? ColorManager.white : ColorManager.black,
+                color: ColorManager.white,
                 child: SizedBox(
                   width: mediaquery.size.width,
                   height: 120,

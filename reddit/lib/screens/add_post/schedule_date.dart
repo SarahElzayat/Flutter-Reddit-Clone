@@ -4,7 +4,7 @@ import '../../components/helpers/color_manager.dart';
 import '../../cubit/add_post/cubit/add_post_cubit.dart';
 
 class ScheduleDate extends StatefulWidget {
-  ScheduleDate({Key? key}) : super(key: key);
+  const ScheduleDate({Key? key}) : super(key: key);
 
   @override
   State<ScheduleDate> createState() => _ScheduleDateState();
@@ -19,7 +19,6 @@ class _ScheduleDateState extends State<ScheduleDate> {
 
   @override
   void initState() {
-    // TODO: implement initState
     finalDate = AddPostCubit.get(context).scheduleDate;
     if (finalDate != null) {
       dateTime = finalDate!;
@@ -61,7 +60,7 @@ class _ScheduleDateState extends State<ScheduleDate> {
         ],
       ),
       body: Container(
-          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 4),
+          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -90,7 +89,7 @@ class _ScheduleDateState extends State<ScheduleDate> {
                                 ),
                                 textButtonTheme: TextButtonThemeData(
                                   style: TextButton.styleFrom(
-                                    primary:
+                                    foregroundColor:
                                         Colors.blueAccent, // button text color
                                   ),
                                 ),
