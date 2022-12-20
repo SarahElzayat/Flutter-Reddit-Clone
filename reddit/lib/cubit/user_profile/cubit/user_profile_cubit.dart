@@ -172,7 +172,8 @@ class UserProfileCubit extends Cubit<UserProfileState> {
                 radius: 30,
                 backgroundImage:
                     (userData!.picture == null || userData!.picture == '')
-                        ? Image.asset('assets/images/Logo.png') as ImageProvider
+                        ? const AssetImage('assets/images/Logo.png')
+                            as ImageProvider
                         : NetworkImage(
                             '$baseUrl/${userData!.picture!}',
                             // fit: BoxFit.cover,

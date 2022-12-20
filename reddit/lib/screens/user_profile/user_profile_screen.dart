@@ -201,21 +201,19 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                       // padding: EdgeInsets.only(left: 15),
                                       child: CircleAvatar(
                                         radius: 40,
-
                                         backgroundImage: (userProfileCubit
                                                         .userData!.picture ==
                                                     null ||
                                                 userProfileCubit
                                                         .userData!.picture ==
                                                     '')
-                                            ? Image.asset(
+                                            ? const AssetImage(
                                                     'assets/images/Logo.png')
                                                 as ImageProvider
                                             : NetworkImage(
                                                 '$baseUrl/${userProfileCubit.userData!.picture!}',
                                                 // fit: BoxFit.cover,
                                               ),
-                                        
                                       ),
                                     ),
                                     Stack(
