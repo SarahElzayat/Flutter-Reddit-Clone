@@ -3,6 +3,7 @@
 /// general search field to be included in home, subreddits, profiles... etc
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/search/cubit/search_cubit.dart';
 import 'package:reddit/screens/search/search_screen.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 
@@ -94,10 +95,8 @@ class _SearchFieldState extends State<SearchField> {
         onChanged: (value) => setState(() {
           (widget.textEditingController.text);
         }),
-        
         controller: widget.textEditingController,
-        style:
-            const TextStyle(color: ColorManager.eggshellWhite, fontSize: 18),
+        style: const TextStyle(color: ColorManager.eggshellWhite, fontSize: 18),
         decoration: InputDecoration(
           hintText: 'Search Reddit',
           border: InputBorder.none,
@@ -139,6 +138,11 @@ class _SearchFieldState extends State<SearchField> {
                             onTap: () {
                               setState(() {
                                 isPrefix = false;
+                                SearchCubit.get(context).setSearchSubreddit('');
+                              
+                                // widget.textEditingController.clear();
+                                // widget.subredditName = '';
+                                // widget.isSubreddit = false;
                               });
                             },
                             child: const Icon(
