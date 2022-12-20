@@ -19,6 +19,7 @@ import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/saved/saved_comments.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
+import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_state.dart';
 import '../../data/post_model/post_model.dart';
 import '../../data/temp_data/tmp_data.dart';
 import '../../networks/constant_end_points.dart';
@@ -130,6 +131,11 @@ class AppCubit extends Cubit<AppState> {
     }).catchError((error) {
       emit(ErrorState());
     });
+  }
+
+  void removeSavedPost(String postId) {
+    savedPostsList.removeWhere((element) => element.id == postId);
+    emit(LoadedSavedState());
   }
 
   ///@param [popularPosts] dummy data for home screen
@@ -511,7 +517,7 @@ class AppCubit extends Cubit<AppState> {
       bool loadMore = false,
       bool before = false,
       bool after = false,
-      int limit = 5}) {
+      int limit = 25}) {
     // if (loadMore && isPosts) emit(LoadingMoreSavedPostsState());
     // if (loadMore && isComments) emit(LoadingMoreSavedCommentsState());
     if (!loadMore) {
