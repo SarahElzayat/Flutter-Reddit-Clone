@@ -6,7 +6,7 @@ import '../../screens/posts/post_screen.dart';
 import '../comments/comment.dart';
 
 class UserProfileComments extends StatefulWidget {
-  UserProfileComments({Key? key}) : super(key: key);
+  const UserProfileComments({Key? key}) : super(key: key);
 
   @override
   State<UserProfileComments> createState() => _UserProfileCommentsState();
@@ -22,7 +22,6 @@ class _UserProfileCommentsState extends State<UserProfileComments> {
 
   @override
   Widget build(BuildContext context) {
-    final mediaquery = MediaQuery.of(context);
     final userProfileCubit = UserProfileCubit.get(context);
     final navigator = Navigator.of(context);
 

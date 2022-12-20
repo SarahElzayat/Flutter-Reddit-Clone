@@ -109,7 +109,7 @@ class PostScreenCubit extends Cubit<PostScreenState> {
       logger.e(post.toJson());
       logger.e(
           'error in comments ${(error as DioError).response!.data['error']}');
-      emit(CommentsError((error as DioError).response!.data['error']));
+      emit(CommentsError((error).response!.data['error']));
     });
   }
 
