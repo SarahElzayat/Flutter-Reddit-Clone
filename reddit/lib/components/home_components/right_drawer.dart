@@ -178,7 +178,6 @@ class RightDrawer extends StatelessWidget {
                     ],
                   ),
                 ),
-                // Column(
               ],
             ),
             Column(
