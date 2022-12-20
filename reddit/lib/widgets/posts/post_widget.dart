@@ -47,6 +47,7 @@ class PostWidget extends StatefulWidget {
     required this.post,
     this.outsideScreen = true,
     this.isNested = false,
+    this.inSearch = false,
     this.upperRowType = ShowingOtions.both,
     this.postView = PostView.card,
     this.comment,
@@ -74,6 +75,7 @@ class PostWidget extends StatefulWidget {
   /// if yes then the post will be shown in a compact way
   final bool isNested;
 
+  final bool inSearch;
   final CommentModel? comment;
 
   final bool insideProfiles;
@@ -332,7 +334,9 @@ class _PostWidgetState extends State<PostWidget> {
   }
 
   Row _lowerPart(bool isWeb) {
-    if (widget.isNested || widget.postView == PostView.withCommentsInSearch) {
+    if (widget.isNested ||
+        widget.postView == PostView.withCommentsInSearch ||
+        widget.inSearch) {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [

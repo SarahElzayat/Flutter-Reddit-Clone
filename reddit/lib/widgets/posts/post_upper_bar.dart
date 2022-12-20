@@ -93,11 +93,18 @@ class PostUpperBar extends StatelessWidget {
     return SizedBox(
       child: Row(
         children: [
-          subredditAvatar(
-              imageUrl:
-                  PostAndCommentActionsCubit.get(context).subreddit?.picture ??
-                      PostAndCommentActionsCubit.get(context).user?.picture ??
-                      ''),
+          InkWell(
+            onTap: () {
+              SubredditCubit.get(context)
+                  .setSubredditName(context, post.subreddit ?? '');
+            },
+            child: subredditAvatar(
+                imageUrl: PostAndCommentActionsCubit.get(context)
+                        .subreddit
+                        ?.picture ??
+                    PostAndCommentActionsCubit.get(context).user?.picture ??
+                    ''),
+          ),
           SizedBox(
             width: min(2.w, 10),
           ),
