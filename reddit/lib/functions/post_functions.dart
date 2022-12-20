@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:reddit/components/snack_bar.dart';
+import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
 import 'package:reddit/data/post_model/approve.dart';
 import 'package:reddit/data/post_model/remove.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -143,6 +144,7 @@ Widget singleRow({
   bool showDots = true,
   required bool isWeb,
   required PostModel post,
+  required BuildContext context,
 }) {
   return Row(
     children: [
@@ -151,11 +153,18 @@ Widget singleRow({
         SizedBox(
           width: min(5.w, 0.2.dp),
         ),
-      Text(
-        '${sub ? 'r' : 'u'}/${post.postedBy} • ',
-        style: const TextStyle(
-          color: ColorManager.greyColor,
-          fontSize: 15,
+      InkWell(
+        onTap: () {
+          // print('Hello Hello Hello Hello ');
+          UserProfileCubit.get(context)
+              .showPopupUserWidget(context, post.postedBy!);
+        },
+        child: Text(
+          '${sub ? 'r' : 'u'}/${post.postedBy} • ',
+          style: const TextStyle(
+            color: ColorManager.greyColor,
+            fontSize: 15,
+          ),
         ),
       ),
       Text(

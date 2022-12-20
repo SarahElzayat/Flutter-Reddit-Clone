@@ -61,6 +61,7 @@ class _PostUpperBarState extends State<PostUpperBar> {
           caseBuilders: {
             ShowingOtions.onlyUser: (ctx) {
               return singleRow(
+                  context: context,
                   sub: false,
                   showIcon: true,
                   post: widget.post,
@@ -68,6 +69,7 @@ class _PostUpperBarState extends State<PostUpperBar> {
             },
             ShowingOtions.onlySubreddit: (_) {
               return singleRow(
+                  context: context,
                   sub: true,
                   showIcon: true,
                   post: widget.post,
@@ -122,6 +124,7 @@ class _PostUpperBarState extends State<PostUpperBar> {
                 ),
               ),
               singleRow(
+                  context: context,
                   sub: false,
                   showDots: false,
                   post: widget.post,

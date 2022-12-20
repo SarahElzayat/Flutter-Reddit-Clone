@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:reddit/components/button.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
+import 'package:reddit/data/settings/settings_models/user_settings.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 import 'package:reddit/widgets/comments/comment.dart';
 import 'package:reddit/widgets/user_profile/user_profile_comments.dart';
@@ -40,6 +43,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
   // final GlobalKey _con2 = GlobalKey();
   // final GlobalKey _con3 = GlobalKey();
 
+  late bool isMyProfile;
+
   @override
   void initState() {
     // final username = CacheHelper.getData(key: 'username');
@@ -56,6 +61,14 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     // }).catchError((error) {
     //   print('Error in fetch user data ==> $error');
     // });
+
+    if (CacheHelper.getData(key: 'username') ==
+        UserProfileCubit.get(context).username) {
+      isMyProfile = true;
+    } else {
+      isMyProfile = false;
+    }
+
     final userProfileCubit = UserProfileCubit.get(context);
 
     userProfileCubit.postController = PagingController(firstPageKey: null);
@@ -185,25 +198,78 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                     Padding(
                                       padding:
                                           EdgeInsets.only(left: 15, top: 10),
-                                      child: Button(
-                                          text: 'Edit',
-                                          textFontSize: 20,
-                                          onPressed: () {
-                                            navigator.pushNamed(
-                                                UserProfileEditScreen
-                                                    .routeName);
-                                            setState(() {});
-                                            SchedulerBinding.instance
-                                                .addPostFrameCallback((_) {
-                                              getHeight();
-                                            });
-                                          },
-                                          buttonWidth: 100,
-                                          buttonHeight: 55,
-                                          splashColor: Colors.transparent,
-                                          borderColor: ColorManager.white,
-                                          backgroundColor: Colors.transparent,
-                                          textFontWeight: FontWeight.bold),
+                                      child: (isMyProfile)
+                                          ? Button(
+                                              text: 'Edit',
+                                              textFontSize: 20,
+                                              onPressed: () {
+                                                navigator.pushNamed(
+                                                    UserProfileEditScreen
+                                                        .routeName);
+                                                setState(() {});
+                                                SchedulerBinding.instance
+                                                    .addPostFrameCallback((_) {
+                                                  getHeight();
+                                                });
+                                              },
+                                              buttonWidth: 100,
+                                              buttonHeight: 55,
+                                              splashColor: Colors.transparent,
+                                              borderColor: ColorManager.white,
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              textFontWeight: FontWeight.bold)
+                                          : BlocBuilder<UserProfileCubit,
+                                              UserProfileState>(
+                                              buildWhen: (previous, current) {
+                                                if (current
+                                                        is FollowOrUnfollowState ||
+                                                    previous
+                                                        is FollowOrUnfollowState) {
+                                                  print(true);
+                                                  return true;
+                                                } else {
+                                                  return false;
+                                                }
+                                              },
+                                              builder: (context, state) {
+                                                return Button(
+                                                    text: (userProfileCubit
+                                                            .userData!
+                                                            .followed!)
+                                                        ? 'Following'
+                                                        : 'Follow',
+                                                    textFontSize: 20,
+                                                    onPressed: () {
+                                                      if (userProfileCubit
+                                                          .userData!
+                                                          .followed!) {
+                                                        userProfileCubit
+                                                            .followOrUnfollowUser(
+                                                                false);
+                                                      } else {
+                                                        userProfileCubit
+                                                            .followOrUnfollowUser(
+                                                                true);
+                                                      }
+                                                    },
+                                                    buttonWidth:
+                                                        (userProfileCubit
+                                                                .userData!
+                                                                .followed!)
+                                                            ? 150
+                                                            : 120,
+                                                    buttonHeight: 55,
+                                                    splashColor:
+                                                        Colors.transparent,
+                                                    borderColor:
+                                                        ColorManager.white,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    textFontWeight:
+                                                        FontWeight.bold);
+                                              },
+                                            ),
                                     ),
                                   ],
                                 ),
@@ -235,39 +301,42 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                             const SizedBox(
                               height: 10,
                             ),
-                            MaterialButton(
-                              padding: EdgeInsets.zero,
-                              onPressed: (() {}),
-                              child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: const [
-                                    Text('0 followers'),
-                                    Icon(Icons.arrow_forward_ios_sharp),
-                                  ]),
-                            ),
+                            // MaterialButton(
+                            //   padding: EdgeInsets.zero,
+                            //   onPressed: (() {}),
+                            //   child: Row(
+                            //       mainAxisSize: MainAxisSize.min,
+                            //       children: const [
+                            //         Text('0 followers'),
+                            //         Icon(Icons.arrow_forward_ios_sharp),
+                            //       ]),
+                            // ),
                             Text(
                                 'u/${userProfileCubit.userData!.displayName} *${userProfileCubit.userData!.karma} Karma *${DateFormat('dd/MM/yyyy').format((userProfileCubit.userData!.cakeDate!))}'),
                             Text(userProfileCubit.userData!.about ?? ''),
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: 2),
-                              child: MaterialButton(
-                                padding: EdgeInsets.zero,
-                                onPressed: (() {}),
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 5),
-                                  decoration: BoxDecoration(
-                                      color: ColorManager.grey,
-                                      borderRadius: BorderRadius.circular(15)),
-                                  child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: const [
-                                        Icon(Icons.add),
-                                        Text('Add Social Link')
-                                      ]),
-                                ),
-                              ),
-                            )
+                            (isMyProfile)
+                                ? Container(
+                                    margin: EdgeInsets.symmetric(vertical: 2),
+                                    child: MaterialButton(
+                                      padding: EdgeInsets.zero,
+                                      onPressed: (() {}),
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 15, vertical: 5),
+                                        decoration: BoxDecoration(
+                                            color: ColorManager.grey,
+                                            borderRadius:
+                                                BorderRadius.circular(15)),
+                                        child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: const [
+                                              Icon(Icons.add),
+                                              Text('Add Social Link')
+                                            ]),
+                                      ),
+                                    ),
+                                  )
+                                : const SizedBox(),
                           ],
                         ),
                       ),

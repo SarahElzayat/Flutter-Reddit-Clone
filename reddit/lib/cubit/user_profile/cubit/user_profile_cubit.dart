@@ -5,12 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meta/meta.dart';
 import 'package:reddit/data/comment/comment_model.dart';
+import 'package:reddit/data/settings/settings_models/user_settings.dart';
 import 'package:reddit/data/user_profile.dart/about_user_model.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/screens/user_profile/user_profile_screen.dart';
 
 import '../../../constants/constants.dart';
 import '../../../data/post_model/post_model.dart';
+import '../../../networks/constant_end_points.dart';
 
 part 'user_profile_state.dart';
 
@@ -23,26 +25,31 @@ class UserProfileCubit extends Cubit<UserProfileState> {
   late PagingController<String?, PostModel> postController;
   late PagingController<String?, Map<String, dynamic>> commentController;
 
-  void setUsername(String usernamePass, {bool navigate = true}) {
-    print('User Name : $usernamePass');
-    print(token);
-    DioHelper.getData(
-        path: '/user/$usernamePass/about',
-        query: {'username': usernamePass}).then((value) {
+  Future<void> fetchUserData(String userName, {bool navigate = true}) async {
+    await DioHelper.getData(
+        path: '/user/$userName/about',
+        query: {'username': userName}).then((value) {
       if (value.statusCode == 200) {
-        username = usernamePass;
+        username = userName;
         userData = AboutUserModel.fromJson(value.data);
         print('All Done');
         print(userData!.displayName);
         if (userData!.displayName == null || userData!.displayName == '') {
           userData!.displayName = username;
         }
-        navigatorKey.currentState!.pushNamed(UserProfileScreen.routeName);
+        if (navigate)
+          navigatorKey.currentState!.pushNamed(UserProfileScreen.routeName);
         // return true;
       }
     }).catchError((error) {
       print('Error in fetch user data ==> $error');
     });
+  }
+
+  void setUsername(String usernamePass, {bool navigate = true}) {
+    print('User Name : $usernamePass');
+    print(token);
+    fetchUserData(usernamePass);
   }
 
   void fetchPosts({String? after}) {
@@ -122,7 +129,23 @@ class UserProfileCubit extends Cubit<UserProfileState> {
     });
   }
 
-  showPopupUserWidget(BuildContext context, String username) {
+  followOrUnfollowUser(bool follow) {
+    print('Follow $follow');
+    DioHelper.postData(
+        path: followUser,
+        data: {'username': username, 'follow': follow}).then((value) {
+      if (value.statusCode == 200) {
+        print('Success');
+        userData!.followed = !(userData!.followed!);
+        emit(FollowOrUnfollowState());
+      }
+    }).catchError((error) {
+      print(error);
+    });
+  }
+
+  showPopupUserWidget(BuildContext context, String userName) async {
+    await fetchUserData(userName, navigate: false);
     showDialog(
         context: context,
         builder: ((context) {
@@ -130,16 +153,18 @@ class UserProfileCubit extends Cubit<UserProfileState> {
             content: Column(mainAxisSize: MainAxisSize.min, children: [
               CircleAvatar(
                 radius: 30,
-                child: Image.asset(
-                  'assets/images/Logo.png',
-                  fit: BoxFit.cover,
-                ),
+                child: (userData!.picture == null || userData!.picture == '')
+                    ? Image.asset('assets/images/Logo.png', fit: BoxFit.cover)
+                    : Image.network(
+                        userData!.picture!,
+                        fit: BoxFit.cover,
+                      ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Text(
-                'u/${username}',
+                'u/${userData!.displayName ?? userName}',
                 style: TextStyle(fontSize: 16),
               ),
               ListTile(
@@ -150,7 +175,10 @@ class UserProfileCubit extends Cubit<UserProfileState> {
                 subtitle: Text('Karma'),
               ),
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    navigatorKey.currentState!
+                        .pushNamed(UserProfileScreen.routeName);
+                  },
                   child: Row(
                     children: const [
                       Icon(Icons.person),

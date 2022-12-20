@@ -4,3 +4,5 @@ part of 'user_profile_cubit.dart';
 abstract class UserProfileState {}
 
 class UserProfileInitial extends UserProfileState {}
+
+class FollowOrUnfollowState extends UserProfileState {}
