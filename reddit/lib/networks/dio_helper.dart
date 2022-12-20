@@ -52,6 +52,7 @@ class DioHelper {
     Map<String, dynamic>? query,
     String? sentToken,
     bool isFormdata = false,
+    Function(int, int)? onSendProgress,
 
     /// additional query
   }) async {
@@ -65,12 +66,12 @@ class DioHelper {
       },
     );
 
-    return await dio.post(
-      path,
-      data: data,
-      options: options,
-      queryParameters: query,
-    );
+    return await dio.post(path,
+        data: data,
+        options: options,
+        queryParameters: query,
+        onReceiveProgress: onSendProgress,
+        onSendProgress: onSendProgress);
   }
 
   /// this is a function used to send put request with certain body to replace
