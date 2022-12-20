@@ -130,6 +130,7 @@ class _SubredditPostsWidgetState extends State<SubredditPostsWidget> {
                 itemBuilder: (context, item, index) => Container(
                   margin: const EdgeInsets.symmetric(vertical: 5),
                   child: PostWidget(
+                    key: ValueKey(index),
                     post: item,
                     postView: postView,
                   ),

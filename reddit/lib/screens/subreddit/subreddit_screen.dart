@@ -119,8 +119,12 @@ class _SubredditState extends State<Subreddit>
                   pinned: true,
                   delegate: SubredditAppBar(
                       scaffoldKey: _scaffoldKey,
-                      maxExtent: 90,
-                      minExtent: 85,
+                      maxExtent: (mediaQuery.size.height * 0.13 > 100)
+                          ? mediaQuery.size.height * 0.13
+                          : 100,
+                      minExtent: (mediaQuery.size.height * 0.12 > 90)
+                          ? mediaQuery.size.height * 0.12
+                          : 90,
                       subredditCubit: subredditCubit)),
               SliverAppBar(
                 pinned: true,
