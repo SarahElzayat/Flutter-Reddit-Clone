@@ -10,7 +10,7 @@ Widget videoBody(context, PostModel post,
     {isFull = false, FlickManager? oldFm}) {
   // return Container();
   return FlickMultiPlayer(
-    url: '$baseUrl/${post.video ?? ''}',
+    url: post.video ?? '',
     isFull: isFull,
     flickMultiManager: VideosCubit.get(context).flickMultiManager,
     alreadyflickManager: oldFm,

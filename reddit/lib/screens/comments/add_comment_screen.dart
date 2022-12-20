@@ -197,6 +197,7 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
       logger.wtf(e);
       doc = Document();
     }
+    // doc = Document();
 
     return QuillController(
       document: doc,

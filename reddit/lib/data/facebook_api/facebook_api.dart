@@ -1,3 +1,7 @@
+/// @author:Abdelaziz Salah
+/// @date : 20/12/2022
+/// This model is used to reply to a LoginWithFacebook.
+
 import 'dart:convert';
 
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';

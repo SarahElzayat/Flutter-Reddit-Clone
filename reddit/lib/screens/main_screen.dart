@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 
 import '../components/home_app_bar.dart';
-import '../components/snack_bar.dart';
 import '../cubit/app_cubit/app_cubit.dart';
 import '../screens/add_post/add_post.dart';
 import '../components/home_components/left_drawer.dart';
@@ -50,13 +49,12 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
             builder: (context) => const HomeScreen(),
           ));
     }
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final AppCubit cubit = AppCubit.get(context)..getUsername();
+    final AppCubit cubit = AppCubit.get(context); //..getUsername();
 
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {
@@ -65,13 +63,6 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
         }
         if (state is ChangeLeftDrawerState) {
           _changeLeftDrawer();
-        }
-
-        if (state is ErrorState) {
-          ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
-            message: 'An error occurred, please try again later.',
-            error: false,
-          ));
         }
       },
       builder: (context, state) {

@@ -4,6 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 
+import '../../components/Button.dart';
+import '../../components/helpers/color_manager.dart';
+
 class SubredditOpion extends StatelessWidget {
   SubredditOpion({
     Key? key,
@@ -26,8 +29,9 @@ class SubredditOpion extends StatelessWidget {
   Widget build(BuildContext context) {
     final subredditCubit = SubredditCubit.get(context);
     final mediaQuery = MediaQuery.of(context);
+    final navigator = Navigator.of(context);
     return BlocBuilder<SubredditCubit, SubredditState>(
-      buildWhen: (previous, current) => (current is LeaveSubredditState),
+      buildWhen: (previous, current) => (current is leaveSubredditState),
       builder: (context, state) {
         return PopupMenuButton(
             itemBuilder: (_) => [

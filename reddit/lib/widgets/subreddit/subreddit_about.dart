@@ -8,6 +8,7 @@ class SubredditAboutWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     final subredditCubit = BlocProvider.of<SubredditCubit>(context);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10),

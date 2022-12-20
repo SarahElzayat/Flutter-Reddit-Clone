@@ -99,7 +99,7 @@ class DropDownList extends StatelessWidget {
 
     // not my post
     if (post.postedBy != CacheHelper.getData(key: 'username')) {
-      // l.add(MenuItems.report);
+      l.add(MenuItems.report);
       l.add(MenuItems.hide);
       l.add(MenuItems.block);
     } else {

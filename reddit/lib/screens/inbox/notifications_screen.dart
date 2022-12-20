@@ -1,5 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/components/snack_bar.dart';
+import 'package:reddit/data/notifications/notification_model.dart';
+import 'package:reddit/networks/constant_end_points.dart';
+import 'package:reddit/networks/dio_helper.dart';
+import 'package:reddit/screens/comments/add_comment_screen.dart';
 import 'package:reddit/widgets/inbox/notification_widget.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -11,115 +17,65 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-  List<NotificationWidget> notifications = [
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'post',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'post',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'post',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'post',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'post',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'post',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'post',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'post',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'post',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'post',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'comment',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-    const NotificationWidget(
-      bodyContent: 'helloMyBrotherWelcomHere',
-      date: '28d',
-      subredditName: 'r/TestSW',
-      type: 'post',
-      userImage: 'fdsa',
-      userWhoReplied: 'Abdelaziz',
-    ),
-  ];
+  String after = '';
+  String before = '';
+
+  final scroller = ScrollController();
+  List<NotificationWidget> notifications = [];
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    scroller.dispose();
+    super.dispose();
+  }
+
+  /// this is a utility function used to fetch the notifications.
+  void fetch() async {
+    await DioHelper.getData(path: notificationPoint, query: {'after': after})
+        .then(
+      (response) {
+        logger.e(response.data);
+        if (response.statusCode == 200) {
+          NotificationModel allNotifications =
+              NotificationModel.fromJson(response.data);
+          after = allNotifications.after ?? '';
+          for (NotificationItSelf notification in allNotifications.children!) {
+            setState(() {
+              notifications.add(NotificationWidget(notification: notification));
+            });
+          }
+        }
+      },
+    ).catchError((err) {
+      // err = err as DioError;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(responseSnackBar(message: err, error: true));
+    });
+  }
+
+  void _scrollListener() {
+    if (scroller.offset == scroller.position.maxScrollExtent) {
+      fetch();
+    }
+  }
+
+  @override
+  void initState() {
+    // fetching the data
+    scroller.addListener(_scrollListener);
+    fetch();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return notifications.isEmpty
-        ? Expanded(
-            child: SizedBox(
-              child: Center(
-                child: Image.asset('assets/images/Empty.jpg'),
-              ),
-            ),
+        ? Center(
+            child: Image.asset('assets/images/Empty.jpg'),
           )
         : ListView.builder(
+            controller: scroller,
             itemBuilder: (context, index) {
               return Card(
                 color: ColorManager.black,
