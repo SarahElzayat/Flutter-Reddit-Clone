@@ -19,8 +19,7 @@ import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/saved/saved_comments.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
-import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
-import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_state.dart';
+// import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import '../../data/post_model/post_model.dart';
 import '../../data/temp_data/tmp_data.dart';
 import '../../networks/constant_end_points.dart';
@@ -96,14 +95,13 @@ class AppCubit extends Cubit<AppState> {
     } else if (HomeSort.trending.index == sort) {
       path = homeTrending;
     }
-    logger.w(path);
-    logger.w(homePostsAfterId);
-    logger.w(homePostsBeforeId);
+    // logger.w(path);
+    // logger.w(homePostsAfterId);
+    // logger.w(homePostsBeforeId);
     // logger.w(path);
     DioHelper.getData(path: path, query: {
       'limit': limit,
       'after': after ? homePostsAfterId : 0,
-    
     }).then((value) {
       logger.wtf(value.data['children'].length);
 
