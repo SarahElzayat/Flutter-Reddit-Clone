@@ -84,7 +84,6 @@ class _SubredditState extends State<Subreddit>
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    final navigator = Navigator.of(context);
     final subredditCubit = BlocProvider.of<SubredditCubit>(context);
     final AppCubit cubit = AppCubit.get(context);
     return WillPopScope(
@@ -277,8 +276,8 @@ class _SubredditState extends State<Subreddit>
                         ),
                         BlocBuilder<SubredditCubit, SubredditState>(
                             buildWhen: (previous, current) =>
-                                (current is leaveSubredditState ||
-                                    current is joinSubredditState),
+                                (current is LeaveSubredditState ||
+                                    current is JoinSubredditState),
                             builder: (context, state) => (subredditCubit
                                     .subreddit!.isModerator!)
                                 ? MaterialButton(
@@ -392,16 +391,14 @@ class _SubredditState extends State<Subreddit>
         builder: (context) => AlertDialog(
           backgroundColor: ColorManager.grey,
           insetPadding: EdgeInsets.zero,
-          content: Container(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Are you sure you want to leave the r/${subredditCubit.subredditName} community',
-                  style: TextStyle(fontSize: 17 * mediaQuery.textScaleFactor),
-                ),
-              ],
-            ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Are you sure you want to leave the r/${subredditCubit.subredditName} community',
+                style: TextStyle(fontSize: 17 * mediaQuery.textScaleFactor),
+              ),
+            ],
           ),
           actions: [
             Button(
@@ -415,7 +412,7 @@ class _SubredditState extends State<Subreddit>
                 buttonWidth: mediaQuery.size.width * 0.3,
                 buttonHeight: 40,
                 textFontSize: 15,
-                splashColor: Color.fromARGB(40, 0, 0, 0)),
+                splashColor: const Color.fromARGB(40, 0, 0, 0)),
             Button(
                 onPressed: () {
                   subredditCubit.leaveCommunity();
@@ -427,7 +424,7 @@ class _SubredditState extends State<Subreddit>
                 buttonWidth: mediaQuery.size.width * 0.3,
                 buttonHeight: 40,
                 textFontSize: 15,
-                splashColor: Color.fromARGB(40, 0, 0, 0))
+                splashColor: const Color.fromARGB(40, 0, 0, 0))
           ],
         ),
       ),
