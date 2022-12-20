@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/screens/add_post/schedule_date.dart';
+import 'package:reddit/screens/add_post/subreddit_flair.dart';
 import 'package:reddit/screens/main_screen.dart';
 
 import '../../components/button.dart';
@@ -134,10 +135,22 @@ class _PostRulesState extends State<PostRules> {
               },
               child: Row(
                 children: [
-                  Text('Schedule Post'),
+                  Text('Schedule Post '),
                   Icon(Icons.arrow_forward_outlined)
                 ],
-              ))
+              )),
+          if (addPostCubit.flairs!.postFlairs!.length > 0)
+            TextButton(
+                onPressed: () {
+                  navigator.push(MaterialPageRoute(
+                      builder: ((context) => SubredditFlairs())));
+                },
+                child: Row(
+                  children: [
+                    Icon(Icons.local_offer_outlined),
+                    Text(' Add Flair'),
+                  ],
+                ))
         ]),
       ),
     );

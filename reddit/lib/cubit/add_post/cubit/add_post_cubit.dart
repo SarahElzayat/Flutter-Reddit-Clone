@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:delta_markdown/delta_markdown.dart';
@@ -17,6 +18,7 @@ import 'package:video_thumbnail/video_thumbnail.dart';
 import '../../../components/button.dart';
 import '../../../components/helpers/color_manager.dart';
 import '../../../constants/constants.dart';
+import '../../../data/add_post/subreddit_flairs.dart';
 import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
 import '../../../screens/main_screen.dart';
@@ -27,6 +29,8 @@ part 'add_post_state.dart';
 
 class AddPostCubit extends Cubit<AddPostState> {
   AddPostCubit() : super(AddPostInitial());
+
+  SubredditFlairModel? flairs;
 
   static AddPostCubit get(context) => BlocProvider.of(context);
 
@@ -77,6 +81,8 @@ class AddPostCubit extends Cubit<AddPostState> {
   ];
 
   String? subredditName;
+
+  String? selectedFlair;
 
   bool nsfw = false;
   bool spoiler = false;
@@ -472,6 +478,7 @@ class AddPostCubit extends Cubit<AddPostState> {
         'imageLinks': imageLinks,
         'nsfw': nsfw,
         'spoiler': spoiler,
+        if (selectedFlair != null) 'flairId': selectedFlair,
         if (scheduleDate != null)
           'scheduleDate': DateFormat('yyyy-MM-dd').format(scheduleDate!),
         // if (scheduleDate != null)
@@ -496,6 +503,7 @@ class AddPostCubit extends Cubit<AddPostState> {
         'inSubreddit': true,
         'nsfw': nsfw,
         'spoiler': spoiler,
+        if (selectedFlair != null) 'flairId': selectedFlair,
         if (scheduleDate != null)
           'scheduleDate': DateFormat('yyyy-MM-dd').format(scheduleDate!),
       };
@@ -510,6 +518,7 @@ class AddPostCubit extends Cubit<AddPostState> {
         },
         'nsfw': nsfw,
         'spoiler': spoiler,
+        if (selectedFlair != null) 'flairId': selectedFlair,
         if (scheduleDate != null)
           'scheduleDate': DateFormat('yyyy-MM-dd').format(scheduleDate!),
       };
@@ -522,6 +531,7 @@ class AddPostCubit extends Cubit<AddPostState> {
         'link': link.text,
         'nsfw': nsfw,
         'spoiler': spoiler,
+        if (selectedFlair != null) 'flairId': selectedFlair,
         if (scheduleDate != null)
           'scheduleDate': DateFormat('yyyy-MM-dd').format(scheduleDate!),
       };
@@ -533,6 +543,7 @@ class AddPostCubit extends Cubit<AddPostState> {
         'title': title.text,
         'nsfw': nsfw,
         'spoiler': spoiler,
+        if (selectedFlair != null) 'flairId': selectedFlair,
         if (scheduleDate != null)
           'scheduleDate': DateFormat('yyyy-MM-dd').format(scheduleDate!),
       };
@@ -711,5 +722,15 @@ class AddPostCubit extends Cubit<AddPostState> {
             ),
           );
         }));
+  }
+
+  Future<void> getSubredditFlair() async {
+    await DioHelper.getData(
+        path: '/r/$subredditName/about/post-flairs',
+        query: {'subreddit': subredditName}).then((value) {
+      if (value.statusCode == 200) {
+        flairs = SubredditFlairModel.fromJson(value.data);
+      }
+    }).catchError((error) {});
   }
 }
