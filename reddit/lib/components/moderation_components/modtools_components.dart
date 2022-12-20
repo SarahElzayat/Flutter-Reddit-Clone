@@ -54,12 +54,12 @@ QueuesWidget queuesWidget(ModToolsSelectedItem selectedItem) {
 ///@param [title] title of the app bar
 ///@param [enabledButton] function of the button in appbar when enabled
 ///@param [isChanged] bool that checks if anything changed to enable or disable button
-moderationAppBar(context, title, enabledButton, isChanged) => AppBar(
+moderationAppBar(context, title, onPressed, isChanged) => AppBar(
       elevation: 0,
       leading: IconButton(
-          onPressed: () {
-            moderationDialog(context);
-          },
+          onPressed: isChanged
+              ? () => moderationDialog(context)
+              : () => Navigator.pop(context),
           icon: Icon(
             Icons.arrow_back,
             size: 24.sp,
@@ -70,21 +70,15 @@ moderationAppBar(context, title, enabledButton, isChanged) => AppBar(
         Padding(
           padding: const EdgeInsets.all(5.0),
           child: Button(
-              onPressed: isChanged
-                  ? () {}
-                  : () {
-                      enabledButton();
-                    },
+              onPressed: isChanged ? onPressed : () {},
               text: 'Save',
               textFontSize: 14,
               buttonHeight: 50,
               buttonWidth: 80,
-              textColor: isChanged
-                  ? ColorManager.darkBlue
-                  : ColorManager.darkBlueColor,
+              textColor: isChanged ? ColorManager.blue : ColorManager.darkBlue,
               backgroundColor: ColorManager.darkGrey,
-              splashColor: ColorManager.grey,
-              disabled: isChanged,
+              splashColor: ColorManager.grey.withOpacity(0.5),
+              disabled: isChanged ? false : true,
               borderRadius: 4.0),
         )
       ],
@@ -92,7 +86,6 @@ moderationAppBar(context, title, enabledButton, isChanged) => AppBar(
 
 ///@param [context]
 ///@param [type]
-///@param [cubit]
 userManagementAction(context, type, onPressed) => showDialog(
     context: context,
     builder: (context) => StatefulBuilder(
@@ -191,12 +184,8 @@ moderationDialog(context) => showDialog(
                     ),
                     Button(
                       onPressed: () {
-                        SchedulerBinding.instance.addPostFrameCallback((_) {
-                          Navigator.push(
-                              context,
-                              AppRouter.onGenerateRoute(const RouteSettings(
-                                  name: '/mod_tools_screen')));
-                        });
+                        Navigator.pop(context);
+                        Navigator.pop(context);
                       },
                       splashColor: ColorManager.white.withOpacity(0.5),
                       buttonHeight: 5.h,
@@ -209,61 +198,6 @@ moderationDialog(context) => showDialog(
               ],
             )));
 
-///@param [context] context of the current screen
-dialog(context) => SchedulerBinding.instance.addPostFrameCallback((_) {
-      showDialog(
-          context: context,
-          builder: (context) => StatefulBuilder(
-              builder: (context, setState) => AlertDialog(
-                    backgroundColor: ColorManager.darkGrey,
-                    content: SizedBox(
-                      height: 10.h,
-                      width: 90.w,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Leave without saving',
-                                style: TextStyle(
-                                    fontSize: 18.sp,
-                                    color: ColorManager.eggshellWhite)),
-                            const Spacer(),
-                            const Text('you cannot undo this action')
-                          ]),
-                    ),
-                    actions: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Button(
-                            onPressed: () => Navigator.pop(context),
-                            buttonHeight: 5.h,
-                            buttonWidth: 35.w,
-                            text: 'CANCEL',
-                            textFontSize: 16.sp,
-                            textColor: ColorManager.lightGrey,
-                            backgroundColor: ColorManager.grey,
-                            splashColor: ColorManager.lightGrey,
-                          ),
-                          SizedBox(
-                            width: 2.w,
-                          ),
-                          Button(
-                            onPressed: () => Navigator.push(
-                                context,
-                                AppRouter.onGenerateRoute(const RouteSettings(
-                                    name: '/mod_tools_screen'))),
-                            // }),
-                            buttonHeight: 5.h,
-                            buttonWidth: 35.w,
-                            text: 'LEAVE',
-                            textFontSize: 16.sp,
-                          ),
-                        ],
-                      )
-                    ],
-                  )));
-    });
-
 ///@param [text] text displayed in row
 ///@param [isSwitched] bool that indicates whether switch is on or off
 ///@param [toggle] function to toggle the switch
@@ -275,9 +209,9 @@ Widget rowSwitch(text, isSwitched, toggle) => Row(
           key: const Key('create_community_switch'),
           value: isSwitched,
           onToggle: toggle,
-          width: 50,
-          height: 20,
-          toggleSize: 3.h,
+          width: 60,
+          height: 32,
+          toggleSize: 31,
           inactiveColor: ColorManager.darkGrey,
           activeColor: ColorManager.darkBlueColor,
         ),

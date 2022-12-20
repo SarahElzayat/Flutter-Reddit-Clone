@@ -13,16 +13,36 @@ import 'package:reddit/components/list_tile_container.dart';
 import 'package:reddit/components/moderation_components/mod_list_tiles.dart';
 import 'package:reddit/components/moderation_components/modtools_components.dart';
 import 'package:reddit/constants/constants.dart';
+import 'package:reddit/data/moderation_models/community_settings_model.dart';
+import 'package:reddit/screens/moderation/content_and_regulation/post_flair.dart';
+import 'package:reddit/screens/moderation/create_flair.dart';
 import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
+import 'package:reddit/screens/moderation/general_screens/archive_posts.dart';
+import 'package:reddit/screens/moderation/general_screens/community_types.dart';
+import 'package:reddit/screens/moderation/general_screens/content_tag.dart';
+import 'package:reddit/screens/moderation/general_screens/description.dart';
+import 'package:reddit/screens/moderation/general_screens/discovery/discovery.dart';
+import 'package:reddit/screens/moderation/general_screens/location.dart';
+import 'package:reddit/screens/moderation/general_screens/media_in_comments.dart';
+import 'package:reddit/screens/moderation/general_screens/mod_notifications.dart';
+import 'package:reddit/screens/moderation/general_screens/post_types.dart';
+import 'package:reddit/screens/moderation/general_screens/topics.dart';
+import 'package:reddit/screens/moderation/general_screens/welcome_message/welcome_message.dart';
+import 'package:reddit/screens/moderation/user_management_screens/approved_users.dart';
+import 'package:reddit/screens/moderation/user_management_screens/banned_users.dart';
+import 'package:reddit/screens/moderation/user_management_screens/moderators.dart';
+import 'package:reddit/screens/moderation/user_management_screens/muted_users.dart';
+import 'package:reddit/shared/local/shared_preferences.dart';
 import 'package:reddit/widgets/moderation/community_settings.dart';
 import 'package:reddit/widgets/moderation/notification_settings.dart';
 import 'package:reddit/widgets/moderation/posts_comments_settings.dart';
+import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ModTools extends StatefulWidget {
   static const String routeName = 'mod_tools';
-  final String communityName = 'yazzooz';
-  ModTools({super.key});
+  final String communityName;
+  const ModTools({super.key, required this.communityName});
 
   @override
   State<ModTools> createState() => _ModToolsState();
@@ -33,7 +53,10 @@ class _ModToolsState extends State<ModTools> {
 
   @override
   void initState() {
-    ModerationCubit.get(context).getSettings(context, widget.communityName);
+    ModerationCubit.get(context)
+        .getCommunitySettings(context, widget.communityName);
+    ModerationCubit.get(context).getPostSettings(context, widget.communityName);
+
     super.initState();
   }
 
@@ -42,69 +65,81 @@ class _ModToolsState extends State<ModTools> {
     final ModerationCubit cubit = ModerationCubit.get(context);
     final List<Function> generalFunctions = [
       () {
-        cubit.navigate(context, '/description_screen');
+        Navigator.push(
+            context, MaterialPageRoute(builder: ((context) => Description())));
       },
       () {
-        cubit.navigate(context, '/welcome_message_screen');
+        Navigator.push(context,
+            MaterialPageRoute(builder: ((context) => WelcomeMessage())));
       },
       () {
-        cubit.navigate(context, '/topics_screen');
+        Navigator.push(
+            context, MaterialPageRoute(builder: ((context) => Topics())));
       },
       () {
-        cubit.navigate(context, '/community_type_screen');
+        Navigator.push(context,
+            MaterialPageRoute(builder: ((context) => CommunityType())));
       },
       () {
-        cubit.navigate(context, '/content_tag_screen');
+        Navigator.push(
+            context, MaterialPageRoute(builder: ((context) => PostTypes())));
       },
       () {
-        cubit.navigate(context, '/post_types_screenconst');
+        Navigator.push(
+            context, MaterialPageRoute(builder: ((context) => Discovery())));
       },
       () {
-        cubit.navigate(context, '/discovery_screen');
+        Navigator.push(context,
+            MaterialPageRoute(builder: ((context) => ModNotifications())));
       },
       () {
-        cubit.navigate(context, '/modmail_screen');
+        Navigator.push(
+            context, MaterialPageRoute(builder: ((context) => Location())));
       },
       () {
-        cubit.navigate(context, '/mod_notifications_screen');
+        Navigator.push(
+            context, MaterialPageRoute(builder: ((context) => ArchivePosts())));
       },
       () {
-        cubit.navigate(context, '/location_screen');
-      },
-      () {
-        cubit.navigate(context, '/archive_posts_screen');
-      },
-      () {
-        cubit.navigate(context, '/media_in_comments_screen');
+        Navigator.push(context,
+            MaterialPageRoute(builder: ((context) => MediaInComments())));
       },
     ];
 
     //content and regulation mod tools screen navigation functions
     final List<Function> contentAndRegulationsFunctions = [
       () {
-        cubit.navigate(context, '/create_flair_mod_screen');
+        Navigator.push(
+            context, MaterialPageRoute(builder: ((context) => PostFlair())));
       },
       () {
-        cubit.navigate(context, '/post_flair_mod_screen');
+        Navigator.push(
+            context, MaterialPageRoute(builder: ((context) => PostFlair())));
       }
     ];
 
     //user managment mod tools screen navigation functions
     final List<Function> userManagementFunctions = [
       () {
-        cubit.navigate(context, '/moderators_screen');
+        Navigator.push(
+            context, MaterialPageRoute(builder: ((context) => Moderators())));
       },
       () {
-        cubit.navigate(context, '/approved_users_screen');
+        Navigator.push(context,
+            MaterialPageRoute(builder: ((context) => ApprovedUsers())));
       },
       () {
-        cubit.navigate(context, '/muted_users_screen');
+        Navigator.push(
+            context, MaterialPageRoute(builder: ((context) => MutedUsers())));
       },
       () {
-        cubit.navigate(context, '/banned_users_screen');
+        Navigator.push(
+            context, MaterialPageRoute(builder: ((context) => BannedUsers())));
       },
       () {
-        cubit.navigate(context, '/user_flair_mod_screen');
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => CreateFlair()));
+        // cubit.navigate(context, '/user_flair_mod_screen');
       }
     ];
 
@@ -305,51 +340,65 @@ class _ModToolsState extends State<ModTools> {
                     child: Column(
                       children: [
                         SizedBox(
-                          height: 710,
+                          height: 75.h,
                           child: ListTileContainer(
-                              types: const [],
                               handler: generalFunctions,
                               title: '      GENERAL',
                               listTileTitles: generalTitles,
                               listTileIcons: generalIcons,
                               trailingObject: const [
-                                TrailingObjects.tailingIcon
+                                TrailingObjects.tailingIcon,
+                                TrailingObjects.tailingIcon,
+                                TrailingObjects.tailingIcon,
+                                TrailingObjects.tailingIcon,
+                                TrailingObjects.tailingIcon,
+                                TrailingObjects.tailingIcon,
+                                TrailingObjects.tailingIcon,
+                                TrailingObjects.tailingIcon,
+                                TrailingObjects.tailingIcon,
+                                TrailingObjects.tailingIcon,
                               ]),
                         ),
                         SizedBox(
-                          height: 150,
+                          height: 20.h,
                           child: ListTileContainer(
-                              types: const [],
                               handler: contentAndRegulationsFunctions,
                               title: '      CONTENT & REGULATIONS',
                               listTileTitles: contentAndRegulationsTitles,
                               listTileIcons: contentAndRegulationsIcons,
                               trailingObject: const [
-                                TrailingObjects.tailingIcon
+                                TrailingObjects.tailingIcon,
+                                TrailingObjects.tailingIcon,
                               ]),
                         ),
                         SizedBox(
-                          height: 315,
+                          height: 40.h,
                           child: ListTileContainer(
-                              types: const [],
                               handler: userManagementFunctions,
                               title: '      USER MANAGEMENT',
                               listTileTitles: userManagementTitles,
                               listTileIcons: userManagementIcons,
                               trailingObject: const [
-                                TrailingObjects.tailingIcon
+                                TrailingObjects.tailingIcon,
+                                TrailingObjects.tailingIcon,
+                                TrailingObjects.tailingIcon,
+                                TrailingObjects.tailingIcon,
+                                TrailingObjects.tailingIcon,
                               ]),
                         ),
                         SizedBox(
-                          height: 315,
+                          height: 40.h,
                           child: ListTileContainer(
-                              types: const [],
                               handler: resourceLinksFunctions,
                               title: '      RSOURCE LINKS',
                               listTileTitles: resourceLinksTitles,
                               listTileIcons: resourceLinksIcons,
                               trailingObject: const [
-                                TrailingObjects.tailingIcon
+                                TrailingObjects.tailingIcon,
+                                TrailingObjects.tailingIcon,
+                                TrailingObjects.tailingIcon,
+                                TrailingObjects.tailingIcon,
+                                TrailingObjects.tailingIcon,
                               ]),
                         ),
                         const Padding(

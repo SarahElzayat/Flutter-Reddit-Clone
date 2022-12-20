@@ -35,6 +35,25 @@ class BanUserModel {
   }
 }
 
+class UnbanUserModel {
+  String? username;
+  String? subreddit;
+
+  UnbanUserModel({this.username, this.subreddit});
+
+  UnbanUserModel.fromJson(Map<String, dynamic> json) {
+    username = json['username'];
+    subreddit = json['subreddit'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['username'] = username;
+    data['subreddit'] = subreddit;
+    return data;
+  }
+}
+
 class MuteUserModel {
   String? username;
   String? muteReason;

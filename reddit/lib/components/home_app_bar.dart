@@ -95,7 +95,9 @@ AppBar homeAppBar(context, index) {
               onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ModTools(),
+                    builder: (context) => const ModTools(
+                      communityName: 'web lesa',
+                    ),
                   )),
               icon: const Icon(Icons.add),
               highlightColor: Colors.transparent,

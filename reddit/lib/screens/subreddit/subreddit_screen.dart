@@ -265,9 +265,11 @@ class _SubredditState extends State<Subreddit>
                                     .subreddit!.isModerator!)
                                 ? MaterialButton(
                                     onPressed: () {
-                                      // Navigator.of(context).push(MaterialPageRoute(
-                                      //     builder: ((context) =>
-                                      //         const ModTools())));
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: ((context) => ModTools(
+                                                  communityName: subredditCubit
+                                                      .subredditName))));
                                     },
                                     child: Row(
                                       children: const [

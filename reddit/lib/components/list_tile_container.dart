@@ -29,7 +29,7 @@ class ListTileContainer extends StatelessWidget {
 
   /// the type of the function that should be
   /// executed when pressing on any trailing obeject
-  final List<String> types;
+  List<String> types;
 
   /// where each item has its own handler
   /// this is the function that should be executed
@@ -39,7 +39,7 @@ class ListTileContainer extends StatelessWidget {
       {super.key,
       required this.handler,
       this.items = const [],
-      required this.types,
+      this.types = const [],
       required this.title,
       required this.listTileTitles,
       required this.listTileIcons,

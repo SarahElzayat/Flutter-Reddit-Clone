@@ -21,8 +21,8 @@ class AddMutedUser extends StatelessWidget {
       listener: ((context, state) {}),
       builder: (context, state) => Scaffold(
         backgroundColor: (kIsWeb) ? ColorManager.darkGrey : ColorManager.black,
-        appBar: userManagementAppBar(context, 'Add a muted user', () {},
-            (!cubit.emptyReason && !cubit.emptyUsername)),
+        appBar: userManagementAppBar(context, 'Add a muted user',
+            () => cubit.muteUser(context), (!cubit.emptyUsername)),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: SingleChildScrollView(

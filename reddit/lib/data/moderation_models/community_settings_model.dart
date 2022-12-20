@@ -36,8 +36,8 @@ class CommunitySettingsModel {
     sendWelcomeMessage = json['sendWelcomeMessage'];
     welcomeMessage = json['welcomeMessage'];
     language = json['language'];
-    region = json['Region'];
-    type = json['Type'];
+    region = json['region'];
+    type = json['type'];
     nSFW = json['NSFW'];
     acceptingRequestsToJoin = json['acceptingRequestsToJoin'];
     acceptingRequestsToPost = json['acceptingRequestsToPost'];
@@ -53,8 +53,8 @@ class CommunitySettingsModel {
     data['sendWelcomeMessage'] = sendWelcomeMessage;
     data['welcomeMessage'] = welcomeMessage;
     data['language'] = language;
-    data['Region'] = region;
-    data['Type'] = type;
+    data['region'] = region;
+    data['type'] = type;
     data['NSFW'] = nSFW;
     data['acceptingRequestsToJoin'] = acceptingRequestsToJoin;
     data['acceptingRequestsToPost'] = acceptingRequestsToPost;

@@ -52,10 +52,8 @@ const List<String> generalTitles = [
   'Welcome message',
   'Topics',
   'Community Type',
-  'Content tag',
   'Post types',
   'Discovery',
-  'Modmail',
   'Mod notifications',
   'Location',
   'Archive Posts',
@@ -70,7 +68,7 @@ const List<String> contentAndRegulationsTitles = [
 const List<String> userManagementTitles = [
   'Moderators',
   'Approved users',
-  'Mutes users',
+  'Muted users',
   'Banned users',
   'User flair',
 ];

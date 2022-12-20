@@ -7,13 +7,20 @@ class ModerationInitial extends ModerationState {}
 
 class LoadSettings extends ModerationState {}
 
+class SettingsLoaded extends ModerationState {
+  final dynamic settings;
+  SettingsLoaded(this.settings);
+}
+
 class SetSettings extends ModerationState {}
 
 class UpdateSettings extends ModerationState {}
 
-class DescriptionChanged extends ModerationState {}
+class TextFieldChanged extends ModerationState {}
 
 class BanReasonChosen extends ModerationState {}
+
+class SaveDescription extends ModerationState {}
 
 class Toggle extends ModerationState {}
 
@@ -46,3 +53,5 @@ class LoadedQueue extends ModerationState {}
 class NoMoreQueueToLoad extends ModerationState {}
 
 class EmptyQueue extends ModerationState {}
+
+class HandleFlairs extends ModerationState {}

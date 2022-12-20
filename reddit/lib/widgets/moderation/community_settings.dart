@@ -129,7 +129,7 @@ class CommunitySettings extends StatelessWidget {
                                     maxLength: 500,
                                     formController: cubit.descriptionController,
                                     onChanged: (description) =>
-                                        cubit.onChanged(),
+                                        cubit.onChangedDescription(),
                                   ),
                                   const SizedBox(
                                     height: 30,
