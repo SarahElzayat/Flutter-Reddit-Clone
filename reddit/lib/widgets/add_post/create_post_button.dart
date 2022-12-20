@@ -46,8 +46,9 @@ class CreatePostButton extends StatelessWidget {
             onPressed: isDisabled
                 ? () {}
                 : (() {
-                    if (addPostCubit.subredditName != null &&
-                        addPostCubit.subredditName != '') {
+                    if ((addPostCubit.subredditName != null &&
+                            addPostCubit.subredditName != '') ||
+                        !addPostCubit.isSubreddit) {
                       navigator.pushNamed(PostRules.routeName);
                     } else {
                       navigator.push(MaterialPageRoute(

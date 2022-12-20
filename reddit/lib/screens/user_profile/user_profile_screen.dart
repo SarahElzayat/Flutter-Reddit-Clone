@@ -16,9 +16,12 @@ import 'package:reddit/widgets/comments/comment.dart';
 import 'package:reddit/widgets/user_profile/user_profile_comments.dart';
 
 import '../../components/helpers/enums.dart';
+import '../../cubit/add_post/cubit/add_post_cubit.dart';
+import '../../cubit/app_cubit/app_cubit.dart';
 import '../../data/user_profile.dart/about_user_model.dart';
 import '../../networks/dio_helper.dart';
 import '../../widgets/user_profile/user_profile_posts.dart';
+import '../add_post/add_post.dart';
 import 'user_profile_edit_screen.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -101,7 +104,32 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     final mediaquery = MediaQuery.of(context);
     final navigator = Navigator.of(context);
     final userProfileCubit = BlocProvider.of<UserProfileCubit>(context);
+    final AppCubit cubit = AppCubit.get(context);
+
     return Scaffold(
+      bottomNavigationBar: (isMyProfile)
+          ? BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              currentIndex: cubit.currentIndex,
+              items: cubit.bottomNavBarIcons,
+              onTap: (value) {
+                setState(() {
+                  if (value == 2) {
+                    AddPostCubit.get(context).isSubreddit = false;
+                    print(AddPostCubit.get(context).isSubreddit);
+                    AddPostCubit.get(context).addSubredditName(null);
+                    Navigator.of(context).push(MaterialPageRoute(
+                      // TODO:pass the name of subreddit to add post
+                      builder: (context) => const AddPost(),
+                    ));
+                  } else {
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                    cubit.changeIndex(value);
+                  }
+                });
+              },
+            )
+          : null,
       body: CustomScrollView(slivers: [
         SliverAppBar(
           // primary: false,

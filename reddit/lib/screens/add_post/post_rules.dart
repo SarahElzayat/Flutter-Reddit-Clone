@@ -60,6 +60,7 @@ class _PostRulesState extends State<PostRules> {
                     addPostCubit.title.text = '';
                     addPostCubit.nsfw = false;
                     addPostCubit.spoiler = false;
+                    addPostCubit.isSubreddit = true;
                   }),
             )
           ],
@@ -74,7 +75,10 @@ class _PostRulesState extends State<PostRules> {
                 },
                 child: Row(
                   children: [
-                    Text(addPostCubit.subredditName!,
+                    Text(
+                        (addPostCubit.isSubreddit)
+                            ? addPostCubit.subredditName!
+                            : 'My Profile',
                         style: Theme.of(context).textTheme.titleSmall),
                     const Icon(Icons.keyboard_arrow_down)
                   ],
