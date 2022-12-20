@@ -503,7 +503,7 @@ class AddPostCubit extends Cubit<AddPostState> {
         'inSubreddit': true,
         'title': title.text,
         'content': {
-          'ops': jsonDecode(markdownToDelta(optionalText.text)),
+          'ops': markdownToDelta(optionalText.text),
         },
         'nsfw': nsfw,
         'spoiler': spoiler,
@@ -540,6 +540,7 @@ class AddPostCubit extends Cubit<AddPostState> {
 
     FormData formData = FormData.fromMap(body);
 
+
     await DioHelper.postData(
             path: submitPost,
             onSendProgress: ((postType == 0 || postType == 1))
@@ -560,6 +561,7 @@ class AddPostCubit extends Cubit<AddPostState> {
     }).catchError((error) {
       ScaffoldMessenger.of(context).showSnackBar(
           responseSnackBar(message: 'An Error Please Try Again', error: true));
+
     });
     emit(PostCreated());
   }

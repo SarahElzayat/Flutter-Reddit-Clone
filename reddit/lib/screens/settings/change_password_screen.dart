@@ -2,6 +2,7 @@
 /// @date 12/12/2022
 /// this file contains the screen of the change password
 import 'package:flutter/material.dart';
+import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 import '../../cubit/settings_cubit/settings_cubit.dart';
 import '../../components/default_text_field.dart';
@@ -36,10 +37,8 @@ class _ChangePasswordState extends State<ChangePassword> {
     if (!_formKey.currentState!.validate() ||
         (newPasswordController.text != confirmPasswordtroller.text)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            backgroundColor: ColorManager.red,
-            content: Text('Insert The Same password please')),
-      );
+          responseSnackBar(message: 'Insert The Same password please 🔑😐'));
+
       return false;
     }
     return true;
@@ -272,6 +271,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     padding: const EdgeInsets.all(8.0),
                     child: Column(children: [
                       HeaderContainsAvatar(
+                        // userImg: SettingsAppBar,
                         usrName: CacheHelper.getData(key: 'username'),
                         email: CacheHelper.getData(key: 'email'),
                       ),

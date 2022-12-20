@@ -56,7 +56,6 @@ String getPlainText(Map<String, dynamic>? body) {
 CircleAvatar subredditAvatar({small = false}) {
   return CircleAvatar(
       radius: small ? min(2.w, 15) : min(5.5.w, 30),
-      //TODO: IMPPPP
       backgroundImage: null // const NetworkImage(unknownAvatar),
       );
 }
@@ -274,7 +273,7 @@ void handleLock(
 }
 
 void handleSticky(
-    {required VoidCallback onSuccess, required VoidCallback onError, required PostModel post}) {
+    {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   //bool pin = !post.sticky
   final stickUnstickPost = PinPostModel(id: post.id, pin: false);
 

@@ -27,10 +27,6 @@ class OpError extends PostActionsState {
   OpError({this.error});
 }
 
-class SubDetailsFetched extends PostActionsState {}
-
-class JoinSubredditState extends PostActionsState {}
-
 class CommentsModToolsToggled extends PostActionsState {}
 
 class SavedChangedState extends PostActionsState {}

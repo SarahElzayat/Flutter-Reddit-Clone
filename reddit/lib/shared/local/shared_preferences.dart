@@ -11,6 +11,7 @@ class CacheHelper {
     sharedPreferences = await SharedPreferences.getInstance();
   }
 
+  /// This method is used to save data in the cache.
   static Future<dynamic> putData(
       {required String key, required dynamic value}) async {
     if (value is String) {
@@ -24,10 +25,12 @@ class CacheHelper {
     }
   }
 
+  /// This method is used to get data from the cache.
   static dynamic getData({required String key}) {
     return sharedPreferences.get(key);
   }
 
+  /// This method is used to remove data from the cache.
   static dynamic removeData({required key}) {
     return sharedPreferences.remove(key);
   }
