@@ -17,8 +17,8 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-  String after = '';
-  String before = '';
+  int after = 0;
+  int before = 0;
 
   final scroller = ScrollController();
   List<NotificationWidget> notifications = [];
@@ -39,7 +39,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         if (response.statusCode == 200) {
           NotificationModel allNotifications =
               NotificationModel.fromJson(response.data);
-          after = allNotifications.after ?? '';
+          after = allNotifications.after ?? 0;
           for (NotificationItSelf notification in allNotifications.children!) {
             setState(() {
               notifications.add(NotificationWidget(notification: notification));

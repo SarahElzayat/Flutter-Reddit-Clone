@@ -2,8 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/constants/constants.dart';
+import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
+import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
+import 'package:reddit/screens/posts/post_screen.dart';
 import '../../components/bottom_sheet.dart';
 import '../../data/notifications/notification_model.dart';
 import '../../screens/inbox/single_notification_screen.dart';
@@ -40,7 +43,8 @@ class _NotificationWidgetState extends State<NotificationWidget> {
     }).onError((error, stackTrace) {
       error = error as DioError;
       ScaffoldMessenger.of(context)
-          .showSnackBar(responseSnackBar(message: '${error.message} 😔'));
+          .showSnackBar(responseSnackBar(message: '${error.response} 😔'));
+      print(error.response);
     });
   }
 
@@ -50,8 +54,17 @@ class _NotificationWidgetState extends State<NotificationWidget> {
     final fontScale = mediaQuery.textScaleFactor;
     return ListTile(
       onTap: () {
-        if (widget.notification.type == 'post')
-          Navigator.of(context).pushNamed(SignleNotificationScreen.routeName);
+        if (widget.notification.type == 'Comment') {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return PostScreen(
+              post: PostModel(id: widget.notification.postId!),
+            );
+          }));
+        } else if (widget.notification.type == 'Follow') {
+          // UserProfileCubit.get(context).showPopupUserWidget(
+          //     context, widget.notification.followingUsername!);
+        }
+        Navigator.of(context).pushNamed(SignleNotificationScreen.routeName);
       },
       contentPadding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
       horizontalTitleGap: 10,
@@ -59,7 +72,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
         backgroundColor: ColorManager.upvoteRed,
         child: widget.notification.photo == null
             ? Image.network(unknownAvatar)
-            : Image.network(widget.notification.photo!),
+            : Image.network('$baseUrl/${widget.notification.photo!}'),
       ),
       title: Row(
         children: [
