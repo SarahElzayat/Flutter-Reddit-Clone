@@ -66,7 +66,11 @@ class SubredditCubit extends Cubit<SubredditState> {
     }).then((value) {
       if (value.statusCode == 200) {
         moderators = ModeratorModel.fromJson(value.data);
-        Navigator.of(context).pushNamed(Subreddit.routeName);
+        if (replace) {
+          Navigator.of(context).pushReplacementNamed(Subreddit.routeName);
+        } else {
+          Navigator.of(context).pushNamed(Subreddit.routeName);
+        }
       }
     }).catchError((error) {});
   }

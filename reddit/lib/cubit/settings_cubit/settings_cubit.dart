@@ -72,7 +72,7 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
     } else {
       await DioHelper.getData(
           path: blockedAccounts,
-          query: {'after': 'after', 'limit': '5'}).then((response) {
+          query: {'after': 'after', 'limit': 5}).then((response) {
         if (response.statusCode == 200) {
           blockedUsers.clear();
           for (var elem in response.data['children']) {

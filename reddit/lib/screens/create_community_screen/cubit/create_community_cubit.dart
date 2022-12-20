@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
+import 'package:reddit/screens/comments/add_comment_screen.dart';
 import '../../../components/helpers/enums.dart';
 import '../../../components/snack_bar.dart';
 import '../../../cubit/subreddit/cubit/subreddit_cubit.dart';
@@ -46,6 +47,9 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
         : (type == CommunityTypes.restricted)
             ? 'Restricted'
             : 'Private';
+
+    logger.w('type $type');
+    logger.w('finalType $finalType');
     CommunitySettingsModel settings = CommunitySettingsModel(
         communityName: name,
         type: type,
@@ -60,8 +64,23 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
         acceptingRequestsToJoin: true,
         acceptingRequestsToPost: true,
         approvedUsersHaveTheAbilityTo: 'Post & Comment');
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['communityName'] = name;
+    data['mainTopic'] = 'Activism';
+    data['subTopics'] = [];
+    data['communityDescription'] = '';
+    data['sendWelcomeMessage'] = false;
+    data['welcomeMessage'] = '';
+    data['language'] = 'English';
+    data['Region'] = 'United States';
+    data['Type'] = type;
+    data['NSFW'] = nsfw;
+    data['acceptingRequestsToJoin'] = true;
+    data['acceptingRequestsToPost'] = true;
+    data['approvedUsersHaveTheAbilityTo'] =
+         'Post & Comment';
 
-    DioHelper.putData(path: '/r/$name/about/edit', data: settings.toJson())
+    DioHelper.putData(path: '/r/$name/about/edit', data: data)
         .then((value) {
       if (value.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
@@ -104,7 +123,7 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
             ? 'Restricted'
             : 'Public';
     final CreateCommunityModel community = CreateCommunityModel(
-        subredditName: name, type: finalType, nsfw: nsfw, category: category);
+        subredditName: name, type: type, nsfw: nsfw, category: category);
     String? token = CacheHelper.getData(key: 'token');
 
     DioHelper.postData(
