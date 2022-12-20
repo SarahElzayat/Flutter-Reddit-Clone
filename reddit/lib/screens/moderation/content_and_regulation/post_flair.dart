@@ -132,16 +132,20 @@ class _PostFlairState extends State<PostFlair> {
                                   child: Row(
                                     children: [
                                       Container(
-                                        decoration: const BoxDecoration(
-                                            color: Colors.blue,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(50))),
+                                        decoration: BoxDecoration(
+                                            color: Color(cubit.postFlairs[index]
+                                                .backgroundColor),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(50))),
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
                                               cubit.postFlairs[index].flairName,
-                                              style: const TextStyle(
-                                                  color: Colors.black)),
+                                              style: TextStyle(
+                                                  color: Color(cubit
+                                                      .postFlairs[index]
+                                                      .textColor))),
                                         ),
                                       ),
                                       const Spacer(),
