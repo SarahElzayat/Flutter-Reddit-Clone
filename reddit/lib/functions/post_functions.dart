@@ -274,7 +274,7 @@ void handleLock(
 }
 
 void handleSticky(
-    {required VoidCallback onSuccess, required VoidCallback onError, post}) {
+    {required VoidCallback onSuccess, required VoidCallback onError, required PostModel post}) {
   //bool pin = !post.sticky
   final stickUnstickPost = PinPostModel(id: post.id, pin: false);
 

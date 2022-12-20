@@ -2,6 +2,8 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/cubit/app_cubit/app_cubit.dart';
+import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
+import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 
 import '../../components/helpers/color_manager.dart';
 import '../../components/helpers/enums.dart';
@@ -40,38 +42,45 @@ class _SavedPostsScreenState extends State<SavedPostsScreen> {
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {},
       builder: (context, state) {
-        return BlocListener<PostNotifierCub, PostNotifierState>(
+        return BlocConsumer<PostNotifierCubit, PostNotifierState>(
           listener: (context, state) {
-            // TODO: implement listener
+            if (state is PostSavedState) {
+              String id = state.id;
+            
+              cubit.savedPostsList.removeWhere((element) => element.id == id);
+            }
           },
-          child: ConditionalBuilder(
-            condition:
-                state is! LoadedResultsState || state is! LoadedSavedState,
-            fallback: (context) => const Center(
-              child: CircularProgressIndicator(
-                color: ColorManager.blue,
+          builder: (context, state) {
+            return ConditionalBuilder(
+              condition:
+                  state is! LoadedResultsState || state is! LoadedSavedState,
+              fallback: (context) => const Center(
+                child: CircularProgressIndicator(
+                  color: ColorManager.blue,
+                ),
               ),
-            ),
-            builder: (context) => cubit.savedPostsList.isEmpty
-                ? Center(
-                    child: Text(
-                      'Wow, such empty',
-                      style: Theme.of(context).textTheme.bodyMedium,
+              builder: (context) => cubit.savedPostsList.isEmpty
+                  ? Center(
+                      child: Text(
+                        'Wow, such empty',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    )
+                  : ListView.builder(
+                      controller: _scrollController,
+                      itemCount: cubit.savedPostsList.length,
+                      itemBuilder: (context, index) => PostWidget(
+                          key: Key(cubit.savedPostsList[index].id.toString()),
+                          upperRowType:
+                              cubit.savedPostsList[index].inYourSubreddit ==
+                                      null
+                                  ? ShowingOtions.onlyUser
+                                  : ShowingOtions.both,
+                          post: cubit.savedPostsList[index],
+                          postView: PostView.classic),
                     ),
-                  )
-                : ListView.builder(
-                    controller: _scrollController,
-                    itemCount: cubit.savedPostsList.length,
-                    itemBuilder: (context, index) => PostWidget(
-                        key: Key(cubit.savedPostsList[index].id.toString()),
-                        upperRowType:
-                            cubit.savedPostsList[index].inYourSubreddit == null
-                                ? ShowingOtions.onlyUser
-                                : ShowingOtions.both,
-                        post: cubit.savedPostsList[index],
-                        postView: PostView.classic),
-                  ),
-          ),
+            );
+          },
         );
       },
     );
