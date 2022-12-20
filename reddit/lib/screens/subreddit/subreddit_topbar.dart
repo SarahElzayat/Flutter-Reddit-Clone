@@ -10,6 +10,7 @@ import '../../components/search_field.dart';
 // import '../../cubit/app_cubit.dart';
 import '../../networks/constant_end_points.dart';
 import '../../widgets/subreddit/subreddit_options.dart';
+import '../search/search_results_main_screen.dart';
 
 class SubredditAppBar extends SliverPersistentHeaderDelegate {
   @override
@@ -117,6 +118,19 @@ class SubredditAppBar extends SliverPersistentHeaderDelegate {
                                     child: SearchField(
                                       isSubreddit: true,
                                       isResult: true,
+                                      onSubmitted: (value) {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => SearchResults(
+                                              isSubreddit: true,
+                                              subredditName:
+                                                  'r/${subredditCubit.subredditName}',
+                                              searchWord: value,
+                                            ),
+                                          ),
+                                        );
+                                      },
                                       subredditName:
                                           'r/${subredditCubit.subredditName}',
                                       textEditingController:
@@ -164,7 +178,7 @@ class SubredditAppBar extends SliverPersistentHeaderDelegate {
                                       : scaffoldKey.currentState
                                           ?.openEndDrawer();
                                 },
-                                child: avatar()),
+                                child: avatar(context: context)),
                           )
                         ],
                       ),

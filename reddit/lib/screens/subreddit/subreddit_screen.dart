@@ -8,10 +8,12 @@ import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/add_post/cubit/add_post_cubit.dart';
 import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import 'package:reddit/networks/constant_end_points.dart';
+import 'package:reddit/screens/search/cubit/search_cubit.dart';
 
 import '../../components/Button.dart';
 import '../../components/home_components/right_drawer.dart';
 import '../../cubit/app_cubit/app_cubit.dart';
+import '../../networks/constant_end_points.dart';
 import '../../widgets/subreddit/subreddit_about.dart';
 import '../../widgets/subreddit/subreddit_posts.dart';
 import '../add_post/add_post.dart';
@@ -90,84 +92,98 @@ class _SubredditState extends State<Subreddit>
         subredditCubit.pagingController.dispose();
         return true;
       },
-      child: Scaffold(
-        key: _scaffoldKey,
-        endDrawer: const RightDrawer(),
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          currentIndex: cubit.currentIndex,
-          items: cubit.bottomNavBarIcons,
-          onTap: (value) {
-            setState(() {
-              if (value == 2) {
-                AddPostCubit.get(context)
-                    .addSubredditName(subredditCubit.subredditName);
-                Navigator.of(context).push(MaterialPageRoute(
-                  // TODO:pass the name of subreddit to add post
-                  builder: (context) => const AddPost(),
-                ));
-              } else {
-                Navigator.of(context).popUntil((route) => route.isFirst);
-                cubit.changeIndex(value);
-              }
-            });
+      child: BlocProvider(
+        create: (context) =>
+            SearchCubit()..setSearchSubreddit(subredditCubit.subredditName),
+        child: BlocConsumer<SearchCubit, SearchState>(
+          listener: (context, state) {
+            // TODO: implement listener
           },
-        ),
-        body: NestedScrollView(
-          headerSliverBuilder: (context2, innerBoxIsScrolled) {
-            return [
-              SliverPersistentHeader(
-                  pinned: true,
-                  delegate: SubredditAppBar(
-                      scaffoldKey: _scaffoldKey,
-                      maxExtent: 90,
-                      minExtent: 85,
-                      subredditCubit: subredditCubit)),
-              SliverAppBar(
-                pinned: true,
-                automaticallyImplyLeading: false,
-                primary: false,
-                actions: <Widget>[Container()],
+          builder: (context, state) {
+            return Scaffold(
+              key: _scaffoldKey,
+              endDrawer: const RightDrawer(),
+              bottomNavigationBar: BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                currentIndex: cubit.currentIndex,
+                items: cubit.bottomNavBarIcons,
+                onTap: (value) {
+                  setState(() {
+                    if (value == 2) {
+                      AddPostCubit.get(context)
+                          .addSubredditName(subredditCubit.subredditName);
+                      Navigator.of(context).push(MaterialPageRoute(
+                        // TODO:pass the name of subreddit to add post
+                        builder: (context) => const AddPost(),
+                      ));
+                    } else {
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                      cubit.changeIndex(value);
+                    }
+                  });
+                },
+              ),
+              body: NestedScrollView(
+                headerSliverBuilder: (context2, innerBoxIsScrolled) {
+                  return [
+                    SliverPersistentHeader(
+                        pinned: true,
+                        delegate: SubredditAppBar(
+                            scaffoldKey: _scaffoldKey,
+                            maxExtent: 90,
+                            minExtent: 85,
+                            subredditCubit: subredditCubit)),
+                    SliverAppBar(
+                      pinned: true,
+                      automaticallyImplyLeading: false,
+                      primary: false,
+                      actions: <Widget>[Container()],
 
-                bottom: PreferredSize(
-                    preferredSize: const Size.fromHeight(0),
-                    child: Container(
-                      key: _con1,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: mediaQuery.size.width * 0.15),
-                      color: ColorManager.black,
-                      child: TabBar(
-                          indicatorColor: ColorManager.blue,
-                          controller: controller,
-                          tabs: [
-                            Text(
-                              'Posts',
-                              style: TextStyle(
-                                  fontSize: 25 * mediaQuery.textScaleFactor),
-                            ),
-                            Text(
-                              'About',
-                              style: TextStyle(
-                                  fontSize: 25 * mediaQuery.textScaleFactor),
-                            )
-                          ]),
-                    )),
-                // pinned: true,
-                // floating: true,
-                // snap: true,
-                backgroundColor: Colors.black,
-                // actionsIconTheme: IconThemeData(opacity: 0.0),
-                expandedHeight: sliverHeight,
-                flexibleSpace: FlexibleSpaceBar(
-                    // key: _subInof,
-                    background: subredditInfo(mediaQuery, subredditCubit)),
-              )
-            ];
+                      bottom: PreferredSize(
+                          preferredSize: const Size.fromHeight(0),
+                          child: Container(
+                            key: _con1,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: mediaQuery.size.width * 0.15),
+                            color: ColorManager.black,
+                            child: TabBar(
+                                indicatorColor: ColorManager.blue,
+                                controller: controller,
+                                tabs: [
+                                  Text(
+                                    'Posts',
+                                    style: TextStyle(
+                                        fontSize:
+                                            25 * mediaQuery.textScaleFactor),
+                                  ),
+                                  Text(
+                                    'About',
+                                    style: TextStyle(
+                                        fontSize:
+                                            25 * mediaQuery.textScaleFactor),
+                                  )
+                                ]),
+                          )),
+                      // pinned: true,
+                      // floating: true,
+                      // snap: true,
+                      backgroundColor: Colors.black,
+                      // actionsIconTheme: IconThemeData(opacity: 0.0),
+                      expandedHeight: sliverHeight,
+                      flexibleSpace: FlexibleSpaceBar(
+                          // key: _subInof,
+                          background:
+                              subredditInfo(mediaQuery, subredditCubit)),
+                    )
+                  ];
+                },
+                body: TabBarView(controller: controller, children: [
+                  SubredditPostsWidget(),
+                  const SubredditAboutWidget(),
+                ]),
+              ),
+            );
           },
-          body: TabBarView(controller: controller, children: [
-            SubredditPostsWidget(),
-            const SubredditAboutWidget(),
-          ]),
         ),
       ),
     );

@@ -116,6 +116,25 @@ class _EditScreenState extends State<EditScreen> {
                       iconUnselectedColor: ColorManager.greyColor),
                 ),
                 const Spacer(),
+                if (_isPost) ...[
+                  // TextButton.icon(
+                  //     onPressed: () {},
+                  //     icon: Icon(Icons.eighteen_up_rating,
+                  //         color: ColorManager.red, size: 20),
+                  //     label: Text(
+                  //       'NSFW',
+                  //       style: TextStyle(color: ColorManager.red, fontSize: 20),
+                  //     )),
+                  // TextButton.icon(
+                  //     onPressed: () {},
+                  //     icon: Icon(Icons.privacy_tip_outlined,
+                  //         color: ColorManager.eggshellWhite, size: 20),
+                  //     label: Text(
+                  //       'Spoiler',
+                  //       style: TextStyle(
+                  //           color: ColorManager.eggshellWhite, fontSize: 20),
+                  //     )),
+                ],
                 if (!_isPost)
                   IconButton(
                       onPressed: () async {

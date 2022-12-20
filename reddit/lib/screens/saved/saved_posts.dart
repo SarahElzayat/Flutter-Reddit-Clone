@@ -26,6 +26,13 @@ class _SavedPostsScreenState extends State<SavedPostsScreen> {
     }
   }
 
+  /// the method that's callled on pull down to refresh
+  Future<void> _onRefresh() async {
+    setState(() {
+      AppCubit.get(context).getSaved(isPosts: true);
+    });
+  }
+
   @override
   void initState() {
     AppCubit.get(context).getSaved(isPosts: true);
@@ -37,6 +44,7 @@ class _SavedPostsScreenState extends State<SavedPostsScreen> {
   @override
   Widget build(BuildContext context) {
     final AppCubit cubit = AppCubit.get(context);
+
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -54,19 +62,20 @@ class _SavedPostsScreenState extends State<SavedPostsScreen> {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 )
-              : ListView.builder(
-                  controller: _scrollController,
-                  itemCount: cubit.savedPostsList.length,
-                  itemBuilder: (context, index) => PostWidget(
-                      key: Key(cubit.savedPostsList[index].id.toString()),
-                      upperRowType:
-                          cubit.savedPostsList[index].inYourSubreddit == null
-                              ? ShowingOtions.onlyUser
-                              : ShowingOtions.both,
-                      // TODO check this
-                      // upperRowType: ShowingOtions.onlyUser,
-                      post: cubit.savedPostsList[index],
-                      postView: PostView.classic),
+              : RefreshIndicator(
+                  onRefresh: _onRefresh,
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: cubit.savedPostsList.length,
+                    itemBuilder: (context, index) => PostWidget(
+                        key: Key(cubit.savedPostsList[index].id.toString()),
+                        upperRowType:
+                            cubit.savedPostsList[index].inYourSubreddit == null
+                                ? ShowingOtions.onlyUser
+                                : ShowingOtions.both,
+                        post: cubit.savedPostsList[index],
+                        postView: PostView.classic),
+                  ),
                 ),
         );
       },

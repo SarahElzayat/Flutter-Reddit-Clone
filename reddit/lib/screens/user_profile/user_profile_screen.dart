@@ -148,7 +148,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
               backgroundColor: ColorManager.blue,
               expandedHeight: sliverHeight,
               bottom: PreferredSize(
-                preferredSize: Size.fromHeight(50),
+                preferredSize: const Size.fromHeight(50),
                 child: Container(
                   color: ColorManager.darkGrey,
                   child: TabBar(
@@ -232,7 +232,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                           )),
                                         ),
                                         Padding(
-                                          padding: EdgeInsets.only(
+                                          padding: const EdgeInsets.only(
                                               left: 15, top: 10),
                                           child: (isMyProfile)
                                               ? Button(
@@ -322,10 +322,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                         ),
                         Container(
                           key: _con1,
-                          padding: EdgeInsets.only(bottom: 5),
+                          padding: const EdgeInsets.only(bottom: 5),
                           color: ColorManager.black,
                           child: Container(
-                            margin: EdgeInsets.only(left: 15),
+                            margin: const EdgeInsets.only(left: 15),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               // key: _con1,
@@ -338,7 +338,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                               '')
                                       ? userProfileCubit.username!
                                       : userProfileCubit.userData!.displayName!,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 25,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -397,7 +397,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                                       mainAxisSize:
                                                           MainAxisSize.min,
                                                       children: [
-                                                        Icon(Icons.link),
+                                                        const Icon(Icons.link),
                                                         Text(userProfileCubit
                                                             .userData!
                                                             .socialLinks![i]
@@ -410,8 +410,9 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                                   .socialLinks!.length <
                                               5)
                                             Container(
-                                              margin: EdgeInsets.symmetric(
-                                                  vertical: 2),
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 2),
                                               child: InkWell(
                                                 // padding: EdgeInsets.zero,
                                                 onTap: (() {
@@ -420,7 +421,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                                           .routeName);
                                                 }),
                                                 child: Container(
-                                                  padding: EdgeInsets.symmetric(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
                                                       horizontal: 15,
                                                       vertical: 5),
                                                   decoration: BoxDecoration(
@@ -462,7 +464,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
               // Comment(post: post, comment: comment,viewType: CommentView.inSubreddits,)
               // Text('Comments'),
               UserProfileComments(),
-              Text('About')
+              const Text('About')
             ]),
           ),
         ),

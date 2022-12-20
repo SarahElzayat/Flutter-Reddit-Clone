@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional_switch.dart';
 import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
+import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
+import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_state.dart';
 import 'package:reddit/widgets/posts/dropdown_list.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
@@ -16,11 +18,9 @@ import '../../data/post_model/post_model.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../functions/post_functions.dart';
 
-bool isjoined = true;
-
 enum ShowingOtions { onlyUser, onlySubreddit, both }
 
-class PostUpperBar extends StatefulWidget {
+class PostUpperBar extends StatelessWidget {
   final bool isWeb;
 
   const PostUpperBar(
@@ -44,61 +44,60 @@ class PostUpperBar extends StatefulWidget {
   final bool outSide;
 
   @override
-  State<PostUpperBar> createState() => _PostUpperBarState();
-}
-
-class _PostUpperBarState extends State<PostUpperBar> {
-  @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ConditionalSwitch.single<ShowingOtions>(
-          context: context,
-          valueBuilder: (BuildContext context) {
-            return widget.showRowsSelect;
-          },
-          caseBuilders: {
-            ShowingOtions.onlyUser: (ctx) {
-              return singleRow(
-                  context: context,
-                  sub: false,
-                  showIcon: true,
-                  post: widget.post,
-                  isWeb: widget.isWeb);
-            },
-            ShowingOtions.onlySubreddit: (_) {
-              return singleRow(
-                  context: context,
-                  sub: true,
-                  showIcon: true,
-                  post: widget.post,
-                  isWeb: widget.isWeb);
-            },
-            ShowingOtions.both: (_) {
-              return _bothRows();
-            },
-          },
-          fallbackBuilder: (BuildContext context) {
-            return _bothRows();
-          },
-        ),
+    return BlocBuilder<PostAndCommentActionsCubit, PostActionsState>(
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ConditionalSwitch.single<ShowingOtions>(
+              context: context,
+              valueBuilder: (BuildContext context) {
+                return showRowsSelect;
+              },
+              caseBuilders: {
+                ShowingOtions.onlyUser: (ctx) {
+                  return singleRow(
+                      context: context,
+                      sub: false,
+                      showIcon: true,
+                      post: post,
+                      isWeb: isWeb);
+                },
+                ShowingOtions.onlySubreddit: (_) {
+                  return singleRow(
+                      context: context,
+                      sub: true,
+                      showIcon: true,
+                      post: post,
+                      isWeb: isWeb);
+                },
+                ShowingOtions.both: (_) {
+                  return _bothRows(context);
+                },
+              },
+              fallbackBuilder: (BuildContext context) {
+                return _bothRows(context);
+              },
+            ),
 
-        BlocBuilder<PostNotifierCubit, PostNotifierState>(
-          builder: (context, state) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: _tagsRow(),
-            );
-          },
-        ),
+            BlocBuilder<PostNotifierCubit, PostNotifierState>(
+              builder: (context, state) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: _tagsRow(),
+                );
+              },
+            ),
 
-        // The title of the post
-      ],
+            // The title of the post
+          ],
+        );
+      },
     );
   }
 
-  SizedBox _bothRows() {
+  SizedBox _bothRows(context) {
     return SizedBox(
       child: Row(
         children: [
@@ -110,14 +109,14 @@ class _PostUpperBarState extends State<PostUpperBar> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if ((widget.post.subreddit ?? '').isNotEmpty)
+              if ((post.subreddit ?? '').isNotEmpty)
                 InkWell(
                   onTap: () {
                     SubredditCubit.get(context)
-                        .setSubredditName(context, widget.post.subreddit ?? '');
+                        .setSubredditName(context, post.subreddit ?? '');
                   },
                   child: Text(
-                    'r/${widget.post.subreddit ?? ''}',
+                    'r/${post.subreddit ?? ''}',
                     style: const TextStyle(
                       color: ColorManager.eggshellWhite,
                       fontSize: 15,
@@ -128,17 +127,16 @@ class _PostUpperBarState extends State<PostUpperBar> {
                   context: context,
                   sub: false,
                   showDots: false,
-                  post: widget.post,
-                  isWeb: widget.isWeb),
+                  post: post,
+                  isWeb: isWeb),
             ],
           ),
           const Spacer(),
-          if (!isjoined)
+          if (!(PostAndCommentActionsCubit.get(context).subreddit?.isMember ??
+              true))
             InkWell(
               onTap: () {
-                setState(() {
-                  isjoined = true;
-                });
+                PostAndCommentActionsCubit.get(context).joinCommunity();
               },
               child: const Chip(
                 label: Text(
@@ -150,8 +148,8 @@ class _PostUpperBarState extends State<PostUpperBar> {
                 backgroundColor: ColorManager.blue,
               ),
             )
-          else if (widget.outSide && !widget.isWeb)
-            dropDownDots(widget.post),
+          else if (outSide && !isWeb)
+            dropDownDots(post),
         ],
       ),
     );
@@ -162,9 +160,9 @@ class _PostUpperBarState extends State<PostUpperBar> {
     return BlocBuilder<PostNotifierCubit, PostNotifierState>(
       builder: (context, state) {
         return DropDownList(
-          post: widget.post,
+          post: post,
           itemClass: ItemsClass.posts,
-          outsideScreen: widget.outSide,
+          outsideScreen: outSide,
         );
       },
     );
@@ -173,7 +171,7 @@ class _PostUpperBarState extends State<PostUpperBar> {
   Row _tagsRow() {
     return Row(
       children: [
-        if (widget.post.nsfw ?? false)
+        if (post.nsfw ?? false)
           Row(
             children: const [
               Icon(Icons.eighteen_up_rating, color: ColorManager.red, size: 20),
@@ -184,8 +182,8 @@ class _PostUpperBarState extends State<PostUpperBar> {
                   )),
             ],
           ),
-        if (widget.post.nsfw ?? false) const SizedBox(width: 5),
-        if (widget.post.spoiler ?? false)
+        if (post.nsfw ?? false) const SizedBox(width: 5),
+        if (post.spoiler ?? false)
           Row(
             children: const [
               Icon(Icons.privacy_tip_outlined,

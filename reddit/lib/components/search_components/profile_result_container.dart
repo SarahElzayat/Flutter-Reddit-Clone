@@ -6,6 +6,8 @@ import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/data/search/search_result_profile_model.dart';
 import 'package:reddit/screens/search/cubit/search_cubit.dart';
 
+import '../../networks/constant_end_points.dart';
+
 
 ///@param [model] model of user result
 class ProfileResultContainer extends StatelessWidget {
@@ -34,7 +36,7 @@ class ProfileResultContainer extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 8.0),
                     child: CircleAvatar(
                       backgroundImage: model.data!.avatar != null
-                          ? NetworkImage(model.data!.avatar.toString())
+                          ? NetworkImage('$baseUrl/${model.data!.avatar}')
                           : null,
                       radius: 20,
                     ),
