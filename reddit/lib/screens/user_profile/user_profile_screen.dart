@@ -11,6 +11,7 @@ import 'package:reddit/components/button.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
 import 'package:reddit/data/settings/settings_models/user_settings.dart';
+import 'package:reddit/screens/settings/change_profile_picture_screen.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 import 'package:reddit/widgets/comments/comment.dart';
 import 'package:reddit/widgets/user_profile/user_profile_comments.dart';
@@ -131,249 +132,271 @@ class _UserProfileScreenState extends State<UserProfileScreen>
             )
           : null,
       body: CustomScrollView(slivers: [
-        SliverAppBar(
-          // primary: false,
-          actions: <Widget>[Container()],
-          title: Text('u/${userProfileCubit.userData!.displayName}'),
-          // automaticallyImplyLeading: false,
-          pinned: true,
-          backgroundColor: ColorManager.blue,
-          expandedHeight: sliverHeight,
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(50),
-            child: Container(
-              color: ColorManager.darkGrey,
-              child: TabBar(
-                  indicatorColor: ColorManager.blue,
-                  controller: controller,
-                  tabs: const [
-                    Tab(
-                      text: 'Posts',
-                    ),
-                    Tab(text: 'Comments'),
-                    Tab(
-                      text: 'About',
-                    )
-                  ]),
-            ),
-          ),
-          flexibleSpace: FlexibleSpaceBar(
-            background: Container(
-              color: ColorManager.black,
-              // height: mediaquery.size.height * 0.5,
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: mediaquery.size.height * 0.4,
-                      width: mediaquery.size.width,
-                      child: Stack(
-                        fit: StackFit.expand,
-                        children: [
-                          (userProfileCubit.userData!.banner == null ||
-                                  userProfileCubit.userData!.banner == '')
-                              ? Image.asset(
-                                  'assets/images/profile_banner.jpg',
-                                  fit: BoxFit.cover,
-                                )
-                              : Image.network(
-                                  userProfileCubit.userData!.banner!,
-                                  fit: BoxFit.cover,
-                                ),
-                          Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 22, vertical: 5),
-                                  // padding: EdgeInsets.only(left: 15),
-                                  child: CircleAvatar(
-                                    radius: 40,
-                                    child: (userProfileCubit
-                                                    .userData!.picture ==
-                                                null ||
-                                            userProfileCubit
-                                                    .userData!.picture ==
-                                                '')
-                                        ? Image.asset(
-                                            'assets/images/Logo.png',
-                                          )
-                                        : Image.network(
-                                            userProfileCubit.userData!.picture!,
-                                            fit: BoxFit.cover,
-                                          ),
-                                  ),
-                                ),
-                                Stack(
+        BlocBuilder<UserProfileCubit, UserProfileState>(
+          buildWhen: (previous, current) {
+            if (previous is ChangeUserProfileInfo ||
+                current is ChangeUserProfileInfo) {
+              setState(() {});
+              return true;
+            }
+            return false;
+          },
+          builder: (context, state) {
+            return SliverAppBar(
+              // primary: false,
+              actions: <Widget>[Container()],
+              title: Text('u/${userProfileCubit.userData!.displayName}'),
+              // automaticallyImplyLeading: false,
+              pinned: true,
+              backgroundColor: ColorManager.blue,
+              expandedHeight: sliverHeight,
+              bottom: PreferredSize(
+                preferredSize: Size.fromHeight(50),
+                child: Container(
+                  color: ColorManager.darkGrey,
+                  child: TabBar(
+                      indicatorColor: ColorManager.blue,
+                      controller: controller,
+                      tabs: const [
+                        Tab(
+                          text: 'Posts',
+                        ),
+                        Tab(text: 'Comments'),
+                        Tab(
+                          text: 'About',
+                        )
+                      ]),
+                ),
+              ),
+              flexibleSpace: FlexibleSpaceBar(
+                background: Container(
+                  color: ColorManager.black,
+                  // height: mediaquery.size.height * 0.5,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: mediaquery.size.height * 0.4,
+                          width: mediaquery.size.width,
+                          child: Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              (userProfileCubit.userData!.banner == null ||
+                                      userProfileCubit.userData!.banner == '')
+                                  ? Image.asset(
+                                      'assets/images/profile_banner.jpg',
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.network(
+                                      userProfileCubit.userData!.banner!,
+                                      fit: BoxFit.cover,
+                                    ),
+                              Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      width: mediaquery.size.width,
-                                      height: 80,
-                                      decoration: const BoxDecoration(
-                                          gradient: LinearGradient(
-                                        colors: [
-                                          Color.fromARGB(20, 0, 0, 0),
-                                          Color.fromARGB(255, 0, 0, 0),
-                                        ],
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                      )),
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 22, vertical: 5),
+                                      // padding: EdgeInsets.only(left: 15),
+                                      child: CircleAvatar(
+                                        radius: 40,
+                                        child: (userProfileCubit
+                                                        .userData!.picture ==
+                                                    null ||
+                                                userProfileCubit
+                                                        .userData!.picture ==
+                                                    '')
+                                            ? Image.asset(
+                                                'assets/images/Logo.png',
+                                              )
+                                            : Image.network(
+                                                userProfileCubit
+                                                    .userData!.picture!,
+                                                fit: BoxFit.cover,
+                                              ),
+                                      ),
                                     ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(left: 15, top: 10),
-                                      child: (isMyProfile)
-                                          ? Button(
-                                              text: 'Edit',
-                                              textFontSize: 20,
-                                              onPressed: () {
-                                                navigator.pushNamed(
-                                                    UserProfileEditScreen
-                                                        .routeName);
-                                                setState(() {});
-                                                SchedulerBinding.instance
-                                                    .addPostFrameCallback((_) {
-                                                  getHeight();
-                                                });
-                                              },
-                                              buttonWidth: 100,
-                                              buttonHeight: 55,
-                                              splashColor: Colors.transparent,
-                                              borderColor: ColorManager.white,
-                                              backgroundColor:
-                                                  Colors.transparent,
-                                              textFontWeight: FontWeight.bold)
-                                          : BlocBuilder<UserProfileCubit,
-                                              UserProfileState>(
-                                              buildWhen: (previous, current) {
-                                                if (current
-                                                        is FollowOrUnfollowState ||
-                                                    previous
-                                                        is FollowOrUnfollowState) {
-                                                  print(true);
-                                                  return true;
-                                                } else {
-                                                  return false;
-                                                }
-                                              },
-                                              builder: (context, state) {
-                                                return Button(
-                                                    text: (userProfileCubit
-                                                            .userData!
-                                                            .followed!)
-                                                        ? 'Following'
-                                                        : 'Follow',
-                                                    textFontSize: 20,
-                                                    onPressed: () {
-                                                      if (userProfileCubit
-                                                          .userData!
-                                                          .followed!) {
-                                                        userProfileCubit
-                                                            .followOrUnfollowUser(
-                                                                false);
-                                                      } else {
-                                                        userProfileCubit
-                                                            .followOrUnfollowUser(
-                                                                true);
-                                                      }
-                                                    },
-                                                    buttonWidth:
-                                                        (userProfileCubit
+                                    Stack(
+                                      children: [
+                                        Container(
+                                          width: mediaquery.size.width,
+                                          height: 80,
+                                          decoration: const BoxDecoration(
+                                              gradient: LinearGradient(
+                                            colors: [
+                                              Color.fromARGB(20, 0, 0, 0),
+                                              Color.fromARGB(255, 0, 0, 0),
+                                            ],
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                          )),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 15, top: 10),
+                                          child: (isMyProfile)
+                                              ? Button(
+                                                  text: 'Edit',
+                                                  textFontSize: 20,
+                                                  onPressed: () {
+                                                    navigator.pushNamed(
+                                                        UserProfileEditScreen
+                                                            .routeName);
+                                                    setState(() {});
+                                                    SchedulerBinding.instance
+                                                        .addPostFrameCallback(
+                                                            (_) {
+                                                      getHeight();
+                                                    });
+                                                  },
+                                                  buttonWidth: 100,
+                                                  buttonHeight: 55,
+                                                  splashColor:
+                                                      Colors.transparent,
+                                                  borderColor:
+                                                      ColorManager.white,
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  textFontWeight:
+                                                      FontWeight.bold)
+                                              : BlocBuilder<UserProfileCubit,
+                                                  UserProfileState>(
+                                                  buildWhen:
+                                                      (previous, current) {
+                                                    if (current
+                                                            is FollowOrUnfollowState ||
+                                                        previous
+                                                            is FollowOrUnfollowState) {
+                                                      print(true);
+                                                      return true;
+                                                    } else {
+                                                      return false;
+                                                    }
+                                                  },
+                                                  builder: (context, state) {
+                                                    return Button(
+                                                        text: (userProfileCubit
                                                                 .userData!
                                                                 .followed!)
-                                                            ? 150
-                                                            : 120,
-                                                    buttonHeight: 55,
-                                                    splashColor:
-                                                        Colors.transparent,
-                                                    borderColor:
-                                                        ColorManager.white,
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                    textFontWeight:
-                                                        FontWeight.bold);
-                                              },
-                                            ),
+                                                            ? 'Following'
+                                                            : 'Follow',
+                                                        textFontSize: 20,
+                                                        onPressed: () {
+                                                          if (userProfileCubit
+                                                              .userData!
+                                                              .followed!) {
+                                                            userProfileCubit
+                                                                .followOrUnfollowUser(
+                                                                    false);
+                                                          } else {
+                                                            userProfileCubit
+                                                                .followOrUnfollowUser(
+                                                                    true);
+                                                          }
+                                                        },
+                                                        buttonWidth:
+                                                            (userProfileCubit
+                                                                    .userData!
+                                                                    .followed!)
+                                                                ? 150
+                                                                : 120,
+                                                        buttonHeight: 55,
+                                                        splashColor:
+                                                            Colors.transparent,
+                                                        borderColor:
+                                                            ColorManager.white,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        textFontWeight:
+                                                            FontWeight.bold);
+                                                  },
+                                                ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          key: _con1,
+                          padding: EdgeInsets.only(bottom: 5),
+                          color: ColorManager.black,
+                          child: Container(
+                            margin: EdgeInsets.only(left: 15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              // key: _con1,
+                              children: [
+                                Text(
+                                  (userProfileCubit.userData!.displayName ==
+                                              null ||
+                                          userProfileCubit
+                                                  .userData!.displayName ==
+                                              '')
+                                      ? userProfileCubit.username!
+                                      : userProfileCubit.userData!.displayName!,
+                                  style: TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                // MaterialButton(
+                                //   padding: EdgeInsets.zero,
+                                //   onPressed: (() {}),
+                                //   child: Row(
+                                //       mainAxisSize: MainAxisSize.min,
+                                //       children: const [
+                                //         Text('0 followers'),
+                                //         Icon(Icons.arrow_forward_ios_sharp),
+                                //       ]),
+                                // ),
+                                Text(
+                                    'u/${userProfileCubit.userData!.displayName} *${userProfileCubit.userData!.karma} Karma *${DateFormat('dd/MM/yyyy').format((userProfileCubit.userData!.cakeDate!))}'),
+                                Text(userProfileCubit.userData!.about ?? ''),
+                                (isMyProfile)
+                                    ? Container(
+                                        margin:
+                                            EdgeInsets.symmetric(vertical: 2),
+                                        child: MaterialButton(
+                                          padding: EdgeInsets.zero,
+                                          onPressed: (() {}),
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 15, vertical: 5),
+                                            decoration: BoxDecoration(
+                                                color: ColorManager.grey,
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: const [
+                                                  Icon(Icons.add),
+                                                  Text('Add Social Link')
+                                                ]),
+                                          ),
+                                        ),
+                                      )
+                                    : const SizedBox(),
                               ],
                             ),
                           ),
-                        ],
-                      ),
+                        )
+                      ],
                     ),
-                    Container(
-                      key: _con1,
-                      padding: EdgeInsets.only(bottom: 5),
-                      color: ColorManager.black,
-                      child: Container(
-                        margin: EdgeInsets.only(left: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          // key: _con1,
-                          children: [
-                            Text(
-                              (userProfileCubit.userData!.displayName == null ||
-                                      userProfileCubit.userData!.displayName ==
-                                          '')
-                                  ? userProfileCubit.username!
-                                  : userProfileCubit.userData!.displayName!,
-                              style: TextStyle(
-                                  fontSize: 25, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            // MaterialButton(
-                            //   padding: EdgeInsets.zero,
-                            //   onPressed: (() {}),
-                            //   child: Row(
-                            //       mainAxisSize: MainAxisSize.min,
-                            //       children: const [
-                            //         Text('0 followers'),
-                            //         Icon(Icons.arrow_forward_ios_sharp),
-                            //       ]),
-                            // ),
-                            Text(
-                                'u/${userProfileCubit.userData!.displayName} *${userProfileCubit.userData!.karma} Karma *${DateFormat('dd/MM/yyyy').format((userProfileCubit.userData!.cakeDate!))}'),
-                            Text(userProfileCubit.userData!.about ?? ''),
-                            (isMyProfile)
-                                ? Container(
-                                    margin: EdgeInsets.symmetric(vertical: 2),
-                                    child: MaterialButton(
-                                      padding: EdgeInsets.zero,
-                                      onPressed: (() {}),
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 15, vertical: 5),
-                                        decoration: BoxDecoration(
-                                            color: ColorManager.grey,
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
-                                        child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: const [
-                                              Icon(Icons.add),
-                                              Text('Add Social Link')
-                                            ]),
-                                      ),
-                                    ),
-                                  )
-                                : const SizedBox(),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
         ),
         SliverFillRemaining(
           child: SizedBox(

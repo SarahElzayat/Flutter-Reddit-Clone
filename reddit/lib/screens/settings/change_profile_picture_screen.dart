@@ -60,7 +60,7 @@ class _ChangeProfilePicutreState extends State<ChangeProfilePicutre> {
                         await _picker
                             .pickImage(source: ImageSource.gallery)
                             .then((value) {
-                          cubit.changeProfilePicture(value!);
+                          if (value != null) cubit.changeProfilePicture(value);
                         });
                       },
                       child: Text(

@@ -5,10 +5,29 @@ import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
 import 'package:reddit/widgets/user_profile/user_profile_eidt_image.dart';
 
-class UserProfileEditScreen extends StatelessWidget {
-  const UserProfileEditScreen({Key? key}) : super(key: key);
+class UserProfileEditScreen extends StatefulWidget {
+  UserProfileEditScreen({Key? key}) : super(key: key);
+
+  @override
+  State<UserProfileEditScreen> createState() => _UserProfileEditScreenState();
 
   static const routeName = '/user_profile_edit_screen_route';
+}
+
+class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
+  late TextEditingController displatNameController;
+
+  late TextEditingController aboutUserController;
+  @override
+  void initState() {
+    displatNameController = TextEditingController(
+        text: UserProfileCubit.get(context).userData!.displayName);
+
+    aboutUserController = TextEditingController(
+        text: UserProfileCubit.get(context).userData!.about);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +39,10 @@ class UserProfileEditScreen extends StatelessWidget {
         title: const Text('Edit'),
         actions: [
           TextButton(
-              onPressed: () {},
+              onPressed: () {
+                userProfile.changeUserProfileInfo(context,
+                    displatNameController.text, aboutUserController.text);
+              },
               child: const Text(
                 'SAVE',
                 style: TextStyle(color: ColorManager.blue),
@@ -51,6 +73,7 @@ class UserProfileEditScreen extends StatelessWidget {
                       child: Container(
                         margin: const EdgeInsets.symmetric(horizontal: 15),
                         child: TextFormField(
+                          controller: displatNameController,
                           maxLength: 30,
                           cursorColor: ColorManager.blue,
                           style: const TextStyle(fontSize: 18),
@@ -83,6 +106,7 @@ class UserProfileEditScreen extends StatelessWidget {
                       child: Container(
                         margin: const EdgeInsets.symmetric(horizontal: 15),
                         child: TextFormField(
+                          controller: aboutUserController,
                           maxLength: 200,
                           // expands: true,
                           maxLines: 4,

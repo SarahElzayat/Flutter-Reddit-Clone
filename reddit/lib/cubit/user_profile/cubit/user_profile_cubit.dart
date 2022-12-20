@@ -19,6 +19,7 @@ import '../../../data/post_model/post_model.dart';
 import '../../../networks/constant_end_points.dart';
 import '../../../screens/moderation/user_management_screens/invite_moderator.dart';
 import '../../../screens/moderation/user_management_screens/moderators.dart';
+import '../../../shared/local/shared_preferences.dart';
 
 part 'user_profile_state.dart';
 
@@ -171,14 +172,14 @@ class UserProfileCubit extends Cubit<UserProfileState> {
               ),
               Text(
                 'u/${userData!.displayName ?? userName}',
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
               ListTile(
                 title: Text(
                   '${userData!.karma}',
-                  style: TextStyle(fontSize: 18),
+                  style: const TextStyle(fontSize: 18),
                 ),
-                subtitle: Text('Karma'),
+                subtitle: const Text('Karma'),
               ),
               TextButton(
                   onPressed: () {
@@ -204,7 +205,7 @@ class UserProfileCubit extends Cubit<UserProfileState> {
               TextButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: ((context) => Moderators())));
+                        builder: ((context) => const Moderators())));
                   },
                   child: Row(
                     children: const [
@@ -226,15 +227,15 @@ class UserProfileCubit extends Cubit<UserProfileState> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Block u/${userData!.displayName}',
-                      style: TextStyle(fontSize: 20)),
-                  SizedBox(
+                      style: const TextStyle(fontSize: 20)),
+                  const SizedBox(
                     height: 7,
                   ),
-                  Text(
+                  const Text(
                     'They won\'t be able to contact you or view your profile, posts, or commentst',
                     style: TextStyle(fontSize: 15),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 7,
                   ),
                   Row(
@@ -267,7 +268,7 @@ class UserProfileCubit extends Cubit<UserProfileState> {
                         },
                         text: 'Block account',
                         backgroundColor: ColorManager.red,
-                        splashColor: Color.fromARGB(100, 0, 0, 0),
+                        splashColor: const Color.fromARGB(100, 0, 0, 0),
                         textColor: ColorManager.white,
                       ),
                       Button(
@@ -278,7 +279,7 @@ class UserProfileCubit extends Cubit<UserProfileState> {
                         },
                         text: 'Cancel',
                         backgroundColor: Colors.transparent,
-                        splashColor: Color.fromARGB(100, 0, 0, 0),
+                        splashColor: const Color.fromARGB(100, 0, 0, 0),
                         textColor: ColorManager.eggshellWhite,
                       ),
                     ],
@@ -286,5 +287,39 @@ class UserProfileCubit extends Cubit<UserProfileState> {
                 ],
               ),
             )));
+  }
+
+  /// 0 -> change Display name
+  /// 1 -> change About User
+  /// 2 -> Add Social Link
+  /// 3 -> Edit Profile Banner
+  void changeUserProfileInfo(
+      BuildContext context, String displayName, String aboutYou) {
+    Map<String, String> data = {};
+    if (userData!.displayName != displayName) {
+      data['displayName'] = displayName;
+    }
+    if (userData!.about != aboutYou) {
+      data['about'] = aboutYou;
+    }
+    if (data.isNotEmpty) {
+      DioHelper.patchData(
+              path: accountSettings,
+              data: data,
+              token: CacheHelper.getData(key: 'token'))
+          .then((value) {
+        if (value.statusCode == 200) {
+          userData!.displayName = displayName;
+          userData!.about = aboutYou;
+          emit(ChangeUserProfileInfo());
+          ScaffoldMessenger.of(context).showSnackBar(
+              responseSnackBar(message: 'Update Successfully', error: false));
+        }
+      }).catchError((error) {
+        ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+            message: 'An Error, Please Try Again', error: true));
+      });
+    }
+    Navigator.of(context).pop();
   }
 }

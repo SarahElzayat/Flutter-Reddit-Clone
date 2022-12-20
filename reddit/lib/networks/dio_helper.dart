@@ -40,9 +40,7 @@ class DioHelper {
         // contentType:
         //     'multipart/form-data; boundary=<calculated when request is sent>',
       ),
-
     );
-    
   }
 
   /// now we need to define the web Services
