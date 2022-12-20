@@ -151,7 +151,6 @@ Widget singleRow(
   bool showDots = true,
   required bool isWeb,
   required PostModel post,
-  required BuildContext context,
 }) {
   return Row(
     children: [
