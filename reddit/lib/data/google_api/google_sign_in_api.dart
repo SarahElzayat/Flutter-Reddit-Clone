@@ -20,6 +20,7 @@ class GoogleSignInApi {
   /// this is the method responsible for logging out
   static Future logOut() => _googleSignIn.disconnect();
 
+  /// this is the method responsible for getting the token
   static Future<void> getToken() async {
     try {
       GoogleSignInAccount? user = await _googleSignIn.signIn();

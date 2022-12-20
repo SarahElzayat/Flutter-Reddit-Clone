@@ -1,3 +1,7 @@
+/// @author Abdelaziz Salah
+/// @date 20/12/2022
+/// This model is used to get the messages from the backend.
+
 class MessageModel {
   String? before;
   String? after;
