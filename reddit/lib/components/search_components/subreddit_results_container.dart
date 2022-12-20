@@ -34,7 +34,10 @@ class SubredditResultsContainer extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 8.0),
                   child: CircleAvatar(
                     backgroundImage: model.data!.profilePicture != null
-                        ? NetworkImage(baseUrl +model.data!.profilePicture.toString())
+                        // ignore: prefer_interpolation_to_compose_strings
+                        ? NetworkImage(baseUrl +
+                            '/' +
+                            model.data!.profilePicture.toString())
                         : null,
                     radius: 20,
                   ),

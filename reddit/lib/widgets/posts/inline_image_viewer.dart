@@ -73,7 +73,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
         PageController(initialPage: widget.initialIndex, keepPage: true);
 
     if (imagesExists) {
-      Image(image: NetworkImage(baseUrl + widget.post.images![0].path!))
+      Image(image: NetworkImage('$baseUrl/${widget.post.images![0].path!}'))
           .image
           .resolve(const ImageConfiguration())
           .addListener(ImageStreamListener((info, call) {
@@ -102,10 +102,10 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
             child: SizedBox(
               // expand the image to the width of the screen with max height of 60% of the screen
               width: widget.postView == PostView.classic
-                  ? constraints.maxWidth * 0.2
+                  ? 20.w
                   : constraints.maxWidth,
               height: widget.postView == PostView.classic
-                  ? constraints.maxWidth * 0.2
+                  ? 20.w
                   : widget.outsideScreen
                       ? min(70.h, aspectRatio * constraints.maxWidth)
                       : 50.h,
@@ -264,7 +264,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
 
   bool _haveCaptions() {
     for (var image in widget.post.images!) {
-      if (image.caption != null) {
+      if (image.caption != null && image.caption!.isNotEmpty) {
         return true;
       }
     }
@@ -283,7 +283,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
   }
 
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
-    final String item = baseUrl + widget.post.images![index].path!;
+    final String item = '$baseUrl/${widget.post.images![index].path!}';
     return PhotoViewGalleryPageOptions(
       imageProvider: NetworkImage(item),
       //NOTE - i changed this to covered so that the image fits small containers

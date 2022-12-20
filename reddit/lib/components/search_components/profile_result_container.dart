@@ -36,7 +36,7 @@ class ProfileResultContainer extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 8.0),
                     child: CircleAvatar(
                       backgroundImage: model.data!.avatar != null
-                          ? NetworkImage(baseUrl +model.data!.avatar.toString())
+                          ? NetworkImage('$baseUrl/${model.data!.avatar}')
                           : null,
                       radius: 20,
                     ),

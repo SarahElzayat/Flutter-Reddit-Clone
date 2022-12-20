@@ -90,7 +90,7 @@ class _PostWidgetState extends State<PostWidget> {
       DioHelper.getData(path: '/post-details', query: {
         'id': widget.post.sharePostId,
       }).then((value) {
-        if (value.statusCode == 200) {
+        if (value.statusCode == 200 && mounted) {
           setState(() {
             childPost = PostModel.fromJson(value.data);
             logger.d(childPost!.title);
@@ -107,7 +107,8 @@ class _PostWidgetState extends State<PostWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PostAndCommentActionsCubit(post: widget.post),
+      create: (context) =>
+          PostAndCommentActionsCubit(post: widget.post)..getSubDetails(),
       child: ResponsiveBuilder(
         builder: (buildContext, sizingInformation) {
           bool isWeb = kIsWeb; //!ResponsiveWidget.isSmallScreen(context);
@@ -169,7 +170,8 @@ class _PostWidgetState extends State<PostWidget> {
                                             PostView.withCommentsInSearch) {
                                           return 'commentBody';
                                         }
-                                        if (widget.post.kind == 'post') {
+                                        if (widget.post.kind == 'post' &&
+                                            !widget.isNested) {
                                           return 'postBody';
                                         }
                                         if (widget.post.kind == 'video') {

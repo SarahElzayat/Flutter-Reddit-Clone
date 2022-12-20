@@ -42,7 +42,7 @@ TextButton linkRow(String link, Color textColor) {
     child: Row(
       children: [
         Text(link),
-        const Icon(Icons.open_in_new),
+        if (link.isNotEmpty) const Icon(Icons.open_in_new),
       ],
     ),
   );

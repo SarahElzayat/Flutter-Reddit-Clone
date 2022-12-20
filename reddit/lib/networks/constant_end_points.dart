@@ -14,6 +14,7 @@ const baseUrl = kReleaseMode
     : kIsWeb
         ? 'http://localhost:3000'
         : 'https://www.read-it.live/api';
+// : 'http://10.0.2.2:3000/';
 
 const imagesBaseUrl =
     kReleaseMode ? 'https://web.read-it.live/' : 'http://192.168.1.8:3000/';

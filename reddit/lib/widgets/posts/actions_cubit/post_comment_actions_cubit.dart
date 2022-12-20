@@ -15,6 +15,8 @@ import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/functions/post_functions.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import '../../../data/comment/sended_comment_model.dart';
+import '../../../data/subreddit/subreddit_model.dart';
+import '../../../networks/constant_end_points.dart';
 import 'post_comment_actions_state.dart';
 
 Logger logger = Logger();
@@ -287,5 +289,31 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
 
   void collapse() {
     currentComment!.isCollapsed = !((currentComment?.isCollapsed) ?? true);
+  }
+
+  SubredditModel? subreddit;
+  void getSubDetails() {
+    DioHelper.getData(
+        path: '$subredditInfo/${post.subreddit}',
+        query: {'subreddit': post.subreddit}).then((value) {
+      if (value.statusCode == 200) {
+        subreddit = SubredditModel.fromJson(value.data);
+        emit(SubDetailsFetched());
+        // emit(subredditChange());
+      }
+    }).catchError((error) {
+      return;
+    });
+  }
+
+  void joinCommunity() {
+    DioHelper.postData(
+        path: joinSubreddit,
+        data: {'subredditId': subreddit?.subredditId}).then((value) {
+      if (value.statusCode == 200) {
+        subreddit!.isMember = true;
+        emit(JoinSubredditState());
+      }
+    }).catchError((error) {});
   }
 }

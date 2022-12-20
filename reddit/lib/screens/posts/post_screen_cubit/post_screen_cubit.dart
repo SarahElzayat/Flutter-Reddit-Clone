@@ -106,7 +106,8 @@ class PostScreenCubit extends Cubit<PostScreenState> {
       });
       emit(CommentsLoaded());
     }).catchError((error) {
-      logger.e('error in coments $error');
+      logger
+          .e('error in comments ${(error as DioError).response!.data['error']}');
       emit(CommentsError((error as DioError).response!.data['error']));
     });
   }
@@ -174,7 +175,8 @@ class PostScreenCubit extends Cubit<PostScreenState> {
       post.overrideWithOther(PostModel.fromJson(value.data));
       emit(PostLoaded());
     }).catchError((error) {
-      logger.e('error in post details $error');
+      error = error as DioError;
+      logger.e('error in post details ${error.response!.data['error']}}');
       emit(PostError());
     });
   }
@@ -183,7 +185,7 @@ class PostScreenCubit extends Cubit<PostScreenState> {
   /// @param [commentId] the id of the comment to delete
   void deleteComment(String commentId) {
     emit(CommentsLoading());
-    
+
     allCommentsMap.remove(commentId);
     comments.removeWhere((element) => element.id == commentId);
 

@@ -198,12 +198,12 @@ class _SubredditState extends State<Subreddit>
                               ? ColorManager.blue
                               : null,
                       radius: 25,
-                      backgroundImage:
-                          (subredditCubit.subreddit!.picture == null ||
-                                  subredditCubit.subreddit!.picture == '')
-                              ? null
-                              : NetworkImage(
-                                  baseUrl + subredditCubit.subreddit!.picture!),
+                      backgroundImage: (subredditCubit.subreddit!.picture ==
+                                  null ||
+                              subredditCubit.subreddit!.picture == '')
+                          ? null
+                          : NetworkImage(
+                              '$baseUrl/${subredditCubit.subreddit!.picture!}'),
                       child: (subredditCubit.subreddit!.picture == null ||
                               subredditCubit.subreddit!.picture == '')
                           ? const Text(
