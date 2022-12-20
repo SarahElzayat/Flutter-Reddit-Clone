@@ -2,27 +2,27 @@
 /// @date 1/11/2022
 /// this file containes all our routes in order to avoid destraction in the main file.
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/inbox/single_message_screen.dart';
+import 'package:reddit/screens/inbox/single_notification_screen.dart';
+import 'package:reddit/screens/add_post/add_post.dart';
+import 'package:reddit/screens/add_post/community_search.dart';
+import 'package:reddit/screens/add_post/post_rules.dart';
+import 'package:reddit/screens/saved/saved_screen.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/continue_sign_up_for_mobile.dart';
+import 'package:reddit/screens/subreddit/subreddit_screen.dart';
 
-import '../screens/inbox/create_message_screen.dart';
-import '../screens/inbox/single_message_screen.dart';
-import '../screens/inbox/single_notification_screen.dart';
-import '../screens/add_post/add_post.dart';
-import '../screens/add_post/community_search.dart';
-import '../screens/add_post/post_rules.dart';
-import '../screens/saved/saved_screen.dart';
-import '../screens/sign_in_and_sign_up_screen/mobile/continue_sign_up_for_mobile.dart';
-import '../screens/subreddit/subreddit_screen.dart';
-import '../screens/bottom_navigation_bar_screens/add_post_screen.dart';
-import '../screens/bottom_navigation_bar_screens/explore_screen.dart';
-import '../screens/bottom_navigation_bar_screens/home_screen.dart';
-import '../screens/forget_user_name_and_password/mobile/recover_username.dart';
-import '../screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
-import '../screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
-import '../screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
-import '../screens/to_go_screens/having_trouble_screen.dart';
-import '../screens/to_go_screens/privacy_and_policy.dart';
-import '../screens/to_go_screens/user_agreement_screen.dart';
-import '../screens/settings/blocked_accounts.dart';
+import '../../screens/bottom_navigation_bar_screens/add_post_screen.dart';
+import '../../screens/bottom_navigation_bar_screens/explore_screen.dart';
+import '../../screens/bottom_navigation_bar_screens/home_screen.dart';
+import '../../screens/forget_user_name_and_password/mobile/recover_username.dart';
+import '../../screens/forget_user_name_and_password/web/forget_password_web_screen.dart';
+import '../../screens/forget_user_name_and_password/web/forget_user_name_web_screen.dart';
+import '../../screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
+import '../../screens/to_go_screens/having_trouble_screen.dart';
+import '../../screens/to_go_screens/privacy_and_policy.dart';
+import '../../screens/to_go_screens/user_agreement_screen.dart';
+import 'package:reddit/screens/settings/blocked_accounts.dart';
+
 import '../screens/inbox/Inbox_screen.dart';
 import '../screens/inbox/notifications_screen.dart';
 import '../screens/add_post/image_screen.dart';
@@ -75,7 +75,6 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   NotificationScreen.routeName: (ctx) => const NotificationScreen(),
   SignleNotificationScreen.routeName: (ctx) => const SignleNotificationScreen(),
   SingleMessageScreen.routeName: (ctx) => const SingleMessageScreen(),
-  CreateMessageScreen.routeName: (ctx) => const CreateMessageScreen(),
 
   // home screens
   HomeScreenForMobile.routeName: (ctx) => const HomeScreenForMobile(),
@@ -99,5 +98,5 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   CommunitySearch.routeName: (ctx) => const CommunitySearch(),
   PostRules.routeName: (ctx) => const PostRules(),
   UserProfileScreen.routeName: (ctx) => const UserProfileScreen(),
-  UserProfileEditScreen.routeName: (ctx) => const UserProfileEditScreen(),
+  UserProfileEditScreen.routeName: (ctx) => UserProfileEditScreen(),
 };

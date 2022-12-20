@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:delta_markdown/delta_markdown.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
 import 'package:reddit/data/add_post/subredditsSearchListModel.dart';
 import 'package:video_player/video_player.dart';
@@ -15,7 +17,9 @@ import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../../../components/button.dart';
 import '../../../components/helpers/color_manager.dart';
+import '../../../components/snack_bar.dart';
 import '../../../constants/constants.dart';
+import '../../../data/add_post/subreddit_flairs.dart';
 import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
 import '../../../screens/main_screen.dart';
@@ -27,6 +31,8 @@ part 'add_post_state.dart';
 class AddPostCubit extends Cubit<AddPostState> {
   AddPostCubit() : super(AddPostInitial());
 
+  SubredditFlairModel? flairs;
+
   static AddPostCubit get(context) => BlocProvider.of(context);
 
   /// [title] Title textField controller
@@ -35,6 +41,8 @@ class AddPostCubit extends Cubit<AddPostState> {
   /// [postType] Number indicate The post Type
   /// This number is the index of post Type in add post screen
   int postType = 2;
+
+  bool isSubreddit = true;
 
   /// [images] Images that User Added
   List<XFile> images = <XFile>[];
@@ -46,6 +54,8 @@ class AddPostCubit extends Cubit<AddPostState> {
   List<TextEditingController> imagesLinkControllerTemp = [];
 
   int imageCurrentIndex = 0;
+
+  DateTime? scheduleDate;
 
   /// [editableImage] Image that User will edit it
   late XFile editableImage;
@@ -74,6 +84,8 @@ class AddPostCubit extends Cubit<AddPostState> {
   ];
 
   String? subredditName;
+
+  String? selectedFlair;
 
   bool nsfw = false;
   bool spoiler = false;
@@ -184,7 +196,6 @@ class AddPostCubit extends Cubit<AddPostState> {
         vidoePath = result.path;
         File file = File(result.path);
         vidoeController = VideoPlayerController.file(file);
-        // print('Video PAth in cuibt = $vidoePath');
         emit(EditVideo());
       }
     } else {
@@ -222,7 +233,6 @@ class AddPostCubit extends Cubit<AddPostState> {
   /// The Function For Debugging only
   @override
   void onChange(Change<AddPostState> change) {
-    print(change);
     super.onChange(change);
   }
 
@@ -439,18 +449,12 @@ class AddPostCubit extends Cubit<AddPostState> {
 
     if (postType == 0) {
       for (var item in images) {
-        print(item.path);
         final mimeType = lookupMimeType(item.path);
-        print(mimeType!.split('/').first);
-        print(mimeType.split('/').last);
         MultipartFile file = await MultipartFile.fromFile(item.path,
             filename: item.path.split('/').last,
             contentType: MediaType('image', 'png'));
         imagesData.add(file);
       }
-      imagesData.forEach((element) {
-        print(element.filename);
-      });
       List<String> imageCaptions = [];
       for (int index = 0; index < captionController.length; index++) {
         imageCaptions.add(captionController[index].text);
@@ -462,22 +466,23 @@ class AddPostCubit extends Cubit<AddPostState> {
       body = {
         'kind': postTypes[postType],
         'subreddit': subredditName,
-        'inSubreddit': true,
+        'inSubreddit': isSubreddit,
         'title': title.text,
         'images': imagesData,
         'imageCaptions': imageCaptions,
         'imageLinks': imageLinks,
         'nsfw': nsfw,
         'spoiler': spoiler,
+        if (selectedFlair != null) 'flairId': selectedFlair,
+        if (scheduleDate != null)
+          'scheduleDate': DateFormat('yyyy-MM-dd').format(scheduleDate!),
+        // if (scheduleDate != null)
+        //   'scheduleTime': DateFormat('hh:mm:ss').format(scheduleDate!),
       };
     }
     if (postType == 1) {
-      print(video!.path);
-      print(lookupMimeType(video!.path));
-
       final mimeType = lookupMimeType(video!.path);
 
-      print(video!.path.split('/').last);
       body = {
         'video': await MultipartFile.fromBytes(
             File(video!.path).readAsBytesSync(),
@@ -486,61 +491,83 @@ class AddPostCubit extends Cubit<AddPostState> {
         'title': title.text,
         'kind': 'video',
         'subreddit': subredditName,
-        'inSubreddit': true,
+        'inSubreddit': isSubreddit,
         'nsfw': nsfw,
         'spoiler': spoiler,
+        if (selectedFlair != null) 'flairId': selectedFlair,
+        if (scheduleDate != null)
+          'scheduleDate': DateFormat('yyyy-MM-dd').format(scheduleDate!),
       };
     } else if (postType == 2) {
       body = {
         'kind': postTypes[postType],
         'subreddit': subredditName,
-        'inSubreddit': true,
+        'inSubreddit': isSubreddit,
         'title': title.text,
         'content': {
-          'ops': markdownToDelta(optionalText.text),
+          'ops': jsonDecode(markdownToDelta(optionalText.text)),
         },
         'nsfw': nsfw,
         'spoiler': spoiler,
+        if (selectedFlair != null) 'flairId': selectedFlair,
+        if (scheduleDate != null)
+          'scheduleDate': DateFormat('yyyy-MM-dd').format(scheduleDate!),
       };
     } else if (postType == 3) {
       body = {
         'kind': postTypes[postType],
         'subreddit': subredditName,
-        'inSubreddit': true,
+        'inSubreddit': isSubreddit,
         'title': title.text,
         'link': link.text,
         'nsfw': nsfw,
         'spoiler': spoiler,
+        if (selectedFlair != null) 'flairId': selectedFlair,
+        if (scheduleDate != null)
+          'scheduleDate': DateFormat('yyyy-MM-dd').format(scheduleDate!),
       };
     } else if (postType == 5) {
       body = {
         'kind': postTypes[postType],
         'subreddit': subredditName,
-        'inSubreddit': true,
+        'inSubreddit': isSubreddit,
         'title': title.text,
         'nsfw': nsfw,
         'spoiler': spoiler,
+        if (selectedFlair != null) 'flairId': selectedFlair,
+        if (scheduleDate != null)
+          'scheduleDate': DateFormat('yyyy-MM-dd').format(scheduleDate!),
       };
     }
+
     FormData formData = FormData.fromMap(body);
-    print('Toke : ${CacheHelper.getData(key: 'token')}');
 
     await DioHelper.postData(
             path: submitPost,
+            onSendProgress: ((postType == 0 || postType == 1))
+                ? ((count, total) {
+                    showProgress(context, count, total);
+                  })
+                : null,
             isFormdata: (postType == 0 || postType == 1),
             data: formData,
             sentToken: CacheHelper.getData(key: 'token'))
         .then((value) {
       print(value);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            backgroundColor: ColorManager.eggshellWhite,
-            content: Text('Post success')),
-      );
-      if (value.statusCode == 200) {
+
+      if (value.statusCode == 201) {
         print('Post success');
-        Navigator.of(context)
-            .pushReplacementNamed(HomeScreenForMobile.routeName);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              backgroundColor: ColorManager.eggshellWhite,
+              content: Text('Post success')),
+        );
+        Navigator.pushAndRemoveUntil(
+          navigatorKey.currentContext!,
+          MaterialPageRoute(
+              builder: (BuildContext context) => HomeScreenForMobile()),
+          ModalRoute.withName('/'),
+        );
       } else if (value.statusCode == 400) {
         print(value);
       } else if (value.statusCode == 401) {
@@ -551,9 +578,10 @@ class AddPostCubit extends Cubit<AddPostState> {
         print('Server Error');
       }
     }).catchError((error) {
-      print('The errorrr isss :::::: ${error.toString()}');
+      ScaffoldMessenger.of(context).showSnackBar(
+          responseSnackBar(message: 'An Error Please Try Again', error: true));
     });
-    emit(PostCreated());
+    // emit(PostCreated());
   }
 
   void subredditSearch(String subredditName) {
@@ -568,13 +596,9 @@ class AddPostCubit extends Cubit<AddPostState> {
       }).then((value) {
         if (value.statusCode == 200) {
           subredditsList = SubredditsSearchListModel.fromJson(value.data);
-          print('List');
-          print(subredditsList!.children);
           emit(SubredditSearch(isLoaded: true));
         }
-      }).catchError((error) {
-        print('Error in Search ==> $error');
-      });
+      }).catchError((error) {});
     }
   }
 
@@ -623,6 +647,7 @@ class AddPostCubit extends Cubit<AddPostState> {
                         if (isPop) {
                           title.text = '';
                           subredditName = null;
+                          isSubreddit = true;
                           changePostType(postTypeIndex: 2);
 
                           navigator.pop();
@@ -649,6 +674,7 @@ class AddPostCubit extends Cubit<AddPostState> {
     } else if (isPop) {
       title.text = '';
       subredditName = null;
+      isSubreddit = true;
       changePostType(postTypeIndex: 2);
 
       navigator.pop();
@@ -664,5 +690,41 @@ class AddPostCubit extends Cubit<AddPostState> {
       }
       changePostType(postTypeIndex: index);
     }
+  }
+
+  showProgress(BuildContext context, int count, int total) {
+    return showDialog(
+        context: context,
+        builder: ((context) {
+          return AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                LinearProgressIndicator(
+                  backgroundColor: ColorManager.white,
+                  valueColor:
+                      const AlwaysStoppedAnimation<Color>(ColorManager.blue),
+                  color: ColorManager.white,
+                  value: count.toDouble() / total.toDouble(),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Text(
+                    'Uploading : ${((count.toDouble() / total.toDouble()) * 100).toStringAsFixed(2)}')
+              ],
+            ),
+          );
+        }));
+  }
+
+  Future<void> getSubredditFlair() async {
+    await DioHelper.getData(
+        path: '/r/$subredditName/about/post-flairs',
+        query: {'subreddit': subredditName}).then((value) {
+      if (value.statusCode == 200) {
+        flairs = SubredditFlairModel.fromJson(value.data);
+      }
+    }).catchError((error) {});
   }
 }

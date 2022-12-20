@@ -3,6 +3,7 @@
 /// this is a DioHelper which is a class used to connect us to the backend
 /// and deal with the server
 import 'package:dio/dio.dart';
+import 'package:reddit/shared/local/shared_preferences.dart';
 import '../constants/constants.dart';
 import 'constant_end_points.dart';
 
@@ -29,7 +30,6 @@ class DioHelper {
         /// I want it to wait 10 seconds before ending
         // connectTimeout: 10 * 1000,
 
-        // /// time waited to receive something from the server
         // receiveTimeout: 20 * 1000,
 
         /// this is a map of headers
@@ -53,6 +53,7 @@ class DioHelper {
     Map<String, dynamic>? query,
     String? sentToken,
     bool isFormdata = false,
+    Function(int, int)? onSendProgress,
 
     /// additional query
   }) async {
@@ -66,12 +67,12 @@ class DioHelper {
       },
     );
 
-    return await dio.post(
-      path,
-      data: data,
-      options: options,
-      queryParameters: query,
-    );
+    return await dio.post(path,
+        data: data,
+        options: options,
+        queryParameters: query,
+        onReceiveProgress: onSendProgress,
+        onSendProgress: onSendProgress);
   }
 
   /// this is a function used to send put request with certain body to replace
@@ -82,12 +83,14 @@ class DioHelper {
 
     /// which is the content of the JSON
     Map<String, dynamic>? query,
+    String? sentToken,
 
     /// additional query
   }) async {
+    sentToken ??= CacheHelper.getData(key: 'token');
     var options = Options(
       headers: {
-        'Authorization': 'Bearer ${token ?? ''}',
+        'Authorization': 'Bearer ${sentToken ?? ''}',
         'Content-Type': 'application/json; charset=utf-8'
       },
     );
@@ -137,7 +140,6 @@ class DioHelper {
     required String path,
   }) async {
     Options options;
-
     options = Options(
       headers: {
         'Authorization': 'Bearer $token',

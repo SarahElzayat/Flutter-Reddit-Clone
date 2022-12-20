@@ -8,6 +8,7 @@ import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/moderation_components/modtools_components.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
+import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class Topics extends StatefulWidget {
@@ -21,7 +22,6 @@ class Topics extends StatefulWidget {
 class _TopicsState extends State<Topics> {
   bool isChanged = false;
   bool? chosen = false;
-  List<dynamic> topics = [];
 
   List<bool?> choices = [
     false,
@@ -81,8 +81,6 @@ class _TopicsState extends State<Topics> {
     false,
   ];
 
-  _enabledButton() {}
-
   @override
   void initState() {
     super.initState();
@@ -93,13 +91,11 @@ class _TopicsState extends State<Topics> {
   Widget build(BuildContext context) {
     final ModerationCubit cubit = ModerationCubit.get(context);
     return BlocConsumer<ModerationCubit, ModerationState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
-          appBar:
-              moderationAppBar(context, 'Topics', _enabledButton(), isChanged),
+          appBar: moderationAppBar(context, 'Topics',
+              () => cubit.addCommunityTopics(context), cubit.topicChanged),
           body: Column(
             children: [
               Theme(
@@ -112,38 +108,40 @@ class _TopicsState extends State<Topics> {
                             (states) => Colors.transparent))),
                 child: Expanded(
                   child: SizedBox(
-                    height: 100.h,
-                    child: (cubit.topics.isNotEmpty)
-                        ? ListView.builder(
-                            itemCount: cubit.topics.length,
-                            itemBuilder: (BuildContext context, int index) =>
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: CheckboxListTile(
-                                    secondary: const Icon(Icons.speaker),
-                                    value: choices[index],
-                                    onChanged: (choice) {
-                                      setState(() {
-                                        choices[index] = choice;
-                                      });
-                                    },
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(50),
-                                        side: BorderSide(
-                                            color: (choices[index] == true)
-                                                ? ColorManager.blue
-                                                : ColorManager.lightGrey,
-                                            width: 0.8)),
-                                    tileColor: ColorManager.darkGrey,
-                                    title: Text(
-                                      cubit.topics[index].topicName,
-                                      style: const TextStyle(
-                                          color: ColorManager.eggshellWhite),
-                                    ),
+                      height: 100.h,
+                      child: ListView.builder(
+                          itemCount: topicsTitles.length,
+                          itemBuilder: (BuildContext context, int index) =>
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: CheckboxListTile(
+                                  secondary: const Icon(Icons.speaker),
+                                  value: choices[index],
+                                  onChanged: (choice) {
+                                    setState(() {
+                                      cubit.selectedTopic = topicsTitles[index];
+                                      cubit.topicChanged = true;
+                                      choices = choices
+                                          .map((value) => false)
+                                          .toList();
+                                      choices[index] = choice;
+                                    });
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50),
+                                      side: BorderSide(
+                                          color: (choices[index] == true)
+                                              ? ColorManager.blue
+                                              : ColorManager.lightGrey,
+                                          width: 0.8)),
+                                  tileColor: ColorManager.darkGrey,
+                                  title: Text(
+                                    topicsTitles[index],
+                                    style: const TextStyle(
+                                        color: ColorManager.eggshellWhite),
                                   ),
-                                ))
-                        : const Center(child: Text('No Available Topics')),
-                  ),
+                                ),
+                              ))),
                 ),
               )
             ],

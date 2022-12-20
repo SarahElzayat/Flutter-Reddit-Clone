@@ -5,6 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:logger/logger.dart';
 import 'package:reddit/components/snack_bar.dart';
+import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
+import 'package:reddit/data/post_model/approve.dart';
+import 'package:reddit/data/post_model/remove.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../components/bottom_sheet.dart';
@@ -53,11 +56,14 @@ String getPlainText(Map<String, dynamic>? body) {
   return doc.toPlainText();
 }
 
-CircleAvatar subredditAvatar({small = false}) {
+CircleAvatar subredditAvatar({small = false, required String imageUrl}) {
   return CircleAvatar(
-      radius: small ? min(2.w, 15) : min(5.5.w, 30),
-      backgroundImage: null // const NetworkImage(unknownAvatar),
-      );
+    radius: small ? min(2.w, 15) : min(5.5.w, 30),
+    backgroundImage: NetworkImage(
+      '$baseUrl/$imageUrl',
+    ),
+    onBackgroundImageError: (exception, stackTrace) {},
+  );
 }
 
 Widget commentSortRow(BuildContext context) {
@@ -137,7 +143,8 @@ Widget commentSortRow(BuildContext context) {
   );
 }
 
-Widget singleRow({
+Widget singleRow(
+  context, {
   bool sub = false,
   bool showIcon = false,
   bool showDots = true,
@@ -146,16 +153,29 @@ Widget singleRow({
 }) {
   return Row(
     children: [
-      if (showIcon) subredditAvatar(small: true),
+      if (showIcon)
+        subredditAvatar(
+            small: true,
+            imageUrl:
+                PostAndCommentActionsCubit.get(context).subreddit?.picture ??
+                    PostAndCommentActionsCubit.get(context).user?.picture ??
+                    ''),
       if (showIcon)
         SizedBox(
           width: min(5.w, 0.2.dp),
         ),
-      Text(
-        '${sub ? 'r' : 'u'}/${post.postedBy} • ',
-        style: const TextStyle(
-          color: ColorManager.greyColor,
-          fontSize: 15,
+      InkWell(
+        onTap: () {
+          // print('Hello Hello Hello Hello ');
+          UserProfileCubit.get(context)
+              .showPopupUserWidget(context, post.postedBy!);
+        },
+        child: Text(
+          '${sub ? 'r' : 'u'}/${post.postedBy} • ',
+          style: const TextStyle(
+            color: ColorManager.greyColor,
+            fontSize: 15,
+          ),
         ),
       ),
       Text(
@@ -273,7 +293,9 @@ void handleLock(
 }
 
 void handleSticky(
-    {required VoidCallback onSuccess, required VoidCallback onError, post}) {
+    {required VoidCallback onSuccess,
+    required VoidCallback onError,
+    required PostModel post}) {
   //bool pin = !post.sticky
   final stickUnstickPost = PinPostModel(id: post.id, pin: false);
 
