@@ -1,9 +1,13 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meta/meta.dart';
+import 'package:reddit/components/button.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/data/settings/settings_models/user_settings.dart';
 import 'package:reddit/data/user_profile.dart/about_user_model.dart';
@@ -13,6 +17,8 @@ import 'package:reddit/screens/user_profile/user_profile_screen.dart';
 import '../../../constants/constants.dart';
 import '../../../data/post_model/post_model.dart';
 import '../../../networks/constant_end_points.dart';
+import '../../../screens/moderation/user_management_screens/invite_moderator.dart';
+import '../../../screens/moderation/user_management_screens/moderators.dart';
 
 part 'user_profile_state.dart';
 
@@ -186,7 +192,9 @@ class UserProfileCubit extends Cubit<UserProfileState> {
                     ],
                   )),
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    blockUser(context);
+                  },
                   child: Row(
                     children: const [
                       Icon(Icons.block_flipped),
@@ -194,7 +202,10 @@ class UserProfileCubit extends Cubit<UserProfileState> {
                     ],
                   )),
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: ((context) => Moderators())));
+                  },
                   child: Row(
                     children: const [
                       Icon(Icons.mail_outline_outlined),
@@ -204,5 +215,76 @@ class UserProfileCubit extends Cubit<UserProfileState> {
             ]),
           );
         }));
+  }
+
+  void blockUser(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: ((context) => AlertDialog(
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Block u/${userData!.displayName}',
+                      style: TextStyle(fontSize: 20)),
+                  SizedBox(
+                    height: 7,
+                  ),
+                  Text(
+                    'They won\'t be able to contact you or view your profile, posts, or commentst',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                  SizedBox(
+                    height: 7,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Button(
+                        buttonHeight: 30,
+                        buttonWidth: MediaQuery.of(context).size.width * 0.35,
+                        onPressed: () async {
+                          await DioHelper.postData(
+                            path: '/block-user',
+                            data: {
+                              'block': true,
+                              'username': username,
+                            },
+                          ).then((value) {
+                            print('Blocked');
+                            Navigator.of(context).pop();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                responseSnackBar(
+                                    message:
+                                        'The author of this post has been blocked',
+                                    error: false));
+                          }).catchError((error) {
+                            error = error as DioError;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                responseSnackBar(
+                                    message: 'An Error', error: true));
+                          });
+                        },
+                        text: 'Block account',
+                        backgroundColor: ColorManager.red,
+                        splashColor: Color.fromARGB(100, 0, 0, 0),
+                        textColor: ColorManager.white,
+                      ),
+                      Button(
+                        buttonHeight: 30,
+                        buttonWidth: MediaQuery.of(context).size.width * 0.25,
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        text: 'Cancel',
+                        backgroundColor: Colors.transparent,
+                        splashColor: Color.fromARGB(100, 0, 0, 0),
+                        textColor: ColorManager.eggshellWhite,
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )));
   }
 }
