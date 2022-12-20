@@ -52,9 +52,7 @@ class PostScreen extends StatelessWidget {
         BlocProvider(
           create: (context) => PostScreenCubit(
             post: post,
-          )
-            ..getCommentsOfPost(limit: 10)
-            ..getPostDetails(),
+          )..getCommentsOfPost(limit: 10),
         ),
       ],
       child: Scaffold(

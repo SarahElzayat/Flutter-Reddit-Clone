@@ -26,7 +26,7 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
   void connectToGoogle(ctx) {}
 
   Future<void> blockUser(context, PagingController pagingController) async {
-    final userToBeBlocked = BlockModel(username: 'saraah', block: true);
+    final userToBeBlocked = BlockModel(username: 'abdelazizSalah', block: true);
     await DioHelper.postData(
       path: block,
       data: userToBeBlocked.toJson(),
@@ -85,12 +85,20 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
                 blockedUsers, response.data['after'] as String);
           }
         }
-      }).catchError((error) {
-        error = error as DioError;
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(error.message.toString())));
-      });
-    }
+        pagingController.appendLastPage(blockedUsers);
+
+        // if (response.data['after'] as String == '') {
+        //   pagingController.appendLastPage(blockedUsers);
+        // } else {
+        //   pagingController.appendPage(
+        //       blockedUsers, response.data['after'] as String);
+        // }
+      }
+    }).catchError((error) {
+      error = error as DioError;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(error.message.toString())));
+    });
 
     emit(UnBlockState(true));
   }

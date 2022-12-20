@@ -174,8 +174,8 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
       }
       emit(FollowedChangedState());
     }).catchError((error) {
-      logger.e(error.toString());
       error = error as DioError;
+      logger.e(error.response?.data);
       emit(OpError(error: error.response?.data['error'] ?? ''));
     });
   }

@@ -50,6 +50,7 @@ class Comment extends StatefulWidget {
 }
 
 class _CommentState extends State<Comment> {
+  bool isCompressed = false;
   QuillController? _controller;
   final FocusNode _focusNode = FocusNode();
   QuillController getController() {
@@ -156,13 +157,13 @@ class _CommentState extends State<Comment> {
       highlightColor: Colors.transparent,
       onLongPress: () {
         setState(() {
-          widget.comment.isCollapsed = !widget.comment.isCollapsed;
+          isCompressed = !isCompressed;
         });
       },
       onTap: () {
-        if (widget.comment.isCollapsed) {
+        if (isCompressed) {
           setState(() {
-            widget.comment.isCollapsed = !widget.comment.isCollapsed;
+            isCompressed = !isCompressed;
           });
         }
       },
@@ -187,10 +188,10 @@ class _CommentState extends State<Comment> {
 
         // margin: EdgeInsets.only(left: widget.level * 10.0),
         child: ConditionalBuilder(
-          condition: widget.comment.isCollapsed,
+          condition: isCompressed,
           builder: (context) {
             return commentAsRow(
-                comment: widget.comment,
+                post: widget.comment,
                 showContent: true,
                 content:
                     _controller!.document.toPlainText().replaceAll('\\n', ''));
@@ -199,7 +200,7 @@ class _CommentState extends State<Comment> {
             return Column(
               children: [
                 commentAsRow(
-                  comment: widget.comment,
+                  post: widget.comment,
                   showDots: false,
                 ),
                 quillEditor,
@@ -307,7 +308,7 @@ class _CommentState extends State<Comment> {
     bool showDots = true,
     bool showContent = false,
     String content = '',
-    required CommentModel comment,
+    required CommentModel post,
   }) {
     return BlocBuilder<PostAndCommentActionsCubit, PostActionsState>(
       builder: (context, state) {
@@ -381,7 +382,7 @@ class _CommentState extends State<Comment> {
         child: Column(
           children: [
             commentAsRow(
-              comment: widget.comment,
+              post: widget.comment,
               showDots: false,
             ),
             quillEditor,
