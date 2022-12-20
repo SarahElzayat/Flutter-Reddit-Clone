@@ -78,8 +78,8 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       AppCubit.get(context).getHomePosts();
       AppCubit.get(context).getUsername();
-      AppCubit.get(context).getYourCommunities();
-      AppCubit.get(context).getYourModerating();
+      // AppCubit.get(context).getYourCommunities();
+      // AppCubit.get(context).getYourModerating();
       AppCubit.get(context).getUserProfilePicture();
     });
   }
@@ -88,18 +88,15 @@ class _HomeScreenState extends State<HomeScreen> {
   /// loads necessary data from backend
   @override
   void initState() {
-
     _scrollController.addListener(_scrollListener);
     AppCubit.get(context).getHomePosts();
     AppCubit.get(context).getUsername();
-    AppCubit.get(context).getYourCommunities();
-    AppCubit.get(context).getYourModerating();
+    // AppCubit.get(context).getYourCommunities();
+    // AppCubit.get(context).getYourModerating();
     AppCubit.get(context).getUserProfilePicture();
 
     super.initState();
   }
-
-
 
   @override
   Widget build(BuildContext context) {

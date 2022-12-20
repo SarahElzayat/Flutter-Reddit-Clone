@@ -4,7 +4,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/settings/settings_models/user_settings.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/continue_sign_up_for_mobile.dart';
+
 import 'package:reddit/shared/local/shared_preferences.dart';
 
 import '../../../components/default_text_field.dart';
@@ -73,9 +76,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
         CacheHelper.putData(key: 'username', value: value.data['username']);
         UserSettingsModel.fromJson(value.data);
         UserSettingsModel.cacheUserSettings();
-        // navigating to the main screen
+        token = CacheHelper.getData(key: 'token');
+
+        // navigating to the interests screen
         Navigator.of(context)
-            .pushReplacementNamed(HomeScreenForMobile.routeName);
+            .pushReplacementNamed(ContinueSignUpForMobile.routeName);
       }
     }).catchError((error) {
       // casting the error as a dio error to be able to use its content

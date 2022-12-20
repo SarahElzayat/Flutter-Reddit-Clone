@@ -48,7 +48,6 @@ class Comment extends StatefulWidget {
 }
 
 class _CommentState extends State<Comment> {
-  bool isCompressed = false;
   QuillController? _controller;
   final FocusNode _focusNode = FocusNode();
   QuillController getController() {
@@ -155,13 +154,13 @@ class _CommentState extends State<Comment> {
       highlightColor: Colors.transparent,
       onLongPress: () {
         setState(() {
-          isCompressed = !isCompressed;
+          widget.comment.isCollapsed = !widget.comment.isCollapsed;
         });
       },
       onTap: () {
-        if (isCompressed) {
+        if (widget.comment.isCollapsed) {
           setState(() {
-            isCompressed = !isCompressed;
+            widget.comment.isCollapsed = !widget.comment.isCollapsed;
           });
         }
       },
@@ -186,10 +185,10 @@ class _CommentState extends State<Comment> {
 
         // margin: EdgeInsets.only(left: widget.level * 10.0),
         child: ConditionalBuilder(
-          condition: isCompressed,
+          condition: widget.comment.isCollapsed,
           builder: (context) {
             return commentAsRow(
-                post: widget.comment,
+                comment: widget.comment,
                 showContent: true,
                 content:
                     _controller!.document.toPlainText().replaceAll('\\n', ''));
@@ -198,7 +197,7 @@ class _CommentState extends State<Comment> {
             return Column(
               children: [
                 commentAsRow(
-                  post: widget.comment,
+                  comment: widget.comment,
                   showDots: false,
                 ),
                 quillEditor,
@@ -302,7 +301,7 @@ class _CommentState extends State<Comment> {
     bool showDots = true,
     bool showContent = false,
     String content = '',
-    required CommentModel post,
+    required CommentModel comment,
   }) {
     return Row(
       children: [
@@ -311,14 +310,14 @@ class _CommentState extends State<Comment> {
           width: min(5.w, 10),
         ),
         Text(
-          '${'u'}/${post.commentedBy} ',
+          '${'u'}/${comment.commentedBy} ',
           style: const TextStyle(
             color: ColorManager.greyColor,
             fontSize: 15,
           ),
         ),
         Text(
-          '• ${timeago.format(DateTime.tryParse(post.editTime ?? '') ?? DateTime.now(), locale: 'en_short')}',
+          '• ${timeago.format(DateTime.tryParse(comment.editTime ?? '') ?? DateTime.now(), locale: 'en_short')}',
           style: const TextStyle(
             color: ColorManager.greyColor,
             fontSize: 15,
@@ -360,7 +359,7 @@ class _CommentState extends State<Comment> {
         child: Column(
           children: [
             commentAsRow(
-              post: widget.comment,
+              comment: widget.comment,
               showDots: false,
             ),
             quillEditor,

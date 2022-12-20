@@ -43,7 +43,6 @@ class SearchField extends StatefulWidget {
 }
 
 class _SearchFieldState extends State<SearchField> {
-  
   ///@param[_focus] the focus node of the text field
   final FocusNode _focus = FocusNode();
 
@@ -63,7 +62,6 @@ class _SearchFieldState extends State<SearchField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: 5,
       decoration: ShapeDecoration(
         shape: CacheHelper.getData(key: 'isAndroid')!
             ? RoundedRectangleBorder(
@@ -71,7 +69,7 @@ class _SearchFieldState extends State<SearchField> {
               )
             : const StadiumBorder(),
         color: (widget.isSubreddit)
-            ? Color.fromARGB(120, 0, 0, 0)
+            ? const Color.fromARGB(120, 0, 0, 0)
             : ColorManager.darkGrey,
       ),
       child: TextField(
@@ -96,8 +94,10 @@ class _SearchFieldState extends State<SearchField> {
         onChanged: (value) => setState(() {
           (widget.textEditingController.text);
         }),
+        
         controller: widget.textEditingController,
-        style: const TextStyle(color: ColorManager.eggshellWhite, fontSize: 18),
+        style:
+            const TextStyle(color: ColorManager.eggshellWhite, fontSize: 18),
         decoration: InputDecoration(
           hintText: 'Search Reddit',
           border: InputBorder.none,

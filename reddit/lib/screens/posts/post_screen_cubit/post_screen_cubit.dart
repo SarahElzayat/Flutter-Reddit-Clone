@@ -161,4 +161,32 @@ class PostScreenCubit extends Cubit<PostScreenState> {
       emit(CommentsError('error in show more'));
     });
   }
+
+  /// get post details
+  Future<void> getPostDetails() async {
+    emit(PostLoading());
+    DioHelper.getData(
+      path: '/post-details',
+      query: {
+        'id': post.id,
+      },
+    ).then((value) {
+      post.overrideWithOther(PostModel.fromJson(value.data));
+      emit(PostLoaded());
+    }).catchError((error) {
+      logger.e('error in post details $error');
+      emit(PostError());
+    });
+  }
+
+  /// deletes comment from the post
+  /// @param [commentId] the id of the comment to delete
+  void deleteComment(String commentId) {
+    emit(CommentsLoading());
+    
+    allCommentsMap.remove(commentId);
+    comments.removeWhere((element) => element.id == commentId);
+
+    emit(CommentsLoaded());
+  }
 }

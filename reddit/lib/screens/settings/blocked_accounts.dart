@@ -27,6 +27,9 @@ class _BlockedAccountsState extends State<BlockedAccounts> {
     screenController = PagingController(
       firstPageKey: null,
     );
+    for (int i = 0; i < 5; i++) {
+      SettingsCubit.get(context).blockUser(context, screenController);
+    }
 
     screenController.addPageRequestListener((pageKey) {
       SettingsCubit.get(context)

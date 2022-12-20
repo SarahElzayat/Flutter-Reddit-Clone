@@ -191,11 +191,13 @@ class _AddCommentScreenState extends State<AddCommentScreen> {
   QuillController getController() {
     Document doc;
     try {
+      logger.wtf(widget.post.content ?? {'ops': []});
       doc = Document.fromJson((widget.post.content ?? {'ops': []})['ops']);
     } catch (e) {
       logger.wtf(e);
       doc = Document();
     }
+    // doc = Document();
 
     return QuillController(
       document: doc,
