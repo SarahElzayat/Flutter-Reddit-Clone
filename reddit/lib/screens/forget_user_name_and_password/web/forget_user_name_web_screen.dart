@@ -14,11 +14,19 @@ import '../../../data/sign_in_And_sign_up_models/validators.dart';
 import '../../sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
 
 /// this screen is built to show the UI in case that the user is using the app through the web
-class ForgetUserNameWebScreen extends StatelessWidget {
-  ForgetUserNameWebScreen({super.key});
+class ForgetUserNameWebScreen extends StatefulWidget {
+  const ForgetUserNameWebScreen({super.key});
 
   static const routeName = '/forget_username_web_screen_route';
+
+  @override
+  State<ForgetUserNameWebScreen> createState() =>
+      _ForgetUserNameWebScreenState();
+}
+
+class _ForgetUserNameWebScreenState extends State<ForgetUserNameWebScreen> {
   TextEditingController emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);

@@ -2,14 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../../components/snack_bar.dart';
 import '../../constants/constants.dart';
-import '../../cubit/user_profile/cubit/user_profile_cubit.dart';
 import '../../data/post_model/post_model.dart';
 import '../../networks/constant_end_points.dart';
 import '../../networks/dio_helper.dart';
 import '../../screens/posts/post_screen.dart';
 import '../../components/bottom_sheet.dart';
 import '../../data/notifications/notification_model.dart';
-import '../../screens/inbox/single_notification_screen.dart';
 import '../../components/helpers/color_manager.dart';
 
 class NotificationWidget extends StatefulWidget {
@@ -44,7 +42,6 @@ class _NotificationWidgetState extends State<NotificationWidget> {
       error = error as DioError;
       ScaffoldMessenger.of(context)
           .showSnackBar(responseSnackBar(message: '${error.response} 😔'));
-      print(error.response);
     });
   }
 
@@ -60,12 +57,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
               post: PostModel(id: widget.notification.postId!),
             );
           }));
-        } else if (widget.notification.type == 'Follow') {
-          // UserProfileCubit.get(context).showPopupUserWidget(
-          //     context, widget.notification.followingUsername!);
-        }
-        // Navigator.of(context).pushNamed(SignleNotificationScreen.routeName);
-        
+        } else if (widget.notification.type == 'Follow') {}
       },
       contentPadding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
       horizontalTitleGap: 10,
@@ -133,7 +125,6 @@ class _NotificationWidgetState extends State<NotificationWidget> {
             if (setItem == 'Hide this notification') {
               hideTheNotifcation();
             } else if ('Disable updates from this community' == setItem) {
-              /// TODO apply the logic of disable updates here.
               // does'nt have an endpoint
             } else {
               /// Turn of this notification.

@@ -24,7 +24,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     scroller.dispose();
     super.dispose();
   }

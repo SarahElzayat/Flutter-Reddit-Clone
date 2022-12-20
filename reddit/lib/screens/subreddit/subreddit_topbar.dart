@@ -5,9 +5,7 @@ import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 
 import '../../components/app_bar_components.dart';
 import '../../components/search_field.dart';
-// import '../../cubit/app_cubit.dart';
 import '../../networks/constant_end_points.dart';
-import '../../widgets/subreddit/subreddit_options.dart';
 import '../search/search_results_main_screen.dart';
 
 class SubredditAppBar extends SliverPersistentHeaderDelegate {

@@ -4,7 +4,6 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/messages/messages_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
@@ -13,9 +12,9 @@ import '../../components/bottom_sheet.dart';
 import '../../components/helpers/color_manager.dart';
 
 class MessageWidget extends StatefulWidget {
-  late final MessageChildren myMessage;
+  final MessageChildren myMessage;
 
-  MessageWidget({
+  const MessageWidget({
     super.key,
     required this.myMessage,
   });
@@ -33,17 +32,13 @@ class _MessageWidgetState extends State<MessageWidget> {
       isOpened = true;
     });
 
-    print('Marking message as read');
     await DioHelper.patchData(
         // token: token,
         path: markMessageAsRead,
         data: {'id': widget.myMessage.id}).then((response) {
-      if (response.statusCode == 200) {
-        print('Message marked as read successfully');
-      }
+      if (response.statusCode == 200) {}
     }).catchError((error) {
       error = error as DioError;
-      print(error.response!.data);
     });
   }
 

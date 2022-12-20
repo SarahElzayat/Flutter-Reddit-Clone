@@ -67,7 +67,6 @@ class _ContinueSignUpForMobileState extends State<ContinueSignUpForMobile> {
                 onPressed: () {
                   setState(() {
                     userGender = gender;
-                    print(userGender);
                     _genderSelected = true;
                   });
                 },
@@ -113,10 +112,8 @@ class _ContinueSignUpForMobileState extends State<ContinueSignUpForMobile> {
                       onPressed: () {
                         if (colors[interest] == ColorManager.upvoteRed) {
                           setState(() {
-                            print(colors[interest]);
                             numOfInterests--;
                             colors[interest] = ColorManager.grey;
-                            print(numOfInterests);
                           });
                         } else if (numOfInterests < 3) {
                           setState(() {
@@ -170,7 +167,6 @@ class _ContinueSignUpForMobileState extends State<ContinueSignUpForMobile> {
 
   /// this is a utilty function used to set the user gender during signup.
   void _setGender() {
-    print('Setting the gender');
     SettingsCubit.get(context)
         .changeDropValue(userGender, 'changeGender', context);
   }

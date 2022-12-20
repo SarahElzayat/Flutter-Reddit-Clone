@@ -19,7 +19,6 @@ import '../../../networks/dio_helper.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/continue_button.dart';
 import '../../../widgets/sign_in_and_sign_up_widgets/continue_with_facebook_or_google.dart';
-import '../../main_screen.dart';
 import '../../to_go_screens/privacy_and_policy.dart';
 import '../../to_go_screens/user_agreement_screen.dart';
 import 'sign_in_screen.dart';

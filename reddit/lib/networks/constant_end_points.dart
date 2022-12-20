@@ -7,7 +7,7 @@ const portNumber = String.fromEnvironment('FLUTTER_PORT', defaultValue: '5000');
 
 const baseUrl = kReleaseMode
     ? 'https://www.read-it.live/api'
-    // ? 'http://www.read-it.live/api' TODO: wa3er aly ast5dm el fo2 34an samaa.
+    // ? 'http://www.read-it.live/api'
     : kIsWeb
         ? 'http://localhost:3000'
         // : 'http://10.0.2.2:3000'; // for mobile
@@ -33,6 +33,15 @@ const blockedAccounts = '/blocked-users';
 const accountSettings =
     '/account-settings'; // this end point is used in multi requests.
 const block = '/block-user';
+
+// messages and inbox
+const replyToMessage = '/message/compose';
+const readAllMsgs = '/read-all-msgs';
+
+// notifications
+const notificationPoint = '/notifications';
+const markAllNotificationsAsRead = '/mark-all-notifications-read';
+const hideNotification = '/hide-notification-read';
 
 // messages and inbox
 const messagesPoint = '/message/inbox';
@@ -93,12 +102,3 @@ const subreddit = '/r';
 const makeFavorite = '/make-favorite';
 const removeFavorite = '/remove-favorite';
 const socialLink = '/social-link';
-
-// messages and inbox
-const replyToMessage = '/message/compose';
-const readAllMsgs = '/read-all-msgs';
-
-// notifications
-const notificationPoint = '/notifications';
-const markAllNotificationsAsRead = '/mark-all-notifications-read';
-const hideNotification = '/hide-notification-read';
