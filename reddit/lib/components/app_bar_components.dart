@@ -23,5 +23,9 @@ Widget avatar({image}) {
 /// @param [context] is the context of the screen that's required to navigate to
 Future<Object?> navigateToSearch(context) {
   return Navigator.push(
-      context, MaterialPageRoute(builder: (context) => const SearchScreen()));
+      context,
+      MaterialPageRoute(
+          builder: (context) => const SearchScreen(
+                isSubreddit: false,
+              )));
 }

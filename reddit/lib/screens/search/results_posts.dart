@@ -19,7 +19,6 @@ class ResultsPosts extends StatefulWidget {
 
 class _ResultsPostsState extends State<ResultsPosts> {
   final _scrollController = ScrollController();
-  // List<PostModel> posts = [];
   void _scrollListener() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
@@ -37,7 +36,7 @@ class _ResultsPostsState extends State<ResultsPosts> {
 
   @override
   Widget build(BuildContext context) {
-    final SearchCubit cubit = SearchCubit.get(context); //..getPosts();
+    final SearchCubit cubit = SearchCubit.get(context); 
     return BlocConsumer<SearchCubit, SearchState>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -64,8 +63,6 @@ class _ResultsPostsState extends State<ResultsPosts> {
                       upperRowType: cubit.posts[index].inYourSubreddit == null
                           ? ShowingOtions.onlyUser
                           : ShowingOtions.both,
-                      // TODO check this
-                      // upperRowType: ShowingOtions.onlyUser,
                       post: cubit.posts[index],
                       postView: PostView.classic),
                 ),

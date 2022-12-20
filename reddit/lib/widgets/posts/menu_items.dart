@@ -5,8 +5,6 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/snack_bar.dart';
-
-import 'package:reddit/constants/constants.dart';
 import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 
 import 'package:reddit/data/post_model/post_model.dart';

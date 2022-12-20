@@ -139,7 +139,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
             ],
           ),
 
-          //TODO make it a fucking reusable zeft
           bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             currentIndex: cubit.currentIndex,
@@ -195,7 +194,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       ),
                       const Spacer(),
 
-                      //TODO change the history view (card-classic)
                       TextButton(
                           onPressed: () => showModalBottomSheet(
                                 context: context,

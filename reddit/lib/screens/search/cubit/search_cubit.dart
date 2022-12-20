@@ -80,6 +80,7 @@ class SearchCubit extends Cubit<SearchState> {
     if (!loadMore) {
       posts.clear();
     }
+    logger.wtf('subreddit set name $subredditName');
 
     DioHelper.getData(
         path: subredditName.isNotEmpty ? '/$subredditName$search' : search,

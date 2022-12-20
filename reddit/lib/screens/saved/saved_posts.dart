@@ -63,8 +63,6 @@ class _SavedPostsScreenState extends State<SavedPostsScreen> {
                           cubit.savedPostsList[index].inYourSubreddit == null
                               ? ShowingOtions.onlyUser
                               : ShowingOtions.both,
-                      // TODO check this
-                      // upperRowType: ShowingOtions.onlyUser,
                       post: cubit.savedPostsList[index],
                       postView: PostView.classic),
                 ),
