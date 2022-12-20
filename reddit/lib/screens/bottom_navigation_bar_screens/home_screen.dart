@@ -11,6 +11,9 @@ import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/home_components/left_drawer.dart';
 import 'package:reddit/components/home_components/right_drawer.dart';
 import 'package:reddit/cubit/app_cubit/app_cubit.dart';
+import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
+import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
+import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_state.dart';
 import '../../components/home_app_bar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -127,26 +130,35 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  width: kIsWeb ? width * 0.5 : width,
-                  child: RefreshIndicator(
-                    color: ColorManager.blue,
-                    onRefresh: _onRefresh,
-                    child: ListView.builder(
-                      // physics: const NeverScrollableScrollPhysics(),
-                      // shrinkWrap: true,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      controller: _scrollController,
-                      scrollDirection: Axis.vertical,
-                      itemCount: cubit.homePosts.length,
-                      itemBuilder: (context, index) => Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 0, vertical: 5),
-                        child: cubit.homePosts[index],
+                BlocConsumer<PostNotifierCubit, PostNotifierState>(
+                  listener: (context, state) {
+                    if (state is PostDeleted) {
+                      AppCubit.get(context).deletePost(state.id);
+                    }
+                  },
+                  builder: (context, state) {
+                    return SizedBox(
+                      width: kIsWeb ? width * 0.5 : width,
+                      child: RefreshIndicator(
+                        color: ColorManager.blue,
+                        onRefresh: _onRefresh,
+                        child: ListView.builder(
+                          // physics: const NeverScrollableScrollPhysics(),
+                          // shrinkWrap: true,
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          controller: _scrollController,
+                          scrollDirection: Axis.vertical,
+                          itemCount: cubit.homePosts.length,
+                          itemBuilder: (context, index) => Container(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 5),
+                            child: cubit.homePosts[index],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
                 if (kIsWeb)
                   SizedBox(

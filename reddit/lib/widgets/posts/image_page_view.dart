@@ -14,7 +14,7 @@ import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'actions_cubit/post_comment_actions_state.dart';
-import 'post_lower_bar.dart';
+import 'post_lower_bar_without_votes.dart';
 import '../../data/post_model/post_model.dart';
 import 'votes_widget.dart';
 

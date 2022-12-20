@@ -106,8 +106,8 @@ class PostScreenCubit extends Cubit<PostScreenState> {
       });
       emit(CommentsLoaded());
     }).catchError((error) {
-      logger
-          .e('error in comments ${(error as DioError).response!.data['error']}');
+      logger.e(
+          'error in comments ${(error as DioError).response!.data['error']}');
       emit(CommentsError((error as DioError).response!.data['error']));
     });
   }
@@ -176,7 +176,7 @@ class PostScreenCubit extends Cubit<PostScreenState> {
       emit(PostLoaded());
     }).catchError((error) {
       error = error as DioError;
-      logger.e('error in post details ${error.response!.data['error']}}');
+      logger.e('error in post details ${error.response!.data}}');
       emit(PostError());
     });
   }

@@ -22,7 +22,7 @@ import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/functions/post_functions.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
-import 'package:reddit/widgets/posts/post_lower_bar.dart';
+import 'package:reddit/widgets/posts/post_lower_bar_without_votes.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tuple/tuple.dart';
@@ -170,8 +170,7 @@ class _PostWidgetState extends State<PostWidget> {
                                             PostView.withCommentsInSearch) {
                                           return 'commentBody';
                                         }
-                                        if (widget.post.kind == 'post' &&
-                                            !widget.isNested) {
+                                        if (widget.post.kind == 'post') {
                                           return 'postBody';
                                         }
                                         if (widget.post.kind == 'video') {

@@ -523,7 +523,7 @@ class AddPostCubit extends Cubit<AddPostState> {
       };
     }
     FormData formData = FormData.fromMap(body);
-    print('Toke : ${CacheHelper.getData(key: 'token')}');
+    print('Token : ${CacheHelper.getData(key: 'token')}');
 
     await DioHelper.postData(
             path: submitPost,
@@ -551,7 +551,7 @@ class AddPostCubit extends Cubit<AddPostState> {
         print('Server Error');
       }
     }).catchError((error) {
-      print('The errorrr isss :::::: ${error.toString()}');
+      print('The errorrr isss :::::: ${(error as DioError).response?.data}');
     });
     emit(PostCreated());
   }

@@ -165,7 +165,7 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
         'commentId': currentComment?.id,
       },
     ).then((value) {
-      logger.w('followed: ${post.followed}');
+      logger.d('followed: ${post.followed}');
       if (isPost) {
         post.followed = !post.followed!;
       } else {
@@ -317,4 +317,3 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
     }).catchError((error) {});
   }
 }
-
