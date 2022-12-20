@@ -1,4 +1,6 @@
 /// @author Haitham
+/// @date 3/11/2022
+/// this file contains all the constants used in the app.
 import 'package:flutter/material.dart';
 
 const bool isMobile = true;

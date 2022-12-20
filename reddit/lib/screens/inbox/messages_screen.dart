@@ -25,7 +25,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
         postTitle: 'The mod Snoosletter is Thankful for you This November',
         subredditName: 'u/ModNewsLetter',
         commentId: '234',
-        isRead: false,
+        isRead: true,
         isReceiverUser: false,
         isSenderUser: true,
         numOfComments: 22,

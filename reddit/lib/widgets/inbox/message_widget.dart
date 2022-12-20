@@ -2,12 +2,8 @@
 /// @date 20/12/2022
 /// This widget is used to display a single message in the inbox screen.
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/messages/messages_model.dart';
-import 'package:reddit/networks/constant_end_points.dart';
-import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/screens/inbox/single_message_screen.dart';
 import '../../components/bottom_sheet.dart';
 import '../../components/helpers/color_manager.dart';
@@ -26,21 +22,31 @@ class MessageWidget extends StatefulWidget {
 
 class _MessageWidgetState extends State<MessageWidget> {
   /// This variable is used to check if the message is opened or not.
-  bool isOpened = false;
 
+  late bool isOpened;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    isOpened = widget.myMessage.data!.isRead!;
+    super.initState();
+  }
+
+  /// This method is used to mark the message as read.
   void markAsReadMessage() async {
     setState(() {
       isOpened = true;
     });
 
-    await DioHelper.patchData(
-        // token: token,
-        path: markMessageAsRead,
-        data: {'id': widget.myMessage.id}).then((response) {
-      if (response.statusCode == 200) {}
-    }).catchError((error) {
-      error = error as DioError;
-    });
+    // this was handled by the backend automaticaly.
+    // await DioHelper.patchData(
+    //     // token: token,
+    //     path: markMessageAsRead,
+    //     data: {'id': widget.myMessage.id}).then((response) {
+    //   if (response.statusCode == 200) {}
+    // }).catchError((error) {
+    //   error = error as DioError;
+    // });
   }
 
   /// This method is used to open the message in a new screen.
@@ -48,8 +54,8 @@ class _MessageWidgetState extends State<MessageWidget> {
     // mark the message as read then navigate to the message screen.
     markAsReadMessage();
 
-    Navigator.of(context).pushNamed(SingleMessageScreen.routeName,
-        arguments: widget.myMessage.data!.text);
+    Navigator.of(context)
+        .pushNamed(SingleMessageScreen.routeName, arguments: widget.myMessage);
   }
 
   @override

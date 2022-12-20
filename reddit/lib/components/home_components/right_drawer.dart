@@ -2,7 +2,9 @@
 ///@description the right (end) drawer that's present through the whole application
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/data/settings/settings_models/user_settings.dart';
 import 'package:reddit/screens/history/history_screen_for_web.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
 import '../../screens/create_community_screen/create_community_screen.dart';
 import '../../screens/saved/saved_screen.dart';
 import '../../screens/settings/change_profile_picture_screen.dart';
@@ -188,9 +190,14 @@ class RightDrawer extends StatelessWidget {
                 isLeftDrawer: false),
             TextButton(
                 onPressed: () {
+                  // clearing all the user details.
                   CacheHelper.removeData(key: 'token');
+                  CacheHelper.removeData(key: 'username');
+                  UserSettingsModel.clearCachedSettings();
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (context) => const SignInScreen(),
+                    builder: (context) => kIsWeb
+                        ? const SignInForWebScreen()
+                        : const SignInScreen(),
                   ));
                 },
                 child: Row(

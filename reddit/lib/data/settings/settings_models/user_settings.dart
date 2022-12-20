@@ -22,6 +22,24 @@ class UserSettingsModel {
   static bool? newFollowerEmail;
   static bool? unsubscribeFromEmails;
 
+  static void clearCachedSettings() {
+    CacheHelper.putData(key: 'email', value: '');
+    CacheHelper.putData(key: 'googleEmail', value: '');
+    CacheHelper.putData(key: 'facebookEmail', value: '');
+    CacheHelper.putData(key: 'country', value: '');
+    CacheHelper.putData(key: 'gender', value: 'Male');
+    CacheHelper.putData(key: 'displayName', value: 'No Name');
+    CacheHelper.putData(key: 'about', value: 'No About');
+    CacheHelper.putData(key: 'havePassword', value: 'false');
+    CacheHelper.putData(key: 'hasVerifiedEmail', value: 'false');
+    CacheHelper.putData(key: 'nsfw', value: 'false');
+    CacheHelper.putData(key: 'allowToFollowYou', value: 'true');
+    CacheHelper.putData(key: 'adultContent', value: 'false');
+    CacheHelper.putData(key: 'autoplayMedia', value: 'true');
+    CacheHelper.putData(key: 'newFollowerEmail', value: 'true');
+    CacheHelper.putData(key: 'unsubscribeFromEmails', value: 'false');
+  }
+
   /// this is a utility function used to cache the user settings.
   /// if any of the returned was null I set it to empty string
   static void cacheUserSettings() {
