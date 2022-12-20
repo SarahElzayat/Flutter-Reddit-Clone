@@ -52,7 +52,7 @@ QueuesWidget queuesWidget(ModToolsSelectedItem selectedItem) {
 
 ///@param [context] context of the screen
 ///@param [title] title of the app bar
-///@param [enabledButton] function of the button in appbar when enabled
+///@param [onPressed] function of the button in appbar when enabled
 ///@param [isChanged] bool that checks if anything changed to enable or disable button
 moderationAppBar(context, title, onPressed, isChanged) => AppBar(
       elevation: 0,

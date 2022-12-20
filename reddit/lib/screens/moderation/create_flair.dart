@@ -19,11 +19,12 @@ class CreateFlair extends StatefulWidget {
 class _CreateFlairState extends State<CreateFlair> {
   bool edit = false;
   bool textColorPicker = false;
-  Color textColor = ColorManager.black;
+  String textColor = '#${Colors.black.value.toRadixString(16)}';
   final TextEditingController _controller = TextEditingController();
   bool colorButtonPressed = false;
   Color selectedColor = Colors.grey;
   int colorIndex = 0;
+  var colorHex = '';
   final List<Color> colors = const [
     Color(0xFFC987EA),
     Color(0xFF75A3F3),
@@ -44,8 +45,12 @@ class _CreateFlairState extends State<CreateFlair> {
           appBar: userManagementAppBar(
               context,
               'Add Flair',
-              () => cubit.addFlair(_controller.text, 'FFFFFFFF',
-                  (textColorPicker) ? 'FFFFFFFF' : '00000000'),
+              () => cubit.addFlair(
+                  _controller.text,
+                  colorHex,
+                  (textColorPicker)
+                      ? '#${Colors.white.value.toRadixString(16)}'
+                      : '#${Colors.black.value.toRadixString(16)}'),
               true),
           body: Center(
             child: Column(
@@ -122,7 +127,8 @@ class _CreateFlairState extends State<CreateFlair> {
                                     onTap: () {
                                       setState(() {
                                         selectedColor = colors[index];
-                                        colorIndex = index;
+                                        colorHex =
+                                            '#${selectedColor.value.toRadixString(16)}';
                                       });
                                     },
                                     child: Container(

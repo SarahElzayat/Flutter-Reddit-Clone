@@ -38,8 +38,8 @@ class CommunitySettings extends StatelessWidget {
                         buttonHeight: 5.h,
                         textColor: ColorManager.black,
                         splashColor: Colors.transparent,
-                        disabled: cubit.isChanged,
-                        isPressable: cubit.isChanged,
+                        disabled: cubit.descriptionChanged,
+                        isPressable: cubit.descriptionChanged,
                         backgroundColor: ColorManager.eggshellWhite,
                       ),
                     )
