@@ -35,7 +35,7 @@ class _CreateMessageScreenState extends State<CreateMessageScreen> {
       SendMessageModel msg = SendMessageModel(
         isReply: false,
         receiverUsername: userNameController.text,
-        senderUsername: CacheHelper.getData(key: 'username'),
+        // senderUsername: CacheHelper.getData(key: 'username'),
         subject: subjectController.text,
         text: messageController.text,
         subredditName: '',
