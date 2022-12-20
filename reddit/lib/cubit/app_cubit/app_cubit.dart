@@ -26,6 +26,7 @@ import '../../data/temp_data/tmp_data.dart';
 import '../../networks/constant_end_points.dart';
 import '../../networks/dio_helper.dart';
 import '../../screens/bottom_navigation_bar_screens/add_post_screen.dart';
+import '../../screens/comments/add_comment_screen.dart';
 import '../../screens/saved/saved_posts.dart';
 import '../../widgets/posts/post_widget.dart';
 
@@ -68,7 +69,7 @@ class AppCubit extends Cubit<AppState> {
 
   ///@param [homePosts] home posts
   List<Widget> homePosts = [];
-  String homePostsAfterId = '';
+  int homePostsAfterId = 0;
   String homePostsBeforeId = '';
 
   /// gets the posts of the home page
@@ -81,6 +82,8 @@ class AppCubit extends Cubit<AppState> {
       homePosts.clear();
     }
     int sort = CacheHelper.getData(key: 'SortHome');
+
+    logger.d(sort.toString());
     String path = '';
     if (HomeSort.best.index == sort) {
       path = homeBest;
@@ -93,34 +96,36 @@ class AppCubit extends Cubit<AppState> {
     } else if (HomeSort.trending.index == sort) {
       path = homeTrending;
     }
-
+    logger.w(path);
+    logger.w(homePostsAfterId);
+    logger.w(homePostsBeforeId);
+    // logger.w(path);
     DioHelper.getData(path: path, query: {
       'limit': limit,
-      'after': after ? homePostsAfterId : null,
-      'before': before ? homePostsBeforeId : null,
+      'after': after ? homePostsAfterId : 0,
+    
     }).then((value) {
+      logger.wtf(value.data['children'].length);
+
       if (value.statusCode == 200) {
         if (value.data['children'].length == 0) {
-          // //logger.wtf('Mafeesh tany');
+          logger.wtf(value.data);
 
           loadMore
               ? emit(NoMoreResultsToLoadState())
               : emit(ResultEmptyState());
           emit(LoadedResultsState());
         } else {
-          // //logger.wtf(value.data);
+          // logger.wtf(value.data);
           homePostsAfterId = value.data['after'];
-          homePostsBeforeId = value.data['before'];
-          // //logger.wtf(value.data['children'].length);
-          // //logger.wtf('before $homePostsBeforeId');
-          // //logger.wtf('after $homePostsAfterId');
+
           for (int i = 0; i < value.data['children'].length; i++) {
             homePosts.add(PostWidget(
                 post: PostModel.fromJson(value.data['children'][i]['data'])));
-            // //logger.e(i);
+            logger.e(i);
           }
         }
-        // //logger.wtf(value.data);
+        logger.wtf(homePosts.length);
         emit(LoadedResultsState());
       } else {
         emit(ErrorState());
@@ -591,7 +596,8 @@ class AppCubit extends Cubit<AppState> {
                   value.data['children'][i]['data']['comments'][j]));
               savedCommentsPostsList.add(PostModel.fromJson(
                   value.data['children'][i]['data']['post']));
-
+              savedCommentsPostsList[savedCommentsPostsList.length - 1].id =
+                  value.data['children'][i]['id'];
               //logger.e('tmmmmamaamammama');
               savedCommentsPostsList[savedCommentsPostsList.length - 1].id =
                   value.data['children'][i]['id'];
