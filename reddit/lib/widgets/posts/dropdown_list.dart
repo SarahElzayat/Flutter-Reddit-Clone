@@ -81,8 +81,10 @@ class DropDownList extends StatelessWidget {
 
     l.add((comment?.followed ?? false) ? MenuItems.unfollow : MenuItems.follow);
     l.insert(0, (comment?.saved ?? false) ? MenuItems.unsave : MenuItems.save);
-    if (!outsideScreen) {
+    if ((comment?.commentedBy != null) &&
+        comment?.commentedBy == CacheHelper.getData(key: 'username')) {
       l.add(MenuItems.edit);
+      l.add(MenuItems.delete);
     }
     return l;
   }

@@ -82,6 +82,7 @@ class PostScreen extends StatelessWidget {
           },
           builder: (context, state) {
             var screenCubit = PostScreenCubit.get(context);
+            bool locked = screenCubit.post.moderation?.lock ?? false;
 
             return Column(
               children: [
@@ -93,6 +94,13 @@ class PostScreen extends StatelessWidget {
                         if (state is CommentsLoadingMore) {
                           Logger().i('loading more comments');
                           screenCubit.getCommentsOfPost(after: true);
+                        }
+
+                        if (state is PostDeleted) {
+                          Navigator.of(context).pop();
+                        }
+                        if (state is CommentDeleted) {
+                          screenCubit.deleteComment(state.id);
                         }
                       },
                       builder: (context, state) {
@@ -112,36 +120,37 @@ class PostScreen extends StatelessWidget {
                   ),
                 ),
                 // a container that when tabbed opens the edit comment screen
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(
-                      builder: (context) => AddCommentScreen(
-                        post: post,
-                      ),
-                    ))
-                        .then((value) {
-                      if (value != null && value) {
-                        screenCubit.getCommentsOfPost();
-                      }
-                    });
-                  },
-                  child: Container(
-                    color: ColorManager.betterDarkGrey,
-                    height: 5.h,
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    child: Row(
-                      children: const [
-                        SizedBox(width: 10),
-                        Text(
-                          'Add a comment',
-                          style: TextStyle(color: ColorManager.lightGrey),
+                if (!locked || (screenCubit.post.inYourSubreddit ?? false))
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(
+                        builder: (context) => AddCommentScreen(
+                          post: post,
                         ),
-                      ],
+                      ))
+                          .then((value) {
+                        if (value != null && value) {
+                          screenCubit.getCommentsOfPost();
+                        }
+                      });
+                    },
+                    child: Container(
+                      color: ColorManager.betterDarkGrey,
+                      height: 5.h,
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: Row(
+                        children: const [
+                          SizedBox(width: 10),
+                          Text(
+                            'Add a comment',
+                            style: TextStyle(color: ColorManager.lightGrey),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
               ],
             );
           },

@@ -337,6 +337,7 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
 
   void _changeGender(newGender, context) {
     final request = {'gender': newGender};
+    print('Setting the gender $newGender');
     DioHelper.patchData(
             token: CacheHelper.getData(key: 'token'),
             path: accountSettings,

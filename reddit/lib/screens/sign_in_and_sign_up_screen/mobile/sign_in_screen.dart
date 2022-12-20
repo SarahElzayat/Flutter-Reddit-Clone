@@ -4,6 +4,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 import '../../../components/default_text_field.dart';
 import '../../../components/helpers/color_manager.dart';
@@ -83,8 +84,9 @@ class _SignInScreenState extends State<SignInScreen> {
     }).catchError((error) {
       // casting the error as a dio error to be able to use its content
       error = error as DioError;
-      if (error.response!.statusCode == 400 ||
-          error.response!.statusCode == 401) {
+      Logger().e(error.response!.data);
+      if (error.response?.statusCode == 400 ||
+          error.response?.statusCode == 401) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
               backgroundColor: ColorManager.red,
