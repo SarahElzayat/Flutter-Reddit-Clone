@@ -29,10 +29,6 @@ class _SearchResultsState extends State<SearchResults>
   /// initial state of the stateful widget
   @override
   void initState() {
-    // if (widget.isSubreddit) {
-    //   SearchCubit.get(context).setSearchSubreddit(widget.subredditName);
-    // }
-    // SearchCubit.get(context).setSearchQuery(widget.searchWord);
     _textEditingController.text = widget.searchWord;
     _tabController =
         TabController(length: widget.isSubreddit ? 2 : 4, vsync: this);
@@ -41,20 +37,18 @@ class _SearchResultsState extends State<SearchResults>
 
   @override
   Widget build(BuildContext context) {
-    // final SearchCubit cubit = SearchCubit.get(context);
     return BlocProvider(
-      create: (ctx) => SearchCubit()..setSearchQuery(widget.searchWord),
-      // ..setSearchSubreddit(widget.subredditName),
+      create: (ctx) => SearchCubit()
+        ..setSearchQuery(widget.searchWord)
+        ..setSearchSubreddit(widget.subredditName),
       child: BlocConsumer<SearchCubit, SearchState>(
         listener: (context, state) {},
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
               title: SearchField(
-                // subredditName: widget.subredditName,
-                // isSubreddit: widget.isSubreddit,
-                // isSubreddit: true,
-                // subredditName: 'hebab',
+                subredditName: widget.subredditName,
+                isSubreddit: widget.isSubreddit,
                 textEditingController: _textEditingController,
                 isResult: true,
               ),

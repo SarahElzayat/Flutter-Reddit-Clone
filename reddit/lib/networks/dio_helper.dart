@@ -154,7 +154,8 @@ class DioHelper {
 
   static Future<Response> deleteData({
     required String path,
-    dynamic data,
+    Map<String, dynamic>? query,
+    Map<String, dynamic>? data,
   }) async {
     Options options;
 
@@ -165,6 +166,11 @@ class DioHelper {
       },
     );
 
-    return await dio.delete(path, options: options, data: data);
+    return await dio.delete(
+      path,
+      options: options,
+      queryParameters: query,
+      data: data,
+    );
   }
 }

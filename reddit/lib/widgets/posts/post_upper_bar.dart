@@ -110,19 +110,20 @@ class _PostUpperBarState extends State<PostUpperBar> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              InkWell(
-                onTap: () {
-                  SubredditCubit.get(context)
-                      .setSubredditName(context, widget.post.subreddit ?? '');
-                },
-                child: Text(
-                  'r/${widget.post.subreddit ?? ''}',
-                  style: const TextStyle(
-                    color: ColorManager.eggshellWhite,
-                    fontSize: 15,
+              if ((widget.post.subreddit ?? '').isNotEmpty)
+                InkWell(
+                  onTap: () {
+                    SubredditCubit.get(context)
+                        .setSubredditName(context, widget.post.subreddit ?? '');
+                  },
+                  child: Text(
+                    'r/${widget.post.subreddit ?? ''}',
+                    style: const TextStyle(
+                      color: ColorManager.eggshellWhite,
+                      fontSize: 15,
+                    ),
                   ),
                 ),
-              ),
               singleRow(
                   context: context,
                   sub: false,

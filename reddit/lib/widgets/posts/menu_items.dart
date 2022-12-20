@@ -5,10 +5,14 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/snack_bar.dart';
+
 import 'package:reddit/constants/constants.dart';
+import 'package:reddit/cubit/app_cubit/app_cubit.dart';
+
 import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/screens/posts/edit_screen.dart';
 import 'package:reddit/screens/posts/pick_community.dart';
+import 'package:reddit/screens/posts/share_to_community.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 import '../../functions/post_functions.dart';
@@ -120,8 +124,16 @@ class MenuItems {
         break;
       case MenuItems.hide:
         //Do something
-        cubit.save().then((value) {
-          PostNotifierCubit.get(context).notifyPosts();
+        cubit.hide().then((value) {
+          if (value == true) {
+            PostNotifierCubit.get(context).deletedPost(cubit.post.id!);
+            ScaffoldMessenger.of(context).showSnackBar(
+              responseSnackBar(
+                message: 'Post Hidden',
+                error: false,
+              ),
+            );
+          }
         });
         break;
       case MenuItems.block:
@@ -142,7 +154,23 @@ class MenuItems {
         break;
       case MenuItems.delete:
         //Do something
-        cubit.delete();
+        cubit.delete().then((value) {
+          if (value == null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              responseSnackBar(
+                message: 'Something went wrong',
+                error: true,
+              ),
+            );
+            return;
+          }
+          if (value) {
+            PostNotifierCubit.get(context).deletedPost(cubit.post.id!);
+          } else {
+            PostNotifierCubit.get(context)
+                .deletedComment(cubit.currentComment!.id!);
+          }
+        });
         PostNotifierCubit.get(context).notifyPosts();
 
         break;
@@ -210,7 +238,15 @@ shareModalBottomSheet(
         shareIcon(
             icon: Icons.person_outline_rounded,
             label: 'Profile',
-            onPressed: () {}),
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ShareToCommunityScreen(
+                    isCommunity: false,
+                    username: AppCubit.get(context).username,
+                    sharedPost: post,
+                  ),
+                ))),
       ],
     ),
   );

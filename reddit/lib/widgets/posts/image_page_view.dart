@@ -212,23 +212,25 @@ class _WholeScreenImageViewerState extends State<WholeScreenImageViewer> {
         children: [
           Row(
             children: [
-              Text(
-                'r/${widget.post.subreddit ?? '-'} • ',
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Colors.white,
-                    ),
-              ),
-              InkWell(
-                onTap: () {
-                  debugPrint('joined');
-                },
-                child: Text(
-                  'Join',
+              if ((widget.post.subreddit ?? '').isNotEmpty)
+                Text(
+                  'r/${widget.post.subreddit ?? '-'} • ',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: Colors.blue,
+                        color: Colors.white,
                       ),
                 ),
-              ),
+              if ((widget.post.subreddit ?? '').isNotEmpty)
+                InkWell(
+                  onTap: () {
+                    debugPrint('joined');
+                  },
+                  child: Text(
+                    'Join',
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Colors.blue,
+                        ),
+                  ),
+                ),
               Text(
                 '  •   u/${widget.post.postedBy ?? '-'}  • ',
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(

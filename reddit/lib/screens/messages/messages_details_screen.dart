@@ -1,7 +1,3 @@
-/// @Author: Abdelaziz Salah
-/// @date 20/12/2022
-/// This widget is used to display a single message in the inbox screen.
-
 import 'dart:async';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
@@ -13,18 +9,27 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../components/helpers/color_manager.dart';
+import '../../data/comment/comment_model.dart';
+import '../../data/post_model/post_model.dart';
 
 var logger = Logger();
 
-class SingleMessageScreen extends StatefulWidget {
-  static const routeName = '/single_message_screen';
-  const SingleMessageScreen({super.key});
+class MessagesScreen extends StatefulWidget {
+  static const routeName = 'add-comment';
+  const MessagesScreen({super.key, required this.post, this.parentComment});
+
+  /// the post to which the comment will be added
+  final PostModel post;
+
+  /// the parent comment to which the comment will be added
+  /// if null, the comment will be added to the post
+  final CommentModel? parentComment;
 
   @override
-  State<SingleMessageScreen> createState() => _SingleMessageScreenState();
+  State<MessagesScreen> createState() => _MessagesScreenState();
 }
 
-class _SingleMessageScreenState extends State<SingleMessageScreen> {
+class _MessagesScreenState extends State<MessagesScreen> {
   QuillController? _controller;
   @override
   void initState() {
@@ -34,7 +39,6 @@ class _SingleMessageScreenState extends State<SingleMessageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final messageBody = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Reply to Messages'),
@@ -52,8 +56,8 @@ class _SingleMessageScreenState extends State<SingleMessageScreen> {
                 return;
               }
               final content = _controller!.document.toDelta().toJson();
-              // TODO: SEND THIS TO THE BACKEND
               Map sentContent = {'ops': content};
+              // TODO: SEND THIS TO THE BACKEND
             },
             child: const Text(
               'Post',
@@ -66,7 +70,7 @@ class _SingleMessageScreenState extends State<SingleMessageScreen> {
         children: [
           Expanded(
             child: QuillEditor(
-              controller: getController(messageBody),
+              controller: getController(),
               readOnly: true,
               enableInteractiveSelection: true,
               autoFocus: false,
@@ -121,15 +125,11 @@ class _SingleMessageScreenState extends State<SingleMessageScreen> {
     );
   }
 
-  QuillController getController(messageBody) {
+  QuillController getController() {
     Document doc;
     try {
-      logger.wtf(messageBody.content ?? {'ops': []});
-      //// this if the message is in json formate
-      // doc = Document.fromJson((messageBody.content ?? {'ops': []})['ops']);
-
-      /// this is the message is in string formate
-      // doc = Doc;
+      logger.wtf(widget.post.content ?? {'ops': []});
+      doc = Document.fromJson((widget.post.content ?? {'ops': []})['ops']);
     } catch (e) {
       logger.wtf(e);
       doc = Document();
@@ -137,7 +137,7 @@ class _SingleMessageScreenState extends State<SingleMessageScreen> {
     // doc = Document();
 
     return QuillController(
-      document: Document(),
+      document: doc,
       selection: const TextSelection.collapsed(offset: 0),
     );
   }
