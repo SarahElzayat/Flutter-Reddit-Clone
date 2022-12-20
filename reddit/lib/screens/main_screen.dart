@@ -49,12 +49,13 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
             builder: (context) => const HomeScreen(),
           ));
     }
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final AppCubit cubit = AppCubit.get(context); //..getUsername();
+    final AppCubit cubit = AppCubit.get(context)..getUsername();
 
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {

@@ -52,6 +52,8 @@ class _SearchFieldState extends State<SearchField> {
 
   @override
   void initState() {
+    // if (widget.isSubreddit)
+    //   SearchCubit.get(context).setSearchSubreddit(widget.subredditName);
     _focus.addListener(_onFocusChange);
     super.initState();
   }
@@ -64,7 +66,7 @@ class _SearchFieldState extends State<SearchField> {
   Widget build(BuildContext context) {
     return Container(
       decoration: ShapeDecoration(
-        shape: CacheHelper.getData(key: 'isAndroid')!
+        shape: !kIsWeb
             ? RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               )
@@ -110,7 +112,7 @@ class _SearchFieldState extends State<SearchField> {
           floatingLabelBehavior: FloatingLabelBehavior.never,
 
           prefixIcon: Padding(
-            padding: const EdgeInsets.only(left: 10.0),
+            padding: const EdgeInsets.only(left: 5.0),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -119,39 +121,21 @@ class _SearchFieldState extends State<SearchField> {
                   color: ColorManager.lightGrey,
                 ),
                 if (widget.isSubreddit && isPrefix)
-                  Container(
+                  Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
-                    decoration: const ShapeDecoration(
-                      shape: StadiumBorder(),
-                      color: ColorManager.grey,
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
+                    child: Container(
+                      decoration: const ShapeDecoration(
+                        shape: StadiumBorder(),
+                        color: ColorManager.grey,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: Text(
                           '${widget.subredditName!} ',
                           style: const TextStyle(
-                              color: ColorManager.eggshellWhite),
+                              fontSize: 16, color: ColorManager.eggshellWhite),
                         ),
-                        InkWell(
-                            onTap: () {
-                              setState(() {
-                                isPrefix = false;
-                                SearchCubit.get(context).setSearchSubreddit('');
-                              
-                                // widget.textEditingController.clear();
-                                // widget.subredditName = '';
-                                // widget.isSubreddit = false;
-                              });
-                            },
-                            child: const Icon(
-                              Icons.cancel_outlined,
-                              color: ColorManager.lightGrey,
-                              // size: MediaQuery.,
-                              // size: ,
-                            ))
-                      ],
+                      ),
                     ),
                   ),
               ],
