@@ -16,6 +16,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../components/helpers/enums.dart';
 import '../../components/helpers/posts/helper_funcs.dart';
+import '../../networks/constant_end_points.dart';
 
 class InlineImageViewer extends StatefulWidget {
   final bool outsideScreen;
@@ -72,7 +73,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
         PageController(initialPage: widget.initialIndex, keepPage: true);
 
     if (imagesExists) {
-      Image(image: NetworkImage(widget.post.images![0].path!))
+      Image(image: NetworkImage(baseUrl + widget.post.images![0].path!))
           .image
           .resolve(const ImageConfiguration())
           .addListener(ImageStreamListener((info, call) {
@@ -282,7 +283,7 @@ class _InlineImageViewerState extends State<InlineImageViewer> {
   }
 
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
-    final String item = widget.post.images![index].path!;
+    final String item = baseUrl + widget.post.images![index].path!;
     return PhotoViewGalleryPageOptions(
       imageProvider: NetworkImage(item),
       //NOTE - i changed this to covered so that the image fits small containers

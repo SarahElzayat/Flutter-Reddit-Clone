@@ -11,6 +11,7 @@ import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import '../../components/Button.dart';
 import '../../components/home_components/right_drawer.dart';
 import '../../cubit/app_cubit/app_cubit.dart';
+import '../../networks/constant_end_points.dart';
 import '../../widgets/subreddit/subreddit_about.dart';
 import '../../widgets/subreddit/subreddit_posts.dart';
 import '../add_post/add_post.dart';
@@ -197,11 +198,12 @@ class _SubredditState extends State<Subreddit>
                               ? ColorManager.blue
                               : null,
                       radius: 25,
-                      backgroundImage: (subredditCubit.subreddit!.picture ==
-                                  null ||
-                              subredditCubit.subreddit!.picture == '')
-                          ? null
-                          : NetworkImage(subredditCubit.subreddit!.picture!),
+                      backgroundImage:
+                          (subredditCubit.subreddit!.picture == null ||
+                                  subredditCubit.subreddit!.picture == '')
+                              ? null
+                              : NetworkImage(
+                                  baseUrl + subredditCubit.subreddit!.picture!),
                       child: (subredditCubit.subreddit!.picture == null ||
                               subredditCubit.subreddit!.picture == '')
                           ? const Text(

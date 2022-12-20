@@ -523,48 +523,50 @@ class _PostWidgetState extends State<PostWidget> {
             paragraph: DefaultTextBlockStyle(
               const TextStyle(
                 fontSize: 14,
-                color: Colors.black,
+                color: ColorManager.eggshellWhite,
                 height: 1.15,
                 fontWeight: FontWeight.w300,
               ),
               const Tuple2(16, 0),
               const Tuple2(0, 0),
-              null,
-            ),
-            quote: DefaultTextBlockStyle(
-              const TextStyle(
-                fontSize: 14,
-                color: Colors.black,
-                height: 1.15,
-                fontWeight: FontWeight.w300,
+              const BoxDecoration(
+                color: Colors.transparent,
               ),
-              const Tuple2(16, 0),
-              const Tuple2(0, 0),
-              null,
             ),
             code: DefaultTextBlockStyle(
               const TextStyle(
                 fontSize: 14,
-                color: Colors.red,
+                color: ColorManager.eggshellWhite,
                 height: 1.15,
                 fontWeight: FontWeight.w300,
               ),
               const Tuple2(16, 0),
               const Tuple2(0, 0),
-              null,
+              const BoxDecoration(
+                color: Colors.transparent,
+              ),
             ),
-            inlineCode:
-                InlineCodeStyle(style: const TextStyle(color: Colors.red)),
+            inlineCode: InlineCodeStyle(
+                style: const TextStyle(color: ColorManager.eggshellWhite)),
             h1: DefaultTextBlockStyle(
-                const TextStyle(
-                  fontSize: 32,
-                  color: Colors.black,
-                  height: 1.15,
-                  fontWeight: FontWeight.w300,
-                ),
-                const Tuple2(16, 0),
-                const Tuple2(0, 0),
-                null),
+              const TextStyle(
+                fontSize: 32,
+                color: ColorManager.eggshellWhite,
+                height: 1.15,
+                fontWeight: FontWeight.w300,
+              ),
+              const Tuple2(16, 0),
+              const Tuple2(0, 0),
+              const BoxDecoration(
+                color: Colors.transparent,
+              ),
+            ),
+            link: const TextStyle(
+              fontSize: 14,
+              color: ColorManager.eggshellWhite,
+              height: 1.15,
+              fontWeight: FontWeight.w600,
+            ),
             sizeSmall: const TextStyle(fontSize: 9),
           ),
           scrollController: ScrollController(),
