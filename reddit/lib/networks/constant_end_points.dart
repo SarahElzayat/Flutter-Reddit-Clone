@@ -9,11 +9,15 @@ const portNumber = String.fromEnvironment('FLUTTER_PORT', defaultValue: '5000');
 // String.fromEnvironment('BASE_URL', defaultValue: 'http://10.0.2.2:3000'); // for mobile
 // const portNumber = 5000;
 const baseUrl = kReleaseMode
-    ? 'https://web.read-it.live/api'
+    ? 'https://www.read-it.live/api'
     // ? 'http://www.read-it.live/api' TODO: wa3er aly ast5dm el fo2 34an samaa.
     : kIsWeb
         ? 'http://localhost:3000'
-        : 'http://10.0.2.2:3000';
+        // : 'http://10.0.2.2:3000'; // for mobile
+        : 'https://www.read-it.live/api';
+
+const imagesBaseUrl =
+    kReleaseMode ? 'https://web.read-it.live/' : 'http://192.168.1.8:3000/';
 
 // login and signup
 const signUp = '/signup';
@@ -22,6 +26,7 @@ const loginForgetPassword = '/login/forget-password';
 const loginForgetUserName = '/login/forget-username';
 const signInGoogle = '/signin/google';
 const signInFacebook = '/signin/facebook';
+const getRandom = '/random-username';
 
 // settings endpoints
 const changeEmail = '/change-email';
@@ -29,6 +34,11 @@ const changePassword = '/change-password';
 const blockedAccounts = '/blocked-users';
 const accountSettings =
     '/account-settings'; // this end point is used in multi requests.
+const block = '/block-user';
+
+// messages and inbox
+const messagesPoint = '/message/inbox';
+const markMessageAsRead = '/unread-message';
 
 // create community
 const createCommunity = '/create-subreddit';
@@ -50,6 +60,7 @@ const upvotedHistory = '/upvoted';
 const downvotedHistory = '/downvoted';
 const hiddenHistory = '/hidden';
 const clearHistory = '/clear-history';
+const userProfilePicture = '/profile-picture';
 const search = '/search';
 const searchPosts = 'post';
 const searchUsers = 'user';
@@ -79,3 +90,5 @@ const homeHot = '/hot';
 const homeTrending = '/trending';
 const homeNew = '/new';
 const subreddit = '/r';
+const makeFavorite = '/make-favorite';
+const removeFavorite = '/remove-favorite';

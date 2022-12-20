@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class CommentModel {
   String? id;
   String? commentedBy;
@@ -15,6 +13,8 @@ class CommentModel {
   int? level;
   int? numberofChildren;
   List<CommentModel>? children;
+  bool? locked;
+  bool isCollapsed = false;
 
   CommentModel({
     this.id,
@@ -31,6 +31,7 @@ class CommentModel {
     this.level,
     this.numberofChildren,
     this.children,
+    this.locked,
   });
 
   factory CommentModel.fromJson(Map<String, dynamic> json) => CommentModel(
@@ -46,6 +47,7 @@ class CommentModel {
         votingType: json['vote'] as int?,
         parent: json['parent'] as String?,
         level: json['level'] as int?,
+        locked: json['locked'] as bool?,
         numberofChildren: json['numberofChildren'] as int?,
         children: (json['children'] as List<dynamic>?)
             ?.map((e) => CommentModel.fromJson(e as Map<String, dynamic>))
@@ -65,6 +67,7 @@ class CommentModel {
         'vote': votingType,
         'parent': parent,
         'level': level,
+        'locked': locked,
         'numberofChildren': numberofChildren,
         'children': children?.map((e) => e.toJson()).toList(),
       };
@@ -83,6 +86,7 @@ class CommentModel {
     votingType = other.votingType;
     parent = other.parent;
     level = other.level;
+    locked = other.locked;
     numberofChildren = other.numberofChildren;
     children = other.children;
   }

@@ -3,15 +3,25 @@
 /// general search field to be included in home, subreddits, profiles... etc
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/search/cubit/search_cubit.dart';
 import 'package:reddit/screens/search/search_screen.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 
 import 'helpers/color_manager.dart';
 
+/// @param [subredditName] is case the field is used in a subreddit page, the subreddit name
+///                         should be passed to the widget
+/// @param [isSubreddit] a bool that indicates whether the field is used in a subreddit page or not
+/// @param [onChanged] an optional funtion that triggers any desired action on the change of the input
+/// @param [onChanged] an optional funtion that triggers any desired action on the change of the input
+/// @param [onPressed] a function that's associated with the cancel button
+/// @param [onSubmitted] the method that's applied when the text field is submitted
+/// @param [textEditingController] the controller of the text field
+/// @param [isResult] a bool that indicates whether the field is called in a search result page or not
+
 class SearchField extends StatefulWidget {
   final String? subredditName;
   final bool isSubreddit;
-  // final String subredditName;
   final void Function()? onChanged;
   final void Function()? onPressed;
   final void Function(String)? onSubmitted;
@@ -34,24 +44,17 @@ class SearchField extends StatefulWidget {
 }
 
 class _SearchFieldState extends State<SearchField> {
-  bool isPrefix = true;
-
-  bool isOpne = false;
+  ///@param[_focus] the focus node of the text field
   final FocusNode _focus = FocusNode();
+
+  ///@param[isPrefix] checks if the search is inside a subreddit and the prefix is not deleted
+  bool isPrefix = true;
 
   @override
   void initState() {
     _focus.addListener(_onFocusChange);
-    // _focus.unfocus();
     super.initState();
   }
-
-  // @override
-  // void dispose() {
-  //   _focus.removeListener(_onFocusChange);
-  //   _focus.dispose();
-  //   super.dispose();
-  // }
 
   void _onFocusChange() {
     debugPrint('Focus: ${_focus.hasFocus.toString()}');
@@ -60,7 +63,6 @@ class _SearchFieldState extends State<SearchField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: 5,
       decoration: ShapeDecoration(
         shape: CacheHelper.getData(key: 'isAndroid')!
             ? RoundedRectangleBorder(
@@ -68,7 +70,7 @@ class _SearchFieldState extends State<SearchField> {
               )
             : const StadiumBorder(),
         color: (widget.isSubreddit)
-            ? Color.fromARGB(120, 0, 0, 0)
+            ? const Color.fromARGB(120, 0, 0, 0)
             : ColorManager.darkGrey,
       ),
       child: TextField(
@@ -136,6 +138,11 @@ class _SearchFieldState extends State<SearchField> {
                             onTap: () {
                               setState(() {
                                 isPrefix = false;
+                                SearchCubit.get(context).setSearchSubreddit('');
+                              
+                                // widget.textEditingController.clear();
+                                // widget.subredditName = '';
+                                // widget.isSubreddit = false;
                               });
                             },
                             child: const Icon(

@@ -8,7 +8,7 @@ import 'package:reddit/components/app_bar_components.dart';
 // import 'package:reddit/components/home_dropdown_menu.dart';
 import 'package:reddit/components/search_field.dart';
 
-import '../cubit/app_cubit.dart';
+import '../cubit/app_cubit/app_cubit.dart';
 
 ///@param [index] is the index of the bottom navigation bar screen
 ///@param [context] is the context of the parent widget

@@ -4,6 +4,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/constants/constants.dart';
+import 'package:reddit/data/settings/settings_models/user_settings.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/continue_sign_up_for_mobile.dart';
+
 import 'package:reddit/shared/local/shared_preferences.dart';
 
 import '../../../components/default_text_field.dart';
@@ -31,9 +35,7 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController usernameController = TextEditingController();
-
   TextEditingController passwordController = TextEditingController();
-
   TextEditingController emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool isEmptyEmail = true;
@@ -68,22 +70,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
         email: emailController.text,
         password: passwordController.text,
         username: usernameController.text);
-    print(baseUrl);
-    DioHelper.postData(path: signUp, data: user.toJson()).then((value) {
+    await DioHelper.postData(path: signUp, data: user.toJson()).then((value) {
       if (value.statusCode == 201) {
         CacheHelper.putData(key: 'token', value: value.data['token']);
         CacheHelper.putData(key: 'username', value: value.data['username']);
+        UserSettingsModel.fromJson(value.data);
+        UserSettingsModel.cacheUserSettings();
+        token = CacheHelper.getData(key: 'token');
 
-        // navigating to the main screen
+        // navigating to the interests screen
         Navigator.of(context)
-            .pushReplacementNamed(HomeScreenForMobile.routeName);
+            .pushReplacementNamed(ContinueSignUpForMobile.routeName);
       }
     }).catchError((error) {
       // casting the error as a dio error to be able to use its content
       error = error as DioError;
       // checking for our main error, which is that the user trying to insert
       // username which is already taken
-      print(error.message);
 
       if (error.message.toString() == 'Http status error [400]') {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -167,15 +170,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           return null;
                         },
                         keyboardType: TextInputType.emailAddress,
-                        onChanged: (myString) {
-                          setState(() {
-                            if (myString.isNotEmpty) {
-                              isEmptyEmail = false;
-                            } else {
-                              isEmptyEmail = true;
-                            }
-                          });
-                        },
+                        onChanged: (_) => setState(() {}),
                         formController: emailController,
                         icon: emailController.text.isNotEmpty
                             ? IconButton(
@@ -183,7 +178,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 onPressed: (() {
                                   setState(() {
                                     emailController.text = '';
-                                    isEmptyEmail = true;
                                   });
                                 }))
                             : null,
@@ -196,15 +190,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           }
                           return null;
                         },
-                        onChanged: (myString) {
-                          setState(() {
-                            if (myString.isNotEmpty) {
-                              isEmptyUserName = false;
-                            } else {
-                              isEmptyUserName = true;
-                            }
-                          });
-                        },
+                        onChanged: (_) => setState(() {}),
                         formController: usernameController,
                         labelText: 'Username',
                         icon: usernameController.text.isNotEmpty ||
@@ -227,6 +213,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           }
                           return null;
                         },
+                        onChanged: (_) => setState(() {}),
                         formController: passwordController,
                         labelText: 'Password',
                         isPassword: true,
@@ -296,7 +283,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         isPressable: emailController.text.isNotEmpty &&
                             usernameController.text.isNotEmpty &&
                             passwordController.text.isNotEmpty,
-                        appliedFunction: continueFunction,
+                        appliedFunction: () {
+                          continueFunction();
+                        },
                       )
                     ],
                   ),

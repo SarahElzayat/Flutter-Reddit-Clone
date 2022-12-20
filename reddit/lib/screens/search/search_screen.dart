@@ -53,20 +53,15 @@ class _SearchScreenState extends State<SearchScreen> {
                     children: [
                       Expanded(
                         child: SearchField(
-                            // isSubreddit: true,sbab',
+                            isSubreddit: widget.isSubreddit,
+                            subredditName: widget.subredditName,
                             onSubmitted: (value) {
-                              // SearchCubit.get(context).setSearchQuery(value);
-                              // // if (widget.isSubreddit) {
-                              // SearchCubit.get(context)
-                              //     .setSearchSubreddit('hebab');
-                              // }
-                              // }
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => SearchResults(
-                                    // isSubreddit: true,
-                                    // subredditName: 'hebab',
+                                    isSubreddit: widget.isSubreddit,
+                                    subredditName: widget.subredditName,
                                     searchWord: value,
                                   ),
                                 ),
@@ -84,21 +79,6 @@ class _SearchScreenState extends State<SearchScreen> {
                         )
                     ],
                   ),
-                  // const Text(
-                  //   'Trending today',
-                  //   style: TextStyle(color: ColorManager.eggshellWhite),
-                  // ),
-                  // Expanded(
-                  //   child: ListView.builder(
-                  //     scrollDirection: Axis.vertical,
-                  //     shrinkWrap: true,
-                  //     itemCount: items.length,
-                  //     itemBuilder: (context, index) => Text(
-                  //       items[index],
-                  //       style: const TextStyle(color: ColorManager.eggshellWhite),
-                  //     ),
-                  //   ),
-                  // )
                 ],
               ),
             )),

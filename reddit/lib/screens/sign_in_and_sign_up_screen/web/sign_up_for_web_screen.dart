@@ -1,6 +1,7 @@
 /// @author Abdelaziz Salah
 /// @date 11/11/20222
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/sign_up_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../components/button.dart';
@@ -54,135 +55,162 @@ class _SignUpForWebScreenState extends State<SignUpForWebScreen> {
     final mediaQuery = MediaQuery.of(context);
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
-        return Scaffold(
-          body: ListView(children: [
-            Form(
-              key: _myKey,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  /// the image box
-                  SizedBox(
+        return mediaQuery.size.height < 500
+            ? const Center(
+                child: Scaffold(
+                    body: Center(
+                        child: Text('Increse the size of the window please'))),
+              )
+            : mediaQuery.size.height < 650
+                ? const SignUpScreen()
+                : Scaffold(
+                    body: ListView(children: [
+                      Form(
+                        key: _myKey,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            /// the image box
+                            SizedBox(
 
-                      /// in the website it is fixed not relative
-                      width: mediaQuery.size.width > 600 ? 140 : 120,
-                      height: 100.h,
-                      child: Image.asset(
-                        'assets/images/WebSideBarBackGroundImage.png',
-                        fit: BoxFit.fitHeight,
-                      )),
+                                /// in the website it is fixed not relative
+                                width: mediaQuery.size.width > 600 ? 140 : 120,
+                                height: 100.h,
+                                child: Image.asset(
+                                  'assets/images/WebSideBarBackGroundImage.png',
+                                  fit: BoxFit.fitHeight,
+                                )),
 
-                  /// the main screen
-                  Container(
-                    margin: const EdgeInsets.only(left: 28),
-                    height: mediaQuery.size.height,
+                            /// the main screen
+                            Container(
+                              margin: const EdgeInsets.only(left: 28),
+                              height: mediaQuery.size.height,
 
-                    /// in the website it is fixed
-                    width: 295,
-                    child: Column(
-                      children: [
-                        /// the text container
-                        Container(
-                            margin: const EdgeInsets.only(bottom: 30, top: 160),
-                            height: 15.h,
-                            width: 295,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Container(
-                                    alignment: Alignment.centerLeft,
-                                    child: const Text(
-                                      'Sign up',
-                                      style: TextStyle(
-                                          color: ColorManager.eggshellWhite,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                    )),
-                                Text(
-                                    'By continuing, you are setting up a Reddit account and '
-                                    'agree to our User Agreement and Privace Policy',
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge),
-                              ],
-                            )),
-                        Container(
-                            margin: const EdgeInsets.only(bottom: 40),
-                            child: const ContinueWithGoogleOrFbWeb()),
-                        const Text(
-                          'OR',
-                          style: TextStyle(
-                            color: ColorManager.eggshellWhite,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              DefaultTextField(
-                                key: const Key('EmailTextField'),
-                                validator: (email) {
-                                  if (!Validator.validEmailValidator(email!)) {
-                                    return 'email must follow this formate:\nexample@aything.com';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                onChanged: (p0) => setState(() {}),
-                                formController: emailController,
-                                labelText: 'Email',
-                              ),
-                              Button(
-                                  isPressable: emailController.text.isNotEmpty,
-                                  key: const Key('ContinueButton'),
-                                  textFontWeight: FontWeight.normal,
-                                  text: 'CONTINUE',
-                                  borderColor: emailController.text.isEmpty
-                                      ? ColorManager.grey
-                                      : ColorManager.upvoteRed,
-                                  textColor: emailController.text.isNotEmpty
-                                      ? ColorManager.white
-                                      : ColorManager.eggshellWhite,
-                                  backgroundColor: ColorManager.upvoteRed,
-                                  buttonWidth: 25.w,
-                                  borderRadius: 5,
-                                  buttonHeight: 40,
-                                  textFontSize: 14,
-                                  onPressed: loginChecker),
-                              Container(
-                                margin: const EdgeInsets.only(top: 10),
-                                child: Row(
-                                  children: [
-                                    const Text(
-                                      'Already a redditor?',
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w200),
+                              /// in the website it is fixed
+                              width: 295,
+                              child: Column(
+                                children: [
+                                  /// the text container
+                                  Container(
+                                      margin: const EdgeInsets.only(
+                                          bottom: 30, top: 160),
+                                      height: 15.h,
+                                      width: 295,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Container(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                'Sign up',
+                                                style: TextStyle(
+                                                    color: ColorManager.blue,
+                                                    fontSize: mediaQuery
+                                                            .textScaleFactor *
+                                                        18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )),
+                                          Text(
+                                              'By continuing, you are setting up a Reddit account and '
+                                              'agree to our User Agreement and Privace Policy',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyLarge),
+                                        ],
+                                      )),
+                                  Container(
+                                      margin: const EdgeInsets.only(bottom: 40),
+                                      child: const ContinueWithGoogleOrFbWeb()),
+                                  const Text(
+                                    'OR',
+                                    style: TextStyle(
+                                      color: ColorManager.eggshellWhite,
                                     ),
-                                    TextButton(
-                                        key: const Key('LoginButton'),
-                                        onPressed: () {
-                                          Navigator.pushReplacementNamed(
-                                              context,
-                                              SignInForWebScreen.routeName);
-                                        },
-                                        child: const Text('LOG IN',
-                                            style: TextStyle(
-                                                color: ColorManager.blue)))
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ]),
-        );
+                                  ),
+                                  SizedBox(
+                                    height: 25.h,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        DefaultTextField(
+                                          key: const Key('EmailTextField'),
+                                          validator: (email) {
+                                            if (!Validator.validEmailValidator(
+                                                email!)) {
+                                              return 'email must follow this formate:\nexample@aything.com';
+                                            } else {
+                                              return null;
+                                            }
+                                          },
+                                          onChanged: (p0) => setState(() {}),
+                                          formController: emailController,
+                                          labelText: 'Email',
+                                        ),
+                                        Button(
+                                            isPressable:
+                                                emailController.text.isNotEmpty,
+                                            key: const Key('ContinueButton'),
+                                            textFontWeight: FontWeight.normal,
+                                            text: 'CONTINUE',
+                                            borderColor:
+                                                emailController.text.isEmpty
+                                                    ? ColorManager.grey
+                                                    : ColorManager.upvoteRed,
+                                            textColor: emailController
+                                                    .text.isNotEmpty
+                                                ? ColorManager.white
+                                                : ColorManager.eggshellWhite,
+                                            backgroundColor:
+                                                ColorManager.upvoteRed,
+                                            buttonWidth: 25.w,
+                                            borderRadius: 5,
+                                            buttonHeight: 40,
+                                            textFontSize: 14,
+                                            onPressed: loginChecker),
+                                        Container(
+                                          margin:
+                                              const EdgeInsets.only(top: 10),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                'Already a redditor?',
+                                                style: TextStyle(
+                                                    fontSize: mediaQuery
+                                                            .textScaleFactor *
+                                                        14,
+                                                    fontWeight:
+                                                        FontWeight.w200),
+                                              ),
+                                              TextButton(
+                                                  key: const Key('LoginButton'),
+                                                  onPressed: () {
+                                                    Navigator
+                                                        .pushReplacementNamed(
+                                                            context,
+                                                            SignInForWebScreen
+                                                                .routeName);
+                                                  },
+                                                  child: const Text('LOG IN',
+                                                      style: TextStyle(
+                                                          color: ColorManager
+                                                              .blue)))
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ]),
+                  );
       },
     );
   }

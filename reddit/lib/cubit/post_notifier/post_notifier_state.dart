@@ -12,3 +12,12 @@ class PostNotifierError extends PostNotifierState {
   final String error;
   PostNotifierError(this.error);
 }
+
+class PostDeleted extends PostNotifierState {
+  final String id;
+  PostDeleted(this.id);
+}
+class CommentDeleted extends PostNotifierState {
+  final String id;
+  CommentDeleted(this.id);
+}

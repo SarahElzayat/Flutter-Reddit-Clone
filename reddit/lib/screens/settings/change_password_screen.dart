@@ -2,9 +2,8 @@
 /// @date 12/12/2022
 /// this file contains the screen of the change password
 import 'package:flutter/material.dart';
-import '../../data/settings_models/change_password_model.dart';
-import '../../networks/constant_end_points.dart';
-import '../../networks/dio_helper.dart';
+import 'package:reddit/shared/local/shared_preferences.dart';
+import '../../cubit/settings_cubit/settings_cubit.dart';
 import '../../components/default_text_field.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../data/sign_in_And_sign_up_models/validators.dart';
@@ -50,24 +49,203 @@ class _ChangePasswordState extends State<ChangePassword> {
   /// to be able to change the password of the user into new user
   void requestChangePassword() {
     if (_validateTextFields()) {
-      final changeRequest = ChangePasswordModel(
-          confirmNewPassword: confirmPasswordtroller.text,
-          currentPassword: passwordController.text,
-          newPassword: newPasswordController.text);
-
-      DioHelper.putData(path: changePassword, data: changeRequest.toJson())
-          .then((response) {
-        if (response.statusCode == 200) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text('Email has been sent!'),
-              backgroundColor: ColorManager.green));
-        }
-      }).catchError((error) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('The password is not correct!'),
-            backgroundColor: ColorManager.red));
-      });
+      SettingsCubit.get(context).changePasswordReq(passwordController.text,
+          confirmPasswordtroller.text, newPasswordController.text, context);
     }
+  }
+
+  void buildForgetUserName() {
+    final mediaQuery = MediaQuery.of(context);
+    showDialog(
+        context: context,
+        builder: (context) {
+          TextEditingController emailController = TextEditingController();
+          return AlertDialog(
+            title: SizedBox(
+                height: mediaQuery.size.height * 0.3,
+                width: mediaQuery.size.width,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Recover username',
+                                textAlign: TextAlign.left,
+                              ),
+                              DefaultTextField(
+                                labelText: 'Email',
+                                formController: emailController,
+                                validator: (email) {
+                                  if (!Validator.validEmailValidator(email!)) {
+                                    return 'opps, you have inserted wrong email formate';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(
+                                height: 3,
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Unfortunately, if you have never given us your email, we cannot help you.',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: ColorManager.upvoteRed),
+                                ),
+                              ),
+                              TextButton(
+                                  onPressed: () {},
+                                  child: const Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'Having trouble?',
+                                      style: TextStyle(
+                                          color: ColorManager.blue,
+                                          fontSize: 12),
+                                    ),
+                                  )),
+                            ]),
+                      ),
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                                onPressed: (() {
+                                  Navigator.of(context).pop();
+                                }),
+                                child: const Text('Cancel')),
+                            TextButton(
+                                onPressed: (() {}),
+                                child: const Text('Email Me')),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                )),
+          );
+        });
+  }
+
+  /// TODO: Fix what happens when the keyboard raises.
+
+  void buildForgetPass() {
+    final mediaQuery = MediaQuery.of(context);
+    showDialog(
+        context: context,
+        builder: (context) {
+          TextEditingController usernameController = TextEditingController();
+          TextEditingController emailController = TextEditingController();
+          return AlertDialog(
+            title: SizedBox(
+                height: mediaQuery.size.height * 0.5,
+                width: mediaQuery.size.width,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 8,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Forgot your password?',
+                                textAlign: TextAlign.left,
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              DefaultTextField(
+                                formController: usernameController,
+                                labelText: 'Username',
+                                validator: (username) {
+                                  if (!Validator.validUserName(username!)) {
+                                    return 'opps, you have inserted wrong username formate';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      buildForgetUserName();
+                                    },
+                                    child: const Text(
+                                      'Forgot username?',
+                                      textAlign: TextAlign.left,
+                                      style:
+                                          TextStyle(color: ColorManager.blue),
+                                    )),
+                              ),
+                              DefaultTextField(
+                                labelText: 'Email',
+                                formController: emailController,
+                                validator: (email) {
+                                  if (!Validator.validEmailValidator(email!)) {
+                                    return 'opps, you have inserted wrong email formate';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(
+                                height: 3,
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Unfortunately, if you have never given us your email, we cannot help you.',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: ColorManager.upvoteRed),
+                                ),
+                              ),
+                              TextButton(
+                                  onPressed: () {},
+                                  child: const Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'Having trouble?',
+                                      style: TextStyle(
+                                          color: ColorManager.blue,
+                                          fontSize: 12),
+                                    ),
+                                  )),
+                            ]),
+                      ),
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                                onPressed: (() {
+                                  Navigator.of(context).pop();
+                                }),
+                                child: const Text('Cancel')),
+                            TextButton(
+                                onPressed: (() {}),
+                                child: const Text('Email Me')),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                )),
+          );
+        });
   }
 
   @override
@@ -90,51 +268,59 @@ class _ChangePasswordState extends State<ChangePassword> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SingleChildScrollView(
-                  child: Column(children: [
-                    const HeaderContainsAvatar(
-                        email: 'Email of the user', usrName: 'UserName'),
-                    DefaultTextField(
-                      labelText: 'Current password',
-                      isPassword: true,
-                      validator: (password) {
-                        if (!Validator.validPasswordValidation(password!)) {
-                          return 'opps, you have inserted wrong password formate';
-                        }
-                        return null;
-                      },
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            'Forget password?',
-                            style: TextStyle(
-                                color: ColorManager.upvoteRed,
-                                fontWeight: FontWeight.bold),
-                          )),
-                    ),
-                    DefaultTextField(
-                      labelText: 'New Password',
-                      isPassword: true,
-                      validator: (password) {
-                        if (!Validator.validPasswordValidation(password!)) {
-                          return 'opps, you have inserted wrong password formate';
-                        }
-                        return null;
-                      },
-                    ),
-                    DefaultTextField(
-                      labelText: 'Confirm New Password',
-                      isPassword: true,
-                      validator: (password) {
-                        if (!Validator.validPasswordValidation(password!)) {
-                          return 'opps, you have inserted wrong password formate';
-                        }
-                        return null;
-                      },
-                    )
-                  ]),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(children: [
+                      HeaderContainsAvatar(
+                        usrName: CacheHelper.getData(key: 'username'),
+                        email: CacheHelper.getData(key: 'email'),
+                      ),
+                      DefaultTextField(
+                        formController: passwordController,
+                        labelText: 'Current password',
+                        isPassword: true,
+                        validator: (password) {
+                          if (!Validator.validPasswordValidation(password!)) {
+                            return 'opps, you have inserted wrong password formate';
+                          }
+                          return null;
+                        },
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                            onPressed: buildForgetPass,
+                            child: const Text(
+                              'Forget password?',
+                              style: TextStyle(
+                                  color: ColorManager.upvoteRed,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                      ),
+                      DefaultTextField(
+                        formController: newPasswordController,
+                        labelText: 'New Password',
+                        isPassword: true,
+                        validator: (password) {
+                          if (!Validator.validPasswordValidation(password!)) {
+                            return 'opps, you have inserted wrong password formate';
+                          }
+                          return null;
+                        },
+                      ),
+                      DefaultTextField(
+                        formController: confirmPasswordtroller,
+                        labelText: 'Confirm New Password',
+                        isPassword: true,
+                        validator: (password) {
+                          if (!Validator.validPasswordValidation(password!)) {
+                            return 'opps, you have inserted wrong password formate';
+                          }
+                          return null;
+                        },
+                      )
+                    ]),
+                  ),
                 ),
                 BottomButtons(
                     string1: 'Cancel',

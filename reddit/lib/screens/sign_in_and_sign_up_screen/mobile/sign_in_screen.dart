@@ -4,11 +4,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 import '../../../components/default_text_field.dart';
 import '../../../components/helpers/color_manager.dart';
 import '../../../constants/constants.dart';
-import '../../../data/sign_in_And_sign_up_models/sign_up_model.dart';
+import '../../../data/settings/settings_models/user_settings.dart';
+import '../../../data/sign_in_And_sign_up_models/sign_in_model.dart';
 import '../../../data/sign_in_And_sign_up_models/validators.dart';
 import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
@@ -57,63 +59,58 @@ class _SignInScreenState extends State<SignInScreen> {
   void continueToTheHomePage() async {
     if (!validTextFields()) return;
 
-    final user = SignUpModel(
-        email: usernameController.text,
-        password: passwordController.text,
-        username: usernameController.text);
+    final user = LogInModel(
+        password: passwordController.text, username: usernameController.text);
 
-    DioHelper.postData(path: login, data: user.toJson()).then((value) {
+    await DioHelper.postData(path: login, data: user.toJson())
+        .then((value) async {
       if (value.statusCode == 200) {
+        /// saving the token and the username in the shared preferences
         CacheHelper.putData(key: 'token', value: value.data['token']);
         CacheHelper.putData(key: 'username', value: value.data['username']);
         token = CacheHelper.getData(key: 'token');
 
-        // navigating to the main screen
-        Navigator.of(context)
-            .pushReplacementNamed(HomeScreenForMobile.routeName);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              backgroundColor: ColorManager.red,
-              content: Text(value.data['error'].toString())),
-        );
+        /// caching the user settings in the shared preferences
+        await DioHelper.getData(path: accountSettings).then((response) {
+          if (response.statusCode == 200) {
+            UserSettingsModel.fromJson(response.data);
+            UserSettingsModel.cacheUserSettings();
+            // navigating to the main screen
+            Navigator.of(context)
+                .pushReplacementNamed(HomeScreenForMobile.routeName);
+          }
+        });
       }
     }).catchError((error) {
       // casting the error as a dio error to be able to use its content
       error = error as DioError;
-      // checking for our main error, which is that the user trying to insert
-      // username which is already taken
-      // if (error.message.toString() == 'Http status error [400]') {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //     const SnackBar(
-      //         backgroundColor: ColorManager.red,
-      //         content: Text('Username is already in use')),
-      //   );
-      // } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            backgroundColor: ColorManager.red,
-            content: Text(
-                'Something went wrong!, please change the inputs and try again')),
-      );
+      Logger().e(error.response!.data);
+      if (error.response?.statusCode == 400 ||
+          error.response?.statusCode == 401) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              backgroundColor: ColorManager.red,
+              content: Text(error.response!.data['error'].toString())),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              backgroundColor: ColorManager.red,
+              content: Text(
+                  'Something went wrong!, please change the inputs and try again')),
+        );
+      }
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //       backgroundColor: ColorManager.red,
+      //       content: Text(
+      //           'Something went wrong!, please change the inputs and try again')),
+      // );
       // }
     });
   }
 
-  /// this function is used to toggle the isEmpty boolean to reflect it on the GUI
-  /// @param myString which is the emailContent
-  void textChanger(myString) {
-    setState(() {
-      if (myString.isNotEmpty) {
-        isEmptyEmail = false;
-      } else {
-        isEmptyEmail = true;
-      }
-    });
-  }
-
   final _formKey = GlobalKey<FormState>();
-  bool isEmptyEmail = true;
   bool isEmptyUserName = true;
   @override
   Widget build(BuildContext context) {
@@ -176,7 +173,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           return null;
                         },
                         keyboardType: TextInputType.emailAddress,
-                        onChanged: (myString) => textChanger(myString),
+                        onChanged: (_) => setState(() {}),
                         formController: usernameController,
                         labelText: 'Username',
                         icon: usernameController.text.isNotEmpty
@@ -185,7 +182,6 @@ class _SignInScreenState extends State<SignInScreen> {
                                 onPressed: (() {
                                   setState(() {
                                     usernameController.text = '';
-                                    isEmptyEmail = true;
                                   });
                                 }))
                             : null,
@@ -199,6 +195,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             return null;
                           }
                         },
+                        onChanged: (_) => setState(() {}),
                         formController: passwordController,
                         labelText: 'Password',
                         isPassword: true,
@@ -285,7 +282,9 @@ class _SignInScreenState extends State<SignInScreen> {
                           key: const Key('ContinueButton'),
                           isPressable: usernameController.text.isNotEmpty &&
                               passwordController.text.isNotEmpty,
-                          appliedFunction: continueToTheHomePage)
+                          appliedFunction: () {
+                            continueToTheHomePage();
+                          })
                     ],
                   ),
                 )

@@ -3,7 +3,6 @@
 /// @Author: Ahmed Atta
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart' hide MenuItem;
-import 'package:logger/logger.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/data/post_model/post_model.dart';
@@ -82,8 +81,10 @@ class DropDownList extends StatelessWidget {
 
     l.add((comment?.followed ?? false) ? MenuItems.unfollow : MenuItems.follow);
     l.insert(0, (comment?.saved ?? false) ? MenuItems.unsave : MenuItems.save);
-    if (!outsideScreen) {
+    if ((comment?.commentedBy != null) &&
+        comment?.commentedBy == CacheHelper.getData(key: 'username')) {
       l.add(MenuItems.edit);
+      l.add(MenuItems.delete);
     }
     return l;
   }
