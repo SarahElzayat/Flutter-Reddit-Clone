@@ -3,14 +3,14 @@
 /// This  file contains the user settings screen in the web version.
 
 import 'package:flutter/material.dart';
-import 'package:reddit/components/default_text_field.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/components/home_app_bar.dart';
-import 'package:reddit/components/snack_bar.dart';
-import 'package:reddit/cubit/settings_cubit/settings_cubit.dart';
-import 'package:reddit/data/settings/countries.dart';
-import 'package:reddit/data/sign_in_And_sign_up_models/validators.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
+import '../../../components/default_text_field.dart';
+import '../../../components/helpers/color_manager.dart';
+import '../../../components/home_app_bar.dart';
+import '../../../components/snack_bar.dart';
+import '../../../cubit/settings_cubit/settings_cubit.dart';
+import '../../../data/settings/countries.dart';
+import '../../../data/sign_in_And_sign_up_models/validators.dart';
+import '../../../shared/local/shared_preferences.dart';
 
 class UserSettings extends StatefulWidget {
   static const String routeName = '/user-settings-for-web';
@@ -22,6 +22,9 @@ class UserSettings extends StatefulWidget {
 
 class _UserSettingsState extends State<UserSettings> {
   final _formKey = GlobalKey<FormState>();
+  String dropDownValue = CacheHelper.getData(key: 'gender') ?? 'Male';
+  String dropDownValueCountries =
+      CacheHelper.getData(key: 'country') ?? 'Egypt';
   TextEditingController oldPasswordController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
@@ -323,10 +326,6 @@ class _UserSettingsState extends State<UserSettings> {
         });
   }
 
-  ///
-
-  String dropDownValue = 'Male';
-  String dropDownValueCountries = 'Egypt';
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -362,35 +361,51 @@ class _UserSettingsState extends State<UserSettings> {
                               scrollDirection: Axis.horizontal,
                               children: [
                                 TextButton(
-                                  child: const Text('Account'),
+                                  child: const Text('Account',
+                                      style:
+                                          TextStyle(color: ColorManager.blue)),
                                   onPressed: () {},
                                 ),
                                 TextButton(
-                                  child: const Text('Profile'),
+                                  child: const Text('Profile',
+                                      style:
+                                          TextStyle(color: ColorManager.blue)),
                                   onPressed: () {},
                                 ),
                                 TextButton(
-                                  child: const Text('Safety & Privacy'),
+                                  child: const Text('Safety & Privacy',
+                                      style:
+                                          TextStyle(color: ColorManager.blue)),
                                   onPressed: () {},
                                 ),
                                 TextButton(
-                                  child: const Text('Feed Settings'),
+                                  child: const Text('Feed Settings',
+                                      style:
+                                          TextStyle(color: ColorManager.blue)),
                                   onPressed: () {},
                                 ),
                                 TextButton(
-                                  child: const Text('Notifications'),
+                                  child: const Text('Notifications',
+                                      style:
+                                          TextStyle(color: ColorManager.blue)),
                                   onPressed: () {},
                                 ),
                                 TextButton(
-                                  child: const Text('Emails'),
+                                  child: const Text('Emails',
+                                      style:
+                                          TextStyle(color: ColorManager.blue)),
                                   onPressed: () {},
                                 ),
                                 TextButton(
-                                  child: const Text('Subscriptions'),
+                                  child: const Text('Subscriptions',
+                                      style:
+                                          TextStyle(color: ColorManager.blue)),
                                   onPressed: () {},
                                 ),
                                 TextButton(
-                                  child: const Text('Chat & Messaging'),
+                                  child: const Text('Chat & Messaging',
+                                      style:
+                                          TextStyle(color: ColorManager.blue)),
                                   onPressed: () {},
                                 ),
                               ],
