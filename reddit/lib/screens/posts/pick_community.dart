@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../components/helpers/color_manager.dart';
-import '../../cubit/app_cubit/app_cubit.dart';
-import 'share_to_community.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/cubit/app_cubit/app_cubit.dart';
+import 'package:reddit/screens/posts/share_to_community.dart';
 
 import '../../data/post_model/post_model.dart';
 
@@ -57,6 +57,7 @@ class _PickCommunityScreenState extends State<PickCommunityScreen> {
                       shrinkWrap: true,
                       itemCount: cubit.yourCommunitiesList.length,
                       itemBuilder: (context, index) => InkWell(
+                        //TODO share post
                         onTap: () {
                           Navigator.push(
                               context,

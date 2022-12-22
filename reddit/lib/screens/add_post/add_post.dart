@@ -49,9 +49,8 @@ class AddPost extends StatelessWidget {
           body: SizedBox(
             height: mediaQuery.size.height,
             child: Column(children: [
-              if ((addPostCubit.subredditName != null &&
-                      addPostCubit.subredditName != '') ||
-                  !addPostCubit.isSubreddit)
+              if (addPostCubit.subredditName != null &&
+                  addPostCubit.subredditName != '')
                 BlocBuilder<AddPostCubit, AddPostState>(
                   buildWhen: (previous, current) =>
                       (current is ChangeSubredditName ||
@@ -63,10 +62,7 @@ class AddPost extends StatelessWidget {
                       },
                       child: Row(
                         children: [
-                          Text(
-                              (addPostCubit.isSubreddit)
-                                  ? addPostCubit.subredditName ?? ''
-                                  : 'My Profile',
+                          Text(addPostCubit.subredditName ?? '',
                               style: Theme.of(context).textTheme.titleSmall),
                           const Icon(Icons.keyboard_arrow_down)
                         ],
@@ -100,3 +96,19 @@ class AddPost extends StatelessWidget {
     );
   }
 }
+
+// class AddPost extends StatefulWidget {
+//   const AddPost({Key? key}) : super(key: key);
+
+//   @override
+//   State<AddPost> createState() => _AddPostState();
+// }
+
+// class _AddPostState extends State<AddPost> {
+
+//   @override
+//   Widget build(BuildContext context) {
+
+//     return
+//   }
+// }

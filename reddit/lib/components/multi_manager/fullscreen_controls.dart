@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import '../helpers/color_manager.dart';
-import '../../widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
-import '../../widgets/posts/votes_widget.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
+import 'package:reddit/widgets/posts/votes_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../data/post_model/post_model.dart';

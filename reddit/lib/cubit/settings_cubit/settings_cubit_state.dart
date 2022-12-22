@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 abstract class SettingsCubitState {}
 
 class SettingsCubitInitial extends SettingsCubitState {}

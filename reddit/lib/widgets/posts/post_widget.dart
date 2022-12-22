@@ -22,7 +22,7 @@ import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/functions/post_functions.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
-import 'package:reddit/widgets/posts/post_lower_bar_without_votes.dart';
+import 'package:reddit/widgets/posts/post_lower_bar.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tuple/tuple.dart';
@@ -47,7 +47,6 @@ class PostWidget extends StatefulWidget {
     required this.post,
     this.outsideScreen = true,
     this.isNested = false,
-    this.inSearch = false,
     this.upperRowType = ShowingOtions.both,
     this.postView = PostView.card,
     this.comment,
@@ -75,7 +74,6 @@ class PostWidget extends StatefulWidget {
   /// if yes then the post will be shown in a compact way
   final bool isNested;
 
-  final bool inSearch;
   final CommentModel? comment;
 
   final bool insideProfiles;
@@ -92,11 +90,13 @@ class _PostWidgetState extends State<PostWidget> {
       DioHelper.getData(path: '/post-details', query: {
         'id': widget.post.sharePostId,
       }).then((value) {
-        if (value.statusCode == 200 && mounted) {
-          setState(() {
-            childPost = PostModel.fromJson(value.data);
-            logger.d(childPost!.title);
-          });
+        if (value.statusCode == 200) {
+          if (mounted) {
+            setState(() {
+              childPost = PostModel.fromJson(value.data);
+              logger.d(childPost!.title);
+            });
+          }
         }
       }).catchError((e) {
         logger.e(e);
@@ -109,9 +109,7 @@ class _PostWidgetState extends State<PostWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PostAndCommentActionsCubit(post: widget.post)
-        ..getSubDetails()
-        ..getUserDetails(),
+      create: (context) => PostAndCommentActionsCubit(post: widget.post),
       child: ResponsiveBuilder(
         builder: (buildContext, sizingInformation) {
           bool isWeb = kIsWeb; //!ResponsiveWidget.isSmallScreen(context);
@@ -334,9 +332,7 @@ class _PostWidgetState extends State<PostWidget> {
   }
 
   Row _lowerPart(bool isWeb) {
-    if (widget.isNested ||
-        widget.postView == PostView.withCommentsInSearch ||
-        widget.inSearch) {
+    if (widget.isNested || widget.postView == PostView.withCommentsInSearch) {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -529,50 +525,48 @@ class _PostWidgetState extends State<PostWidget> {
             paragraph: DefaultTextBlockStyle(
               const TextStyle(
                 fontSize: 14,
-                color: ColorManager.eggshellWhite,
+                color: Colors.black,
                 height: 1.15,
                 fontWeight: FontWeight.w300,
               ),
               const Tuple2(16, 0),
               const Tuple2(0, 0),
-              const BoxDecoration(
-                color: Colors.transparent,
+              null,
+            ),
+            quote: DefaultTextBlockStyle(
+              const TextStyle(
+                fontSize: 14,
+                color: Colors.black,
+                height: 1.15,
+                fontWeight: FontWeight.w300,
               ),
+              const Tuple2(16, 0),
+              const Tuple2(0, 0),
+              null,
             ),
             code: DefaultTextBlockStyle(
               const TextStyle(
                 fontSize: 14,
-                color: ColorManager.eggshellWhite,
+                color: Colors.red,
                 height: 1.15,
                 fontWeight: FontWeight.w300,
               ),
               const Tuple2(16, 0),
               const Tuple2(0, 0),
-              const BoxDecoration(
-                color: Colors.transparent,
-              ),
+              null,
             ),
-            inlineCode: InlineCodeStyle(
-                style: const TextStyle(color: ColorManager.eggshellWhite)),
+            inlineCode:
+                InlineCodeStyle(style: const TextStyle(color: Colors.red)),
             h1: DefaultTextBlockStyle(
-              const TextStyle(
-                fontSize: 32,
-                color: ColorManager.eggshellWhite,
-                height: 1.15,
-                fontWeight: FontWeight.w300,
-              ),
-              const Tuple2(16, 0),
-              const Tuple2(0, 0),
-              const BoxDecoration(
-                color: Colors.transparent,
-              ),
-            ),
-            link: const TextStyle(
-              fontSize: 14,
-              color: ColorManager.eggshellWhite,
-              height: 1.15,
-              fontWeight: FontWeight.w600,
-            ),
+                const TextStyle(
+                  fontSize: 32,
+                  color: Colors.black,
+                  height: 1.15,
+                  fontWeight: FontWeight.w300,
+                ),
+                const Tuple2(16, 0),
+                const Tuple2(0, 0),
+                null),
             sizeSmall: const TextStyle(fontSize: 9),
           ),
           scrollController: ScrollController(),
@@ -677,7 +671,7 @@ class _PostWidgetState extends State<PostWidget> {
               ),
           ],
         ),
-        if (widget.post.flair?.id != null &&
+        if (widget.post.flair != null &&
             !(widget.post.kind == 'link' && widget.outsideScreen))
           _flairWidget()
       ],
@@ -710,13 +704,12 @@ class _PostWidgetState extends State<PostWidget> {
   }
 
   Widget _flairWidget() {
-    logger.d('flair: ${widget.post.flair!}');
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
-          color: HexColor(widget.post.flair!.backgroundColor ?? '#FF0000'),
+          color: HexColor(widget.post.flair!.backgroundColor ?? '#FF00000'),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(

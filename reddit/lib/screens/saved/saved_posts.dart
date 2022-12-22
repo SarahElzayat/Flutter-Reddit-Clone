@@ -1,7 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../cubit/app_cubit/app_cubit.dart';
+import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 
 import '../../components/helpers/color_manager.dart';
 import '../../components/helpers/enums.dart';
@@ -26,13 +26,6 @@ class _SavedPostsScreenState extends State<SavedPostsScreen> {
     }
   }
 
-  /// the method that's callled on pull down to refresh
-  Future<void> _onRefresh() async {
-    setState(() {
-      AppCubit.get(context).getSaved(isPosts: true);
-    });
-  }
-
   @override
   void initState() {
     AppCubit.get(context).getSaved(isPosts: true);
@@ -44,7 +37,6 @@ class _SavedPostsScreenState extends State<SavedPostsScreen> {
   @override
   Widget build(BuildContext context) {
     final AppCubit cubit = AppCubit.get(context);
-
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -62,20 +54,19 @@ class _SavedPostsScreenState extends State<SavedPostsScreen> {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 )
-              : RefreshIndicator(
-                  onRefresh: _onRefresh,
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    itemCount: cubit.savedPostsList.length,
-                    itemBuilder: (context, index) => PostWidget(
-                        key: Key(cubit.savedPostsList[index].id.toString()),
-                        upperRowType:
-                            cubit.savedPostsList[index].inYourSubreddit == null
-                                ? ShowingOtions.onlyUser
-                                : ShowingOtions.both,
-                        post: cubit.savedPostsList[index],
-                        postView: PostView.classic),
-                  ),
+              : ListView.builder(
+                  controller: _scrollController,
+                  itemCount: cubit.savedPostsList.length,
+                  itemBuilder: (context, index) => PostWidget(
+                      key: Key(cubit.savedPostsList[index].id.toString()),
+                      upperRowType:
+                          cubit.savedPostsList[index].inYourSubreddit == null
+                              ? ShowingOtions.onlyUser
+                              : ShowingOtions.both,
+                      // TODO check this
+                      // upperRowType: ShowingOtions.onlyUser,
+                      post: cubit.savedPostsList[index],
+                      postView: PostView.classic),
                 ),
         );
       },

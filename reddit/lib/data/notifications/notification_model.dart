@@ -1,6 +1,6 @@
 class NotificationModel {
-  int? before;
-  int? after;
+  String? before;
+  String? after;
   int? unreadCount;
   List<NotificationItSelf>? children;
 
@@ -37,7 +37,6 @@ class NotificationItSelf {
   String? type;
   String? link;
   String? photo;
-  String? followingUsername;
   String? sendAt;
   bool? isRead;
 
@@ -47,7 +46,6 @@ class NotificationItSelf {
       this.type,
       this.link,
       this.sendAt,
-      this.followingUsername,
       this.isRead,
       this.commentId,
       this.photo,
@@ -61,7 +59,6 @@ class NotificationItSelf {
     type = json['type'];
     link = json['link'];
     photo = json['photo'];
-    photo = json['followingUsername'];
     sendAt = json['sendAt'];
     isRead = json['isRead'];
   }
@@ -75,7 +72,6 @@ class NotificationItSelf {
       'sendAt': sendAt,
       'isRead': isRead,
       'commentId': commentId,
-      'followingUsername': followingUsername,
       'postId': postId,
       'photo': photo,
     };

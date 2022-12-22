@@ -47,8 +47,7 @@ class CreatePostButton extends StatelessWidget {
                 ? () {}
                 : (() async {
                     if (addPostCubit.subredditName != null &&
-                            addPostCubit.subredditName != '' ||
-                        addPostCubit.isSubreddit == false) {
+                        addPostCubit.subredditName != '') {
                       await addPostCubit.getSubredditFlair();
                       navigator.pushNamed(PostRules.routeName);
                     } else {

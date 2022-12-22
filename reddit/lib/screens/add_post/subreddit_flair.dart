@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import '../../components/helpers/color_manager.dart';
-import '../../cubit/add_post/cubit/add_post_cubit.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/cubit/add_post/cubit/add_post_cubit.dart';
 
 import '../../data/add_post/subreddit_flairs.dart';
 
 class SubredditFlairs extends StatefulWidget {
-  const SubredditFlairs({Key? key}) : super(key: key);
+  SubredditFlairs({Key? key}) : super(key: key);
 
   @override
   State<SubredditFlairs> createState() => _SubredditFlairsState();
@@ -20,6 +20,7 @@ class _SubredditFlairsState extends State<SubredditFlairs> {
 
   @override
   void initState() {
+    // TODO: implement initState
     AddPostCubit.get(context).getSubredditFlair();
     subredditFlairs = AddPostCubit.get(context).flairs!;
     super.initState();
@@ -28,6 +29,7 @@ class _SubredditFlairsState extends State<SubredditFlairs> {
   @override
   Widget build(BuildContext context) {
     final meidaQuery = MediaQuery.of(context);
+    final addPostCubit = AddPostCubit.get(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -52,7 +54,7 @@ class _SubredditFlairsState extends State<SubredditFlairs> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   const Icon(Icons.search),
-                  SizedBox(
+                  Container(
                     width: meidaQuery.size.width * 0.85,
                     child: TextFormField(
                       style: const TextStyle(fontSize: 20),
@@ -77,8 +79,8 @@ class _SubredditFlairsState extends State<SubredditFlairs> {
               },
             ),
             Container(
-              padding: const EdgeInsets.all(4),
-              child: const Text('None'),
+              padding: EdgeInsets.all(4),
+              child: Text('None'),
             )
           ],
         ),
@@ -99,7 +101,7 @@ class _SubredditFlairsState extends State<SubredditFlairs> {
                         },
                         activeColor: ColorManager.white),
                     Container(
-                      padding: const EdgeInsets.all(4),
+                      padding: EdgeInsets.all(4),
                       color: Color(jsonDecode(
                           subredditFlairs.postFlairs![index].backgroundColor!)),
                       child: Text(

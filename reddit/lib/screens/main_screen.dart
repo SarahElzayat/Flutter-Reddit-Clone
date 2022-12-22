@@ -1,17 +1,17 @@
 /// @author Sarah Elzayat
 /// @date 3/11/2022
 /// @description This screen is the main one that has the bottom navigation bar, the main app bar, drawer and end drawer
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 
 import '../components/home_app_bar.dart';
-import '../components/home_components/left_drawer.dart';
-import '../components/home_components/right_drawer.dart';
-import '../components/snack_bar.dart';
 import '../cubit/app_cubit/app_cubit.dart';
 import '../screens/add_post/add_post.dart';
+import '../components/home_components/left_drawer.dart';
+import '../components/home_components/right_drawer.dart';
 
 class HomeScreenForMobile extends StatefulWidget {
   const HomeScreenForMobile({super.key});
@@ -49,13 +49,12 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
             builder: (context) => const HomeScreen(),
           ));
     }
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final AppCubit cubit = AppCubit.get(context)..getUsername();
+    final AppCubit cubit = AppCubit.get(context); //..getUsername();
 
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {
@@ -64,13 +63,6 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
         }
         if (state is ChangeLeftDrawerState) {
           _changeLeftDrawer();
-        }
-
-        if (state is ErrorState) {
-          ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
-            message: 'An error occurred, please try again later.',
-            error: false,
-          ));
         }
       },
       builder: (context, state) {

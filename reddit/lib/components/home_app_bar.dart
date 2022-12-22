@@ -133,9 +133,7 @@ AppBar homeAppBar(context, index) {
 
                       if (choice == 'new message') {
                         Navigator.of(context)
-                            .push(MaterialPageRoute(builder: (context) {
-                          return CreateMessageScreen();
-                        }));
+                            .pushNamed(CreateMessageScreen.routeName);
                       } else if (choice == 'Mark all inbox tabs as read') {
                         /// TODO: mark all notifications as read
                         markAllAsRead(context);
@@ -149,9 +147,7 @@ AppBar homeAppBar(context, index) {
                         onPressed: () {},
                         icon: const Icon(Icons.add_comment_outlined))
                     : const Text(''),
-        InkWell(
-            onTap: () => cubit.changeRightDrawer(),
-            child: avatar(context: context))
+        InkWell(onTap: () => cubit.changeRightDrawer(), child: avatar())
       ],
     );
   }
@@ -204,9 +200,7 @@ AppBar homeAppBar(context, index) {
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
             ),
-            InkWell(
-                onTap: () => cubit.changeRightDrawer(),
-                child: avatar(context: context))
+            InkWell(onTap: () => cubit.changeRightDrawer(), child: avatar())
           ],
         ),
       ),

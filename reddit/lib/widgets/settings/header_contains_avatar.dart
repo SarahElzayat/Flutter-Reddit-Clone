@@ -8,12 +8,17 @@ import 'package:flutter/material.dart';
 import '../../components/helpers/color_manager.dart';
 
 class HeaderContainsAvatar extends StatelessWidget {
-  // ignore: prefer_typing_uninitialized_variables
   final usrName;
-  // ignore: prefer_typing_uninitialized_variables
   final email;
-  const HeaderContainsAvatar(
-      {super.key, required this.email, required this.usrName});
+
+  /// TODO: how to get the user image ?
+  // final userImg;
+  const HeaderContainsAvatar({
+    super.key,
+    required this.email,
+    required this.usrName,
+    // required this.userImg
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +33,12 @@ class HeaderContainsAvatar extends StatelessWidget {
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+
+          /// TODO: here we will need to use cubit
           children: [
             Text(
               usrName,
-              style:const TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(email)
           ],

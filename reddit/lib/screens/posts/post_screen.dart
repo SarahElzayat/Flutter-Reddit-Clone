@@ -1,6 +1,7 @@
 /// The Main Post Screen with the Comments
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
@@ -11,7 +12,6 @@ import 'package:reddit/screens/posts/post_screen_cubit/post_screen_state.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_state.dart';
 import '../../data/post_model/post_model.dart';
@@ -52,12 +52,14 @@ class PostScreen extends StatelessWidget {
         BlocProvider(
           create: (context) => PostScreenCubit(
             post: post,
-          )..getCommentsOfPost(limit: 10),
+          )
+            ..getCommentsOfPost(limit: 10)
+            ..getPostDetails(),
         ),
       ],
       child: Scaffold(
         appBar: AppBar(
-          title: Text(post.title ?? ''),
+          title: Text(post.title!),
           actions: [
             BlocBuilder<PostNotifierCubit, PostNotifierState>(
               builder: (context, state) {

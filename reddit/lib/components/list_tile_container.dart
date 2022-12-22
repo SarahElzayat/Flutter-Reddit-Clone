@@ -3,7 +3,6 @@
 /// this is a common container for the list tiles because
 /// it is used alot in the mod tools
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -29,7 +28,7 @@ class ListTileContainer extends StatelessWidget {
 
   /// the type of the function that should be
   /// executed when pressing on any trailing obeject
-  List<String> types;
+  final List<String> types;
 
   /// where each item has its own handler
   /// this is the function that should be executed
@@ -39,7 +38,7 @@ class ListTileContainer extends StatelessWidget {
       {super.key,
       required this.handler,
       this.items = const [],
-      this.types = const [],
+      required this.types,
       required this.title,
       required this.listTileTitles,
       required this.listTileIcons,
@@ -61,8 +60,6 @@ class ListTileContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final fontScale = MediaQuery.of(context).textScaleFactor;
     return Column(
-      mainAxisSize: MainAxisSize.min,
-      
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 2.h),
@@ -81,19 +78,13 @@ class ListTileContainer extends StatelessWidget {
               padding: EdgeInsets.zero,
               itemCount: listTileTitles.length,
               itemBuilder: (BuildContext context, int index) {
-                return Theme(
-                  data: ThemeData(
-                      hoverColor: ColorManager.grey.withOpacity(0.5),
-                      splashColor: (kIsWeb)
-                          ? Colors.transparent
-                          : ColorManager.lightGrey.withOpacity(0.5)),
-                  child: ListTileWidget(
-                      items: _ourItems(index),
-                      leadingIcon: Icon(listTileIcons[index]),
-                      title: listTileTitles[index],
-                      handler: handler[index],
-                      tailingObj: trailingObject[index]),
-                );
+                return ListTileWidget(
+                    type: types[index],
+                    items: _ourItems(index),
+                    leadingIcon: Icon(listTileIcons[index]),
+                    title: listTileTitles[index],
+                    handler: handler[index],
+                    tailingObj: trailingObject[index]);
               }),
         ),
       ],

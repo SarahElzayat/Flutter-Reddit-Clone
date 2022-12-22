@@ -1,13 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import '../../components/snack_bar.dart';
-import '../../constants/constants.dart';
-import '../../data/post_model/post_model.dart';
-import '../../networks/constant_end_points.dart';
-import '../../networks/dio_helper.dart';
-import '../../screens/posts/post_screen.dart';
+import 'package:reddit/components/snack_bar.dart';
+import 'package:reddit/constants/constants.dart';
+import 'package:reddit/networks/constant_end_points.dart';
+import 'package:reddit/networks/dio_helper.dart';
 import '../../components/bottom_sheet.dart';
 import '../../data/notifications/notification_model.dart';
+import '../../screens/inbox/single_notification_screen.dart';
 import '../../components/helpers/color_manager.dart';
 
 class NotificationWidget extends StatefulWidget {
@@ -41,7 +40,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
     }).onError((error, stackTrace) {
       error = error as DioError;
       ScaffoldMessenger.of(context)
-          .showSnackBar(responseSnackBar(message: '${error.response} 😔'));
+          .showSnackBar(responseSnackBar(message: '${error.message} 😔'));
     });
   }
 
@@ -51,13 +50,8 @@ class _NotificationWidgetState extends State<NotificationWidget> {
     final fontScale = mediaQuery.textScaleFactor;
     return ListTile(
       onTap: () {
-        if (widget.notification.type == 'Comment') {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return PostScreen(
-              post: PostModel(id: widget.notification.postId!),
-            );
-          }));
-        } else if (widget.notification.type == 'Follow') {}
+        if (widget.notification.type == 'post')
+          Navigator.of(context).pushNamed(SignleNotificationScreen.routeName);
       },
       contentPadding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
       horizontalTitleGap: 10,
@@ -65,7 +59,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
         backgroundColor: ColorManager.upvoteRed,
         child: widget.notification.photo == null
             ? Image.network(unknownAvatar)
-            : Image.network('$baseUrl/${widget.notification.photo!}'),
+            : Image.network(widget.notification.photo!),
       ),
       title: Row(
         children: [
@@ -125,6 +119,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
             if (setItem == 'Hide this notification') {
               hideTheNotifcation();
             } else if ('Disable updates from this community' == setItem) {
+              /// TODO apply the logic of disable updates here.
               // does'nt have an endpoint
             } else {
               /// Turn of this notification.

@@ -64,11 +64,11 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
 
   /// this function is used to validate that the user has inserted the right
   /// input formate and also send the request to the api
-  void loginChecker(myMail) async {
+  void loginChecker(_myMail) async {
     if (!validTextFields()) return;
 
     final user = SignUpModel(
-        email: myMail, // we get it from the navigation
+        email: _myMail, // we get it from the navigation
         password: passwordController.text,
         username: usernameController.text);
 
@@ -91,8 +91,8 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                 content: const SizedBox(
                     width: 400, child: ContinueSignUpForMobile()),
                 actions: [
-                  TextButton(onPressed: () {}, child: const Text('Cancel')),
-                  TextButton(onPressed: () {}, child: const Text('Ok')),
+                  TextButton(onPressed: () {}, child: Text('Cancel')),
+                  TextButton(onPressed: () {}, child: Text('Ok')),
                 ],
               );
             });
@@ -148,7 +148,7 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final myMail = ModalRoute.of(context)!.settings.arguments as String;
+    final _myMail = ModalRoute.of(context)!.settings.arguments as String;
     final navigator = Navigator.of(context);
     return Scaffold(
       body: MediaQuery.of(context).size.height < 400
@@ -322,7 +322,7 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                                           (usernameController.text.isNotEmpty &&
                                                   passwordController
                                                       .text.isNotEmpty)
-                                              ? loginChecker(myMail)
+                                              ? loginChecker(_myMail)
                                               : () {};
                                         },
                                         child: const Text('SIGN UP',

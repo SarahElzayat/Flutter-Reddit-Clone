@@ -45,7 +45,6 @@ class PaintScreen extends StatelessWidget {
 
               addPostCubit.imagePaintedOrCropped();
             }
-            // ignore: use_build_context_synchronously
             Navigator.of(context).pop();
           },
           color: ColorManager.blueGrey,

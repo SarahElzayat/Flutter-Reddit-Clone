@@ -1,11 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import '../../components/helpers/color_manager.dart';
-import '../../components/snack_bar.dart';
-import '../../data/notifications/notification_model.dart';
-import '../../networks/constant_end_points.dart';
-import '../../networks/dio_helper.dart';
-import '../comments/add_comment_screen.dart';
-import '../../widgets/inbox/notification_widget.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/components/snack_bar.dart';
+import 'package:reddit/data/notifications/notification_model.dart';
+import 'package:reddit/networks/constant_end_points.dart';
+import 'package:reddit/networks/dio_helper.dart';
+import 'package:reddit/screens/comments/add_comment_screen.dart';
+import 'package:reddit/widgets/inbox/notification_widget.dart';
 
 class NotificationScreen extends StatefulWidget {
   static const routeName = '/notification_screen';
@@ -16,14 +17,15 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-  int after = 0;
-  int before = 0;
+  String after = '';
+  String before = '';
 
   final scroller = ScrollController();
   List<NotificationWidget> notifications = [];
 
   @override
   void dispose() {
+    // TODO: implement dispose
     scroller.dispose();
     super.dispose();
   }
@@ -37,7 +39,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         if (response.statusCode == 200) {
           NotificationModel allNotifications =
               NotificationModel.fromJson(response.data);
-          after = allNotifications.after ?? 0;
+          after = allNotifications.after ?? '';
           for (NotificationItSelf notification in allNotifications.children!) {
             setState(() {
               notifications.add(NotificationWidget(notification: notification));

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../../components/helpers/color_manager.dart';
-import '../../../../components/moderation_components/modtools_components.dart';
-import 'choose_language.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/components/moderation_components/modtools_components.dart';
+import 'package:reddit/screens/moderation/general_screens/discovery/choose_language.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class Discovery extends StatefulWidget {

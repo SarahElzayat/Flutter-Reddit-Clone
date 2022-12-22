@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../components/helpers/color_manager.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
 
 import '../../components/button.dart';
 

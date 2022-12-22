@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import '../../cubit/user_profile/cubit/user_profile_cubit.dart';
-import '../../data/post_model/post_model.dart';
-import '../posts/post_widget.dart';
+import 'package:reddit/components/bottom_sheet.dart';
+import 'package:reddit/components/helpers/enums.dart';
+import 'package:reddit/constants/constants.dart';
+import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
+import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
+import 'package:reddit/data/post_model/post_model.dart';
+import 'package:reddit/widgets/posts/post_widget.dart';
 
 class UserProfilePosts extends StatefulWidget {
-  const UserProfilePosts({Key? key}) : super(key: key);
+  UserProfilePosts({Key? key}) : super(key: key);
 
   @override
   State<UserProfilePosts> createState() => _UserProfilePostsState();
@@ -21,6 +25,7 @@ class _UserProfilePostsState extends State<UserProfilePosts> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaquery = MediaQuery.of(context);
     final userProfileCubit = UserProfileCubit.get(context);
 
     return Column(

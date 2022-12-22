@@ -1,7 +1,7 @@
 ///@author Yasmine Ghanem
 ///@date 12/12/2022
 ///invite a user to join community as moderator
-///
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
@@ -36,9 +36,9 @@ class InviteModerator extends StatelessWidget {
                   SizedBox(
                     height: 8.h,
                     child: SquareTextField(
-                        formController: cubit.usernameController,
+                        formController: controller,
                         onChanged: (username) =>
-                            cubit.modButtonState(cubit.usernameController.text),
+                            cubit.modButtonState(controller.text),
                         showSuffix: false,
                         labelText: 'username',
                         prefix: const Text('u/')),

@@ -2,11 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
-import '../../../data/comment/comment_model.dart';
-import '../../../data/search/search_result_profile_model.dart';
-import '../../../data/search/search_result_subbredit_model.dart';
-import '../../../networks/constant_end_points.dart';
-import '../../../networks/dio_helper.dart';
+import 'package:reddit/data/comment/comment_model.dart';
+import 'package:reddit/data/search/search_result_profile_model.dart';
+import 'package:reddit/data/search/search_result_subbredit_model.dart';
+import 'package:reddit/networks/constant_end_points.dart';
+import 'package:reddit/networks/dio_helper.dart';
 
 import '../../../data/post_model/post_model.dart';
 import '../results_comments.dart';
@@ -92,9 +92,10 @@ class SearchCubit extends Cubit<SearchState> {
         }).then((value) {
       if (value.statusCode == 200) {
         if (value.data['children'].length == 0) {
-          if (!loadMore) {
-            emit(ResultEmptyState());
-          }
+          loadMore
+              ? emit(NoMoreResultsToLoadState())
+              : emit(ResultEmptyState());
+          emit(LoadedResultsState());
         } else {
           logger.wtf(value.data);
           postsAfterId = value.data['after'];
@@ -102,11 +103,9 @@ class SearchCubit extends Cubit<SearchState> {
           for (int i = 0; i < value.data['children'].length; i++) {
             posts.add(PostModel.fromJson(value.data['children'][i]['data']));
           }
-          loadMore
-              ? emit(LoadedMoreResultsState())
-              : emit(LoadedResultsState());
         }
         // print(value.data);
+        loadMore ? emit(LoadedMoreResultsState()) : emit(LoadedResultsState());
       } else {
         emit(SearchErrorState());
       }
@@ -139,10 +138,9 @@ class SearchCubit extends Cubit<SearchState> {
       if (value.statusCode == 200) {
         logger.wtf(value.data);
         if (value.data['children'].length == 0) {
-          if (!loadMore) {
-            emit(ResultEmptyState());
-          }
-
+          loadMore
+              ? emit(NoMoreResultsToLoadState())
+              : emit(ResultEmptyState());
           emit(LoadedResultsState());
         } else {
           usersAfterId = value.data['after'];
@@ -153,11 +151,11 @@ class SearchCubit extends Cubit<SearchState> {
             users.add(
                 SearchResultProfileModel.fromJson(value.data['children'][i]));
           }
-          // print(value.data);
-          loadMore
-              ? emit(LoadedMoreResultsState())
-              : emit(LoadingMoreResultsState());
         }
+        // print(value.data);
+        loadMore
+            ? emit(LoadedMoreResultsState())
+            : emit(LoadingMoreResultsState());
       } else {
         emit(SearchErrorState());
       }
@@ -196,9 +194,9 @@ class SearchCubit extends Cubit<SearchState> {
         }).then((value) {
       if (value.statusCode == 200) {
         if (value.data.length == 0) {
-          if (!loadMore) {
-            emit(ResultEmptyState());
-          }
+          loadMore
+              ? emit(NoMoreResultsToLoadState())
+              : emit(ResultEmptyState());
         } else {
           commentsAfterId = value.data['after'];
           commentsBeforeId = value.data['before'];
@@ -245,9 +243,9 @@ class SearchCubit extends Cubit<SearchState> {
       if (value.statusCode == 200) {
         logger.wtf(value.data);
         if (value.data.length == 0) {
-          if (!loadMore) {
-            emit(ResultEmptyState());
-          }
+          loadMore
+              ? emit(NoMoreResultsToLoadState())
+              : emit(ResultEmptyState());
         } else {
           subbredditsAfterId = value.data['after'];
           subbredditsBeforeId = value.data['before'];

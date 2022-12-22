@@ -5,7 +5,6 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/search_components/profile_result_container.dart';
-import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
 import 'package:reddit/data/search/search_result_profile_model.dart';
 import 'package:reddit/screens/search/cubit/search_cubit.dart';
 
@@ -72,14 +71,9 @@ class _ResultsUsersState extends State<ResultsUsers> {
                     controller: _scrollController,
                     itemCount: cubit.users.length, //cubit.cubit.users.length,
                     shrinkWrap: true,
-                    itemBuilder: (context, index) => InkWell(
-                          onTap: () => UserProfileCubit.get(context)
-                              .showPopupUserWidget(
-                                  context, cubit.users[index].data!.username!),
-                          child: IntrinsicHeight(
-                            child: ProfileResultContainer(
-                              model: cubit.users[index],
-                            ),
+                    itemBuilder: (context, index) => IntrinsicHeight(
+                          child: ProfileResultContainer(
+                            model: cubit.users[index],
                           ),
                         ));
           },

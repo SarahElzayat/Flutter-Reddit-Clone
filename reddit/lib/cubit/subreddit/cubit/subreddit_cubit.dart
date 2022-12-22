@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import '../../../data/post_model/post_model.dart';
-import '../../../data/settings/settings_models/user_settings.dart';
-import '../../../data/subreddit/subreddit_model.dart';
-import '../../../networks/constant_end_points.dart';
-import '../../../networks/dio_helper.dart';
-import '../../../shared/local/shared_preferences.dart';
-import '../../../components/snack_bar.dart';
+import 'package:reddit/constants/constants.dart';
+import 'package:reddit/data/post_model/post_model.dart';
+import 'package:reddit/data/subreddit/subreddit_model.dart';
+import 'package:reddit/networks/constant_end_points.dart';
+import 'package:reddit/networks/dio_helper.dart';
+import 'package:reddit/shared/local/shared_preferences.dart';
 import '../../../data/subreddit/moderators_model.dart';
+import '../../../screens/comments/add_comment_screen.dart';
 import '../../../screens/subreddit/subreddit_screen.dart';
 part 'subreddit_state.dart';
 
@@ -28,56 +28,65 @@ class SubredditCubit extends Cubit<SubredditState> {
   void setSubredditName(BuildContext context, String name,
       {bool replace = false}) async {
     Map<String, String> query = {'subreddit': name};
+    print(query);
+    print('Set Subreddit');
+    print(token);
     await DioHelper.getData(path: '$subredditInfo/$name', query: query)
         .then((value) {
       if (value.statusCode == 200) {
+        // logger.wtf('Subreddit Info ====>');
+        // logger.wtf(value.data);
+        print('Subreddit model');
         subreddit = SubredditModel.fromJson(value.data);
         subredditName = name;
         if (subreddit!.isMember == null) return;
 
-        if (subreddit!.type == 'private' && subreddit!.isMember == false) {
-          ScaffoldMessenger.of(context).showSnackBar(
-              responseSnackBar(message: 'Subreddit is Private', error: true));
-          return;
-        }
-
-        if (UserSettingsModel.nsfw == false &&
-            subreddit!.nsfw != null &&
-            subreddit!.nsfw == true) {
-          ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
-              message: 'Subreddit is NSFW , Edit Setting', error: true));
-          return;
-        }
+        // emit(subredditChange());
       }
     }).catchError((error) {
+      print('Error In Get Subreddit Info : $error');
       return;
     });
 
-    DioHelper.getData(path: '/r/$name/about/moderators', query: {
+    print('Get Moderators');
+
+    await DioHelper.getData(path: '/r/$name/about/moderators', query: {
       'subreddit': name,
     }).then((value) {
       if (value.statusCode == 200) {
+        print('Success');
+        print(value.data);
         moderators = ModeratorModel.fromJson(value.data);
-        if (replace) {
-          Navigator.of(context).pushReplacementNamed(Subreddit.routeName);
-        } else {
+        print('convert to mod model');
+        if (!replace)
           Navigator.of(context).pushNamed(Subreddit.routeName);
-        }
+        else
+          Navigator.of(context).pushReplacementNamed(Subreddit.routeName);
+
+        print('navigate');
       }
-    }).catchError((error) {});
+    }).catchError((error) {
+      print('Error in gettin moderators');
+    });
   }
 
   void leaveCommunity() {
+    print('In leave subreddit');
     String token = CacheHelper.getData(key: 'token');
+    print('Token');
+    print(token);
     DioHelper.postData(
         sentToken: token,
         path: leaveSubreddit,
         data: {'subredditName': subredditName}).then((value) {
       if (value.statusCode == 200) {
+        print('Leaved Successfully');
         subreddit!.isMember = false;
-        emit(LeaveSubredditState());
+        emit(leaveSubredditState());
       }
-    }).catchError((error) {});
+    }).catchError((error) {
+      print('Error In Leave Subreddit : $error');
+    });
   }
 
   void joinCommunity() {
@@ -87,14 +96,19 @@ class SubredditCubit extends Cubit<SubredditState> {
         path: joinSubreddit,
         data: {'subredditId': subreddit!.subredditId}).then((value) {
       if (value.statusCode == 200) {
+        print('joined Successfully');
         subreddit!.isMember = true;
-        emit(JoinSubredditState());
+        emit(joinSubredditState());
       }
-    }).catchError((error) {});
+    }).catchError((error) {
+      print('Error In Leave Subreddit : $error');
+    });
   }
 
   void fetchPosts({String? after, required String sortBy}) {
     final query = {'after': after, 'subreddit': subredditName};
+    print('URL : /r/$subredditName/$sortBy');
+    print(query);
     DioHelper.getData(path: '/r/$subredditName/$sortBy', query: query)
         .then((value) {
       if (value.statusCode == 200) {
@@ -103,7 +117,10 @@ class SubredditCubit extends Cubit<SubredditState> {
           // logger.wtf(i);
           final post = (PostModel.fromJsonwithData(value.data['children'][i]));
           fetchedPosts.add(post);
+          print(i);
+          print(post.title);
         }
+        print(value.data['after'] as String);
         if (value.data['after'] as String == '') {
           pagingController.appendLastPage(fetchedPosts);
         } else {
@@ -111,6 +128,8 @@ class SubredditCubit extends Cubit<SubredditState> {
               fetchedPosts, value.data['after'] as String);
         }
       }
-    }).catchError((error) {});
+    }).catchError((error) {
+      print('Error In Fetch Posts ==> $error');
+    });
   }
 }
