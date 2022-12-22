@@ -1,13 +1,9 @@
-import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:delta_markdown/delta_markdown.dart';
-import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
@@ -540,7 +536,6 @@ class AddPostCubit extends Cubit<AddPostState> {
 
     FormData formData = FormData.fromMap(body);
 
-
     await DioHelper.postData(
             path: submitPost,
             onSendProgress: ((postType == 0 || postType == 1))
@@ -561,7 +556,6 @@ class AddPostCubit extends Cubit<AddPostState> {
     }).catchError((error) {
       ScaffoldMessenger.of(context).showSnackBar(
           responseSnackBar(message: 'An Error Please Try Again', error: true));
-
     });
     emit(PostCreated());
   }
