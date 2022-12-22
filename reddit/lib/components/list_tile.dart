@@ -121,7 +121,7 @@ class _ListTileWidgetState extends State<ListTileWidget> {
     );
   }
 
-// { hot, best, top, trending, newPosts, raising, controversial }
+  /// utility handlertion to build if the tailing object was DropBox
   void _setDropDownValue() {
     int res = CacheHelper.getData(key: 'SortHome');
     if (widget.title.contains('Sort home posts by')) {
@@ -160,7 +160,6 @@ class _ListTileWidgetState extends State<ListTileWidget> {
       }
     } else if (widget.title.contains('Google')) {
       String mail = CacheHelper.getData(key: 'googleEmail');
-      print('mail is $mail');
       dropDownValue = mail.isEmpty ? 'Disconnected' : 'Connected';
     } else if (widget.title.contains('Facebook')) {
       String mail = CacheHelper.getData(key: 'facebookEmail');
@@ -206,7 +205,6 @@ class _ListTileWidgetState extends State<ListTileWidget> {
         onChanged: (String? newValue) {
           SettingsCubit.get(context)
               .changeDropValue(newValue, widget.type!, context);
-          print(newValue);
           _setDropDownValue();
         },
       ),

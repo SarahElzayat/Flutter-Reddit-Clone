@@ -1,12 +1,14 @@
 /// @author Sarah El-Zayat
 /// @date 9/11/2022
 /// Theme of the whole application
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 
 ThemeData appTheme() {
   return ThemeData(
-    scaffoldBackgroundColor: ColorManager.black,
+    scaffoldBackgroundColor:
+        kIsWeb ? ColorManager.darkGrey : ColorManager.black,
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       elevation: 0,
       backgroundColor: ColorManager.black,
@@ -45,25 +47,18 @@ ThemeData appTheme() {
       outline: ColorManager.white,
     ),
     textTheme: const TextTheme(
-      titleMedium: TextStyle(
-        fontSize: 12,
+      titleLarge: TextStyle(
+        fontSize: 20,
         fontWeight: FontWeight.bold,
         color: ColorManager.eggshellWhite,
       ),
+      titleMedium: TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.bold,
+        color: ColorManager.greyColor,
+      ),
       titleSmall: TextStyle(
           fontSize: 18,
-          fontWeight: FontWeight.normal,
-          color: ColorManager.eggshellWhite),
-      titleLarge: TextStyle(
-          fontSize: 22,
-          fontWeight: FontWeight.normal,
-          color: ColorManager.eggshellWhite),
-      displaySmall: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.normal,
-          color: ColorManager.eggshellWhite),
-      displayMedium: TextStyle(
-          fontSize: 16,
           fontWeight: FontWeight.normal,
           color: ColorManager.eggshellWhite),
     ),

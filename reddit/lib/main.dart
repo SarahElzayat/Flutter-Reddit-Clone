@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
 import 'package:reddit/screens/comments/add_comment_screen.dart';
+import 'package:reddit/screens/settings/web/account_settings_screen_for_web.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/continue_sign_up_for_mobile.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/web/continue_sign_up_screen.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/web/sign_up_for_web_screen.dart';
@@ -101,11 +102,11 @@ class Main extends StatelessWidget {
                     CacheHelper.getData(key: 'token')?.toString().isNotEmpty ??
                             false
                         ? kIsWeb
-                            ? HomeScreen.routeName
+                            ? UserSettings.routeName
                             : HomeScreenForMobile.routeName
                         : !kIsWeb
                             ? SignInScreen.routeName
-                            : SignInForWebScreen.routeName,
+                            : UserSettings.routeName,
                 routes: myRoutes,
                 onUnknownRoute: (settings) {
                   return MaterialPageRoute(

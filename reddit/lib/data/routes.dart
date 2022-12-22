@@ -2,6 +2,7 @@
 /// @date 1/11/2022
 /// this file containes all our routes in order to avoid destraction in the main file.
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/settings/web/account_settings_screen_for_web.dart';
 
 import '../screens/inbox/create_message_screen.dart';
 import '../screens/inbox/single_message_screen.dart';
@@ -49,7 +50,6 @@ import '../screens/user_profile/user_profile_screen.dart';
 Map<String, Widget Function(BuildContext)> myRoutes = {
   // sign in sign up screens
   RecoverUserName.routeName: (ctx) => const RecoverUserName(),
-  // SignInForWebScreen.routeName: (ctx) => const SignInForWebScreen(),
   SignInForWebScreen.routeName: (ctx) => const SignInForWebScreen(),
   SignUpForWebScreen.routeName: (ctx) => const SignUpForWebScreen(),
   ContinueSignUpScreen.routeName: (ctx) => const ContinueSignUpScreen(),
@@ -69,6 +69,7 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   BlockedAccounts.routeName: (ctx) => const BlockedAccounts(),
   ChangePassword.routeName: (ctx) => const ChangePassword(),
   CountriesScreen.routeName: (ctx) => const CountriesScreen(),
+  UserSettings.routeName: (ctx) => const UserSettings(),
 
   // inbox screens
   InboxScreen.routeName: (ctx) => const InboxScreen(),
