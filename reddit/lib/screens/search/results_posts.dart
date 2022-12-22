@@ -1,7 +1,6 @@
 /// @author Sarah El-Zayat
 /// @date 9/11/2022
 /// this is the screen for the posts results of the main search
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../components/helpers/enums.dart';
@@ -9,7 +8,6 @@ import '../../components/snack_bar.dart';
 import '../../screens/search/cubit/search_cubit.dart';
 import '../../widgets/posts/post_upper_bar.dart';
 import '../../widgets/posts/post_widget.dart';
-import '../../Components/helpers/color_manager.dart';
 
 class ResultsPosts extends StatefulWidget {
   const ResultsPosts({super.key});

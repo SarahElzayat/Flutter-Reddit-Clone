@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'dart:math';
-
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:tuple/tuple.dart';
 import '../../cubit/comment_notifier/comment_notifier_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 import '../../data/post_model/post_model.dart';
@@ -75,6 +75,26 @@ class AddCommentWeb extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
+        var defaultStyles = DefaultStyles(
+            code: DefaultTextBlockStyle(
+              const TextStyle(
+                fontSize: 14,
+                color: ColorManager.eggshellWhite,
+                height: 1.15,
+                fontWeight: FontWeight.w300,
+              ),
+              const Tuple2(16, 0),
+              const Tuple2(0, 0),
+              const BoxDecoration(
+                color: Colors.transparent,
+              ),
+            ),
+            inlineCode: InlineCodeStyle(
+              backgroundColor: ColorManager.darkGrey,
+              style: const TextStyle(
+                color: ColorManager.eggshellWhite,
+              ),
+            ));
         return ClipRRect(
           borderRadius: BorderRadius.circular(3),
           child: Container(
@@ -100,6 +120,7 @@ class AddCommentWeb extends StatelessWidget {
                       scrollable: true,
                       scrollController: ScrollController(),
                       focusNode: FocusNode(),
+                      customStyles: defaultStyles,
                       placeholder: 'what are your thoughts?',
                       padding: const EdgeInsets.all(8),
                       embedBuilders: defaultEmbedBuildersWeb,

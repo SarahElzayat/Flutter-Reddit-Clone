@@ -332,4 +332,17 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
       }
     }).catchError((error) {});
   }
+
+  void leaveCommunity() {
+    DioHelper.postData(
+        path: leaveSubreddit,
+        data: {'subredditName': subreddit?.title}).then((value) {
+      if (value.statusCode == 200) {
+        subreddit!.isMember = false;
+        emit(LeaveSubredditState());
+      }
+    }).catchError((error) {
+      logger.d(error.response.data);
+    });
+  }
 }
