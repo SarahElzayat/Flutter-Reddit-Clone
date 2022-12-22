@@ -48,12 +48,12 @@ ThemeData appTheme() {
     ),
     textTheme: const TextTheme(
       titleLarge: TextStyle(
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: FontWeight.bold,
-        color: ColorManager.eggshellWhite,
+        color: ColorManager.upvoteRed,
       ),
       titleMedium: TextStyle(
-        fontSize: 12,
+        fontSize: 14,
         fontWeight: FontWeight.bold,
         color: ColorManager.greyColor,
       ),
