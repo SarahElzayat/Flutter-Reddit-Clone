@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:logger/logger.dart';
+import 'package:reddit/components/helpers/mocks/mock_functions.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/data/post_model/insights_model.dart';
@@ -63,6 +64,7 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
   /// @param [oldDir] the direction of the wanted post or comment
   Future vote({
     required int oldDir,
+    bool isTesting = false,
   }) {
     int postState = getModel.votingType ?? 0;
     int direction = oldDir;
@@ -76,6 +78,29 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
 
     // int newDir = postState + direction;
     Logger().d(token);
+    if (isTesting) {
+      return mockDio.post(
+        '/vote',
+        data: {
+          'id': getModel.id,
+          'direction': oldDir,
+          'type': currentComment == null ? 'post' : 'comment',
+        },
+      ).then((value) {
+        if (value.statusCode == 200) {
+          getModel.votingType = (getModel.votingType ?? 0) + direction;
+          getModel.votes = (getModel.votes ?? 0) + direction;
+          emit(VotedSuccess());
+        } else {
+          emit(VotedError());
+        }
+      }).catchError((error) {
+        error = error as DioError;
+        debugPrint('error in vote: ${error.response?.data}');
+        emit(VotedError(error: error));
+      });
+    }
+
     return DioHelper.postData(
       path: '/vote',
       data: {
@@ -99,9 +124,27 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
   }
 
   /// Saves a Post or a Comment
-  Future save() {
+  Future save({isTesting = false}) {
     bool isSaved = getModel.saved ?? false;
     String path = isSaved ? '/unsave' : '/save';
+
+    if (isTesting) {
+      return mockDio.post(
+        path,
+        data: {
+          'id': isPost ? post.id : currentComment!.id,
+          'type': isPost ? 'post' : 'comment',
+        },
+      ).then((value) {
+        getModel.saved = !getModel.saved!;
+        emit(SavedChangedState());
+      }).catchError((error) {
+        error = error as DioError;
+        logger.e(error.response?.data);
+        emit(OpError(error: error.response?.data['error'] ?? ''));
+      });
+    }
+
     return DioHelper.postData(
       path: path,
       sentToken: token,
@@ -120,8 +163,26 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
   }
 
   /// this function is used to hide a post
-  Future<bool?> hide() {
+  Future<bool?> hide({isTesting = false}) {
     String path = post.hidden ?? false ? '/unhide' : '/hide';
+
+    if (isTesting) {
+      return mockDio.post(
+        path,
+        data: {
+          'id': post.id,
+        },
+      ).then((value) {
+        post.hidden = !post.hidden!;
+
+        emit(HiddenChangedState());
+        return post.hidden;
+      }).catchError((error) {
+        error = error as DioError;
+        logger.e(error.response?.data);
+        emit(OpError(error: error.response?.data['error'] ?? ''));
+      });
+    }
 
     return DioHelper.postData(
       path: path,
@@ -143,6 +204,7 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
   /// this function is used to block the author of a post or a comment
   Future blockUser() {
     String? username = isPost ? post.postedBy : currentComment!.commentedBy;
+
     return DioHelper.postData(
       path: '/block-user',
       data: {
@@ -159,7 +221,24 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
   }
 
   /// this function is used to delete a post
-  Future<bool?> delete() {
+  Future<bool?> delete({isTesting = false}) {
+    if (isTesting) {
+      return mockDio.delete(
+        '/delete',
+        data: {
+          'id': isPost ? post.id : currentComment!.id,
+          'type': isPost ? 'post' : 'comment'
+        },
+      ).then((value) {
+        emit(PostsDeleted());
+        return isPost;
+      }).catchError((error) {
+        error = error as DioError;
+        logger.e(error.response?.data);
+        emit(OpError(error: error.response?.data['error'] ?? ''));
+      });
+    }
+
     return DioHelper.deleteData(
       path: '/delete',
       data: {
@@ -177,12 +256,32 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
   }
 
   /// this function is used to toggle follow/unfollow a post or a comment
-  Future follow() {
+  Future follow({isTesting = false}) {
     String path = isPost
         ? '/follow-post'
         : (currentComment!.followed ?? false)
             ? '/unfollow-comment'
             : '/follow-comment';
+
+    if (isTesting) {
+      return mockDio.post(path, data: {
+        'id': post.id,
+        'follow': !(post.followed ?? false),
+        'commentId': currentComment?.id,
+      }).then((value) {
+        logger.d('followed: ${post.followed}');
+        if (isPost) {
+          post.followed = !post.followed!;
+        } else {
+          currentComment!.followed = !currentComment!.followed!;
+        }
+        emit(FollowedChangedState());
+      }).catchError((error) {
+        logger.e(error.toString());
+        error = error as DioError;
+        emit(OpError(error: error.response?.data['error'] ?? ''));
+      });
+    }
 
     return DioHelper.postData(
       path: path,
