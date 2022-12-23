@@ -20,7 +20,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
   int before = 0;
 
   final scroller = ScrollController();
-  List<NotificationWidget> notifications = [];
+  List<NotificationWidget> notifications = [
+    NotificationWidget(
+        notification: NotificationItSelf(
+      commentId: '123',
+      followingUsername: 'zizo',
+      id: '123',
+      isRead: false,
+      link: 'www.soso.com',
+      photo: 'www.soso.com',
+      postId: '1234',
+      sendAt: '2020',
+      title: 'helooworld',
+      type: 'comment',
+    )),
+  ];
 
   @override
   void dispose() {

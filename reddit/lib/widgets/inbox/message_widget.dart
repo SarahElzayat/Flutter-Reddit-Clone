@@ -47,8 +47,8 @@ class _MessageWidgetState extends State<MessageWidget> {
     // mark the message as read then navigate to the message screen.
     markAsReadMessage();
 
-    Navigator.of(context).pushNamed(SingleMessageScreen.routeName,
-        arguments: widget.myMessage.data!.text);
+    Navigator.of(context)
+        .pushNamed(SingleMessageScreen.routeName, arguments: widget.myMessage);
   }
 
   @override

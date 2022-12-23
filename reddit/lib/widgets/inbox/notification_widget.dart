@@ -86,10 +86,12 @@ class _NotificationWidgetState extends State<NotificationWidget> {
         ],
       ),
       subtitle: Text(
-        DateTime.tryParse(widget.notification.sendAt!)!
-            .toLocal()
-            .toIso8601String()
-            .toString(),
+        widget.notification.sendAt!
+        // : DateTime.tryParse(widget.notification.sendAt!)!
+        //     .toLocal()
+        //     .toIso8601String()
+        //     .toString(),,
+        ,
         style:
             TextStyle(color: ColorManager.greyColor, fontSize: 13 * fontScale),
       ),
