@@ -18,8 +18,6 @@ import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
 import 'package:reddit/screens/inbox/Inbox_screen.dart';
 import 'package:reddit/screens/saved/saved_comments.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
-
-// import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import '../../data/post_model/post_model.dart';
 import '../../data/temp_data/tmp_data.dart';
 import '../../networks/constant_end_points.dart';
@@ -34,6 +32,7 @@ part 'app_state.dart';
 class AppCubit extends Cubit<AppState> {
   AppCubit() : super(AppInitial());
 
+  /// static method to instantiate an isntance of the app cubit to be used
   static AppCubit get(context) => BlocProvider.of(context);
 
   ///@param[currentIndex] indicates the index of the current bottom navigation bar screen
@@ -53,7 +52,7 @@ class AppCubit extends Cubit<AppState> {
     const InboxScreen(),
   ];
 
-  ///@param[screensNames] a list of the icons of the bottom navigation bar screens
+  ///@param[bottomNavBarIcons] a list of the icons of the bottom navigation bar screens
   List<BottomNavigationBarItem> bottomNavBarIcons = [
     const BottomNavigationBarItem(
         icon: Icon(Icons.home_outlined), label: 'Home'),
@@ -95,10 +94,7 @@ class AppCubit extends Cubit<AppState> {
     } else if (HomeSort.trending.index == sort) {
       path = homeTrending;
     }
-    // logger.w(path);
-    // logger.w(homePostsAfterId);
-    // logger.w(homePostsBeforeId);
-    // logger.w(path);
+
     DioHelper.getData(path: path, query: {
       'limit': limit,
       'after': after ? homePostsAfterId : 0,
@@ -114,7 +110,6 @@ class AppCubit extends Cubit<AppState> {
               : emit(ResultEmptyState());
           emit(LoadedResultsState());
         } else {
-          // logger.wtf(value.data);
           homePostsAfterId = value.data['after'];
 
           for (int i = 0; i < value.data['children'].length; i++) {
@@ -129,13 +124,15 @@ class AppCubit extends Cubit<AppState> {
       }
     }).onError((error, stackTrace) {
       if (kDebugMode) {
-        // //logger.wtf(error.toString());
+        logger.wtf(error.toString());
       }
     }).catchError((error) {
       emit(ErrorState());
     });
   }
 
+  /// @param [postId] is the id of the saved post that's been unsaved
+  /// the method removes the saved post from th saved list
   void removeSavedPost(String postId) {
     savedPostsList.removeWhere((element) => element.id == postId);
     emit(LoadedSavedState());
@@ -173,7 +170,6 @@ class AppCubit extends Cubit<AppState> {
   /// the function changes the index according ti the selected item
   void changeHomeMenuIndex(index) {
     homeMenuIndex = index;
-
     emit(ChangeHomeMenuIndex());
   }
 
@@ -226,8 +222,10 @@ class AppCubit extends Cubit<AppState> {
   Map<String, DrawerCommunitiesModel> favoriteCommunities =
       <String, DrawerCommunitiesModel>{};
 
+
+
+  /// gets the list of the user's joined
   void getYourCommunities() {
-    // favoriteCommunities.clear();
     yourCommunitiesList.clear();
     DioHelper.getData(path: joinedSubreddits).then((value) {
       if (value.statusCode == 200) {
@@ -268,6 +266,9 @@ class AppCubit extends Cubit<AppState> {
     });
   }
 
+  /// @param [subredditName] is the name of the subreddit that needs to be added to favorites
+  /// the function checks whether the subreddit is added to the user's favorite subreddits or not
+  /// if it is the it's added to the list
   void addFavoriteSubreddit({required String subredditName}) {
     DioHelper.patchData(
         token: token,
@@ -295,6 +296,8 @@ class AppCubit extends Cubit<AppState> {
     });
   }
 
+  /// @param [subredditName] is the name of the subreddit that needs to be removed from the user's favorites
+  /// the method removes a certain subreddit from the user's favorites
   void removeFavoriteSubreddit({required String subredditName}) {
     DioHelper.patchData(
         token: token,
@@ -375,11 +378,24 @@ class AppCubit extends Cubit<AppState> {
 
   ///@param [history] the list of the user's history, changes according to its category
   List<PostModel> history = [];
+
+  ///@param [currentHistoryCategory] the category chosen [recent, upvoted, downvoted, hidden]
   String currentHistoryCategory = recentHistory;
+
+  ///@param [beforeId] is the last "before" id sent from the backend, used when needed to get the posts
+  ///                   before the currently loaded oens
+  /// initially empty to load posts for the first time
   String beforeId = '';
+
+  ///@param [afterId] is the last "after" id sent from the backend, used when needed to get the posts
+  ///                   after the currently loaded oens
+  /// initially empty to load posts for the first time
   String afterId = '';
 
   ///@param [path] is the path of the desired history category
+  ///@param [loadMore] bool that indicates whether the function is called on loading more items for infinte scrolling or not
+  ///@param [before] bool to use when the posts before the current loaded ones are needed
+  ///@param [after] bool to use when the posts after the current loaded ones are needed
   /// the function gets the history of the specified path (recent, upvoted, downvoted, hidden) history
   /// emits some corresponding states and fills [history] list
   void getHistory(
@@ -388,7 +404,6 @@ class AppCubit extends Cubit<AppState> {
       bool before = false,
       bool after = false,
       int limit = 10}) {
-    // loadMore ? emit(LoadingMoreHistoryState()) : emit(LoadingHistoryState());
     if (!loadMore) {
       history.clear();
       beforeId = '';
@@ -413,7 +428,6 @@ class AppCubit extends Cubit<AppState> {
         afterId = value.data['after'];
         beforeId = value.data['before'];
         for (int i = 0; i < value.data['children'].length; i++) {
-          // //logger.wtf(i);
           history.add(PostModel.fromJsonwithData(value.data['children'][i]));
           loadMore
               ? emit(LoadedMoreHistoryState())
@@ -421,9 +435,7 @@ class AppCubit extends Cubit<AppState> {
         }
       }
     }).onError((error, stackTrace) {
-      if (kDebugMode) {
-        // //logger.wtf(error.toString());
-      }
+      if (kDebugMode) {}
     }).catchError((onError) {
       emit(ErrorState());
     });
@@ -475,20 +487,27 @@ class AppCubit extends Cubit<AppState> {
     emit(ChangeHistoryCategoryState());
   }
 
+  /// @param [historyPostViewsIcons] the icons of the different history post views in mobile
   List<Icon> historyPostViewsIcons = [
     const Icon(Icons.crop_square_outlined),
     const Icon(Icons.view_list),
   ];
 
+  /// @param [historyPostViewIconIndex] the index of the selected [historyPostViewsIcons] icon
   int historyPostViewIconIndex = 0;
+
+  /// @param [histoyPostsView] the current PostView selected
   PostView histoyPostsView = PostView.card;
+
+  /// @param [view] the PostView selected by the user
+  /// the method changed the history posts view
   void changeHistoryPostView(PostView view) {
     historyPostViewIconIndex = view.index;
     histoyPostsView = view;
-    // //logger.wtf(histoyPostsView.toString());
     emit(ChangeHistoryPostViewState());
   }
 
+  /// @param [savedTabBarTabs] list of Tab items for saved screen
   List<Tab> savedTabBarTabs = [
     const Tab(
       text: 'Posts',
@@ -498,22 +517,48 @@ class AppCubit extends Cubit<AppState> {
     ),
   ];
 
+  /// @param [savedTabBarScreens] list of widgets corresponding to the [savedTabBarTabs] for search screen
   List<Widget> savedTabBarScreens = const [
     SavedPostsScreen(),
     SavedCommentsScreen()
   ];
 
+  /// @param [savedPostsList] the list of the user's saved posts
   List<PostModel> savedPostsList = [];
+
+  ///@param [savedPostsBeforeId] is the last "before" id sent from the backend, used when needed to get the posts
+  ///                   before the currently loaded oens
+  /// initially empty to load posts for the first time
   String savedPostsBeforeId = '';
+
+  ///@param [savedPostsAfterId] is the last "after" id sent from the backend, used when needed to get the posts
+  ///                   after the currently loaded oens
+  /// initially empty to load posts for the first time
   String savedPostsAfterId = '';
 
+  /// @param [savedCommentsList] the list of the user's saved comments
   List<CommentModel> savedCommentsList = [];
+
+  /// @param [savedCommentsPostsList] the list of the user's saved posts corresopnding to the user's saved comments
   List<PostModel> savedCommentsPostsList = [];
+
+  ///@param [savedCommentsBeforeId] is the last "before" id sent from the backend, used when needed to get the posts
+  ///                   before the currently loaded oens
+  /// initially empty to load posts for the first time
   String savedCommentsBeforeId = '';
+
+  ///@param [savedCommentsAfterId] is the last "after" id sent from the backend, used when needed to get the posts
+  ///                   after the currently loaded oens
+  /// initially empty to load posts for the first time
   String savedCommentsAfterId = '';
 
   /// the function gets the history of the specified path (recent, upvoted, downvoted, hidden) history
   /// emits some corresponding states and fills [savedPostsList] list
+  ///@param [isPosts] bool to indicate if the method is called for posts or not
+  ///@param [isComments] bool to indicate if the method is called for comments or not
+  ///@param [loadMore] bool that indicates whether the function is called on loading more items for infinte scrolling or not
+  ///@param [before] bool to use when the posts before the current loaded ones are needed
+  ///@param [after] bool to use when the posts after the current loaded ones are needed
   void getSaved(
       {bool isPosts = false,
       bool isComments = false,
@@ -521,8 +566,6 @@ class AppCubit extends Cubit<AppState> {
       bool before = false,
       bool after = false,
       int limit = 25}) {
-    // if (loadMore && isPosts) emit(LoadingMoreSavedPostsState());
-    // if (loadMore && isComments) emit(LoadingMoreSavedCommentsState());
     if (!loadMore) {
       savedPostsList.clear();
       savedCommentsList.clear();
@@ -555,7 +598,7 @@ class AppCubit extends Cubit<AppState> {
     ).then((value) {
       if (value.data['children'].length == 0) {
         if (kDebugMode) {
-          //logger.wtf('EMPPPTTYYYYY');
+          logger.wtf('EMPPPTTYYYYY');
         }
 
         if (!loadMore) {
@@ -628,7 +671,7 @@ class AppCubit extends Cubit<AppState> {
     });
   }
 
-  /// clears the user's history
+  /// the method clears the user's history
   void clearHistoy() {
     DioHelper.postData(
       sentToken: token,
@@ -643,6 +686,7 @@ class AppCubit extends Cubit<AppState> {
     });
   }
 
+  /// the method deletes the user's profile picture
   void deleteProfilePicture() {
     DioHelper.deleteData(path: userProfilePicture).then((value) {
       if (value.statusCode == 204) {
@@ -656,6 +700,9 @@ class AppCubit extends Cubit<AppState> {
     });
   }
 
+  ///@param [image] is the image file uploaded by the user
+  ///SUPPORTS PNG ONLY
+  ///the method changes the user's profile picture
   Future<void> changeProfilePicture(XFile image) async {
     MultipartFile file = await MultipartFile.fromFile(image.path,
         filename: image.path.split('/').last,
@@ -678,9 +725,19 @@ class AppCubit extends Cubit<AppState> {
     );
   }
 
+  ///@param [id] is the id of the posts that needs to be deletes
+  /// deletes a post from home
   void deletePost(String id) {
     homePosts.removeWhere((element) {
       return (element is PostWidget) && element.post.id == id;
     });
+  }
+
+  ///@param [sort] the sort of the home screen's posts [best, hot, new, top, trending]
+  ///the function chanegs the home posts sort
+  void changeHomeSort(HomeSort sort) {
+    CacheHelper.putData(key: 'SortHome', value: sort.index);
+    emit(ChangeHomeSortState());
+    getHomePosts();
   }
 }

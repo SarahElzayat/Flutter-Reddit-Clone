@@ -95,6 +95,7 @@ class Main extends StatelessWidget {
           return ResponsiveSizer(
             builder: (context, orientation, screenType) {
               return MaterialApp(
+  
                 navigatorKey: navigatorKey,
                 initialRoute:
                     CacheHelper.getData(key: 'token')?.toString().isNotEmpty ??

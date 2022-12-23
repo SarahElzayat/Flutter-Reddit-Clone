@@ -2,13 +2,13 @@
 /// @date 9/11/2022
 /// this is the screen for the communities results of the main search
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/search_components/subreddit_results_container.dart';
 import 'package:reddit/screens/search/cubit/search_cubit.dart';
 
 import '../../components/helpers/color_manager.dart';
-import '../../data/search/search_result_subbredit_model.dart';
 
 class ResultsCommunities extends StatefulWidget {
   const ResultsCommunities({super.key});
@@ -19,7 +19,8 @@ class ResultsCommunities extends StatefulWidget {
 
 class _ResultsCommunitiesState extends State<ResultsCommunities> {
   final _scrollController = ScrollController();
-  List<SearchResultSubredditModel> subreddits = [];
+
+  /// scroll listener to load more at the bottom of the screen
   void _scrollListener() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
@@ -34,17 +35,9 @@ class _ResultsCommunitiesState extends State<ResultsCommunities> {
     super.initState();
   }
 
-  // @override
-  // void dispose() {
-  //   SearchCubit.get(context).getSubbreddits();
-  //   _scrollController.dispose();
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
-    SearchCubit cubit = SearchCubit.get(context); //..getSubbreddits();
-
+    SearchCubit cubit = SearchCubit.get(context); 
     return BlocConsumer<SearchCubit, SearchState>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -63,15 +56,21 @@ class _ResultsCommunitiesState extends State<ResultsCommunities> {
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   )
-                : ListView.builder(
-                    controller: _scrollController,
-                    itemCount: cubit.subbreddits.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) => IntrinsicHeight(
-                          child: SubredditResultsContainer(
-                            model: cubit.subbreddits[index],
-                          ),
-                        ));
+                : Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: kIsWeb
+                            ? MediaQuery.of(context).size.width * 0.2
+                            : 0),
+                    child: ListView.builder(
+                        controller: _scrollController,
+                        itemCount: cubit.subbreddits.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) => IntrinsicHeight(
+                              child: SubredditResultsContainer(
+                                model: cubit.subbreddits[index],
+                              ),
+                            )),
+                  );
           },
         );
       },

@@ -74,6 +74,7 @@ class SavedEmptyState extends AppState {}
 class ErrorState extends AppState {}
 
 class DeletedProfilePictureState extends AppState {}
+class ChangeHomeSortState extends AppState {}
 
 class NoProfilePictureState extends AppState {}
 

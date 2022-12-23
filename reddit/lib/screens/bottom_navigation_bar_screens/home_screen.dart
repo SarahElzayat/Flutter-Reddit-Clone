@@ -10,13 +10,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/back_to_top_button.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/components/home_components/left_drawer.dart';
 import 'package:reddit/components/home_components/right_drawer.dart';
 import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
-import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_state.dart';
+import 'package:reddit/screens/add_post/add_post.dart';
 import '../../components/home_app_bar.dart';
+import '../create_community_screen/create_community_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -81,8 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       AppCubit.get(context).getHomePosts();
       AppCubit.get(context).getUsername();
-      // AppCubit.get(context).getYourCommunities();
-      // AppCubit.get(context).getYourModerating();
+
       AppCubit.get(context).getUserProfilePicture();
     });
   }
@@ -94,8 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _scrollController.addListener(_scrollListener);
     AppCubit.get(context).getHomePosts();
     AppCubit.get(context).getUsername();
-    // AppCubit.get(context).getYourCommunities();
-    // AppCubit.get(context).getYourModerating();
+
     AppCubit.get(context).getUserProfilePicture();
 
     super.initState();
@@ -145,57 +145,124 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: ColorManager.blue,
                         onRefresh: _onRefresh,
                         child: ListView.builder(
-                          // physics: const NeverScrollableScrollPhysics(),
-                          // shrinkWrap: true,
                           physics: const AlwaysScrollableScrollPhysics(),
                           controller: _scrollController,
                           scrollDirection: Axis.vertical,
                           itemCount: cubit.homePosts.length,
-                          itemBuilder: (context, index) => Container(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 0, vertical: 5),
-                            child: cubit.homePosts[index],
-                          ),
+                          itemBuilder: (context, index) {
+                            return index == 0 && kIsWeb
+                                ? Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Column(
+                                      // mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            homeButton(
+                                                Icons.rocket,
+                                                'Best',
+                                                () => cubit.changeHomeSort(
+                                                    HomeSort.best)),
+                                            homeButton(
+                                                Icons.trending_up,
+                                                'Hot',
+                                                () => cubit.changeHomeSort(
+                                                    HomeSort.hot)),
+                                            homeButton(
+                                                Icons.new_releases,
+                                                'New',
+                                                () => cubit.changeHomeSort(
+                                                    HomeSort.newPosts)),
+                                            homeButton(
+                                                Icons.bar_chart,
+                                                'Trending',
+                                                () => cubit.changeHomeSort(
+                                                    HomeSort.trending)),
+                                            homeButton(
+                                                Icons.upload,
+                                                'Top',
+                                                () => cubit.changeHomeSort(
+                                                    HomeSort.top)),
+                                          ],
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 8),
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 0, vertical: 5),
+                                          child: cubit.homePosts[index],
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                : Container(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 8),
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 0, vertical: 5),
+                                    child: cubit.homePosts[index],
+                                  );
+                          },
                         ),
                       ),
                     );
                   },
                 ),
                 if (kIsWeb)
-                  SizedBox(
-                    height: 500,
-                    width: 300,
-                    child: Column(
-                      children: [
-                        Container(
-                          color: Colors.red,
-                          height: 200,
-                          width: 200,
-                          child: Text(
-                            'Communities near you',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge!
-                                .copyWith(color: Colors.white),
-                          ),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: ColorManager.darkGrey,
+                          border: Border.all(color: ColorManager.grey),
+                          borderRadius: BorderRadius.circular(10)),
+                      width: width * 0.15,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 18.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            MaterialButton(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 48),
+                              color: ColorManager.blue,
+                              shape: const StadiumBorder(),
+                              onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const AddPost(),
+                                  )),
+                              child: const Text(
+                                'Create Post',
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: ColorManager.blue),
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: MaterialButton(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 28),
+                                shape: const StadiumBorder(),
+                                // color: ColorManager.blue,
+                                onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const CreateCommunityScreen(),
+                                    )),
+                                child: const Text('Create Community'),
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          color: Colors.blue,
-                          height: 200,
-                          width: 200,
-                          child: Text(
-                            'Create post',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge!
-                                .copyWith(color: Colors.white),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
               ],
@@ -205,4 +272,23 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
   }
+}
+
+Widget homeButton(icon, text, onPressed) {
+  return InkWell(
+    onTap: onPressed,
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          icon,
+          size: 30,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Text(text),
+        )
+      ],
+    ),
+  );
 }
