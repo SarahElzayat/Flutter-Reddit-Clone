@@ -8,7 +8,7 @@ import 'package:reddit/widgets/add_post/image_web.dart';
 import 'package:reddit/widgets/add_post/text_post_web.dart';
 import '../../cubit/add_post/cubit/add_post_cubit.dart';
 import 'add_post_textfield.dart';
-import 'image.dart';
+import 'image_widget.dart';
 import 'poll_widget.dart';
 import 'video.dart';
 
