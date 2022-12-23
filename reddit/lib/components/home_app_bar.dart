@@ -5,14 +5,15 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/components/bottom_sheet.dart';
+import 'package:reddit/components/community_components/create_community_dialog.dart';
 import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
-import 'package:reddit/screens/create_community_screen/create_community_screen.dart';
 import 'package:reddit/components/app_bar_components.dart';
 import 'package:reddit/components/search_field.dart';
 import 'package:reddit/screens/inbox/create_message_screen.dart';
+import 'package:reddit/screens/moderation/mod_tools.dart';
 
 import '../cubit/app_cubit/app_cubit.dart';
 
@@ -195,11 +196,7 @@ AppBar homeAppBar(context, index) {
               splashColor: Colors.transparent,
             ),
             IconButton(
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CreateCommunityScreen(),
-                  )),
+              onPressed: () => createCommunityDialog(context),
               icon: const Icon(Icons.add),
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,

@@ -23,6 +23,7 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
   CreateCommunityCubit() : super(CreateCommunityInitial());
   static CreateCommunityCubit get(context) => BlocProvider.of(context);
 
+  /// get the saved categories available for communities
   List<dynamic> getSavedCategories() {
     DioHelper.getData(path: savedCategories).then((value) {
       if (value.statusCode == 200) {
@@ -77,11 +78,9 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
     data['NSFW'] = nsfw;
     data['acceptingRequestsToJoin'] = true;
     data['acceptingRequestsToPost'] = true;
-    data['approvedUsersHaveTheAbilityTo'] =
-         'Post & Comment';
+    data['approvedUsersHaveTheAbilityTo'] = 'Post & Comment';
 
-    DioHelper.putData(path: '/r/$name/about/edit', data: data)
-        .then((value) {
+    DioHelper.putData(path: '/r/$name/about/edit', data: data).then((value) {
       if (value.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
             message: 'Community settings initialized successfully',
@@ -95,9 +94,9 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
     });
   }
 
-  ///initializes the post settings when first creating a community
   ///@param [context] of screen
   ///@param [name] of created subreddit
+  ///initializes the post settings when first creating a community
   void initializePostSettings(context, name) {
     ModPostSettingsModel postSettings = ModPostSettingsModel(
         enableSpoiler: true, allowImagesInComment: true, suggestedSort: 'none');
@@ -116,6 +115,12 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
     });
   }
 
+  ///@param [context] screen context
+  ///@param [name] created community name
+  ///@param [type] created community type
+  ///@param [nsfw] whether the community is nsfw
+  ///@param [category] the category chosen for the community
+  ///sends a request to create a new community
   void creatCommunity(context, name, type, nsfw, category) {
     String finalType = (type == CommunityTypes.private)
         ? 'Private'
@@ -130,7 +135,6 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
             sentToken: token, path: createCommunity, data: community.toJson())
         .then((value) {
       if (value.statusCode == 201) {
-        ///TODO: Nagiate to AddPost with community name to add post to community
         initializeCommunitySettings(context, name, type, nsfw, category);
         initializePostSettings(context, name);
         ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(

@@ -47,6 +47,7 @@ const List<IconData> communityTypesIcon = [
 final regexp = RegExp(r'^[A-Za-z0-9_]*$');
 
 //Moderation constants
+///Modtools titles for general screens
 const List<String> generalTitles = [
   'Description',
   'Welcome message',
@@ -60,11 +61,13 @@ const List<String> generalTitles = [
   'Media in comments'
 ];
 
+/// Modtools titles for content and regulations screens
 const List<String> contentAndRegulationsTitles = [
   'Post flair',
   'Scheduled posts',
 ];
 
+/// Modtools titles for content and user management screens
 const List<String> userManagementTitles = [
   'Moderators',
   'Approved users',
@@ -73,6 +76,7 @@ const List<String> userManagementTitles = [
   'User flair',
 ];
 
+/// Modtools titles for content and resource links screens
 final List<String> resourceLinksTitles = [
   'r/ModSupport',
   'r/modhelp',
@@ -81,6 +85,7 @@ final List<String> resourceLinksTitles = [
   'Connect Reddit',
 ];
 
+///Modtools icons for general screens
 const List<IconData> generalIcons = [
   Icons.edit_outlined,
   Icons.message_outlined,
@@ -96,11 +101,13 @@ const List<IconData> generalIcons = [
   Icons.image_outlined
 ];
 
+///Modtools icons for content and regulations screens
 const List<IconData> contentAndRegulationsIcons = [
   Icons.edit_outlined,
   Icons.message_outlined,
 ];
 
+///Modtools icons for user management screens
 const List<IconData> userManagementIcons = [
   Icons.shield_outlined,
   Icons.person_outlined,
@@ -109,6 +116,7 @@ const List<IconData> userManagementIcons = [
   Icons.label_outlined
 ];
 
+///Modtools icons for resource links screens
 const List<IconData> resourceLinksIcons = [
   Icons.shield,
   Icons.shield,
@@ -174,6 +182,7 @@ const List<String> topicsTitles = [
   'None of these topics'
 ];
 
+/// possible ban reasons for banning a user
 const List<String> banReasons = [
   'This is spam',
   'This is misinformation',
@@ -181,6 +190,7 @@ const List<String> banReasons = [
   'Other issues'
 ];
 
+/// sorting posts according to values
 const List<String> sortingItems = ['Newest First', 'New', 'Old'];
 
 /// drop down list items to show type
@@ -191,10 +201,16 @@ const List<String> listingTypes = ['Posts', 'Comments'];
 /// could be card or classic or both
 const List<String> view = ['Card', 'Classic'];
 
+/// available languages for a subreddit
 const List<String> languages = ['English', 'Arabic', 'French'];
+
+/// available regions for a subreddit
 const List<String> regions = ['Egypt', 'Argentina', 'Brazil'];
 
+/// available options a post can be
 const List<String> postOptions = ['Any', 'Links Only', 'Text Post Only'];
+
+/// the suggested sorting for posts and comments
 const List<String> suggestedSort = ['Top', 'New', 'Best', 'Old'];
 
 String? token;

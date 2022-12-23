@@ -16,10 +16,12 @@ import 'package:reddit/data/moderation_models/community_settings_model.dart';
 import 'package:reddit/data/moderation_models/description_model.dart';
 import 'package:reddit/data/moderation_models/flairs_model.dart';
 import 'package:reddit/data/moderation_models/get_users_model.dart';
+import 'package:reddit/data/moderation_models/traffic_stats_model.dart';
 import 'package:reddit/data/post_model/post_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/screens/comments/add_comment_screen.dart';
+import 'package:reddit/screens/moderation/general_screens/welcome_message/welcome_message.dart';
 part 'moderation_state.dart';
 
 class ModerationCubit extends Cubit<ModerationState> {
@@ -248,13 +250,12 @@ class ModerationCubit extends Cubit<ModerationState> {
                 : 'moderators';
     DioHelper.getData(path: '/r/${settings.communityName}/about/$finalPath')
         .then((value) {
-      Logger().e(value.data['children']);
       if (value.statusCode == 200) {
         users = value.data['children']
             .map((value) => (type == UserManagement.banned)
                 ? BannedUsersModel.fromJson(value as Map<String, dynamic>)
                 : (type == UserManagement.muted)
-                    ? MuteUserModel.fromJson(value as Map<String, dynamic>)
+                    ? MutedUsersModel.fromJson(value as Map<String, dynamic>)
                     : (type == UserManagement.approved)
                         ? ApprovedUsersModel.fromJson(
                             value as Map<String, dynamic>)
@@ -276,7 +277,6 @@ class ModerationCubit extends Cubit<ModerationState> {
   /// updates the community settings when save changes button is pressed
   void updateCommunitySettings(context) {
     settings.welcomeMessage = welcomeMessageController.text;
-    logger.wtf(token);
     final Map<String, dynamic> data = <String, dynamic>{};
     data['communityName'] = settings.communityName;
     data['mainTopic'] = settings.mainTopic;
@@ -285,13 +285,13 @@ class ModerationCubit extends Cubit<ModerationState> {
     data['sendWelcomeMessage'] = sendMessageSwitch;
     data['welcomeMessage'] = welcomeMessageController.text;
     data['language'] = settings.language;
-    data['Region'] = regionController.text;
-    data['Type'] = communityTopic;
+    data['Region'] = (!kIsWeb) ? regionController.text : settings.region;
+    data['Type'] = communityType;
     data['NSFW'] = nsfwSwitch;
-    data['acceptingRequestsToJoin'] = settings.acceptingRequestsToJoin;
-    data['acceptingRequestsToPost'] = settings.acceptingRequestsToPost;
+    data['acceptingRequestsToJoin'] = settings.acceptingRequestsToJoin ?? true;
+    data['acceptingRequestsToPost'] = settings.acceptingRequestsToPost ?? true;
     data['approvedUsersHaveTheAbilityTo'] =
-        settings.approvedUsersHaveTheAbilityTo;
+        settings.approvedUsersHaveTheAbilityTo ?? 'Post & Comment';
 
     DioHelper.putData(
             sentToken: token,
@@ -324,6 +324,8 @@ class ModerationCubit extends Cubit<ModerationState> {
         ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
             message: 'Post settings updated successfully', error: false));
       }
+    }).catchError((error) {
+      error = error as DioError;
     });
   }
 
@@ -462,7 +464,7 @@ class ModerationCubit extends Cubit<ModerationState> {
     });
   }
 
-  void unmuteUser(username) {
+  void unmuteUser(context, username) {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['username'] = username;
     DioHelper.postData(
@@ -472,7 +474,7 @@ class ModerationCubit extends Cubit<ModerationState> {
         .then((value) {
       if (value.statusCode == 200) {
         logger.wtf('tamam');
-        emit(UsersLoaded());
+        getUsers(context, UserManagement.muted);
       }
     }).catchError((error) {
       error = error as DioError;
@@ -503,7 +505,7 @@ class ModerationCubit extends Cubit<ModerationState> {
     });
   }
 
-  void removeUser(username) {
+  void removeUser(context, username) {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['username'] = username;
     DioHelper.postData(
@@ -513,7 +515,7 @@ class ModerationCubit extends Cubit<ModerationState> {
         .then((value) {
       if (value.statusCode == 200) {
         logger.wtf('tamam');
-        emit(UsersLoaded());
+        getUsers(context, UserManagement.approved);
       }
     }).catchError((error) {
       error = error as DioError;
@@ -774,6 +776,7 @@ class ModerationCubit extends Cubit<ModerationState> {
   ///@param [value] chosen post type from dropdown list
   void setSuggestedSort(value) {
     sort = value;
+    postSettings.suggestedSort = value;
     emit(SetDropdownItem());
   }
 
@@ -792,6 +795,7 @@ class ModerationCubit extends Cubit<ModerationState> {
 
   void toggleCommentSwitches(key, value) {
     commentsSwitches[key] = value;
+
     emit(Toggle());
   }
 
@@ -840,20 +844,34 @@ class ModerationCubit extends Cubit<ModerationState> {
     });
   }
 
-  ///@param[name]
-  ///@param[backgroundColor]
-  ///@param[textColor]
+  void setModOnlySwitch(value) {
+    modOnly = value;
+    (value == true) ? allowUser = false : allowUser;
+    emit(Toggle());
+  }
+
+  void setAllowUserEdits(value) {
+    allowUser = (modOnly == false) ? value : false;
+    emit(Toggle());
+  }
+
+  ///@param[name] flair name
+  ///@param[backgroundColor] flair color
+  ///@param[textColor] text color
   void addFlair(context, name, backgroundColor, textColor) {
     FlairSettingModel flairSettings = FlairSettingModel(
         modOnly: modOnly,
         flairType: flairType,
         emojisLimit: emojisLimit,
         allowUserEdits: allowUser);
+    logger.w(flairSettings.modOnly);
     PostFlairModel postFlair = PostFlairModel(
         flairName: name,
         backgroundColor: backgroundColor,
         textColor: textColor,
         settings: flairSettings);
+
+    logger.w(postFlair.flairName);
     DioHelper.postData(
             sentToken: token,
             path: '/r/${settings.communityName}/about/post-flairs',
@@ -920,6 +938,86 @@ class ModerationCubit extends Cubit<ModerationState> {
       error = error as DioError;
       ScaffoldMessenger.of(context)
           .showSnackBar(responseSnackBar(message: '${error.response}'));
+    });
+  }
+
+  ///@param [context] screen context
+  ///@param [type] new community type
+  ///@param [topic] new chosen community topic
+  ///@param [description] new community description
+  ///@param [welcomeMessage] new community welcome message
+  ///@param [sendMessage] send message to user value
+  ///@param [language] new language for the community
+  ///@param [nsfw] nsfw value
+  ///updates the community settings for web
+  void updateCommunitySettingsWeb(
+      {required context,
+      type,
+      topic,
+      description,
+      welcomeMessage,
+      sendMessage,
+      language,
+      nsfw}) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['communityName'] = settings.communityName;
+    data['mainTopic'] = topic ?? settings.mainTopic;
+    data['subTopics'] = settings.subTopics;
+    data['communityDescription'] = description ?? settings.communityDescription;
+    data['sendWelcomeMessage'] = sendMessage ?? settings.sendWelcomeMessage;
+    data['welcomeMessage'] = welcomeMessage ?? settings.welcomeMessage;
+    data['language'] = language ?? settings.language;
+    data['Region'] = (!kIsWeb) ? regionController.text : settings.region;
+    data['Type'] = type ?? settings.type;
+    data['NSFW'] = nsfw ?? settings.nSFW;
+    data['acceptingRequestsToJoin'] = settings.acceptingRequestsToJoin ?? true;
+    data['acceptingRequestsToPost'] = settings.acceptingRequestsToPost ?? true;
+    data['approvedUsersHaveTheAbilityTo'] =
+        settings.approvedUsersHaveTheAbilityTo ?? 'Post & Comment';
+
+    DioHelper.putData(
+            sentToken: token,
+            path: '/r/${settings.communityName}/about/edit',
+            data: data)
+        .then((value) {
+      if (value.statusCode == 200) {
+        getCommunitySettings(context, settings.communityName);
+        ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+            message: 'Community settings updated successfully', error: false));
+      }
+    }).catchError((error) {
+      error = error as DioError;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(responseSnackBar(message: '${error.response}'));
+    });
+  }
+
+  ///@param [context] screen context
+  /// updates the post and comments settings when save changes button is pressed
+  void updatePostSettingsWeb(context) {
+    DioHelper.putData(
+            path: '/r/${settings.communityName}/about/edit-post-settings',
+            data: postSettings.toJson())
+        .then((value) {
+      if (value.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+            message: 'Post settings updated successfully', error: false));
+      }
+    }).catchError((error) {
+      error = error as DioError;
+    });
+  }
+
+  dynamic trafficStats;
+  void getTrafficStats() async {
+    await DioHelper.getData(path: '/r/${settings.communityName}/traffic-stats')
+        .then((value) {
+      if (value.statusCode == 200) {
+        trafficStats = TrafficStatsData.fromJson(value.data);
+        emit(TrafficStatsLoaded());
+      }
+    }).catchError((error) {
+      error = error as DioError;
     });
   }
 }

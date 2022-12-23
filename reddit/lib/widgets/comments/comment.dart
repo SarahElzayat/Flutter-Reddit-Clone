@@ -191,7 +191,7 @@ class _CommentState extends State<Comment> {
           condition: isCompressed,
           builder: (context) {
             return commentAsRow(
-                post: widget.comment,
+                comment: widget.comment,
                 showContent: true,
                 content:
                     _controller!.document.toPlainText().replaceAll('\\n', ''));
@@ -200,7 +200,7 @@ class _CommentState extends State<Comment> {
             return Column(
               children: [
                 commentAsRow(
-                  post: widget.comment,
+                  comment: widget.comment,
                   showDots: false,
                 ),
                 quillEditor,
@@ -308,7 +308,7 @@ class _CommentState extends State<Comment> {
     bool showDots = true,
     bool showContent = false,
     String content = '',
-    required CommentModel post,
+    required CommentModel comment,
   }) {
     return BlocBuilder<PostAndCommentActionsCubit, PostActionsState>(
       builder: (context, state) {
@@ -382,7 +382,7 @@ class _CommentState extends State<Comment> {
         child: Column(
           children: [
             commentAsRow(
-              post: widget.comment,
+              comment: widget.comment,
               showDots: false,
             ),
             quillEditor,

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../components/moderation_components/modtools_components.dart';
 import '../../components/square_text_field.dart';
-import '../comments/add_comment_screen.dart';
 import 'content_and_regulation/post_flair-settings.dart';
 import 'cubit/moderation_cubit.dart';
 
@@ -18,13 +15,29 @@ class CreateFlair extends StatefulWidget {
 
 class _CreateFlairState extends State<CreateFlair> {
   bool edit = false;
+
+  /// determines whether the floating action button is pressed to reflect text color
   bool textColorPicker = false;
+
+  ///the hex value of the text color sent to the add flair function
   String textColor = '#${Colors.black.value.toRadixString(16)}';
+
+  ///contols the text in the flair name textfield
   final TextEditingController _controller = TextEditingController();
+
+  ///determines which color is pressed from the list of colors
   bool colorButtonPressed = false;
+
+  /// the selected color from the colors list
   Color selectedColor = Colors.grey;
+
+  /// the index of the selected color
   int colorIndex = 0;
+
+  /// the hex code of the selected color from the list
   var colorHex = '';
+
+  ///list of available colors for the post flair
   final List<Color> colors = const [
     Color(0xFFC987EA),
     Color(0xFF75A3F3),
