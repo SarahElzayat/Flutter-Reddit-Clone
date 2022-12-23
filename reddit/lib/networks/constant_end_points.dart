@@ -7,7 +7,7 @@ const portNumber = String.fromEnvironment('FLUTTER_PORT', defaultValue: '5000');
 
 const baseUrl = kReleaseMode
     ? '/api'
-    // ? 'http://www.read-it.live/api'
+    // ? 'https://www.read-it.live/api'
     : kIsWeb
         // ? 'http://localhost:3000'
         ? 'https://www.read-it.live/api'
