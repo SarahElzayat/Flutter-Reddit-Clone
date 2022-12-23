@@ -120,7 +120,7 @@ class _SubredditState extends State<Subreddit>
               appBar: kIsWeb
                   ? homeAppBar(context, 0,
                       isSubreddit: true,
-                      subredditName: subredditCubit.subredditName)
+                      subredditName: 'r/${subredditCubit.subredditName}')
                   : null,
               drawer: kIsWeb ? const LeftDrawer() : null,
               endDrawer: (kIsWeb) ? const RightDrawer() : const RightDrawer(),

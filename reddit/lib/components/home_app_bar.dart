@@ -197,6 +197,8 @@ AppBar homeAppBar(
                         MaterialPageRoute(
                           builder: (context) => SearchResults(
                             searchWord: searchController.text,
+                            isSubreddit: isSubreddit,
+                            subredditName: subredditName,
                           ),
                         ))
                     : Navigator.push(
