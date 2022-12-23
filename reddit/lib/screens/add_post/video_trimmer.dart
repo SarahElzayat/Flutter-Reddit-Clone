@@ -21,10 +21,10 @@ class TrimmerView extends StatefulWidget {
   const TrimmerView({super.key});
 
   @override
-  TrimmerViewState createState() => TrimmerViewState();
+  _TrimmerViewState createState() => _TrimmerViewState();
 }
 
-class TrimmerViewState extends State<TrimmerView> {
+class _TrimmerViewState extends State<TrimmerView> {
   final Trimmer _trimmer = Trimmer();
 
   double _startValue = 0.0;
@@ -54,7 +54,9 @@ class TrimmerViewState extends State<TrimmerView> {
           if (value != null) {
             addPostCubit.addVideo(XFile(value!));
             // GlobalVarible.video.notifyListeners();
-          } else {}
+          } else {
+            print('Error To Save Video');
+          }
         }));
 
     return value;

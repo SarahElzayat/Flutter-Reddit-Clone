@@ -2,6 +2,7 @@
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide MenuItem;
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/data/comment/comment_model.dart';
@@ -26,15 +27,21 @@ class DropDownList extends StatelessWidget {
 
   /// The [PostModel] of targeted Post
   final PostModel post;
+
+  /// The [CommentModel] of targeted Comment
   final CommentModel? comment;
 
   /// The Class of the Post
   /// depends on the post's status
-  /// defaults to [ItemsClass.public]
+  /// defaults to [ItemsClass.posts]
   final ItemsClass itemClass;
 
+  /// if the dropdown is outside the screen
+  /// defaults to false
   final bool outsideScreen;
 
+  /// if the dropdown is in the web
+  /// defaults to false
   final bool isWeb;
   List<MenuItem> getList() {
     switch (itemClass) {
@@ -64,7 +71,7 @@ class DropDownList extends StatelessWidget {
         onChanged: (value) {
           MenuItems.onChanged(context, value as MenuItem, post);
         },
-        dropdownWidth: 45.w,
+        dropdownWidth: kIsWeb ? 20.w : 45.w,
         dropdownMaxHeight: 40.h,
         dropdownPadding: const EdgeInsets.symmetric(vertical: 6),
         dropdownDecoration: BoxDecoration(

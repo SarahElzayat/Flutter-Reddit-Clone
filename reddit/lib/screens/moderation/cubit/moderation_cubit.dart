@@ -22,6 +22,7 @@ import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/screens/comments/add_comment_screen.dart';
 import 'package:reddit/screens/moderation/general_screens/welcome_message/welcome_message.dart';
+import 'package:reddit/widgets/moderation/traffic_stats.dart';
 part 'moderation_state.dart';
 
 class ModerationCubit extends Cubit<ModerationState> {
@@ -1008,7 +1009,8 @@ class ModerationCubit extends Cubit<ModerationState> {
     });
   }
 
-  dynamic trafficStats;
+
+  TrafficStatsData? trafficStats;
   void getTrafficStats() async {
     await DioHelper.getData(path: '/r/${settings.communityName}/traffic-stats')
         .then((value) {

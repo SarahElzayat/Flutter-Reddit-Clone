@@ -1,9 +1,11 @@
 /// Model Post Type widget
 /// @author Haitham Mohamed
 /// @date 4/11/2022
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:reddit/widgets/add_post/image_web.dart';
+import 'package:reddit/widgets/add_post/text_post_web.dart';
 import '../../cubit/add_post/cubit/add_post_cubit.dart';
 import 'add_post_textfield.dart';
 import 'image.dart';
@@ -41,26 +43,29 @@ class PostTypeWidget extends StatelessWidget {
         }
       }),
       builder: ((context, state) {
+        final mediaQuery = MediaQuery.of(context);
         switch (addPostCubit.postType) {
           case 0:
-            return const ImageWidget();
+            return kIsWeb ? ImageWidgetWeb() : const ImageWidget();
           case 1:
             return const VideoPost();
 
           case 2:
-            return Column(
-              children: [
-                AddPostTextField(
-                    onChanged: ((string) {
-                      addPostCubit.checkPostValidation();
-                    }),
-                    controller: addPostCubit.optionalText,
-                    mltiline: true,
-                    isBold: false,
-                    fontSize: 18,
-                    hintText: 'Add optional body text'),
-              ],
-            );
+            return (kIsWeb)
+                ? TextPostWidget()
+                : Column(
+                    children: [
+                      AddPostTextField(
+                          onChanged: ((string) {
+                            addPostCubit.checkPostValidation();
+                          }),
+                          controller: addPostCubit.optionalText,
+                          mltiline: true,
+                          isBold: false,
+                          fontSize: 18,
+                          hintText: 'Add optional body text'),
+                    ],
+                  );
 
           case 3:
             return AddPostTextField(

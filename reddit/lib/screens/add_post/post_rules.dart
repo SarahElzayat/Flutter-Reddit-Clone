@@ -134,24 +134,24 @@ class _PostRulesState extends State<PostRules> {
           ),
           TextButton(
               onPressed: () {
-                navigator.push(MaterialPageRoute(
-                    builder: ((context) => const ScheduleDate())));
+                navigator.push(
+                    MaterialPageRoute(builder: ((context) => ScheduleDate())));
               },
               child: Row(
-                children: const [
+                children: [
                   Text('Schedule Post '),
                   Icon(Icons.arrow_forward_outlined)
                 ],
               )),
           if (addPostCubit.isSubreddit &&
-              addPostCubit.flairs!.postFlairs!.isNotEmpty)
+              addPostCubit.flairs!.postFlairs!.length > 0)
             TextButton(
                 onPressed: () {
                   navigator.push(MaterialPageRoute(
-                      builder: ((context) => const SubredditFlairs())));
+                      builder: ((context) => SubredditFlairs())));
                 },
                 child: Row(
-                  children: const [
+                  children: [
                     Icon(Icons.local_offer_outlined),
                     Text(' Add Flair'),
                   ],

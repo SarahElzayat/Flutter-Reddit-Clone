@@ -8,12 +8,12 @@ import 'package:reddit/components/home_components/components.dart';
 import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 import 'package:reddit/screens/to_be_done_screen.dart';
 
+/// Given an instance of the App Cubit to give easier access to the state management cubit
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    ///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
     final AppCubit cubit = AppCubit.get(context)
       ..getYourCommunities()
       ..getYourModerating();

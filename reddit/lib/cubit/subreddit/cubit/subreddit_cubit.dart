@@ -31,6 +31,8 @@ class SubredditCubit extends Cubit<SubredditState> {
     await DioHelper.getData(path: '$subredditInfo/$name', query: query)
         .then((value) {
       if (value.statusCode == 200) {
+        // logger.wtf('Subreddit Info ====>');
+        // logger.wtf(value.data);
         subreddit = SubredditModel.fromJson(value.data);
         subredditName = name;
         if (subreddit!.isMember == null) return;

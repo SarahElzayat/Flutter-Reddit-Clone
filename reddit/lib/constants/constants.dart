@@ -25,7 +25,7 @@ const List<String> postTypes = [
   'hybrid'
 ];
 
-//Create community constants
+/// Create community constants
 /// community types when creating a community
 const List<String> communityTypes = ['Public', 'Restricted', 'Private'];
 

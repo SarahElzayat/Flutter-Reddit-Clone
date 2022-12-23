@@ -15,8 +15,8 @@ import 'package:reddit/widgets/moderation/queues_modtools.dart';
 import 'package:reddit/widgets/moderation/user_management.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-///@param [selectedItem] the selected tile from the mod tools in web
-///returns a user management widget that shows specific users based on the type
+/// @param [selectedItem] the selected tile from the mod tools in web
+/// returns a user management widget that shows specific users based on the type
 UserManagementWidget userManagementWidget(ModToolsSelectedItem selectedItem) {
   // determines the final title of the screen to show relevant information
   String finalTitle = (selectedItem == ModToolsSelectedItem.banned)
@@ -40,8 +40,8 @@ UserManagementWidget userManagementWidget(ModToolsSelectedItem selectedItem) {
   return UserManagementWidget(screenTitle: finalTitle, type: finalType);
 }
 
-///@param [selectedItem] the selected tile from the mod tools in web
-///returns a queues widget that shows specific posts based on the mod tool tile selected
+/// @param [selectedItem] the selected tile from the mod tools in web
+/// returns a queues widget that shows specific posts based on the mod tool tile selected
 QueuesWidget queuesWidget(ModToolsSelectedItem selectedItem) {
   // determines the final title of the widget based on selected mod tool tile
   String finalTitle = (selectedItem == ModToolsSelectedItem.spam)
@@ -53,11 +53,11 @@ QueuesWidget queuesWidget(ModToolsSelectedItem selectedItem) {
   return QueuesWidget(title: finalTitle);
 }
 
-///@param [context] context of the screen
-///@param [title] title of the app bar
-///@param [onPressed] function of the button in appbar when enabled
-///@param [isChanged] bool that checks if anything changed to enable or disable button
-///returns an appbar specified for the moderation general screens
+/// @param [context] context of the screen
+/// @param [title] title of the app bar
+/// @param [onPressed] function of the button in appbar when enabled
+/// @param [isChanged] bool that checks if anything changed to enable or disable button
+/// returns an appbar specified for the moderation general screens
 moderationAppBar(context, title, onPressed, isChanged) => AppBar(
       elevation: 0,
       leading: IconButton(
@@ -90,10 +90,10 @@ moderationAppBar(context, title, onPressed, isChanged) => AppBar(
         )
       ],
     );
-
-///@param [context] screen context
-///@param [type] type of the user management screen
-///shows a dialog to add a certain user to a certain categor in a community
+ 
+/// @param [context] screen context
+/// @param [type] type of the user management screen
+/// shows a dialog to add a certain user to a certain categor in a community
 userManagementAction(context, type, onPressed) => showDialog(
     context: context,
     builder: (context) => StatefulBuilder(
@@ -206,10 +206,10 @@ moderationDialog(context) => showDialog(
               ],
             )));
 
-///@param [text] text displayed in row
-///@param [isSwitched] bool that indicates whether switch is on or off
-///@param [toggle] function to toggle the switch
-///returns a row containing a title and a row at the end
+/// @param [text] text displayed in row
+/// @param [isSwitched] bool that indicates whether switch is on or off
+/// @param [toggle] function to toggle the switch
+/// returns a row containing a title and a row at the end
 Widget rowSwitch(text, isSwitched, toggle) => Row(
       children: [
         Text(text),
@@ -227,11 +227,11 @@ Widget rowSwitch(text, isSwitched, toggle) => Row(
       ],
     );
 
-///@param [context] user management screen context
-///@param [text] the title of the appbar
-///@param [function] function of button in actions appbar
-///@param [enable] bool to indicate whether button is enabled of not for validation
-///returns an app bar for the user management screens
+/// @param [context] user management screen context
+/// @param [text] the title of the appbar
+/// @param [function] function of button in actions appbar
+/// @param [enable] bool to indicate whether button is enabled of not for validation
+/// returns an app bar for the user management screens
 AppBar userManagementAppBar(context, text, function, enable) => AppBar(
       elevation: (kIsWeb) ? 0 : null,
       backgroundColor: ColorManager.darkGrey,

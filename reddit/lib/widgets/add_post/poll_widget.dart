@@ -10,7 +10,6 @@ import 'add_post_textfield.dart';
 
 /// Poll widget that show the options and can add or delete
 /// Note Minimum number of Options is 2
-// ignore: must_be_immutable
 class Poll extends StatefulWidget {
   /// Check if the Keyboard Is Opened
   bool isOpen;
@@ -75,6 +74,7 @@ class _PollState extends State<Poll> {
                                     fontSize: (18 * mediaQuery.textScaleFactor)
                                         .toInt(),
                                     hintText: 'Opition ${index + 1}',
+                                    index: index,
                                   ),
                                 ),
                               ),

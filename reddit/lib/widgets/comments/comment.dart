@@ -50,7 +50,6 @@ class Comment extends StatefulWidget {
 }
 
 class _CommentState extends State<Comment> {
-  bool isCompressed = false;
   QuillController? _controller;
   final FocusNode _focusNode = FocusNode();
   QuillController getController() {
@@ -157,13 +156,13 @@ class _CommentState extends State<Comment> {
       highlightColor: Colors.transparent,
       onLongPress: () {
         setState(() {
-          isCompressed = !isCompressed;
+          widget.comment.isCollapsed = !widget.comment.isCollapsed;
         });
       },
       onTap: () {
-        if (isCompressed) {
+        if (widget.comment.isCollapsed) {
           setState(() {
-            isCompressed = !isCompressed;
+            widget.comment.isCollapsed = !widget.comment.isCollapsed;
           });
         }
       },
@@ -188,7 +187,7 @@ class _CommentState extends State<Comment> {
 
         // margin: EdgeInsets.only(left: widget.level * 10.0),
         child: ConditionalBuilder(
-          condition: isCompressed,
+          condition: widget.comment.isCollapsed,
           builder: (context) {
             return commentAsRow(
                 comment: widget.comment,
@@ -344,12 +343,12 @@ class _CommentState extends State<Comment> {
                 ),
               ),
               if (showContent)
-                const Expanded(
+                Expanded(
                   child: Text(
                     ' • ',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: ColorManager.greyColor,
                       fontSize: 15,
                     ),

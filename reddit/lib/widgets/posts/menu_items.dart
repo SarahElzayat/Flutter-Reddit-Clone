@@ -14,8 +14,8 @@ import 'package:reddit/screens/posts/edit_screen.dart';
 import 'package:reddit/screens/posts/pick_community.dart';
 import 'package:reddit/screens/posts/share_to_community.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
+import '../../components/helpers/enums.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
-import '../../functions/post_functions.dart';
 
 /// Class of a single Menu item
 /// it contains the icon and the text used
@@ -28,6 +28,7 @@ class MenuItem {
   /// The icon of the menu item
   final IconData icon;
 
+  /// the modOPtions that are shown in the menu item
   final ModOPtions? modOPtions;
 }
 
@@ -78,9 +79,9 @@ class MenuItems {
   static const collapse =
       MenuItem(text: 'Collapse Thread', icon: Icons.compare_arrows);
   static const unsave = MenuItem(text: 'UnSave', icon: Icons.bookmark);
-  static const hide = MenuItem(text: 'UnHide post', icon: Icons.visibility_off);
+  static const hide = MenuItem(text: 'Hide post', icon: Icons.visibility_off);
   static const unhide =
-      MenuItem(text: 'Hide post', icon: Icons.visibility_rounded);
+      MenuItem(text: 'unHide post', icon: Icons.visibility_rounded);
   // static const report = MenuItem(text: 'Report', icon: Icons.flag_outlined);
   static const block = MenuItem(text: 'Block Acount', icon: Icons.block);
   static const share = MenuItem(text: 'Share', icon: Icons.share);
@@ -206,7 +207,10 @@ class MenuItems {
           );
         });
         break;
-
+      case MenuItems.collapse:
+        cubit.collapse();
+        PostNotifierCubit.get(context).notifyPosts();
+        break;
       default:
         break;
     }

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../cubit/user_profile/cubit/user_profile_cubit.dart';
@@ -10,7 +11,7 @@ import '../../components/helpers/color_manager.dart';
 import '../../networks/constant_end_points.dart';
 
 class UserProfileEditImage extends StatefulWidget {
-  const UserProfileEditImage({Key? key}) : super(key: key);
+  UserProfileEditImage({Key? key}) : super(key: key);
 
   @override
   State<UserProfileEditImage> createState() => _UserProfileEditImageState();
@@ -32,7 +33,7 @@ class _UserProfileEditImageState extends State<UserProfileEditImage> {
             margin: const EdgeInsets.all(3),
             child: DottedBorder(
                 dashPattern: const [10, 5],
-                color: ColorManager.white,
+                color: (true) ? ColorManager.white : ColorManager.black,
                 child: SizedBox(
                   width: mediaquery.size.width,
                   height: 120,
@@ -40,10 +41,12 @@ class _UserProfileEditImageState extends State<UserProfileEditImage> {
                     fit: StackFit.expand,
                     children: [
                       (userProfile.img != null)
-                          ? Image.file(
-                              File(userProfile.img!.path),
-                              fit: BoxFit.fitWidth,
-                            )
+                          ? (kIsWeb)
+                              ? Image.network(userProfile.img!.path)
+                              : Image.file(
+                                  File(userProfile.img!.path),
+                                  fit: BoxFit.fitWidth,
+                                )
                           : (userProfile.userData!.banner != null &&
                                   userProfile.userData!.banner != '')
                               ? Image.network(
@@ -116,15 +119,27 @@ class _UserProfileEditImageState extends State<UserProfileEditImage> {
                 child: Stack(
                   children: [
                     CircleAvatar(
+                      child: (kIsWeb)
+                          ? (userProfile.userData!.picture == null ||
+                                  userProfile.userData!.picture == '')
+                              ? Image.asset('assets/images/Logo.png')
+                              : Image.network(
+                                  '$baseUrl/${userProfile.userData!.picture!}',
+                                  // fit: BoxFit.cover,
+                                )
+                          : null,
+                      backgroundColor: (kIsWeb) ? Colors.transparent : null,
                       radius: 40,
-                      backgroundImage: (userProfile.userData!.picture == null ||
-                              userProfile.userData!.picture == '')
-                          ? Image.asset('assets/images/Logo.png')
-                              as ImageProvider
-                          : NetworkImage(
-                              '$baseUrl/${userProfile.userData!.picture!}',
-                              // fit: BoxFit.cover,
-                            ),
+                      backgroundImage: (!kIsWeb)
+                          ? (userProfile.userData!.picture == null ||
+                                  userProfile.userData!.picture == '')
+                              ? Image.asset('assets/images/Logo.png')
+                                  as ImageProvider
+                              : NetworkImage(
+                                  '$baseUrl/${userProfile.userData!.picture!}',
+                                  // fit: BoxFit.cover,
+                                )
+                          : null,
                     ),
                     Align(
                         alignment: Alignment.bottomRight,

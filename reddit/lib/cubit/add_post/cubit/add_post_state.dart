@@ -20,14 +20,14 @@ class ImageAddedOrRemoved extends AddPostState {}
 class ImagePaintedOrCropped extends AddPostState {}
 
 class VideoAddedOrRemoved extends AddPostState {
-  final bool isAdded;
+  bool isAdded;
   VideoAddedOrRemoved({
     required this.isAdded,
   });
 }
 
 class CanCreatePost extends AddPostState {
-  final bool canPost;
+  bool canPost;
   CanCreatePost({
     required this.canPost,
   });
@@ -36,7 +36,7 @@ class CanCreatePost extends AddPostState {
 class EditVideo extends AddPostState {}
 
 class ImageCaptionOrLinkEdited extends AddPostState {
-  final bool isChange;
+  bool isChange;
   ImageCaptionOrLinkEdited({
     required this.isChange,
   });
@@ -47,7 +47,7 @@ class PreviewImage extends AddPostState {}
 class PostCreated extends AddPostState {}
 
 class SubredditSearch extends AddPostState {
-  final bool isLoaded;
+  bool isLoaded;
   SubredditSearch({
     required this.isLoaded,
   });

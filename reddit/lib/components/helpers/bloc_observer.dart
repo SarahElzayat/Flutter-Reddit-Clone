@@ -1,8 +1,12 @@
-///@author Sarah Elzayat
-///@description the bloc observer is used for debugging purposes, it shows the the app states in the debug console
+/// @author Sarah Elzayat
+/// the bloc observer is used for debugging purposes, it shows the the app states in the debug console
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 
+/// Observer for bloc library
+///
+/// this class is used to observe the bloc library and show the states in the debug console
+/// it prints the state of the bloc when it is created, changed, closed or has an error
 class MyBlocObserver extends BlocObserver {
   @override
   void onCreate(BlocBase bloc) {

@@ -30,6 +30,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../components/helpers/posts/helper_funcs.dart';
 // import '../../cubit/videos_cubit/videos_cubit.dart';
+import '../../components/helpers/widgets/responsive_widget.dart';
 import '../../data/comment/comment_model.dart';
 import '../../data/post_model/post_model.dart';
 import '../../widgets/posts/inline_image_viewer.dart';
@@ -75,9 +76,16 @@ class PostWidget extends StatefulWidget {
   /// if yes then the post will be shown in a compact way
   final bool isNested;
 
+  /// determines if the post is in the search screen or not
+  /// if yes then the post will be shown in a compact way
   final bool inSearch;
+
+  /// the comment that the post is related to
+  /// it's used to show the comment in the Search screen
   final CommentModel? comment;
 
+  /// determines if the post is inside the profiles screen or not
+  /// if yes then the post will be shown in a different way
   final bool insideProfiles;
   @override
   State<PostWidget> createState() => _PostWidgetState();
@@ -114,7 +122,7 @@ class _PostWidgetState extends State<PostWidget> {
         ..getUserDetails(),
       child: ResponsiveBuilder(
         builder: (buildContext, sizingInformation) {
-          bool isWeb = kIsWeb; //!ResponsiveWidget.isSmallScreen(context);
+          bool isWeb = !ResponsiveWidget.isSmallScreen(context);
 
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
@@ -291,25 +299,26 @@ class _PostWidgetState extends State<PostWidget> {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            'r/${widget.post.subreddit}',
-            style: TextStyle(
-              color: ColorManager.lightGrey,
-              fontSize: 15.sp,
+          if (widget.post.subreddit?.isNotEmpty ?? false)
+            Text(
+              'r/${widget.post.subreddit}',
+              style: const TextStyle(
+                color: ColorManager.lightGrey,
+                fontSize: 15,
+              ),
             ),
-          ),
           Text(
             '• ${timeago.format(DateTime.tryParse(widget.post.postedAt ?? '') ?? DateTime.now(), locale: 'en_short')}',
-            style: TextStyle(
+            style: const TextStyle(
               color: ColorManager.greyColor,
-              fontSize: 15.sp,
+              fontSize: 15,
             ),
           ),
           Text(
             ' u/${widget.post.postedBy ?? ''}',
-            style: TextStyle(
+            style: const TextStyle(
               color: ColorManager.lightGrey,
-              fontSize: 15.sp,
+              fontSize: 15,
             ),
           ),
         ],
@@ -333,7 +342,7 @@ class _PostWidgetState extends State<PostWidget> {
                 widget.post.kind == 'hybrid'));
   }
 
-  Row _lowerPart(bool isWeb) {
+  Widget _lowerPart(bool isWeb) {
     if (widget.isNested ||
         widget.postView == PostView.withCommentsInSearch ||
         widget.inSearch) {
@@ -342,25 +351,39 @@ class _PostWidgetState extends State<PostWidget> {
         children: [
           Text(
             '${widget.post.votes ?? 0} points',
-            style: TextStyle(
+            style: const TextStyle(
               color: ColorManager.lightGrey,
-              fontSize: 15.sp,
+              fontSize: 15,
             ),
           ),
           Text(
             ' • ${widget.post.comments ?? 0} comments',
-            style: TextStyle(
+            style: const TextStyle(
               color: ColorManager.lightGrey,
-              fontSize: 15.sp,
+              fontSize: 15,
             ),
           ),
         ],
       );
     }
+    if (kIsWeb) {
+      return Row(
+        // mainAxisSize: MainAxisSize.min,
+        children: [
+          if (!isWeb) VotesPart(post: widget.post),
+          if (!isWeb) SizedBox(width: 1.w),
+          PostLowerBarWithoutVotes(
+              post: widget.post,
+              isWeb: isWeb,
+              showIsights: widget.insideProfiles,
+              pad: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10)),
+        ],
+      );
+    }
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      // mainAxisSize: MainAxisSize.min,
       children: [
-        if (!isWeb) Expanded(flex: 1, child: VotesPart(post: widget.post)),
+        Expanded(flex: 1, child: VotesPart(post: widget.post)),
         Expanded(
           flex: 2,
           child: PostLowerBarWithoutVotes(

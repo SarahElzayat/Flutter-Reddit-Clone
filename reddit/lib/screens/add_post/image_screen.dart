@@ -86,6 +86,8 @@ class ImageScreen extends StatelessWidget {
                 child: IconButton(
                     onPressed: () async {
                       const folderName = 'Pictures';
+
+                      ///TODO: check on the emulated path.
                       final path = Directory('storage/emulated/0/$folderName');
                       if ((await path.exists())) {
                         File image = File(addPostCubit.editableImage.path);
