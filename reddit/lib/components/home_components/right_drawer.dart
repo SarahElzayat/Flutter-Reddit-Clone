@@ -28,7 +28,7 @@ class RightDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppCubit cubit = AppCubit.get(context);
 
-    ///@param [rightDrawerItems] the list of right drawer items
+    /// @param [rightDrawerItems] the list of right drawer items
     List<Widget> rightDrawerItems = [
       genericTextButton(context, Icons.person, 'My profile',
           kIsWeb ? UserProfileWeb() : const UserProfileScreen(),

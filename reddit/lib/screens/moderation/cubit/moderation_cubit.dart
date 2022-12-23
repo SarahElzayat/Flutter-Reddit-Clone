@@ -89,8 +89,8 @@ class ModerationCubit extends Cubit<ModerationState> {
 
   ///GET requests
 
-  ///@param [context] screen context
-  ///@param [name] community name
+  /// @param [context] screen context
+  /// @param [name] community name
   ///sends a GET request to retrieve the settings of a certain subreddit
   void getCommunitySettings(context, name) {
     DioHelper.getData(path: '/r/$name/about/edit').then((value) {
@@ -130,8 +130,8 @@ class ModerationCubit extends Cubit<ModerationState> {
   }
 
   ///returns the post settings for a certain subreddit
-  ///@param [context] screen context
-  ///@param [name] name of the subreddit
+  /// @param [context] screen context
+  /// @param [name] name of the subreddit
   void getPostSettings(context, name) {
     DioHelper.getData(path: '/r/$name/about/edit-post-settings').then((value) {
       if (value.statusCode == 200) {
@@ -144,8 +144,8 @@ class ModerationCubit extends Cubit<ModerationState> {
     });
   }
 
-  ///@param [context] screen context
-  ///@param [name] name of the subreddit
+  /// @param [context] screen context
+  /// @param [name] name of the subreddit
   /// gets the current settings of the subreddit being moderated
   void getSettings(context, name) {
     getCommunitySettings(context, name);
@@ -153,12 +153,12 @@ class ModerationCubit extends Cubit<ModerationState> {
     emit(LoadSettings());
   }
 
-  ///@param [context] screen context
-  ///@param [loadMore] indicates whether the user wants more posts to be shown
+  /// @param [context] screen context
+  /// @param [loadMore] indicates whether the user wants more posts to be shown
   ///true when the scrollbar reaches end of screen
-  ///@param [after] index to indicate the next request
-  ///@param [before] index to indicate the next request
-  ///@param [limit] number of posts retrieved from the request
+  /// @param [after] index to indicate the next request
+  /// @param [before] index to indicate the next request
+  /// @param [limit] number of posts retrieved from the request
   ///gets the posts in queue moderation in web
   void getQueuePosts(
       {context,
@@ -222,7 +222,7 @@ class ModerationCubit extends Cubit<ModerationState> {
     });
   }
 
-  ///@param[context] screen context
+  /// @param[context] screen context
   ///retieves the suggested topics a subreddit can be bout
   void getSuggestedTopics(context) {
     DioHelper.getData(path: '/r/${settings.communityName}/suggested-topics')
@@ -235,8 +235,8 @@ class ModerationCubit extends Cubit<ModerationState> {
     });
   }
 
-  ///@param [context] screen context
-  ///@param [type] user management screen type
+  /// @param [context] screen context
+  /// @param [type] user management screen type
   ///returns users based on the type of widget
   void getUsers(context, UserManagement type) {
     String finalPath = (type == UserManagement.banned)
@@ -272,7 +272,7 @@ class ModerationCubit extends Cubit<ModerationState> {
 
   ///POST and PUT requests
 
-  ///@param [context] screen context
+  /// @param [context] screen context
   /// updates the community settings when save changes button is pressed
   void updateCommunitySettings(context) {
     settings.welcomeMessage = welcomeMessageController.text;
@@ -313,7 +313,7 @@ class ModerationCubit extends Cubit<ModerationState> {
     });
   }
 
-  ///@param [context] screen context
+  /// @param [context] screen context
   /// updates the post and comments settings when save changes button is pressed
   void updatePostSettings(context) {
     DioHelper.putData(
@@ -327,7 +327,7 @@ class ModerationCubit extends Cubit<ModerationState> {
     });
   }
 
-  ///@param [context] screen context
+  /// @param [context] screen context
   ///updates settings when the save changes button is pressed
   void updateSettings(context) {
     Logger().e(descriptionController.text);
@@ -368,7 +368,7 @@ class ModerationCubit extends Cubit<ModerationState> {
   //User moderation funactions in subreddit
   // a moderator can ban, mute, approve or invite user as a moderator
 
-  ///@param[context] context of banned users screen
+  /// @param[context] context of banned users screen
   /// this functions bans a user from a subreddit
   void banUser(context) {
     BanUserModel banUser = BanUserModel(
@@ -410,7 +410,7 @@ class ModerationCubit extends Cubit<ModerationState> {
     });
   }
 
-  ///@param [context] context of invite moderator screen
+  /// @param [context] context of invite moderator screen
   ///this function invites a user as a moderator
   void inviteModerator(context) {
     InviteModeratorModel inviteModerator = InviteModeratorModel(
@@ -441,7 +441,7 @@ class ModerationCubit extends Cubit<ModerationState> {
 
   void removeModerator() {}
 
-  ///@param [context] context of invite moderator screen
+  /// @param [context] context of invite moderator screen
   ///this function mutes a user in a subreddit
   void muteUser(context) {
     MuteUserModel mutedUser = MuteUserModel(
@@ -480,7 +480,7 @@ class ModerationCubit extends Cubit<ModerationState> {
     });
   }
 
-  ///@param [context] context of invite moderator screen
+  /// @param [context] context of invite moderator screen
   ///this function approves a user into a subreddit
   void approveUser(context) {
     ApproveUserModel approveUser =
@@ -576,7 +576,7 @@ class ModerationCubit extends Cubit<ModerationState> {
     emit(Toggle());
   }
 
-  ///@param [reason] reason for banning a user
+  /// @param [reason] reason for banning a user
   ///sets reason chosen from modal bottom sheet
   void setBanReason(reason) {
     banReason = reason;
@@ -584,7 +584,7 @@ class ModerationCubit extends Cubit<ModerationState> {
     emit(BanReasonChosen());
   }
 
-  ///@param [username] username of user to ban
+  /// @param [username] username of user to ban
   ///updates button state whether enabled or not
   void buttonState(String username) {
     emptyUsername = username.isEmpty;
@@ -624,7 +624,7 @@ class ModerationCubit extends Cubit<ModerationState> {
   /// to check if username textfield is empty
   bool emptyModUsername = true;
 
-  ///@param [username] username of moderator to invite
+  /// @param [username] username of moderator to invite
   void modButtonState(String username) {
     emptyModUsername = username.isEmpty;
     invitedModerator = username;
@@ -632,7 +632,7 @@ class ModerationCubit extends Cubit<ModerationState> {
   }
 
   ///handles toggling permissions in invite moderator screen
-  ///@param [index] the index of the toggled checkbox
+  /// @param [index] the index of the toggled checkbox
   void togglePermissions(int index) {
     // if full permisions is pressed
     if (index == -1) {
@@ -660,7 +660,7 @@ class ModerationCubit extends Cubit<ModerationState> {
   ModToolsSelectedItem webSelectedItem = ModToolsSelectedItem.spam;
   ModToolsGroup webSelectedGroup = ModToolsGroup.queues;
 
-  ///@param [item] the tile chosen from the mod tools in web
+  /// @param [item] the tile chosen from the mod tools in web
   setWebSelectedItem(context, ModToolsSelectedItem item, ModToolsGroup group) {
     webSelectedItem = item;
     webSelectedGroup = group;
@@ -680,7 +680,7 @@ class ModerationCubit extends Cubit<ModerationState> {
   ///value of selected sorting iem
   String? sortingValue = sortingItems.first;
 
-  ///@param [value] the tile chosen from the mod tools in web
+  /// @param [value] the tile chosen from the mod tools in web
   setSortType(value) {
     sortingValue = value;
     emit(SetDropdownItem());
@@ -689,7 +689,7 @@ class ModerationCubit extends Cubit<ModerationState> {
   ///value of selected listing iem
   String? listingTypeValue = listingTypes.first;
 
-  ///@param [value] the tile chosen from the mod tools in web
+  /// @param [value] the tile chosen from the mod tools in web
   setListType(String? value) {
     listingTypeValue = value;
     emit(SetDropdownItem());
@@ -698,32 +698,32 @@ class ModerationCubit extends Cubit<ModerationState> {
   /// value of selected view
   String? viewValue = view.first;
 
-  ///@param [value] the tile chosen from the mod tools in web
+  /// @param [value] the tile chosen from the mod tools in web
   setView(String? value) {
     viewValue = value;
     emit(SetDropdownItem());
   }
 
-  ///@param [value] new switch value to toggle switch
+  /// @param [value] new switch value to toggle switch
   toggleNSFWSwitch(value) {
     settings.nSFW = value;
     emit(Toggle());
   }
 
-  ///@param [value] new switch value to toggle switch
+  /// @param [value] new switch value to toggle switch
   toggleMessageSwitch(value) {
     settings.sendWelcomeMessage ?? false;
     settings.sendWelcomeMessage = value;
     emit(Toggle());
   }
 
-  ///@param [value] chosen community language
+  /// @param [value] chosen community language
   setCommunityLanguage(String? value) {
     settings.language = value;
     emit(SetDropdownItem());
   }
 
-  ///@param [value] chosen community region
+  /// @param [value] chosen community region
   setCommunityRegion(String? value) {
     settings.region = value;
     emit(SetDropdownItem());
@@ -731,7 +731,7 @@ class ModerationCubit extends Cubit<ModerationState> {
 
   String communityTopic = 'Activism';
 
-  ///@param [value] chosen community region
+  /// @param [value] chosen community region
   setCommunityTopic(value) {
     communityTopic = value;
     settings.subTopics = [communityTopic, communityTopic];
@@ -762,7 +762,7 @@ class ModerationCubit extends Cubit<ModerationState> {
   ///post type
   String postOption = postOptions.first;
 
-  ///@param [value] chosen post type from dropdown list
+  /// @param [value] chosen post type from dropdown list
   void setPostType(value) {
     postOption = value;
     emit(SetDropdownItem());
@@ -771,7 +771,7 @@ class ModerationCubit extends Cubit<ModerationState> {
   /// suggested sort
   String sort = suggestedSort.first;
 
-  ///@param [value] chosen post type from dropdown list
+  /// @param [value] chosen post type from dropdown list
   void setSuggestedSort(value) {
     sort = value;
     emit(SetDropdownItem());
@@ -840,9 +840,9 @@ class ModerationCubit extends Cubit<ModerationState> {
     });
   }
 
-  ///@param[name]
-  ///@param[backgroundColor]
-  ///@param[textColor]
+  /// @param[name]
+  /// @param[backgroundColor]
+  /// @param[textColor]
   void addFlair(context, name, backgroundColor, textColor) {
     FlairSettingModel flairSettings = FlairSettingModel(
         modOnly: modOnly,

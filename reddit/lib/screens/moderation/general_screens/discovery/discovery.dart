@@ -19,14 +19,14 @@ class _DiscoveryState extends State<Discovery> {
   bool trafficSwitch = false;
   bool recommendSwitch = false;
 
-  ///@param [switcher]
+  /// @param [switcher]
   toggleTraffic(switcher) {
     setState(() {
       trafficSwitch = switcher;
     });
   }
 
-  ///@param [switcher]
+  /// @param [switcher]
   toggleRecommend(switcher) {
     setState(() {
       recommendSwitch = switcher;

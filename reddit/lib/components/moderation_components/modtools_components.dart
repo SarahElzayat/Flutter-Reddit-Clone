@@ -18,7 +18,7 @@ import 'package:reddit/widgets/moderation/user_management.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:flutter/scheduler.dart';
 
-///@param [selectedItem] the selected tile from the mod tools in web
+/// @param [selectedItem] the selected tile from the mod tools in web
 UserManagementWidget userManagementWidget(ModToolsSelectedItem selectedItem) {
   String finalTitle = (selectedItem == ModToolsSelectedItem.banned)
       ? 'Banned users'
@@ -39,7 +39,7 @@ UserManagementWidget userManagementWidget(ModToolsSelectedItem selectedItem) {
   return UserManagementWidget(screenTitle: finalTitle, type: finalType);
 }
 
-///@param [selectedItem] the selected tile from the mod tools in web
+/// @param [selectedItem] the selected tile from the mod tools in web
 QueuesWidget queuesWidget(ModToolsSelectedItem selectedItem) {
   String finalTitle = (selectedItem == ModToolsSelectedItem.spam)
       ? 'Spam'
@@ -50,10 +50,10 @@ QueuesWidget queuesWidget(ModToolsSelectedItem selectedItem) {
   return QueuesWidget(title: finalTitle);
 }
 
-///@param [context] context of the screen
-///@param [title] title of the app bar
-///@param [onPressed] function of the button in appbar when enabled
-///@param [isChanged] bool that checks if anything changed to enable or disable button
+/// @param [context] context of the screen
+/// @param [title] title of the app bar
+/// @param [onPressed] function of the button in appbar when enabled
+/// @param [isChanged] bool that checks if anything changed to enable or disable button
 moderationAppBar(context, title, onPressed, isChanged) => AppBar(
       elevation: 0,
       leading: IconButton(
@@ -84,8 +84,8 @@ moderationAppBar(context, title, onPressed, isChanged) => AppBar(
       ],
     );
 
-///@param [context]
-///@param [type]
+/// @param [context]
+/// @param [type]
 userManagementAction(context, type, onPressed) => showDialog(
     context: context,
     builder: (context) => StatefulBuilder(
@@ -144,7 +144,7 @@ userManagementAction(context, type, onPressed) => showDialog(
               ],
             ))));
 
-///@param [context] mod tools screen context
+/// @param [context] mod tools screen context
 ///shows the dialog for action button in web
 moderationDialog(context) => showDialog(
     context: context,
@@ -198,9 +198,9 @@ moderationDialog(context) => showDialog(
               ],
             )));
 
-///@param [text] text displayed in row
-///@param [isSwitched] bool that indicates whether switch is on or off
-///@param [toggle] function to toggle the switch
+/// @param [text] text displayed in row
+/// @param [isSwitched] bool that indicates whether switch is on or off
+/// @param [toggle] function to toggle the switch
 Widget rowSwitch(text, isSwitched, toggle) => Row(
       children: [
         Text(text),
@@ -218,10 +218,10 @@ Widget rowSwitch(text, isSwitched, toggle) => Row(
       ],
     );
 
-///@param [context] user management screen context
-///@param [text] the title of the appbar
-///@param [function] function of button in actions appbar
-///@param [enable] bool to indicate whether button is enabled of not for validation
+/// @param [context] user management screen context
+/// @param [text] the title of the appbar
+/// @param [function] function of button in actions appbar
+/// @param [enable] bool to indicate whether button is enabled of not for validation
 AppBar userManagementAppBar(context, text, function, enable) => AppBar(
       elevation: (kIsWeb) ? 0 : null,
       backgroundColor: ColorManager.darkGrey,

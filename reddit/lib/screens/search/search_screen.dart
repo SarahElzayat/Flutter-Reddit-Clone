@@ -15,7 +15,7 @@ import 'package:reddit/components/search_field.dart';
 import '../../components/snack_bar.dart';
 
 ///
-///@param [query] the search word
+/// @param [query] the search word
 /// @param [subredditName] the name of the subreddit in case of searching inside one
 /// @param [isSubreddit] bool to check if the search is called inside a subreddit or not to preview the results accordingly
 ///

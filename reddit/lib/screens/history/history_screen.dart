@@ -14,7 +14,7 @@ import '../../cubit/app_cubit/app_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_state.dart';
 import '../add_post/add_post.dart';
 
-///@param [bottomNavBarScreenIndex] the index of the screen the history was called from
+/// @param [bottomNavBarScreenIndex] the index of the screen the history was called from
 ///so it pops back to it
 
 class HistoryScreen extends StatefulWidget {
@@ -46,10 +46,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
+    /// @param [cubit] an instance of the App Cubit to give easier access to the state management cubit
     final AppCubit cubit = AppCubit.get(context);
 
-    ///@param [historyCategories] a list of history categories names and icons for the bottom modal sheet
+    /// @param [historyCategories] a list of history categories names and icons for the bottom modal sheet
     List<ListTile> historyCategories = [
       ListTile(
         leading: const Icon(Icons.timelapse),

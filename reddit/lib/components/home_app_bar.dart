@@ -80,9 +80,9 @@ void markAllAsRead(context) async {
   });
 }
 
-///@param [index] is the index of the bottom navigation bar screen, when used on web ir doesn't affect anything
-///@param [context] is the context of the parent widget
-///@param [isSearch] bool to indicate if the appbar was called inside search screen or not, if true, the search result is displayed in the same screen
+/// @param [index] is the index of the bottom navigation bar screen, when used on web ir doesn't affect anything
+/// @param [context] is the context of the parent widget
+/// @param [isSearch] bool to indicate if the appbar was called inside search screen or not, if true, the search result is displayed in the same screen
 /// returns the app bar of the screen
 AppBar homeAppBar(
   context,
@@ -91,7 +91,7 @@ AppBar homeAppBar(
   bool isSubreddit = false,
   String? subredditName,
 }) {
-  ///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
+  /// @param [cubit] an instance of the App Cubit to give easier access to the state management cubit
   final AppCubit cubit = AppCubit.get(context);
 
   ///checks if the it's mobile

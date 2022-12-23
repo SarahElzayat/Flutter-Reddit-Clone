@@ -8,7 +8,7 @@ import 'package:reddit/screens/search/cubit/search_cubit.dart';
 
 import '../../networks/constant_end_points.dart';
 
-///@param [model] model of user result
+/// @param [model] model of user result
 class ProfileResultContainer extends StatelessWidget {
   const ProfileResultContainer({super.key, required this.model});
   final SearchResultProfileModel model;

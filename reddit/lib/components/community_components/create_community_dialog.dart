@@ -26,7 +26,7 @@ class CreateCommunityWindow extends StatelessWidget {
   ///to control the text field
   final TextEditingController _controller = TextEditingController();
 
-  ///@param [communityName] current state of the text in the text field
+  /// @param [communityName] current state of the text in the text field
   ///changes continuosly while user is editing
 
   @override

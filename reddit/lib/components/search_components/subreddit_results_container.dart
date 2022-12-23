@@ -9,7 +9,7 @@ import '../../networks/constant_end_points.dart';
 import '../../screens/search/cubit/search_cubit.dart';
 import '../helpers/color_manager.dart';
 
-///@param [model] model of subreddit result
+/// @param [model] model of subreddit result
 
 class SubredditResultsContainer extends StatelessWidget {
   const SubredditResultsContainer({super.key, required this.model});

@@ -34,14 +34,14 @@ class AppCubit extends Cubit<AppState> {
   /// static method to instantiate an isntance of the app cubit to be used
   static AppCubit get(context) => BlocProvider.of(context);
 
-  ///@param[currentIndex] indicates the index of the current bottom navigation bar screen
+  /// @param[currentIndex] indicates the index of the current bottom navigation bar screen
   int currentIndex = 0;
 
-  ///@param[screensNames] a list of the names of the bottom navigation bar screens
+  /// @param[screensNames] a list of the names of the bottom navigation bar screens
   List screensNames = ['Home', 'Discover', 'Create', 'Chat', 'Inbox'];
   // late BuildContext mainScreenContext;
 
-  ///@param[bottomNavBarScreens] a list of the bottom navigation bar widgets
+  /// @param[bottomNavBarScreens] a list of the bottom navigation bar widgets
   List<Widget> bottomNavBarScreens = [
     const HomeScreen(),
     const ExploreScreen(),
@@ -52,7 +52,7 @@ class AppCubit extends Cubit<AppState> {
     const InboxScreen(),
   ];
 
-  ///@param[bottomNavBarIcons] a list of the icons of the bottom navigation bar screens
+  /// @param[bottomNavBarIcons] a list of the icons of the bottom navigation bar screens
   List<BottomNavigationBarItem> bottomNavBarIcons = [
     const BottomNavigationBarItem(
         icon: Icon(Icons.home_outlined), label: 'Home'),
@@ -65,7 +65,7 @@ class AppCubit extends Cubit<AppState> {
         icon: Icon(Icons.notifications_outlined), label: 'Inbox'),
   ];
 
-  ///@param [homePosts] home posts
+  /// @param [homePosts] home posts
   List<Widget> homePosts = [];
   int homePostsAfterId = 0;
   String homePostsBeforeId = '';
@@ -138,7 +138,7 @@ class AppCubit extends Cubit<AppState> {
     emit(LoadedSavedState());
   }
 
-  ///@param [popularPosts] dummy data for home screen
+  /// @param [popularPosts] dummy data for home screen
   List<Widget> popularPosts = [
     PostWidget(
         post: textPost, insideProfiles: true, postView: PostView.classic),
@@ -148,14 +148,14 @@ class AppCubit extends Cubit<AppState> {
     PostWidget(post: oneImagePost),
   ];
 
-  ///@param [index] is the index of the bottom navigation bar screen
+  /// @param [index] is the index of the bottom navigation bar screen
   ///the function changes the displayed screen accordingly
   void changeIndex(int index) {
     currentIndex = index;
     emit(ChangeBottomNavBarState());
   }
 
-  ///@param [homeMenuDropdown] a boolean that indicates whether the home dropdown button is open or not
+  /// @param [homeMenuDropdown] a boolean that indicates whether the home dropdown button is open or not
   bool homeMenuDropdown = false;
   List homeMenuItems = ['Home', 'Popular'];
   int homeMenuIndex = 0;
@@ -183,7 +183,7 @@ class AppCubit extends Cubit<AppState> {
     emit(ChangeLeftDrawerState());
   }
 
-  ///@param [moderatingListOpen] a boolean that indicates whether the left drawer's 'moderating' list is open or not
+  /// @param [moderatingListOpen] a boolean that indicates whether the left drawer's 'moderating' list is open or not
   bool moderatingListOpen = true;
 
   /// The function changes the moderating list state from open to closed and the opposite to keep its state in different contexts
@@ -192,7 +192,7 @@ class AppCubit extends Cubit<AppState> {
     emit(ChangeModeratingListState());
   }
 
-  ///@param [favoritesListOpen] a boolean that indicates whether the left drawer's 'moderating' list is open or not
+  /// @param [favoritesListOpen] a boolean that indicates whether the left drawer's 'moderating' list is open or not
   bool favoritesListOpen = true;
 
   /// The function changes the moderating list state from open to closed and the opposite to keep its state in different contexts
@@ -201,11 +201,11 @@ class AppCubit extends Cubit<AppState> {
     emit(ChangeFavoritesListState());
   }
 
-  ///@param [moderatingListItems] the subreddits you moderate
+  /// @param [moderatingListItems] the subreddits you moderate
   Map<String, DrawerCommunitiesModel> moderatingListItems =
       <String, DrawerCommunitiesModel>{};
 
-  ///@param [yourCommunitiesistOpen] a boolean that indicates whether the left drawer's 'your communities' list is open or not
+  /// @param [yourCommunitiesistOpen] a boolean that indicates whether the left drawer's 'your communities' list is open or not
   bool yourCommunitiesistOpen = true;
 
   /// The function changes the communitites list state from openn to closed and the opposite to keep its state in different contexts
@@ -214,11 +214,11 @@ class AppCubit extends Cubit<AppState> {
     emit(ChangeYourCommunitiesState());
   }
 
-  ///@param [yourCommunitiesList] user's joined communities
+  /// @param [yourCommunitiesList] user's joined communities
   Map<String, DrawerCommunitiesModel> yourCommunitiesList =
       <String, DrawerCommunitiesModel>{};
 
-  ///@param [yourCommunitiesList] user's favorite communities
+  /// @param [yourCommunitiesList] user's favorite communities
   Map<String, DrawerCommunitiesModel> favoriteCommunities =
       <String, DrawerCommunitiesModel>{};
 
@@ -319,7 +319,7 @@ class AppCubit extends Cubit<AppState> {
     });
   }
 
-  ///@param [profilePicture] the profile picture of the user
+  /// @param [profilePicture] the profile picture of the user
   String profilePicture = '';
 
   /// gets the profile picture of the user
@@ -340,13 +340,13 @@ class AppCubit extends Cubit<AppState> {
     });
   }
 
-  ///@param [username] is the username of the user
+  /// @param [username] is the username of the user
   String? username = 'Anonymous';
 
-  ///@param [age] is the user's age
+  /// @param [age] is the user's age
   String? age = '';
 
-  ///@param [karma] is the user's karma
+  /// @param [karma] is the user's karma
   int? karma = 1;
 
   /// the function get the user's username, age and karma from the backend
@@ -374,26 +374,26 @@ class AppCubit extends Cubit<AppState> {
     });
   }
 
-  ///@param [history] the list of the user's history, changes according to its category
+  /// @param [history] the list of the user's history, changes according to its category
   List<PostModel> history = [];
 
-  ///@param [currentHistoryCategory] the category chosen [recent, upvoted, downvoted, hidden]
+  /// @param [currentHistoryCategory] the category chosen [recent, upvoted, downvoted, hidden]
   String currentHistoryCategory = recentHistory;
 
-  ///@param [beforeId] is the last "before" id sent from the backend, used when needed to get the posts
+  /// @param [beforeId] is the last "before" id sent from the backend, used when needed to get the posts
   ///                   before the currently loaded oens
   /// initially empty to load posts for the first time
   String beforeId = '';
 
-  ///@param [afterId] is the last "after" id sent from the backend, used when needed to get the posts
+  /// @param [afterId] is the last "after" id sent from the backend, used when needed to get the posts
   ///                   after the currently loaded oens
   /// initially empty to load posts for the first time
   String afterId = '';
 
-  ///@param [path] is the path of the desired history category
-  ///@param [loadMore] bool that indicates whether the function is called on loading more items for infinte scrolling or not
-  ///@param [before] bool to use when the posts before the current loaded ones are needed
-  ///@param [after] bool to use when the posts after the current loaded ones are needed
+  /// @param [path] is the path of the desired history category
+  /// @param [loadMore] bool that indicates whether the function is called on loading more items for infinte scrolling or not
+  /// @param [before] bool to use when the posts before the current loaded ones are needed
+  /// @param [after] bool to use when the posts after the current loaded ones are needed
   /// the function gets the history of the specified path (recent, upvoted, downvoted, hidden) history
   /// emits some corresponding states and fills [history] list
   void getHistory(
@@ -439,7 +439,7 @@ class AppCubit extends Cubit<AppState> {
     });
   }
 
-  ///@param [historyCategoriesNames] a list the string names of the history categories to be used in different buttons, lists...etc
+  /// @param [historyCategoriesNames] a list the string names of the history categories to be used in different buttons, lists...etc
   List<String> historyCategoriesNames = [
     'Recent',
     'Upvoted',
@@ -447,7 +447,7 @@ class AppCubit extends Cubit<AppState> {
     'Hidden'
   ];
 
-  ///@param [historyCategoriesIcons] a list of icons corresponding to [historyCategoriesNames]
+  /// @param [historyCategoriesIcons] a list of icons corresponding to [historyCategoriesNames]
   List<Icon> historyCategoriesIcons = [
     const Icon(Icons.timelapse),
     const Icon(Icons.arrow_circle_up_rounded),
@@ -455,10 +455,10 @@ class AppCubit extends Cubit<AppState> {
     const Icon(Icons.hide_image_outlined),
   ];
 
-  ///@param [historyCategoryIndex] is the index of the chosen history category
+  /// @param [historyCategoryIndex] is the index of the chosen history category
   int historyCategoryIndex = 0;
 
-  ///@param [category] is an enum that corresponds to the history category item
+  /// @param [category] is an enum that corresponds to the history category item
   /// the function clears the [history] list and fills it with the designated category and emits a state after doing so
   void changeHistoryCategory(HistoyCategory category) {
     historyCategoryIndex = category.index;
@@ -524,12 +524,12 @@ class AppCubit extends Cubit<AppState> {
   /// @param [savedPostsList] the list of the user's saved posts
   List<PostModel> savedPostsList = [];
 
-  ///@param [savedPostsBeforeId] is the last "before" id sent from the backend, used when needed to get the posts
+  /// @param [savedPostsBeforeId] is the last "before" id sent from the backend, used when needed to get the posts
   ///                   before the currently loaded oens
   /// initially empty to load posts for the first time
   String savedPostsBeforeId = '';
 
-  ///@param [savedPostsAfterId] is the last "after" id sent from the backend, used when needed to get the posts
+  /// @param [savedPostsAfterId] is the last "after" id sent from the backend, used when needed to get the posts
   ///                   after the currently loaded oens
   /// initially empty to load posts for the first time
   String savedPostsAfterId = '';
@@ -540,23 +540,23 @@ class AppCubit extends Cubit<AppState> {
   /// @param [savedCommentsPostsList] the list of the user's saved posts corresopnding to the user's saved comments
   List<PostModel> savedCommentsPostsList = [];
 
-  ///@param [savedCommentsBeforeId] is the last "before" id sent from the backend, used when needed to get the posts
+  /// @param [savedCommentsBeforeId] is the last "before" id sent from the backend, used when needed to get the posts
   ///                   before the currently loaded oens
   /// initially empty to load posts for the first time
   String savedCommentsBeforeId = '';
 
-  ///@param [savedCommentsAfterId] is the last "after" id sent from the backend, used when needed to get the posts
+  /// @param [savedCommentsAfterId] is the last "after" id sent from the backend, used when needed to get the posts
   ///                   after the currently loaded oens
   /// initially empty to load posts for the first time
   String savedCommentsAfterId = '';
 
   /// the function gets the history of the specified path (recent, upvoted, downvoted, hidden) history
   /// emits some corresponding states and fills [savedPostsList] list
-  ///@param [isPosts] bool to indicate if the method is called for posts or not
-  ///@param [isComments] bool to indicate if the method is called for comments or not
-  ///@param [loadMore] bool that indicates whether the function is called on loading more items for infinte scrolling or not
-  ///@param [before] bool to use when the posts before the current loaded ones are needed
-  ///@param [after] bool to use when the posts after the current loaded ones are needed
+  /// @param [isPosts] bool to indicate if the method is called for posts or not
+  /// @param [isComments] bool to indicate if the method is called for comments or not
+  /// @param [loadMore] bool that indicates whether the function is called on loading more items for infinte scrolling or not
+  /// @param [before] bool to use when the posts before the current loaded ones are needed
+  /// @param [after] bool to use when the posts after the current loaded ones are needed
   void getSaved(
       {bool isPosts = false,
       bool isComments = false,
@@ -698,7 +698,7 @@ class AppCubit extends Cubit<AppState> {
     });
   }
 
-  ///@param [image] is the image file uploaded by the user
+  /// @param [image] is the image file uploaded by the user
   ///SUPPORTS PNG ONLY
   ///the method changes the user's profile picture
   Future<void> changeProfilePicture(XFile image) async {
@@ -723,7 +723,7 @@ class AppCubit extends Cubit<AppState> {
     );
   }
 
-  ///@param [id] is the id of the posts that needs to be deletes
+  /// @param [id] is the id of the posts that needs to be deletes
   /// deletes a post from home
   void deletePost(String id) {
     homePosts.removeWhere((element) {
@@ -731,7 +731,7 @@ class AppCubit extends Cubit<AppState> {
     });
   }
 
-  ///@param [sort] the sort of the home screen's posts [best, hot, new, top, trending]
+  /// @param [sort] the sort of the home screen's posts [best, hot, new, top, trending]
   ///the function chanegs the home posts sort
   void changeHomeSort(HomeSort sort) {
     CacheHelper.putData(key: 'SortHome', value: sort.index);
