@@ -71,7 +71,7 @@ class _ResultsPostsState extends State<ResultsPosts> {
               kIsWeb ? CrossAxisAlignment.start : CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           children: [
-            if (cubit.posts.isEmpty && kIsWeb)
+            if (cubit.posts.isEmpty && kIsWeb && widget.isSubreddit)
               Padding(
                 padding: EdgeInsets.only(
                     left: MediaQuery.of(context).size.width * 0.3,

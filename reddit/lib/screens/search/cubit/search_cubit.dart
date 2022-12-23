@@ -71,7 +71,7 @@ class SearchCubit extends Cubit<SearchState> {
 
   ///@param[searchInSubredditResultScreens] a list of the search results screens in case of searching inside a subreddit
   List<Widget> searchInSubredditResultScreens = [
-    const ResultsPosts(),
+    const ResultsPosts(isSubreddit: true),
     const ResultsComments(),
   ];
 
@@ -326,7 +326,6 @@ class SearchCubit extends Cubit<SearchState> {
       }
     });
   }
-
 
   ///@param [username] the username of the user to be followed/unfollowed
   ///@param [follow] the action that needs to be taken (follow/unfollow) user
