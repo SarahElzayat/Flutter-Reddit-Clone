@@ -5,19 +5,17 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 
 import 'package:reddit/data/post_model/post_model.dart';
-import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/screens/posts/edit_screen.dart';
 import 'package:reddit/screens/posts/pick_community.dart';
 import 'package:reddit/screens/posts/share_to_community.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
+import '../../components/helpers/enums.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
-import '../../functions/post_functions.dart';
 
 /// Class of a single Menu item
 /// it contains the icon and the text used

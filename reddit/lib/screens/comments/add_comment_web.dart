@@ -1,3 +1,7 @@
+/// this file is the add comment screen in web.
+/// date: 20/12/2022
+/// @Author: Ahmed Atta
+
 import 'dart:io';
 import 'dart:math';
 import 'package:dio/dio.dart';
@@ -20,16 +24,30 @@ import '../../data/comment/comment_model.dart';
 import '../../data/comment/sended_comment_model.dart';
 import '../../widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 
+/// the screen of adding a comment
+/// it is used to add a comment to a post or a comment
+/// if the parent comment is null, the comment will be added to the post
+/// otherwise, the comment will be added to the parent comment
+/// the screen is used in web
 class AddCommentWeb extends StatelessWidget {
   AddCommentWeb({
     Key? key,
     required this.post,
     this.parentComment,
   }) : super(key: key);
+
+  /// the post that the comment will be added to
   final PostModel post;
+
+  /// the parent comment that the comment will be added to
   final CommentModel? parentComment;
+
+  /// the controller of the quill editor
   final QuillController _controller = QuillController.basic();
+
+  /// the focus node of the quill editor
   final FocusNode _focusNode = FocusNode();
+
   bool get parentPost => parentComment == null;
 
   @override

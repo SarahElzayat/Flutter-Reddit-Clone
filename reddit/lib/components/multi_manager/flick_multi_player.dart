@@ -1,3 +1,6 @@
+/// this file is used to define the custom video player that can be used in a listview.
+/// date: 16/12/2022
+/// @Author: Ahmed Atta
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'portrait_controls.dart';
@@ -9,6 +12,10 @@ import 'package:visibility_detector/visibility_detector.dart';
 import 'flick_multi_manager.dart';
 import 'fullscreen_controls.dart';
 
+/// This is a custom video player that can be used in a listview.
+///
+/// It uses the [FlickMultiManager] to manage multiple video players.
+/// It also uses the [VisibilityDetector] to pause the video when it is not visible.
 class FlickMultiPlayer extends StatefulWidget {
   const FlickMultiPlayer(
       {Key? key,
@@ -20,11 +27,23 @@ class FlickMultiPlayer extends StatefulWidget {
       required this.flickMultiManager})
       : super(key: key);
 
+  /// The url of the video.
   final String url;
+
+  /// The image that will be shown before the video starts.
   final String? image;
+
+  /// The post that this video belongs to.
   final PostModel post;
+
+  /// If the video is full screen or not.
   final bool isFull;
+
+  /// The [FlickManager] that was used to manage the video.
+  /// it can be null if this is the first time the video is played.
   final FlickManager? alreadyflickManager;
+
+  /// The [FlickMultiManager] that is used to manage multiple videos.
   final FlickMultiManager flickMultiManager;
 
   @override
@@ -128,24 +147,6 @@ class _FlickMultiPlayerState extends State<FlickMultiPlayer> {
         preferredDeviceOrientationFullscreen: const [
           DeviceOrientation.portraitUp,
         ],
-        // flickVideoWithControlsFullscreen: FlickVideoWithControls(
-        //   playerLoadingFallback: Center(
-        //       child: Image.network(
-        //     widget.image!,
-        //     fit: BoxFit.fitWidth,
-        //   )),
-        //   controls: FullScreenPortraitControls(
-        //     flickMultiManager: widget.flickMultiManager,
-        //     flickManager: flickManager,
-        //     post: widget.post,
-        //   ),
-        //   videoFit: BoxFit.contain,
-        //   iconThemeData: const IconThemeData(
-        //     size: 40,
-        //     color: Colors.white,
-        //   ),
-        //   textStyle: const TextStyle(fontSize: 16, color: Colors.white),
-        // ),
       ),
     );
   }

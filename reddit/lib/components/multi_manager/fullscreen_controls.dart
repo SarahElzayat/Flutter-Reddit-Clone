@@ -1,3 +1,7 @@
+/// this file is used to define the full screen controls for the video player
+/// date: 16/12/2022
+/// @Author: Ahmed Atta
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -12,13 +16,21 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../data/post_model/post_model.dart';
 import 'flick_multi_manager.dart';
 
+/// defines the full screen controls for the video player
+///
+/// it is used in the Player widget when the video is in full screen mode
 class FullScreenPortraitControls extends StatelessWidget {
   const FullScreenPortraitControls(
       {Key? key, this.flickMultiManager, this.flickManager, required this.post})
       : super(key: key);
 
+  /// the multi manager used to control all video players
   final FlickMultiManager? flickMultiManager;
+
+  /// the manager used to control the video player
   final FlickManager? flickManager;
+
+  /// the post that contains the video
   final PostModel post;
 
   @override
@@ -33,21 +45,9 @@ class FullScreenPortraitControls extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            // Row(
-            //   children: [
-            //     IconButton(
-            //         onPressed: () {
-            //           // flickManager?.flickControlManager?.toggleFullscreen();
-            //         },
-            //         icon: const Icon(Icons.arrow_back_rounded)),
-            //     Expanded(child: Center(child: Text('r/${post.subreddit!}'))),
-            //     // dropDownDots(post)
-            //   ],
-            // ),
             Expanded(
               child: FlickToggleSoundAction(
                 toggleMute: () {
-                  // flickMultiManager?.toggleMute();
                   displayManager.handleShowPlayerControls();
                 },
                 child: const FlickSeekVideoAction(
@@ -101,7 +101,6 @@ class FullScreenPortraitControls extends StatelessWidget {
                       ],
                     ),
                   ),
-                  // const FlickFullScreenToggle(),
                 ],
               ),
             ),

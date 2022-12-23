@@ -32,16 +32,18 @@ enum PostView {
   withCommentsInSearch,
 }
 
+/// controls the view of the comment in the comments list
 enum CommentView {
   normal,
   inSearch,
   inSubreddits,
 }
 
+/// controls the view of the history in the history list
 enum HistoyCategory { recent, upvoted, downvoted, hidden }
 
+/// used to determine the type of the sort in Home screen
 enum HomeSort { hot, best, top, trending, newPosts, raising, controversial }
-// enum HomeSort { best, hot, newPosts, top, raising, controversial }
 
 /// used to indicate which users to get
 enum UserManagement {
@@ -76,3 +78,6 @@ enum ModToolsGroup {
   settings,
   communityActivity
 }
+
+/// used to enumerate the types of the moderation options
+enum ModOPtions { spoiler, nsfw, lock, unsticky, remove, spam, approve }
