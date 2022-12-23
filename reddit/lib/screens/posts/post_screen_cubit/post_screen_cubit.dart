@@ -1,3 +1,7 @@
+/// this file is used to define Cubit used to manage the post screen.
+/// date: 20/12/2022
+/// @Author: Ahmed Atta
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,11 +17,51 @@ import 'post_screen_state.dart';
 
 Logger logger = Logger();
 
+/// Cubit used to manage the post screen.
+///
+/// it is used to get the Comments of the Post and to sort them.
+/// it is also used to get the replies of the comments.
+/// it is also used to get the replies of the replies.
 class PostScreenCubit extends Cubit<PostScreenState> {
+  /// the post that is shown in the post screen
   final PostModel post;
+
+  /// the list of comments of the post
   final List<CommentModel> comments = [];
+
+  /// Map of all comments of the post
+  Map<String, CommentModel> allCommentsMap = {};
+
+  /// show the button to scroll to the top of the comments
   bool? showbtn;
+
+  /// the controller of the scroll view of the comments
   final ScrollController scrollController = ScrollController();
+
+  /// labels of the sort types with the same order of the icons
+  static final List<String> labels = ['Best', 'Top', 'New', 'Old'];
+  static final List<IconData> icons = [
+    Icons.rocket_outlined,
+    Icons.star_border_outlined,
+    Icons.new_releases_outlined,
+    Icons.access_time_outlined,
+  ];
+  static final Map<String, IconData> sortIcons = {
+    labels[0]: icons[0],
+    labels[1]: icons[1],
+    labels[2]: icons[2],
+    labels[3]: icons[3],
+  };
+
+  /// the selected sort type
+  String selectedItem = 'Best';
+
+  /// the last after of the comments Pagination
+  String? lastafter;
+
+  /// the last before of the comments Pagination
+  String? lastbefore;
+
   PostScreenCubit({
     required this.post,
   }) : super(PostScreenInitial()) {
@@ -34,28 +78,12 @@ class PostScreenCubit extends Cubit<PostScreenState> {
 
   static PostScreenCubit get(context) => BlocProvider.of(context);
 
-  Map<String, CommentModel> allCommentsMap = {};
-
-  static final List<String> labels = ['Best', 'Top', 'New', 'Old'];
-  static final List<IconData> icons = [
-    Icons.rocket_outlined,
-    Icons.star_border_outlined,
-    Icons.new_releases_outlined,
-    Icons.access_time_outlined,
-  ];
-
-  static final Map<String, IconData> sortIcons = {
-    labels[0]: icons[0],
-    labels[1]: icons[1],
-    labels[2]: icons[2],
-    labels[3]: icons[3],
-  };
-
-  String selectedItem = 'Best';
+  /// get the icon of the selected sort type
   IconData getSelectedIcon() {
     return sortIcons[selectedItem]!;
   }
 
+  /// change the sort type of the comments
   void changeSortType(String item) {
     selectedItem = item;
     getCommentsOfPost(
@@ -64,10 +92,7 @@ class PostScreenCubit extends Cubit<PostScreenState> {
     emit(CommentsSortTypeChanged());
   }
 
-  String? lastafter;
-  String? lastbefore;
-
-  /// get  comments section
+  /// get all comments in screen
   /// @param [limit] the number of replies to show
   /// @param [sort] the sort type of the replies
   void getCommentsOfPost({
@@ -119,7 +144,7 @@ class PostScreenCubit extends Cubit<PostScreenState> {
   }
 
   /// show more in comments section (show more replies)
-  /// @param [comment] the comment to show more replies for
+  /// @param [commentId] the comment to show more replies for
   /// @param [limit] the number of replies to show
   /// @param [before] the id of the comment to show replies before
   /// @param [after] the id of the comment to show replies after
