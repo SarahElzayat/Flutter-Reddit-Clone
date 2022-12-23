@@ -37,7 +37,6 @@ RUN mkdir /app/
 COPY pubspec.yaml /app/
 # similar to cd
 WORKDIR /app/ 
-RUN dart pub add build_runner build_web_compilers --dev
 RUN dart pub global activate webdev
 RUN flutter pub get
 # RUN flutter clean
