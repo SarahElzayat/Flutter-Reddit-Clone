@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+///@param [message] the message shown in the snack bar
+///@param [error] specifies whether the snack bar is intended to show error message
 SnackBar responseSnackBar({message, error = true}) => SnackBar(
     behavior: SnackBarBehavior.floating,
     width: 90.w,

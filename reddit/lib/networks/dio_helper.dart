@@ -112,6 +112,7 @@ class DioHelper {
 
     /// additional query
   }) async {
+    token ??= CacheHelper.getData(key: 'token');
     var options = Options(
       headers: {
         'Authorization': 'Bearer ${token ?? ''}',

@@ -72,17 +72,27 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
         password: passwordController.text,
         username: usernameController.text);
 
-    await DioHelper.postData(path: signUp, data: user.toJson()).then((value) {
+    await DioHelper.postData(path: signUp, data: user.toJson())
+        .then((value) async {
       if (value.statusCode == 201) {
         CacheHelper.putData(key: 'token', value: value.data['token']);
         CacheHelper.putData(key: 'username', value: value.data['username']);
-        UserSettingsModel.fromJson(value.data);
-        UserSettingsModel.cacheUserSettings();
         token = CacheHelper.getData(key: 'token');
+
+        /// here we should get the user settings from the backend and cache them
+        await DioHelper.getData(path: accountSettings).then((resp) {
+          UserSettingsModel user = UserSettingsModel.fromJson(value.data);
+          user.cacheUserSettings();
+        }).onError((error, stackTrace) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                backgroundColor: ColorManager.red,
+                content: Text('Something went wrong!, please try again')),
+          );
+        });
         // navigating to the main screen
         Navigator.of(context)
             .pushReplacementNamed(HomeScreenForMobile.routeName);
-
         showDialog(
             context: context,
             builder: (context) {
@@ -322,7 +332,9 @@ class _ContinueSignUpScreenState extends State<ContinueSignUpScreen> {
                                           (usernameController.text.isNotEmpty &&
                                                   passwordController
                                                       .text.isNotEmpty)
-                                              ? loginChecker(myMail)
+                                              ? () {
+                                                  loginChecker(myMail);
+                                                }
                                               : () {};
                                         },
                                         child: const Text('SIGN UP',

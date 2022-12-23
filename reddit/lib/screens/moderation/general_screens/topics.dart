@@ -8,7 +8,6 @@ import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/moderation_components/modtools_components.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
-import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class Topics extends StatefulWidget {
@@ -20,9 +19,13 @@ class Topics extends StatefulWidget {
 }
 
 class _TopicsState extends State<Topics> {
+  ///indicates whethet the community topic has been changed
   bool isChanged = false;
+
+  ///indicates the topic chosen
   bool? chosen = false;
 
+  /// a bool for each list tile to indicate whether it is chosen or not
   List<bool?> choices = [
     false,
     false,
@@ -84,6 +87,8 @@ class _TopicsState extends State<Topics> {
   @override
   void initState() {
     super.initState();
+
+    ///gets the suggested topics available in a community
     ModerationCubit.get(context).getSuggestedTopics(context);
   }
 

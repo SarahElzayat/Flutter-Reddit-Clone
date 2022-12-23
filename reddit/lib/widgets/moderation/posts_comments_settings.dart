@@ -1,3 +1,7 @@
+///@author: Yasmine Ghanem
+///@date:
+///this screen is for the post setting s for the web
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../components/button.dart';
@@ -31,7 +35,7 @@ class PostsCommentsSettings extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: Button(
-                        onPressed: () {},
+                        onPressed: () => cubit.updatePostSettings(context),
                         text: 'Save changes',
                         buttonWidth: 10.w,
                         buttonHeight: 5.h,

@@ -1,5 +1,3 @@
-// import 'dart:ffi';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -12,7 +10,7 @@ import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/screens/search/cubit/search_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../../components/Button.dart';
+import '../../components/button.dart';
 import '../../components/home_app_bar.dart';
 import '../../components/home_components/functions.dart';
 import '../../components/home_components/left_drawer.dart';

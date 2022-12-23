@@ -9,8 +9,6 @@ import '../../../widgets/moderation/user_management.dart';
 class ApprovedUsers extends StatelessWidget {
   const ApprovedUsers({super.key});
 
-  // late List<dynamic> approvedUsers = [];
-
   @override
   Widget build(BuildContext context) {
     return UserManagementWidget(

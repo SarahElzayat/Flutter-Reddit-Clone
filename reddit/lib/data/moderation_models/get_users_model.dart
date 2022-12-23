@@ -48,6 +48,7 @@ class BannedUsersModel {
 
 class MutedUsersModel {
   String? username;
+  String? avatar;
   String? dateOfMute;
   String? muteReason;
 
@@ -55,6 +56,7 @@ class MutedUsersModel {
 
   MutedUsersModel.fromJson(Map<String, dynamic> json) {
     username = json['username'];
+    avatar = json['avatar'];
     dateOfMute = json['dateOfMute'];
     muteReason = json['muteReason'];
   }
@@ -129,17 +131,17 @@ class MutedZeft {
     if (json['children'] != null) {
       children = <Children>[];
       json['children'].forEach((v) {
-        children!.add(new Children.fromJson(v));
+        children!.add(Children.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['before'] = this.before;
-    data['after'] = this.after;
-    if (this.children != null) {
-      data['children'] = this.children!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['before'] = before;
+    data['after'] = after;
+    if (children != null) {
+      data['children'] = children!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -162,10 +164,10 @@ class Children {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['username'] = this.username;
-    data['avatar'] = this.avatar;
-    data['dateOfMute'] = this.dateOfMute;
-    data['muteReason'] = this.muteReason;
+    data['username'] = username;
+    data['avatar'] = avatar;
+    data['dateOfMute'] = dateOfMute;
+    data['muteReason'] = muteReason;
     return data;
   }
 }

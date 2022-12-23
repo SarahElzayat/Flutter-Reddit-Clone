@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/bottom_sheet.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/components/moderation_components/modtools_components.dart';
 import 'package:reddit/components/square_text_field.dart';
 import 'package:reddit/constants/constants.dart';
@@ -18,11 +17,9 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 class AddBannedUser extends StatelessWidget {
   static const String routeName = 'add_banned_user';
   AddBannedUser({super.key});
+
+  /// the reason a user was banned for
   late dynamic reason = 'Pick a reason';
-  // final TextEditingController usernameController = TextEditingController();
-  // final TextEditingController daysController = TextEditingController();
-  // final TextEditingController modNoteController = TextEditingController();
-  // final TextEditingController userNoteController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

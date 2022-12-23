@@ -91,6 +91,7 @@ class ListTileContainer extends StatelessWidget {
                       leadingIcon: Icon(listTileIcons[index]),
                       title: listTileTitles[index],
                       handler: handler[index],
+                      type: types[index],
                       tailingObj: trailingObject[index]),
                 );
               }),

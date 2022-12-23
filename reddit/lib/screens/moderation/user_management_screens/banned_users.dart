@@ -11,13 +11,8 @@ class BannedUsers extends StatelessWidget {
   static const String routeName = 'banned_users';
   const BannedUsers({super.key});
 
-  // late List<dynamic> bannedUsers;
-
   @override
   Widget build(BuildContext context) {
-    // bannedUsers =
-    //     ModerationCubit.get(context).getUsers(context, UserManagement.banned);
-
     return UserManagementWidget(
         screenTitle: 'Banned users', type: UserManagement.banned);
   }
