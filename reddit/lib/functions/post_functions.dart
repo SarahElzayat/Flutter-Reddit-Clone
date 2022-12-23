@@ -6,8 +6,6 @@ import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:logger/logger.dart';
 import '../components/snack_bar.dart';
 import '../cubit/user_profile/cubit/user_profile_cubit.dart';
-import '../data/post_model/approve.dart';
-import '../data/post_model/remove.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../components/bottom_sheet.dart';

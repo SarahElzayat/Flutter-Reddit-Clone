@@ -4,7 +4,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/screens/search/search_screen.dart';
-
 import 'helpers/color_manager.dart';
 
 /// @param [subredditName] is case the field is used in a subreddit page, the subreddit name
@@ -48,10 +47,10 @@ class _SearchFieldState extends State<SearchField> {
   ///@param[isPrefix] checks if the search is inside a subreddit and the prefix is not deleted
   bool isPrefix = true;
 
+
+  /// initial state of the widget, binds the focus nod to its listner
   @override
   void initState() {
-    // if (widget.isSubreddit)
-    //   SearchCubit.get(context).setSearchSubreddit(widget.subredditName);
     _focus.addListener(_onFocusChange);
     super.initState();
   }

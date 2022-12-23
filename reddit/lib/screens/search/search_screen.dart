@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/home_app_bar.dart';
-import 'package:reddit/components/home_components/functions.dart';
 import 'package:reddit/components/home_components/left_drawer.dart';
 import 'package:reddit/components/home_components/right_drawer.dart';
 import 'package:reddit/cubit/app_cubit/app_cubit.dart';
@@ -14,6 +13,12 @@ import 'package:reddit/screens/search/search_results_main_screen.dart';
 import 'package:reddit/components/search_field.dart';
 
 import '../../components/snack_bar.dart';
+
+///
+///@param [query] the search word
+/// @param [subredditName] the name of the subreddit in case of searching inside one
+/// @param [isSubreddit] bool to check if the search is called inside a subreddit or not to preview the results accordingly
+///
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen(
@@ -31,14 +36,6 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _textEditingController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  // void endDrawer() {
-  //   changeEndDrawer(_scaffoldKey);
-  // }
-
-  // void drawer() {
-  //   changeLeftDrawer(_scaffoldKey);
-  // }
 
   ///The method changes the end drawer state from open to closed and vice versa
   void _changeEndDrawer() {

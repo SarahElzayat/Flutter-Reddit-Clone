@@ -1,3 +1,7 @@
+///@author Sarah Elzayat
+///@date 22/12/2022
+///@description this file has functions reusable components to open and close drawers
+
 import 'package:flutter/material.dart';
 import 'package:reddit/screens/comments/add_comment_screen.dart';
 

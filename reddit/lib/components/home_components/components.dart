@@ -19,6 +19,9 @@ import '../../screens/to_be_done_screen.dart';
 /// @param [list] is the items to be displayed
 /// @param [onPressed] is the function that controls the list
 /// @param [isOpen] is the state of the list
+/// @param [isCommunity] bool to indicate whether it's used for user's communities or not
+/// @param [isModerating] bool to indicate whether it's used for user's moderated or not
+/// @param [navigateToSubreddit] function to navigate to subreddit 
 Widget listButton(
     context, text, Map<String, DrawerCommunitiesModel> list, onPressed, isOpen,
     {isCommunity = false,
@@ -107,6 +110,8 @@ Widget listButton(
 /// @param [context] is the context of the current build context
 /// @param [text] is the text of the button
 /// @param [icon] the icons next to text
+/// @param [route] the route navigated to when the button is pressed
+/// @param [isLeftDrawer] bool that indeicated whether it's called in left drawer on not to change the right drawer state
 Widget genericTextButton(context, icon, text, route, {required isLeftDrawer}) =>
     TextButton(
         onPressed: () {

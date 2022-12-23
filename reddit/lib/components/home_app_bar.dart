@@ -14,7 +14,6 @@ import 'package:reddit/components/app_bar_components.dart';
 import 'package:reddit/components/search_field.dart';
 import 'package:reddit/screens/inbox/create_message_screen.dart';
 import 'package:reddit/screens/search/search_results_main_screen.dart';
-
 import '../cubit/app_cubit/app_cubit.dart';
 import '../screens/bottom_navigation_bar_screens/home_screen.dart';
 
@@ -80,11 +79,11 @@ void markAllAsRead(context) async {
   });
 }
 
-///@param [index] is the index of the bottom navigation bar screen
+///@param [index] is the index of the bottom navigation bar screen, when used on web ir doesn't affect anything
 ///@param [context] is the context of the parent widget
+///@param [isSearch] bool to indicate if the appbar was called inside search screen or not, if true, the search result is displayed in the same screen
 /// returns the app bar of the screen
-AppBar homeAppBar(context, index,
-    {bool isSearch = false, GlobalKey<ScaffoldState>? scaffoldKey}) {
+AppBar homeAppBar(context, index, {bool isSearch = false}) {
   ///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
   final AppCubit cubit = AppCubit.get(context);
 
@@ -140,10 +139,7 @@ AppBar homeAppBar(context, index,
                           return const CreateMessageScreen();
                         }));
                       } else if (choice == 'Mark all inbox tabs as read') {
-                        /// TODO: mark all notifications as read
                         markAllAsRead(context);
-                      } else {
-                        print(choice);
                       }
                     },
                     icon: const Icon(Icons.more_vert))
@@ -184,7 +180,6 @@ AppBar homeAppBar(context, index,
                 scale: 6,
               ),
             ),
-            // const HomeDropdownMenu(),
             const Spacer(),
             Expanded(
               child: SearchField(
@@ -219,18 +214,19 @@ AppBar homeAppBar(context, index,
             ),
             IconButton(
               onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CreateCommunityScreen(),
-                  )),
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CreateCommunityScreen(),
+                ),
+              ),
               icon: const Icon(Icons.add),
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
             ),
             InkWell(
-                // onTap: () => cubit.changeRightDrawer(),
-                onTap: () => cubit.changeRightDrawer(),
-                child: avatar(context: context))
+              onTap: () => cubit.changeRightDrawer(),
+              child: avatar(context: context),
+            )
           ],
         ),
       ),

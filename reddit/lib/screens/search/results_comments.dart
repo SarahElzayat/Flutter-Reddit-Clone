@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
 
 import '../../components/helpers/color_manager.dart';
@@ -21,7 +20,8 @@ class ResultsComments extends StatefulWidget {
 
 class _ResultsCommentsState extends State<ResultsComments> {
   final _scrollController = ScrollController();
-  List<CommentModel> comments = [];
+
+  /// scroll listener to load more at the bottom of the screen
   void _scrollListener() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
@@ -39,7 +39,7 @@ class _ResultsCommentsState extends State<ResultsComments> {
 
   @override
   Widget build(BuildContext context) {
-    final SearchCubit cubit = SearchCubit.get(context); //..getComments();
+    final SearchCubit cubit = SearchCubit.get(context); 
     return BlocConsumer<SearchCubit, SearchState>(
       listener: (context, state) {},
       builder: (context, state) {

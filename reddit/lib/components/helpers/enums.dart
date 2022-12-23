@@ -4,7 +4,6 @@
 
 /// this enum is used to determine the type of the trailing posts
 enum TrailingObjects {
-  // TODO: here we should add a button
   switchButton,
   dropBox,
   tailingIcon,
@@ -38,6 +37,7 @@ enum CommentView {
   inSubreddits,
 }
 
+/// the history categories presented in reddit
 enum HistoyCategory { recent, upvoted, downvoted, hidden }
 
 enum HomeSort { hot, best, top, trending, newPosts, raising, controversial }

@@ -23,6 +23,8 @@ class ResultsPosts extends StatefulWidget {
 
 class _ResultsPostsState extends State<ResultsPosts> {
   final _scrollController = ScrollController();
+
+    /// scroll listener to load more at the bottom of the screen
   void _scrollListener() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {

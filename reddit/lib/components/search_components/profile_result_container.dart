@@ -21,7 +21,6 @@ class ProfileResultContainer extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           return InkWell(
-            //TODO on tap => navigate to profile
             child: Container(
               padding: const EdgeInsets.all(8),
               decoration: const BoxDecoration(
@@ -40,13 +39,11 @@ class ProfileResultContainer extends StatelessWidget {
                     ),
                   ),
                   Column(
-                    // mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
                         'u/${model.data!.username.toString()}',
-                        // overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                             fontSize: 16, color: ColorManager.eggshellWhite),
                       ), // const Spacer(),

@@ -9,7 +9,6 @@ import 'package:reddit/components/search_components/subreddit_results_container.
 import 'package:reddit/screens/search/cubit/search_cubit.dart';
 
 import '../../components/helpers/color_manager.dart';
-import '../../data/search/search_result_subbredit_model.dart';
 
 class ResultsCommunities extends StatefulWidget {
   const ResultsCommunities({super.key});
@@ -20,7 +19,8 @@ class ResultsCommunities extends StatefulWidget {
 
 class _ResultsCommunitiesState extends State<ResultsCommunities> {
   final _scrollController = ScrollController();
-  List<SearchResultSubredditModel> subreddits = [];
+
+  /// scroll listener to load more at the bottom of the screen
   void _scrollListener() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
@@ -37,8 +37,7 @@ class _ResultsCommunitiesState extends State<ResultsCommunities> {
 
   @override
   Widget build(BuildContext context) {
-    SearchCubit cubit = SearchCubit.get(context); //..getSubbreddits();
-
+    SearchCubit cubit = SearchCubit.get(context); 
     return BlocConsumer<SearchCubit, SearchState>(
       listener: (context, state) {},
       builder: (context, state) {

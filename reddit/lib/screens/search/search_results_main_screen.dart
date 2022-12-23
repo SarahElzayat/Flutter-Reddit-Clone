@@ -10,10 +10,15 @@ import 'package:reddit/components/home_components/left_drawer.dart';
 import 'package:reddit/components/home_components/right_drawer.dart';
 import 'package:reddit/components/search_field.dart';
 import 'package:reddit/screens/search/cubit/search_cubit.dart';
-
 import '../../components/home_components/functions.dart';
 import '../../components/snack_bar.dart';
 import '../../cubit/app_cubit/app_cubit.dart';
+
+///
+/// @param [searchWord] the seaech word entered by the user
+/// @param [subredditName] the name of the subreddit in case of searching inside one
+/// @param [isSubreddit] bool to check if the search is called inside a subreddit or not to preview the results accordingly
+///
 
 class SearchResults extends StatefulWidget {
   final String searchWord;
@@ -35,16 +40,19 @@ class _SearchResultsState extends State<SearchResults>
   final TextEditingController _textEditingController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+
+  ///opens/closes the end drawer
   void endDrawer() {
     changeEndDrawer(_scaffoldKey);
   }
 
+  ///opens/closes the drawer
   void drawer() {
     changeLeftDrawer(_scaffoldKey);
   }
 
-
   /// initial state of the stateful widget
+  /// sets the search word of the screen
   @override
   void initState() {
     _textEditingController.text = widget.searchWord;
