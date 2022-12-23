@@ -16,6 +16,7 @@ import 'package:reddit/screens/inbox/create_message_screen.dart';
 import 'package:reddit/screens/inbox/web/inbox_screen_for_web.dart';
 import 'package:reddit/screens/search/search_results_main_screen.dart';
 import '../cubit/app_cubit/app_cubit.dart';
+import '../screens/add_post/add_post_web.dart';
 import '../screens/bottom_navigation_bar_screens/home_screen.dart';
 
 /// this is a utility function used to mark all the items in the inbox as read
@@ -233,7 +234,7 @@ AppBar homeAppBar(
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const CreateCommunityScreen(),
+                  builder: (context) => AddPostWebScreen(),
                 ),
               ),
               icon: const Icon(Icons.add),
