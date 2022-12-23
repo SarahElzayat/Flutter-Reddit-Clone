@@ -1,3 +1,7 @@
+///@author: Yasmine Ghanem
+///@date:
+/// this screen is for adding/editing the description of the community
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../components/moderation_components/modtools_components.dart';
@@ -14,6 +18,7 @@ class Description extends StatefulWidget {
 }
 
 class _DescriptionState extends State<Description> {
+  ///the controller that controls textfield
   final TextEditingController controller = TextEditingController();
 
   @override

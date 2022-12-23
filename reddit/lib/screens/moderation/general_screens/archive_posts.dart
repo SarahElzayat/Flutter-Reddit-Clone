@@ -1,7 +1,10 @@
+///@author: Yasmine Ghanem
+///@date:
+///this screen enables/disables archived posts in a community
+
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 import '../../../components/helpers/color_manager.dart';
 
 class ArchivePosts extends StatefulWidget {
@@ -13,7 +16,9 @@ class ArchivePosts extends StatefulWidget {
 }
 
 class _ArchivePostsState extends State<ArchivePosts> {
+  /// indicates whether the enabled archived is turned on or off
   bool isSwitched = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -69,14 +69,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
         email: emailController.text,
         password: passwordController.text,
         username: usernameController.text);
-    await DioHelper.postData(path: signUp, data: user.toJson()).then((value) {
+    await DioHelper.postData(path: signUp, data: user.toJson())
+        .then((value) async {
       if (value.statusCode == 201) {
         CacheHelper.putData(key: 'token', value: value.data['token']);
         CacheHelper.putData(key: 'username', value: value.data['username']);
-        UserSettingsModel.fromJson(value.data);
-        UserSettingsModel.cacheUserSettings();
         token = CacheHelper.getData(key: 'token');
 
+        /// here we should request the user settings from the backend
+        await DioHelper.getData(path: accountSettings).then((response2) {
+          UserSettingsModel user = UserSettingsModel.fromJson(response2.data);
+          user.cacheUserSettings();
+        }).onError((error, stackTrace) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                backgroundColor: ColorManager.red,
+                content: Text('Something went wrong!, please try again')),
+          );
+        });
         // navigating to the interests screen
         Navigator.of(context)
             .pushReplacementNamed(ContinueSignUpForMobile.routeName);

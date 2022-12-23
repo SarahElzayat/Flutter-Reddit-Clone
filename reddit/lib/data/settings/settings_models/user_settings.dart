@@ -5,63 +5,52 @@ import 'package:reddit/shared/local/shared_preferences.dart';
 
 /// this is the model for the UserSettings.
 class UserSettingsModel {
-  static String? email;
-  static String? googleEmail;
-  static String? facebookEmail;
-  static String? country;
-  static String? gender;
-  static String? displayName;
-  static String? about;
-  static List<SocialLinks>? socialLinks;
-  static bool? havePassword;
-  static bool? hasVerifiedEmail;
-  static bool? nsfw;
-  static bool? allowToFollowYou;
-  static bool? adultContent;
-  static bool? autoplayMedia;
-  static bool? newFollowerEmail;
-  static bool? unsubscribeFromEmails;
+  String? email;
+  String? googleEmail;
+  String? facebookEmail;
+  String? country;
+  String? gender;
+  String? displayName;
+  String? about;
+  List<SocialLinks>? socialLinks;
+  bool? havePassword;
+  bool? hasVerifiedEmail;
+  bool? nsfw;
+  bool? allowToFollowYou;
+  bool? adultContent;
+  bool? autoplayMedia;
+  bool? newFollowerEmail;
+  bool? unsubscribeFromEmails;
 
   /// this is a utility function used to cache the user settings.
   /// if any of the returned was null I set it to empty string
-  static void cacheUserSettings() {
-    CacheHelper.putData(key: 'email', value: UserSettingsModel.email ?? '');
+  void cacheUserSettings() {
+    CacheHelper.putData(key: 'email', value: email ?? '');
+    CacheHelper.putData(key: 'googleEmail', value: googleEmail ?? '');
+    CacheHelper.putData(key: 'facebookEmail', value: facebookEmail ?? '');
+    CacheHelper.putData(key: 'country', value: country ?? 'Egypt');
+    CacheHelper.putData(key: 'gender', value: gender ?? 'Male');
+    print('${CacheHelper.getData(key: 'gender')} is my gender');
+    CacheHelper.putData(key: 'displayName', value: displayName ?? 'No Name');
+    CacheHelper.putData(key: 'about', value: about ?? 'No About');
+    CacheHelper.putData(key: 'havePassword', value: havePassword ?? false);
     CacheHelper.putData(
-        key: 'googleEmail', value: UserSettingsModel.googleEmail ?? '');
+        key: 'hasVerifiedEmail', value: hasVerifiedEmail ?? false);
+    CacheHelper.putData(key: 'nsfw', value: nsfw ?? false);
     CacheHelper.putData(
-        key: 'facebookEmail', value: UserSettingsModel.facebookEmail ?? '');
+        key: 'allowToFollowYou', value: allowToFollowYou ?? true);
+    CacheHelper.putData(key: 'adultContent', value: adultContent ?? false);
+    CacheHelper.putData(key: 'autoplayMedia', value: autoplayMedia ?? true);
     CacheHelper.putData(
-        key: 'country', value: UserSettingsModel.country ?? 'Egypt');
+        key: 'newFollowerEmail', value: newFollowerEmail ?? true);
     CacheHelper.putData(
-        key: 'gender', value: UserSettingsModel.gender ?? 'Male');
-    CacheHelper.putData(
-        key: 'displayName', value: UserSettingsModel.displayName ?? 'No Name');
-    CacheHelper.putData(
-        key: 'about', value: UserSettingsModel.about ?? 'No About');
-    CacheHelper.putData(
-        key: 'havePassword', value: UserSettingsModel.havePassword ?? 'false');
-    CacheHelper.putData(
-        key: 'hasVerifiedEmail',
-        value: UserSettingsModel.hasVerifiedEmail ?? 'false');
-    CacheHelper.putData(key: 'nsfw', value: UserSettingsModel.nsfw ?? 'false');
-    CacheHelper.putData(
-        key: 'allowToFollowYou',
-        value: UserSettingsModel.allowToFollowYou ?? 'true');
-    CacheHelper.putData(
-        key: 'adultContent', value: UserSettingsModel.adultContent ?? 'false');
-    CacheHelper.putData(
-        key: 'autoplayMedia', value: UserSettingsModel.autoplayMedia ?? 'true');
-    CacheHelper.putData(
-        key: 'newFollowerEmail',
-        value: UserSettingsModel.newFollowerEmail ?? 'true');
-    CacheHelper.putData(
-        key: 'unsubscribeFromEmails',
-        value: UserSettingsModel.unsubscribeFromEmails ?? 'false');
+        key: 'unsubscribeFromEmails', value: unsubscribeFromEmails ?? false);
   }
 
   /// this is a named constructor to create a new object from the json file.
   UserSettingsModel.fromJson(Map<String, dynamic> json) {
     email = json['email'];
+    print('$email this is my mail');
     googleEmail = json['googleEmail'];
     facebookEmail = json['facebookEmail'];
     country = json['country'];
@@ -79,6 +68,7 @@ class UserSettingsModel {
     nsfw = json['nsfw'];
     allowToFollowYou = json['allowToFollowYou'];
     adultContent = json['adultContent'];
+    print(adultContent);
     autoplayMedia = json['autoplayMedia'];
     newFollowerEmail = json['newFollowerEmail'];
     unsubscribeFromEmails = json['unsubscribeFromEmails'];
@@ -116,7 +106,7 @@ class SocialLinks {
   String? displayText;
   String? link;
 
-  SocialLinks({this.type, this.displayText, this.link});
+  SocialLinks({type, displayText, link});
 
   /// this is a named constructor to create a new object from the json file.
   SocialLinks.fromJson(Map<String, dynamic> json) {

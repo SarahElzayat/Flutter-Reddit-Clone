@@ -62,10 +62,9 @@ class _NotificationWidgetState extends State<NotificationWidget> {
       contentPadding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
       horizontalTitleGap: 10,
       leading: CircleAvatar(
-        backgroundColor: ColorManager.upvoteRed,
-        child: widget.notification.photo == null
-            ? Image.network(unknownAvatar)
-            : Image.network('$baseUrl/${widget.notification.photo!}'),
+        backgroundImage: widget.notification.photo == null
+            ? const NetworkImage(unknownAvatar)
+            : NetworkImage('$baseUrl/${widget.notification.photo!}'),
       ),
       title: Row(
         children: [
@@ -86,10 +85,12 @@ class _NotificationWidgetState extends State<NotificationWidget> {
         ],
       ),
       subtitle: Text(
-        DateTime.tryParse(widget.notification.sendAt!)!
-            .toLocal()
-            .toIso8601String()
-            .toString(),
+        widget.notification.sendAt!
+        // : DateTime.tryParse(widget.notification.sendAt!)!
+        //     .toLocal()
+        //     .toIso8601String()
+        //     .toString(),,
+        ,
         style:
             TextStyle(color: ColorManager.greyColor, fontSize: 13 * fontScale),
       ),

@@ -41,12 +41,11 @@ class SearchField extends StatefulWidget {
 }
 
 class _SearchFieldState extends State<SearchField> {
-  ///@param[_focus] the focus node of the text field
+  /// @param[_focus] the focus node of the text field
   final FocusNode _focus = FocusNode();
 
-  ///@param[isPrefix] checks if the search is inside a subreddit and the prefix is not deleted
+  /// @param[isPrefix] checks if the search is inside a subreddit and the prefix is not deleted
   bool isPrefix = true;
-
 
   /// initial state of the widget, binds the focus nod to its listner
   @override

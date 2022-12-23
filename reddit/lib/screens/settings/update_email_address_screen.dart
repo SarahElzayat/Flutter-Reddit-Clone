@@ -3,6 +3,7 @@
 /// This file contains the Update email address screen.
 
 import 'package:flutter/material.dart';
+import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 import '../../cubit/settings_cubit/settings_cubit.dart';
 import '../../data/sign_in_And_sign_up_models/validators.dart';
@@ -42,17 +43,15 @@ class _UpdateEmailAddressScreenState extends State<UpdateEmailAddressScreen> {
   /// @return [False] otherwise
   bool _validateTextFields() {
     if (!_myKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            backgroundColor: ColorManager.red,
-            content: Text(
-                'Try inserting a valid and existing email address and user name.')),
-      );
+      ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+          message:
+              'Try inserting a valid and existing email address and user name.'));
       return false;
     }
     return true;
   }
 
+  /// This function is responsible for building the forget password screen.
   void buildForgetUserName() {
     final mediaQuery = MediaQuery.of(context);
     showDialog(
@@ -135,6 +134,7 @@ class _UpdateEmailAddressScreenState extends State<UpdateEmailAddressScreen> {
         });
   }
 
+  /// This function is responsible for building the forget password screen.
   void buildForgetPass() {
     final mediaQuery = MediaQuery.of(context);
     showDialog(

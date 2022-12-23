@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/app_bar_components.dart';
 import 'package:reddit/screens/history/history_screen_for_web.dart';
+import 'package:reddit/screens/settings/web/account_settings_screen_for_web.dart';
 import 'package:reddit/widgets/user_profile/user_profile_web.dart';
 import '../../screens/create_community_screen/create_community_screen.dart';
 import '../../screens/saved/saved_screen.dart';
@@ -27,7 +28,7 @@ class RightDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppCubit cubit = AppCubit.get(context);
 
-    ///@param [rightDrawerItems] the list of right drawer items
+    /// @param [rightDrawerItems] the list of right drawer items
     List<Widget> rightDrawerItems = [
       genericTextButton(context, Icons.person, 'My profile',
           kIsWeb ? UserProfileWeb() : const UserProfileScreen(),
@@ -59,9 +60,7 @@ class RightDrawer extends StatelessWidget {
     ];
 
     return BlocConsumer<AppCubit, AppState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return SafeArea(
           child: Drawer(
@@ -187,8 +186,13 @@ class RightDrawer extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: rightDrawerItems,
                   ),
-                  genericTextButton(context, Icons.settings_outlined,
-                      'Settings', const SettingsMainScreen(),
+                  genericTextButton(
+                      context,
+                      Icons.settings_outlined,
+                      'Settings',
+                      kIsWeb
+                          ? const UserSettings()
+                          : const SettingsMainScreen(),
                       isLeftDrawer: false),
                   TextButton(
                       onPressed: () {

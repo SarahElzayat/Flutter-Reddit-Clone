@@ -16,8 +16,6 @@ class AccountSettingsScreen extends StatelessWidget {
   static const routeName = 'account_settings_screen_route';
   const AccountSettingsScreen({super.key});
 
-  void requestChangeGender() {}
-
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);

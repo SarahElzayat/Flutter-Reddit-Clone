@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/comments/add_comment_screen.dart';
 import '../../data/messages/messages_model.dart';
 import '../../networks/constant_end_points.dart';
 import '../../networks/dio_helper.dart';
@@ -15,120 +16,21 @@ class MessagesScreen extends StatefulWidget {
 }
 
 class _MessagesScreenState extends State<MessagesScreen> {
-  List<MessageWidget> messages = [
-    MessageWidget(
-        myMessage: MessageChildren(
-      id: '123',
-      data: MessageChild(
-        text:
-            'November us? We\'re the Snoosletter team, here to wish you a happy November! Looking back through the coming days',
-        postTitle: 'The mod Snoosletter is Thankful for you This November',
-        subredditName: 'u/ModNewsLetter',
-        commentId: '234',
-        isRead: false,
-        isReceiverUser: false,
-        isSenderUser: true,
-        numOfComments: 22,
-        postId: 'fdd',
-        postOwner: 'u/ModNewsLetter',
-        receiverUsername: 'zizo',
-        sendAt: '2020',
-        senderUsername: 'zizo',
-        subject: 'The mod Snoosletter is Thankful for you This November',
-        type: 'comment',
-        vote: 32,
-      ),
-    )),
-
-    //   const MessageWidget(
-    //       messageBody:
-    //           'November us? We\'re the Snoosletter team, here to wish you a happy November! Looking back through the coming days',
-    //       messageTitle: 'The mod Snoosletter is Thankful for you This November',
-    //       subredditName: 'u/ModNewsLetter',
-    //       time: '.1mo'),
-    //   const MessageWidget(
-    //       messageBody:
-    //           'November us? We\'re the Snoosletter team, here to wish you a happy November! Looking back through the coming days',
-    //       messageTitle: 'The mod Snoosletter is Thankful for you This November',
-    //       subredditName: 'u/ModNewsLetter',
-    //       time: '.1mo'),
-    //   const MessageWidget(
-    //       messageBody:
-    //           'November us? We\'re the Snoosletter team, here to wish you a happy November! Looking back through the coming days',
-    //       messageTitle: 'The mod Snoosletter is Thankful for you This November',
-    //       subredditName: 'u/ModNewsLetter',
-    //       time: '.1mo'),
-    //   const MessageWidget(
-    //       messageBody:
-    //           'November us? We\'re the Snoosletter team, here to wish you a happy November! Looking back through the coming days',
-    //       messageTitle: 'The mod Snoosletter is Thankful for you This November',
-    //       subredditName: 'u/ModNewsLetter',
-    //       time: '.1mo'),
-    //   const MessageWidget(
-    //       messageBody:
-    //           'November us? We\'re the Snoosletter team, here to wish you a happy November! Looking back through the coming days',
-    //       messageTitle: 'The mod Snoosletter is Thankful for you This November',
-    //       subredditName: 'u/ModNewsLetter',
-    //       time: '.1mo'),
-    //   const MessageWidget(
-    //       messageBody:
-    //           'November us? We\'re the Snoosletter team, here to wish you a happy November! Looking back through the coming days',
-    //       messageTitle: 'The mod Snoosletter is Thankful for you This November',
-    //       subredditName: 'u/ModNewsLetter',
-    //       time: '.1mo'),
-    //   const MessageWidget(
-    //       messageBody:
-    //           'November us? We\'re the Snoosletter team, here to wish you a happy November! Looking back through the coming days',
-    //       messageTitle: 'The mod Snoosletter is Thankful for you This November',
-    //       subredditName: 'u/ModNewsLetter',
-    //       time: '.1mo'),
-    //   const MessageWidget(
-    //       messageBody:
-    //           'November us? We\'re the Snoosletter team, here to wish you a happy November! Looking back through the coming days',
-    //       messageTitle: 'The mod Snoosletter is Thankful for you This November',
-    //       subredditName: 'u/ModNewsLetter',
-    //       time: '.1mo'),
-    //   const MessageWidget(
-    //       messageBody:
-    //           'November us? We\'re the Snoosletter team, here to wish you a happy November! Looking back through the coming days',
-    //       messageTitle: 'The mod Snoosletter is Thankful for you This November',
-    //       subredditName: 'u/ModNewsLetter',
-    //       time: '.1mo'),
-    //   const MessageWidget(
-    //       messageBody:
-    //           'November us? We\'re the Snoosletter team, here to wish you a happy November! Looking back through the coming days',
-    //       messageTitle: 'The mod Snoosletter is Thankful for you This November',
-    //       subredditName: 'u/ModNewsLetter',
-    //       time: '.1mo'),
-    //   const MessageWidget(
-    //       messageBody:
-    //           'November us? We\'re the Snoosletter team, here to wish you a happy November! Looking back through the coming days',
-    //       messageTitle: 'The mod Snoosletter is Thankful for you This November',
-    //       subredditName: 'u/ModNewsLetter',
-    //       time: '.1mo'),
-    //   const MessageWidget(
-    //       messageBody:
-    //           'November us? We\'re the Snoosletter team, here to wish you a happy November! Looking back through the coming days',
-    //       messageTitle: 'The mod Snoosletter is Thankful for you This November',
-    //       subredditName: 'u/ModNewsLetter',
-    //       time: '.1mo'),
-    //   const MessageWidget(
-    //       messageBody:
-    //           'November us? We\'re the Snoosletter team, here to wish you a happy November! Looking back through the coming days',
-    //       messageTitle: 'The mod Snoosletter is Thankful for you This November',
-    //       subredditName: 'u/ModNewsLetter',
-    //       time: '.1mo'),
-  ];
+  List<MessageWidget> messages = [];
 
   void fetch() async {
     await DioHelper.getData(path: messagesPoint).then(
       (response) {
         if (response.statusCode == 200) {
+          logger.i(response.data);
           MessageModel msgs = MessageModel.fromJson(response.data);
           for (MessageChildren msg in msgs.children!) {
-            messages.add(MessageWidget(
-              myMessage: msg,
-            ));
+            print(msg == null);
+            setState(() {
+              messages.add(MessageWidget(
+                myMessage: msg,
+              ));
+            });
           }
         }
       },

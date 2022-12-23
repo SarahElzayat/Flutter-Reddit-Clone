@@ -1,3 +1,7 @@
+///@author: Yasmine Ghanem
+///@date:
+///this screen is responsible for choosing the post types allowed in a community
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../components/bottom_sheet.dart';
@@ -8,7 +12,7 @@ import '../cubit/moderation_cubit.dart';
 
 class PostTypes extends StatefulWidget {
   static const String routeName = 'post_types';
-  PostTypes({super.key});
+  const PostTypes({super.key});
 
   @override
   State<PostTypes> createState() => _PostTypesState();

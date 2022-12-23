@@ -31,8 +31,7 @@ class SubredditCubit extends Cubit<SubredditState> {
     await DioHelper.getData(path: '$subredditInfo/$name', query: query)
         .then((value) {
       if (value.statusCode == 200) {
-        // logger.wtf('Subreddit Info ====>');
-        // logger.wtf(value.data);
+
         subreddit = SubredditModel.fromJson(value.data);
         subredditName = name;
         if (subreddit!.isMember == null) return;
@@ -43,7 +42,7 @@ class SubredditCubit extends Cubit<SubredditState> {
           return;
         }
 
-        if (UserSettingsModel.nsfw == false &&
+        if (CacheHelper.getData(key: 'nfsw') == false &&
             subreddit!.nsfw != null &&
             subreddit!.nsfw == true) {
           ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
