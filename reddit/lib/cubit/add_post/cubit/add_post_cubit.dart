@@ -23,6 +23,7 @@ import '../../../constants/constants.dart';
 import '../../../data/add_post/subreddit_flairs.dart';
 import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
+import '../../../screens/bottom_navigation_bar_screens/home_screen.dart';
 import '../../../screens/main_screen.dart';
 import '../../../shared/local/shared_preferences.dart';
 import 'package:http_parser/http_parser.dart';
@@ -42,6 +43,10 @@ class AddPostCubit extends Cubit<AddPostState> {
   /// [postType] Number indicate The post Type
   /// This number is the index of post Type in add post screen
   int postType = 2;
+
+  quill.QuillController quillController = quill.QuillController.basic();
+
+  bool isMarkdown = true;
 
   bool isSubreddit = true;
 
@@ -319,7 +324,8 @@ class AddPostCubit extends Cubit<AddPostState> {
         }
         break;
       case 1:
-        if ((video != null && videoThumbnail != null)) {
+        if (((video != null && videoThumbnail != null && !kIsWeb) ||
+            (kIsWeb && video != null))) {
           emit(CanCreatePost(canPost: true));
         } else {
           emit(CanCreatePost(canPost: false));
@@ -466,10 +472,18 @@ class AddPostCubit extends Cubit<AddPostState> {
     if (postType == 0) {
       for (var item in images) {
         final mimeType = lookupMimeType(item.path);
-        MultipartFile file = await MultipartFile.fromFile(item.path,
-            filename: item.path.split('/').last,
-            contentType: MediaType('image', 'png'));
-        imagesData.add(file);
+        MultipartFile file;
+        if (kIsWeb) {
+          file = await MultipartFile.fromBytes(await item.readAsBytes(),
+              filename: item.path.split('/').last,
+              contentType: MediaType('image', 'png'));
+          imagesData.add(file);
+        } else {
+          file = await MultipartFile.fromFile(item.path,
+              filename: item.path.split('/').last,
+              contentType: MediaType('image', 'png'));
+          imagesData.add(file);
+        }
       }
       List<String> imageCaptions = [];
       for (int index = 0; index < captionController.length; index++) {
@@ -500,10 +514,11 @@ class AddPostCubit extends Cubit<AddPostState> {
       final mimeType = lookupMimeType(video!.path);
 
       body = {
-        'video': await MultipartFile.fromBytes(
-            File(video!.path).readAsBytesSync(),
-            filename: 'video.mp4',
-            contentType: MediaType('video', 'mp4')),
+        'video': (kIsWeb)
+            ? await MultipartFile.fromBytes(await video!.readAsBytes(),
+                filename: 'video.mp4', contentType: MediaType('video', 'mp4'))
+            : await MultipartFile.fromBytes(File(video!.path).readAsBytesSync(),
+                filename: 'video.mp4', contentType: MediaType('video', 'mp4')),
         'title': title.text,
         'kind': 'video',
         'subreddit': subredditName,
@@ -521,7 +536,9 @@ class AddPostCubit extends Cubit<AddPostState> {
         'inSubreddit': isSubreddit,
         'title': title.text,
         'content': {
-          'ops': jsonDecode(markdownToDelta(optionalText.text)),
+          'ops': (isMarkdown)
+              ? jsonDecode(markdownToDelta(optionalText.text))
+              : quillController.document.toDelta().toJson(),
         },
         'nsfw': nsfw,
         'spoiler': spoiler,
@@ -555,7 +572,7 @@ class AddPostCubit extends Cubit<AddPostState> {
           'scheduleDate': DateFormat('yyyy-MM-dd').format(scheduleDate!),
       };
     }
-
+    debugPrint('Body $body');
     FormData formData = FormData.fromMap(body);
 
     await DioHelper.postData(
@@ -581,7 +598,8 @@ class AddPostCubit extends Cubit<AddPostState> {
         Navigator.pushAndRemoveUntil(
           navigatorKey.currentContext!,
           MaterialPageRoute(
-              builder: (BuildContext context) => HomeScreenForMobile()),
+              builder: (BuildContext context) =>
+                  (kIsWeb) ? HomeScreen() : HomeScreenForMobile()),
           ModalRoute.withName('/'),
         );
       } else if (value.statusCode == 400) {

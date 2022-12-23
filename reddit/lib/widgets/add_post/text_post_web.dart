@@ -17,7 +17,7 @@ class _TextPostWidgetState extends State<TextPostWidget> {
   @override
   Widget build(BuildContext context) {
     final addPostCubit = BlocProvider.of<AddPostCubit>(context);
-    quill.QuillController controller = quill.QuillController.basic();
+    // quill.QuillController controller = quill.QuillController.basic();
     return Column(
       children: [
         Row(
@@ -26,16 +26,18 @@ class _TextPostWidgetState extends State<TextPostWidget> {
             InkWell(
               onTap: () {
                 setState(() {
-                  isMarkdown = !isMarkdown;
+                  addPostCubit.isMarkdown = !addPostCubit.isMarkdown;
                 });
               },
-              child: (isMarkdown)
+              child: (addPostCubit.isMarkdown)
                   ? Text('Switch to Fancy Pants Editor')
                   : Text('Markdown Mode'),
             ),
           ],
         ),
-        (isMarkdown) ? markdown() : quillEditor(controller),
+        (addPostCubit.isMarkdown)
+            ? markdown()
+            : quillEditor(addPostCubit.quillController),
       ],
     );
   }

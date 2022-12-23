@@ -47,16 +47,26 @@ class CreatePostButton extends StatelessWidget {
             onPressed: isDisabled
                 ? () {}
                 : (() async {
-                    if (addPostCubit.subredditName != null &&
-                            addPostCubit.subredditName != '' ||
-                        addPostCubit.isSubreddit == false) {
-                      await addPostCubit.getSubredditFlair();
-                      navigator.pushNamed(PostRules.routeName);
+                    if (kIsWeb) {
+                      await addPostCubit.createPost(context);
+                      addPostCubit.removeExistData();
+                      addPostCubit.addSubredditName(null);
+                      addPostCubit.title.text = '';
+                      addPostCubit.nsfw = false;
+                      addPostCubit.spoiler = false;
+                      addPostCubit.isSubreddit = true;
                     } else {
-                      navigator.push(MaterialPageRoute(
-                          builder: ((context) => const CommunitySearch(
-                                goToRules: true,
-                              ))));
+                      if (addPostCubit.subredditName != null &&
+                              addPostCubit.subredditName != '' ||
+                          addPostCubit.isSubreddit == false) {
+                        await addPostCubit.getSubredditFlair();
+                        navigator.pushNamed(PostRules.routeName);
+                      } else {
+                        navigator.push(MaterialPageRoute(
+                            builder: ((context) => const CommunitySearch(
+                                  goToRules: true,
+                                ))));
+                      }
                     }
                   }));
       },

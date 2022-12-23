@@ -117,7 +117,9 @@ class _ImageWidgetWebState extends State<ImageWidgetWeb> {
                                   const EdgeInsets.symmetric(horizontal: 15),
                               child: AddPostTextField(
                                   onChanged: ((string) {
-                                    addPostCubit.imageCaptionEdited();
+                                    addPostCubit
+                                        .captionController[selectedImage]
+                                        .text = string;
                                   }),
                                   mltiline: true,
                                   isBold: false,
@@ -131,7 +133,9 @@ class _ImageWidgetWebState extends State<ImageWidgetWeb> {
                                   const EdgeInsets.symmetric(horizontal: 15),
                               child: AddPostTextField(
                                   onChanged: ((string) {
-                                    addPostCubit.imageCaptionEdited();
+                                    addPostCubit
+                                        .imagesLinkController[selectedImage]
+                                        .text = string;
                                   }),
                                   mltiline: true,
                                   isBold: false,
