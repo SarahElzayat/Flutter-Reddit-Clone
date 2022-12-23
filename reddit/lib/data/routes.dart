@@ -2,6 +2,8 @@
 /// @date 1/11/2022
 /// this file containes all our routes in order to avoid destraction in the main file.
 import 'package:flutter/material.dart';
+
+import '../screens/inbox/web/send_private_message_screen.dart';
 import '../screens/inbox/single_message_screen.dart';
 import '../screens/inbox/single_notification_screen.dart';
 import '../screens/add_post/add_post.dart';
@@ -22,7 +24,6 @@ import '../screens/to_go_screens/having_trouble_screen.dart';
 import '../screens/to_go_screens/privacy_and_policy.dart';
 import '../screens/to_go_screens/user_agreement_screen.dart';
 import '../screens/settings/blocked_accounts.dart';
-
 import '../screens/inbox/Inbox_screen.dart';
 import '../screens/inbox/notifications_screen.dart';
 import '../screens/add_post/image_screen.dart';
@@ -76,6 +77,7 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   SignleNotificationScreen.routeName: (ctx) => const SignleNotificationScreen(),
   SingleMessageScreen.routeName: (ctx) => const SingleMessageScreen(),
   InboxScreenforWeb.routeName: (ctx) => const InboxScreenforWeb(),
+  SendPrivateMessageScreen.routeName: (ctx) => const SendPrivateMessageScreen(),
 
   // home screens
   HomeScreenForMobile.routeName: (ctx) => const HomeScreenForMobile(),

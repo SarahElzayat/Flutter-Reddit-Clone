@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:reddit/components/home_app_bar.dart';
 import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/data/messages/messages_model.dart';
-import 'package:reddit/screens/inbox/web/message_template_for_web.dart';
+import 'package:reddit/widgets/inbox/web/message_template_for_web.dart';
 import 'package:reddit/widgets/inbox/web/header_for_inbox.dart';
 
 import '../../../networks/constant_end_points.dart';
@@ -332,7 +332,9 @@ class _InboxScreenStateforWeb extends State<InboxScreenforWeb> {
           child: Column(
             children: [
               // this is always constant for any screen
-              const HeaderAppBarForInboxWeb(),
+              const SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: HeaderAppBarForInboxWeb()),
               // the header which contains [send prvt msg, inbox, sent]
               SizedBox(
                 height: mediaQuery.size.height * 0.8,

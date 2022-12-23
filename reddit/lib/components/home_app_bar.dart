@@ -134,7 +134,7 @@ AppBar homeAppBar(context, index) {
                       if (choice == 'new message') {
                         Navigator.of(context)
                             .push(MaterialPageRoute(builder: (context) {
-                          return CreateMessageScreen();
+                          return const CreateMessageScreen();
                         }));
                       } else if (choice == 'Mark all inbox tabs as read') {
                         /// TODO: mark all notifications as read
