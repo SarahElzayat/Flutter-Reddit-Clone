@@ -19,8 +19,7 @@ import '../../screens/to_be_done_screen.dart';
 import '../helpers/color_manager.dart';
 import 'components.dart';
 
-///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
-
+/// given an instance of the App Cubit to give easier access to the state management cubit
 class RightDrawer extends StatelessWidget {
   const RightDrawer({super.key});
 
