@@ -13,6 +13,7 @@ import 'package:reddit/shared/local/shared_preferences.dart';
 
 import '../../screens/create_community_screen/create_community_screen.dart';
 import '../../screens/to_be_done_screen.dart';
+import '../../widgets/user_profile/user_profile_web.dart';
 
 /// a reusable button with a dropdown list to use in drawer
 /// @param [text] is the name of the list
@@ -115,7 +116,7 @@ Widget genericTextButton(context, icon, text, route, {required isLeftDrawer}) =>
           } else {
             AppCubit.get(context).changeRightDrawer();
           }
-          if (route is UserProfileScreen) {
+          if (route is UserProfileScreen || route is UserProfileWeb) {
             UserProfileCubit.get(context).setUsername(
                 CacheHelper.getData(key: 'username'),
                 navigate: true);

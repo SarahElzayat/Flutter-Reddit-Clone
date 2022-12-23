@@ -1,5 +1,6 @@
 // import 'dart:ffi';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -100,27 +101,30 @@ class _SubredditState extends State<Subreddit>
           builder: (context, state) {
             return Scaffold(
               key: _scaffoldKey,
-              endDrawer: const RightDrawer(),
-              bottomNavigationBar: BottomNavigationBar(
-                type: BottomNavigationBarType.fixed,
-                currentIndex: cubit.currentIndex,
-                items: cubit.bottomNavBarIcons,
-                onTap: (value) {
-                  setState(() {
-                    if (value == 2) {
-                      AddPostCubit.get(context)
-                          .addSubredditName(subredditCubit.subredditName);
-                      Navigator.of(context).push(MaterialPageRoute(
-                        // TODO:pass the name of subreddit to add post
-                        builder: (context) => const AddPost(),
-                      ));
-                    } else {
-                      Navigator.of(context).popUntil((route) => route.isFirst);
-                      cubit.changeIndex(value);
-                    }
-                  });
-                },
-              ),
+              endDrawer: (kIsWeb) ? null : const RightDrawer(),
+              bottomNavigationBar: (kIsWeb)
+                  ? null
+                  : BottomNavigationBar(
+                      type: BottomNavigationBarType.fixed,
+                      currentIndex: cubit.currentIndex,
+                      items: cubit.bottomNavBarIcons,
+                      onTap: (value) {
+                        setState(() {
+                          if (value == 2) {
+                            AddPostCubit.get(context)
+                                .addSubredditName(subredditCubit.subredditName);
+                            Navigator.of(context).push(MaterialPageRoute(
+                              // TODO:pass the name of subreddit to add post
+                              builder: (context) => const AddPost(),
+                            ));
+                          } else {
+                            Navigator.of(context)
+                                .popUntil((route) => route.isFirst);
+                            cubit.changeIndex(value);
+                          }
+                        });
+                      },
+                    ),
               body: NestedScrollView(
                 headerSliverBuilder: (context2, innerBoxIsScrolled) {
                   return [

@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/app_bar_components.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/screens/history/history_screen_for_web.dart';
+import 'package:reddit/widgets/user_profile/user_profile_web.dart';
 import '../../screens/create_community_screen/create_community_screen.dart';
 import '../../screens/saved/saved_screen.dart';
 import '../../screens/settings/change_profile_picture_screen.dart';
@@ -29,8 +30,8 @@ class RightDrawer extends StatelessWidget {
 
     ///@param [rightDrawerItems] the list of right drawer items
     List<Widget> rightDrawerItems = [
-      genericTextButton(
-          context, Icons.person, 'My profile', const UserProfileScreen(),
+      genericTextButton(context, Icons.person, 'My profile',
+          kIsWeb ? UserProfileWeb() : const UserProfileScreen(),
           isLeftDrawer: false),
       genericTextButton(context, Icons.add, 'Create a community',
           const CreateCommunityScreen(),

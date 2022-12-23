@@ -104,7 +104,7 @@ class Main extends StatelessWidget {
                             : HomeScreenForMobile.routeName
                         : !kIsWeb
                             ? SignInScreen.routeName
-                            : HomeScreen.routeName,
+                            : SignInForWebScreen.routeName,
                 routes: myRoutes,
                 onUnknownRoute: (settings) {
                   return MaterialPageRoute(
