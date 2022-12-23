@@ -41,7 +41,7 @@ WORKDIR /app/
 RUN flutter pub get
 # RUN flutter clean
 COPY . /app/
-RUN flutter build web 
+RUN flutter build web --no-sound-null-safety --web-renderer html
 
 # Record the exposed port
 EXPOSE 5000
