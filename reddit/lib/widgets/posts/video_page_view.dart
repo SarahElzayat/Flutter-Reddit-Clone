@@ -25,6 +25,8 @@ class WholeScreenVideoViewer extends StatefulWidget {
     required this.post,
     this.flickManager,
   });
+
+  /// The [FlickManager] of the video
   final FlickManager? flickManager;
 
   /// The post to show

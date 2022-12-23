@@ -3,6 +3,7 @@
 /// @author Haitham Mohamed
 /// @date 2/12/2022
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,55 +34,74 @@ class _CommunitySearchState extends State<CommunitySearch> {
     final mediaQuery = MediaQuery.of(context);
     final addPostCubit = BlocProvider.of<AddPostCubit>(context);
     final navigator = Navigator.of(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Post to'),
-        leading: IconButton(
-          icon: const Icon(Icons.close),
-          onPressed: () {
-            navigator.pop();
-          },
+    return (kIsWeb)
+        ? searchWidget(addPostCubit, navigator, mediaQuery)
+        : Scaffold(
+            appBar: AppBar(
+              title: const Text('Post to'),
+              leading: IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () {
+                  navigator.pop();
+                },
+              ),
+            ),
+            body: searchWidget(addPostCubit, navigator, mediaQuery),
+          );
+  }
+
+  Widget searchWidget(AddPostCubit addPostCubit, NavigatorState navigator,
+      MediaQueryData mediaQuery) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Container(
+        // height: (kIsWeb) ? 500 : null,
+        color: ColorManager.darkGrey,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: AddPostTextField(
+                  mltiline: false,
+                  isBold: false,
+                  fontSize: 20,
+                  hintText: 'Search',
+                  onChanged: (val) {
+                    addPostCubit.subredditSearch(val);
+                    setState(() {});
+                  },
+                  controller: controller),
+            ),
+            if (controller.text.isNotEmpty)
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      controller.clear();
+
+                      addPostCubit.subredditSearch('');
+                    });
+                  },
+                  icon: const Icon(Icons.close)),
+          ],
         ),
       ),
-      body: Column(children: [
-        Container(
-          color: ColorManager.darkGrey,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: AddPostTextField(
-                    mltiline: false,
-                    isBold: false,
-                    fontSize: 20,
-                    hintText: 'Search',
-                    onChanged: (val) {
-                      addPostCubit.subredditSearch(val);
-                      setState(() {});
-                    },
-                    controller: controller),
-              ),
-              if (controller.text.isNotEmpty)
-                IconButton(
-                    onPressed: () {
-                      setState(() {
-                        controller.clear();
-
-                        addPostCubit.subredditSearch('');
-                      });
-                    },
-                    icon: const Icon(Icons.close)),
-            ],
-          ),
-        ),
-        BlocBuilder<AddPostCubit, AddPostState>(
+      InkWell(
+        onTap: () {
+          addPostCubit.addProfile();
+        },
+        child: Text('My Profile'),
+      ),
+      SizedBox(
+        height: (kIsWeb) ? 500 : null,
+        child: BlocBuilder<AddPostCubit, AddPostState>(
           buildWhen: (previous, current) => current is SubredditSearch,
           builder: (context, state) {
             if (state is SubredditSearch && state.isLoaded == false) {
-              return const CircularProgressIndicator(
-                color: ColorManager.blue,
+              return Center(
+                child: const CircularProgressIndicator(
+                  color: ColorManager.blue,
+                ),
               );
             } else if (state is SubredditSearch &&
                 state.isLoaded == true &&
@@ -92,19 +112,25 @@ class _CommunitySearchState extends State<CommunitySearch> {
                   itemBuilder: (BuildContext context, int index) {
                     return ListTile(
                       onTap: () async {
+                        addPostCubit.isSubreddit = true;
                         addPostCubit.addSubredditName(addPostCubit
                             .subredditsList!
                             .children![index]
                             .data!
                             .subredditName!);
-                        if (widget.goToRules) {
-                          await addPostCubit.getSubredditFlair();
-                          navigator.pop();
+                        if (!kIsWeb) {
+                          if (widget.goToRules) {
+                            await addPostCubit.getSubredditFlair();
+                            navigator.pop();
 
-                          navigator.pushNamed(PostRules.routeName);
+                            navigator.pushNamed(PostRules.routeName);
+                          } else {
+                            navigator.pop();
+                          }
                         } else {
-                          navigator.pop();
+                          addPostCubit.checkPostValidation();
                         }
+                        setState(() {});
                       },
                       title: Text(
                         addPostCubit.subredditsList!.children![index].data!
@@ -124,8 +150,8 @@ class _CommunitySearchState extends State<CommunitySearch> {
             }
           },
         ),
-      ]),
-    );
+      ),
+    ]);
   }
 
   String memberNumber(double number) {
