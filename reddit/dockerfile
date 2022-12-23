@@ -28,8 +28,8 @@ ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PAT
 RUN flutter doctor
 
 # Enable flutter web
-RUN flutter channel master
-RUN flutter upgrade
+RUN flutter channel 3.3
+# RUN flutter upgrade
 RUN flutter config --enable-web
 
 # Copy files to container and build
@@ -41,7 +41,7 @@ WORKDIR /app/
 RUN flutter pub get
 # RUN flutter clean
 COPY . /app/
-RUN flutter build web
+RUN flutter build web --web-renderer html
 
 # Record the exposed port
 EXPOSE 5000
