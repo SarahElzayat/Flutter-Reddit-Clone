@@ -17,6 +17,7 @@ import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 import 'package:reddit/screens/add_post/add_post.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../components/home_app_bar.dart';
 import '../create_community_screen/create_community_screen.dart';
 
@@ -144,68 +145,81 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: RefreshIndicator(
                         color: ColorManager.blue,
                         onRefresh: _onRefresh,
-                        child: ListView.builder(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          controller: _scrollController,
-                          scrollDirection: Axis.vertical,
-                          itemCount: cubit.homePosts.length,
-                          itemBuilder: (context, index) {
-                            return index == 0 && kIsWeb
-                                ? Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Column(
-                                      // mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            homeButton(
-                                                Icons.rocket,
-                                                'Best',
-                                                () => cubit.changeHomeSort(
-                                                    HomeSort.best)),
-                                            homeButton(
-                                                Icons.trending_up,
-                                                'Hot',
-                                                () => cubit.changeHomeSort(
-                                                    HomeSort.hot)),
-                                            homeButton(
-                                                Icons.new_releases,
-                                                'New',
-                                                () => cubit.changeHomeSort(
-                                                    HomeSort.newPosts)),
-                                            homeButton(
-                                                Icons.bar_chart,
-                                                'Trending',
-                                                () => cubit.changeHomeSort(
-                                                    HomeSort.trending)),
-                                            homeButton(
-                                                Icons.upload,
-                                                'Top',
-                                                () => cubit.changeHomeSort(
-                                                    HomeSort.top)),
-                                          ],
-                                        ),
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 8),
-                                          margin: const EdgeInsets.symmetric(
-                                              horizontal: 0, vertical: 5),
-                                          child: cubit.homePosts[index],
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                : Container(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 8),
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 0, vertical: 5),
-                                    child: cubit.homePosts[index],
-                                  );
-                          },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: ColorManager.darkBlack,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: ListView.separated(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            controller: _scrollController,
+                            scrollDirection: Axis.vertical,
+                            itemCount: cubit.homePosts.length,
+                            itemBuilder: (context, index) {
+                              return index == 0 && kIsWeb
+                                  ? Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Column(
+                                        // mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              homeButton(
+                                                  Icons.rocket,
+                                                  'Best',
+                                                  () => cubit.changeHomeSort(
+                                                      HomeSort.best)),
+                                              homeButton(
+                                                  Icons.trending_up,
+                                                  'Hot',
+                                                  () => cubit.changeHomeSort(
+                                                      HomeSort.hot)),
+                                              homeButton(
+                                                  Icons.new_releases,
+                                                  'New',
+                                                  () => cubit.changeHomeSort(
+                                                      HomeSort.newPosts)),
+                                              homeButton(
+                                                  Icons.bar_chart,
+                                                  'Trending',
+                                                  () => cubit.changeHomeSort(
+                                                      HomeSort.trending)),
+                                              homeButton(
+                                                  Icons.upload,
+                                                  'Top',
+                                                  () => cubit.changeHomeSort(
+                                                      HomeSort.top)),
+                                            ],
+                                          ),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 8),
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 0, vertical: 5),
+                                            child: cubit.homePosts[index],
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  : Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8),
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 0, vertical: 5),
+                                      child: cubit.homePosts[index],
+                                    );
+                            },
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return Divider(
+                                color: ColorManager.betterDarkGrey,
+                                thickness: kIsWeb ? 1.h : 1,
+                              );
+                            },
+                          ),
                         ),
                       ),
                     );
@@ -283,10 +297,16 @@ Widget homeButton(icon, text, onPressed) {
         Icon(
           icon,
           size: 30,
+          color: ColorManager.eggshellWhite,
         ),
         Padding(
           padding: const EdgeInsets.only(left: 8.0),
-          child: Text(text),
+          child: Text(
+            text,
+            style: const TextStyle(
+              color: ColorManager.eggshellWhite,
+            ),
+          ),
         )
       ],
     ),

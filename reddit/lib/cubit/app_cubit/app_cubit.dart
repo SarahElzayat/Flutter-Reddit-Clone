@@ -222,8 +222,6 @@ class AppCubit extends Cubit<AppState> {
   Map<String, DrawerCommunitiesModel> favoriteCommunities =
       <String, DrawerCommunitiesModel>{};
 
-
-
   /// gets the list of the user's joined
   void getYourCommunities() {
     yourCommunitiesList.clear();
@@ -613,7 +611,7 @@ class AppCubit extends Cubit<AppState> {
           savedCommentsBeforeId = value.data['before'];
         }
 
-        //logger.wtf(value.data.toString());
+        logger.wtf(value.data.toString());
         for (int i = 0; i < value.data['children'].length; i++) {
           if (value.data['children'][i]['type'] == 'post') {
             //logger.wtf('POOOOSTTTTSSS');
@@ -623,8 +621,9 @@ class AppCubit extends Cubit<AppState> {
                 PostModel.fromJson(value.data['children'][i]['data']['post']));
             savedPostsList[savedPostsList.length - 1].id =
                 value.data['children'][i]['id'];
-            savedCommentsPostsList[savedCommentsPostsList.length - 1].id =
-                value.data['children'][i]['id'];
+
+            // savedCommentsPostsList[savedCommentsPostsList.length - 1].id =
+            // value.data['children'][i]['id'];
             //logger.e('tmmmmamaamammama');
           } else if (value.data['children'][i]['type'] == 'comment') {
             //logger.wtf('COOOMMMMEEENNNTSSSS');
@@ -639,8 +638,7 @@ class AppCubit extends Cubit<AppState> {
               savedCommentsPostsList[savedCommentsPostsList.length - 1].id =
                   value.data['children'][i]['id'];
               //logger.e('tmmmmamaamammama');
-              savedCommentsPostsList[savedCommentsPostsList.length - 1].id =
-                  value.data['children'][i]['id'];
+
             }
           } else {
             savedPostsList.add(
@@ -659,12 +657,12 @@ class AppCubit extends Cubit<AppState> {
             }
           }
         }
-
+        logger.wtf('TAMMAMM');
         loadMore ? emit(LoadedMoreSavedState()) : emit(LoadedSavedState());
       }
     }).onError((error, stackTrace) {
       if (kDebugMode) {
-        //logger.wtf(error.toString());
+        logger.wtf(error.toString());
       }
     }).catchError((onError) {
       emit(ErrorState());
