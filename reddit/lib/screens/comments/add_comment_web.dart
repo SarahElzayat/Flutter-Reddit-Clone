@@ -9,6 +9,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
+import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tuple/tuple.dart';
 import '../../cubit/comment_notifier/comment_notifier_cubit.dart';
@@ -237,6 +238,7 @@ class AddCommentWeb extends StatelessWidget {
   Future<String> _onImagePickCallback(File file) async {
     // Copies the picked file from temporary cache to applications directory
     // insert new line
+    Logger().d('file path: ${file.absolute}');
     _controller.document.format(
         _controller.selection.start,
         1,
