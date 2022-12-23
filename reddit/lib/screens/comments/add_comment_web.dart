@@ -1,12 +1,16 @@
+/// this file is the add comment screen in web.
+/// date: 20/12/2022
+/// @Author: Ahmed Atta
+
 import 'dart:io';
 import 'dart:math';
-
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:tuple/tuple.dart';
 import '../../cubit/comment_notifier/comment_notifier_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_cubit.dart';
 import '../../data/post_model/post_model.dart';
@@ -20,16 +24,30 @@ import '../../data/comment/comment_model.dart';
 import '../../data/comment/sended_comment_model.dart';
 import '../../widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 
+/// the screen of adding a comment
+/// it is used to add a comment to a post or a comment
+/// if the parent comment is null, the comment will be added to the post
+/// otherwise, the comment will be added to the parent comment
+/// the screen is used in web
 class AddCommentWeb extends StatelessWidget {
   AddCommentWeb({
     Key? key,
     required this.post,
     this.parentComment,
   }) : super(key: key);
+
+  /// the post that the comment will be added to
   final PostModel post;
+
+  /// the parent comment that the comment will be added to
   final CommentModel? parentComment;
+
+  /// the controller of the quill editor
   final QuillController _controller = QuillController.basic();
+
+  /// the focus node of the quill editor
   final FocusNode _focusNode = FocusNode();
+
   bool get parentPost => parentComment == null;
 
   @override
@@ -75,6 +93,26 @@ class AddCommentWeb extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
+        var defaultStyles = DefaultStyles(
+            code: DefaultTextBlockStyle(
+              const TextStyle(
+                fontSize: 14,
+                color: ColorManager.eggshellWhite,
+                height: 1.15,
+                fontWeight: FontWeight.w300,
+              ),
+              const Tuple2(16, 0),
+              const Tuple2(0, 0),
+              const BoxDecoration(
+                color: Colors.transparent,
+              ),
+            ),
+            inlineCode: InlineCodeStyle(
+              backgroundColor: ColorManager.darkGrey,
+              style: const TextStyle(
+                color: ColorManager.eggshellWhite,
+              ),
+            ));
         return ClipRRect(
           borderRadius: BorderRadius.circular(3),
           child: Container(
@@ -100,6 +138,7 @@ class AddCommentWeb extends StatelessWidget {
                       scrollable: true,
                       scrollController: ScrollController(),
                       focusNode: FocusNode(),
+                      customStyles: defaultStyles,
                       placeholder: 'what are your thoughts?',
                       padding: const EdgeInsets.all(8),
                       embedBuilders: defaultEmbedBuildersWeb,

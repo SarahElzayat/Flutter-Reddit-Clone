@@ -1,9 +1,14 @@
+/// this file is used to define function used as helpers in building the posts.
+/// date: 20/12/2022
+/// @Author: Ahmed Atta
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:logger/logger.dart';
+import '../components/helpers/enums.dart';
 import '../components/snack_bar.dart';
 import '../cubit/user_profile/cubit/user_profile_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -31,8 +36,8 @@ import '../widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import '../widgets/posts/actions_cubit/post_comment_actions_state.dart';
 import '../widgets/posts/dropdown_list.dart';
 
-enum ModOPtions { spoiler, nsfw, lock, unsticky, remove, spam, approve }
-
+/// opens the dropdown menu from the dots in many places
+/// [post] is the post that the dropdown menu is opened for
 BlocBuilder<PostNotifierCubit, PostNotifierState> dropDownDots(PostModel post) {
   return BlocBuilder<PostNotifierCubit, PostNotifierState>(
     builder: (context, state) {
@@ -44,6 +49,7 @@ BlocBuilder<PostNotifierCubit, PostNotifierState> dropDownDots(PostModel post) {
   );
 }
 
+/// gets the plain text from the body of a [Document] object
 String getPlainText(Map<String, dynamic>? body) {
   Document doc;
   try {
@@ -54,6 +60,7 @@ String getPlainText(Map<String, dynamic>? body) {
   return doc.toPlainText();
 }
 
+/// builds the [CircleAvatar] for the user's profile picture
 CircleAvatar subredditAvatar({small = false, required String imageUrl}) {
   return CircleAvatar(
     radius: small ? min(2.w, 15) : min(5.5.w, 30),
@@ -64,6 +71,7 @@ CircleAvatar subredditAvatar({small = false, required String imageUrl}) {
   );
 }
 
+/// builds the row that contains the control of comments sorting
 Widget commentSortRow(BuildContext context) {
 // a row with a button to choose the sorting type and an icon button for MOD
 // operations
@@ -141,6 +149,7 @@ Widget commentSortRow(BuildContext context) {
   );
 }
 
+/// builds the row that contains the avatar of the user, the name of the user,
 Widget singleRow(
   context, {
   bool sub = false,
@@ -190,6 +199,7 @@ Widget singleRow(
   );
 }
 
+/// builds a card for a single Mod Item
 Widget buildModItem(icon, text, {bool disabled = false}) {
   return Row(
     children: [
@@ -213,6 +223,7 @@ Widget buildModItem(icon, text, {bool disabled = false}) {
   );
 }
 
+/// whether the [post] is approved or not
 bool isApproved(PostModel post) {
   if (post.moderation?.approve?.approvedBy == null) {
     return false;
@@ -220,13 +231,22 @@ bool isApproved(PostModel post) {
   return true;
 }
 
+/// whether the [post] is spammed or not
 bool isSpammed(PostModel post) {
   return (post.moderation?.spam?.spammedBy != null);
 }
 
+/// whether the [post] is removed or not
 bool isRemoved(PostModel post) {
   return (post.moderation?.remove?.removedBy != null);
 }
+
+/// handles the spoiler button on the post for moderators
+/// if the post is already marked as spoiler, it will unmark it
+/// otherwise it will mark it as spoiler
+/// [onSuccess] is called when the request is successful
+/// [onError] is called when the request fails
+/// [post] is the post that is being marked as spoiler
 
 void handleSpoiler(
     {required VoidCallback onSuccess, required VoidCallback onError, post}) {
@@ -246,6 +266,10 @@ void handleSpoiler(
   });
 }
 
+/// handles the nsfw button on the post for moderators
+/// [onSuccess] is called when the request is successful
+/// [onError] is called when the request fails
+/// [post] is the post that is being marked as spoiler
 void handleNSFW(
     {required VoidCallback onSuccess, required VoidCallback onError, post}) {
   // marks the post as nsfw
@@ -265,6 +289,13 @@ void handleNSFW(
   });
 }
 
+/// handles the lock button on the post or comment for moderators
+/// if the post is already locked, it will unlock it
+/// otherwise it will lock it
+/// [onSuccess] is called when the request is successful
+/// [onError] is called when the request fails
+/// [post] is the post that is being locked
+/// [comment] is the comment that is being locked
 void handleLock(
     {required VoidCallback onSuccess,
     required VoidCallback onError,
@@ -290,6 +321,12 @@ void handleLock(
   });
 }
 
+/// handles the sticky button on the post for moderators
+/// if the post is already sticky, it will unsticky it
+/// otherwise it will sticky it
+/// [onSuccess] is called when the request is successful
+/// [onError] is called when the request fails
+/// [post] is the post that is being stickied
 void handleSticky(
     {required VoidCallback onSuccess,
     required VoidCallback onError,
@@ -307,6 +344,12 @@ void handleSticky(
   });
 }
 
+/// handles the remove button on the post for moderators
+/// if the post is already removed, it will unremove it
+/// otherwise it will remove it
+/// [onSuccess] is called when the request is successful
+/// [onError] is called when the request fails
+/// [post] is the post that is being removed
 void handleRemove(
     {required VoidCallback onSuccess,
     required void Function(DioError) onError,
@@ -324,6 +367,13 @@ void handleRemove(
   });
 }
 
+/// handles the Approve button on the post or comments for moderators
+/// if the post is already approved, it will unapprove it
+/// otherwise it will approve it
+/// [onSuccess] is called when the request is successful
+/// [onError] is called when the request fails
+/// [post] is the post that is being approved
+/// [comment] is the comment that is being approved
 void handleApprove({
   required VoidCallback onSuccess,
   required void Function(DioError) onError,
@@ -348,6 +398,13 @@ void handleApprove({
   });
 }
 
+/// handles the spam button on the post or comments for moderators
+/// if the post is already spammed, it will unspam it
+/// otherwise it will spam it
+/// [onSuccess] is called when the request is successful
+/// [onError] is called when the request fails
+/// [post] is the post that is being spammed
+/// [comment] is the comment that is being spammed
 void handleSpam({
   required VoidCallback onSuccess,
   required void Function(DioError) onError,
@@ -372,6 +429,9 @@ void handleSpam({
   });
 }
 
+/// opens a dialog to show the moderator options and proccesses the selected option
+/// [context] is the context of the widget
+/// [post] is the post that is being moderated
 Future<void> showModOperations({
   required BuildContext context,
   required PostModel post,

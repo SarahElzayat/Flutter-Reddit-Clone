@@ -217,8 +217,7 @@ class _ListTileWidgetState extends State<ListTileWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SettingsCubit, SettingsCubitState>(
-      listener: (context, state) {
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return SizedBox(
           child: Material(

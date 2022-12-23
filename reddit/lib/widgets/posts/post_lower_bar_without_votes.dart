@@ -47,6 +47,7 @@ class PostLowerBarWithoutVotes extends StatefulWidget {
   /// if the app is running on web
   final bool isWeb;
 
+  /// if the post has insights Button or not
   final bool showIsights;
   @override
   State<PostLowerBarWithoutVotes> createState() =>

@@ -11,7 +11,7 @@ import '../../../components/helpers/color_manager.dart';
 import '../../../components/snack_bar.dart';
 import '../../../data/comment/comment_model.dart';
 import '../../../data/settings/settings_models/user_settings.dart';
-import '../../../data/user_profile.dart/about_user_model.dart';
+import '../../../data/user_profile/about_user_model.dart';
 import '../../../networks/dio_helper.dart';
 import '../../../screens/user_profile/user_profile_screen.dart';
 
