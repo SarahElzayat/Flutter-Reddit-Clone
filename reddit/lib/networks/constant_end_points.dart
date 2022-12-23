@@ -5,13 +5,13 @@ import 'package:flutter/foundation.dart' show kIsWeb, kReleaseMode;
 
 const portNumber = String.fromEnvironment('FLUTTER_PORT', defaultValue: '5000');
 
-const baseUrl = kReleaseMode
-    ? 'https://www.read-it.live/api'
-    // ? 'http://www.read-it.live/api'
-    : kIsWeb
-        ? 'http://localhost:3000'
-        // : 'http://10.0.2.2:3000'; // for mobile
-        : 'https://www.read-it.live/api';
+const baseUrl = 'https://www.read-it.live/api';
+// kReleaseMode
+//     // ? 'http://www.read-it.live/api'
+//     : kIsWeb
+//         ? 'http://localhost:3000'
+//         // : 'http://10.0.2.2:3000'; // for mobile
+//         : 'https://www.read-it.live/api';
 // : 'http://10.0.2.2:3000/';
 
 const imagesBaseUrl =

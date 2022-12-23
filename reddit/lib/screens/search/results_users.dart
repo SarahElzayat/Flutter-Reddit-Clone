@@ -2,6 +2,7 @@
 /// @date 9/11/2022
 /// this is the screen for the people results of the main search
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/search_components/profile_result_container.dart';
@@ -66,22 +67,27 @@ class _ResultsUsersState extends State<ResultsUsers> {
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   )
-                : ListView.builder(
-                    // itemExtent: 400,
-                    key: _globalKey,
-                    controller: _scrollController,
-                    itemCount: cubit.users.length, //cubit.cubit.users.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) => InkWell(
-                          onTap: () => UserProfileCubit.get(context)
-                              .showPopupUserWidget(
-                                  context, cubit.users[index].data!.username!),
-                          child: IntrinsicHeight(
-                            child: ProfileResultContainer(
-                              model: cubit.users[index],
+                : Padding(
+                   padding: EdgeInsets.symmetric(
+                    horizontal:
+                        kIsWeb ? MediaQuery.of(context).size.width * 0.2 : 0),
+                  child: ListView.builder(
+                      // itemExtent: 400,
+                      key: _globalKey,
+                      controller: _scrollController,
+                      itemCount: cubit.users.length, //cubit.cubit.users.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) => InkWell(
+                            onTap: () => UserProfileCubit.get(context)
+                                .showPopupUserWidget(
+                                    context, cubit.users[index].data!.username!),
+                            child: IntrinsicHeight(
+                              child: ProfileResultContainer(
+                                model: cubit.users[index],
+                              ),
                             ),
-                          ),
-                        ));
+                          )),
+                );
           },
         );
       },

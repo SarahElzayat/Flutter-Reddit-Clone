@@ -46,6 +46,7 @@ class ProfileResultContainer extends StatelessWidget {
                     children: [
                       Text(
                         'u/${model.data!.username.toString()}',
+                        // overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                             fontSize: 16, color: ColorManager.eggshellWhite),
                       ), // const Spacer(),

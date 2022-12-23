@@ -7,7 +7,6 @@ import '../../cubit/app_cubit/app_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../components/snack_bar.dart';
-import '../../networks/constant_end_points.dart';
 
 class ChangeProfilePicutre extends StatefulWidget {
   const ChangeProfilePicutre({super.key});

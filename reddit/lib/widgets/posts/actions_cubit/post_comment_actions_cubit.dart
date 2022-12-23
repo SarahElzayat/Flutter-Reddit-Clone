@@ -316,7 +316,7 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
         emit(UserDetailsFetched());
       }
     }).catchError((error) {
-      logger.wtf('USER:' + (error as DioError?)?.response?.data);
+      // logger.wtf('USER:' + (error as DioError?)?.response?.data);
 
       return;
     });

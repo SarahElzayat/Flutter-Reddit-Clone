@@ -1,11 +1,19 @@
 /// @author Sarah El-Zayat
 /// @date 9/11/2022
 /// The screen that shows the main search results with the tab bar
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/components/home_app_bar.dart';
+import 'package:reddit/components/home_components/left_drawer.dart';
+import 'package:reddit/components/home_components/right_drawer.dart';
 import 'package:reddit/components/search_field.dart';
 import 'package:reddit/screens/search/cubit/search_cubit.dart';
+
+import '../../components/home_components/functions.dart';
+import '../../components/snack_bar.dart';
+import '../../cubit/app_cubit/app_cubit.dart';
 
 class SearchResults extends StatefulWidget {
   final String searchWord;
@@ -25,6 +33,16 @@ class _SearchResultsState extends State<SearchResults>
     with TickerProviderStateMixin {
   late TabController _tabController;
   final TextEditingController _textEditingController = TextEditingController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void endDrawer() {
+    changeEndDrawer(_scaffoldKey);
+  }
+
+  void drawer() {
+    changeLeftDrawer(_scaffoldKey);
+  }
+
 
   /// initial state of the stateful widget
   @override
@@ -41,7 +59,6 @@ class _SearchResultsState extends State<SearchResults>
     return BlocProvider(
       create: (ctx) {
         return SearchCubit()..setSearchQuery(widget.searchWord);
-        // ..setSearchSubreddit(widget.subredditName);
       },
       child: BlocConsumer<SearchCubit, SearchState>(
         listener: (context, state) {},
@@ -49,31 +66,62 @@ class _SearchResultsState extends State<SearchResults>
           if (widget.isSubreddit) {
             SearchCubit.get(context).setSearchSubreddit(widget.subredditName);
           }
-          return Scaffold(
-            appBar: AppBar(
-              title: SearchField(
-                subredditName: widget.isSubreddit ? widget.subredditName : null,
-                isSubreddit: widget.isSubreddit,
-                textEditingController: _textEditingController,
-                isResult: true,
+          return BlocListener<AppCubit, AppState>(
+            listener: (context, state) {
+              if (kIsWeb) {
+                if (state is ChangeRightDrawerState) {
+                  endDrawer();
+                }
+                if (state is ChangeLeftDrawerState) {
+                  drawer();
+                }
+
+                if (state is ErrorState) {
+                  ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+                    message: 'An error occurred, please try again later.',
+                    error: false,
+                  ));
+                }
+              }
+            },
+            child: Scaffold(
+              key: _scaffoldKey,
+              drawer: kIsWeb ? const LeftDrawer() : null,
+              endDrawer: kIsWeb ? const RightDrawer() : null,
+              appBar: AppBar(
+                actions: kIsWeb ? [Container()] : null,
+                automaticallyImplyLeading: kIsWeb ? false : true,
+                title: kIsWeb
+                    ? homeAppBar(
+                        context,
+                        0,
+                        isSearch: true,
+                      )
+                    : SearchField(
+                        subredditName:
+                            widget.isSubreddit ? widget.subredditName : null,
+                        isSubreddit: widget.isSubreddit,
+                        textEditingController: _textEditingController,
+                        isResult: true,
+                      ),
+                bottom: TabBar(
+                  controller: _tabController,
+                  labelStyle: const TextStyle(fontSize: 14),
+                  indicatorWeight: 1,
+                  indicatorSize: TabBarIndicatorSize.label,
+                  isScrollable: true,
+                  tabs: widget.isSubreddit
+                      ? SearchCubit.get(context).searchInSubredditResultTabs
+                      : SearchCubit.get(context).searchResultTabs,
+                  indicatorColor: ColorManager.blue,
+                ),
               ),
-              bottom: TabBar(
-                controller: _tabController,
-                labelStyle: const TextStyle(fontSize: 14),
-                indicatorWeight: 1,
-                indicatorSize: TabBarIndicatorSize.label,
-                isScrollable: true,
-                tabs: widget.isSubreddit
-                    ? SearchCubit.get(context).searchInSubredditResultTabs
-                    : SearchCubit.get(context).searchResultTabs,
-                indicatorColor: ColorManager.blue,
-              ),
+              body: TabBarView(
+                  controller: _tabController,
+                  children: widget.isSubreddit
+                      ? SearchCubit.get(context).searchInSubredditResultScreens
+                      : SearchCubit.get(context).searchResultScreens),
             ),
-            body: TabBarView(
-                controller: _tabController,
-                children: widget.isSubreddit
-                    ? SearchCubit.get(context).searchInSubredditResultScreens
-                    : SearchCubit.get(context).searchResultScreens),
           );
         },
       ),

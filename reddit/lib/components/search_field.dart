@@ -77,16 +77,17 @@ class _SearchFieldState extends State<SearchField> {
         onTap: () {
           if (widget.isResult) {
             _focus.unfocus();
-
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SearchScreen(
-                    subredditName: widget.subredditName,
-                    isSubreddit: widget.isSubreddit,
-                    query: widget.textEditingController.text,
-                  ),
-                ));
+            if (!kIsWeb) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SearchScreen(
+                      subredditName: widget.subredditName,
+                      isSubreddit: widget.isSubreddit,
+                      query: widget.textEditingController.text,
+                    ),
+                  ));
+            }
           }
         },
         focusNode: _focus,

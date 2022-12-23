@@ -155,7 +155,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
           ),
           body: SingleChildScrollView(
             controller: _scrollController,
-            // physics: const NeverScrollableScrollPhysics(),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Column(

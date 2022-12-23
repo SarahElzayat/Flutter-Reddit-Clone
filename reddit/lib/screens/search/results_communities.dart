@@ -2,6 +2,7 @@
 /// @date 9/11/2022
 /// this is the screen for the communities results of the main search
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/search_components/subreddit_results_container.dart';
@@ -34,13 +35,6 @@ class _ResultsCommunitiesState extends State<ResultsCommunities> {
     super.initState();
   }
 
-  // @override
-  // void dispose() {
-  //   SearchCubit.get(context).getSubbreddits();
-  //   _scrollController.dispose();
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
     SearchCubit cubit = SearchCubit.get(context); //..getSubbreddits();
@@ -63,15 +57,21 @@ class _ResultsCommunitiesState extends State<ResultsCommunities> {
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   )
-                : ListView.builder(
-                    controller: _scrollController,
-                    itemCount: cubit.subbreddits.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) => IntrinsicHeight(
-                          child: SubredditResultsContainer(
-                            model: cubit.subbreddits[index],
-                          ),
-                        ));
+                : Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: kIsWeb
+                            ? MediaQuery.of(context).size.width * 0.2
+                            : 0),
+                    child: ListView.builder(
+                        controller: _scrollController,
+                        itemCount: cubit.subbreddits.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) => IntrinsicHeight(
+                              child: SubredditResultsContainer(
+                                model: cubit.subbreddits[index],
+                              ),
+                            )),
+                  );
           },
         );
       },

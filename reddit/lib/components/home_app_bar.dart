@@ -13,8 +13,10 @@ import 'package:reddit/screens/create_community_screen/create_community_screen.d
 import 'package:reddit/components/app_bar_components.dart';
 import 'package:reddit/components/search_field.dart';
 import 'package:reddit/screens/inbox/create_message_screen.dart';
+import 'package:reddit/screens/search/search_results_main_screen.dart';
 
 import '../cubit/app_cubit/app_cubit.dart';
+import '../screens/bottom_navigation_bar_screens/home_screen.dart';
 
 /// this is a utility function used to mark all the items in the inbox as read
 void markAllAsRead(context) async {
@@ -81,7 +83,8 @@ void markAllAsRead(context) async {
 ///@param [index] is the index of the bottom navigation bar screen
 ///@param [context] is the context of the parent widget
 /// returns the app bar of the screen
-AppBar homeAppBar(context, index) {
+AppBar homeAppBar(context, index,
+    {bool isSearch = false, GlobalKey<ScaffoldState>? scaffoldKey}) {
   ///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
   final AppCubit cubit = AppCubit.get(context);
 
@@ -134,7 +137,7 @@ AppBar homeAppBar(context, index) {
                       if (choice == 'new message') {
                         Navigator.of(context)
                             .push(MaterialPageRoute(builder: (context) {
-                          return CreateMessageScreen();
+                          return const CreateMessageScreen();
                         }));
                       } else if (choice == 'Mark all inbox tabs as read') {
                         /// TODO: mark all notifications as read
@@ -158,27 +161,47 @@ AppBar homeAppBar(context, index) {
 
   ///if it's web then display the following
   else {
+    final TextEditingController searchController = TextEditingController();
     return AppBar(
       actions: [Container()],
       automaticallyImplyLeading: false,
+      leading: IconButton(
+        icon: const Icon(Icons.menu),
+        onPressed: () => cubit.changeLeftDrawer(),
+      ),
       title: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             InkWell(
-              onTap: () => cubit.changeLeftDrawer(),
+              onTap: () => Navigator.pushNamed(
+                context,
+                HomeScreen.routeName,
+              ),
               child: Image.asset(
                 'assets/images/Reddit_Lockup_OnDark.png',
                 scale: 6,
               ),
             ),
             // const HomeDropdownMenu(),
-            Center(
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.5,
-                child: SearchField(
-                  textEditingController: TextEditingController(),
-                ),
+            const Spacer(),
+            Expanded(
+              child: SearchField(
+                onSubmitted: (p0) => isSearch
+                    ? Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              SearchResults(searchWord: searchController.text),
+                        ))
+                    : Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              SearchResults(searchWord: searchController.text),
+                        )),
+                textEditingController: searchController,
               ),
             ),
             const Spacer(),
@@ -205,6 +228,7 @@ AppBar homeAppBar(context, index) {
               splashColor: Colors.transparent,
             ),
             InkWell(
+                // onTap: () => cubit.changeRightDrawer(),
                 onTap: () => cubit.changeRightDrawer(),
                 child: avatar(context: context))
           ],

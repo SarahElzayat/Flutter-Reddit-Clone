@@ -683,4 +683,10 @@ class AppCubit extends Cubit<AppState> {
       return (element is PostWidget) && element.post.id == id;
     });
   }
+
+  void changeHomeSort(HomeSort sort) {
+    CacheHelper.putData(key: 'SortHome', value: sort.index);
+    emit(ChangeHomeSortState());
+    getHomePosts();
+  }
 }

@@ -2,6 +2,7 @@
 /// @date 9/11/2022
 /// this is the screen for the comments results of the main search
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/enums.dart';
@@ -56,14 +57,18 @@ class _ResultsCommentsState extends State<ResultsComments> {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 )
-              // :Placeholder()
-              : ListView.builder(
-                  controller: _scrollController,
-                  itemCount: cubit.comments.length,
-                  itemBuilder: (context, index) => PostWidget(
-                    post: cubit.commentsPosts[index],
-                    comment: cubit.comments[index],
-                    postView: PostView.withCommentsInSearch,
+              : Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal:
+                          kIsWeb ? MediaQuery.of(context).size.width * 0.2 : 0),
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: cubit.comments.length,
+                    itemBuilder: (context, index) => PostWidget(
+                      post: cubit.commentsPosts[index],
+                      comment: cubit.comments[index],
+                      postView: PostView.withCommentsInSearch,
+                    ),
                   ),
                 ),
         );
