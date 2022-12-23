@@ -5,14 +5,20 @@
 /// you can also send a private message.
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/components/home_app_bar.dart';
-import 'package:reddit/components/snack_bar.dart';
-import 'package:reddit/data/messages/messages_model.dart';
-import 'package:reddit/screens/inbox/web/send_private_message_screen.dart';
-import 'package:reddit/widgets/inbox/web/message_template_for_web.dart';
-import 'package:reddit/widgets/inbox/web/header_for_inbox.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/components/home_components/functions.dart';
+import 'package:reddit/components/home_components/left_drawer.dart';
+import 'package:reddit/components/home_components/right_drawer.dart';
+import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 
+import '../../../components/home_app_bar.dart';
+import '../../../components/snack_bar.dart';
+import '../../../data/messages/messages_model.dart';
+import '../../../screens/inbox/web/send_private_message_screen.dart';
+import '../../../widgets/inbox/web/message_template_for_web.dart';
+import '../../../widgets/inbox/web/header_for_inbox.dart';
 import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
 
@@ -200,39 +206,69 @@ class _InboxScreenStateforWeb extends State<InboxScreenforWeb> {
     super.initState();
   }
 
+  ///// Saras work
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  ///opens/closes the end drawer
+  void endDrawer() {
+    changeEndDrawer(_scaffoldKey);
+  }
+
+  ///opens/closes the drawer
+  void drawer() {
+    changeLeftDrawer(_scaffoldKey);
+  }
+
+  ////
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    return Scaffold(
-      appBar: homeAppBar(context, 1),
-      body: SingleChildScrollView(
-        child: SizedBox(
-          height: mediaQuery.size.height,
-          child: Column(
-            children: [
-              // this is always constant for any screen
-              HeaderAppBarForInboxWeb(
-                decideTheTypeHandler: changeTheMsgType,
-                type: msgType,
-                headerType: headerType,
-                decideTheHeaderTypeHandler: changeTheHeaderType,
-              ),
-              // the header which contains [send prvt msg, inbox, sent]
-              SizedBox(
-                height: mediaQuery.size.height * 0.8,
-                child: Scaffold(
-                  body: Container(
-                    height: mediaQuery.size.height * 0.9,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 20),
-                    child: ListView(
-                        children: messages.map((msg) {
-                      return msg;
-                    }).toList()),
-                  ),
+    return BlocListener<AppCubit, AppState>(
+      listener: (context, state) {
+        if (kIsWeb) {
+          if (state is ChangeRightDrawerState) {
+            endDrawer();
+          }
+          if (state is ChangeLeftDrawerState) {
+            drawer();
+          }
+        }
+      },
+      child: Scaffold(
+        key: _scaffoldKey,
+        drawer: const LeftDrawer(),
+        endDrawer: const RightDrawer(),
+        appBar: homeAppBar(context, 1),
+        body: SingleChildScrollView(
+          child: SizedBox(
+            height: mediaQuery.size.height,
+            child: Column(
+              children: [
+                // this is always constant for any screen
+                HeaderAppBarForInboxWeb(
+                  decideTheTypeHandler: changeTheMsgType,
+                  type: msgType,
+                  headerType: headerType,
+                  decideTheHeaderTypeHandler: changeTheHeaderType,
                 ),
-              )
-            ],
+                // the header which contains [send prvt msg, inbox, sent]
+                SizedBox(
+                  height: mediaQuery.size.height * 0.8,
+                  child: Scaffold(
+                    body: Container(
+                      height: mediaQuery.size.height * 0.9,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 20),
+                      child: ListView(
+                          children: messages.map((msg) {
+                        return msg;
+                      }).toList()),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
