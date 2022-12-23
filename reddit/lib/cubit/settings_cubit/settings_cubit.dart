@@ -160,13 +160,13 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
   /// @param [mailText] is the new email
   /// @param [context] the context of the screen to show
   /// the message on success or fail
-  void changeEmailAddress(passText, mailText, context) {
+  void changeEmailAddress(passText, mailText, context) async {
     final update = UpdateEmail(
       currentPassword: passText,
       newEmail: mailText,
     );
 
-    DioHelper.putData(
+    await DioHelper.putData(
       path: changeEmail,
       data: update.toJson(),
     ).then((response) {
@@ -174,13 +174,15 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('Email has been changed!'),
             backgroundColor: ColorManager.green));
+        CacheHelper.putData(key: 'email', value: mailText);
+        Navigator.pop(context);
       }
     }).catchError((error) {
       error = error as DioError;
 
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
-          '${error.response?.data} :(',
+          '$error :(',
           style: const TextStyle(
               color: ColorManager.eggshellWhite,
               fontWeight: FontWeight.bold,

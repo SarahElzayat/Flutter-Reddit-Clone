@@ -62,7 +62,6 @@ class ListTileContainer extends StatelessWidget {
     final fontScale = MediaQuery.of(context).textScaleFactor;
     return Column(
       mainAxisSize: MainAxisSize.min,
-      
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 2.h),
@@ -92,6 +91,7 @@ class ListTileContainer extends StatelessWidget {
                       leadingIcon: Icon(listTileIcons[index]),
                       title: listTileTitles[index],
                       handler: handler[index],
+                      type: types[index],
                       tailingObj: trailingObject[index]),
                 );
               }),

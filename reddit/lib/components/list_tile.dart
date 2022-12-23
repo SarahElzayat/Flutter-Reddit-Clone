@@ -217,8 +217,7 @@ class _ListTileWidgetState extends State<ListTileWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SettingsCubit, SettingsCubitState>(
-      listener: (context, state) {
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return SizedBox(
           child: Material(
@@ -230,7 +229,11 @@ class _ListTileWidgetState extends State<ListTileWidget> {
                   tileColor: ColorManager.darkGrey,
 
                   /// This is the first el
-                  leading: widget.leadingIcon,
+                  leading: IconButton(
+                    icon: widget.leadingIcon,
+                    onPressed: widget.handler,
+                    color: ColorManager.blue,
+                  ),
                   title: Text(
                     widget.title,
                     style: TextStyle(
