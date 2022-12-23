@@ -29,6 +29,8 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   any_link_preview: ^2.0.9
+  image_picker_web: ^3.0.0+1
+  video_player_web: null
   bloc: ^8.1.0
   conditional_builder_null_safety: ^0.0.6
   cupertino_icons: ^1.0.2

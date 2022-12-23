@@ -2,6 +2,7 @@
 /// @date 1/11/2022
 /// this file containes all our routes in order to avoid destraction in the main file.
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/add_post/add_post_web.dart';
 import 'package:reddit/screens/inbox/single_message_screen.dart';
 import 'package:reddit/screens/inbox/single_notification_screen.dart';
 import 'package:reddit/screens/add_post/add_post.dart';
@@ -10,6 +11,7 @@ import 'package:reddit/screens/add_post/post_rules.dart';
 import 'package:reddit/screens/saved/saved_screen.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/continue_sign_up_for_mobile.dart';
 import 'package:reddit/screens/subreddit/subreddit_screen.dart';
+import 'package:reddit/widgets/user_profile/user_profile_web.dart';
 
 import '../../screens/bottom_navigation_bar_screens/add_post_screen.dart';
 import '../../screens/bottom_navigation_bar_screens/explore_screen.dart';
@@ -99,4 +101,6 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   PostRules.routeName: (ctx) => const PostRules(),
   UserProfileScreen.routeName: (ctx) => const UserProfileScreen(),
   UserProfileEditScreen.routeName: (ctx) => UserProfileEditScreen(),
+  AddPostWebScreen.routeName: (ctx) => AddPostWebScreen(),
+  UserProfileWeb.routeName: (ctx) => UserProfileWeb(),
 };

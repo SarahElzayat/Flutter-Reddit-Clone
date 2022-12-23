@@ -1,11 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meta/meta.dart';
+import 'package:reddit/widgets/user_profile/user_profile_web.dart';
 import '../../../components/button.dart';
 import '../../../components/helpers/color_manager.dart';
 import '../../../components/snack_bar.dart';
@@ -49,8 +51,13 @@ class UserProfileCubit extends Cubit<UserProfileState> {
         if (userData!.displayName == null || userData!.displayName == '') {
           userData!.displayName = username;
         }
-        if (navigate)
-          navigatorKey.currentState!.pushNamed(UserProfileScreen.routeName);
+        if (navigate) {
+          if (kIsWeb) {
+            navigatorKey.currentState!.pushNamed(UserProfileWeb.routeName);
+          } else {
+            navigatorKey.currentState!.pushNamed(UserProfileScreen.routeName);
+          }
+        }
         // return true;
       }
     }).catchError((error) {
@@ -195,8 +202,13 @@ class UserProfileCubit extends Cubit<UserProfileState> {
               ),
               TextButton(
                   onPressed: () {
-                    navigatorKey.currentState!
-                        .pushNamed(UserProfileScreen.routeName);
+                    if (kIsWeb) {
+                      navigatorKey.currentState!
+                          .pushNamed(UserProfileWeb.routeName);
+                    } else {
+                      navigatorKey.currentState!
+                          .pushNamed(UserProfileScreen.routeName);
+                    }
                   },
                   child: Row(
                     children: const [

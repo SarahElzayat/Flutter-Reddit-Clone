@@ -2,6 +2,8 @@
 /// @author Haitham Mohamed
 /// @date 4/11/2022
 
+import 'package:flutter/foundation.dart';
+
 import '../../screens/add_post/image_screen.dart';
 import '../../components/button.dart';
 import '../../components/helpers/color_manager.dart';
@@ -39,7 +41,7 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
         color: ColorManager.darkGrey,
         child: BlocConsumer<AddPostCubit, AddPostState>(
           listener: (context, state) {
-            if (state is EditVideo) {
+            if (state is EditVideo && !kIsWeb) {
               Navigator.of(context).pushNamed(TrimmerView.routeName);
             } else if (state is PreviewImage) {
               navigator.pushNamed(ImageScreen.routeName);
@@ -59,7 +61,7 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
           }),
           builder: (context, state) {
             return Container(
-              child: widget.keyboardIsOpened
+              child: (widget.keyboardIsOpened || kIsWeb)
                   ? Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
@@ -73,14 +75,29 @@ class _PostTypeButtonsState extends State<PostTypeButtons> {
                               child: Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 15),
-                                child: Icon(
-                                  (index == addPostCubit.postType)
-                                      ? selectedIcons[index]
-                                      : icons[index],
-                                  size: 32 * mediaQuery.textScaleFactor,
-                                  color: (index == addPostCubit.postType)
-                                      ? Colors.blue
-                                      : Colors.white,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      (index == addPostCubit.postType)
+                                          ? selectedIcons[index]
+                                          : icons[index],
+                                      size: 32 * mediaQuery.textScaleFactor,
+                                      color: (index == addPostCubit.postType)
+                                          ? Colors.blue
+                                          : Colors.white,
+                                    ),
+                                    Text(
+                                      labels[index],
+                                      style: TextStyle(
+                                          fontWeight:
+                                              (index == addPostCubit.postType)
+                                                  ? FontWeight.w700
+                                                  : FontWeight.w200,
+                                          fontSize:
+                                              20 * mediaQuery.textScaleFactor),
+                                    ),
+                                  ],
                                 ),
                               ),
                             )

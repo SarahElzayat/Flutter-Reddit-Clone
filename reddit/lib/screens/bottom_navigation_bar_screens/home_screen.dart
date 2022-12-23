@@ -16,8 +16,10 @@ import 'package:reddit/components/home_components/right_drawer.dart';
 import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
+
 import 'package:reddit/screens/add_post/add_post.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
 import '../../components/home_app_bar.dart';
 import '../create_community_screen/create_community_screen.dart';
 
@@ -226,6 +228,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
                 if (kIsWeb)
+
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Container(
@@ -275,6 +278,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           ],
+
                         ),
                       ),
                     ),
