@@ -8,11 +8,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/components/home_components/functions.dart';
-import 'package:reddit/components/home_components/left_drawer.dart';
-import 'package:reddit/components/home_components/right_drawer.dart';
-import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 
+import '../../../components/home_components/functions.dart';
+import '../../../components/home_components/left_drawer.dart';
+import '../../../components/home_components/right_drawer.dart';
+import '../../../cubit/app_cubit/app_cubit.dart';
 import '../../../components/home_app_bar.dart';
 import '../../../components/snack_bar.dart';
 import '../../../data/messages/messages_model.dart';
@@ -48,6 +48,7 @@ class _InboxScreenStateforWeb extends State<InboxScreenforWeb> {
               messageChildren: msg,
             ));
           }
+          setState(() {});
         }
       },
     ).catchError((err) {
@@ -74,6 +75,7 @@ class _InboxScreenStateforWeb extends State<InboxScreenforWeb> {
                   0), // because we are going to add a new message.
               messageChildren: msg,
             ));
+            setState(() {});
           }
         }
       },
@@ -102,6 +104,7 @@ class _InboxScreenStateforWeb extends State<InboxScreenforWeb> {
               messageChildren: msg,
             ));
           }
+          setState(() {});
         }
       },
     ).catchError((err) {
@@ -129,6 +132,7 @@ class _InboxScreenStateforWeb extends State<InboxScreenforWeb> {
               messageChildren: msg,
             ));
           }
+          setState(() {});
         }
       },
     ).catchError((err) {
@@ -146,12 +150,9 @@ class _InboxScreenStateforWeb extends State<InboxScreenforWeb> {
 
   /// change the header type to be able to show the appropriate header.
   void changeTheHeaderType(String type) {
-    print(type);
-
     setState(() {
       headerType = type;
     });
-    print(type);
     if (type == 'Inbox') {
       setState(() {
         headerType = 'Inbox';
@@ -193,6 +194,8 @@ class _InboxScreenStateforWeb extends State<InboxScreenforWeb> {
 
   @override
   void initState() {
+    print(msgType);
+
     if (msgType == 'all') {
       fetchAll();
     } else if (msgType == 'unread') {
