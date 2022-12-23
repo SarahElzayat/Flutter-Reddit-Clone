@@ -1,18 +1,16 @@
-import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:meta/meta.dart';
+import 'package:reddit/components/helpers/mocks/mock_functions.dart';
 import 'package:reddit/widgets/user_profile/user_profile_web.dart';
 import '../../../components/button.dart';
 import '../../../components/helpers/color_manager.dart';
 import '../../../components/snack_bar.dart';
 import '../../../data/comment/comment_model.dart';
-import '../../../data/settings/settings_models/user_settings.dart';
 import '../../../data/user_profile/about_user_model.dart';
 import '../../../networks/dio_helper.dart';
 import '../../../screens/user_profile/user_profile_screen.dart';
@@ -20,25 +18,32 @@ import '../../../screens/user_profile/user_profile_screen.dart';
 import '../../../constants/constants.dart';
 import '../../../data/post_model/post_model.dart';
 import '../../../networks/constant_end_points.dart';
-import '../../../screens/moderation/user_management_screens/invite_moderator.dart';
-import '../../../screens/moderation/user_management_screens/moderators.dart';
 import '../../../shared/local/shared_preferences.dart';
-
-import 'package:http_parser/src/media_type.dart';
-
 part 'user_profile_state.dart';
 
 class UserProfileCubit extends Cubit<UserProfileState> {
   UserProfileCubit() : super(UserProfileInitial());
   static UserProfileCubit get(context) => BlocProvider.of(context);
+
+  /// User Information
   AboutUserModel? userData;
+
+  /// User Name
   String? username;
 
+  /// Banner Image File
   XFile? img;
 
+  /// Controller of the scrolling widget for Posts
   late PagingController<String?, PostModel> postController;
+
+  /// Controller of the scrolling widget for Comments
   late PagingController<String?, Map<String, dynamic>> commentController;
 
+
+  /// Fetch User Data Before Go to his Profile
+  /// [userName] User Name
+  /// [navigate] Navigato to your Profile or Not
   Future<void> fetchUserData(String userName, {bool navigate = true}) async {
     await DioHelper.getData(
         path: '/user/$userName/about',
@@ -46,8 +51,6 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       if (value.statusCode == 200) {
         username = userName;
         userData = AboutUserModel.fromJson(value.data);
-        print('All Done');
-        print(userData!.displayName);
         if (userData!.displayName == null || userData!.displayName == '') {
           userData!.displayName = username;
         }
@@ -61,34 +64,25 @@ class UserProfileCubit extends Cubit<UserProfileState> {
         // return true;
       }
     }).catchError((error) {
-      print('Error in fetch user data ==> $error');
     });
   }
 
   void setUsername(String usernamePass, {bool navigate = true}) {
-    print('User Name : $usernamePass');
-    print(token);
     fetchUserData(usernamePass);
   }
 
+  /// Fetch Posts Of The User
+  /// [after] Get the Next Posts
   void fetchPosts({String? after}) {
     final query = {'after': after, 'username': username};
-    print('URL : /user/$username/posts');
-    print(query);
-    print(token);
     DioHelper.getData(path: '/user/$username/posts', query: query)
         .then((value) {
       if (value.statusCode == 200) {
         List<PostModel> fetchedPosts = [];
         for (int i = 0; i < value.data['children'].length; i++) {
-          // logger.wtf(i);
           final post = (PostModel.fromJsonwithData(value.data['children'][i]));
           fetchedPosts.add(post);
-          print(i);
-          print(post.title);
-          print(post.id);
         }
-        print(value.data['after'] as String);
         if (value.data['after'] as String == '') {
           postController.appendLastPage(fetchedPosts);
         } else {
@@ -97,50 +91,34 @@ class UserProfileCubit extends Cubit<UserProfileState> {
         }
       }
     }).catchError((error) {
-      print('Error In Fetch Posts ==> $error');
     });
   }
 
+  /// Fetch Comments Of The User
+  /// [after] Get the Next Comments
   void fetchComments({String? after}) {
     final query = {'after': after, 'username': username};
-    print('URL : /user/$username/comments');
-    print(query);
     DioHelper.getData(path: '/user/$username/comments', query: query)
         .then((value) {
       if (value.statusCode == 200) {
         List<Map<String, dynamic>> fetchedPosts = [];
         for (int i = 0; i < value.data['children'].length; i++) {
-          // logger.wtf(i);
           final post =
               (PostModel.fromJson(value.data['children'][i]['data']['post']));
-          // post.id = value.data['children'][i]['id'];
           post.id = value.data['children'][i]['id'];
-          print(post.id);
           for (int j = 0;
               j < value.data['children'][i]['data']['comments'].length;
               j++) {
             final comment = (CommentModel.fromJson(
                 value.data['children'][i]['data']['comments'][j]));
 
-            print('Post ID : ${post.id}');
-            print('Comment ID : ${comment.id}');
             var item = {
               'post': post,
               'comment': comment,
             };
             fetchedPosts.add(item);
           }
-
-          // // fetchedPosts.add(post);
-          // var data = {
-          //   'post': post,
-          //   'comment': comment,
-          // };
-          // fetchedPosts.add(data);
-          // print(i);
-          // print(post.title);
         }
-        print(value.data['after'] as String);
         if (value.data['after'] as String == '') {
           commentController.appendLastPage(fetchedPosts);
         } else {
@@ -149,25 +127,35 @@ class UserProfileCubit extends Cubit<UserProfileState> {
         }
       }
     }).catchError((error) {
-      print('Error In Fetch comments ==> $error');
     });
   }
 
-  followOrUnfollowUser(bool follow) {
-    print('Follow $follow');
-    DioHelper.postData(
-        path: followUser,
-        data: {'username': username, 'follow': follow}).then((value) {
-      if (value.statusCode == 200) {
-        print('Success');
-        userData!.followed = !(userData!.followed!);
-        emit(FollowOrUnfollowState());
-      }
-    }).catchError((error) {
-      print(error);
-    });
+  /// Follow OR Unfollow User
+  /// [follow] is follow or unfollow
+  /// [isTesting] for testing only
+  Future followOrUnfollowUser(bool follow, {bool isTesting = false}) {
+    if (isTesting) {
+      return mockDio.post('/follow-user',
+          data: {'username': username, 'follow': follow}).then((value) {
+        if (value.statusCode == 200) {
+          userData!.followed = !(userData!.followed!);
+          emit(FollowOrUnfollowState());
+        }
+      }).catchError((error) {});
+    } else {
+      return DioHelper.postData(
+          path: followUser,
+          data: {'username': username, 'follow': follow}).then((value) {
+        if (value.statusCode == 200) {
+          userData!.followed = !(userData!.followed!);
+          emit(FollowOrUnfollowState());
+        }
+      }).catchError((error) {
+      });
+    }
   }
 
+  /// The popup widget that show when press on the name of the user
   showPopupUserWidget(BuildContext context, String userName) async {
     await fetchUserData(userName, navigate: false);
     showDialog(
@@ -227,22 +215,12 @@ class UserProfileCubit extends Cubit<UserProfileState> {
                         Text('  Block Account')
                       ],
                     )),
-              // TextButton(
-              //     onPressed: () {
-              //       Navigator.of(context).push(MaterialPageRoute(
-              //           builder: ((context) => const Moderators())));
-              //     },
-              //     child: Row(
-              //       children: const [
-              //         Icon(Icons.mail_outline_outlined),
-              //         Text('  Invite to Community')
-              //       ],
-              //     )),
             ]),
           );
         }));
   }
 
+  /// Block The user
   void blockUser(BuildContext context) {
     showDialog(
         context: context,
@@ -277,7 +255,6 @@ class UserProfileCubit extends Cubit<UserProfileState> {
                               'username': username,
                             },
                           ).then((value) {
-                            print('Blocked');
                             Navigator.of(context).pop();
                             ScaffoldMessenger.of(context).showSnackBar(
                                 responseSnackBar(
@@ -314,8 +291,12 @@ class UserProfileCubit extends Cubit<UserProfileState> {
             )));
   }
 
-  void changeUserProfileInfo(
-      BuildContext context, String displayName, String aboutYou, XFile? img) {
+  /// Change User Profile Information
+  /// [displayName] The name That Display in the profile
+  /// [aboutYou] About of user
+  /// [img] Banner File Image
+  Future? changeUserProfileInfo(
+      BuildContext? context, String displayName, String aboutYou, XFile? img, {bool isTesting = false}) {
     Map<String, String> data = {};
     if (userData!.displayName != displayName) {
       data['displayName'] = displayName;
@@ -324,10 +305,23 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       data['about'] = aboutYou;
     }
     if (img != null) {
-      changeProfileBanner(context, img);
+      changeProfileBanner(context!, img);
     }
+    
     if (data.isNotEmpty) {
-      DioHelper.patchData(
+      if(isTesting){
+        return mockDio.patch('/account-settings',data: data
+
+        ).then((value) {if (value.statusCode == 200) {
+          userData!.displayName = displayName;
+          userData!.about = aboutYou;
+          emit(ChangeUserProfileInfo());
+          
+        }}).catchError((error) {
+      });
+      }
+      else{
+        return DioHelper.patchData(
               path: accountSettings,
               data: data,
               token: CacheHelper.getData(key: 'token'))
@@ -344,12 +338,15 @@ class UserProfileCubit extends Cubit<UserProfileState> {
             responseSnackBar(
                 message: 'An Error, Please Try Again', error: true));
       });
+      }
+      
     }
-    Navigator.of(context).pop();
+    Navigator.of(context!).pop();
   }
 
+  /// Add Social Link To your Profile
+  /// [url] URL of the link
   void addSocialLink(BuildContext context, String text, String url) {
-    print({'type': 'custom', 'displayText': text, 'link': url});
 
     DioHelper.postData(
             path: socialLink,
@@ -358,22 +355,22 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       if (value.statusCode == 201) {
         userData!.socialLinks!
             .add(SocialLink(displayText: text, link: url, type: 'custom'));
-        print('Sccess');
         emit(ChangeUserProfileSocialLinks());
         ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
             responseSnackBar(message: 'Add Link Successfully', error: false));
       }
     }).catchError((onError) {
-      print('error');
 
       ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
           responseSnackBar(message: 'An Error, Please Try Again', error: true));
     });
   }
 
+  /// Delete Social Link from your Profile
+  /// [url] URL of the link
+  /// [index] index of the link in list
   void deleteSocialLink(
       BuildContext context, String text, String url, int index) {
-    print({'type': 'custom', 'displayText': text, 'link': url});
     DioHelper.deleteData(path: socialLink, data: {
       'type': 'custom',
       'displayText': text,
@@ -381,25 +378,23 @@ class UserProfileCubit extends Cubit<UserProfileState> {
     }).then((value) {
       if (value.statusCode == 204) {
         userData!.socialLinks!.removeAt(index);
-        print('Sccess');
         emit(ChangeUserProfileSocialLinks());
         ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
             responseSnackBar(
                 message: 'Link Deleted Successfully', error: false));
       }
     }).catchError((onError) {
-      print('error');
 
       ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
           responseSnackBar(message: 'An Error, Please Try Again', error: true));
     });
   }
-
+  /// Change Banner of the Profile
+  /// [image] Banner File Image
   Future<void> changeProfileBanner(BuildContext context, XFile? image) async {
     MultipartFile file = await MultipartFile.fromFile(image!.path,
         filename: image.path.split('/').last,
         contentType: MediaType('image', 'png'));
-    print('Change Profile Picture');
     DioHelper.postData(
       isFormdata: true,
       path: userProfileBanner,
@@ -407,7 +402,6 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       sentToken: token,
     ).then((value) {
       if (value.statusCode == 200) {
-        print('success Profile Picture');
         emit(ChangeUserProfileBanner());
 
         ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
@@ -424,6 +418,7 @@ class UserProfileCubit extends Cubit<UserProfileState> {
     );
   }
 
+  /// Delete the Banner
   void deleteBannerImage() {
     DioHelper.deleteData(path: userProfileBanner).then((value) {
       if (value.statusCode == 204) {

@@ -3,6 +3,7 @@ import '../../components/helpers/color_manager.dart';
 
 import '../../components/button.dart';
 
+/// Subreddit Screen For Web
 class SubredditWeb extends StatefulWidget {
   const SubredditWeb({Key? key}) : super(key: key);
 

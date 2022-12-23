@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import '../../components/button.dart';
+import '../../components/helpers/color_manager.dart';
 import 'package:reddit/screens/history/history_downvoted_web.dart';
 import 'package:reddit/screens/history/history_hidden_web.dart';
 import 'package:reddit/screens/history/history_recent_web.dart';
 import 'package:reddit/screens/history/history_upvoted_web.dart';
 import 'package:reddit/screens/saved/saved_comments.dart';
 import 'package:reddit/screens/saved/saved_posts.dart';
-
-import '../../components/button.dart';
-import '../../components/helpers/color_manager.dart';
 import '../../components/home_app_bar.dart';
 import '../../components/home_components/functions.dart';
 import '../../components/home_components/left_drawer.dart';
@@ -22,6 +21,8 @@ import '../../shared/local/shared_preferences.dart';
 import 'user_profile_comments.dart';
 import 'user_profile_posts.dart';
 
+
+/// User Profile Screen For Web
 class UserProfileWeb extends StatefulWidget {
   const UserProfileWeb({Key? key}) : super(key: key);
 

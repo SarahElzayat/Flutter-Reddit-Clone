@@ -4,6 +4,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:reddit/cubit/add_post/cubit/add_post_cubit.dart';
 import 'package:reddit/screens/add_post/community_search.dart';
 
@@ -55,6 +56,7 @@ class CreatePostButton extends StatelessWidget {
                       addPostCubit.nsfw = false;
                       addPostCubit.spoiler = false;
                       addPostCubit.isSubreddit = true;
+                      addPostCubit.quillController.document = Document();
                     } else {
                       if (addPostCubit.subredditName != null &&
                               addPostCubit.subredditName != '' ||

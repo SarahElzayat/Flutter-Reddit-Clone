@@ -1,14 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import '../../components/bottom_sheet.dart';
-import '../../components/helpers/enums.dart';
-import '../../constants/constants.dart';
-import '../../cubit/subreddit/cubit/subreddit_cubit.dart';
 import '../../cubit/user_profile/cubit/user_profile_cubit.dart';
 import '../../data/post_model/post_model.dart';
 import '../posts/post_widget.dart';
 
+
+/// Get User Posts
 class UserProfilePosts extends StatefulWidget {
   UserProfilePosts({Key? key}) : super(key: key);
 
