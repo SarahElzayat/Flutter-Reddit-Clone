@@ -3,8 +3,8 @@
 /// This widget is used to display a single message in the inbox screen.
 
 import 'package:flutter/material.dart';
-import 'package:reddit/data/messages/messages_model.dart';
-import 'package:reddit/screens/inbox/single_message_screen.dart';
+import '../../data/messages/messages_model.dart';
+import '../../screens/inbox/single_message_screen.dart';
 import '../../components/bottom_sheet.dart';
 import '../../components/helpers/color_manager.dart';
 
