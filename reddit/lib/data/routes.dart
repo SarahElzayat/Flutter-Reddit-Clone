@@ -2,6 +2,7 @@
 /// @date 1/11/2022
 /// this file containes all our routes in order to avoid destraction in the main file.
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/add_post/add_post_web.dart';
 import 'package:reddit/screens/inbox/single_message_screen.dart';
 import 'package:reddit/screens/inbox/single_notification_screen.dart';
 import 'package:reddit/screens/add_post/add_post.dart';
@@ -99,4 +100,5 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   PostRules.routeName: (ctx) => const PostRules(),
   UserProfileScreen.routeName: (ctx) => const UserProfileScreen(),
   UserProfileEditScreen.routeName: (ctx) => UserProfileEditScreen(),
+  AddPostWebScreen.routeName: (ctx) => AddPostWebScreen(),
 };

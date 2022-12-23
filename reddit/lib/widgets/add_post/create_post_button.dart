@@ -1,6 +1,7 @@
 /// Model Button
 /// @author Haitham Mohamed
 /// @date 4/11/2022
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/cubit/add_post/cubit/add_post_cubit.dart';
@@ -33,7 +34,7 @@ class CreatePostButton extends StatelessWidget {
       builder: (context, state) {
         if (state is CanCreatePost) isDisabled = !(state.canPost);
         return Button(
-            text: 'Next',
+            text: (kIsWeb) ? 'Post' : 'Next',
             borderRadius: 30,
             splashColor: Colors.transparent,
             textColor:

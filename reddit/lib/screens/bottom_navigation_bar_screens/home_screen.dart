@@ -13,6 +13,7 @@ import 'package:reddit/components/home_components/right_drawer.dart';
 import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
+import 'package:reddit/widgets/add_post/create_post_widget_web.dart';
 import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_state.dart';
 import '../../components/home_app_bar.dart';
 
@@ -166,6 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     width: 300,
                     child: Column(
                       children: [
+                        CreatePostWidgetWeb(),
                         Container(
                           color: Colors.red,
                           height: 200,
