@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meta/meta.dart';
+import 'package:reddit/components/helpers/mocks/mock_functions.dart';
 import 'package:reddit/widgets/user_profile/user_profile_web.dart';
 import '../../../components/button.dart';
 import '../../../components/helpers/color_manager.dart';
@@ -153,19 +154,28 @@ class UserProfileCubit extends Cubit<UserProfileState> {
     });
   }
 
-  followOrUnfollowUser(bool follow) {
-    print('Follow $follow');
-    DioHelper.postData(
-        path: followUser,
-        data: {'username': username, 'follow': follow}).then((value) {
-      if (value.statusCode == 200) {
-        print('Success');
-        userData!.followed = !(userData!.followed!);
-        emit(FollowOrUnfollowState());
-      }
-    }).catchError((error) {
-      print(error);
-    });
+  Future followOrUnfollowUser(bool follow, {bool isTesting = false}) {
+    if (isTesting) {
+      return mockDio.post('/follow-user',
+          data: {'username': username, 'follow': follow}).then((value) {
+        if (value.statusCode == 200) {
+          userData!.followed = !(userData!.followed!);
+          emit(FollowOrUnfollowState());
+        }
+      }).catchError((error) {});
+    } else {
+      return DioHelper.postData(
+          path: followUser,
+          data: {'username': username, 'follow': follow}).then((value) {
+        if (value.statusCode == 200) {
+          print('Success');
+          userData!.followed = !(userData!.followed!);
+          emit(FollowOrUnfollowState());
+        }
+      }).catchError((error) {
+        print(error);
+      });
+    }
   }
 
   showPopupUserWidget(BuildContext context, String userName) async {
