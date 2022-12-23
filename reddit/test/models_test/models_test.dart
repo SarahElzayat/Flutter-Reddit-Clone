@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reddit/data/home/drawer_communities_model.dart';
 import 'package:reddit/data/post_model/approve.dart';
+import 'package:reddit/data/post_model/flair.dart';
 import 'package:reddit/data/saved/saved_comments_model.dart';
 import 'package:reddit/data/search/search_result_profile_model.dart';
 import 'package:reddit/data/search/search_result_subbredit_model.dart';
@@ -153,5 +154,30 @@ void main() {
 
       expect(m, data);
     });
+    test('flair model test', () {
+      final data = {
+        'id': '13245',
+        'flairName': 'redFlair',
+        'order': 2,
+        'backgroundColor': 'blue',
+        'textColor': 'red'
+      };
+
+      final Flair model = Flair.fromJson(data);
+
+      expect(model.id, '13245');
+      expect(model.flairName, 'redFlair');
+      expect(model.order, 2);
+      expect(model.backgroundColor, 'blue');
+      expect(model.textColor, 'red');
+
+      Map<String, dynamic> m = model.toJson();
+
+      expect(m, data);
+    });
+
+
+
+    
   });
 }
