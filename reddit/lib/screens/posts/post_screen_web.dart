@@ -1,7 +1,6 @@
-/// @author Sarah El-Zayat
+/// @author Ahmed Atta
 /// @date 9/11/2022
-/// this is the screen fpr the main home
-///
+
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

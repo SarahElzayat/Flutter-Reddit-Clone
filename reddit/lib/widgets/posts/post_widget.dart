@@ -291,13 +291,14 @@ class _PostWidgetState extends State<PostWidget> {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            'r/${widget.post.subreddit}',
-            style: TextStyle(
-              color: ColorManager.lightGrey,
-              fontSize: 15.sp,
+          if (widget.post.subreddit?.isNotEmpty ?? false)
+            Text(
+              'r/${widget.post.subreddit}',
+              style: TextStyle(
+                color: ColorManager.lightGrey,
+                fontSize: 15.sp,
+              ),
             ),
-          ),
           Text(
             '• ${timeago.format(DateTime.tryParse(widget.post.postedAt ?? '') ?? DateTime.now(), locale: 'en_short')}',
             style: TextStyle(

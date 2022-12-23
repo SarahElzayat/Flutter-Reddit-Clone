@@ -310,9 +310,7 @@ class _CommentWebState extends State<CommentWeb> {
     return Row(
       children: [
         BlocConsumer<PostAndCommentActionsCubit, PostActionsState>(
-          listener: (context, state) {
-            // TODO: implement listener
-          },
+          listener: (context, state) {},
           builder: (context, state) {
             return subredditAvatar(
                 small: true,
