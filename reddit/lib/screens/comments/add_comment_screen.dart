@@ -1,3 +1,7 @@
+/// this file is the screen of Add Comment.
+/// date: 20/12/2022
+/// @Author: Ahmed Atta
+
 import 'dart:async';
 import 'dart:io';
 
@@ -21,8 +25,15 @@ import '../../data/post_model/post_model.dart';
 
 var logger = Logger();
 
+/// the screen of adding a comment
+/// it is used to add a comment to a post or a comment
+/// if the parent comment is null, the comment will be added to the post
+/// otherwise, the comment will be added to the parent comment
 class AddCommentScreen extends StatefulWidget {
+  /// the route name of the screen
   static const routeName = 'add-comment';
+
+  /// the constructor of the screen
   const AddCommentScreen({super.key, required this.post, this.parentComment});
 
   /// the post to which the comment will be added
@@ -37,7 +48,11 @@ class AddCommentScreen extends StatefulWidget {
 }
 
 class _AddCommentScreenState extends State<AddCommentScreen> {
+  /// the controller of the quill editor
+  /// it is used to get the content of the comment
+  /// and to add the content to the editor
   QuillController? _controller;
+
   @override
   void initState() {
     _controller = QuillController.basic();

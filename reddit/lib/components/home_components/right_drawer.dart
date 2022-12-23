@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/app_bar_components.dart';
-import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/screens/history/history_screen_for_web.dart';
+import 'package:reddit/widgets/user_profile/user_profile_web.dart';
 import '../../screens/create_community_screen/create_community_screen.dart';
 import '../../screens/saved/saved_screen.dart';
 import '../../screens/settings/change_profile_picture_screen.dart';
@@ -19,35 +19,38 @@ import '../../screens/to_be_done_screen.dart';
 import '../helpers/color_manager.dart';
 import 'components.dart';
 
+///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
+
 class RightDrawer extends StatelessWidget {
   const RightDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    ///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
     final AppCubit cubit = AppCubit.get(context);
 
     ///@param [rightDrawerItems] the list of right drawer items
     List<Widget> rightDrawerItems = [
-      genericTextButton(
-          context, Icons.person, 'My profile', const UserProfileScreen(),
+      genericTextButton(context, Icons.person, 'My profile',
+          kIsWeb ? UserProfileWeb() : const UserProfileScreen(),
           isLeftDrawer: false),
       genericTextButton(context, Icons.add, 'Create a community',
           const CreateCommunityScreen(),
           isLeftDrawer: false),
-      genericTextButton(
-          context, Icons.bookmark_border_rounded, 'Saved', const SavedScreen(),
-          isLeftDrawer: false),
-      genericTextButton(
-          context,
-          Icons.history_toggle_off_rounded,
-          'History',
-          kIsWeb
-              ? const HistoryScreenForWeb()
-              : HistoryScreen(
-                  bottomNavBarScreenIndex: cubit.currentIndex,
-                ),
-          isLeftDrawer: false),
+      if (!kIsWeb)
+        genericTextButton(context, Icons.bookmark_border_rounded, 'Saved',
+            const SavedScreen(),
+            isLeftDrawer: false),
+      if (!kIsWeb)
+        genericTextButton(
+            context,
+            Icons.history_toggle_off_rounded,
+            'History',
+            kIsWeb
+                ? const HistoryScreenForWeb()
+                : HistoryScreen(
+                    bottomNavBarScreenIndex: cubit.currentIndex,
+                  ),
+            isLeftDrawer: false),
       genericTextButton(context, Icons.pending_outlined, 'Pending Posts',
           const ToBeDoneScreen(text: 'Pending posts'),
           isLeftDrawer: false),

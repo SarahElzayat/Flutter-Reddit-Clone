@@ -2,6 +2,7 @@
 /// @author Haitham Mohamed
 /// @date 8/11/2022
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../components/helpers/color_manager.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,12 +28,12 @@ class VideoPost extends StatelessWidget {
         child: MaterialButton(
           onPressed: () => addPostCubit.pickVideo(true),
           child: SizedBox(
-            height: mediaQuery.size.height * 0.2,
-            width: mediaQuery.size.width * 0.38,
+            height: (kIsWeb) ? 100 : mediaQuery.size.height * 0.2,
+            width: (kIsWeb) ? 90 : mediaQuery.size.width * 0.38,
             child: Icon(
               Icons.add_outlined,
               color: ColorManager.blue,
-              size: mediaQuery.size.width * 0.1,
+              size: (kIsWeb) ? 30 : mediaQuery.size.width * 0.1,
             ),
           ),
         ),
@@ -61,8 +62,8 @@ class VideoPost extends StatelessWidget {
           width: width * 0.4,
           height: height * 0.23,
           color: Colors.transparent,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Stack(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Align(
                 alignment: Alignment.topRight,
@@ -88,7 +89,7 @@ class VideoPost extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Align(
-                    alignment: Alignment.topRight,
+                    alignment: Alignment.center,
                     child: Container(
                       margin: const EdgeInsets.all(7),
                       padding: const EdgeInsets.all(2),
@@ -109,26 +110,27 @@ class VideoPost extends StatelessWidget {
                   ),
                 ],
               ),
-              Align(
-                alignment: Alignment.topRight,
-                child: Container(
-                  margin: const EdgeInsets.all(7),
-                  padding: const EdgeInsets.all(2),
-                  decoration: const BoxDecoration(
-                      color: Color.fromARGB(100, 0, 0, 0),
-                      borderRadius: BorderRadius.all(Radius.circular(50))),
-                  child: InkWell(
-                    child: const Icon(
-                      Icons.edit,
-                      color: Colors.white,
-                      size: 25,
+              if (!kIsWeb)
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Container(
+                    margin: const EdgeInsets.all(7),
+                    padding: const EdgeInsets.all(2),
+                    decoration: const BoxDecoration(
+                        color: Color.fromARGB(100, 0, 0, 0),
+                        borderRadius: BorderRadius.all(Radius.circular(50))),
+                    child: InkWell(
+                      child: const Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                        size: 25,
+                      ),
+                      onTap: () {
+                        addPostCubit.pickVideo(false);
+                      },
                     ),
-                    onTap: () {
-                      addPostCubit.pickVideo(false);
-                    },
                   ),
                 ),
-              ),
             ],
           ),
         ),

@@ -1,12 +1,14 @@
 /// @author Sarah El-Zayat
 /// @date 9/11/2022
 /// Theme of the whole application
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 
 ThemeData appTheme() {
   return ThemeData(
-    scaffoldBackgroundColor: ColorManager.black,
+    scaffoldBackgroundColor:
+        kIsWeb ? ColorManager.betterDarkGrey : ColorManager.black,
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       elevation: 0,
       backgroundColor: ColorManager.black,
