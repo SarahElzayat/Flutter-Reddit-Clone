@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/screens/settings/web/account_settings_screen_for_web.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
 import 'components/helpers/enums.dart';
 import 'cubit/user_profile/cubit/user_profile_cubit.dart';

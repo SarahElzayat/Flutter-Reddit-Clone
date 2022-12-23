@@ -2,7 +2,13 @@
 /// @date 22/12/2022
 /// This  file contains the user settings screen in the web version.
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/components/home_components/functions.dart';
+import 'package:reddit/components/home_components/left_drawer.dart';
+import 'package:reddit/components/home_components/right_drawer.dart';
+import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 import '../../../components/default_text_field.dart';
 import '../../../components/helpers/color_manager.dart';
 import '../../../components/home_app_bar.dart';
@@ -73,6 +79,24 @@ class _UserSettingsState extends State<UserSettings> {
           confirmPasswordController.text, passwordController.text, context);
     }
   }
+
+  /// adding the drawers
+  ///// Saras work
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  ///opens/closes the end drawer
+  void endDrawer() {
+    changeEndDrawer(_scaffoldKey);
+  }
+
+  ///opens/closes the drawer
+  void drawer() {
+    changeLeftDrawer(_scaffoldKey);
+  }
+
+  ////
+
+  ///
 
   /// This function is responsible for changing the user email.
   void _changeEmail() {
@@ -330,272 +354,289 @@ class _UserSettingsState extends State<UserSettings> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final theme = Theme.of(context);
-    return Scaffold(
-        appBar: homeAppBar(context, 1),
-        body: mediaQuery.size.height < 400 || mediaQuery.size.width < 580
-            ? const Scaffold(
-                body: Center(child: Text('increase the window size please!')),
-              )
-            : SingleChildScrollView(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  width: mediaQuery.size.width > 800
-                      ? mediaQuery.size.width * 0.6
-                      : double.infinity,
-                  height: mediaQuery.size.height,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('User Settings',
-                              style: theme.textTheme.titleLarge),
-                          const Divider(),
-                          SizedBox(
-                            height: 20,
-                            width: 800,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: [
-                                TextButton(
-                                  child: const Text('Account',
-                                      style:
-                                          TextStyle(color: ColorManager.blue)),
-                                  onPressed: () {},
-                                ),
-                                TextButton(
-                                  child: const Text('Profile',
-                                      style:
-                                          TextStyle(color: ColorManager.blue)),
-                                  onPressed: () {},
-                                ),
-                                TextButton(
-                                  child: const Text('Safety & Privacy',
-                                      style:
-                                          TextStyle(color: ColorManager.blue)),
-                                  onPressed: () {},
-                                ),
-                                TextButton(
-                                  child: const Text('Feed Settings',
-                                      style:
-                                          TextStyle(color: ColorManager.blue)),
-                                  onPressed: () {},
-                                ),
-                                TextButton(
-                                  child: const Text('Notifications',
-                                      style:
-                                          TextStyle(color: ColorManager.blue)),
-                                  onPressed: () {},
-                                ),
-                                TextButton(
-                                  child: const Text('Emails',
-                                      style:
-                                          TextStyle(color: ColorManager.blue)),
-                                  onPressed: () {},
-                                ),
-                                TextButton(
-                                  child: const Text('Subscriptions',
-                                      style:
-                                          TextStyle(color: ColorManager.blue)),
-                                  onPressed: () {},
-                                ),
-                                TextButton(
-                                  child: const Text('Chat & Messaging',
-                                      style:
-                                          TextStyle(color: ColorManager.blue)),
-                                  onPressed: () {},
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Account Settings',
-                              style: theme.textTheme.titleLarge),
-                          const Divider(),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+    return BlocListener<AppCubit, AppState>(
+      listener: (context, state) {
+        if (kIsWeb) {
+          if (state is ChangeRightDrawerState) {
+            endDrawer();
+          }
+          if (state is ChangeLeftDrawerState) {
+            drawer();
+          }
+        }
+      },
+      child: Scaffold(
+          key: _scaffoldKey,
+          drawer: const LeftDrawer(),
+          endDrawer: const RightDrawer(),
+          appBar: homeAppBar(context, 1),
+          body: mediaQuery.size.height < 400 || mediaQuery.size.width < 580
+              ? const Scaffold(
+                  body: Center(child: Text('increase the window size please!')),
+                )
+              : SingleChildScrollView(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    width: mediaQuery.size.width > 800
+                        ? mediaQuery.size.width * 0.6
+                        : double.infinity,
+                    height: mediaQuery.size.height,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('User Settings',
+                                style: theme.textTheme.titleLarge),
+                            const Divider(),
+                            SizedBox(
+                              height: 20,
+                              width: 800,
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
                                 children: [
-                                  Text('ACCOUNT PREFERENCES',
-                                      style: theme.textTheme.titleMedium),
-                                  const Divider(
-                                    thickness: 5,
-                                    height: 5,
-                                    color: ColorManager.green,
-                                  )
+                                  TextButton(
+                                    child: const Text('Account',
+                                        style: TextStyle(
+                                            color: ColorManager.blue)),
+                                    onPressed: () {},
+                                  ),
+                                  TextButton(
+                                    child: const Text('Profile',
+                                        style: TextStyle(
+                                            color: ColorManager.blue)),
+                                    onPressed: () {},
+                                  ),
+                                  TextButton(
+                                    child: const Text('Safety & Privacy',
+                                        style: TextStyle(
+                                            color: ColorManager.blue)),
+                                    onPressed: () {},
+                                  ),
+                                  TextButton(
+                                    child: const Text('Feed Settings',
+                                        style: TextStyle(
+                                            color: ColorManager.blue)),
+                                    onPressed: () {},
+                                  ),
+                                  TextButton(
+                                    child: const Text('Notifications',
+                                        style: TextStyle(
+                                            color: ColorManager.blue)),
+                                    onPressed: () {},
+                                  ),
+                                  TextButton(
+                                    child: const Text('Emails',
+                                        style: TextStyle(
+                                            color: ColorManager.blue)),
+                                    onPressed: () {},
+                                  ),
+                                  TextButton(
+                                    child: const Text('Subscriptions',
+                                        style: TextStyle(
+                                            color: ColorManager.blue)),
+                                    onPressed: () {},
+                                  ),
+                                  TextButton(
+                                    child: const Text('Chat & Messaging',
+                                        style: TextStyle(
+                                            color: ColorManager.blue)),
+                                    onPressed: () {},
+                                  ),
                                 ],
                               ),
-                              Text('Email address',
-                                  style: theme.textTheme.titleLarge),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Text(
-                                    CacheHelper.getData(key: 'email') ??
-                                        'email',
-                                    style: theme.textTheme.titleMedium),
-                              ),
-                            ],
-                          ),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: ColorManager.grey,
-                                side: const BorderSide(
-                                    width: 1, color: ColorManager.upvoteRed),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                              ),
-                              onPressed: _changeEmail,
-                              child: const Padding(
-                                padding: EdgeInsets.all(5.0),
-                                child: Text('Change',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: ColorManager.upvoteRed)),
-                              ))
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Change password',
-                                  style: theme.textTheme.titleLarge),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Text(
-                                    'password must be at least 8 characters',
-                                    style: theme.textTheme.titleMedium),
-                              ),
-                            ],
-                          ),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: ColorManager.grey,
-                                side: const BorderSide(
-                                    width: 1, color: ColorManager.upvoteRed),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                              ),
-                              onPressed: _changePassword,
-                              child: const Padding(
-                                padding: EdgeInsets.all(5.0),
-                                child: Text('Change',
-                                    style: TextStyle(
-                                      color: ColorManager.upvoteRed,
-                                      fontSize: 18,
-                                    )),
-                              ))
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Gender', style: theme.textTheme.titleLarge),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Text(
-                                    'Reddit will never share this information and only uses it to improve what content you see.',
-                                    overflow: TextOverflow.clip,
-                                    style: theme.textTheme.titleMedium),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 100,
-                            child: DropdownButtonHideUnderline(
-                                child: DropdownButton(
-                              alignment: Alignment.center,
-                              value: dropDownValue,
-                              items: [
-                                DropdownMenuItem(
-                                  alignment: Alignment.center,
-                                  value: 'Male',
-                                  child: Text(
-                                    'Male',
-                                    style: theme.textTheme.titleMedium,
-                                  ),
+                            )
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Account Settings',
+                                style: theme.textTheme.titleLarge),
+                            const Divider(),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('ACCOUNT PREFERENCES',
+                                        style: theme.textTheme.titleMedium),
+                                    const Divider(
+                                      thickness: 5,
+                                      height: 5,
+                                      color: ColorManager.green,
+                                    )
+                                  ],
                                 ),
-                                DropdownMenuItem(
-                                  alignment: Alignment.center,
-                                  value: 'Female',
+                                Text('Email address',
+                                    style: theme.textTheme.titleLarge),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
                                   child: Text(
-                                    'Female',
-                                    style: theme.textTheme.titleMedium,
-                                  ),
+                                      CacheHelper.getData(key: 'email') ??
+                                          'email',
+                                      style: theme.textTheme.titleMedium),
                                 ),
                               ],
-                              onChanged: (value) {
-                                setState(() {
-                                  dropDownValue = value!;
-                                  SettingsCubit.get(context).changeDropValue(
-                                      value, 'changeGender', context);
-                                });
-                              },
-                            )),
-                          )
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Country',
-                            style: theme.textTheme.titleLarge,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Text(
-                              'This is your primary location.',
-                              style: theme.textTheme.titleMedium,
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20.0, top: 8),
-                            child: DropdownButtonHideUnderline(
-                                child: DropdownButton(
-                              value: dropDownValueCountries,
-                              items: countries.map((country) {
-                                return DropdownMenuItem(
-                                  value: country,
-                                  child: Text(country),
-                                );
-                              }).toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  dropDownValueCountries = value!;
-                                  SettingsCubit.get(context)
-                                      .changeCountry(value, context);
-                                });
-                              },
-                            )),
-                          ),
-                        ],
-                      ),
-                    ],
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: ColorManager.grey,
+                                  side: const BorderSide(
+                                      width: 1, color: ColorManager.upvoteRed),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                ),
+                                onPressed: _changeEmail,
+                                child: const Padding(
+                                  padding: EdgeInsets.all(5.0),
+                                  child: Text('Change',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color: ColorManager.upvoteRed)),
+                                ))
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Change password',
+                                    style: theme.textTheme.titleLarge),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: Text(
+                                      'password must be at least 8 characters',
+                                      style: theme.textTheme.titleMedium),
+                                ),
+                              ],
+                            ),
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: ColorManager.grey,
+                                  side: const BorderSide(
+                                      width: 1, color: ColorManager.upvoteRed),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                ),
+                                onPressed: _changePassword,
+                                child: const Padding(
+                                  padding: EdgeInsets.all(5.0),
+                                  child: Text('Change',
+                                      style: TextStyle(
+                                        color: ColorManager.upvoteRed,
+                                        fontSize: 18,
+                                      )),
+                                ))
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Gender',
+                                    style: theme.textTheme.titleLarge),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: Text(
+                                      'Reddit will never share this information and only uses it to improve what content you see.',
+                                      overflow: TextOverflow.clip,
+                                      style: theme.textTheme.titleMedium),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 100,
+                              child: DropdownButtonHideUnderline(
+                                  child: DropdownButton(
+                                alignment: Alignment.center,
+                                value: dropDownValue,
+                                items: [
+                                  DropdownMenuItem(
+                                    alignment: Alignment.center,
+                                    value: 'Male',
+                                    child: Text(
+                                      'Male',
+                                      style: theme.textTheme.titleMedium,
+                                    ),
+                                  ),
+                                  DropdownMenuItem(
+                                    alignment: Alignment.center,
+                                    value: 'Female',
+                                    child: Text(
+                                      'Female',
+                                      style: theme.textTheme.titleMedium,
+                                    ),
+                                  ),
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    dropDownValue = value!;
+                                    SettingsCubit.get(context).changeDropValue(
+                                        value, 'changeGender', context);
+                                  });
+                                },
+                              )),
+                            )
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Country',
+                              style: theme.textTheme.titleLarge,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Text(
+                                'This is your primary location.',
+                                style: theme.textTheme.titleMedium,
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20.0, top: 8),
+                              child: DropdownButtonHideUnderline(
+                                  child: DropdownButton(
+                                value: dropDownValueCountries,
+                                items: countries.map((country) {
+                                  return DropdownMenuItem(
+                                    value: country,
+                                    child: Text(country),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    dropDownValueCountries = value!;
+                                    SettingsCubit.get(context)
+                                        .changeCountry(value, context);
+                                  });
+                                },
+                              )),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ));
+                )),
+    );
   }
 }
