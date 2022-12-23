@@ -51,10 +51,4 @@ void main() {
     await tester.pumpWidget(const MaterialApp(home: RecoverUserName()));
     expect(find.text('Having trouble?'), findsOneWidget);
   });
-
-  /// buttons
-  testWidgets('continue button exists', (WidgetTester tester) async {
-    await tester.pumpWidget(const MaterialApp(home: RecoverUserName()));
-    expect(find.text('Continue'), findsOneWidget);
-  });
 }
