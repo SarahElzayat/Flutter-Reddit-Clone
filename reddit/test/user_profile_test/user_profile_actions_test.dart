@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:path/path.dart';
 import 'package:reddit/cubit/user_profile/cubit/user_profile_cubit.dart';
 import 'package:reddit/data/temp_data/tmp_data.dart';
 import 'package:reddit/components/helpers/mocks/mock_functions.dart';
@@ -49,6 +50,29 @@ void main() {
           .followOrUnfollowUser(false, isTesting: true)
           .then((value) {
         expect(userProfileCubit.userData!.followed, false);
+      });
+    });
+    test('Change Displayed Name And About', () async {
+      var userProfileCubit = UserProfileCubit();
+      userProfileCubit.userData = userProfileData;
+      userProfileCubit.username = 'haitham';
+
+      when(mockDio.patch('/account-settings', data: anyNamed('data'))).thenAnswer(
+          (_) => Future.value(Response(
+              requestOptions: RequestOptions(path: '/account-settings'),
+              data: {},
+              statusCode: 200)));
+      expect(userProfileCubit.userData!.displayName, 'haitham');
+      expect(userProfileCubit.userData!.about, 'Description');
+
+      await userProfileCubit
+          .changeUserProfileInfo(null,'New User','New Description',null, isTesting: true)!
+          .then((value) {
+        expect(userProfileCubit.userData!.displayName, 'New User');
+        expect(userProfileCubit.userData!.about, 'New Description');
+
+
+        
       });
     });
   });

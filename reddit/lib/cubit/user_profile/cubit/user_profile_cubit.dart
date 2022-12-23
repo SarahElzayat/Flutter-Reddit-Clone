@@ -295,8 +295,8 @@ class UserProfileCubit extends Cubit<UserProfileState> {
   /// [displayName] The name That Display in the profile
   /// [aboutYou] About of user
   /// [img] Banner File Image
-  void changeUserProfileInfo(
-      BuildContext context, String displayName, String aboutYou, XFile? img) {
+  Future? changeUserProfileInfo(
+      BuildContext? context, String displayName, String aboutYou, XFile? img, {bool isTesting = false}) {
     Map<String, String> data = {};
     if (userData!.displayName != displayName) {
       data['displayName'] = displayName;
@@ -305,10 +305,23 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       data['about'] = aboutYou;
     }
     if (img != null) {
-      changeProfileBanner(context, img);
+      changeProfileBanner(context!, img);
     }
+    
     if (data.isNotEmpty) {
-      DioHelper.patchData(
+      if(isTesting){
+        return mockDio.patch('/account-settings',data: data
+
+        ).then((value) {if (value.statusCode == 200) {
+          userData!.displayName = displayName;
+          userData!.about = aboutYou;
+          emit(ChangeUserProfileInfo());
+          
+        }}).catchError((error) {
+      });
+      }
+      else{
+        return DioHelper.patchData(
               path: accountSettings,
               data: data,
               token: CacheHelper.getData(key: 'token'))
@@ -325,8 +338,10 @@ class UserProfileCubit extends Cubit<UserProfileState> {
             responseSnackBar(
                 message: 'An Error, Please Try Again', error: true));
       });
+      }
+      
     }
-    Navigator.of(context).pop();
+    Navigator.of(context!).pop();
   }
 
   /// Add Social Link To your Profile

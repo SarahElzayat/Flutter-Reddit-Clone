@@ -15,9 +15,9 @@ class SubredditPostsWidget extends StatefulWidget {
 }
 
 class _SubredditPostsWidgetState extends State<SubredditPostsWidget> {
-  // int selectedIndex = 0;
 
-  //
+
+  /// Post View (Card or Classic)
   PostView postView = PostView.card;
 
   final List<IconData> _unselectedIcons = [
