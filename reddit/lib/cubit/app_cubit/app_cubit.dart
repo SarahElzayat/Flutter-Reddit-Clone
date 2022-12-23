@@ -15,7 +15,7 @@ import 'package:reddit/data/home/drawer_communities_model.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/chat_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/explore_screen.dart';
 import 'package:reddit/screens/bottom_navigation_bar_screens/home_screen.dart';
-import 'package:reddit/screens/inbox/Inbox_screen.dart';
+import 'package:reddit/screens/inbox/inbox_screen.dart';
 import 'package:reddit/screens/saved/saved_comments.dart';
 import 'package:reddit/shared/local/shared_preferences.dart';
 import '../../data/post_model/post_model.dart';

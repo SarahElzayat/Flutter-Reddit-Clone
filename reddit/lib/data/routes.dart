@@ -9,7 +9,6 @@ import 'package:reddit/screens/add_post/add_post.dart';
 import 'package:reddit/screens/add_post/community_search.dart';
 import 'package:reddit/screens/add_post/post_rules.dart';
 import 'package:reddit/screens/saved/saved_screen.dart';
-import 'package:reddit/screens/settings/web/account_settings_screen_for_web.dart';
 import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/continue_sign_up_for_mobile.dart';
 import 'package:reddit/screens/subreddit/subreddit_screen.dart';
 import 'package:reddit/widgets/user_profile/user_profile_web.dart';
@@ -25,8 +24,6 @@ import '../../screens/to_go_screens/privacy_and_policy.dart';
 import '../../screens/to_go_screens/user_agreement_screen.dart';
 import 'package:reddit/screens/settings/blocked_accounts.dart';
 
-import '../screens/inbox/web/send_private_message_screen.dart';
-import '../screens/inbox/web/inbox_screen_for_web.dart';
 import '../screens/inbox/Inbox_screen.dart';
 import '../screens/inbox/notifications_screen.dart';
 import '../screens/add_post/image_screen.dart';
@@ -60,7 +57,7 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   SignUpScreen.routeName: (ctx) => const SignUpScreen(),
   ContinueSignUpForMobile.routeName: (ctx) => const ContinueSignUpForMobile(),
   SignInScreen.routeName: (ctx) => const SignInScreen(),
-  ForgetUserNameWebScreen.routeName: (ctx) => const ForgetUserNameWebScreen(),
+  ForgetUserNameWebScreen.routeName: (ctx) => ForgetUserNameWebScreen(),
   ForgetPasswordWebScreen.routeName: (ctx) => const ForgetPasswordWebScreen(),
   TroubleScreen.routeName: (ctx) => const TroubleScreen(),
   PrivacyAndPolicy.routeName: (ctx) => const PrivacyAndPolicy(),
@@ -73,15 +70,12 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   BlockedAccounts.routeName: (ctx) => const BlockedAccounts(),
   ChangePassword.routeName: (ctx) => const ChangePassword(),
   CountriesScreen.routeName: (ctx) => const CountriesScreen(),
-  UserSettings.routeName: (ctx) => const UserSettings(),
 
   // inbox screens
   InboxScreen.routeName: (ctx) => const InboxScreen(),
   NotificationScreen.routeName: (ctx) => const NotificationScreen(),
   SignleNotificationScreen.routeName: (ctx) => const SignleNotificationScreen(),
   SingleMessageScreen.routeName: (ctx) => const SingleMessageScreen(),
-  InboxScreenforWeb.routeName: (ctx) => const InboxScreenforWeb(),
-  SendPrivateMessageScreen.routeName: (ctx) => const SendPrivateMessageScreen(),
 
   // home screens
   HomeScreenForMobile.routeName: (ctx) => const HomeScreenForMobile(),
