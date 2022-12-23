@@ -3,20 +3,15 @@
 /// This widget is used to display a single message in the inbox screen.
 
 import 'dart:async';
-import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:logger/logger.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
 import 'package:reddit/data/messages/messages_model.dart';
 import 'package:reddit/data/messages/reply_to_message_model.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../components/helpers/color_manager.dart';
 
@@ -117,10 +112,7 @@ class _SingleMessageScreenState extends State<SingleMessageScreen> {
                 return;
               }
 
-              /// TODO: here we should see what to send either text or json.
-              final content = _controller!.document.toDelta().toJson();
-              Map sentContent = {'ops': content};
-              sendTheReply(sentContent, myMessage);
+              sendTheReply(myMessageText!, myMessage);
             },
             child: const Text(
               'Post',
@@ -134,7 +126,7 @@ class _SingleMessageScreenState extends State<SingleMessageScreen> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(myMessageText!,
+              child: Text(myMessageText ?? 'empty',
                   overflow: TextOverflow.clip,
                   style: TextStyle(
                     fontSize: 21.sp,
@@ -198,7 +190,6 @@ class _SingleMessageScreenState extends State<SingleMessageScreen> {
   }
 
   QuillController getController(myMessage) {
-    Document doc;
     try {
       logger.wtf(myMessage.content ?? {'ops': []});
       //// this if the message is in json formate
@@ -208,7 +199,6 @@ class _SingleMessageScreenState extends State<SingleMessageScreen> {
       // doc = Doc;
     } catch (e) {
       logger.wtf(e);
-      doc = Document();
     }
     // doc = Document();
 
@@ -216,56 +206,5 @@ class _SingleMessageScreenState extends State<SingleMessageScreen> {
       document: Document(),
       selection: const TextSelection.collapsed(offset: 0),
     );
-  }
-
-  void _linkSubmitted(String? value) {
-    if (value != null && value.isNotEmpty && _controller != null) {
-      final index = _controller!.selection.baseOffset;
-      final length = _controller!.selection.extentOffset - index;
-      _controller!.replaceText(index, length, BlockEmbed.image(value), null);
-
-      // _controller!.document
-      //     .insert(_controller!.selection.start, BlockEmbed.image(value));
-      _controller!.document.format(
-          _controller!.selection.start,
-          1,
-          StyleAttribute(
-              'mobileWidth: ${30.w}; mobileHeight: ${30.h}; mobileMargin: 10; mobileAlignment: topLeft'));
-      _controller!.document.insert(_controller!.selection.start, '\n');
-      // insert new line
-
-    }
-  }
-
-  // Renders the image picked by imagePicker from local file storage
-  // You can also upload the picked image to any server (eg : AWS s3
-  // or Firebase) and then return the uploaded image URL.
-  Future<String> _onImagePickCallback(File file) async {
-    // Copies the picked file from temporary cache to applications directory
-    // insert new line
-    _controller!.document.format(
-        _controller!.selection.start,
-        1,
-        StyleAttribute(
-            'mobileWidth: ${30.w}; mobileHeight: ${30.h}; mobileMargin: 10; mobileAlignment: topLeft'));
-    _controller!.document.insert(_controller!.selection.start, '\n');
-    final appDocDir = await getApplicationDocumentsDirectory();
-    final copiedFile =
-        await file.copy('${appDocDir.path}/${p.basename(file.path)}');
-    return copiedFile.path.toString();
-  }
-
-  Future<String?> _webImagePickImpl(
-      OnImagePickCallback onImagePickCallback) async {
-    final result = await FilePicker.platform.pickFiles();
-    if (result == null) {
-      return null;
-    }
-
-    // Take first, because we don't allow picking multiple files.
-    final fileName = result.files.first.name;
-    final file = File(fileName);
-
-    return onImagePickCallback(file);
   }
 }

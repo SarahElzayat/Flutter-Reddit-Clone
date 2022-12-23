@@ -1,5 +1,5 @@
 import 'package:flutter_lorem/flutter_lorem.dart';
-import 'package:reddit/data/comment/comment_model.dart';
+import '../comment/comment_model.dart';
 
 import '../post_model/flair.dart';
 import '../post_model/image.dart';

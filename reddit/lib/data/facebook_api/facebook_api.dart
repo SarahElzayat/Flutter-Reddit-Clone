@@ -1,7 +1,3 @@
-/// @author:Abdelaziz Salah
-/// @date : 20/12/2022
-/// This model is used to reply to a LoginWithFacebook.
-
 import 'dart:convert';
 
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -21,33 +17,23 @@ class FacebookLoginAPI {
     final accessToken = await FacebookAuth.instance.accessToken;
 
     if (accessToken != null) {
-      print('is Logged:::: ${prettyPrint(accessToken.toJson())}');
       // now you can call to  FacebookAuth.instance.getUserData();
       final userData = await FacebookAuth.instance.getUserData();
       // final userData = await FacebookAuth.instance.getUserData(fields: "email,birthday,friends,gender,link");
       _accessToken = accessToken;
 
       _userData = userData;
-      print(userData);
+      (userData);
       return accessToken.toJson();
     }
 
     return null;
   }
 
-  static void _printCredentials() {
-    print(
-      prettyPrint(_accessToken!.toJson()),
-    );
-  }
-
   static Future<Map<String, dynamic>> login() async {
     final LoginResult result = await FacebookAuth.instance
         .login(permissions: ['email', 'public_profile']).then((response) {
-      print(response);
-      FacebookAuth.instance.getUserData().then((userData) async {
-        print('here is the user Details \n\n\n $userData');
-      });
+      FacebookAuth.instance.getUserData().then((userData) async {});
       return response;
     }); // by default we request the email and the public profile
 
@@ -60,15 +46,12 @@ class FacebookLoginAPI {
 
     if (result.status == LoginStatus.success) {
       _accessToken = result.accessToken;
-      _printCredentials();
+
       // get the user data
       // by default we get the userId, email,name and picture
       final userData = await FacebookAuth.instance.getUserData();
       // final userData = await FacebookAuth.instance.getUserData(fields: "email,birthday,friends,gender,link");
       _userData = userData;
-    } else {
-      print(result.status);
-      print(result.message);
     }
 
     return _userData;

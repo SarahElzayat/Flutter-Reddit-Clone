@@ -2,14 +2,18 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
-import 'package:reddit/data/create_community_model/create_community_model.dart';
-import 'package:reddit/data/create_community_model/saved_categories_model.dart';
-import 'package:reddit/networks/constant_end_points.dart';
-import 'package:reddit/networks/dio_helper.dart';
-import 'package:reddit/shared/local/shared_preferences.dart';
-
-import '../../comments/add_comment_screen.dart';
+import 'package:logger/logger.dart';
+import 'package:reddit/screens/comments/add_comment_screen.dart';
+import '../../../components/helpers/enums.dart';
+import '../../../components/snack_bar.dart';
+import '../../../cubit/subreddit/cubit/subreddit_cubit.dart';
+import '../../../data/create_community_model/create_community_model.dart';
+import '../../../data/create_community_model/saved_categories_model.dart';
+import '../../../data/moderation_models/community_settings_model.dart';
+import '../../../networks/constant_end_points.dart';
+import '../../../networks/dio_helper.dart';
+import '../../moderation/cubit/moderation_cubit.dart';
+import '../../../shared/local/shared_preferences.dart';
 
 part 'create_community_state.dart';
 
@@ -118,22 +122,26 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
             : 'Public';
     final CreateCommunityModel community = CreateCommunityModel(
         subredditName: name, type: type, nsfw: nsfw, category: category);
+    String? token = CacheHelper.getData(key: 'token');
 
-    DioHelper.postData(path: createCommunity, data: community.toJson())
+    DioHelper.postData(
+            sentToken: token, path: createCommunity, data: community.toJson())
         .then((value) {
       if (value.statusCode == 201) {
-        logger.wtf('community created successfully');
-
         ///TODO: Nagiate to AddPost with community name to add post to community
-
+        initializeCommunitySettings(context, name, type, nsfw, category);
+        initializePostSettings(context, name);
+        ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+            message: 'r/$name created successfully', error: false));
+        emit(CreateCommunity());
         SubredditCubit.get(context)
             .setSubredditName(context, name, replace: true);
       }
     }).catchError((err) {
       err = err as DioError;
-      logger.wtf(err.message);
-      logger.wtf(err.response!.data['error']);
+      Logger().e(err.response);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(responseSnackBar(message: 'Failed to create r/$name'));
     });
-    emit(CreateCommunity());
   }
 }

@@ -91,7 +91,7 @@ dependencies:
   top_modal_sheet: ^2.0.1
   tuple: ^2.0.1
   universal_html: ^2.0.8
-  universal_ui: ^0.0.8
+  universal_ui: 
   url_launcher: ^6.1.6
   video_player: null
   video_thumbnail: ^0.5.3

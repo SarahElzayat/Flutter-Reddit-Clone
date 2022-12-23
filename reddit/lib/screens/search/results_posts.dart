@@ -53,9 +53,16 @@ class _ResultsPostsState extends State<ResultsPosts> {
 
   @override
   Widget build(BuildContext context) {
-    final SearchCubit cubit = SearchCubit.get(context); //..getPosts();
+    final SearchCubit cubit = SearchCubit.get(context);
     return BlocConsumer<SearchCubit, SearchState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is NoMoreResultsToLoadState) {
+          ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+            message: 'No more results!',
+            error: false,
+          ));
+        }
+      },
       builder: (context, state) {
         return Row(
           mainAxisAlignment:

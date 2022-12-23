@@ -55,6 +55,7 @@ class _SearchResultsState extends State<SearchResults>
   @override
   void initState() {
     _textEditingController.text = widget.searchWord;
+
     _tabController =
         TabController(length: widget.isSubreddit ? 2 : 4, vsync: this);
     super.initState();

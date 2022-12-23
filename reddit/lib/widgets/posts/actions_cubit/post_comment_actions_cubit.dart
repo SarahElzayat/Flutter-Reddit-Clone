@@ -13,6 +13,7 @@ import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/data/post_model/insights_model.dart';
 import 'package:reddit/data/post_model/post_model.dart';
+import 'package:reddit/data/user_data_model/user_data_model.dart';
 import 'package:reddit/functions/post_functions.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import 'package:reddit/screens/posts/post_screen.dart';
@@ -290,7 +291,7 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
         'commentId': currentComment?.id,
       },
     ).then((value) {
-      logger.w('followed: ${post.followed}');
+      logger.d('followed: ${post.followed}');
       if (isPost) {
         post.followed = !post.followed!;
       } else {
@@ -496,4 +497,3 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
     });
   }
 }
-

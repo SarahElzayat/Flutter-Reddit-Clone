@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:meta/meta.dart';
 import 'package:reddit/widgets/user_profile/user_profile_web.dart';
@@ -17,6 +19,12 @@ import '../../../screens/user_profile/user_profile_screen.dart';
 
 import '../../../constants/constants.dart';
 import '../../../data/post_model/post_model.dart';
+import '../../../networks/constant_end_points.dart';
+import '../../../screens/moderation/user_management_screens/invite_moderator.dart';
+import '../../../screens/moderation/user_management_screens/moderators.dart';
+import '../../../shared/local/shared_preferences.dart';
+
+import 'package:http_parser/src/media_type.dart';
 
 part 'user_profile_state.dart';
 
@@ -26,17 +34,17 @@ class UserProfileCubit extends Cubit<UserProfileState> {
   AboutUserModel? userData;
   String? username;
 
+  XFile? img;
+
   late PagingController<String?, PostModel> postController;
   late PagingController<String?, Map<String, dynamic>> commentController;
 
-  void setUsername(String usernamePass, {bool navigate = true}) {
-    print('User Name : $usernamePass');
-    print(token);
-    DioHelper.getData(
-        path: '/user/$usernamePass/about',
-        query: {'username': usernamePass}).then((value) {
+  Future<void> fetchUserData(String userName, {bool navigate = true}) async {
+    await DioHelper.getData(
+        path: '/user/$userName/about',
+        query: {'username': userName}).then((value) {
       if (value.statusCode == 200) {
-        username = usernamePass;
+        username = userName;
         userData = AboutUserModel.fromJson(value.data);
         print('All Done');
         print(userData!.displayName);
@@ -55,6 +63,12 @@ class UserProfileCubit extends Cubit<UserProfileState> {
     }).catchError((error) {
       print('Error in fetch user data ==> $error');
     });
+  }
+
+  void setUsername(String usernamePass, {bool navigate = true}) {
+    print('User Name : $usernamePass');
+    print(token);
+    fetchUserData(usernamePass);
   }
 
   void fetchPosts({String? after}) {
@@ -99,12 +113,17 @@ class UserProfileCubit extends Cubit<UserProfileState> {
           // logger.wtf(i);
           final post =
               (PostModel.fromJson(value.data['children'][i]['data']['post']));
-          print(value.data['children'][i]['data']['comments']);
+          // post.id = value.data['children'][i]['id'];
+          post.id = value.data['children'][i]['id'];
+          print(post.id);
           for (int j = 0;
               j < value.data['children'][i]['data']['comments'].length;
               j++) {
             final comment = (CommentModel.fromJson(
                 value.data['children'][i]['data']['comments'][j]));
+
+            print('Post ID : ${post.id}');
+            print('Comment ID : ${comment.id}');
             var item = {
               'post': post,
               'comment': comment,

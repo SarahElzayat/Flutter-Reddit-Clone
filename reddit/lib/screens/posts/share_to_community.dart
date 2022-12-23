@@ -1,13 +1,13 @@
 ///@author Sarah Elzayat
 ///@description: the screen that appears when sharing the post whether to a community or a profile
 import 'package:flutter/material.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/data/home/drawer_communities_model.dart';
-import 'package:reddit/data/post_model/post_model.dart';
-import 'package:reddit/networks/constant_end_points.dart';
-import 'package:reddit/networks/dio_helper.dart';
-import 'package:reddit/screens/main_screen.dart';
-import 'package:reddit/widgets/posts/post_widget.dart';
+import '../../components/helpers/color_manager.dart';
+import '../../data/home/drawer_communities_model.dart';
+import '../../data/post_model/post_model.dart';
+import '../../networks/constant_end_points.dart';
+import '../../networks/dio_helper.dart';
+import '../main_screen.dart';
+import '../../widgets/posts/post_widget.dart';
 
   ///@param [community] is the community the post is being shared to
   ///@param [sharedPost] is the shared post

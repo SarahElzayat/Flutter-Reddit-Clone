@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/cubit/settings_cubit/settings_cubit.dart';
-import 'package:reddit/screens/main_screen.dart';
-import 'package:reddit/widgets/sign_in_and_sign_up_widgets/app_bar.dart';
+import '../../../components/helpers/color_manager.dart';
+import '../../../cubit/settings_cubit/settings_cubit.dart';
+import '../../main_screen.dart';
+import '../../../widgets/sign_in_and_sign_up_widgets/app_bar.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ContinueSignUpForMobile extends StatefulWidget {
@@ -67,7 +67,6 @@ class _ContinueSignUpForMobileState extends State<ContinueSignUpForMobile> {
                 onPressed: () {
                   setState(() {
                     userGender = gender;
-                    print(userGender);
                     _genderSelected = true;
                   });
                 },
@@ -113,10 +112,8 @@ class _ContinueSignUpForMobileState extends State<ContinueSignUpForMobile> {
                       onPressed: () {
                         if (colors[interest] == ColorManager.upvoteRed) {
                           setState(() {
-                            print(colors[interest]);
                             numOfInterests--;
                             colors[interest] = ColorManager.grey;
-                            print(numOfInterests);
                           });
                         } else if (numOfInterests < 3) {
                           setState(() {
@@ -170,7 +167,6 @@ class _ContinueSignUpForMobileState extends State<ContinueSignUpForMobile> {
 
   /// this is a utilty function used to set the user gender during signup.
   void _setGender() {
-    print('Setting the gender');
     SettingsCubit.get(context)
         .changeDropValue(userGender, 'changeGender', context);
   }

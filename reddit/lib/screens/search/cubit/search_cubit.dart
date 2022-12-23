@@ -122,10 +122,9 @@ class SearchCubit extends Cubit<SearchState> {
         }).then((value) {
       if (value.statusCode == 200) {
         if (value.data['children'].length == 0) {
-          loadMore
-              ? emit(NoMoreResultsToLoadState())
-              : emit(ResultEmptyState());
-          emit(LoadedResultsState());
+          if (!loadMore) {
+            emit(ResultEmptyState());
+          }
         } else {
           logger.wtf(value.data);
           postsAfterId = value.data['after'];
@@ -133,9 +132,11 @@ class SearchCubit extends Cubit<SearchState> {
           for (int i = 0; i < value.data['children'].length; i++) {
             posts.add(PostModel.fromJson(value.data['children'][i]['data']));
           }
+          loadMore
+              ? emit(LoadedMoreResultsState())
+              : emit(LoadedResultsState());
         }
         // print(value.data);
-        loadMore ? emit(LoadedMoreResultsState()) : emit(LoadedResultsState());
       } else {
         emit(SearchErrorState());
       }
@@ -181,9 +182,10 @@ class SearchCubit extends Cubit<SearchState> {
       if (value.statusCode == 200) {
         logger.wtf(value.data);
         if (value.data['children'].length == 0) {
-          loadMore
-              ? emit(NoMoreResultsToLoadState())
-              : emit(ResultEmptyState());
+          if (!loadMore) {
+            emit(ResultEmptyState());
+          }
+
           emit(LoadedResultsState());
         } else {
           usersAfterId = value.data['after'];
@@ -194,11 +196,11 @@ class SearchCubit extends Cubit<SearchState> {
             users.add(
                 SearchResultProfileModel.fromJson(value.data['children'][i]));
           }
+          // print(value.data);
+          loadMore
+              ? emit(LoadedMoreResultsState())
+              : emit(LoadingMoreResultsState());
         }
-        // print(value.data);
-        loadMore
-            ? emit(LoadedMoreResultsState())
-            : emit(LoadingMoreResultsState());
       } else {
         emit(SearchErrorState());
       }
@@ -252,9 +254,9 @@ class SearchCubit extends Cubit<SearchState> {
         }).then((value) {
       if (value.statusCode == 200) {
         if (value.data.length == 0) {
-          loadMore
-              ? emit(NoMoreResultsToLoadState())
-              : emit(ResultEmptyState());
+          if (!loadMore) {
+            emit(ResultEmptyState());
+          }
         } else {
           commentsAfterId = value.data['after'];
           commentsBeforeId = value.data['before'];
@@ -301,9 +303,9 @@ class SearchCubit extends Cubit<SearchState> {
       if (value.statusCode == 200) {
         logger.wtf(value.data);
         if (value.data.length == 0) {
-          loadMore
-              ? emit(NoMoreResultsToLoadState())
-              : emit(ResultEmptyState());
+          if (!loadMore) {
+            emit(ResultEmptyState());
+          }
         } else {
           subbredditsAfterId = value.data['after'];
           subbredditsBeforeId = value.data['before'];

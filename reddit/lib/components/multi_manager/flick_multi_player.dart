@@ -4,13 +4,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:reddit/components/multi_manager/portrait_controls.dart';
-import 'package:reddit/data/post_model/post_model.dart';
+import 'portrait_controls.dart';
+import '../../data/post_model/post_model.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-import './flick_multi_manager.dart';
+import 'flick_multi_manager.dart';
 import 'fullscreen_controls.dart';
 
 /// This is a custom video player that can be used in a listview.

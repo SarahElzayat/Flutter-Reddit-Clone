@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flick_video_player/flick_video_player.dart';
-import 'package:reddit/data/post_model/post_model.dart';
+import '../../data/post_model/post_model.dart';
 
 import '../../widgets/posts/video_page_view.dart';
 import 'flick_multi_manager.dart';

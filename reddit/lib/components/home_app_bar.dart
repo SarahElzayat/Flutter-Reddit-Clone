@@ -154,7 +154,9 @@ AppBar homeAppBar(
                         onPressed: () {},
                         icon: const Icon(Icons.add_comment_outlined))
                     : const Text(''),
-        InkWell(onTap: () => cubit.changeRightDrawer(), child: avatar())
+        InkWell(
+            onTap: () => cubit.changeRightDrawer(),
+            child: avatar(context: context))
       ],
     );
   }

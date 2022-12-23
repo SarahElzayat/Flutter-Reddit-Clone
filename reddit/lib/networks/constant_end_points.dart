@@ -18,7 +18,7 @@ const baseUrl = kReleaseMode
 // : 'http://10.0.2.2:3000/';
 
 const imagesBaseUrl =
-    kReleaseMode ? 'https://web.read-it.live/' : 'http://192.168.1.8:3000/';
+    kReleaseMode ? 'https://www.read-it.live/' : 'http://192.168.1.8:3000/';
 
 // login and signup
 const signUp = '/signup';
@@ -38,8 +38,6 @@ const accountSettings =
 const block = '/block-user';
 
 // messages and inbox
-const messagesPoint = '/message/inbox';
-const markMessageAsRead = '/unread-message';
 const replyToMessage = '/message/compose';
 const readAllMsgs = '/read-all-msgs';
 
@@ -47,6 +45,10 @@ const readAllMsgs = '/read-all-msgs';
 const notificationPoint = '/notifications';
 const markAllNotificationsAsRead = '/mark-all-notifications-read';
 const hideNotification = '/hide-notification-read';
+
+// messages and inbox
+const messagesPoint = '/message/inbox';
+const markMessageAsRead = '/unread-message';
 
 // create community
 const createCommunity = '/create-subreddit';
@@ -69,6 +71,8 @@ const downvotedHistory = '/downvoted';
 const hiddenHistory = '/hidden';
 const clearHistory = '/clear-history';
 const userProfilePicture = '/profile-picture';
+const userProfileBanner = '/banner-image';
+
 const search = '/search';
 const searchPosts = 'post';
 const searchUsers = 'user';
@@ -100,3 +104,4 @@ const homeNew = '/new';
 const subreddit = '/r';
 const makeFavorite = '/make-favorite';
 const removeFavorite = '/remove-favorite';
+const socialLink = '/social-link';

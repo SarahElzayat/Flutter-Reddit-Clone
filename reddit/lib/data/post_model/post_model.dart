@@ -30,7 +30,7 @@ class PostModel {
   bool? spammed;
   bool? inYourSubreddit;
   Moderation? moderation;
-
+  String avatarImage = '';
   PostModel({
     this.id,
     this.kind,
@@ -193,6 +193,5 @@ class PostModel {
     spammed = postModel.spammed;
     inYourSubreddit = postModel.inYourSubreddit;
     moderation = postModel.moderation;
-
   }
 }

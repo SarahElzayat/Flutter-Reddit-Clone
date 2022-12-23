@@ -2,11 +2,11 @@
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
 
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/snack_bar.dart';
-
-import 'package:reddit/constants/constants.dart';
 import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 
 import 'package:reddit/data/post_model/post_model.dart';
@@ -34,17 +34,17 @@ class MenuItem {
 
 /// container class of all the menu items that are shown iin the dropDownList
 class MenuItems {
-  static const List<MenuItem> publicOutItems = [hide, report, block];
+  static const List<MenuItem> publicOutItems = [hide, block];
   static const List<MenuItem> publicInItems = [
     share,
     follow,
     copy,
     save,
     hide,
-    report,
+    // report,
     block
   ];
-  static const List<MenuItem> publicItemsSaved = [unsave, hide, report, block];
+  static const List<MenuItem> publicItemsSaved = [unsave, hide, block];
   static const List<MenuItem> myPostsOutItems = [save, share, delete];
   static const List<MenuItem> myPostsInItems = [
     share,
@@ -59,7 +59,6 @@ class MenuItems {
     copy,
     collapse,
     block,
-    report,
     markNSFW
   ];
 
@@ -122,10 +121,9 @@ class MenuItems {
           PostNotifierCubit.get(context).notifyPosts();
         });
         break;
-      case MenuItems.report:
-        //Do something
-        break;
+
       case MenuItems.hide:
+      case MenuItems.unhide:
         //Do something
         cubit.hide().then((value) {
           if (value == true) {
@@ -196,7 +194,7 @@ class MenuItems {
         cubit.copyText().then((value) {
           ScaffoldMessenger.of(context).showSnackBar(
             responseSnackBar(
-              message: 'Your copy is ready for pasta!',
+              message: 'Your copy is ready for paste!',
               error: false,
             ),
           );
@@ -227,7 +225,6 @@ shareModalBottomSheet(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        shareIcon(icon: Icons.link, label: 'Copy link', onPressed: () {}),
         shareIcon(
             icon: Icons.fork_right,
             label: 'Community',

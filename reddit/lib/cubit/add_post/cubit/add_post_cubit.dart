@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:delta_markdown/delta_markdown.dart';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
-import 'package:reddit/data/add_post/subredditsSearchListModel.dart';
+import '../../../data/add_post/subredditsSearchListModel.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
@@ -493,7 +494,7 @@ class AddPostCubit extends Cubit<AddPostState> {
       body = {
         'kind': postTypes[postType],
         'subreddit': subredditName,
-        'inSubreddit': true,
+        'inSubreddit': isSubreddit,
         'title': title.text,
         'images': imagesData,
         'imageCaptions': imageCaptions,
@@ -519,7 +520,7 @@ class AddPostCubit extends Cubit<AddPostState> {
         'title': title.text,
         'kind': 'video',
         'subreddit': subredditName,
-        'inSubreddit': true,
+        'inSubreddit': isSubreddit,
         'nsfw': nsfw,
         'spoiler': spoiler,
         if (selectedFlair != null) 'flairId': selectedFlair,
@@ -530,7 +531,7 @@ class AddPostCubit extends Cubit<AddPostState> {
       body = {
         'kind': postTypes[postType],
         'subreddit': subredditName,
-        'inSubreddit': true,
+        'inSubreddit': isSubreddit,
         'title': title.text,
         'content': {
           'ops': (isMarkdown)
@@ -547,7 +548,7 @@ class AddPostCubit extends Cubit<AddPostState> {
       body = {
         'kind': postTypes[postType],
         'subreddit': subredditName,
-        'inSubreddit': true,
+        'inSubreddit': isSubreddit,
         'title': title.text,
         'link': link.text,
         'nsfw': nsfw,
@@ -560,7 +561,7 @@ class AddPostCubit extends Cubit<AddPostState> {
       body = {
         'kind': postTypes[postType],
         'subreddit': subredditName,
-        'inSubreddit': true,
+        'inSubreddit': isSubreddit,
         'title': title.text,
         'nsfw': nsfw,
         'spoiler': spoiler,
@@ -612,7 +613,7 @@ class AddPostCubit extends Cubit<AddPostState> {
       ScaffoldMessenger.of(context).showSnackBar(
           responseSnackBar(message: 'An Error Please Try Again', error: true));
     });
-    emit(PostCreated());
+    // emit(PostCreated());
   }
 
   void subredditSearch(String subredditName) {

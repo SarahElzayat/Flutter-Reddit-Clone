@@ -2,6 +2,10 @@
 /// @date 9/11/2022
 /// The file contains helping components for the app bar
 import 'package:flutter/material.dart';
+import 'package:reddit/components/helpers/color_manager.dart';
+import 'package:reddit/cubit/app_cubit/app_cubit.dart';
+
+import '../networks/constant_end_points.dart';
 import '../screens/search/search_screen.dart';
 
 /// the functions returns the user's profile picture as a circle avatara

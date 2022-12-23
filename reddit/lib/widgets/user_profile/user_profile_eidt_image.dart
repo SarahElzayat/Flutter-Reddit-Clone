@@ -1,16 +1,29 @@
+import 'dart:io';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import '../../cubit/user_profile/cubit/user_profile_cubit.dart';
+import '../../screens/settings/change_profile_picture_screen.dart';
 
 import '../../components/helpers/color_manager.dart';
+import '../../networks/constant_end_points.dart';
 
-class UserProfileEditImage extends StatelessWidget {
-  const UserProfileEditImage({Key? key}) : super(key: key);
+class UserProfileEditImage extends StatefulWidget {
+  UserProfileEditImage({Key? key}) : super(key: key);
 
+  @override
+  State<UserProfileEditImage> createState() => _UserProfileEditImageState();
+}
+
+class _UserProfileEditImageState extends State<UserProfileEditImage> {
+  final ImagePicker _picker = ImagePicker();
   @override
   Widget build(BuildContext context) {
     final mediaquery = MediaQuery.of(context);
     final navigator = Navigator.of(context);
+    final userProfile = UserProfileCubit.get(context);
     return SizedBox(
       width: mediaquery.size.width,
       height: 145,
@@ -94,7 +107,7 @@ class UserProfileEditImage extends StatelessWidget {
           Align(
             alignment: Alignment.bottomLeft,
             child: Container(
-              margin: EdgeInsets.only(left: 20),
+              margin: const EdgeInsets.only(left: 20),
               height: 60,
               width: 60,
               child: InkWell(
@@ -128,19 +141,19 @@ class UserProfileEditImage extends StatelessWidget {
                                 )
                           : null,
                     ),
-                  ),
-                  Align(
-                      alignment: Alignment.bottomRight,
-                      child: InkWell(
-                          onTap: (() {}),
-                          child: const Icon(
-                            Icons.camera_alt_outlined,
-                            shadows: <Shadow>[
-                              Shadow(color: Colors.black, blurRadius: 20.0),
-                              Shadow(color: Colors.black, blurRadius: 20.0)
-                            ],
-                          )))
-                ],
+                    Align(
+                        alignment: Alignment.bottomRight,
+                        child: InkWell(
+                            onTap: (() {}),
+                            child: const Icon(
+                              Icons.camera_alt_outlined,
+                              shadows: <Shadow>[
+                                Shadow(color: Colors.black, blurRadius: 20.0),
+                                Shadow(color: Colors.black, blurRadius: 20.0)
+                              ],
+                            )))
+                  ],
+                ),
               ),
             ),
           )

@@ -62,6 +62,7 @@ class _PostRulesState extends State<PostRules> {
                     addPostCubit.title.text = '';
                     addPostCubit.nsfw = false;
                     addPostCubit.spoiler = false;
+                    addPostCubit.isSubreddit = true;
                   }),
             )
           ],
@@ -76,7 +77,10 @@ class _PostRulesState extends State<PostRules> {
                 },
                 child: Row(
                   children: [
-                    Text(addPostCubit.subredditName!,
+                    Text(
+                        (addPostCubit.isSubreddit)
+                            ? addPostCubit.subredditName!
+                            : 'My Profile',
                         style: Theme.of(context).textTheme.titleSmall),
                     const Icon(Icons.keyboard_arrow_down)
                   ],
@@ -139,7 +143,8 @@ class _PostRulesState extends State<PostRules> {
                   Icon(Icons.arrow_forward_outlined)
                 ],
               )),
-          if (addPostCubit.flairs!.postFlairs!.length > 0)
+          if (addPostCubit.isSubreddit &&
+              addPostCubit.flairs!.postFlairs!.length > 0)
             TextButton(
                 onPressed: () {
                   navigator.push(MaterialPageRoute(
