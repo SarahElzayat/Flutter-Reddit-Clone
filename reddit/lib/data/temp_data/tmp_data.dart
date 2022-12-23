@@ -39,13 +39,15 @@ var textPost = PostModel(
     backgroundColor: '#FFAA00',
     textColor: '#0E0EEE',
   ),
-  saved: true,
+  saved: false,
   sharePostId: '639c4d7dd072d62eaf3792c5',
   spoiler: true,
   inYourSubreddit: false,
   nsfw: false,
   votes: 100,
+  followed: false,
   comments: 10,
+  hidden: false,
 );
 
 final textPostS = textPost.toJson();
