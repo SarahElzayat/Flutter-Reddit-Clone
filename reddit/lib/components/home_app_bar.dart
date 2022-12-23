@@ -83,7 +83,13 @@ void markAllAsRead(context) async {
 ///@param [context] is the context of the parent widget
 ///@param [isSearch] bool to indicate if the appbar was called inside search screen or not, if true, the search result is displayed in the same screen
 /// returns the app bar of the screen
-AppBar homeAppBar(context, index, {bool isSearch = false}) {
+AppBar homeAppBar(
+  context,
+  index, {
+  bool isSearch = false,
+  bool isSubreddit = false,
+  String? subredditName,
+}) {
   ///@param [cubit] an instance of the App Cubit to give easier access to the state management cubit
   final AppCubit cubit = AppCubit.get(context);
 
@@ -183,18 +189,24 @@ AppBar homeAppBar(context, index, {bool isSearch = false}) {
             const Spacer(),
             Expanded(
               child: SearchField(
+                isSubreddit: isSubreddit,
+                subredditName: subredditName,
                 onSubmitted: (p0) => isSearch
                     ? Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              SearchResults(searchWord: searchController.text),
+                          builder: (context) => SearchResults(
+                            searchWord: searchController.text,
+                          ),
                         ))
                     : Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              SearchResults(searchWord: searchController.text),
+                          builder: (context) => SearchResults(
+                            searchWord: searchController.text,
+                            isSubreddit: isSubreddit,
+                            subredditName: subredditName,
+                          ),
                         )),
                 textEditingController: searchController,
               ),

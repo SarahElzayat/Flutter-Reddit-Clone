@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:delta_markdown/delta_markdown.dart';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
@@ -42,7 +42,7 @@ class AddPostCubit extends Cubit<AddPostState> {
   /// This number is the index of post Type in add post screen
   int postType = 2;
 
-  quill.QuillController quillController = quill.QuillController.basic();
+  QuillController quillController = QuillController.basic();
 
   bool isMarkdown = true;
 

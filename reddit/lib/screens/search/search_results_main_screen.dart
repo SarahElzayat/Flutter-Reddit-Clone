@@ -40,7 +40,6 @@ class _SearchResultsState extends State<SearchResults>
   final TextEditingController _textEditingController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-
   ///opens/closes the end drawer
   void endDrawer() {
     changeEndDrawer(_scaffoldKey);
@@ -104,6 +103,8 @@ class _SearchResultsState extends State<SearchResults>
                         context,
                         0,
                         isSearch: true,
+                        isSubreddit: widget.isSubreddit,
+                        subredditName: widget.subredditName,
                       )
                     : SearchField(
                         subredditName:

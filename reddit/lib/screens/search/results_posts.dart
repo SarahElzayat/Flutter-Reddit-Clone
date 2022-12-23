@@ -17,7 +17,11 @@ import '../../widgets/posts/post_upper_bar.dart';
 import '../../widgets/posts/post_widget.dart';
 
 class ResultsPosts extends StatefulWidget {
-  const ResultsPosts({super.key});
+  /// bool to check if the search is called inside a subreddit or
+  /// not to preview the results accordingly
+  final bool isSubreddit;
+
+  const ResultsPosts({super.key, this.isSubreddit = false});
 
   @override
   State<ResultsPosts> createState() => _ResultsPostsState();
@@ -26,7 +30,7 @@ class ResultsPosts extends StatefulWidget {
 class _ResultsPostsState extends State<ResultsPosts> {
   final _scrollController = ScrollController();
 
-    /// scroll listener to load more at the bottom of the screen
+  /// scroll listener to load more at the bottom of the screen
   void _scrollListener() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
@@ -105,7 +109,7 @@ class _ResultsPostsState extends State<ResultsPosts> {
                       ),
                     ),
                   ),
-            if (kIsWeb)
+            if (kIsWeb && !widget.isSubreddit)
               Padding(
                 padding: EdgeInsets.only(
                     right: MediaQuery.of(context).size.width * 0.1),
