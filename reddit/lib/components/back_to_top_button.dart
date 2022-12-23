@@ -42,7 +42,7 @@ class _BackToTopButtonState extends State<BackToTopButton> {
     final width = MediaQuery.of(context).size.width;
 
     return AnimatedOpacity(
-      duration: const Duration(milliseconds: 500), //show/hide animation
+      duration: const Duration(milliseconds: 250), //show/hide animation
       opacity: showbtn ? 1.0 : 0.0, //set obacity to 1 on visible, or hide
       child: MaterialButton(
         hoverColor: Colors.transparent,
@@ -64,9 +64,12 @@ class _BackToTopButtonState extends State<BackToTopButton> {
             shape: StadiumBorder(),
           ),
           margin: EdgeInsets.only(right: width * 0.20),
-          child: Text(
+          child: const Text(
             'Back to Top',
-            style: Theme.of(context).textTheme.titleLarge,
+            style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.normal,
+                color: ColorManager.eggshellWhite),
           ),
         ),
       ),

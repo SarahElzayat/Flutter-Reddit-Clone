@@ -2,10 +2,10 @@
 /// @date 9/11/2022
 /// this is the screen for the comments results of the main search
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
 
 import '../../components/helpers/color_manager.dart';
@@ -20,7 +20,8 @@ class ResultsComments extends StatefulWidget {
 
 class _ResultsCommentsState extends State<ResultsComments> {
   final _scrollController = ScrollController();
-  List<CommentModel> comments = [];
+
+  /// scroll listener to load more at the bottom of the screen
   void _scrollListener() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
@@ -38,7 +39,7 @@ class _ResultsCommentsState extends State<ResultsComments> {
 
   @override
   Widget build(BuildContext context) {
-    final SearchCubit cubit = SearchCubit.get(context); //..getComments();
+    final SearchCubit cubit = SearchCubit.get(context); 
     return BlocConsumer<SearchCubit, SearchState>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -56,14 +57,18 @@ class _ResultsCommentsState extends State<ResultsComments> {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 )
-              // :Placeholder()
-              : ListView.builder(
-                  controller: _scrollController,
-                  itemCount: cubit.comments.length,
-                  itemBuilder: (context, index) => PostWidget(
-                    post: cubit.commentsPosts[index],
-                    comment: cubit.comments[index],
-                    postView: PostView.withCommentsInSearch,
+              : Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal:
+                          kIsWeb ? MediaQuery.of(context).size.width * 0.2 : 0),
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: cubit.comments.length,
+                    itemBuilder: (context, index) => PostWidget(
+                      post: cubit.commentsPosts[index],
+                      comment: cubit.comments[index],
+                      postView: PostView.withCommentsInSearch,
+                    ),
                   ),
                 ),
         );

@@ -1,13 +1,11 @@
 ///@author Sarah Elzayat
-///@desctiob
+///@desction history screen for web
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/components/home_app_bar.dart';
 import 'package:reddit/widgets/posts/post_widget.dart';
-
-// import '../../components/helpers/color_manager.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../cubit/app_cubit/app_cubit.dart';
 import '../../widgets/posts/post_upper_bar.dart';

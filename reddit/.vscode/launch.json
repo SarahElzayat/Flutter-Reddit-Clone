@@ -8,8 +8,7 @@
                 "--web-port",
                 "5000",
                 "--web-renderer",
-                "html",
-
+                "html"
             ]
         }
     ]
