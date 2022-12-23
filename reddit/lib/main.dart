@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/screens/sign_in_and_sign_up_screen/web/sign_in_for_web_screen.dart';
 import 'components/helpers/enums.dart';
 import 'cubit/user_profile/cubit/user_profile_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -95,7 +96,6 @@ class Main extends StatelessWidget {
           return ResponsiveSizer(
             builder: (context, orientation, screenType) {
               return MaterialApp(
-  
                 navigatorKey: navigatorKey,
                 initialRoute:
                     CacheHelper.getData(key: 'token')?.toString().isNotEmpty ??
@@ -105,8 +105,7 @@ class Main extends StatelessWidget {
                             : HomeScreenForMobile.routeName
                         : !kIsWeb
                             ? SignInScreen.routeName
-                            // : SignInForWebScreen.routeName,
-                            : SendPrivateMessageScreen.routeName,
+                            : SignInForWebScreen.routeName,
                 routes: myRoutes,
                 onUnknownRoute: (settings) {
                   return MaterialPageRoute(
