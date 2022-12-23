@@ -33,7 +33,7 @@ class DropDownList extends StatelessWidget {
 
   /// The Class of the Post
   /// depends on the post's status
-  /// defaults to [ItemsClass.public]
+  /// defaults to [ItemsClass.posts]
   final ItemsClass itemClass;
 
   /// if the dropdown is outside the screen

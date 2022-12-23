@@ -13,7 +13,6 @@ import 'package:reddit/screens/sign_in_and_sign_up_screen/mobile/continue_sign_u
 import 'package:reddit/screens/subreddit/subreddit_screen.dart';
 import 'package:reddit/widgets/user_profile/user_profile_web.dart';
 
-import '../../screens/bottom_navigation_bar_screens/add_post_screen.dart';
 import '../../screens/bottom_navigation_bar_screens/explore_screen.dart';
 import '../../screens/bottom_navigation_bar_screens/home_screen.dart';
 import '../../screens/forget_user_name_and_password/mobile/recover_username.dart';
@@ -86,7 +85,7 @@ Map<String, Widget Function(BuildContext)> myRoutes = {
   HomeScreenForMobile.routeName: (ctx) => const HomeScreenForMobile(),
   //bottom navigation bar screens
   HomeScreen.routeName: (ctx) => const HomeScreen(),
-  AddPostScreen.routeName: (ctx) => const AddPostScreen(),
+  // AddPostScreen.routeName: (ctx) => const AddPostScreen(),
   ExploreScreen.routeName: (ctx) => const ExploreScreen(),
 
   SearchScreen.routeName: (ctx) => const SearchScreen(),
