@@ -19,6 +19,7 @@ import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
 import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
 
 import 'package:reddit/screens/add_post/add_post.dart';
+import 'package:reddit/screens/add_post/add_post_web.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../components/home_app_bar.dart';
@@ -250,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               onPressed: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const AddPost(),
+                                    builder: (context) => AddPostWebScreen(),
                                   )),
                               child: const Text(
                                 'Create Post',

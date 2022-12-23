@@ -34,11 +34,11 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
     return categories;
   }
 
-  ///@param [context] of screen
-  ///@param [name] subreddit name
-  ///@param [type] subreddit type
-  ///@param [nsfw] whether subreddit is not safe for work
-  ///@param [category] subreddit category
+  /// @param [context] of screen
+  /// @param [name] subreddit name
+  /// @param [type] subreddit type
+  /// @param [nsfw] whether subreddit is not safe for work
+  /// @param [category] subreddit category
   ///initializes the community settings when first creating a community
   void initializeCommunitySettings(context, name, type, nsfw, category) {
     String finalType = (type == CommunityTypes.public)
@@ -92,9 +92,9 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
     });
   }
 
-  ///@param [context] of screen
-  ///@param [name] of created subreddit
   ///initializes the post settings when first creating a community
+  /// @param [context] of screen
+  /// @param [name] of created subreddit
   void initializePostSettings(context, name) {
     ModPostSettingsModel postSettings = ModPostSettingsModel(
         enableSpoiler: true, allowImagesInComment: true, suggestedSort: 'none');

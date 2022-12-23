@@ -65,14 +65,24 @@ class _SignInForWebScreenState extends State<SignInForWebScreen> {
     final user = LogInModel(
         password: passwordController.text, username: usernameController.text);
 
-    DioHelper.postData(path: login, data: user.toJson()).then((value) {
+    DioHelper.postData(path: login, data: user.toJson()).then((value) async {
       // if valid request then we can navigate to another screen after sending the data to the backend
       if (value.statusCode == 200) {
         CacheHelper.putData(key: 'token', value: value.data['token']);
         CacheHelper.putData(key: 'username', value: value.data['username']);
-        UserSettingsModel.fromJson(value.data);
-        UserSettingsModel.cacheUserSettings();
         token = CacheHelper.getData(key: 'token');
+
+        /// here we should cache the user settings
+        await DioHelper.getData(path: accountSettings).then((value) {
+          UserSettingsModel user = UserSettingsModel.fromJson(value.data);
+          user.cacheUserSettings();
+        }).onError((error, stackTrace) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                backgroundColor: ColorManager.red,
+                content: Text('Something went wrong!, please try again')),
+          );
+        });
         // navigating to the main screen
         Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
       }

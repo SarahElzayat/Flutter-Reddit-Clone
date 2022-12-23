@@ -90,7 +90,9 @@ moderationAppBar(context, title, onPressed, isChanged) => AppBar(
         )
       ],
     );
- 
+
+/// @param [context]
+/// @param [type]
 /// @param [context] screen context
 /// @param [type] type of the user management screen
 /// shows a dialog to add a certain user to a certain categor in a community
@@ -152,7 +154,7 @@ userManagementAction(context, type, onPressed) => showDialog(
               ],
             ))));
 
-///@param [context] mod tools screen context
+/// @param [context] mod tools screen context
 ///shows the dialog for action button in web
 moderationDialog(context) => showDialog(
     context: context,

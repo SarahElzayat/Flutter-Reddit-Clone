@@ -229,7 +229,11 @@ class _ListTileWidgetState extends State<ListTileWidget> {
                   tileColor: ColorManager.darkGrey,
 
                   /// This is the first el
-                  leading: widget.leadingIcon,
+                  leading: IconButton(
+                    icon: widget.leadingIcon,
+                    onPressed: widget.handler,
+                    color: ColorManager.blue,
+                  ),
                   title: Text(
                     widget.title,
                     style: TextStyle(

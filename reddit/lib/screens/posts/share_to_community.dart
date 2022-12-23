@@ -9,11 +9,11 @@ import '../../networks/dio_helper.dart';
 import '../main_screen.dart';
 import '../../widgets/posts/post_widget.dart';
 
-  ///@param [community] is the community the post is being shared to
-  ///@param [sharedPost] is the shared post
-  ///@param [isCommunity] bool to check the post is being shared to a profile or a community
-  ///@param [username] the username of the post's author
-  
+/// @param [community] is the community the post is being shared to
+/// @param [sharedPost] is the shared post
+/// @param [isCommunity] bool to check the post is being shared to a profile or a community
+/// @param [username] the username of the post's author
+
 class ShareToCommunityScreen extends StatelessWidget {
   const ShareToCommunityScreen(
       {super.key,

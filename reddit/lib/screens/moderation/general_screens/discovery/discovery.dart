@@ -24,7 +24,8 @@ class _DiscoveryState extends State<Discovery> {
   /// indicates whethwe recommend switch is turned on or off
   bool recommendSwitch = false;
 
-  ///@param [switcher] new value of switch
+  /// @param [switcher]
+  /// @param [switcher] new value of switch
   /// toggles the recommend subreddit and sets it state
   toggleTraffic(switcher) {
     setState(() {
@@ -32,7 +33,7 @@ class _DiscoveryState extends State<Discovery> {
     });
   }
 
-  ///@param [switcher] new value of switch
+  /// @param [switcher] new value of switch
   /// toggles the recommend subreddit and sets it state
   toggleRecommend(switcher) {
     setState(() {
