@@ -81,12 +81,15 @@ class PostScreenCubit extends Cubit<PostScreenState> {
     DioHelper.getData(
       path: '/comments/${post.id}',
       query: {
-        'before': before ?? false ? lastbefore : null,
-        'after': after ?? false ? lastafter : null,
+        'before': (before ?? false) ? lastbefore : null,
+        'after': (after ?? false) ? lastafter : null,
         'limit': limit,
         'sort': sort,
       },
     ).then((value) {
+      if ((after ?? false) && comments.isNotEmpty) {
+        return;
+      }
       if (!(after ?? false)) {
         comments.clear();
         allCommentsMap.clear();
@@ -97,6 +100,8 @@ class PostScreenCubit extends Cubit<PostScreenState> {
 
       lastafter = commentsListingModel.after;
       lastbefore = commentsListingModel.before;
+      logger.wtf(commentsListingModel.toJson());
+
       commentsListingModel.children?.forEach((element) {
         comments.add(element);
         allCommentsMap[element.id!] = element;

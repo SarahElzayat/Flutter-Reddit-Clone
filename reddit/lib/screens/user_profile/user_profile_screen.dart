@@ -201,7 +201,6 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                       // padding: EdgeInsets.only(left: 15),
                                       child: CircleAvatar(
                                         radius: 40,
-
                                         backgroundImage: (userProfileCubit
                                                         .userData!.picture ==
                                                     null ||
@@ -215,7 +214,6 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                                 '$baseUrl/${userProfileCubit.userData!.picture!}',
                                                 // fit: BoxFit.cover,
                                               ),
-                                        
                                       ),
                                     ),
                                     Stack(

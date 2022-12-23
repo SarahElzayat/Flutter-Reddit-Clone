@@ -77,11 +77,9 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
     data['NSFW'] = nsfw;
     data['acceptingRequestsToJoin'] = true;
     data['acceptingRequestsToPost'] = true;
-    data['approvedUsersHaveTheAbilityTo'] =
-         'Post & Comment';
+    data['approvedUsersHaveTheAbilityTo'] = 'Post & Comment';
 
-    DioHelper.putData(path: '/r/$name/about/edit', data: data)
-        .then((value) {
+    DioHelper.putData(path: '/r/$name/about/edit', data: data).then((value) {
       if (value.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
             message: 'Community settings initialized successfully',

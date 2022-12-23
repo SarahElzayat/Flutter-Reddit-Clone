@@ -16,9 +16,12 @@ Widget avatar({required context, image, double radius = 20}) {
     child: CircleAvatar(
       // backgroundColor: Colors.red,
       backgroundColor: ColorManager.darkGrey,
-      backgroundImage: image != null? NetworkImage('$baseUrl/$image'): AppCubit.get(context).profilePicture.isEmpty
-          ? const AssetImage('./assets/images/Logo.png') as ImageProvider
-          : NetworkImage('$baseUrl/${AppCubit.get(context).profilePicture}'),
+      backgroundImage: image != null
+          ? NetworkImage('$baseUrl/$image')
+          : AppCubit.get(context).profilePicture.isEmpty
+              ? const AssetImage('./assets/images/Logo.png') as ImageProvider
+              : NetworkImage(
+                  '$baseUrl/${AppCubit.get(context).profilePicture}'),
       radius: radius,
     ),
   );

@@ -2,6 +2,7 @@
 /// date: 8/11/2022
 /// @Author: Ahmed Atta
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide MenuItem;
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/data/comment/comment_model.dart';
@@ -64,7 +65,7 @@ class DropDownList extends StatelessWidget {
         onChanged: (value) {
           MenuItems.onChanged(context, value as MenuItem, post);
         },
-        dropdownWidth: 45.w,
+        dropdownWidth: kIsWeb ? 20.w : 45.w,
         dropdownMaxHeight: 40.h,
         dropdownPadding: const EdgeInsets.symmetric(vertical: 6),
         dropdownDecoration: BoxDecoration(

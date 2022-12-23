@@ -51,4 +51,6 @@ class PostsLoading extends PostActionsState {}
 
 class UserDetailsFetched extends PostActionsState {}
 
+class RulesFetched extends PostActionsState {}
+
 class LeaveSubredditState extends PostActionsState {}

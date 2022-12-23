@@ -16,6 +16,7 @@ import 'package:reddit/data/user_data_model/user_data_model.dart';
 import 'package:reddit/functions/post_functions.dart';
 import 'package:reddit/networks/dio_helper.dart';
 import '../../../data/comment/sended_comment_model.dart';
+import '../../../data/subreddit/rules_model/rules.dart';
 import '../../../data/subreddit/subreddit_model.dart';
 import '../../../networks/constant_end_points.dart';
 import 'post_comment_actions_state.dart';
@@ -340,6 +341,20 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
       if (value.statusCode == 200) {
         subreddit!.isMember = false;
         emit(LeaveSubredditState());
+      }
+    }).catchError((error) {
+      logger.d(error.response.data);
+    });
+  }
+
+  Rules? rules;
+  void getRules() {
+    DioHelper.getData(
+      path: '/r/${post.subreddit}/about/rules',
+    ).then((value) {
+      if (value.statusCode == 200) {
+        rules = Rules.fromJson(value.data);
+        emit(RulesFetched());
       }
     }).catchError((error) {
       logger.d(error.response.data);

@@ -11,6 +11,7 @@ import 'package:reddit/components/back_to_top_button.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/home_components/left_drawer.dart';
 import 'package:reddit/components/home_components/right_drawer.dart';
+import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
 import 'package:reddit/functions/post_functions.dart';
 import 'package:reddit/screens/posts/post_screen_cubit/post_screen_cubit.dart';
 import 'package:reddit/screens/posts/post_screen_cubit/post_screen_state.dart';
@@ -50,8 +51,9 @@ class PostScreenWeb extends StatelessWidget {
             ..getPostDetails(),
         ),
         BlocProvider(
-          create: (context) =>
-              PostAndCommentActionsCubit(post: post)..getSubDetails(),
+          create: (context) => PostAndCommentActionsCubit(post: post)
+            ..getSubDetails()
+            ..getRules(),
         ),
       ],
       child: BlocConsumer<PostScreenCubit, PostScreenState>(
@@ -138,97 +140,154 @@ class PostScreenWeb extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height: 500,
-                        width: 300,
+                        width: 2.w,
+                      ),
+                      SizedBox(
+                        width: 20.w,
                         child: Column(
                           children: [
-                            Container(
-                              width: 200,
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                  color: ColorManager.blue,
-                                  width: 2,
-                                ),
-                              ),
-                              child: BlocConsumer<PostAndCommentActionsCubit,
-                                  PostActionsState>(
-                                listener: (context, state) {},
-                                builder: (context, state) {
-                                  var actionsCubit =
-                                      PostAndCommentActionsCubit.get(context);
-                                  return Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          subredditAvatar(
-                                              imageUrl: actionsCubit
-                                                      .subreddit?.picture ??
-                                                  ''),
-                                          const SizedBox(
-                                            width: 10,
+                            BlocConsumer<PostAndCommentActionsCubit,
+                                PostActionsState>(
+                              listener: (context, state) {},
+                              builder: (context, state) {
+                                final actionsCubit =
+                                    PostAndCommentActionsCubit.get(context);
+                                return actionsCubit.subreddit == null
+                                    ? Container()
+                                    : Container(
+                                        width: 20.w,
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          border: Border.all(
+                                            color: ColorManager.blue,
+                                            width: 2,
                                           ),
-                                          Text(actionsCubit.subreddit?.title ??
-                                              '')
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                          'Created At : ${DateFormat.yMMMMd('en_US').format(DateTime.tryParse(actionsCubit.subreddit?.dateOfCreation ?? '') ?? DateTime.now())}'),
-                                      const Divider(
-                                        color: Colors.grey,
-                                      ),
-                                      Text(
-                                        'Subscribers : ${actionsCubit.subreddit?.members ?? ''}',
-                                      ),
-                                      const Divider(
-                                        color: Colors.grey,
-                                      ),
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            if ((actionsCubit
-                                                    .subreddit?.isMember ??
-                                                false)) {
-                                              actionsCubit.leaveCommunity();
-                                            } else {
-                                              actionsCubit.joinCommunity();
-                                            }
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                ColorManager.betterDarkGrey,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                SubredditCubit.get(context)
+                                                    .setSubredditName(
+                                                        context,
+                                                        actionsCubit.subreddit
+                                                                ?.title ??
+                                                            '');
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  subredditAvatar(
+                                                      imageUrl: actionsCubit
+                                                              .subreddit
+                                                              ?.picture ??
+                                                          ''),
+                                                  const SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Text(actionsCubit
+                                                          .subreddit?.title ??
+                                                      '')
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          child: Text((actionsCubit
-                                                      .subreddit?.isMember ??
-                                                  false)
-                                              ? 'Joined'
-                                              : 'Join')),
-                                    ],
-                                  );
-                                },
-                              ),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            Text(
+                                                'Created At : ${DateFormat.yMMMMd('en_US').format(DateTime.tryParse(actionsCubit.subreddit?.dateOfCreation ?? '') ?? DateTime.now())}'),
+                                            const Divider(
+                                              color: Colors.grey,
+                                              height: 10,
+                                            ),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            Text(
+                                              'Subscribers : ${actionsCubit.subreddit?.members ?? ''}',
+                                            ),
+                                            const Divider(
+                                              color: Colors.grey,
+                                              height: 10,
+                                            ),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            ElevatedButton(
+                                                onPressed: () {
+                                                  if ((actionsCubit.subreddit
+                                                          ?.isMember ??
+                                                      false)) {
+                                                    actionsCubit
+                                                        .leaveCommunity();
+                                                  } else {
+                                                    actionsCubit
+                                                        .joinCommunity();
+                                                  }
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: ColorManager
+                                                      .betterDarkGrey,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                ),
+                                                child: Text((actionsCubit
+                                                            .subreddit
+                                                            ?.isMember ??
+                                                        false)
+                                                    ? 'Joined'
+                                                    : 'Join')),
+                                          ],
+                                        ),
+                                      );
+                              },
                             ),
                             const SizedBox(
                               height: 20,
                             ),
-                            Container(
-                              color: Colors.blue,
-                              height: 200,
-                              width: 200,
-                              child: Text(
-                                'Create post',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge!
-                                    .copyWith(color: Colors.white),
-                              ),
+                            BlocConsumer<PostAndCommentActionsCubit,
+                                PostActionsState>(
+                              listener: (context, state) {},
+                              builder: (context, state) {
+                                final actionsCubit =
+                                    PostAndCommentActionsCubit.get(context);
+                                return (actionsCubit.rules?.rules?.isEmpty ??
+                                            true) ==
+                                        true
+                                    ? Container()
+                                    : Container(
+                                        width: 20.w,
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          border: Border.all(
+                                            color: ColorManager.blue,
+                                            width: 2,
+                                          ),
+                                        ),
+                                        child: ListView.builder(
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.vertical,
+                                          itemBuilder: (context, index) {
+                                            return Text(
+                                              actionsCubit.rules!.rules![index]
+                                                  .description!,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                            );
+                                          },
+                                          itemCount: actionsCubit
+                                                  .rules!.rules?.length ??
+                                              0,
+                                        ),
+                                      );
+                              },
                             ),
                           ],
                         ),
@@ -247,9 +306,9 @@ class PostScreenWeb extends StatelessWidget {
   _getCommentsList(List<CommentModel> l) {
     return l
         .map((e) => Padding(
+              key: Key(e.id!),
               padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 0),
               child: CommentWeb(
-                key: Key(e.id!),
                 post: post,
                 comment: e,
               ),
