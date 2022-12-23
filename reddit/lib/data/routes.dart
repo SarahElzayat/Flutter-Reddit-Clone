@@ -24,7 +24,7 @@ import '../../screens/to_go_screens/privacy_and_policy.dart';
 import '../../screens/to_go_screens/user_agreement_screen.dart';
 import 'package:reddit/screens/settings/blocked_accounts.dart';
 
-import '../screens/inbox/Inbox_screen.dart';
+import '../screens/inbox/inbox_screen.dart';
 import '../screens/inbox/notifications_screen.dart';
 import '../screens/add_post/image_screen.dart';
 import '../screens/create_community_screen/create_community_screen.dart';

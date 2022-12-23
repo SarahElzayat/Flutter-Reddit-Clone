@@ -10,7 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:reddit/screens/add_post/image_screen.dart';
 import 'package:reddit/screens/add_post/video_trimmer.dart';
 
-import '../components/Button.dart';
+import '../components/button.dart';
 import '../components/helpers/color_manager.dart';
 import '../cubit/add_post/cubit/add_post_cubit.dart';
 
