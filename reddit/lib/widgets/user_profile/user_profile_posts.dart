@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:reddit/components/bottom_sheet.dart';
@@ -35,6 +36,8 @@ class _UserProfilePostsState extends State<UserProfilePosts> {
             onRefresh: () =>
                 Future.sync(() => userProfileCubit.postController.refresh()),
             child: PagedListView<String?, PostModel>(
+              // physics: (kIsWeb) ? NeverScrollableScrollPhysics() : null,
+              // shrinkWrap: (kIsWeb) ? true : false,
               pagingController: userProfileCubit.postController,
               builderDelegate: PagedChildBuilderDelegate<PostModel>(
                 itemBuilder: (context, item, index) => Container(

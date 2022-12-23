@@ -1,24 +1,24 @@
 import 'dart:math';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_conditional_rendering/conditional_switch.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
-import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/cubit/comment_notifier/comment_notifier_cubit.dart';
-import 'package:reddit/cubit/comment_notifier/comment_notifier_state.dart';
-import 'package:reddit/cubit/post_notifier/post_notifier_cubit.dart';
-import 'package:reddit/cubit/post_notifier/post_notifier_state.dart';
-import 'package:reddit/data/comment/comment_model.dart';
-import 'package:reddit/functions/post_functions.dart';
-import 'package:reddit/screens/comments/add_comment_web.dart';
+import 'package:tuple/tuple.dart';
+import '../../components/helpers/color_manager.dart';
+import '../../components/helpers/enums.dart';
+import '../../cubit/comment_notifier/comment_notifier_cubit.dart';
+import '../../cubit/comment_notifier/comment_notifier_state.dart';
+import '../../cubit/post_notifier/post_notifier_cubit.dart';
+import '../../cubit/post_notifier/post_notifier_state.dart';
+import '../../data/comment/comment_model.dart';
+import '../../functions/post_functions.dart';
+import '../../screens/comments/add_comment_web.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:reddit/screens/posts/post_screen_cubit/post_screen_cubit.dart';
-import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
-import 'package:reddit/widgets/posts/votes_widget.dart';
+import '../../screens/posts/post_screen_cubit/post_screen_cubit.dart';
+import '../posts/actions_cubit/post_comment_actions_cubit.dart';
+import '../posts/actions_cubit/post_comment_actions_state.dart';
+import '../posts/votes_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../components/helpers/universal_ui/universal_ui.dart';
 import '../../data/post_model/post_model.dart';
@@ -78,49 +78,51 @@ class _CommentWebState extends State<CommentWeb> {
     if (_controller == null) {
       return Container();
     }
-
+    var defaultStyles = DefaultStyles(
+        code: DefaultTextBlockStyle(
+          const TextStyle(
+            fontSize: 14,
+            color: ColorManager.eggshellWhite,
+            height: 1.15,
+            fontWeight: FontWeight.w300,
+          ),
+          const Tuple2(16, 0),
+          const Tuple2(0, 0),
+          const BoxDecoration(
+            color: ColorManager.darkGrey,
+          ),
+        ),
+        inlineCode: InlineCodeStyle(
+          backgroundColor: ColorManager.darkGrey,
+          style: const TextStyle(
+            color: ColorManager.eggshellWhite,
+          ),
+        ));
     Widget quillEditor = MouseRegion(
       cursor: SystemMouseCursors.text,
       child: QuillEditor(
         controller: _controller!,
         scrollController: ScrollController(),
-        scrollable: false,
+        scrollable: true,
         focusNode: _focusNode,
+        customStyles: defaultStyles,
         autoFocus: false,
-        readOnly: true,
-        placeholder: '',
+        readOnly: false,
+        placeholder: 'Add content',
         expands: false,
-        showCursor: false,
         padding: EdgeInsets.zero,
-        embedBuilders: [
-          ...FlutterQuillEmbeds.builders(),
-        ],
+        embedBuilders: defaultEmbedBuildersWeb,
       ),
     );
-    if (kIsWeb) {
-      quillEditor = MouseRegion(
-        cursor: SystemMouseCursors.text,
-        child: QuillEditor(
-          controller: _controller!,
-          scrollController: ScrollController(),
-          scrollable: true,
-          focusNode: _focusNode,
-          autoFocus: false,
-          readOnly: false,
-          placeholder: 'Add content',
-          expands: false,
-          padding: EdgeInsets.zero,
-          embedBuilders: defaultEmbedBuildersWeb,
-        ),
-      );
-    }
     return MultiBlocProvider(
       providers: [
         BlocProvider(
           create: (context) => PostAndCommentActionsCubit(
             post: widget.post,
             currentComment: widget.comment,
-          ),
+          )
+            ..getUserDetails()
+            ..getSubDetails(),
         ),
       ],
       child: BlocConsumer<CommentNotifierCubit, CommentsNotifierState>(
@@ -307,7 +309,18 @@ class _CommentWebState extends State<CommentWeb> {
   }) {
     return Row(
       children: [
-        subredditAvatar(small: true),
+        BlocConsumer<PostAndCommentActionsCubit, PostActionsState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            return subredditAvatar(
+                small: true,
+                imageUrl: PostAndCommentActionsCubit.get(context)
+                        .subreddit
+                        ?.picture ??
+                    PostAndCommentActionsCubit.get(context).user?.picture ??
+                    '');
+          },
+        ),
         SizedBox(
           width: min(5.w, 10),
         ),

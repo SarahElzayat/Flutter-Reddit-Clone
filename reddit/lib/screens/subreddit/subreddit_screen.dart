@@ -1,5 +1,6 @@
 // import 'dart:ffi';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,9 +8,16 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/add_post/cubit/add_post_cubit.dart';
 import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
+import 'package:reddit/networks/constant_end_points.dart';
+import 'package:reddit/screens/search/cubit/search_cubit.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../../components/Button.dart';
+import '../../components/button.dart';
+import '../../components/home_app_bar.dart';
+import '../../components/home_components/functions.dart';
+import '../../components/home_components/left_drawer.dart';
 import '../../components/home_components/right_drawer.dart';
+import '../../components/snack_bar.dart';
 import '../../cubit/app_cubit/app_cubit.dart';
 import '../../widgets/subreddit/subreddit_about.dart';
 import '../../widgets/subreddit/subreddit_posts.dart';
@@ -29,6 +37,17 @@ class _SubredditState extends State<Subreddit>
     with SingleTickerProviderStateMixin {
   late TabController controller = TabController(length: 2, vsync: this);
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  ///opens/closes the end drawer
+  void endDrawer() {
+    changeEndDrawer(_scaffoldKey);
+  }
+
+  ///opens/closes the drawer
+  void drawer() {
+    changeLeftDrawer(_scaffoldKey);
+  }
+
   double sliverHeight = 0;
 
   bool descriptionFlag = true;
@@ -111,57 +130,127 @@ class _SubredditState extends State<Subreddit>
               }
             });
           },
-        ),
-        body: NestedScrollView(
-          headerSliverBuilder: (context2, innerBoxIsScrolled) {
-            return [
-              SliverPersistentHeader(
-                  pinned: true,
-                  delegate: SubredditAppBar(
-                      scaffoldKey: _scaffoldKey,
-                      maxExtent: 90,
-                      minExtent: 85,
-                      subredditCubit: subredditCubit)),
-              SliverAppBar(
-                pinned: true,
-                automaticallyImplyLeading: false,
-                primary: false,
-                actions: <Widget>[Container()],
+          builder: (context, state) {
+            return Scaffold(
+              key: _scaffoldKey,
+              appBar: kIsWeb
+                  ? homeAppBar(context, 0,
+                      isSubreddit: true,
+                      subredditName: 'r/${subredditCubit.subredditName}')
+                  : null,
+              drawer: kIsWeb ? const LeftDrawer() : null,
+              endDrawer: (kIsWeb) ? const RightDrawer() : const RightDrawer(),
+              bottomNavigationBar: (kIsWeb)
+                  ? null
+                  : BottomNavigationBar(
+                      type: BottomNavigationBarType.fixed,
+                      currentIndex: cubit.currentIndex,
+                      items: cubit.bottomNavBarIcons,
+                      onTap: (value) {
+                        setState(() {
+                          if (value == 2) {
+                            AddPostCubit.get(context)
+                                .addSubredditName(subredditCubit.subredditName);
+                            Navigator.of(context).push(MaterialPageRoute(
+                              // TODO:pass the name of subreddit to add post
+                              builder: (context) => const AddPost(),
+                            ));
+                          } else {
+                            Navigator.of(context)
+                                .popUntil((route) => route.isFirst);
+                            cubit.changeIndex(value);
+                          }
+                        });
+                      },
+                    ),
+              body: BlocListener<AppCubit, AppState>(
+                listener: (context, state) {
+                  if (kIsWeb) {
+                    if (state is ChangeRightDrawerState) {
+                      endDrawer();
+                    }
+                    if (state is ChangeLeftDrawerState) {
+                      drawer();
+                    }
 
-                bottom: PreferredSize(
-                    preferredSize: const Size.fromHeight(0),
-                    child: Container(
-                      key: _con1,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: mediaQuery.size.width * 0.15),
-                      color: ColorManager.black,
-                      child: TabBar(
-                          indicatorColor: ColorManager.blue,
-                          controller: controller,
-                          tabs: [
-                            Text(
-                              'Posts',
-                              style: TextStyle(
-                                  fontSize: 25 * mediaQuery.textScaleFactor),
-                            ),
-                            Text(
-                              'About',
-                              style: TextStyle(
-                                  fontSize: 25 * mediaQuery.textScaleFactor),
-                            )
-                          ]),
-                    )),
-                // pinned: true,
-                // floating: true,
-                // snap: true,
-                backgroundColor: Colors.black,
-                // actionsIconTheme: IconThemeData(opacity: 0.0),
-                expandedHeight: sliverHeight,
-                flexibleSpace: FlexibleSpaceBar(
-                    // key: _subInof,
-                    background: subredditInfo(mediaQuery, subredditCubit)),
-              )
-            ];
+                    if (state is ErrorState) {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(responseSnackBar(
+                        message: 'An error occurred, please try again later.',
+                        error: false,
+                      ));
+                    }
+                  }
+                },
+                child: NestedScrollView(
+                  headerSliverBuilder: (context2, innerBoxIsScrolled) {
+                    return [
+                      SliverPersistentHeader(
+                          pinned: true,
+                          delegate: SubredditAppBar(
+                              scaffoldKey: _scaffoldKey,
+                              maxExtent: 90,
+                              minExtent: 85,
+                              subredditCubit: subredditCubit)),
+                      SliverAppBar(
+                        pinned: true,
+                        automaticallyImplyLeading: false,
+                        primary: false,
+                        actions: <Widget>[Container()],
+
+                        bottom: PreferredSize(
+                            preferredSize: const Size.fromHeight(0),
+                            child: Container(
+                              key: _con1,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: mediaQuery.size.width * 0.15),
+                              color: ColorManager.black,
+                              child: TabBar(
+                                  indicatorColor: ColorManager.blue,
+                                  controller: controller,
+                                  tabs: [
+                                    Text(
+                                      'Posts',
+                                      style: TextStyle(
+                                          fontSize:
+                                              25 * mediaQuery.textScaleFactor),
+                                    ),
+                                    Text(
+                                      'About',
+                                      style: TextStyle(
+                                          fontSize:
+                                              25 * mediaQuery.textScaleFactor),
+                                    )
+                                  ]),
+                            )),
+                        // pinned: true,
+                        // floating: true,
+                        // snap: true,
+                        backgroundColor: Colors.black,
+                        // actionsIconTheme: IconThemeData(opacity: 0.0),
+                        expandedHeight: sliverHeight,
+                        flexibleSpace: FlexibleSpaceBar(
+                            // key: _subInof,
+                            background:
+                                subredditInfo(mediaQuery, subredditCubit)),
+                      )
+                    ];
+                  },
+                  body: Padding(
+                    padding: (kIsWeb && mediaQuery.size.width > 800)
+                        ? EdgeInsets.only(
+                            left: 24.w,
+                            right: 24.w,
+                          )
+                        : EdgeInsets.zero,
+                    child: TabBarView(controller: controller, children: const [
+                      SubredditPostsWidget(),
+                      SubredditAboutWidget(),
+                    ]),
+                  ),
+                ),
+              ),
+            );
           },
           body: TabBarView(controller: controller, children: [
             SubredditPostsWidget(),

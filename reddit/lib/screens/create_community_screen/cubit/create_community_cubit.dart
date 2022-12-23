@@ -31,7 +31,91 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
     return categories;
   }
 
-  void creatCommunity(name, type, nsfw, category, context) {
+  ///@param [context] of screen
+  ///@param [name] subreddit name
+  ///@param [type] subreddit type
+  ///@param [nsfw] whether subreddit is not safe for work
+  ///@param [category] subreddit category
+  ///initializes the community settings when first creating a community
+  void initializeCommunitySettings(context, name, type, nsfw, category) {
+    String finalType = (type == CommunityTypes.public)
+        ? 'Public'
+        : (type == CommunityTypes.restricted)
+            ? 'Restricted'
+            : 'Private';
+
+    logger.w('type $type');
+    logger.w('finalType $finalType');
+    CommunitySettingsModel settings = CommunitySettingsModel(
+        communityName: name,
+        type: type,
+        nSFW: nsfw ?? false,
+        communityDescription: '',
+        mainTopic: 'Activism',
+        subTopics: [],
+        region: 'United States',
+        language: 'English',
+        welcomeMessage: '',
+        sendWelcomeMessage: false,
+        acceptingRequestsToJoin: true,
+        acceptingRequestsToPost: true,
+        approvedUsersHaveTheAbilityTo: 'Post & Comment');
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['communityName'] = name;
+    data['mainTopic'] = 'Activism';
+    data['subTopics'] = [];
+    data['communityDescription'] = '';
+    data['sendWelcomeMessage'] = false;
+    data['welcomeMessage'] = '';
+    data['language'] = 'English';
+    data['Region'] = 'United States';
+    data['Type'] = type;
+    data['NSFW'] = nsfw;
+    data['acceptingRequestsToJoin'] = true;
+    data['acceptingRequestsToPost'] = true;
+    data['approvedUsersHaveTheAbilityTo'] = 'Post & Comment';
+
+    DioHelper.putData(path: '/r/$name/about/edit', data: data).then((value) {
+      if (value.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+            message: 'Community settings initialized successfully',
+            error: false));
+      }
+    }).catchError((error) {
+      error = error as DioError;
+      Logger().e(error.response);
+      ScaffoldMessenger.of(context).showSnackBar(
+          responseSnackBar(message: 'Couldn\'t initialize community settings'));
+    });
+  }
+
+  ///initializes the post settings when first creating a community
+  ///@param [context] of screen
+  ///@param [name] of created subreddit
+  void initializePostSettings(context, name) {
+    ModPostSettingsModel postSettings = ModPostSettingsModel(
+        enableSpoiler: true, allowImagesInComment: true, suggestedSort: 'none');
+    DioHelper.putData(
+            path: '/r/$name/about/edit-post-settings',
+            data: postSettings.toJson())
+        .then((value) {
+      if (value.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+            message: 'Post settings initialized successfully', error: false));
+      }
+    }).catchError((error) {
+      error = error as DioError;
+      ScaffoldMessenger.of(context).showSnackBar(
+          responseSnackBar(message: 'Couldn\'t initialize post settings'));
+    });
+  }
+
+  void creatCommunity(context, name, type, nsfw, category) {
+    String finalType = (type == CommunityTypes.private)
+        ? 'Private'
+        : (type == CommunityTypes.restricted)
+            ? 'Restricted'
+            : 'Public';
     final CreateCommunityModel community = CreateCommunityModel(
         subredditName: name, type: type, nsfw: nsfw, category: category);
 

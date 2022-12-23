@@ -47,7 +47,6 @@ class SubredditResultsContainer extends StatelessWidget {
                       style: const TextStyle(
                           fontSize: 16, color: ColorManager.eggshellWhite),
                     ),
-                    // const Spacer(),
                     Row(
                       children: [
                         if (model.data!.nsfw!)

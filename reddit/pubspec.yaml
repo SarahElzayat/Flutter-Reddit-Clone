@@ -30,6 +30,8 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   any_link_preview: ^2.0.9
+  image_picker_web: ^3.0.0+1
+  video_player_web: null
   bloc: ^8.1.0
   conditional_builder_null_safety: ^0.0.6
   cupertino_icons: ^1.0.2
@@ -46,6 +48,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.1
+  flutter_colorpicker: ^1.0.3
   flutter_conditional_rendering: ^2.0.0
   flutter_facebook_auth: ^5.0.6
   flutter_html: null
@@ -63,6 +66,7 @@ dependencies:
   google_sign_in: ^5.4.2
   hexcolor: ^3.0.1
   html_parser_plus: ^0.0.1
+  http_parser: ^4.0.2
   image_cropper: ^3.0.1
   image_painter: ^0.4.6
   image_picker: ^0.8.6

@@ -38,7 +38,7 @@ class HeaderContainsAvatar extends StatelessWidget {
           children: [
             Text(
               usrName,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(email)
           ],

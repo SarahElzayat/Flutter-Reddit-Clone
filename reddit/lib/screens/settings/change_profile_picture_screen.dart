@@ -5,6 +5,8 @@ import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../components/snack_bar.dart';
+
 class ChangeProfilePicutre extends StatefulWidget {
   const ChangeProfilePicutre({super.key});
 

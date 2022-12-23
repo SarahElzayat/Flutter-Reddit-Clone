@@ -1,5 +1,10 @@
+/// this file is used to define the full screen controls for the video player
+/// date: 16/12/2022
+/// @Author: Ahmed Atta
+
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,13 +17,21 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../data/post_model/post_model.dart';
 import 'flick_multi_manager.dart';
 
+/// defines the full screen controls for the video player
+///
+/// it is used in the Player widget when the video is in full screen mode
 class FullScreenPortraitControls extends StatelessWidget {
   const FullScreenPortraitControls(
       {Key? key, this.flickMultiManager, this.flickManager, required this.post})
       : super(key: key);
 
+  /// the multi manager used to control all video players
   final FlickMultiManager? flickMultiManager;
+
+  /// the manager used to control the video player
   final FlickManager? flickManager;
+
+  /// the post that contains the video
   final PostModel post;
 
   @override
@@ -28,26 +41,22 @@ class FullScreenPortraitControls extends StatelessWidget {
     return BlocProvider(
       create: ((context) => PostAndCommentActionsCubit(post: post)),
       child: Container(
-        color: Colors.transparent,
+        decoration: const BoxDecoration(
+          color: Colors.transparent,
+          gradient: LinearGradient(
+            colors: [ColorManager.black, Colors.transparent],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            stops: [0.0, 0.3],
+          ),
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            // Row(
-            //   children: [
-            //     IconButton(
-            //         onPressed: () {
-            //           // flickManager?.flickControlManager?.toggleFullscreen();
-            //         },
-            //         icon: const Icon(Icons.arrow_back_rounded)),
-            //     Expanded(child: Center(child: Text('r/${post.subreddit!}'))),
-            //     // dropDownDots(post)
-            //   ],
-            // ),
             Expanded(
               child: FlickToggleSoundAction(
                 toggleMute: () {
-                  // flickMultiManager?.toggleMute();
                   displayManager.handleShowPlayerControls();
                 },
                 child: const FlickSeekVideoAction(
@@ -58,25 +67,27 @@ class FullScreenPortraitControls extends StatelessWidget {
             FlickAutoHideChild(
               child: Row(
                 children: [
-                  Text(
-                    post.title!,
-                    style: const TextStyle(color: ColorManager.eggshellWhite),
-                  ),
+                  if (!kIsWeb)
+                    Text(
+                      post.title!,
+                      style: const TextStyle(color: ColorManager.eggshellWhite),
+                    ),
                   const Spacer(),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      VotesPart(
-                        post: post,
-                        iconColor: Colors.white,
-                        isWeb: true,
-                      ),
-                      Icon(
-                        Icons.share,
-                        size: min(5.5.w, 30),
-                      )
-                    ],
-                  ),
+                  if (!kIsWeb)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        VotesPart(
+                          post: post,
+                          iconColor: Colors.white,
+                          isWeb: true,
+                        ),
+                        Icon(
+                          Icons.share,
+                          size: min(5.5.w, 30),
+                        )
+                      ],
+                    ),
                 ],
               ),
             ),
@@ -101,7 +112,6 @@ class FullScreenPortraitControls extends StatelessWidget {
                       ],
                     ),
                   ),
-                  // const FlickFullScreenToggle(),
                 ],
               ),
             ),

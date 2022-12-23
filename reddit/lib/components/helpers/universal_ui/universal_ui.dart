@@ -1,3 +1,6 @@
+/// this file is used to fix the ui library in flutter web
+/// date: 16/12/2022
+/// @Author: Ahmed Atta
 library universal_ui;
 
 import 'package:flutter/cupertino.dart';
@@ -27,6 +30,9 @@ class UniversalUI {
 
 var ui = UniversalUI();
 
+/// embed Image builder for web
+///
+/// this class is used to build image embed for web and used by the [QuillEditor]
 class ImageEmbedBuilderWeb implements EmbedBuilder {
   @override
   String get key => BlockEmbed.imageType;
@@ -64,6 +70,9 @@ class ImageEmbedBuilderWeb implements EmbedBuilder {
   }
 }
 
+/// embed Video builder for web
+///
+/// this class is used to build video embed for web and used by the [QuillEditor]
 class VideoEmbedBuilderWeb implements EmbedBuilder {
   @override
   String get key => BlockEmbed.videoType;
@@ -96,6 +105,7 @@ class VideoEmbedBuilderWeb implements EmbedBuilder {
   }
 }
 
+/// getter for default embed builders for web
 List<EmbedBuilder> get defaultEmbedBuildersWeb => [
       ImageEmbedBuilderWeb(),
       VideoEmbedBuilderWeb(),

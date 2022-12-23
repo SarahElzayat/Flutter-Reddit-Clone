@@ -1,6 +1,7 @@
 /// @author Sarah El-Zayat
 /// @date 9/11/2022
 /// Home dropdown menu to choose between popular and home
+/// intended to be used, the back didn't implement it
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

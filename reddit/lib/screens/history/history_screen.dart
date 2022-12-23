@@ -14,6 +14,9 @@ import '../../cubit/app_cubit/app_cubit.dart';
 import '../../cubit/post_notifier/post_notifier_state.dart';
 import '../add_post/add_post.dart';
 
+///@param [bottomNavBarScreenIndex] the index of the screen the history was called from
+///so it pops back to it
+
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key, required this.bottomNavBarScreenIndex});
   final int bottomNavBarScreenIndex;
@@ -26,6 +29,7 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> {
   final _scrollController = ScrollController();
 
+  /// scroll listener to load more at the bottom of the screen
   void _scrollListener() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
@@ -36,7 +40,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   void initState() {
     AppCubit.get(context).changeHistoryCategory(HistoyCategory.recent);
-
     _scrollController.addListener(_scrollListener);
     super.initState();
   }

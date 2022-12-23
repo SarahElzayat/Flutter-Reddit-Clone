@@ -1,3 +1,7 @@
+/// this file is used to define the normal controls for the video player
+/// date: 16/12/2022
+/// @Author: Ahmed Atta
+
 import 'package:flutter/material.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:reddit/data/post_model/post_model.dart';
@@ -5,6 +9,9 @@ import 'package:reddit/data/post_model/post_model.dart';
 import '../../widgets/posts/video_page_view.dart';
 import 'flick_multi_manager.dart';
 
+/// defines the normal controls for the video player
+///
+/// it is used in the Player widget when the video is in normal mode
 class FeedPlayerPortraitControls extends StatelessWidget {
   final PostModel post;
 
@@ -17,11 +24,6 @@ class FeedPlayerPortraitControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // FlickDisplayManager displayManager =
-    // Provider.of<FlickDisplayManager>(context);
-
-    // FlickControlManager controlManager =
-    //     Provider.of<FlickControlManager>(context);
     return Container(
       color: Colors.transparent,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -31,8 +33,6 @@ class FeedPlayerPortraitControls extends StatelessWidget {
           Expanded(
             child: FlickToggleSoundAction(
               toggleMute: () {
-                // flickMultiManager?.toggleMute();
-                // controlManager.toggleFullscreen();
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => WholeScreenVideoViewer(
@@ -61,7 +61,6 @@ class FeedPlayerPortraitControls extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              // const FlickFullScreenToggle(),
             ],
           ),
         ],

@@ -1,13 +1,15 @@
+/// @author Sarah El-Zayat
+/// @date 9/11/2022
+/// Search cubit for handling application's state management of searching
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
-import 'package:reddit/data/comment/comment_model.dart';
-import 'package:reddit/data/search/search_result_profile_model.dart';
-import 'package:reddit/data/search/search_result_subbredit_model.dart';
-import 'package:reddit/networks/constant_end_points.dart';
-import 'package:reddit/networks/dio_helper.dart';
-
+import '../../../data/comment/comment_model.dart';
+import '../../../data/search/search_result_profile_model.dart';
+import '../../../data/search/search_result_subbredit_model.dart';
+import '../../../networks/constant_end_points.dart';
+import '../../../networks/dio_helper.dart';
 import '../../../data/post_model/post_model.dart';
 import '../results_comments.dart';
 import '../results_communities.dart';
@@ -20,30 +22,38 @@ var logger = Logger();
 
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit() : super(SearchInitial());
+
+  /// static method to instantiate an isntance of the app cubit to be used
   static SearchCubit get(context) => BlocProvider.of(context);
 
+  ///@param[searchQuery] the search word
   String searchQuery = '';
+
+  ///@param[s] the search word entered
+  ///the method sets the search word for the cubit
   void setSearchQuery(s) {
     searchQuery = s;
   }
 
+  ///@param[subredditName] in case of searching inside a subreddit, the paramater holds the subreddit name
   String subredditName = '';
 
+  ///@param[s] subreddit's name, it's the subreddit's name
+  ///the method sets the subreddit's name for the cubit in case of searching inside a subreddit
   void setSearchSubreddit(s) {
     subredditName = s;
     logger.wtf(s);
   }
 
+  ///@param[searchResultScreens] a list of the search results screens
   List<Widget> searchResultScreens = [
     const ResultsPosts(),
     const ResultsComments(),
     const ResultsCommunities(),
     const ResultsUsers(),
   ];
-  List<Widget> searchInSubredditResultScreens = [
-    const ResultsPosts(),
-    const ResultsComments(),
-  ];
+
+  ///@param[searchResultTabs] a list of the search result tabs to be added to the appbar
   List<Tab> searchResultTabs = [
     const Tab(
       text: 'Posts',
@@ -59,6 +69,13 @@ class SearchCubit extends Cubit<SearchState> {
     ),
   ];
 
+  ///@param[searchInSubredditResultScreens] a list of the search results screens in case of searching inside a subreddit
+  List<Widget> searchInSubredditResultScreens = [
+    const ResultsPosts(isSubreddit: true),
+    const ResultsComments(),
+  ];
+
+  ///@param[searchInSubredditResultTabs] a list of the search result tabs to be added to the appbar in case of searching inside a subreddit
   List<Tab> searchInSubredditResultTabs = [
     const Tab(
       text: 'Posts',
@@ -68,10 +85,23 @@ class SearchCubit extends Cubit<SearchState> {
     ),
   ];
 
+  ///@param [posts] list of search result posts
   List<PostModel> posts = [];
+
+  ///@param [postsBeforeId] is the last "before" id sent from the backend, used when needed to get the posts
+  ///                   before the currently loaded oens
+  /// initially empty to load posts for the first time
   String postsBeforeId = '';
+
+  ///@param [postsAfterId] is the last "after" id sent from the backend, used when needed to get the posts
+  ///                   after the currently loaded oens
+  /// initially empty to load posts for the first time
   String postsAfterId = '';
 
+  ///@param [loadMore] bool that indicates whether the function is called on loading more items for infinte scrolling or not
+  ///@param [before] bool to use when the posts before the current loaded ones are needed
+  ///@param [after] bool to use when the posts after the current loaded ones are needed
+  /// the function gets the search result posts and fills the [posts] list
   void getPosts(
       {bool loadMore = false,
       bool before = false,
@@ -116,10 +146,23 @@ class SearchCubit extends Cubit<SearchState> {
     });
   }
 
+  ///@param [users] list of search result users
   List<SearchResultProfileModel> users = [];
+
+  ///@param [usersBeforeId] is the last "before" id sent from the backend, used when needed to get the posts
+  ///                   before the currently loaded oens
+  /// initially empty to load users for the first time
   String usersBeforeId = '';
+
+  ///@param [usersAfterId] is the last "before" id sent from the backend, used when needed to get the posts
+  ///                   before the currently loaded oens
+  /// initially empty to load users for the first time
   String usersAfterId = '';
 
+  ///@param [loadMore] bool that indicates whether the function is called on loading more items for infinte scrolling or not
+  ///@param [before] bool to use when the users before the current loaded ones are needed
+  ///@param [after] bool to use when the users after the current loaded ones are needed
+  /// the function gets the search result users and fills the [users] list
   void getUsers(
       {bool loadMore = false,
       bool before = false,
@@ -166,11 +209,26 @@ class SearchCubit extends Cubit<SearchState> {
     });
   }
 
+  ///@param [comments] list of search result comments
   List<CommentModel> comments = [];
+
+  ///@param [commentsPosts] list of search result posts corresponding to comments
   List<PostModel> commentsPosts = [];
+
+  ///@param [commentsBeforeId] is the last "before" id sent from the backend, used when needed to get the posts
+  ///                   before the currently loaded oens
+  /// initially empty to load comments for the first time
   String commentsBeforeId = '';
+
+  ///@param [commentsAfterId] is the last "before" id sent from the backend, used when needed to get the posts
+  ///                   before the currently loaded oens
+  /// initially empty to load comments for the first time
   String commentsAfterId = '';
 
+  ///@param [loadMore] bool that indicates whether the function is called on loading more items for infinte scrolling or not
+  ///@param [before] bool to use when the comments before the current loaded ones are needed
+  ///@param [after] bool to use when the comments after the current loaded ones are needed
+  /// the function gets the search result comments and fills the [comments] and [commentsPosts] list
   void getComments(
       {bool loadMore = false,
       bool before = false,
@@ -267,8 +325,10 @@ class SearchCubit extends Cubit<SearchState> {
     });
   }
 
+  ///@param [username] the username of the user to be followed/unfollowed
+  ///@param [follow] the action that needs to be taken (follow/unfollow) user
+  ///the method follows/unfollow a user
   void folowUser({required username, required follow}) {
-    // print('$token token');
     DioHelper.postData(
         path: followUser,
         data: {'username': username, 'follow': follow}).then((value) {
@@ -280,6 +340,8 @@ class SearchCubit extends Cubit<SearchState> {
     });
   }
 
+  ///@param [id] the id of the subreddit the user needs to join
+  ///the function allows the user to join a certain subreddit
   void joinSubreddit({required id}) {
     DioHelper.postData(path: joinCommunity, data: {
       'subredditId': id,
@@ -293,6 +355,8 @@ class SearchCubit extends Cubit<SearchState> {
     });
   }
 
+  ///@param [name] the name of the subreddit the user needs to leave
+  ///the function allows the user to leave a certain subreddit
   void leaveSubreddit({required name}) {
     DioHelper.postData(path: leaveCommunity, data: {
       'subredditName': name,

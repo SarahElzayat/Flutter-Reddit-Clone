@@ -22,8 +22,8 @@ class HomeScreenForMobile extends StatefulWidget {
 }
 
 class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool isAndroid = !kIsWeb;
 
   ///The method changes the end drawer state from open to closed and vice versa

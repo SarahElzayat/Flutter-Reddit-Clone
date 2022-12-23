@@ -1,21 +1,23 @@
-import 'package:flutter/material.dart';
-import 'package:reddit/components/helpers/color_manager.dart';
-import 'package:reddit/data/post_model/post_model.dart';
-import 'package:reddit/data/saved/saved_comments_model.dart';
-import 'package:reddit/networks/constant_end_points.dart';
-import 'package:reddit/networks/dio_helper.dart';
-import 'package:reddit/widgets/posts/post_widget.dart';
+///@author Sarah Elzayat
+///@date 17/12/2022
+///@description this file has some reusable components to use in the saved comments screen
 
+import 'package:flutter/material.dart';
+import '../../data/saved/saved_comments_model.dart';
+import '../helpers/color_manager.dart';
+
+/// @param [model] is the Saved comment model passed to  the widget
 class SavedCommentContainer extends StatelessWidget {
   const SavedCommentContainer({super.key, required this.model});
   final SavedCommentModel model;
-  // now.day -  commentTime.day
   @override
   Widget build(BuildContext context) {
     DateTime now = DateTime.now().toUtc();
     DateTime commentTime = DateTime.parse(model.publishTime.toString());
     String time; //;= TimeAgo;
     String commentBody = '';
+
+    ///calculating the comment's time
     if (now.year - commentTime.year != 0) {
       time = '${now.year - commentTime.year} y';
     } else if (now.month - commentTime.month != 0) {
@@ -30,14 +32,16 @@ class SavedCommentContainer extends StatelessWidget {
       time = 'Now';
     }
 
+    /// extracting the comment's content without quill
     for (var element in model.commentBody!.ops!) {
-      // logger.wtf(model.commentBody!.toString());
       commentBody += element.insert.toString();
     }
     return Container(
       decoration: const BoxDecoration(
-          border: BorderDirectional(
-              bottom: BorderSide(width: 1, color: ColorManager.darkGrey))),
+        border: BorderDirectional(
+          bottom: BorderSide(width: 1, color: ColorManager.darkGrey),
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -46,7 +50,6 @@ class SavedCommentContainer extends StatelessWidget {
             style: const TextStyle(
               color: ColorManager.eggshellWhite,
               fontSize: 18,
-              // fontWeight: FontWeight.w600,
             ),
           ),
           Row(
@@ -84,7 +87,6 @@ class SavedCommentContainer extends StatelessWidget {
               style: const TextStyle(
                 color: ColorManager.eggshellWhite,
                 fontSize: 18,
-                // fontWeight: FontWeight.w600,
               ))
         ],
       ),

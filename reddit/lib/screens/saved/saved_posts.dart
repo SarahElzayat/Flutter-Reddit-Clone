@@ -1,3 +1,5 @@
+///@author Sarah Elzayat
+///@description: the screen that shows the user's saved comeents
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,6 +20,7 @@ class SavedPostsScreen extends StatefulWidget {
 class _SavedPostsScreenState extends State<SavedPostsScreen> {
   final _scrollController = ScrollController();
 
+  /// scroll listener to load more at the bottom of the screen
   void _scrollListener() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
@@ -26,6 +29,15 @@ class _SavedPostsScreenState extends State<SavedPostsScreen> {
     }
   }
 
+  /// the method that's callled on pull down to refresh
+  Future<void> _onRefresh() async {
+    setState(() {
+      AppCubit.get(context).getSaved(isPosts: true);
+    });
+  }
+
+  /// initial state of the widget
+  /// loads posts on creation
   @override
   void initState() {
     AppCubit.get(context).getSaved(isPosts: true);

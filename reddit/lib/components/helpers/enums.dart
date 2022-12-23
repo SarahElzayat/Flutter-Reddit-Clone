@@ -4,7 +4,6 @@
 
 /// this enum is used to determine the type of the trailing posts
 enum TrailingObjects {
-  // TODO: here we should add a button
   switchButton,
   dropBox,
   tailingIcon,
@@ -32,16 +31,19 @@ enum PostView {
   withCommentsInSearch,
 }
 
+/// controls the view of the comment in the comments list
 enum CommentView {
   normal,
   inSearch,
   inSubreddits,
 }
 
+
+/// the history categories presented in reddit
 enum HistoyCategory { recent, upvoted, downvoted, hidden }
 
+/// used to determine the type of the sort in Home screen
 enum HomeSort { hot, best, top, trending, newPosts, raising, controversial }
-// enum HomeSort { best, hot, newPosts, top, raising, controversial }
 
 /// used to indicate which users to get
 enum UserManagement {
@@ -50,3 +52,32 @@ enum UserManagement {
   muted,
   moderator,
 }
+
+enum ModToolsSelectedItem {
+  spam,
+  unmoderated,
+  edited,
+  banned,
+  muted,
+  approved,
+  moderator,
+  userFlair,
+  postFlair,
+  scheduledPost,
+  communitySettings,
+  postsAndComments,
+  notifications,
+  trafficStats
+}
+
+enum ModToolsGroup {
+  queues,
+  userManagement,
+  flair,
+  content,
+  settings,
+  communityActivity
+}
+
+/// used to enumerate the types of the moderation options
+enum ModOPtions { spoiler, nsfw, lock, unsticky, remove, spam, approve }

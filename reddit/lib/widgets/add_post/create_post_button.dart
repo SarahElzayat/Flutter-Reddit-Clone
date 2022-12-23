@@ -1,6 +1,7 @@
 /// Model Button
 /// @author Haitham Mohamed
 /// @date 4/11/2022
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/cubit/add_post/cubit/add_post_cubit.dart';
@@ -33,28 +34,39 @@ class CreatePostButton extends StatelessWidget {
       builder: (context, state) {
         if (state is CanCreatePost) isDisabled = !(state.canPost);
         return Button(
-            text: 'Next',
+            text: (kIsWeb) ? 'Post' : 'Next',
             borderRadius: 30,
             splashColor: Colors.transparent,
             textColor:
                 (isDisabled) ? ColorManager.unselectedItem : ColorManager.white,
             backgroundColor:
                 isDisabled ? ColorManager.darkGrey : ColorManager.blue,
-            buttonWidth: 80,
+            buttonWidth: 100,
             buttonHeight: 30,
             textFontSize: 17.0 * mediaQuery.textScaleFactor,
             onPressed: isDisabled
                 ? () {}
                 : (() async {
-                    if (addPostCubit.subredditName != null &&
-                        addPostCubit.subredditName != '') {
-                      await addPostCubit.getSubredditFlair();
-                      navigator.pushNamed(PostRules.routeName);
+                    if (kIsWeb) {
+                      await addPostCubit.createPost(context);
+                      addPostCubit.removeExistData();
+                      addPostCubit.addSubredditName(null);
+                      addPostCubit.title.text = '';
+                      addPostCubit.nsfw = false;
+                      addPostCubit.spoiler = false;
+                      addPostCubit.isSubreddit = true;
                     } else {
-                      navigator.push(MaterialPageRoute(
-                          builder: ((context) => const CommunitySearch(
-                                goToRules: true,
-                              ))));
+                      if (addPostCubit.subredditName != null &&
+                              addPostCubit.subredditName != '' ||
+                          addPostCubit.isSubreddit == false) {
+                        await addPostCubit.getSubredditFlair();
+                        navigator.pushNamed(PostRules.routeName);
+                      } else {
+                        navigator.push(MaterialPageRoute(
+                            builder: ((context) => const CommunitySearch(
+                                  goToRules: true,
+                                ))));
+                      }
                     }
                   }));
       },

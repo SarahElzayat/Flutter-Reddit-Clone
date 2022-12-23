@@ -16,11 +16,24 @@ class PostNotifierCubit extends Cubit<PostNotifierState> {
     emit(PostChanged());
   }
 
+  /// updates the UI if a Post is deleted
+  /// [id] is the id of the deleted post
   void deletedPost(String id) {
     emit(PostDeleted(id));
   }
 
+  /// updates the UI if a comment is deleted
+  /// [id] is the id of the deleted comment
   void deletedComment(String id) {
     emit(CommentDeleted(id));
+  }
+
+  /// updates the UI if a post is saved
+  /// [id] is the id of the saved post
+  /// [type] is the type of the saved post
+  /// [newState] is the new state of the post (saved or unsaved)
+  /// and it is true if the post is saved
+  void postsSaveChanged(String id, String type, bool newState) {
+    PostSavedState(id, type, newState);
   }
 }

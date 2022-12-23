@@ -45,6 +45,8 @@ class InlineImageViewer extends StatefulWidget {
   /// The post to show
   final PostModel post;
 
+  /// if the dropdown is Web Mode
+  /// defaults to false
   final bool isWeb;
 
   /// it's either a card or a classic view
