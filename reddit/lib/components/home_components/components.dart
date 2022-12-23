@@ -1,8 +1,10 @@
 ///@author Sarah Elzayat
 ///@date 16/11/2022
 ///@description this file has some reusable components to use in the home screen
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/components/community_components/create_community_dialog.dart';
 import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/cubit/subreddit/cubit/subreddit_cubit.dart';
@@ -22,7 +24,7 @@ import '../../widgets/user_profile/user_profile_web.dart';
 /// @param [isOpen] is the state of the list
 /// @param [isCommunity] bool to indicate whether it's used for user's communities or not
 /// @param [isModerating] bool to indicate whether it's used for user's moderated or not
-/// @param [navigateToSubreddit] function to navigate to subreddit 
+/// @param [navigateToSubreddit] function to navigate to subreddit
 Widget listButton(
     context, text, Map<String, DrawerCommunitiesModel> list, onPressed, isOpen,
     {isCommunity = false,
@@ -63,7 +65,13 @@ Widget listButton(
         if (isOpen)
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             if (isCommunity)
-              genericTextButton(context, Icons.add, 'Create a community',
+              genericTextButton(
+                  context,
+                  Icons.add,
+                  'Create a community',
+                  // (kIsWeb)
+                  //     ? createCommunityDialog(context)
+                  //     :
                   const CreateCommunityScreen(),
                   isLeftDrawer: true),
             if (isModerating)

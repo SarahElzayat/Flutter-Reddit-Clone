@@ -6,7 +6,10 @@
             "request": "launch",
             "args": [
                 "--web-port",
-                "5000"
+                "5000",
+                "--web-renderer",
+                "html"
+
             ]
         }
     ]

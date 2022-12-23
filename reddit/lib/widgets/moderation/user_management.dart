@@ -256,23 +256,25 @@ class _UserManagementWidgetState extends State<UserManagementWidget> {
                     padding: const EdgeInsets.all(20.0),
                     child: Text(widget.screenTitle),
                   ),
-                  Container(
-                    decoration: const BoxDecoration(
-                        color: ColorManager.betterDarkGrey,
-                        borderRadius: BorderRadius.all(Radius.circular(8))),
-                    width: 70.w,
-                    height: 60.h,
-                    child: (cubit.users.isEmpty)
-                        ? Center(
-                            child: Text('No ${widget.screenTitle} Yet',
-                                style: const TextStyle(
-                                    color: ColorManager.lightGrey)))
-                        : Scrollbar(
-                            controller: scrollController,
-                            thumbVisibility: true,
-                            trackVisibility: true,
-                            child: Expanded(
+                  Scrollbar(
+                    controller: scrollController,
+                    child: SingleChildScrollView(
+                      controller: scrollController,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                            color: ColorManager.betterDarkGrey,
+                            borderRadius: BorderRadius.all(Radius.circular(8))),
+                        width: 70.w,
+                        height: 60.h,
+                        child: (cubit.users.isEmpty)
+                            ? Center(
+                                child: Text('No ${widget.screenTitle} Yet',
+                                    style: const TextStyle(
+                                        color: ColorManager.lightGrey)))
+                            : Expanded(
                                 child: ListView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     controller: scrollController,
                                     itemCount: cubit.users.length,
                                     itemBuilder:
@@ -356,7 +358,9 @@ class _UserManagementWidgetState extends State<UserManagementWidget> {
                                                 backgroundColor:
                                                     ColorManager.betterDarkGrey,
                                               )));
-                                    }))),
+                                    })),
+                      ),
+                    ),
                   )
                 ],
               );
