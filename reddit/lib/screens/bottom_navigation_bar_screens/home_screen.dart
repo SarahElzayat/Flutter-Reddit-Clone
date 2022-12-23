@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/back_to_top_button.dart';
+import 'package:reddit/components/community_components/create_community_dialog.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/helpers/enums.dart';
 import 'package:reddit/components/home_components/left_drawer.dart';
@@ -268,12 +269,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                     const EdgeInsets.symmetric(horizontal: 28),
                                 shape: const StadiumBorder(),
                                 // color: ColorManager.blue,
-                                onPressed: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const CreateCommunityScreen(),
-                                    )),
+                                onPressed: () => createCommunityDialog(context),
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //       builder: (context) =>
+                                //           const CreateCommunityScreen(),
+                                //     )),
                                 child: const Text('Create Community'),
                               ),
                             ),

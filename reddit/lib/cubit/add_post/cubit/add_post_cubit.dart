@@ -9,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:mime/mime.dart';
 import '../../../data/add_post/subredditsSearchListModel.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
@@ -31,8 +30,6 @@ part 'add_post_state.dart';
 class AddPostCubit extends Cubit<AddPostState> {
   AddPostCubit() : super(AddPostInitial());
 
-  SubredditFlairModel? flairs;
-
   static AddPostCubit get(context) => BlocProvider.of(context);
 
   /// [title] Title textField controller
@@ -40,25 +37,39 @@ class AddPostCubit extends Cubit<AddPostState> {
 
   /// [postType] Number indicate The post Type
   /// This number is the index of post Type in add post screen
+  /// [postType] Initial with Text Post
   int postType = 2;
 
+  /// [quillController] Quill Editor Controller
   QuillController quillController = QuillController.basic();
 
+  /// [isMarkdown] Type of Hybred Post if Markdown or From Rich Editor
   bool isMarkdown = true;
 
+  /// [isSubreddit] Choose if you submit post in subreddit (true) or Your Profile (flase)
   bool isSubreddit = true;
 
   /// [images] Images that User Added
   List<XFile> images = <XFile>[];
 
+  /// [captionController] Controller of Captions TextformFiled
   List<TextEditingController> captionController = [];
+
+  /// [captionControllerTemp] Controller of Captions TextformFiled
+  /// Note this is used to check if the data changes or NOT
   List<TextEditingController> captionControllerTemp = [];
 
+  /// [imagesLinkController] Controller of Image Link TextformFiled
   List<TextEditingController> imagesLinkController = [];
+
+  /// [imagesLinkControllerTemp] Controller of Image Link TextformFiled
+  /// Note this is used to check if the data changes or NOT
   List<TextEditingController> imagesLinkControllerTemp = [];
 
+  /// [imageCurrentIndex] This Used In web TO switch between Images TO add Captions and links
   int imageCurrentIndex = 0;
 
+  /// [scheduleDate] Shedule Data of the Post
   DateTime? scheduleDate;
 
   /// [editableImage] Image that User will edit it
@@ -87,27 +98,41 @@ class AddPostCubit extends Cubit<AddPostState> {
     TextEditingController()
   ];
 
+  /// [flairs] Flairs Of Subreddit that you will post in
+  SubredditFlairModel? flairs;
+
+  /// [subredditName] The subreddit Name That will Post in
   String? subredditName;
 
+  /// [selectedFlair] The Flair Of the Post
   String? selectedFlair;
 
+  /// [nsfw]  Post is NSFW or NOT
   bool nsfw = false;
+
+  /// [spoiler]  Post is spoiler
   bool spoiler = false;
 
+  /// [subredditsList] List of Subreddit When Searching
   SubredditsSearchListModel? subredditsList;
 
+  /// Change Between Image , Video , Text and Link Post
+  /// [postTypeIndex] index of Post Type
   void changePostType({required int postTypeIndex}) {
     postType = postTypeIndex;
     checkPostValidation();
     emit(PostTypeChanged(postType: postTypeIndex));
   }
 
+  /// Add Subreddit Name That You will post in
+  /// [subredditName] Subreddit Name
   void addSubredditName(String? subredditName) {
     this.subredditName = subredditName;
     emit(ChangeSubredditName());
   }
 
   /// Add Image To The List And Rebuild The widget
+  /// [image] Image That Want to Add
   void addImage({required XFile image}) {
     images.add(image);
     captionController.add(TextEditingController());
@@ -119,6 +144,7 @@ class AddPostCubit extends Cubit<AddPostState> {
   }
 
   /// Add List of Images To The List And Rebuild The widget
+  /// [images] List of Images That Want to Add
   void addImages({required List<XFile> images}) {
     for (var element in images) {
       this.images.add(element);
@@ -132,6 +158,7 @@ class AddPostCubit extends Cubit<AddPostState> {
   }
 
   /// Remove Image From The List And Rebuild The widget
+  /// [index] The Image Index That want To Remove
   void removeImage({required int index}) {
     images.removeAt(index);
     captionController.removeAt(index);
@@ -142,6 +169,7 @@ class AddPostCubit extends Cubit<AddPostState> {
     emit(ImageAddedOrRemoved());
   }
 
+  /// Check if Caption IS Edited 
   void imageCaptionEdited() {
     for (int i = 0; i < captionController.length; i++) {
       if (captionController[i].text.toString() !=
@@ -163,6 +191,8 @@ class AddPostCubit extends Cubit<AddPostState> {
     emit(ImageCaptionOrLinkEdited(isChange: false));
   }
 
+  /// Edit Caption of the Image
+  /// [editOrRemove] if you edit or Remove
   void editCaptions(bool editOrRemove) {
     if (editOrRemove) {
       for (int i = 0; i < captionController.length; i++) {
@@ -191,6 +221,7 @@ class AddPostCubit extends Cubit<AddPostState> {
 
   /// This function allow you to choose video
   /// you are allowed to choose one video only after that it will navigate to Video Trimmer Screen
+  /// [pickVideo] IF you will pick video or the video is exist and want to edit
   void pickVideo(bool pickVideo) async {
     if (pickVideo) {
       XFile? result = await ImagePicker().pickVideo(
@@ -203,7 +234,6 @@ class AddPostCubit extends Cubit<AddPostState> {
           vidoeController = VideoPlayerController.file(file);
           emit(EditVideo());
         } else {
-          this.video = result;
           checkPostValidation();
           emit(VideoAddedOrRemoved(isAdded: true));
         }
@@ -217,15 +247,13 @@ class AddPostCubit extends Cubit<AddPostState> {
   }
 
   /// Add Video And its videoThumbnail
+  /// [video] The Video File
   void addVideo(XFile video) async {
     this.video = video;
 
     videoThumbnail = await VideoThumbnail.thumbnailData(
       video: this.video!.path,
       imageFormat: ImageFormat.JPEG,
-      // maxWidth:
-      //     128, // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
-      // quality: 0,
     );
 
     checkPostValidation();
@@ -362,6 +390,7 @@ class AddPostCubit extends Cubit<AddPostState> {
   /// This function allow you to choose images
   /// if the number of images is one so it will navigate to Preview Screen that can make edit in image
   /// else it will add images and navigate back
+  /// [source] From Gallery Or Camera
   imageFunc(BuildContext context, ImageSource source) async {
     List<XFile> images = <XFile>[];
     if (source == ImageSource.gallery) {
@@ -371,11 +400,6 @@ class AddPostCubit extends Cubit<AddPostState> {
       if (image != null) images.add(image);
     }
     if (images.length == 1 && !kIsWeb) {
-      // Navigator.of(context).push(MaterialPageRoute(
-      //   builder: (context) {
-      //     return ImageScreen(image: image[0], imageKey: imageKey);
-      //   },
-      // ));
       editableImage = images[0];
 
       emit(PreviewImage());
@@ -469,10 +493,9 @@ class AddPostCubit extends Cubit<AddPostState> {
 
     if (postType == 0) {
       for (var item in images) {
-        final mimeType = lookupMimeType(item.path);
         MultipartFile file;
         if (kIsWeb) {
-          file = await MultipartFile.fromBytes(await item.readAsBytes(),
+          file =  MultipartFile.fromBytes(await item.readAsBytes(),
               filename: item.path.split('/').last,
               contentType: MediaType('image', 'png'));
           imagesData.add(file);
@@ -509,13 +532,12 @@ class AddPostCubit extends Cubit<AddPostState> {
       };
     }
     if (postType == 1) {
-      final mimeType = lookupMimeType(video!.path);
 
       body = {
         'video': (kIsWeb)
-            ? await MultipartFile.fromBytes(await video!.readAsBytes(),
+            ?  MultipartFile.fromBytes(await video!.readAsBytes(),
                 filename: 'video.mp4', contentType: MediaType('video', 'mp4'))
-            : await MultipartFile.fromBytes(File(video!.path).readAsBytesSync(),
+            :  MultipartFile.fromBytes(File(video!.path).readAsBytesSync(),
                 filename: 'video.mp4', contentType: MediaType('video', 'mp4')),
         'title': title.text,
         'kind': 'video',
@@ -584,10 +606,8 @@ class AddPostCubit extends Cubit<AddPostState> {
             data: formData,
             sentToken: CacheHelper.getData(key: 'token'))
         .then((value) {
-      print(value);
 
       if (value.statusCode == 201) {
-        print('Post success');
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
               backgroundColor: ColorManager.eggshellWhite,
@@ -597,18 +617,10 @@ class AddPostCubit extends Cubit<AddPostState> {
           navigatorKey.currentContext!,
           MaterialPageRoute(
               builder: (BuildContext context) =>
-                  (kIsWeb) ? HomeScreen() : HomeScreenForMobile()),
+                  (kIsWeb) ? const HomeScreen() : const HomeScreenForMobile()),
           ModalRoute.withName('/'),
         );
-      } else if (value.statusCode == 400) {
-        print(value);
-      } else if (value.statusCode == 401) {
-        print('User not allowed to post in this subreddit');
-      } else if (value.statusCode == 404) {
-        print('Subreddit not found');
-      } else if (value.statusCode == 500) {
-        print('Server Error');
-      }
+      } 
     }).catchError((error) {
       ScaffoldMessenger.of(context).showSnackBar(
           responseSnackBar(message: 'An Error Please Try Again', error: true));
@@ -616,6 +628,8 @@ class AddPostCubit extends Cubit<AddPostState> {
     // emit(PostCreated());
   }
 
+  /// Search For Subreddit That want To Post in
+  /// [subredditName] Set Subreddit name to search for it
   void subredditSearch(String subredditName) {
     if (subredditName == '') {
       subredditsList = null;
@@ -641,6 +655,7 @@ class AddPostCubit extends Cubit<AddPostState> {
     emit(ChangeSubredditName());
   }
 
+  /// Make Post Submitted in Profile
   addProfile() {
     isSubreddit = false;
     subredditName = null;
@@ -745,6 +760,7 @@ class AddPostCubit extends Cubit<AddPostState> {
     }
   }
 
+  /// Show Loading Progress when upload image or Video
   showProgress(BuildContext context, int count, int total) {
     return showDialog(
         context: context,
@@ -771,6 +787,7 @@ class AddPostCubit extends Cubit<AddPostState> {
         }));
   }
 
+  /// Get Flair of the Subreddit that want to post in
   Future<void> getSubredditFlair() async {
     await DioHelper.getData(
         path: '/r/$subredditName/about/post-flairs',

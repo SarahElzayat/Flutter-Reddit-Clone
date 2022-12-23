@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:reddit/components/helpers/mocks/mock_functions.dart';
 import '../../../data/post_model/post_model.dart';
 import '../../../data/settings/settings_models/user_settings.dart';
 import '../../../data/subreddit/subreddit_model.dart';
@@ -17,13 +18,24 @@ class SubredditCubit extends Cubit<SubredditState> {
 
   static SubredditCubit get(context) => BlocProvider.of(context);
 
+  /// Subreddit Data
   SubredditModel? subreddit;
+
+  /// Subreddit Name
   late String subredditName;
+
+  /// Moderators Of the Subredit
   late ModeratorModel moderators;
+
+  /// List Of Posts
   List<PostModel> posts = [];
+
+  /// Controller of the scrolling widget for Posts
   late PagingController<String?, PostModel> pagingController;
 
+  /// index of the type of Sorting
   int selectedIndex = 0;
+
 
   void setSubredditName(BuildContext context, String name,
       {bool replace = false}) async {
@@ -68,32 +80,59 @@ class SubredditCubit extends Cubit<SubredditState> {
     }).catchError((error) {});
   }
 
-  void leaveCommunity() {
-    String token = CacheHelper.getData(key: 'token');
-    DioHelper.postData(
-        sentToken: token,
-        path: leaveSubreddit,
-        data: {'subredditName': subredditName}).then((value) {
-      if (value.statusCode == 200) {
-        subreddit!.isMember = false;
-        emit(LeaveSubredditState());
-      }
-    }).catchError((error) {});
+  /// Leave The Joined Community
+  /// [isTesting] for Testing only
+  Future leaveCommunity({bool isTesting = false}) {
+    if (isTesting) {
+      return mockDio.post('/leave-subreddit', data: {
+        {'subredditName': subredditName}
+      }).then((value) {
+        if (value.statusCode == 200) {
+          subreddit!.isMember = false;
+          emit(LeaveSubredditState());
+        }
+      }).catchError((error) {});
+    } else {
+      String token = CacheHelper.getData(key: 'token');
+      return DioHelper.postData(
+          sentToken: token,
+          path: leaveSubreddit,
+          data: {'subredditName': subredditName}).then((value) {
+        if (value.statusCode == 200) {
+          subreddit!.isMember = false;
+          emit(LeaveSubredditState());
+        }
+      }).catchError((error) {});
+    }
   }
 
-  void joinCommunity() {
-    String token = CacheHelper.getData(key: 'token');
-    DioHelper.postData(
-        sentToken: token,
-        path: joinSubreddit,
-        data: {'subredditId': subreddit!.subredditId}).then((value) {
-      if (value.statusCode == 200) {
-        subreddit!.isMember = true;
-        emit(JoinSubredditState());
-      }
-    }).catchError((error) {});
+  /// Join the Subreddit
+  Future joinCommunity({bool isTesting = false}) {
+    if (isTesting) {
+      return mockDio.post('/join-subreddit', data: {
+        {'subredditId': subreddit!.subredditId}
+      }).then((value) {
+        if (value.statusCode == 200) {
+          subreddit!.isMember = true;
+          emit(JoinSubredditState());
+        }
+      }).catchError((error) {});
+    } else {
+      String token = CacheHelper.getData(key: 'token');
+      return DioHelper.postData(
+          sentToken: token,
+          path: joinSubreddit,
+          data: {'subredditId': subreddit!.subredditId}).then((value) {
+        if (value.statusCode == 200) {
+          subreddit!.isMember = true;
+          emit(JoinSubredditState());
+        }
+      }).catchError((error) {});
+    }
   }
 
+  ///  fetch Subreddit Posts
+  /// [sortBy] Type of Sorting
   void fetchPosts({String? after, required String sortBy}) {
     final query = {'after': after, 'subreddit': subredditName};
     DioHelper.getData(path: '/r/$subredditName/$sortBy', query: query)

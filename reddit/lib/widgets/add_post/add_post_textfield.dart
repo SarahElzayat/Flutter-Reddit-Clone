@@ -3,7 +3,6 @@
 /// @date 4/11/2022
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 
@@ -50,7 +49,6 @@ class AddPostTextField extends StatefulWidget {
 class _AddPostTextFieldState extends State<AddPostTextField> {
   @override
   Widget build(BuildContext context) {
-    final addPostCubit = BlocProvider.of<AddPostCubit>(context);
     return TextFormField(
       onChanged: widget.onChanged,
       keyboardType:

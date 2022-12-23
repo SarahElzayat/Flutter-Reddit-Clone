@@ -7,6 +7,8 @@ import '../comment/comment_model.dart';
 import '../post_model/flair.dart';
 import '../post_model/image.dart';
 import '../post_model/post_model.dart';
+import '../subreddit/subreddit_model.dart';
+import '../user_profile/about_user_model.dart';
 
 const quillContent = {
   'ops': [
@@ -42,13 +44,12 @@ var textPost = PostModel(
     backgroundColor: '#FFAA00',
     textColor: '#0E0EEE',
   ),
-  saved: false,
+  saved: true,
   sharePostId: '639c4d7dd072d62eaf3792c5',
   spoiler: true,
   inYourSubreddit: false,
   nsfw: false,
   votes: 100,
-  followed: false,
   comments: 10,
   hidden: false,
   moderation: Moderation(
@@ -310,3 +311,36 @@ CommentModel commentEx = CommentModel(
 );
 
 final commentExS = commentEx.toJson();
+
+SubredditModel subredditTempData = SubredditModel(
+  nsfw: false,
+  subredditId: '123',
+  type: 'Public',
+  isFavorite: false,
+  title: 'News',
+  nickname: 'News',
+  isModerator: false,
+  category: 'News',
+  members: 5,
+  description: 'Description',
+  dateOfCreation: '20-9-2020',
+  isMember: false,
+  banner: '',
+  picture: '',
+  views: 50,
+  mainTopic: '',
+  subtopics: [],
+);
+
+AboutUserModel userProfileData = AboutUserModel(
+  displayName: 'haitham',
+  about: 'Description',
+  banner: '',
+  picture: '',
+  karma: 1,
+  socialLinks: [],
+  nsfw: false,
+  followed: false,
+  blocked: false,
+  moderatorOf: [],
+);
