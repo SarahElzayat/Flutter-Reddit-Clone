@@ -22,7 +22,6 @@ import '../../data/post_model/post_model.dart';
 import '../../data/temp_data/tmp_data.dart';
 import '../../networks/constant_end_points.dart';
 import '../../networks/dio_helper.dart';
-import '../../screens/bottom_navigation_bar_screens/add_post_screen.dart';
 import '../../screens/comments/add_comment_screen.dart';
 import '../../screens/saved/saved_posts.dart';
 import '../../widgets/posts/post_widget.dart';
@@ -46,7 +45,8 @@ class AppCubit extends Cubit<AppState> {
   List<Widget> bottomNavBarScreens = [
     const HomeScreen(),
     const ExploreScreen(),
-    const AddPostScreen(),
+    const ExploreScreen(),
+    // const AddPostScreen(),
     // const AddPost(),
     const ChatScreen(),
     const InboxScreen(),
