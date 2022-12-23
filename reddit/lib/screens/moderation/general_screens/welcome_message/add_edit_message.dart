@@ -1,3 +1,7 @@
+///@author: Yasmine Ghanem
+///@date:
+///this screen is for adding/editing the community welcome message
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../components/default_text_field.dart';
@@ -15,6 +19,7 @@ class AddEditMessage extends StatefulWidget {
 }
 
 class _AddEditMessageState extends State<AddEditMessage> {
+  /// the actual welcome message of the community
   String welcomeMessage = 'Welcome Message';
 
   enabledButton() {}
@@ -23,9 +28,7 @@ class _AddEditMessageState extends State<AddEditMessage> {
   Widget build(BuildContext context) {
     final ModerationCubit cubit = ModerationCubit.get(context);
     return BlocConsumer<ModerationCubit, ModerationState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
           appBar: moderationAppBar(

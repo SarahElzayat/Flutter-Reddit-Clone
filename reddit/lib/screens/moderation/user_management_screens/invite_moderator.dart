@@ -1,7 +1,7 @@
 ///@author Yasmine Ghanem
 ///@date 12/12/2022
 ///invite a user to join community as moderator
-///
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
@@ -13,6 +13,8 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 class InviteModerator extends StatelessWidget {
   static const String routeName = 'invite_moderator';
   InviteModerator({super.key});
+
+  ///controller that controls the username being added
   final TextEditingController controller = TextEditingController();
 
   @override

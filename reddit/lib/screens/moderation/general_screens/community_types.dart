@@ -1,6 +1,9 @@
+///@author: Yasmine Ghanem
+///@date:
+///this screen is to change the current type of the community
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 import '../../../components/helpers/color_manager.dart';
 import '../../../components/moderation_components/modtools_components.dart';
 import '../cubit/moderation_cubit.dart';
@@ -15,16 +18,13 @@ class CommunityType extends StatefulWidget {
 }
 
 class _CommunityTypeState extends State<CommunityType> {
-  // bool isChanged = false;
-  // bool isSwitched = false;
+  /// the change done to indicate slider value
   double change = 0;
-  // Color thumbColor = ColorManager.green;
-  // Color sliderColor = ColorManager.green;
-  // CommunityTypes communityType = CommunityTypes.public;
 
   _enabledButton() {
     //do something
   }
+
   @override
   Widget build(BuildContext context) {
     final ModerationCubit cubit = ModerationCubit.get(context);

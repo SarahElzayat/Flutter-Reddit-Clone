@@ -5,7 +5,6 @@
 import 'package:flutter/material.dart';
 import 'package:reddit/components/bottom_sheet.dart';
 import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/router.dart';
 import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
 import 'package:reddit/screens/moderation/user_management_screens/invite_moderator.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';

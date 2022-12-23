@@ -1,10 +1,11 @@
-import 'dart:ui';
+///@author: Yasmine Ghanem
+///@date:
+///a screen that shows a list of all post flairs in the community
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../components/button.dart';
 import '../../../components/helpers/color_manager.dart';
-import '../../../components/helpers/enums.dart';
 import '../../../components/moderation_components/modtools_components.dart';
 import '../create_flair.dart';
 import '../cubit/moderation_cubit.dart';
@@ -19,15 +20,21 @@ class PostFlair extends StatefulWidget {
 }
 
 class _PostFlairState extends State<PostFlair> {
+  /// determines whether posts flairs are enabled in a community
   bool isSwitched = false;
+
+  /// determines whether there are post flairs in a community
   bool isEmpty = true;
 
   @override
   void initState() {
+    //returns all the post flairs of the community when first opening the screen
     ModerationCubit.get(context).getPostFlairs();
     super.initState();
   }
 
+  ///@param [switcher] the new value of the switch
+  ///toggles a switch and sets its state
   toggle(switcher) {
     setState(() {
       isSwitched = switcher;

@@ -55,3 +55,5 @@ class NoMoreQueueToLoad extends ModerationState {}
 class EmptyQueue extends ModerationState {}
 
 class HandleFlairs extends ModerationState {}
+
+class TrafficStatsLoaded extends ModerationState {}

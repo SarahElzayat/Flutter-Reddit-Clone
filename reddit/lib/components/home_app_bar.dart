@@ -9,7 +9,6 @@ import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/networks/constant_end_points.dart';
 import 'package:reddit/networks/dio_helper.dart';
-import 'package:reddit/screens/create_community_screen/create_community_screen.dart';
 import 'package:reddit/components/app_bar_components.dart';
 import 'package:reddit/components/search_field.dart';
 import 'package:reddit/screens/inbox/create_message_screen.dart';
@@ -18,6 +17,7 @@ import 'package:reddit/screens/search/search_results_main_screen.dart';
 import '../cubit/app_cubit/app_cubit.dart';
 import '../screens/add_post/add_post_web.dart';
 import '../screens/bottom_navigation_bar_screens/home_screen.dart';
+import '../screens/create_community_screen/create_community_screen.dart';
 
 /// this is a utility function used to mark all the items in the inbox as read
 void markAllAsRead(context) async {

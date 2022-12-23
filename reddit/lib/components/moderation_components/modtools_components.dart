@@ -7,8 +7,6 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:reddit/components/button.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 import 'package:reddit/components/helpers/enums.dart';
-import 'package:reddit/router.dart';
-import 'package:reddit/screens/moderation/cubit/moderation_cubit.dart';
 import 'package:reddit/screens/moderation/user_management_screens/add_approved_user.dart';
 import 'package:reddit/screens/moderation/user_management_screens/add_banned_user.dart';
 import 'package:reddit/screens/moderation/user_management_screens/add_muted_user.dart';
@@ -16,10 +14,11 @@ import 'package:reddit/screens/moderation/user_management_screens/invite_moderat
 import 'package:reddit/widgets/moderation/queues_modtools.dart';
 import 'package:reddit/widgets/moderation/user_management.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:flutter/scheduler.dart';
 
 /// @param [selectedItem] the selected tile from the mod tools in web
+/// returns a user management widget that shows specific users based on the type
 UserManagementWidget userManagementWidget(ModToolsSelectedItem selectedItem) {
+  // determines the final title of the screen to show relevant information
   String finalTitle = (selectedItem == ModToolsSelectedItem.banned)
       ? 'Banned users'
       : (selectedItem == ModToolsSelectedItem.muted)
@@ -28,6 +27,7 @@ UserManagementWidget userManagementWidget(ModToolsSelectedItem selectedItem) {
               ? 'Approved users'
               : 'Moderators';
 
+  //determines the final type of the screen to show relevant users
   UserManagement finalType = (selectedItem == ModToolsSelectedItem.banned)
       ? UserManagement.banned
       : (selectedItem == ModToolsSelectedItem.muted)
@@ -36,11 +36,14 @@ UserManagementWidget userManagementWidget(ModToolsSelectedItem selectedItem) {
               ? UserManagement.approved
               : UserManagement.moderator;
 
+  //returns the final chosen widget based on the mod tool selected item
   return UserManagementWidget(screenTitle: finalTitle, type: finalType);
 }
 
 /// @param [selectedItem] the selected tile from the mod tools in web
+/// returns a queues widget that shows specific posts based on the mod tool tile selected
 QueuesWidget queuesWidget(ModToolsSelectedItem selectedItem) {
+  // determines the final title of the widget based on selected mod tool tile
   String finalTitle = (selectedItem == ModToolsSelectedItem.spam)
       ? 'Spam'
       : (selectedItem == ModToolsSelectedItem.edited)
@@ -54,11 +57,15 @@ QueuesWidget queuesWidget(ModToolsSelectedItem selectedItem) {
 /// @param [title] title of the app bar
 /// @param [onPressed] function of the button in appbar when enabled
 /// @param [isChanged] bool that checks if anything changed to enable or disable button
+/// returns an appbar specified for the moderation general screens
 moderationAppBar(context, title, onPressed, isChanged) => AppBar(
       elevation: 0,
       leading: IconButton(
           onPressed: isChanged
+              //checks whether any variable is changed to show confirmation dialog
               ? () => moderationDialog(context)
+
+              //if nothing was changed return to previous scree
               : () => Navigator.pop(context),
           icon: Icon(
             Icons.arrow_back,
@@ -86,6 +93,9 @@ moderationAppBar(context, title, onPressed, isChanged) => AppBar(
 
 /// @param [context]
 /// @param [type]
+/// @param [context] screen context
+/// @param [type] type of the user management screen
+/// shows a dialog to add a certain user to a certain categor in a community
 userManagementAction(context, type, onPressed) => showDialog(
     context: context,
     builder: (context) => StatefulBuilder(
@@ -97,9 +107,9 @@ userManagementAction(context, type, onPressed) => showDialog(
                   child: (type == UserManagement.banned)
                       ? AddBannedUser()
                       : (type == UserManagement.muted)
-                          ? AddMutedUser()
+                          ? const AddMutedUser()
                           : (type == UserManagement.approved)
-                              ? AddApprovedUser()
+                              ? const AddApprovedUser()
                               : InviteModerator()),
               actions: <Widget>[
                 Container(
@@ -201,6 +211,7 @@ moderationDialog(context) => showDialog(
 /// @param [text] text displayed in row
 /// @param [isSwitched] bool that indicates whether switch is on or off
 /// @param [toggle] function to toggle the switch
+/// returns a row containing a title and a row at the end
 Widget rowSwitch(text, isSwitched, toggle) => Row(
       children: [
         Text(text),
@@ -222,6 +233,7 @@ Widget rowSwitch(text, isSwitched, toggle) => Row(
 /// @param [text] the title of the appbar
 /// @param [function] function of button in actions appbar
 /// @param [enable] bool to indicate whether button is enabled of not for validation
+/// returns an app bar for the user management screens
 AppBar userManagementAppBar(context, text, function, enable) => AppBar(
       elevation: (kIsWeb) ? 0 : null,
       backgroundColor: ColorManager.darkGrey,

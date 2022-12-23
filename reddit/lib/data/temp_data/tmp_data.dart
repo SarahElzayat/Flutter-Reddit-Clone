@@ -1,4 +1,7 @@
 import 'package:flutter_lorem/flutter_lorem.dart';
+import 'package:reddit/data/post_model/approve.dart';
+import 'package:reddit/data/post_model/moderation.dart';
+import 'package:reddit/data/post_model/remove.dart';
 import '../comment/comment_model.dart';
 
 import '../post_model/flair.dart';
@@ -48,6 +51,16 @@ var textPost = PostModel(
   followed: false,
   comments: 10,
   hidden: false,
+  moderation: Moderation(
+    approve: Approve(
+      approvedBy: 'Atta',
+      approvedDate: '2019-08-24T14:15:22Z',
+    ),
+    remove: Remove(
+      removedBy: 'Atta',
+      removedDate: '2019-08-24T14:15:22Z',
+    ),
+  ),
 );
 
 final textPostS = textPost.toJson();

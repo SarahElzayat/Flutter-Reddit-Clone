@@ -60,9 +60,7 @@ class RightDrawer extends StatelessWidget {
     ];
 
     return BlocConsumer<AppCubit, AppState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return SafeArea(
           child: Drawer(

@@ -1,3 +1,7 @@
+///@author: Yasmine Ghanem
+///@date:
+///this screen is resposible for previewing and enabling sending welcome message to users
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../components/button.dart';
@@ -5,7 +9,6 @@ import '../../../../components/moderation_components/modtools_components.dart';
 import '../../cubit/moderation_cubit.dart';
 import 'add_edit_message.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 import '../../../../components/helpers/color_manager.dart';
 
 class WelcomeMessage extends StatefulWidget {
@@ -17,6 +20,7 @@ class WelcomeMessage extends StatefulWidget {
 }
 
 class _WelcomeMessageState extends State<WelcomeMessage> {
+  /// indicates wether or not to send welcome message to new users
   bool isSwitched = false;
 
   @override
