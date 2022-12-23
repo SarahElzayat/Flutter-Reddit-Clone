@@ -20,7 +20,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../components/helpers/enums.dart';
 import '../../cubit/add_post/cubit/add_post_cubit.dart';
 import '../../cubit/app_cubit/app_cubit.dart';
-import '../../data/user_profile.dart/about_user_model.dart';
+import '../../data/user_profile/about_user_model.dart';
 import '../../networks/constant_end_points.dart';
 import '../../networks/dio_helper.dart';
 import '../../widgets/user_profile/user_profile_posts.dart';

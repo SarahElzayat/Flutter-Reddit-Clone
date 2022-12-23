@@ -1,6 +1,7 @@
 /// this file is used to define the custom video player that can be used in a listview.
 /// date: 16/12/2022
 /// @Author: Ahmed Atta
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'portrait_controls.dart';
@@ -133,7 +134,7 @@ class _FlickMultiPlayerState extends State<FlickMultiPlayer> {
                   color: Colors.white,
                   fontSize: 12,
                 ),
-          controls: widget.isFull
+          controls: (widget.isFull || kIsWeb)
               ? FullScreenPortraitControls(
                   flickMultiManager: widget.flickMultiManager,
                   flickManager: flickManager,

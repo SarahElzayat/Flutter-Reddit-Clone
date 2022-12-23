@@ -27,6 +27,8 @@ class DropDownList extends StatelessWidget {
 
   /// The [PostModel] of targeted Post
   final PostModel post;
+
+  /// The [CommentModel] of targeted Comment
   final CommentModel? comment;
 
   /// The Class of the Post
@@ -34,8 +36,12 @@ class DropDownList extends StatelessWidget {
   /// defaults to [ItemsClass.public]
   final ItemsClass itemClass;
 
+  /// if the dropdown is outside the screen
+  /// defaults to false
   final bool outsideScreen;
 
+  /// if the dropdown is in the web
+  /// defaults to false
   final bool isWeb;
   List<MenuItem> getList() {
     switch (itemClass) {

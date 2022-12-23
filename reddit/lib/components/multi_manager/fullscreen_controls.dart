@@ -4,6 +4,7 @@
 
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,7 +41,15 @@ class FullScreenPortraitControls extends StatelessWidget {
     return BlocProvider(
       create: ((context) => PostAndCommentActionsCubit(post: post)),
       child: Container(
-        color: Colors.transparent,
+        decoration: const BoxDecoration(
+          color: Colors.transparent,
+          gradient: LinearGradient(
+            colors: [ColorManager.black, Colors.transparent],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            stops: [0.0, 0.3],
+          ),
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -58,25 +67,27 @@ class FullScreenPortraitControls extends StatelessWidget {
             FlickAutoHideChild(
               child: Row(
                 children: [
-                  Text(
-                    post.title!,
-                    style: const TextStyle(color: ColorManager.eggshellWhite),
-                  ),
+                  if (!kIsWeb)
+                    Text(
+                      post.title!,
+                      style: const TextStyle(color: ColorManager.eggshellWhite),
+                    ),
                   const Spacer(),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      VotesPart(
-                        post: post,
-                        iconColor: Colors.white,
-                        isWeb: true,
-                      ),
-                      Icon(
-                        Icons.share,
-                        size: min(5.5.w, 30),
-                      )
-                    ],
-                  ),
+                  if (!kIsWeb)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        VotesPart(
+                          post: post,
+                          iconColor: Colors.white,
+                          isWeb: true,
+                        ),
+                        Icon(
+                          Icons.share,
+                          size: min(5.5.w, 30),
+                        )
+                      ],
+                    ),
                 ],
               ),
             ),

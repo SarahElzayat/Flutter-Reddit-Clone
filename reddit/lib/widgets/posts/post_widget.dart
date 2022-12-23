@@ -75,9 +75,16 @@ class PostWidget extends StatefulWidget {
   /// if yes then the post will be shown in a compact way
   final bool isNested;
 
+  /// determines if the post is in the search screen or not
+  /// if yes then the post will be shown in a compact way
   final bool inSearch;
+
+  /// the comment that the post is related to
+  /// it's used to show the comment in the Search screen
   final CommentModel? comment;
 
+  /// determines if the post is inside the profiles screen or not
+  /// if yes then the post will be shown in a different way
   final bool insideProfiles;
   @override
   State<PostWidget> createState() => _PostWidgetState();
