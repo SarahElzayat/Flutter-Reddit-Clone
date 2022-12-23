@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:logger/logger.dart';
+import 'package:reddit/components/helpers/mocks/mock_functions.dart';
 import 'package:reddit/constants/constants.dart';
 import 'package:reddit/data/comment/comment_model.dart';
 import 'package:reddit/data/post_model/insights_model.dart';
@@ -63,6 +64,7 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
   /// @param [oldDir] the direction of the wanted post or comment
   Future vote({
     required int oldDir,
+    bool isTesting = false,
   }) {
     int postState = getModel.votingType ?? 0;
     int direction = oldDir;
@@ -76,6 +78,29 @@ class PostAndCommentActionsCubit extends Cubit<PostActionsState> {
 
     // int newDir = postState + direction;
     Logger().d(token);
+    if (isTesting) {
+      return mockDio.post(
+        '/vote',
+        data: {
+          'id': getModel.id,
+          'direction': oldDir,
+          'type': currentComment == null ? 'post' : 'comment',
+        },
+      ).then((value) {
+        if (value.statusCode == 200) {
+          getModel.votingType = (getModel.votingType ?? 0) + direction;
+          getModel.votes = (getModel.votes ?? 0) + direction;
+          emit(VotedSuccess());
+        } else {
+          emit(VotedError());
+        }
+      }).catchError((error) {
+        error = error as DioError;
+        debugPrint('error in vote: ${error.response?.data}');
+        emit(VotedError(error: error));
+      });
+    }
+
     return DioHelper.postData(
       path: '/vote',
       data: {

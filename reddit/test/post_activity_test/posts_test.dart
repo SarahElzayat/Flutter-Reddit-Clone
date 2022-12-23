@@ -20,28 +20,31 @@ void main() {
       var cubit = PostAndCommentActionsCubit(post: post);
       expect(post.votes, 100);
 
-      await cubit.vote(oldDir: 1).then((value) {
+      await cubit.vote(oldDir: 1, isTesting: true).then((value) {
         expect(post.votes, 101);
       });
 
-      await cubit.vote(oldDir: 1).then((value) {
+      await cubit.vote(oldDir: 1, isTesting: true).then((value) {
         expect(post.votes, 100);
       });
 
       // testing an invalid status code
-      when(mockDio.post('$baseUrl/vote', data: anyNamed('data')))
+      when(mockDio.post('/vote', data: anyNamed('data')))
           .thenAnswer((_) => Future.value(Response(
-              requestOptions: RequestOptions(path: '$baseUrl/vote'),
+              requestOptions: RequestOptions(path: '/vote'),
               data: {
                 'id': 1,
                 'type': 'post',
               },
               statusCode: 400)));
 
-      await cubit.vote(oldDir: 1).then((value) {
+      await cubit.vote(oldDir: 1, isTesting: true).then((value) {
         expect(post.votes, 100);
       });
     });
+
+
+    
     test('downvote', () async {
       prepareMocks();
 
@@ -49,25 +52,25 @@ void main() {
       var cubit = PostAndCommentActionsCubit(post: post);
       expect(post.votes, 100);
 
-      await cubit.vote(oldDir: -1).then((value) {
+      await cubit.vote(oldDir: -1, isTesting: true).then((value) {
         expect(post.votes, 99);
       });
 
-      await cubit.vote(oldDir: -1).then((value) {
+      await cubit.vote(oldDir: -1, isTesting: true).then((value) {
         expect(post.votes, 100);
       });
 
       // testing an invalid status code
-      when(mockDio.post('$baseUrl/vote', data: anyNamed('data')))
+      when(mockDio.post('/vote', data: anyNamed('data')))
           .thenAnswer((_) => Future.value(Response(
-              requestOptions: RequestOptions(path: '$baseUrl/vote'),
+              requestOptions: RequestOptions(path: '/vote'),
               data: {
                 'id': 71,
                 'type': 'post',
               },
               statusCode: 400)));
 
-      await cubit.vote(oldDir: -1).then((value) {
+      await cubit.vote(oldDir: -1, isTesting: true).then((value) {
         expect(post.votes, 100);
       });
     });
