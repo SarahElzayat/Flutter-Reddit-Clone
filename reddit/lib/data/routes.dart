@@ -2,7 +2,6 @@
 /// @date 1/11/2022
 /// this file containes all our routes in order to avoid destraction in the main file.
 import 'package:flutter/material.dart';
-=
 import 'package:reddit/screens/add_post/add_post_web.dart';
 import 'package:reddit/screens/inbox/single_message_screen.dart';
 import 'package:reddit/screens/inbox/single_notification_screen.dart';
@@ -25,7 +24,6 @@ import '../../screens/to_go_screens/having_trouble_screen.dart';
 import '../../screens/to_go_screens/privacy_and_policy.dart';
 import '../../screens/to_go_screens/user_agreement_screen.dart';
 import 'package:reddit/screens/settings/blocked_accounts.dart';
-
 
 import '../screens/inbox/web/send_private_message_screen.dart';
 import '../screens/inbox/single_message_screen.dart';
