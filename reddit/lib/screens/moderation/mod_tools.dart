@@ -1,6 +1,7 @@
 ///@author: Yasmine Ghanem
 ///@date: 5/12/2022
 ///this screen shows the mod tools to a moderator of the subreddit
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,11 +31,15 @@ import 'package:reddit/screens/moderation/user_management_screens/moderators.dar
 import 'package:reddit/screens/moderation/user_management_screens/muted_users.dart';
 import 'package:reddit/widgets/moderation/community_settings.dart';
 import 'package:reddit/widgets/moderation/notification_settings.dart';
+import 'package:reddit/widgets/moderation/post_flair_web.dart';
 import 'package:reddit/widgets/moderation/posts_comments_settings.dart';
+import 'package:reddit/widgets/moderation/traffic_stats.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ModTools extends StatefulWidget {
   static const String routeName = 'mod_tools';
+
+  ///the community name of the currents subreddit
   final String communityName;
   const ModTools({super.key, required this.communityName});
 
@@ -43,97 +48,103 @@ class ModTools extends StatefulWidget {
 }
 
 class _ModToolsState extends State<ModTools> {
+  /// the scroll controller for the column of list tiles
   final ScrollController controller = ScrollController();
 
   @override
   void initState() {
+    /// returns the community settings of the current subreddit
     ModerationCubit.get(context)
         .getCommunitySettings(context, widget.communityName);
-    ModerationCubit.get(context).getPostSettings(context, widget.communityName);
 
+    /// returns the post settings of the currents subreddit
+    ModerationCubit.get(context).getPostSettings(context, widget.communityName);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final ModerationCubit cubit = ModerationCubit.get(context);
+
+    /// the functions for the list tile container to navigate to screens
     final List<Function> generalFunctions = [
       () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: ((context) => Description())));
+        Navigator.push(context,
+            MaterialPageRoute(builder: ((context) => const Description())));
       },
       () {
         Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => WelcomeMessage())));
+            MaterialPageRoute(builder: ((context) => const WelcomeMessage())));
       },
       () {
         Navigator.push(
-            context, MaterialPageRoute(builder: ((context) => Topics())));
+            context, MaterialPageRoute(builder: ((context) => const Topics())));
       },
       () {
         Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => CommunityType())));
+            MaterialPageRoute(builder: ((context) => const CommunityType())));
       },
       () {
         Navigator.push(
             context, MaterialPageRoute(builder: ((context) => PostTypes())));
       },
       () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: ((context) => const Discovery())));
+      },
+      () {
         Navigator.push(
-            context, MaterialPageRoute(builder: ((context) => Discovery())));
+            context,
+            MaterialPageRoute(
+                builder: ((context) => const ModNotifications())));
       },
       () {
         Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => ModNotifications())));
-      },
-      () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: ((context) => Location())));
-      },
-      () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: ((context) => ArchivePosts())));
+            MaterialPageRoute(builder: ((context) => const Location())));
       },
       () {
         Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => MediaInComments())));
+            MaterialPageRoute(builder: ((context) => const ArchivePosts())));
+      },
+      () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: ((context) => const MediaInComments())));
       },
     ];
 
     //content and regulation mod tools screen navigation functions
     final List<Function> contentAndRegulationsFunctions = [
       () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: ((context) => PostFlair())));
+        Navigator.push(context,
+            MaterialPageRoute(builder: ((context) => const PostFlair())));
       },
       () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: ((context) => PostFlair())));
+        Navigator.push(context,
+            MaterialPageRoute(builder: ((context) => const PostFlair())));
       }
     ];
 
     //user managment mod tools screen navigation functions
     final List<Function> userManagementFunctions = [
       () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: ((context) => Moderators())));
+        Navigator.push(context,
+            MaterialPageRoute(builder: ((context) => const Moderators())));
       },
       () {
         Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => ApprovedUsers())));
+            MaterialPageRoute(builder: ((context) => const ApprovedUsers())));
       },
       () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: ((context) => MutedUsers())));
+        Navigator.push(context,
+            MaterialPageRoute(builder: ((context) => const MutedUsers())));
       },
       () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: ((context) => BannedUsers())));
+        Navigator.push(context,
+            MaterialPageRoute(builder: ((context) => const BannedUsers())));
       },
       () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => CreateFlair()));
-        // cubit.navigate(context, '/user_flair_mod_screen');
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const CreateFlair()));
       }
     ];
 
@@ -172,6 +183,8 @@ class _ModToolsState extends State<ModTools> {
                         }),
                     title: const Text('Moderator tools'),
                   ),
+
+            ///if the platform is web returns modtools in a column is same screen
             body: (kIsWeb)
                 ? Row(
                     children: [
@@ -182,7 +195,7 @@ class _ModToolsState extends State<ModTools> {
                             child: ListView(
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.all(10.0),
+                                  padding: const EdgeInsets.all(10.0),
                                   child: Text('QUEUES',
                                       style: TextStyle(
                                           fontSize: 10.sp,
@@ -208,7 +221,7 @@ class _ModToolsState extends State<ModTools> {
                                         ModToolsGroup.queues),
                                     title: 'Edited'),
                                 Padding(
-                                  padding: EdgeInsets.all(10.0),
+                                  padding: const EdgeInsets.all(10.0),
                                   child: Text('USER MANAGEMENT',
                                       style: TextStyle(
                                           fontSize: 10.sp,
@@ -239,39 +252,22 @@ class _ModToolsState extends State<ModTools> {
                                         ModToolsGroup.userManagement),
                                     title: 'Moderators'),
                                 Padding(
-                                  padding: EdgeInsets.all(10.0),
+                                  padding: const EdgeInsets.all(10.0),
                                   child: Text('FLAIR',
                                       style: TextStyle(
                                           fontSize: 10.sp,
                                           color: ColorManager.lightGrey)),
                                 ),
-                                ModListTile(
-                                    onTap: () => cubit.setWebSelectedItem(
-                                        context,
-                                        ModToolsSelectedItem.userFlair,
-                                        ModToolsGroup.flair),
-                                    title: 'User Flair'),
+
                                 ModListTile(
                                     onTap: () => cubit.setWebSelectedItem(
                                         context,
                                         ModToolsSelectedItem.postFlair,
                                         ModToolsGroup.flair),
-                                    title: 'PostFlair'),
+                                    title: 'Post Flair'),
+
                                 Padding(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: Text('CONTENT',
-                                      style: TextStyle(
-                                          fontSize: 10.sp,
-                                          color: ColorManager.lightGrey)),
-                                ),
-                                ModListTile(
-                                    title: 'Scheduled post',
-                                    onTap: () => cubit.setWebSelectedItem(
-                                        context,
-                                        ModToolsSelectedItem.scheduledPost,
-                                        ModToolsGroup.content)),
-                                Padding(
-                                  padding: EdgeInsets.all(10.0),
+                                  padding: const EdgeInsets.all(10.0),
                                   child: Text('SETTINGS',
                                       style: TextStyle(
                                           fontSize: 10.sp,
@@ -296,7 +292,7 @@ class _ModToolsState extends State<ModTools> {
                                         ModToolsSelectedItem.notifications,
                                         ModToolsGroup.settings)),
                                 Padding(
-                                  padding: EdgeInsets.all(10.0),
+                                  padding: const EdgeInsets.all(10.0),
                                   child: Text('COMMUNITY ACTIVITY',
                                       style: TextStyle(
                                           fontSize: 10.sp,
@@ -321,13 +317,16 @@ class _ModToolsState extends State<ModTools> {
                                   ? (cubit.webSelectedItem ==
                                           ModToolsSelectedItem
                                               .communitySettings)
-                                      ? CommunitySettings()
+                                      ? const CommunitySettings()
                                       : (cubit.webSelectedItem ==
                                               ModToolsSelectedItem
                                                   .notifications)
-                                          ? ModNotificationSettings()
-                                          : PostsCommentsSettings()
-                                  : CommunitySettings()
+                                          ? const ModNotificationSettings()
+                                          : const PostsCommentsSettings()
+                                  : (cubit.webSelectedGroup ==
+                                          ModToolsGroup.flair)
+                                      ? WebPostFlair()
+                                      : const TrafficStats()
                     ],
                   )
                 : SingleChildScrollView(

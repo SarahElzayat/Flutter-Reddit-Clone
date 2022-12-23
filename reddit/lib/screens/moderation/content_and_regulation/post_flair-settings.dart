@@ -1,6 +1,8 @@
+///@author: Yasmine Ghanem
+///@date: 20/12/2022
+///this screen is for the settings of the post flair
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../components/bottom_sheet.dart';
 import '../../../components/helpers/color_manager.dart';
@@ -17,12 +19,21 @@ class FlairSettings extends StatefulWidget {
 }
 
 class _FlairSettingsState extends State<FlairSettings> {
+  ///indicates whether the fairs can be edited by moderators only
   bool modSwitch = false;
+
+  ///indicates whether the fairs can be edited by users
   bool userSwitch = false;
+
+  ///the options that a flair can allow in a community
   dynamic flairAllows;
+
+  ///maximum number of emojis to be used in a flair name
   dynamic noOfEmojis;
+
   @override
   Widget build(BuildContext context) {
+    //cubit to access cubit functions and members outside class
     final ModerationCubit cubit = ModerationCubit.get(context);
     return BlocConsumer<ModerationCubit, ModerationState>(
       listener: (context, state) {},

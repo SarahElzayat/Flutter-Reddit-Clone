@@ -15,18 +15,26 @@ class Discovery extends StatefulWidget {
 class _DiscoveryState extends State<Discovery> {
   enabledButton() {}
 
+  /// determines whether a change in variables has been made
   bool isChanged = false;
+
+  /// indicates whethwe traffic switch is turned on or off
   bool trafficSwitch = false;
+
+  /// indicates whethwe recommend switch is turned on or off
   bool recommendSwitch = false;
 
   /// @param [switcher]
+  /// @param [switcher] new value of switch
+  /// toggles the recommend subreddit and sets it state
   toggleTraffic(switcher) {
     setState(() {
       trafficSwitch = switcher;
     });
   }
 
-  /// @param [switcher]
+  /// @param [switcher] new value of switch
+  /// toggles the recommend subreddit and sets it state
   toggleRecommend(switcher) {
     setState(() {
       recommendSwitch = switcher;
