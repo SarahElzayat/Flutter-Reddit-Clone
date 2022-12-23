@@ -1,7 +1,8 @@
-import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reddit/data/home/drawer_communities_model.dart';
+import 'package:reddit/data/mod_in_post_models/lock_model.dart';
+import 'package:reddit/data/mod_in_post_models/mark_nsfw_model.dart';
 import 'package:reddit/data/post_model/approve.dart';
 import 'package:reddit/data/post_model/flair.dart';
 import 'package:reddit/data/saved/saved_comments_model.dart';
@@ -154,6 +155,40 @@ void main() {
 
       expect(m, data);
     });
+    
+    
+    test('Lock model test', () {
+      final data = {
+        'id': '3ad165sa',
+        'type': 'type',
+      };
+
+      final LockModel model = LockModel.fromJson(data);
+
+      expect(model.id, '3ad165sa');
+
+      expect(model.type, 'type');
+
+      Map<String, dynamic> m = model.toJson();
+
+      expect(m, data);
+    });
+       test('MarkNSFW model test', () {
+      final data = {
+        'id': '3ad165sa',
+        
+      };
+
+      final MarkNSFWModel model = MarkNSFWModel.fromJson(data);
+
+      expect(model.id, '3ad165sa');
+
+
+      Map<String, dynamic> m = model.toJson();
+
+      expect(m, data);
+    });
+    
     test('flair model test', () {
       final data = {
         'id': '13245',
@@ -178,6 +213,6 @@ void main() {
 
 
 
-    
+
   });
 }
