@@ -1,6 +1,6 @@
 /// @author Sarah El-Zayat
 /// @date 9/11/2022
-/// this is the screen for the comments results of the main search
+/// this is a dummy route to screen that might be dont for future extension
 import 'package:flutter/material.dart';
 
 class ToBeDoneScreen extends StatefulWidget {

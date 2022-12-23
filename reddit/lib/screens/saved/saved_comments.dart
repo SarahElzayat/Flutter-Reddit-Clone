@@ -1,3 +1,5 @@
+///@author Sarah Elzayat
+///@description: the screen that shows the user's saved posts
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,6 +20,7 @@ class SavedCommentsScreen extends StatefulWidget {
 class _SavedCommentsScreenState extends State<SavedCommentsScreen> {
   final _scrollController = ScrollController();
 
+  /// scroll listener to load more at the bottom of the screen
   void _scrollListener() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
@@ -26,18 +29,19 @@ class _SavedCommentsScreenState extends State<SavedCommentsScreen> {
     }
   }
 
-  /// the method that's callled on pull down to refresh
+  /// the method that's callled on pull down to refresh to reload the screen
   Future<void> _onRefresh() async {
     setState(() {
       AppCubit.get(context).getSaved(isComments: true);
     });
   }
 
+/// initial state of the widget
+/// loads posts on creation
   @override
   void initState() {
     AppCubit.get(context).getSaved(isComments: true);
     _scrollController.addListener(_scrollListener);
-
     super.initState();
   }
 

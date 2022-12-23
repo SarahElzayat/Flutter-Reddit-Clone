@@ -8,8 +8,10 @@ import 'package:reddit/cubit/app_cubit/app_cubit.dart';
 import '../networks/constant_end_points.dart';
 import '../screens/search/search_screen.dart';
 
-///@param [image] is the user's profile picture
 /// the functions returns the user's profile picture as a circle avatara
+///@param [image] is the user's profile picture
+///@param [context] is the context of the parent widget
+///@param [radius] is the radius of the circular avatar, 20 by default
 Widget avatar({required context, image, double radius = 20}) {
   return Padding(
     padding: const EdgeInsets.only(right: 8.0),
@@ -31,9 +33,11 @@ Widget avatar({required context, image, double radius = 20}) {
 /// @param [context] is the context of the screen that's required to navigate to
 Future<Object?> navigateToSearch(context) {
   return Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => const SearchScreen(
-                isSubreddit: false,
-              )));
+    context,
+    MaterialPageRoute(
+      builder: (context) => const SearchScreen(
+        isSubreddit: false,
+      ),
+    ),
+  );
 }
