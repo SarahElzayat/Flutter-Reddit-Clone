@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:reddit/components/snack_bar.dart';
 import '../../data/google_api/google_sign_in_api.dart';
 import '../../data/settings/settings_models/block_user_model.dart';
 import '../../data/settings/settings_models/blocked_accounts_getter_model.dart';
@@ -171,25 +172,19 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
       data: update.toJson(),
     ).then((response) {
       if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Email has been changed!'),
-            backgroundColor: ColorManager.green));
+        ScaffoldMessenger.of(context).showSnackBar(
+          responseSnackBar(
+              message: 'Email has been changed! 📧🔑📧', error: false),
+        );
         CacheHelper.putData(key: 'email', value: mailText);
-        Navigator.pop(context);
+        Navigator.of(context).pop();
       }
     }).catchError((error) {
       error = error as DioError;
 
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-          '$error :(',
-          style: const TextStyle(
-              color: ColorManager.eggshellWhite,
-              fontWeight: FontWeight.bold,
-              fontSize: 14),
-        ),
-        backgroundColor: ColorManager.red,
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        responseSnackBar(message: '${error.error} 😐🔑😔'),
+      );
     });
 
     emit(ChangeEmail());
@@ -330,22 +325,14 @@ class SettingsCubit extends Cubit<SettingsCubitState> {
                 {
                   CacheHelper.putData(key: 'gender', value: newGender),
                   emit(ChangeSwitchState()),
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(
-                        'Your Gender is now $newGender',
-                        style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: ColorManager.black),
-                      ),
-                      backgroundColor: ColorManager.green))
+                  ScaffoldMessenger.of(context).showSnackBar(responseSnackBar(
+                      message: 'Your Gender is now $newGender', error: false))
                 }
             })
         .catchError((error) {
       error = error as DioError;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('${error.response?.data}'),
-          backgroundColor: ColorManager.red));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(responseSnackBar(message: '${error.response?.data}'));
     });
   }
 

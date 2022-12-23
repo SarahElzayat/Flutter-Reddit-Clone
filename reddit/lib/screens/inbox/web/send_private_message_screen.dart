@@ -10,6 +10,7 @@ import 'package:reddit/components/home_app_bar.dart';
 import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/data/messages/send_message_model.dart';
 import 'package:reddit/data/sign_in_And_sign_up_models/validators.dart';
+import 'package:reddit/screens/inbox/web/inbox_screen_for_web.dart';
 import 'package:reddit/widgets/inbox/web/header_for_inbox.dart';
 
 import '../../../networks/constant_end_points.dart';
@@ -80,6 +81,45 @@ class _SendPrivateMessageScreenState extends State<SendPrivateMessageScreen> {
     }
   }
 
+  /// this is the type of the message that will be sent.
+  String msgType = 'all';
+
+  /// this function is used to change the type of the message.
+  /// to be able to show the appropriate data.
+  void changeTheMsgType(String type) {
+    setState(() {
+      msgType = type;
+    });
+    Navigator.of(context).pushReplacementNamed(InboxScreenforWeb.routeName);
+  }
+
+  /// the header type which decide which content will be shown.
+  String headerType = 'Inbox';
+
+  /// change the header type to be able to show the appropriate header.
+  void changeTheHeaderType(String type) {
+    setState(() {
+      headerType = type;
+    });
+    if (type == 'Inbox') {
+      setState(() {
+        headerType = 'Inbox';
+      });
+      Navigator.of(context).pushReplacementNamed(InboxScreenforWeb.routeName);
+    } else if (type == 'Sent') {
+      setState(() {
+        headerType = 'Sent';
+      });
+      Navigator.of(context).pushReplacementNamed(InboxScreenforWeb.routeName);
+    } else if (type == 'Private') {
+      setState(() {
+        headerType = 'Private';
+      });
+      Navigator.of(context)
+          .pushReplacementNamed(SendPrivateMessageScreen.routeName);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -92,7 +132,11 @@ class _SendPrivateMessageScreenState extends State<SendPrivateMessageScreen> {
               height: mediaQuery.size.height,
               child: Column(mainAxisSize: MainAxisSize.max, children: [
                 // this is always constant for any screen
-                const HeaderAppBarForInboxWeb(),
+                HeaderAppBarForInboxWeb(
+                    decideTheTypeHandler: changeTheMsgType,
+                    type: msgType,
+                    decideTheHeaderTypeHandler: changeTheHeaderType,
+                    headerType: headerType),
 
                 Center(
                     child: SizedBox(

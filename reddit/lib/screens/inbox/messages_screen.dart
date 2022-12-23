@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:reddit/screens/comments/add_comment_screen.dart';
 import '../../data/messages/messages_model.dart';
 import '../../networks/constant_end_points.dart';
 import '../../networks/dio_helper.dart';
@@ -45,11 +46,15 @@ class _MessagesScreenState extends State<MessagesScreen> {
     await DioHelper.getData(path: messagesPoint).then(
       (response) {
         if (response.statusCode == 200) {
+          logger.i(response.data);
           MessageModel msgs = MessageModel.fromJson(response.data);
           for (MessageChildren msg in msgs.children!) {
-            messages.add(MessageWidget(
-              myMessage: msg,
-            ));
+            print(msg == null);
+            setState(() {
+              messages.add(MessageWidget(
+                myMessage: msg,
+              ));
+            });
           }
         }
       },

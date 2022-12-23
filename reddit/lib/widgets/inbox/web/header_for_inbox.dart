@@ -6,10 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:reddit/components/helpers/color_manager.dart';
 
 class HeaderAppBarForInboxWeb extends StatelessWidget {
-  const HeaderAppBarForInboxWeb({super.key});
+  final decideTheTypeHandler;
+  final decideTheHeaderTypeHandler;
+  final String type;
+  final String headerType;
+  const HeaderAppBarForInboxWeb(
+      {super.key,
+      required this.decideTheTypeHandler,
+      required this.decideTheHeaderTypeHandler,
+      required this.type,
+      required this.headerType});
 
   @override
   Widget build(BuildContext context) {
+    final navigator = Navigator.of(context);
     return Container(
       decoration: const BoxDecoration(
         color: ColorManager.greyColor,
@@ -28,29 +38,43 @@ class HeaderAppBarForInboxWeb extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     TextButton(
-                        onPressed: () {},
-                        child: const Text(
+                        onPressed: () {
+                          decideTheHeaderTypeHandler('Private');
+                        },
+                        child: Text(
                           'Send a Private Message',
                           style: TextStyle(
-                              color: ColorManager.grey,
+                              color: headerType == 'Private'
+                                  ? ColorManager.blue
+                                  : ColorManager.grey,
                               fontSize: 18,
                               fontWeight: FontWeight.bold),
                         )),
                     TextButton(
-                        onPressed: () {},
-                        child: const Text(
+                        onPressed: () {
+                          decideTheHeaderTypeHandler('Inbox');
+                          decideTheTypeHandler('all');
+                        },
+                        child: Text(
                           'Inbox',
                           style: TextStyle(
-                              color: ColorManager.grey,
+                              color: headerType == 'Inbox'
+                                  ? ColorManager.blue
+                                  : ColorManager.grey,
                               fontSize: 18,
                               fontWeight: FontWeight.bold),
                         )),
                     TextButton(
-                        onPressed: () {},
-                        child: const Text(
+                        onPressed: () {
+                          decideTheTypeHandler('sent');
+                          decideTheHeaderTypeHandler('Sent');
+                        },
+                        child: Text(
                           'Sent',
                           style: TextStyle(
-                              color: ColorManager.grey,
+                              color: headerType == 'Sent'
+                                  ? ColorManager.blue
+                                  : ColorManager.grey,
                               fontSize: 18,
                               fontWeight: FontWeight.bold),
                         )),
@@ -65,40 +89,58 @@ class HeaderAppBarForInboxWeb extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               TextButton(
-                  onPressed: () {},
-                  child: const Text(
+                  onPressed: () => decideTheTypeHandler('all'),
+                  child: Text(
                     'All',
-                    style: TextStyle(color: ColorManager.grey),
+                    style: TextStyle(
+                        color: type == 'all'
+                            ? ColorManager.upvoteRed
+                            : ColorManager.grey),
                   )),
               TextButton(
-                  onPressed: () {},
-                  child: const Text(
+                  onPressed: () => decideTheTypeHandler('unread'),
+                  child: Text(
                     'Unread',
-                    style: TextStyle(color: ColorManager.grey),
+                    style: TextStyle(
+                        color: type == 'unread'
+                            ? ColorManager.upvoteRed
+                            : ColorManager.grey),
                   )),
               TextButton(
-                  onPressed: () {},
-                  child: const Text(
+                  onPressed: () => decideTheTypeHandler('messages'),
+                  child: Text(
                     'Messages',
-                    style: TextStyle(color: ColorManager.grey),
+                    style: TextStyle(
+                        color: type == 'messages'
+                            ? ColorManager.upvoteRed
+                            : ColorManager.grey),
                   )),
               TextButton(
                   onPressed: () {},
-                  child: const Text(
+                  child: Text(
                     'Comment Replies',
-                    style: TextStyle(color: ColorManager.grey),
+                    style: TextStyle(
+                        color: type == 'comment'
+                            ? ColorManager.upvoteRed
+                            : ColorManager.grey),
                   )),
               TextButton(
                   onPressed: () {},
-                  child: const Text(
+                  child: Text(
                     'Post Replies',
-                    style: TextStyle(color: ColorManager.grey),
+                    style: TextStyle(
+                        color: type == 'post'
+                            ? ColorManager.upvoteRed
+                            : ColorManager.grey),
                   )),
               TextButton(
                   onPressed: () {},
-                  child: const Text(
+                  child: Text(
                     'Username Mentions',
-                    style: TextStyle(color: ColorManager.grey),
+                    style: TextStyle(
+                        color: type == 'mentions'
+                            ? ColorManager.upvoteRed
+                            : ColorManager.grey),
                   )),
             ],
           )
