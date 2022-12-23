@@ -28,7 +28,7 @@ ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PAT
 RUN flutter doctor
 
 # Enable flutter web
-RUN flutter channel 3.3
+RUN flutter channel flutter-3.3-candidate.5
 # RUN flutter upgrade
 RUN flutter config --enable-web
 
