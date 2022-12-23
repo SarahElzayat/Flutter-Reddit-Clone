@@ -61,7 +61,7 @@ class NotificationItSelf {
     type = json['type'];
     link = json['link'];
     photo = json['photo'];
-    photo = json['followingUsername'];
+    followingUsername = json['followingUsername'];
     sendAt = json['sendAt'];
     isRead = json['isRead'];
   }
