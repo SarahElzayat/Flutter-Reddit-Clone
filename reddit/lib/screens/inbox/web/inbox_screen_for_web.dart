@@ -7,6 +7,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit/components/home_app_bar.dart';
+import 'package:reddit/components/snack_bar.dart';
 import 'package:reddit/data/messages/messages_model.dart';
 import 'package:reddit/screens/inbox/web/message_template_for_web.dart';
 import 'package:reddit/widgets/inbox/web/header_for_inbox.dart';
@@ -296,13 +297,21 @@ class _InboxScreenStateforWeb extends State<InboxScreenforWeb> {
         if (response.statusCode == 200) {
           MessageModel msgs = MessageModel.fromJson(response.data);
           for (MessageChildren msg in msgs.children!) {
-            // / here we should add the message to the list
-            // messages.add();
+            // here we should add the message to the list
+            messages.add(MessageTemplateWidgetForWeb(
+              isEven: ((messages.length + 1) % 2 ==
+                  0), // because we are going to add a new message.
+              messageChildren: msg,
+            ));
           }
         }
       },
     ).catchError((err) {
-      err = err as DioError;
+      ScaffoldMessenger.of(context).showSnackBar(
+        responseSnackBar(
+          message: 'err',
+        ),
+      );
     });
   }
 
