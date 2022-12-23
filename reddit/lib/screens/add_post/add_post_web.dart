@@ -10,8 +10,10 @@ import '../../widgets/add_post/post_type_buttons.dart';
 import '../../widgets/add_post/post_type_widget.dart';
 import 'community_search.dart';
 
+
+/// Add Post Screen For Web
 class AddPostWebScreen extends StatefulWidget {
-  AddPostWebScreen({Key? key}) : super(key: key);
+  const AddPostWebScreen({Key? key}) : super(key: key);
 
   @override
   State<AddPostWebScreen> createState() => _AddPostWebScreenState();
@@ -23,7 +25,6 @@ class _AddPostWebScreenState extends State<AddPostWebScreen> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    final navigator = Navigator.of(context);
     final addPostCubit = BlocProvider.of<AddPostCubit>(context);
     return Scaffold(
       appBar: homeAppBar(context, 0),
@@ -52,14 +53,14 @@ class _AddPostWebScreenState extends State<AddPostWebScreen> {
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Column(children: [
                         PostTypeButtons(
                           keyboardIsOpened: false,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Padding(
@@ -74,7 +75,7 @@ class _AddPostWebScreenState extends State<AddPostWebScreen> {
                                 fontSize:
                                     (23 * mediaQuery.textScaleFactor).toInt(),
                                 hintText: 'Title')),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         SizedBox(
@@ -92,7 +93,7 @@ class _AddPostWebScreenState extends State<AddPostWebScreen> {
                                 ' Spoiler', addPostCubit, mediaQuery)
                           ],
                         ),
-                        CreatePostButton(),
+                        const CreatePostButton(),
                       ]),
                     ]),
               ),
@@ -134,12 +135,12 @@ class _AddPostWebScreenState extends State<AddPostWebScreen> {
                                     addPostCubit
                                         .clearSelectedSubredditOrProfile();
                                   },
-                                  icon: Icon(Icons.close))
+                                  icon: const Icon(Icons.close))
                             ],
                           );
                         },
                       ),
-                      CommunitySearch()
+                      const CommunitySearch()
 
                       // Row(
                       //   mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -6,6 +6,7 @@ import 'package:reddit/components/helpers/color_manager.dart';
 import '../../cubit/add_post/cubit/add_post_cubit.dart';
 import 'add_post_textfield.dart';
 
+/// Text Post In Web
 class TextPostWidget extends StatefulWidget {
   TextPostWidget({Key? key}) : super(key: key);
 
@@ -14,6 +15,8 @@ class TextPostWidget extends StatefulWidget {
 }
 
 class _TextPostWidgetState extends State<TextPostWidget> {
+
+  /// Type of Text Post (IS markdown or Rich text editor 'Quill')
   bool isMarkdown = false;
   @override
   Widget build(BuildContext context) {
@@ -51,7 +54,7 @@ class _TextPostWidgetState extends State<TextPostWidget> {
   Widget quillEditor(quill.QuillController controller) {
     return Column(
       children: [
-        quill.QuillToolbar.basic(controller: controller),
+        quill.QuillToolbar.basic(controller: controller,showHeaderStyle :false,multiRowsDisplay :true,showIndent :false,showInlineCode :false,showQuote :false),
         quill.QuillEditor(
             controller: controller,
             placeholder: 'Text (optional)',

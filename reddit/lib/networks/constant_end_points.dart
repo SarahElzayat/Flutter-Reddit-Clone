@@ -10,8 +10,8 @@ const baseUrl = kReleaseMode
     ? '/api'
     // ? 'http://www.read-it.live/api'
     : kIsWeb
-        // ? 'http://localhost:3000'
-        ? 'https://www.read-it.live/api'
+        ? 'http://localhost:3000'
+        // ? 'https://www.read-it.live/api'
         // : 'http://10.0.2.2:3000'; // for mobile
         : 'https://www.read-it.live/api';
 

@@ -9,6 +9,7 @@ import '../../components/search_field.dart';
 import '../../networks/constant_end_points.dart';
 import '../search/search_results_main_screen.dart';
 
+/// AppBar in Subreddit Screen For Mobile
 class SubredditAppBar extends SliverPersistentHeaderDelegate {
   @override
   final double minExtent;

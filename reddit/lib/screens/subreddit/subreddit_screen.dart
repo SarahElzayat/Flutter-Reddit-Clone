@@ -25,6 +25,7 @@ import '../add_post/add_post.dart';
 import '../moderation/mod_tools.dart';
 import 'subreddit_topbar.dart';
 
+/// Subreddit Screen For Mobile
 class Subreddit extends StatefulWidget {
   const Subreddit({Key? key}) : super(key: key);
 

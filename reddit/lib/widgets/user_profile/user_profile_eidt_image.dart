@@ -10,6 +10,8 @@ import '../../screens/settings/change_profile_picture_screen.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../networks/constant_end_points.dart';
 
+
+/// Edit Profile picture and banner
 class UserProfileEditImage extends StatefulWidget {
   UserProfileEditImage({Key? key}) : super(key: key);
 
@@ -119,15 +121,6 @@ class _UserProfileEditImageState extends State<UserProfileEditImage> {
                 child: Stack(
                   children: [
                     CircleAvatar(
-                      child: (kIsWeb)
-                          ? (userProfile.userData!.picture == null ||
-                                  userProfile.userData!.picture == '')
-                              ? Image.asset('assets/images/Logo.png')
-                              : Image.network(
-                                  '$baseUrl/${userProfile.userData!.picture!}',
-                                  // fit: BoxFit.cover,
-                                )
-                          : null,
                       backgroundColor: (kIsWeb) ? Colors.transparent : null,
                       radius: 40,
                       backgroundImage: (!kIsWeb)
@@ -136,6 +129,15 @@ class _UserProfileEditImageState extends State<UserProfileEditImage> {
                               ? Image.asset('assets/images/Logo.png')
                                   as ImageProvider
                               : NetworkImage(
+                                  '$baseUrl/${userProfile.userData!.picture!}',
+                                  // fit: BoxFit.cover,
+                                )
+                          : null,
+                      child: (kIsWeb)
+                          ? (userProfile.userData!.picture == null ||
+                                  userProfile.userData!.picture == '')
+                              ? Image.asset('assets/images/Logo.png')
+                              : Image.network(
                                   '$baseUrl/${userProfile.userData!.picture!}',
                                   // fit: BoxFit.cover,
                                 )

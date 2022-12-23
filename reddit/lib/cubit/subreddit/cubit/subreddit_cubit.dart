@@ -18,13 +18,24 @@ class SubredditCubit extends Cubit<SubredditState> {
 
   static SubredditCubit get(context) => BlocProvider.of(context);
 
+  /// Subreddit Data
   SubredditModel? subreddit;
+
+  /// Subreddit Name
   late String subredditName;
+
+  /// Moderators Of the Subredit
   late ModeratorModel moderators;
+
+  /// List Of Posts
   List<PostModel> posts = [];
+
+  /// Controller of the scrolling widget for Posts
   late PagingController<String?, PostModel> pagingController;
 
+  /// index of the type of Sorting
   int selectedIndex = 0;
+
 
   void setSubredditName(BuildContext context, String name,
       {bool replace = false}) async {
@@ -70,6 +81,8 @@ class SubredditCubit extends Cubit<SubredditState> {
     }).catchError((error) {});
   }
 
+  /// Leave The Joined Community
+  /// [isTesting] for Testing only
   Future leaveCommunity({bool isTesting = false}) {
     if (isTesting) {
       return mockDio.post('/leave-subreddit', data: {
@@ -94,6 +107,7 @@ class SubredditCubit extends Cubit<SubredditState> {
     }
   }
 
+  /// Join the Subreddit
   Future joinCommunity({bool isTesting = false}) {
     if (isTesting) {
       return mockDio.post('/join-subreddit', data: {
@@ -118,6 +132,8 @@ class SubredditCubit extends Cubit<SubredditState> {
     }
   }
 
+  ///  fetch Subreddit Posts
+  /// [sortBy] Type of Sorting
   void fetchPosts({String? after, required String sortBy}) {
     final query = {'after': after, 'subreddit': subredditName};
     DioHelper.getData(path: '/r/$subredditName/$sortBy', query: query)

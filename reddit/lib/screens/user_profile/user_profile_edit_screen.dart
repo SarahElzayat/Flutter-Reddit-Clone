@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../components/bottom_sheet.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../cubit/user_profile/cubit/user_profile_cubit.dart';
-import '../../networks/constant_end_points.dart';
 import '../../widgets/user_profile/user_profile_eidt_image.dart';
 
 class UserProfileEditScreen extends StatefulWidget {
-  UserProfileEditScreen({Key? key}) : super(key: key);
+  const UserProfileEditScreen({Key? key}) : super(key: key);
 
   @override
   State<UserProfileEditScreen> createState() => _UserProfileEditScreenState();
@@ -200,7 +198,7 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
                                                   .userData!
                                                   .socialLinks![i]
                                                   .displayText!),
-                                              Icon(Icons.close),
+                                              const Icon(Icons.close),
                                             ]),
                                       ),
                                     ),

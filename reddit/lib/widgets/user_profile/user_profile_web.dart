@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-
 import '../../components/button.dart';
 import '../../components/helpers/color_manager.dart';
-import '../../constants/constants.dart';
-import '../../cubit/app_cubit/app_cubit.dart';
 import '../../cubit/user_profile/cubit/user_profile_cubit.dart';
 import '../../networks/constant_end_points.dart';
 import '../../screens/user_profile/user_profile_edit_screen.dart';
-import '../../screens/user_profile/user_profile_screen.dart';
 import '../../shared/local/shared_preferences.dart';
 import 'user_profile_comments.dart';
 import 'user_profile_posts.dart';
 
+
+/// User Profile Screen For Web
 class UserProfileWeb extends StatefulWidget {
-  UserProfileWeb({Key? key}) : super(key: key);
+  const UserProfileWeb({Key? key}) : super(key: key);
 
   @override
   State<UserProfileWeb> createState() => _UserProfileWebState();
@@ -58,11 +55,10 @@ class _UserProfileWebState extends State<UserProfileWeb>
     final mediaQuery = MediaQuery.of(context);
     final navigator = Navigator.of(context);
     final userProfileCubit = BlocProvider.of<UserProfileCubit>(context);
-    final AppCubit cubit = AppCubit.get(context);
     return Scaffold(
       body: ListView(
         children: [
-          TabBar(controller: controller, tabs: [
+          TabBar(controller: controller, tabs: const [
             Tab(
               text: 'POSTS',
             ),
@@ -88,34 +84,13 @@ class _UserProfileWebState extends State<UserProfileWeb>
                         : null,
                     child: TabBarView(
                         clipBehavior: Clip.none,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         controller: controller,
                         children: [
                           SizedBox(height: 500, child: UserProfilePosts()),
                           SizedBox(height: 500, child: UserProfileComments()),
                         ])
-
-                    // ListView.builder(
-                    //   physics: const NeverScrollableScrollPhysics(),
-                    //   shrinkWrap: true,
-                    //   scrollDirection: Axis.vertical,
-                    //   itemCount: 8,
-                    //   itemBuilder: (context, index) => Container(
-                    //     height: 300,
-                    //     color: Color.fromARGB(
-                    //         255, index * 10, index * 15, index * 13),
-                    //     margin: const EdgeInsets.symmetric(
-                    //         horizontal: 0, vertical: 10),
-                    //     child: Text(
-                    //       'Post $index',
-                    //     ),
-                    //   ),
-                    // ),
                     ),
-                // if (mediaQuery.size.width <= 1000)
-                //   SizedBox(
-                //     width: mediaQuery.size.width * 0.2,
-                //   ),
                 if (mediaQuery.size.width > 1000)
                   Container(
                     color: ColorManager.bottomSheetBackgound,
@@ -182,9 +157,9 @@ class _UserProfileWebState extends State<UserProfileWeb>
                       (userProfileCubit.userData!.about != null &&
                               userProfileCubit.userData!.about != '')
                           ? Container(
-                              margin: EdgeInsets.symmetric(vertical: 10),
+                              margin: const EdgeInsets.symmetric(vertical: 10),
                               child: Text(userProfileCubit.userData!.about!))
-                          : SizedBox(),
+                          : const SizedBox(),
 
                       (isMyProfile)
                           ? Button(
@@ -205,7 +180,6 @@ class _UserProfileWebState extends State<UserProfileWeb>
                               buildWhen: (previous, current) {
                                 if (current is FollowOrUnfollowState ||
                                     previous is FollowOrUnfollowState) {
-                                  print(true);
                                   return true;
                                 } else {
                                   return false;

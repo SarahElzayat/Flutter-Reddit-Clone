@@ -90,7 +90,7 @@ class _CommunitySearchState extends State<CommunitySearch> {
         onTap: () {
           addPostCubit.addProfile();
         },
-        child: Text('My Profile'),
+        child: const Text('My Profile'),
       ),
       SizedBox(
         height: (kIsWeb) ? 500 : null,
@@ -98,8 +98,8 @@ class _CommunitySearchState extends State<CommunitySearch> {
           buildWhen: (previous, current) => current is SubredditSearch,
           builder: (context, state) {
             if (state is SubredditSearch && state.isLoaded == false) {
-              return Center(
-                child: const CircularProgressIndicator(
+              return const Center(
+                child: CircularProgressIndicator(
                   color: ColorManager.blue,
                 ),
               );

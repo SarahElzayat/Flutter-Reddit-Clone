@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../cubit/subreddit/cubit/subreddit_cubit.dart';
 
+/// Widget That Contain The Moderators Of subreddit
 class SubredditAboutWidget extends StatelessWidget {
   const SubredditAboutWidget({Key? key}) : super(key: key);
 

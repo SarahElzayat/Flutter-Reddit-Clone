@@ -5,6 +5,7 @@ import '../../cubit/user_profile/cubit/user_profile_cubit.dart';
 import '../../screens/posts/post_screen.dart';
 import '../comments/comment.dart';
 
+/// Get Comment Of The User
 class UserProfileComments extends StatefulWidget {
   UserProfileComments({Key? key}) : super(key: key);
 

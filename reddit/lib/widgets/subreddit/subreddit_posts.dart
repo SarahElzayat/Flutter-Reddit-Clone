@@ -6,6 +6,7 @@ import '../../cubit/subreddit/cubit/subreddit_cubit.dart';
 import '../../data/post_model/post_model.dart';
 import '../posts/post_widget.dart';
 
+/// Show Posts In the Subreddit
 class SubredditPostsWidget extends StatefulWidget {
   const SubredditPostsWidget({Key? key}) : super(key: key);
 
@@ -16,6 +17,7 @@ class SubredditPostsWidget extends StatefulWidget {
 class _SubredditPostsWidgetState extends State<SubredditPostsWidget> {
   // int selectedIndex = 0;
 
+  //
   PostView postView = PostView.card;
 
   final List<IconData> _unselectedIcons = [
