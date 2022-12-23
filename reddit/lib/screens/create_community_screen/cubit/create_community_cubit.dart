@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
@@ -12,7 +11,6 @@ import '../../../data/create_community_model/saved_categories_model.dart';
 import '../../../data/moderation_models/community_settings_model.dart';
 import '../../../networks/constant_end_points.dart';
 import '../../../networks/dio_helper.dart';
-import '../../moderation/cubit/moderation_cubit.dart';
 import '../../../shared/local/shared_preferences.dart';
 
 part 'create_community_state.dart';
@@ -121,7 +119,13 @@ class CreateCommunityCubit extends Cubit<CreateCommunityState> {
   ///@param [nsfw] whether the community is nsfw
   ///@param [category] the category chosen for the community
   ///sends a request to create a new community
-  void creatCommunity(context, name, type, nsfw, category) {
+  Future creatCommunity(
+      {context,
+      required String name,
+      required String type,
+      required bool nsfw,
+      required String category,
+      bool isTesting = false}) async {
     String finalType = (type == CommunityTypes.private)
         ? 'Private'
         : (type == CommunityTypes.restricted)

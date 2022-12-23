@@ -235,8 +235,12 @@ class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
                       onPressed: (isEmpty || !isValidated)
                           ? () {}
                           : () {
-                              cubit.creatCommunity(context, communityName,
-                                  communityType, isSwitched, category);
+                              cubit.creatCommunity(
+                                  context: context,
+                                  name: communityName,
+                                  type: communityType,
+                                  nsfw: isSwitched,
+                                  category: category.toString());
                             },
                     ))
                   ],
