@@ -73,12 +73,19 @@ class _SignInScreenState extends State<SignInScreen> {
         /// caching the user settings in the shared preferences
         await DioHelper.getData(path: accountSettings).then((response) {
           if (response.statusCode == 200) {
-            UserSettingsModel.fromJson(response.data);
-            UserSettingsModel.cacheUserSettings();
+            UserSettingsModel user = UserSettingsModel.fromJson(response.data);
+
+            user.cacheUserSettings();
             // navigating to the main screen
             Navigator.of(context)
                 .pushReplacementNamed(HomeScreenForMobile.routeName);
           }
+        }).onError((error, stackTrace) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                backgroundColor: ColorManager.red,
+                content: Text('Something went wrong!, please try again')),
+          );
         });
       }
     }).catchError((error) {
@@ -100,13 +107,6 @@ class _SignInScreenState extends State<SignInScreen> {
                   'Something went wrong!, please change the inputs and try again')),
         );
       }
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   const SnackBar(
-      //       backgroundColor: ColorManager.red,
-      //       content: Text(
-      //           'Something went wrong!, please change the inputs and try again')),
-      // );
-      // }
     });
   }
 

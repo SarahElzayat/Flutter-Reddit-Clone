@@ -13,6 +13,7 @@ import 'package:reddit/screens/create_community_screen/create_community_screen.d
 import 'package:reddit/components/app_bar_components.dart';
 import 'package:reddit/components/search_field.dart';
 import 'package:reddit/screens/inbox/create_message_screen.dart';
+import 'package:reddit/screens/inbox/web/inbox_screen_for_web.dart';
 import 'package:reddit/screens/search/search_results_main_screen.dart';
 import '../cubit/app_cubit/app_cubit.dart';
 import '../screens/bottom_navigation_bar_screens/home_screen.dart';
@@ -221,7 +222,9 @@ AppBar homeAppBar(
               splashColor: Colors.transparent,
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(InboxScreenforWeb.routeName);
+              },
               icon: const Icon(Icons.notifications_outlined),
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
