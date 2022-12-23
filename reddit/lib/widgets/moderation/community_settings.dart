@@ -1,5 +1,11 @@
+///@author: Yasmine Ghanem
+///@date:
+///this screen is for the subreddit community settings in web
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reddit/components/helpers/enums.dart';
+import 'package:reddit/widgets/posts/actions_cubit/post_comment_actions_cubit.dart';
 import '../../components/button.dart';
 import '../../components/helpers/color_manager.dart';
 import '../../components/moderation_components/modtools_components.dart';
@@ -8,15 +14,37 @@ import '../../constants/constants.dart';
 import '../../screens/moderation/cubit/moderation_cubit.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class CommunitySettings extends StatelessWidget {
+class CommunitySettings extends StatefulWidget {
   const CommunitySettings({super.key});
 
   @override
+  State<CommunitySettings> createState() => _CommunitySettingsState();
+}
+
+class _CommunitySettingsState extends State<CommunitySettings> {
+  @override
   Widget build(BuildContext context) {
+    final ModerationCubit cubit = ModerationCubit.get(context);
+
+    ///current name of community
+    cubit.usernameController.text = cubit.settings.communityName.toString();
+
+    /// current description of the community
+    cubit.descriptionController.text =
+        cubit.settings.communityDescription.toString();
+
+    /// current welcome message of the community
+    cubit.welcomeMessageController.text =
+        cubit.settings.welcomeMessage.toString();
+
+    CommunityTypes? communityType = (cubit.communityType == 'Public')
+        ? CommunityTypes.public
+        : (cubit.communityType == 'Restricted')
+            ? CommunityTypes.restricted
+            : CommunityTypes.private;
     return BlocConsumer<ModerationCubit, ModerationState>(
       listener: (context, state) {},
       builder: (context, state) {
-        final ModerationCubit cubit = ModerationCubit.get(context);
         return Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,14 +60,20 @@ class CommunitySettings extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: Button(
-                        onPressed: () => cubit.updateSettings(context),
+                        onPressed: () => cubit.updateCommunitySettingsWeb(
+                            context: context,
+                            topic: cubit.settings.mainTopic,
+                            nsfw: cubit.settings.nSFW,
+                            type: cubit.settings.type,
+                            sendMessage: cubit.settings.sendWelcomeMessage,
+                            welcomeMessage: cubit.welcomeMessageController.text,
+                            description: cubit.descriptionController.text,
+                            language: cubit.settings.language),
                         text: 'Save changes',
                         buttonWidth: 10.w,
                         buttonHeight: 5.h,
                         textColor: ColorManager.black,
                         splashColor: Colors.transparent,
-                        disabled: cubit.descriptionChanged,
-                        isPressable: cubit.descriptionChanged,
                         backgroundColor: ColorManager.eggshellWhite,
                       ),
                     )
@@ -60,7 +94,7 @@ class CommunitySettings extends StatelessWidget {
                             color: ColorManager.darkGrey,
                             child: Flexible(
                               child: ListView(
-                                padding: EdgeInsets.all(20),
+                                padding: const EdgeInsets.all(20),
                                 shrinkWrap: true,
                                 children: [
                                   const Text('Community settings'),
@@ -190,17 +224,17 @@ class CommunitySettings extends StatelessWidget {
                                   const SizedBox(
                                     height: 10,
                                   ),
-                                  DropdownButton(
-                                    underline:
-                                        Container(color: Colors.transparent),
-                                    value: cubit.settings.region,
-                                    items: regions.map((item) {
-                                      return DropdownMenuItem(
-                                          value: item, child: Text(item));
-                                    }).toList(),
-                                    onChanged: (value) =>
-                                        cubit.setCommunityRegion(value),
-                                  ),
+                                  // DropdownButton(
+                                  //   underline:
+                                  //       Container(color: Colors.transparent),
+                                  //   value: cubit.settings.region,
+                                  //   items: regions.map((item) {
+                                  //     return DropdownMenuItem(
+                                  //         value: item, child: Text(item));
+                                  //   }).toList(),
+                                  //   onChanged: (value) =>
+                                  //       cubit.setCommunityRegion(value),
+                                  // ),
                                   const SizedBox(
                                     height: 30,
                                   ),
@@ -210,6 +244,116 @@ class CommunitySettings extends StatelessWidget {
                                           fontSize: 10.sp,
                                           color: ColorManager.greyColor)),
                                   const Divider(),
+
+                                  ///ListTile for public radio button
+                                  ListTile(
+                                    horizontalTitleGap: 0.05.w,
+                                    visualDensity:
+                                        const VisualDensity(vertical: -4),
+                                    contentPadding: EdgeInsets.zero,
+                                    title: Row(
+                                      children: [
+                                        Icon(Icons.person,
+                                            color: ColorManager.textGrey,
+                                            size: 13.sp),
+                                        Text('  Public ',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 12.sp,
+                                                color: ColorManager
+                                                    .eggshellWhite)),
+                                        Text(
+                                          ' Anyone can view, post, and comment to this community',
+                                          style: TextStyle(
+                                              color: ColorManager.textGrey,
+                                              fontSize: 11.sp),
+                                        )
+                                      ],
+                                    ),
+                                    leading: Radio(
+                                        hoverColor: Colors.transparent,
+                                        activeColor: ColorManager.darkBlueColor,
+                                        value: CommunityTypes.public,
+                                        groupValue: communityType,
+                                        onChanged: (newCommunityType) {
+                                          communityType = newCommunityType;
+                                          setState(() {});
+                                        }),
+                                  ),
+
+                                  ///ListTile for restricted radio button
+                                  ListTile(
+                                      horizontalTitleGap: 0.05.w,
+                                      visualDensity:
+                                          const VisualDensity(vertical: -4),
+                                      contentPadding: EdgeInsets.zero,
+                                      title: Row(
+                                        children: [
+                                          Icon(Icons.remove_red_eye_outlined,
+                                              color: ColorManager.textGrey,
+                                              size: 13.sp),
+                                          Text('  Restricted  ',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 12.sp,
+                                                  color: ColorManager
+                                                      .eggshellWhite)),
+                                          Text(
+                                            'Anyone can view this community, but only approved users can post',
+                                            style: TextStyle(
+                                                color: ColorManager.textGrey,
+                                                fontSize: 11.sp),
+                                          )
+                                        ],
+                                      ),
+                                      leading: Radio(
+                                          hoverColor: Colors.transparent,
+                                          activeColor:
+                                              ColorManager.darkBlueColor,
+                                          value: CommunityTypes.restricted,
+                                          groupValue: communityType,
+                                          onChanged: (newCommunityType) {
+                                            logger.w(communityType);
+                                            logger.w(newCommunityType);
+                                            communityType = newCommunityType;
+                                            setState(() {});
+                                          })),
+
+                                  ///ListTile for private radio button
+                                  ListTile(
+                                      horizontalTitleGap: 0.05.w,
+                                      visualDensity:
+                                          const VisualDensity(vertical: -4),
+                                      contentPadding: EdgeInsets.zero,
+                                      title: Row(
+                                        children: [
+                                          Icon(Icons.lock_rounded,
+                                              color: ColorManager.textGrey,
+                                              size: 13.sp),
+                                          Text('  Private  ',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 12.sp,
+                                                  color: ColorManager
+                                                      .eggshellWhite)),
+                                          Text(
+                                            'Only approved users can view and submit to this community',
+                                            style: TextStyle(
+                                                color: ColorManager.textGrey,
+                                                fontSize: 11.sp),
+                                          )
+                                        ],
+                                      ),
+                                      leading: Radio(
+                                        hoverColor: Colors.transparent,
+                                        activeColor: ColorManager.darkBlueColor,
+                                        value: CommunityTypes.private,
+                                        groupValue: communityType,
+                                        onChanged: (newCommunityType) {
+                                          communityType = newCommunityType;
+                                          setState(() {});
+                                        },
+                                      )),
                                   const SizedBox(
                                     height: 30,
                                   ),
