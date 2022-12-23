@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
+import 'package:reddit/components/helpers/color_manager.dart';
 
 import '../../cubit/add_post/cubit/add_post_cubit.dart';
 import 'add_post_textfield.dart';
@@ -23,15 +24,20 @@ class _TextPostWidgetState extends State<TextPostWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            InkWell(
-              onTap: () {
-                setState(() {
-                  addPostCubit.isMarkdown = !addPostCubit.isMarkdown;
-                });
-              },
-              child: (addPostCubit.isMarkdown)
-                  ? Text('Switch to Fancy Pants Editor')
-                  : Text('Markdown Mode'),
+            Container(
+              margin: EdgeInsets.all(15),
+              padding: EdgeInsets.all(15),
+              color: ColorManager.darkGrey,
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    addPostCubit.isMarkdown = !addPostCubit.isMarkdown;
+                  });
+                },
+                child: (addPostCubit.isMarkdown)
+                    ? Text('Switch to Fancy Pants Editor')
+                    : Text('Markdown Mode'),
+              ),
             ),
           ],
         ),

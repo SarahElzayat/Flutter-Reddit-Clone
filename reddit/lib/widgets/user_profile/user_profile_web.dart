@@ -80,7 +80,7 @@ class _UserProfileWebState extends State<UserProfileWeb>
               children: [
                 Container(
                     width: (mediaQuery.size.width > 1000)
-                        ? mediaQuery.size.width * 0.6
+                        ? mediaQuery.size.width * 0.7
                         : mediaQuery.size.width * 0.95,
                     margin: (mediaQuery.size.width <= 1000)
                         ? EdgeInsets.symmetric(

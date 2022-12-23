@@ -52,9 +52,15 @@ class _AddPostWebScreenState extends State<AddPostWebScreen> {
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
                     children: [
+                      SizedBox(
+                        height: 10,
+                      ),
                       Column(children: [
                         PostTypeButtons(
                           keyboardIsOpened: false,
+                        ),
+                        SizedBox(
+                          height: 10,
                         ),
                         Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -68,6 +74,9 @@ class _AddPostWebScreenState extends State<AddPostWebScreen> {
                                 fontSize:
                                     (23 * mediaQuery.textScaleFactor).toInt(),
                                 hintText: 'Title')),
+                        SizedBox(
+                          height: 20,
+                        ),
                         SizedBox(
                           // height: mediaQuery.size,
                           child: PostTypeWidget(
