@@ -1,6 +1,6 @@
-/// @author Sarah Elzayat
-/// @date 3/11/2022
-/// @description This screen is the main one that has the bottom navigation bar, the main app bar, drawer and end drawer
+///  @author Sarah Elzayat
+///  @date 3/11/2022
+///  @description This screen is the main one that has the bottom navigation bar, the main app bar, drawer and end drawer
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,14 +26,14 @@ class _HomeScreenForMobileState extends State<HomeScreenForMobile> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool isAndroid = !kIsWeb;
 
-  ///The method changes the end drawer state from open to closed and vice versa
+  /// The method changes the end drawer state from open to closed and vice versa
   void _changeEndDrawer() {
     _scaffoldKey.currentState!.isEndDrawerOpen
         ? _scaffoldKey.currentState?.closeEndDrawer()
         : _scaffoldKey.currentState?.openEndDrawer();
   }
 
-  ///The method changes the drawer state from open to closed and vice versa
+  /// The method changes the drawer state from open to closed and vice versa
   void _changeLeftDrawer() {
     _scaffoldKey.currentState!.isDrawerOpen
         ? _scaffoldKey.currentState?.closeDrawer()

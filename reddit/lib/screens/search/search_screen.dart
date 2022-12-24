@@ -1,6 +1,6 @@
-/// @author Sarah El-Zayat
-/// @date 9/11/2022
-/// The search screen on mobile
+///  @author Sarah El-Zayat
+///  @date 9/11/2022
+///  The search screen on mobile
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,11 +14,11 @@ import 'package:reddit/components/search_field.dart';
 
 import '../../components/snack_bar.dart';
 
-///
-/// @param [query] the search word
-/// @param [subredditName] the name of the subreddit in case of searching inside one
-/// @param [isSubreddit] bool to check if the search is called inside a subreddit or not to preview the results accordingly
-///
+/// 
+///  @param [query] the search word
+///  @param [subredditName] the name of the subreddit in case of searching inside one
+///  @param [isSubreddit] bool to check if the search is called inside a subreddit or not to preview the results accordingly
+/// 
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen(
@@ -37,14 +37,14 @@ class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _textEditingController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  ///The method changes the end drawer state from open to closed and vice versa
+  /// The method changes the end drawer state from open to closed and vice versa
   void _changeEndDrawer() {
     _scaffoldKey.currentState!.isEndDrawerOpen
         ? _scaffoldKey.currentState?.closeEndDrawer()
         : _scaffoldKey.currentState?.openEndDrawer();
   }
 
-  ///The method changes the drawer state from open to closed and vice versa
+  /// The method changes the drawer state from open to closed and vice versa
   void _changeLeftDrawer() {
     _scaffoldKey.currentState!.isDrawerOpen
         ? _scaffoldKey.currentState?.closeDrawer()

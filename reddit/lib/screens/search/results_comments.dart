@@ -1,6 +1,6 @@
-/// @author Sarah El-Zayat
-/// @date 9/11/2022
-/// this is the screen for the comments results of the main search
+///  @author Sarah El-Zayat
+///  @date 9/11/2022
+///  this is the screen for the comments results of the main search
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,7 @@ class ResultsComments extends StatefulWidget {
 class _ResultsCommentsState extends State<ResultsComments> {
   final _scrollController = ScrollController();
 
-  /// scroll listener to load more at the bottom of the screen
+  ///  scroll listener to load more at the bottom of the screen
   void _scrollListener() {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {

@@ -1,5 +1,5 @@
-///@author Sarah Elzayat
-///@description sybreddit's model in search results
+/// @description sybreddit's model in search results
+/// @author Sarah Elzayat
 
 class SearchResultSubredditModel {
   String? id;

@@ -1,5 +1,5 @@
-///@author Sarah Elzayat
-///@description: the screen that shows the user's saved posts and comments
+/// @author Sarah Elzayat
+/// @description: the screen that shows the user's saved posts and comments
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reddit/cubit/app_cubit/app_cubit.dart';
@@ -17,7 +17,7 @@ class _SavedScreenState extends State<SavedScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
 
-  /// initial state of the stateful widget
+  ///  initial state of the stateful widget
   @override
   void initState() {
     super.initState();
