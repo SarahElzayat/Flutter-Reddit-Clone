@@ -20,7 +20,8 @@ pipeline {
     stage('Build') {
 
 			steps {
-				sh 'docker build -t waer/flutterweb:latest ./reddit/'
+				sh 'cd ./reddit'
+				sh 'docker build -t waer/flutterweb:latest .'
 			}
 		}
 
