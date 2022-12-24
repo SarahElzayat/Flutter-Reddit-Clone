@@ -1,52 +1,8 @@
-# Install Operating system and dependencies
-FROM ubuntu:20.04
-
-ENV DEBIAN_FRONTEND noninteractive
-
-RUN apt-get update 
-RUN apt-get install -y curl 
-RUN apt-get install -y git 
-RUN apt-get install -y wget 
-RUN apt-get install -y unzip 
-RUN apt-get install -y libgconf-2-4 
-RUN apt-get install -y gdb 
-RUN apt-get install -y libstdc++6 
-RUN apt-get install -y libglu1-mesa 
-RUN apt-get install -y fonts-droid-fallback 
-RUN apt-get install -y lib32stdc++6 
-RUN apt-get install -y python3
-
-RUN apt-get clean
-
-# download Flutter SDK from Flutter Github repo
-RUN git clone https://github.com/flutter/flutter.git /usr/local/flutter
-
-# Set flutter environment path
-ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
-
-# Run flutter doctor
-RUN flutter doctor
-
-# Enable flutter web
-RUN flutter channel flutter-3.3-candidate.5
-# RUN flutter upgrade
-RUN flutter config --enable-web
-
-# Copy files to container and build
-RUN mkdir /app/
-COPY pubspec.yaml /app/
-# similar to cd
-WORKDIR /app/ 
-# RUN dart pub global activate webdev
-RUN flutter pub get
-# RUN flutter clean
+FROM instrumentisto/flutter AS build-env
+WORKDIR /app/
 COPY . /app/
-RUN flutter build web --web-renderer html
+RUN flutter doctor -v
+RUN flutter build web
 
-# Record the exposed port
-EXPOSE 5000
-
-# make server startup script executable and start the web server
-RUN ["chmod", "+x", "/app/server/server.sh"]
-
-ENTRYPOINT [ "/app/server/server.sh"]
+FROM nginx:1.21.1-alpine
+COPY --from=build-env /app/build/web /usr/share/nginx/html
