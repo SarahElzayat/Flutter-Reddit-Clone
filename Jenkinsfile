@@ -21,6 +21,7 @@ pipeline {
 
 			steps {
 				sh 'cd ./reddit'
+				sh 'ls'
 				sh 'docker build -t waer/flutterweb:latest .'
 			}
 		}
