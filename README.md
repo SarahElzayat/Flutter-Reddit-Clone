@@ -27,7 +27,7 @@ flutter pub get
 ### Demo Videos 
 
 ###### Mobile view
-<img src="[https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Dart_programming_language_logo.svg/2560px-Dart_programming_language_logo.svg.png](https://github.com/SarahElzayat/Flutter-Reddit-Clone/blob/master/screenshots/vid1.mp4)" width=30%>
+<img src="[https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Dart_programming_language_logo.svg/2560px-Dart_programming_language_logo.svg.png](https://github.com/SarahElzayat/Flutter-Reddit-Clone/blob/master/screenshots/vid1.gif)" width=30%>
 
 
 ###### Web view
