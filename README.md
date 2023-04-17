@@ -13,8 +13,8 @@ As part of studying software engineering and applying software engineering proce
 A team of 5 people worked on developing a cross platform version of Reddit. 
 
 The cross platform development was mainly based on Flutter framework and Dart programming language.
-<img src="https://storage.googleapis.com/cms-storage-bucket/c823e53b3a1a7b0d36a9.png" width = 30%> 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Dart_programming_language_logo.svg/2560px-Dart_programming_language_logo.svg.png" width=30%>
+<img src="https://storage.googleapis.com/cms-storage-bucket/c823e53b3a1a7b0d36a9.png" width = 20%>  </t>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Dart_programming_language_logo.svg/2560px-Dart_programming_language_logo.svg.png" width=20%>
 
 ### Installation
 
