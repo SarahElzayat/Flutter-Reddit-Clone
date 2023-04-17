@@ -1,8 +1,7 @@
 # Reddit-Replica
 ![](https://download.logo.wine/logo/Reddit/Reddit-Logo.wine.png)
 <br>
-<img src="https://storage.googleapis.com/cms-storage-bucket/c823e53b3a1a7b0d36a9.png" width = 50%>
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Dart_programming_language_logo.svg/2560px-Dart_programming_language_logo.svg.png" width=50%>
+<img src="https://storage.googleapis.com/cms-storage-bucket/c823e53b3a1a7b0d36a9.png" width = 30%> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Dart_programming_language_logo.svg/2560px-Dart_programming_language_logo.svg.png" width=30%>
 
 ## Descrtiption
 
