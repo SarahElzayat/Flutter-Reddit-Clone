@@ -1,5 +1,8 @@
 # Reddit-Replica
-
+![](https://download.logo.wine/logo/Reddit/Reddit-Logo.wine.png)
+<br>
+![](https://w7.pngwing.com/pngs/537/866/png-transparent-flutter-hd-logo.png | width = 80)
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Dart_programming_language_logo.svg/2560px-Dart_programming_language_logo.svg.png | width = 80)
 ## Descrtiption
 
 Reddit is an American social news aggregation, content rating, and discussion website. Registered users submit content to the site such as links, text posts, images, and videos, which are then voted up or down by other members.
