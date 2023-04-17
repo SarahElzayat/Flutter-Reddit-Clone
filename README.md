@@ -31,3 +31,4 @@ flutter pub get
 
 
 ###### Web view
+![](https://github.com/SarahElzayat/Flutter-Reddit-Clone/blob/master/screenshots/vid2.gif)
