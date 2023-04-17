@@ -23,5 +23,6 @@ flutter pub get
 ### Demo Videos 
 
 ###### Mobile view
+![](https://github.com/SarahElzayat/Flutter-Reddit-Clone/blob/master/screenshots/vid1.mp4)
 
 ###### Web view
